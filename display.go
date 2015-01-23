@@ -1,4 +1,4 @@
-package display
+package main
 
 import (
 	"fmt"
@@ -24,17 +24,17 @@ func PrintSubtitle(format string, a ...interface{}) {
 }
 
 func PrintTitle(format string, a ...interface{}) {
-	m := fmt.Sprintf(format, a...)
+	m := fmt.Sprintf("== "+format+" ==", a...)
 	fmt.Println(titleize(m))
 }
 
 func PrintSuccess(format string, a ...interface{}) {
-	m := fmt.Sprintf(format, a...)
+	m := fmt.Sprintf("[INFO] "+format, a...)
 	fmt.Println(successize(m))
 }
 
 func PrintError(format string, a ...interface{}) {
-	m := fmt.Sprintf(format, a...)
+	m := fmt.Sprintf("[ERROR] "+format, a...)
 	fmt.Println(errorize(m))
 }
 
