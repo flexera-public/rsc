@@ -1,216 +1,229 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
-	"time"
 
 	"bitbucket.org/pkg/inflect"
-	"github.com/kr/text"
+)
+
+var (
+	// Path to generated file
+	targetFile string
+
+	// Attribute types mapping
+	attributeTypes map[string]string
+
+	// Regexp used to match RightScale media type identifiers
+	rightScaleType = regexp.MustCompile("^vnd\\.rightscale\\.")
+
+	// Resources that don't have a media type
+	NoMediaTypeResources = map[string]bool{
+		"HealthCheck":   true,
+		"Oauth2":        true,
+		"Tag":           true,
+		"UserDatas":     true,
+		"ChildAccounts": true,
+	}
+
+	// Datetime attribute name regexp
+	dateAttributeRegex = regexp.MustCompile("_at$")
 )
 
 func main() {
 	destDefault, _ := filepath.Abs("codegen.go")
-	var metadata = flag.String("metadata", "",
+	metadata := flag.String("metadata", "./api_data.json",
 		"Path to API 1.5 metadata file, defaults to './api_data.json'")
-	var dest = flag.String("output", destDefault,
+	attributes := flag.String("attributes", "./attributes.json",
+		"Path to API 1.5 attribute types file, defaults to './attributes.json'")
+	targetFile = *flag.String("output", destDefault,
 		"Path to output file, defaults to './codegen.go'")
 	flag.Parse()
 	if len(*metadata) == 0 {
 		check(fmt.Errorf("Specify path to metadata json with '-metadata /path/to/api_data.json'"))
 	}
+	at, err := ioutil.ReadFile(*attributes)
+	check(err)
+	check(json.Unmarshal(at, &attributeTypes))
 	js, err := ioutil.ReadFile(*metadata)
 	check(err)
 	var content map[string]interface{}
-	err = json.Unmarshal(js, &content)
-	f, err := os.Create(*dest)
+	check(json.Unmarshal(js, &content))
+	f, err := os.Create(targetFile)
 	check(err)
-	generateTopComment(f)
-	generateCommonTypes(f)
-	for name, resource := range content {
-		check(generateResource(name, resource, f))
+	c, err := NewCodeWriter()
+	check(err)
+	check(c.WriteHeader(f))
+	names := sortedKeys(content)
+	for _, name := range names {
+		data, err := analyzeResource(name, content[name])
+		check(err)
+		check(c.WriteResource(data, f))
 	}
 }
 
-func generateTopComment(dest io.Writer) {
-	dest.Write([]byte("/**************************************************************************/\n"))
-	dest.Write([]byte("/*                     RightScale API 1.5 go client                       */\n"))
-	dest.Write([]byte("/*                                                                        */\n"))
-	dest.Write(pad("/* Generated ", time.Now().Format("Jan 2, 2006 at 3:04pm (PST)")))
-	dest.Write(pad("/* Command: `api15gen ", strings.Join(os.Args[1:], " "), "`"))
-	dest.Write([]byte("/*                                                                        */\n"))
-	dest.Write([]byte("/* The content of this file is auto-generated, DO NOT MODIFY              */\n"))
-	dest.Write([]byte("/**************************************************************************/\n\n"))
-}
-
-func pad(items ...string) []byte {
-	l := 0
-	buffer := bytes.NewBuffer(make([]byte, 80))
-	for _, i := range items {
-		buffer.WriteString(i)
-		l = l + len(i)
-	}
-	numSpaces := 74 - l
-	if numSpaces < 1 {
-		numSpaces = 1
-	}
-	buffer.WriteString(strings.Repeat(" ", numSpaces))
-	buffer.WriteString("*/\n")
-	return buffer.Bytes()
-}
-
-func generateCommonTypes(dest io.Writer) {
-	dest.Write([]byte(`
-// Href type
-type Href string
-`))
-}
-
-func generateResource(name string, resource interface{}, dest io.Writer) error {
+func analyzeResource(name string, resource interface{}) (*ResourceData, error) {
 	res := resource.(map[string]interface{})
-	dest.Write([]byte(fmt.Sprintf("\n// == %s ==\n\n", name)))
+
+	// Compute actions
 	methods := res["methods"].(map[string]interface{})
-	var mediaType map[string]interface{}
-	if raw, _ := res["media_type"]; raw != nil {
-		mediaType = raw.(map[string]interface{})
-	}
-	for n, m := range methods {
-		//fmt.Printf("GENERATING %s of %s\n", n, name)
-		kind := n
-		n = methodName(n, name)
+	actionNames := sortedKeys(methods)
+	actions := make([]*ResourceAction, len(methods))
+	idx := 0
+	for _, actionName := range actionNames {
+		m := methods[actionName]
 		meth := m.(map[string]interface{})
-		params := meth["parameters"].(map[string]interface{})
-		body := generateBody(kind, mediaType)
+		var params map[string]interface{}
+		if p, ok := meth["parameters"]; ok {
+			params = p.(map[string]interface{})
+		}
 		description := "<no description>"
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
-		generateHeader(n, description, meth["route"].(string), dest)
-		generateSignature(n, name, params, kind, dest)
-		dest.Write(body)
-		dest.Write([]byte("}\n"))
-		generateGenericSignature(n, name, kind, dest)
-		dest.Write(body)
-		dest.Write([]byte("}\n\n"))
-	}
-	return nil
-}
-
-func generateBody(kind string, mediaType map[string]interface{}) []byte {
-	return []byte{}
-}
-
-func generateHeader(name string, description string, route string, dest io.Writer) {
-	dest.Write([]byte("// "))
-	dest.Write(parseRoute(route))
-	// There's a bug in the text package that will cause an infinite loop if the number below
-	// is less than 104 (has to do with the comment on the 'create CloudAccount' action)
-	dest.Write([]byte(text.Indent(text.Wrap(description, 104), "// ")))
-	dest.Write([]byte("\n"))
-}
-
-func generateSignature(name, resName string, params map[string]interface{}, kind string, dest io.Writer) {
-	dest.Write([]byte("func (c *Client) "))
-	dest.Write([]byte(name))
-	dest.Write(parseParams(params))
-	dest.Write(parseReturn(kind, resName))
-	dest.Write([]byte(" {\n"))
-}
-
-func generateGenericSignature(name, resName, kind string, dest io.Writer) {
-	dest.Write([]byte("func (c *Client) "))
-	dest.Write([]byte(name))
-	dest.Write([]byte("(p *Params)"))
-	dest.Write(parseReturn(kind, resName))
-	dest.Write([]byte(" {\n"))
-}
-
-func parseRoute(route string) []byte {
-	if len(route) < 7 {
-		return []byte("<empty route>") // :(((( some routes are empty
-	}
-	verb := strings.TrimRight(route[0:7], " ")
-	path := strings.TrimRight(strings.Split(route[8:], "{")[0], " ")
-	buffer := bytes.NewBuffer(make([]byte, 128))
-	buffer.WriteString(verb)
-	buffer.WriteString(" ")
-	buffer.WriteString(path)
-	buffer.WriteString("\n")
-	return buffer.Bytes()
-}
-
-func parseParams(params map[string]interface{}) []byte {
-	buffer := bytes.NewBuffer(make([]byte, 256))
-	buffer.WriteString("(")
-	idx, max := 0, len(params)
-	for name, param := range params {
-		p := param.(map[string]interface{})
-		class, ok := p["class"]
-		if !ok {
-			// Assume string, seems to happen e.g. with parameter 'limit' of audit entries index
-			class = "String"
+		httpMethod, path := parseRoute(meth["route"].(string))
+		var contentType string
+		if c, ok := meth["content_type"].(string); ok {
+			contentType = c
 		}
-		switch class { // Possible values: "String", "Hash", "Array", "Integer", "Enumerable"
-		case "Integer":
-			buffer.Write(parseParamName(name))
-			buffer.WriteString(" int")
-		case "String":
-			buffer.Write(parseParamName(name))
-			buffer.WriteString(" string")
-		case "Hash":
-			continue // skip - one parameter per field
-		case "Array":
-			buffer.Write(parseParamName(name))
-			buffer.WriteString(" []string")
-		case "Enumerable": // inputs
-			buffer.Write(parseParamName(name))
-			buffer.WriteString(" map[string]string")
+		actions[idx] = &ResourceAction{
+			Name:        methodName(actionName, name),
+			Description: description,
+			HttpMethod:  httpMethod,
+			Path:        path,
+			Params:      parseParams(params),
+			Return:      parseReturn(actionName, name, contentType),
 		}
 		idx += 1
-		if idx < max {
-			buffer.WriteString(", ")
+	}
+
+	// Compute description
+	var description string
+	if d, ok := res["description"].(string); ok {
+		description = d
+	}
+
+	// Compute attributes
+	var attributes []*ResourceAttribute
+	var atts map[string]interface{}
+	if a, ok := res["media_type"].(map[string]interface{}); ok {
+		atts = a["attributes"].(map[string]interface{})
+		attributes = make([]*ResourceAttribute, len(atts))
+		for idx, n := range sortedKeys(atts) {
+			attributes[idx] = &ResourceAttribute{n, attributeTypes[n]}
+		}
+	} else {
+		attributes = []*ResourceAttribute{}
+	}
+
+	// We're done!
+	return &ResourceData{
+		Name:        name,
+		Description: description,
+		Actions:     actions,
+		Attributes:  attributes,
+	}, nil
+}
+
+func parseRoute(route string) (string, string) {
+	if len(route) < 7 {
+		return "", "<unknown route>" // :(((( some routes are empty
+	}
+	method := strings.TrimRight(route[0:7], " ")
+	path := strings.TrimRight(strings.Split(route[8:], "{")[0], " ")
+
+	return method, path
+}
+
+func parseParams(params map[string]interface{}) []*ActionParam {
+	paramNames := sortedKeys(params)
+	res := make([]*ActionParam, len(paramNames))
+	j := 0
+	for _, name := range paramNames {
+		p := params[name]
+		param := p.(map[string]interface{})
+		n := parseParamName(name)
+		class, ok := param["class"]
+		if !ok {
+			res[j] = &ActionParam{n, goType("String")} // Assume string, e.g. 'limit' of audit entries index
+			j += 1
+		} else if class != "Hash" {
+			res[j] = &ActionParam{n, goType(class.(string))}
+			j += 1
 		}
 	}
-	buffer.WriteString(")")
-	return buffer.Bytes()
+	return res[0:j]
 }
 
-func parseParamName(name string) []byte {
+func parseParamName(name string) string {
 	r := regexp.MustCompile("[^[:alnum:]]+")
 	p := r.ReplaceAllString(name, "_")
-	return []byte(inflect.CamelizeDownFirst(p))
+	return inflect.CamelizeDownFirst(p)
 }
 
-func parseReturn(kind, resName string) []byte {
+func parseReturn(kind, resName, contentType string) string {
 	switch kind {
 	case "show":
-		b := bytes.NewBuffer(make([]byte, len(resName)+11))
-		b.WriteString(" (*")
-		b.WriteString(resName)
-		b.WriteString(", error) ")
-		return b.Bytes()
+		return fmt.Sprintf("*%s", resourceType(resName))
 	case "index":
-		b := bytes.NewBuffer(make([]byte, len(resName)+11))
-		b.WriteString(" ([]")
-		b.WriteString(resName)
-		b.WriteString(", error) ")
-		return b.Bytes()
+		return fmt.Sprintf("[]%s", resourceType(resName))
 	case "create":
-		return []byte(" (href, error) ")
+		return "href"
 	case "update", "destroy":
-		return []byte(" error ")
+		return ""
 	default:
-		return []byte(" ") // TBD: Look at media type
+		switch {
+		case len(contentType) == 0:
+			return ""
+		case strings.Index(contentType, "application/vnd.rightscale.") == 0:
+			if contentType == "application/vnd.rightscale.text" {
+				return "string"
+			}
+			elems := strings.SplitN(contentType[27:], ";", 2)
+			name := inflect.Camelize(elems[0])
+			if len(elems) > 1 && elems[1] == "type=collection" {
+				name = "[]" + name
+			}
+			return name
+		default: // Shouldn't be here
+			panic("api15gen: Unknown content type " + contentType)
+		}
 	}
 
+}
+
+// Name of go type corresponding to metadata type
+func goType(apiType string) string {
+	switch apiType {
+	case "Integer":
+		return "int"
+	case "String":
+		return "string"
+	case "Array":
+		return "[]string"
+	case "Enumerable":
+		return "map[string]string" // e.g. inputs
+	default:
+		panic("Unknown API type " + apiType)
+	}
+}
+
+// Name of go type for resource with given name
+// It should always be the same (camelized) but there are some resources that don't have a media
+// type so for these we use a map.
+func resourceType(resName string) string {
+	if _, ok := NoMediaTypeResources[resName]; ok {
+		return "map[string]string"
+	} else {
+		return inflect.Singularize(resName)
+	}
 }
 
 // Heuristic to create method name from action and resource names
@@ -221,10 +234,23 @@ func methodName(action, resource string) string {
 	return inflect.Camelize(action) + inflect.Camelize(resource)
 }
 
+// Return keys of given maps sorted
+func sortedKeys(m map[string]interface{}) []string {
+	keys := make([]string, len(m))
+	idx := 0
+	for k, _ := range m {
+		keys[idx] = k
+		idx += 1
+	}
+	sort.Strings(keys)
+	return keys
+}
+
 // Panic if error is not nil
 func check(err error) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "api15gen: %s\n", err.Error())
+		os.Remove(targetFile)
 		os.Exit(1)
 	}
 }
