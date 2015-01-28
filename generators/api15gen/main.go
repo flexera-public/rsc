@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -17,6 +18,9 @@ import (
 var (
 	// Path to generated file
 	targetFile string
+
+	// Whether to keep generated file even if there were errors during generation
+	keep bool
 
 	// Attribute types mapping
 	attributeTypes map[string]string
@@ -40,12 +44,15 @@ var (
 func main() {
 	destDefault, _ := filepath.Abs("codegen.go")
 	metadata := flag.String("metadata", "./api_data.json",
-		"Path to API 1.5 metadata file, defaults to './api_data.json'")
+		"Path to API 1.5 metadata file")
 	attributes := flag.String("attributes", "./attributes.json",
-		"Path to API 1.5 attribute types file, defaults to './attributes.json'")
-	targetFile = *flag.String("output", destDefault,
-		"Path to output file, defaults to './codegen.go'")
+		"Path to API 1.5 attribute types file")
+	targetFilePtr := flag.String("output", destDefault,
+		"Path to output file")
+	keepPtr := flag.Bool("keep", false, "Keep generated code even if generation produced errors")
 	flag.Parse()
+	targetFile = *targetFilePtr
+	keep = *keepPtr
 	if len(*metadata) == 0 {
 		check(fmt.Errorf("Specify path to metadata json with '-metadata /path/to/api_data.json'"))
 	}
@@ -66,6 +73,10 @@ func main() {
 		data, err := analyzeResource(name, content[name])
 		check(err)
 		check(c.WriteResource(data, f))
+	}
+	o, err := exec.Command("go", "fmt", targetFile).CombinedOutput()
+	if err != nil {
+		check(fmt.Errorf("Failed to format generated code:\n%s", o))
 	}
 }
 
@@ -117,7 +128,7 @@ func analyzeResource(name string, resource interface{}) (*ResourceData, error) {
 		atts = a["attributes"].(map[string]interface{})
 		attributes = make([]*ResourceAttribute, len(atts))
 		for idx, n := range sortedKeys(atts) {
-			attributes[idx] = &ResourceAttribute{n, attributeTypes[n]}
+			attributes[idx] = &ResourceAttribute{attributeName(n), attributeTypes[n]}
 		}
 	} else {
 		attributes = []*ResourceAttribute{}
@@ -234,6 +245,14 @@ func methodName(action, resource string) string {
 	return inflect.Camelize(action) + inflect.Camelize(resource)
 }
 
+// Escape attribute names using go keywords
+func attributeName(name string) string {
+	if name == "type" {
+		return "type_"
+	}
+	return name
+}
+
 // Return keys of given maps sorted
 func sortedKeys(m map[string]interface{}) []string {
 	keys := make([]string, len(m))
@@ -250,7 +269,9 @@ func sortedKeys(m map[string]interface{}) []string {
 func check(err error) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "api15gen: %s\n", err.Error())
-		os.Remove(targetFile)
+		if !keep {
+			os.Remove(targetFile)
+		}
 		os.Exit(1)
 	}
 }
