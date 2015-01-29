@@ -30,11 +30,16 @@ var (
 
 	// Resources that don't have a media type
 	NoMediaTypeResources = map[string]bool{
-		"HealthCheck":   true,
-		"Oauth2":        true,
-		"Tag":           true,
-		"UserDatas":     true,
-		"ChildAccounts": true,
+		"HealthCheck":          true,
+		"Oauth2":               true,
+		"Tag":                  true,
+		"UserDatas":            true,
+		"ChildAccounts":        true,
+		"MonitoringMetricData": true,
+		"ImportPreview":        true,
+		"Changes":              true,
+		"CookbookResolution":   true,
+		"ResourceTag":          true,
 	}
 
 	// Datetime attribute name regexp
@@ -83,6 +88,25 @@ func main() {
 func analyzeResource(name string, resource interface{}) (*ResourceData, error) {
 	res := resource.(map[string]interface{})
 
+	// Compute description
+	var description string
+	if d, ok := res["description"].(string); ok {
+		description = d
+	}
+
+	// Compute attributes
+	var attributes []*ResourceAttribute
+	var atts map[string]interface{}
+	if a, ok := res["media_type"].(map[string]interface{}); ok {
+		atts = a["attributes"].(map[string]interface{})
+		attributes = make([]*ResourceAttribute, len(atts))
+		for idx, n := range sortedKeys(atts) {
+			attributes[idx] = &ResourceAttribute{attributeName(n), n, attributeTypes[n]}
+		}
+	} else {
+		attributes = []*ResourceAttribute{}
+	}
+
 	// Compute actions
 	methods := res["methods"].(map[string]interface{})
 	actionNames := sortedKeys(methods)
@@ -99,53 +123,97 @@ func analyzeResource(name string, resource interface{}) (*ResourceData, error) {
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
-		httpMethod, path := parseRoute(meth["route"].(string))
+		httpMethod, path := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
+			meth["route"].(string))
 		var contentType string
 		if c, ok := meth["content_type"].(string); ok {
 			contentType = c
 		}
+		url, pathParamNames := parseUrl(path)
+		actionParams := parseParams(path, params)
+		queryParams := []*ActionParam{}
+		payloadParams := []*ActionParam{}
+		for n, p := range actionParams {
+			isPathParam := false
+			for _, pp := range pathParamNames {
+				if pp == n {
+					isPathParam = true
+					break
+				}
+			}
+			if isPathParam {
+				continue
+			}
+			if isQueryParam(n) {
+				queryParams = append(queryParams, p)
+			} else {
+				payloadParams = append(payloadParams, p)
+			}
+		}
+		pathParams := make([]*ActionParam, len(pathParamNames))
+		for i, n := range pathParamNames {
+			pathParams[i] = actionParams[n]
+		}
+		allParams := make([]*ActionParam, len(pathParams)+len(queryParams)+len(payloadParams))
+		for i, p := range queryParams {
+			allParams[i] = p
+		}
+		offset := len(queryParams)
+		for i, p := range payloadParams {
+			allParams[offset+i] = p
+		}
+		offset += len(payloadParams)
+		for i, p := range pathParams {
+			allParams[offset+i] = p
+		}
 		actions[idx] = &ResourceAction{
-			Name:        methodName(actionName, name),
-			Description: description,
-			HttpMethod:  httpMethod,
-			Path:        path,
-			Params:      parseParams(params),
-			Return:      parseReturn(actionName, name, contentType),
+			Name:          methodName(actionName, name),
+			Description:   description,
+			HttpMethod:    httpMethod,
+			Path:          path,
+			AllParams:     allParams,
+			PathParams:    pathParams,
+			QueryParams:   queryParams,
+			PayloadParams: payloadParams,
+			Url:           url,
+			Return:        parseReturn(actionName, name, contentType),
 		}
 		idx += 1
 	}
 
-	// Compute description
-	var description string
-	if d, ok := res["description"].(string); ok {
-		description = d
-	}
-
-	// Compute attributes
-	var attributes []*ResourceAttribute
-	var atts map[string]interface{}
-	if a, ok := res["media_type"].(map[string]interface{}); ok {
-		atts = a["attributes"].(map[string]interface{})
-		attributes = make([]*ResourceAttribute, len(atts))
-		for idx, n := range sortedKeys(atts) {
-			attributes[idx] = &ResourceAttribute{attributeName(n), attributeTypes[n]}
-		}
-	} else {
-		attributes = []*ResourceAttribute{}
-	}
-
 	// We're done!
 	return &ResourceData{
-		Name:        name,
+		Name:        inflect.Singularize(name),
 		Description: description,
 		Actions:     actions,
 		Attributes:  attributes,
 	}, nil
 }
 
-func parseRoute(route string) (string, string) {
-	if len(route) < 7 {
-		return "", "<unknown route>" // :(((( some routes are empty
+// Heuristic to determine whether given param is a query string param
+// For now only consider view and filter...
+func isQueryParam(n string) bool {
+	return n == "view" || n == "filter"
+}
+
+func parseRoute(moniker string, route string) (string, string) {
+	// :(((( some routes are empty
+	switch moniker {
+	case "Deployments#servers":
+		return "GET", "api/deployments/:id/servers"
+	case "ServerArrays#current_instances":
+		return "GET", "api/server_arrays/:id/current_instances"
+	case "ServerArrays#launch":
+		return "POST", "api/server_arrays/:id/launch"
+	case "ServerArrays#multi_run_executable":
+		return "POST", "api/server_arrays/:id/multi_run_executable"
+	case "ServerArrays#multi_terminate":
+		return "POST", "api/server_arrays/:id/multi_terminate"
+	case "Servers#launch":
+		return "POST", "api/servers/:id/launch"
+	case "Servers#terminate":
+		return "POST", "api/servers/:id/teminate"
+
 	}
 	method := strings.TrimRight(route[0:7], " ")
 	path := strings.TrimRight(strings.Split(route[8:], "{")[0], " ")
@@ -153,29 +221,81 @@ func parseRoute(route string) (string, string) {
 	return method, path
 }
 
-func parseParams(params map[string]interface{}) []*ActionParam {
-	paramNames := sortedKeys(params)
-	res := make([]*ActionParam, len(paramNames))
+func parseUrl(path string) (string, []string) {
+	if strings.HasSuffix(path, "(.:format)?") {
+		path = path[:len(path)-11]
+	}
+	elems := strings.Split(path, "/")
+	urlElems := make([]string, len(elems))
+	params := []string{}
 	j := 0
+	acc := ""
+	for i, e := range elems {
+		if strings.HasPrefix(e, ":") {
+			prefix := acc
+			acc = ""
+			if len(prefix) > 0 {
+				prefix = fmt.Sprintf("\"/%s/\"", prefix)
+			}
+			if i > 0 || len(prefix) > 0 {
+				prefix += "+"
+			}
+			suffix := ""
+			if i < len(elems)-1 {
+				suffix = "+"
+			}
+			p := parseParamName(e[1:])
+			params = append(params, p)
+			urlElems[j] = fmt.Sprintf("%s%s%s", prefix, p, suffix)
+			j += 1
+		} else {
+			if len(acc) > 0 {
+				acc = fmt.Sprintf("%s%s%s", acc, "/", e)
+			} else {
+				acc = e
+			}
+		}
+	}
+	if len(acc) > 0 {
+		urlElems[j] = fmt.Sprintf("\"/%s\"", acc)
+		j += 1
+	}
+	urlElems = urlElems[:j]
+	return strings.Join(urlElems, ""), params
+}
+
+func parseParams(path string, params map[string]interface{}) map[string]*ActionParam {
+	elems := strings.Split(path, "/")
+	for _, e := range elems {
+		if strings.HasPrefix(e, ":") {
+			if strings.HasSuffix(e, "(.:format)?") {
+				e = e[:len(e)-11]
+			}
+			params[e[1:]] = map[string]interface{}{"class": "String"}
+		}
+	}
+	paramNames := sortedKeys(params)
+	res := make(map[string]*ActionParam)
 	for _, name := range paramNames {
 		p := params[name]
 		param := p.(map[string]interface{})
 		n := parseParamName(name)
 		class, ok := param["class"]
 		if !ok {
-			res[j] = &ActionParam{n, goType("String")} // Assume string, e.g. 'limit' of audit entries index
-			j += 1
+			res[n] = &ActionParam{n, name, goType("String")} // Assume string, e.g. 'limit' of audit entries index
 		} else if class != "Hash" {
-			res[j] = &ActionParam{n, goType(class.(string))}
-			j += 1
+			res[n] = &ActionParam{n, name, goType(class.(string))}
 		}
 	}
-	return res[0:j]
+	return res
 }
 
 func parseParamName(name string) string {
 	r := regexp.MustCompile("[^[:alnum:]]+")
 	p := r.ReplaceAllString(name, "_")
+	if p == "r_s_version" {
+		return "rsVersion"
+	}
 	return inflect.CamelizeDownFirst(p)
 }
 
@@ -186,7 +306,11 @@ func parseReturn(kind, resName, contentType string) string {
 	case "index":
 		return fmt.Sprintf("[]%s", resourceType(resName))
 	case "create":
-		return "href"
+		if _, ok := NoMediaTypeResources[resName]; ok {
+			return "map[string]interface{}"
+		} else {
+			return "Href"
+		}
 	case "update", "destroy":
 		return ""
 	default:
@@ -198,7 +322,7 @@ func parseReturn(kind, resName, contentType string) string {
 				return "string"
 			}
 			elems := strings.SplitN(contentType[27:], ";", 2)
-			name := inflect.Camelize(elems[0])
+			name := resourceType(inflect.Camelize(elems[0]))
 			if len(elems) > 1 && elems[1] == "type=collection" {
 				name = "[]" + name
 			}
@@ -247,10 +371,7 @@ func methodName(action, resource string) string {
 
 // Escape attribute names using go keywords
 func attributeName(name string) string {
-	if name == "type" {
-		return "type_"
-	}
-	return name
+	return inflect.Camelize(name)
 }
 
 // Return keys of given maps sorted

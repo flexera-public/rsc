@@ -2,10 +2,15 @@
 package rsapi15
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"path"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -21,6 +26,8 @@ type Client struct {
 	accessToken  string
 	refreshAt    time.Time
 	logger       *log.Logger
+	endpoint     string
+	client       http.Client
 }
 
 // APIs can be called in two ways: using a discrete interface where all parameters have to be
@@ -33,8 +40,23 @@ type Params map[string]interface{}
 
 // NewClient returns a API 1.5 client from a refresh token and an account id.
 // It attempts to authenticate with RightScale and returns an error if that fails.
-func NewClient(token string, accountId int) (*Client, error) {
-	c := &Client{accountId: accountId, refreshToken: token}
+// If no endpoint is provided (i.e. `endpoint` argument is the empty string) then the correct
+// endpoint is detected during initial auth (in other words, provide the endpoint to avoid the
+// initial redirect and save time).
+// The timeout semantic is the same as the `net/http` package `Client` type `timeout` field. In
+// particular a timeout value of zero means no timeout.
+func NewClient(token string, accountId int, endpoint string, timeout time.Duration) (*Client, error) {
+	if endpoint == "" {
+		endpoint = "https://my.rightscale.com"
+	}
+	client := http.Client{Timeout: timeout}
+	c := &Client{
+		accountId:    accountId,
+		refreshToken: token,
+		endpoint:     endpoint,
+		client:       client,
+	}
+	client.CheckRedirect = c.handleRedirect
 	if err := c.refresh(); err != nil {
 		return nil, err
 	} else {
@@ -52,9 +74,16 @@ func (c *Client) SetLogger(l *log.Logger) {
 	c.logger = l
 }
 
-// Refresh access token
+// Update endpoint to match redirect
+func (c *Client) handleRedirect(req *http.Request, via []*http.Request) error {
+	elems := strings.SplitN(req.URL.String(), "/api", 2)
+	c.endpoint = elems[0]
+	return nil
+}
+
+// Refresh access token, handles redirection
 func (c *Client) refresh() error {
-	session, err := c.CreateOauth2(&Params{
+	session, err := c.CreateOauth2G(&Params{
 		"refresh_token": c.refreshToken,
 		"account_id":    c.accountId,
 		"grant_type":    "refresh_token",
@@ -62,9 +91,8 @@ func (c *Client) refresh() error {
 	if err != nil {
 		return err
 	}
-	s := session.(map[string]string)
-	c.accessToken = s["access_token"]
-	d, err := time.ParseDuration(s["expires_in"] + "s")
+	c.accessToken = session["access_token"].(string)
+	d, err := time.ParseDuration(session["expires_in"].(string) + "s")
 	if err != nil {
 		return err
 	}
@@ -73,25 +101,40 @@ func (c *Client) refresh() error {
 	return nil
 }
 
+// Request context created by `beforeRequest`
+// Used by `afterRequest` to log the time it took to process the request
+type requestContext struct {
+	id        string
+	startedAt time.Time
+}
+
 // Before request callback, check token freshness, sign request and log it if needed
-func (c *Client) beforeRequest(r *http.Request, id string) {
+// Return short unique id used for logging, pass it back in afterRequest to log it together
+// with response.
+func (c *Client) beforeRequest(r *http.Request) *requestContext {
 	r.Header.Add("X-Account", strconv.Itoa(c.accountId))
 	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
+	r.URL.Path = path.Join(c.endpoint, r.URL.Path)
 	if c.refreshAt.After(time.Now()) {
 		err := c.refresh()
 		if err != nil && c.logger != nil {
 			c.logger.Printf("ERROR: failed to refresh token: %s, will retry with next API call.", err.Error())
 		}
 	}
+	b := make([]byte, 6)
+	io.ReadFull(rand.Reader, b)
+	id := base64.StdEncoding.EncodeToString(b)
 	if c.logger != nil {
 		c.logger.Printf("[%s] %s %s", id, r.Method, r.URL.String())
 	}
+	return &requestContext{id: id, startedAt: time.Now()}
 }
 
 // After request callback, log if needed
 // TBD: add some verbose flag that enables logging request and response bodies?
-func (c *Client) afterRequest(r *http.Response, id string) {
+func (c *Client) afterRequest(r *http.Response, ctx *requestContext) {
+	d := time.Since(ctx.startedAt)
 	if c.logger != nil {
-		c.logger.Printf("[%s] %s", id, r.Status)
+		c.logger.Printf("[%s] %s in %s", ctx.id, r.Status, d.String())
 	}
 }
