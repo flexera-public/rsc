@@ -130,47 +130,13 @@ func analyzeResource(name string, resource interface{}) (*ResourceData, error) {
 			contentType = c
 		}
 		url, pathParamNames := parseUrl(path)
-		actionParams := parseParams(path, params)
-		queryParams := []*ActionParam{}
-		payloadParams := []*ActionParam{}
-		for n, p := range actionParams {
-			isPathParam := false
-			for _, pp := range pathParamNames {
-				if pp == n {
-					isPathParam = true
-					break
-				}
-			}
-			if isPathParam {
-				continue
-			}
-			if isQueryParam(n) {
-				queryParams = append(queryParams, p)
-			} else {
-				payloadParams = append(payloadParams, p)
-			}
-		}
-		pathParams := make([]*ActionParam, len(pathParamNames))
-		for i, n := range pathParamNames {
-			pathParams[i] = actionParams[n]
-		}
-		allParams := make([]*ActionParam, len(pathParams)+len(queryParams)+len(payloadParams))
-		for i, p := range queryParams {
-			allParams[i] = p
-		}
-		offset := len(queryParams)
-		for i, p := range payloadParams {
-			allParams[offset+i] = p
-		}
-		offset += len(payloadParams)
-		for i, p := range pathParams {
-			allParams[offset+i] = p
-		}
+		allParams, pathParams, queryParams, payloadParams := analyzeParams(path, params, pathParamNames)
 		actions[idx] = &ResourceAction{
 			Name:          methodName(actionName, name),
 			Description:   description,
 			HttpMethod:    httpMethod,
 			Path:          path,
+			NativeParams:  params,
 			AllParams:     allParams,
 			PathParams:    pathParams,
 			QueryParams:   queryParams,
@@ -245,7 +211,7 @@ func parseUrl(path string) (string, []string) {
 				suffix = "+"
 			}
 			p := parseParamName(e[1:])
-			params = append(params, p)
+			params = append(params, e[1:])
 			urlElems[j] = fmt.Sprintf("%s%s%s", prefix, p, suffix)
 			j += 1
 		} else {
@@ -262,41 +228,6 @@ func parseUrl(path string) (string, []string) {
 	}
 	urlElems = urlElems[:j]
 	return strings.Join(urlElems, ""), params
-}
-
-func parseParams(path string, params map[string]interface{}) map[string]*ActionParam {
-	elems := strings.Split(path, "/")
-	for _, e := range elems {
-		if strings.HasPrefix(e, ":") {
-			if strings.HasSuffix(e, "(.:format)?") {
-				e = e[:len(e)-11]
-			}
-			params[e[1:]] = map[string]interface{}{"class": "String"}
-		}
-	}
-	paramNames := sortedKeys(params)
-	res := make(map[string]*ActionParam)
-	for _, name := range paramNames {
-		p := params[name]
-		param := p.(map[string]interface{})
-		n := parseParamName(name)
-		class, ok := param["class"]
-		if !ok {
-			res[n] = &ActionParam{n, name, goType("String")} // Assume string, e.g. 'limit' of audit entries index
-		} else if class != "Hash" {
-			res[n] = &ActionParam{n, name, goType(class.(string))}
-		}
-	}
-	return res
-}
-
-func parseParamName(name string) string {
-	r := regexp.MustCompile("[^[:alnum:]]+")
-	p := r.ReplaceAllString(name, "_")
-	if p == "r_s_version" {
-		return "rsVersion"
-	}
-	return inflect.CamelizeDownFirst(p)
 }
 
 func parseReturn(kind, resName, contentType string) string {
@@ -334,22 +265,6 @@ func parseReturn(kind, resName, contentType string) string {
 
 }
 
-// Name of go type corresponding to metadata type
-func goType(apiType string) string {
-	switch apiType {
-	case "Integer":
-		return "int"
-	case "String":
-		return "string"
-	case "Array":
-		return "[]string"
-	case "Enumerable":
-		return "map[string]string" // e.g. inputs
-	default:
-		panic("Unknown API type " + apiType)
-	}
-}
-
 // Name of go type for resource with given name
 // It should always be the same (camelized) but there are some resources that don't have a media
 // type so for these we use a map.
@@ -384,6 +299,19 @@ func sortedKeys(m map[string]interface{}) []string {
 	}
 	sort.Strings(keys)
 	return keys
+}
+
+// Sort array of string by length
+type ByReverseLength []string
+
+func (s ByReverseLength) Len() int {
+	return len(s)
+}
+func (s ByReverseLength) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+func (s ByReverseLength) Less(i, j int) bool {
+	return len(s[i]) > len(s[j])
 }
 
 // Panic if error is not nil

@@ -17,56 +17,18 @@ type CodeWriter struct {
 	resourceTmpl *template.Template
 }
 
-// Data structure used to render resource code
-// Note: we don't want to use hashes in structs used to generate the code to guarantee that code
-// is always generated in the same order (to allow for diff etc.)
-type ResourceData struct {
-	Name        string
-	Description string
-	Actions     []*ResourceAction
-	Attributes  []*ResourceAttribute
-}
-
-// Data structure used to render resource method
-type ResourceAction struct {
-	Name          string
-	Description   string
-	HttpMethod    string
-	Path          string
-	Url           string
-	AllParams     []*ActionParam // All parameters
-	PathParams    []*ActionParam // Params used to build URL
-	PayloadParams []*ActionParam // Params that should be sent in payload
-	QueryParams   []*ActionParam // Params that should be sent in query string
-	Return        string
-}
-
-// Resource attributes, 'Type' is string representation of go type, e.g. "*time.Time"
-type ResourceAttribute struct {
-	Name      string
-	JsonName  string
-	Signature string
-}
-
-// Data structure used to render method params
-type ActionParam struct {
-	Name      string
-	QueryName string
-	Signature string
-}
-
 // Code writer factory
 func NewCodeWriter() (*CodeWriter, error) {
 	funcMap := template.FuncMap{
-		"comment":        comment,
-		"now":            time.Now,
-		"join":           strings.Join,
-		"commandLine":    commandLine,
-		"joinParams":     joinParams,
-		"joinParamNames": joinParamNames,
-		"paramsAsMap":    paramsAsMap,
-		"isPointer":      isPointer,
-		"isArray":        isArray,
+		"comment":         comment,
+		"now":             time.Now,
+		"join":            strings.Join,
+		"commandLine":     commandLine,
+		"joinParams":      joinParams,
+		"joinParamNames":  joinParamNames,
+		"paramsAsPayload": paramsAsPayload,
+		"isPointer":       isPointer,
+		"isArray":         isArray,
 	}
 	headerT, err := template.New("header").Funcs(funcMap).Parse(headerTmpl)
 	if err != nil {
@@ -103,7 +65,7 @@ func comment(elems ...string) string {
 func joinParams(p []*ActionParam) string {
 	params := make([]string, len(p))
 	for i, param := range p {
-		params[i] = fmt.Sprintf("%s %s", param.Name, param.Signature)
+		params[i] = fmt.Sprintf("%s %s", param.Name, param.Type.Signature())
 	}
 	return strings.Join(params, ", ")
 }
@@ -118,12 +80,12 @@ func joinParamNames(p []*ActionParam) string {
 }
 
 // Create map out of parameter names
-func paramsAsMap(p []*ActionParam) string {
-	params := make([]string, len(p))
+func paramsAsPayload(p []*ActionParam) string {
+	fields := make([]string, len(p))
 	for i, param := range p {
-		params[i] = fmt.Sprintf("\"%s\": %s", param.QueryName, param.Name)
+		fields[i] = fmt.Sprintf("\"%s\": %s,", param.NativeName, param.Name)
 	}
-	return fmt.Sprintf("map[string]interface{}{\n%s}", strings.Join(params, ",\n"))
+	return fmt.Sprintf("map[string]interface{}{\n%s\n}", strings.Join(fields, "\n\t"))
 }
 
 // Return true if signature contains pointer, false otherwise
@@ -183,14 +145,14 @@ func (c *Client) {{.Name}}({{joinParams .AllParams}}){{if .Return}} ({{.Return}}
 	{{template "actionBody" . }}
 }
 func (c *Client) {{.Name}}G(p *Params){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
-	{{range .AllParams}}{{.Name}} := (*p)["{{.Name}}"].({{.Signature}})
+	{{range .AllParams}}{{.Name}} := (*p)["{{.Name}}"].({{.Type.Signature}})
 	{{end}}return c.{{.Name}}({{joinParamNames .AllParams}})
 }
 {{end}}
 `
 
 const actionBodyTmpl = `{{if .Return}}var res {{.Return}}
-	{{end}}{{if .PayloadParams}}payload := {{paramsAsMap .PayloadParams}}
+	{{end}}{{if .PayloadParams}}payload := {{paramsAsPayload .PayloadParams}}
 	b, err := json.Marshal(payload)
 	if err != nil {
 		{{if .Return}}return res, err{{else}}return err{{end}}
@@ -201,8 +163,8 @@ const actionBodyTmpl = `{{if .Return}}var res {{.Return}}
 	if err != nil {
 		return {{if .Return}}res, {{end}}err
 	}
-	{{if .QueryParams}}{{range .QueryParams}}{{if isArray .Signature}}for _, v := range {{.Name}} {
-		req.URL.Query().Add("{{.QueryName}}", v)
+	{{if .QueryParams}}{{range .QueryParams}}{{if isArray .Type.Signature}}for _, v := range {{.Name}} {
+		req.URL.Query().Add("{{.NativeName}}", v)
 	}
 	{{else}}req.URL.Query().Set("{{.Name}}", {{.Name}})
 	{{end}}{{end}}{{end}}{{if .PayloadParams}}req.Header.Set("Content-Type", "application/json")
