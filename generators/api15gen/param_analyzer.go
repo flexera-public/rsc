@@ -9,81 +9,58 @@ import (
 	"bitbucket.org/pkg/inflect"
 )
 
-// Capture root of path
-var rootRegexp = regexp.MustCompile("([^\\[]+)\\[")
+var (
+	// Capture root of path
+	rootRegexp = regexp.MustCompile("([^\\[]+)\\[")
 
-// Parent path regular expression
-var parentPathRegexp = regexp.MustCompile(`^(.*)\[.+\]$`)
+	// Parent path regular expression
+	parentPathRegexp = regexp.MustCompile(`^(.*)\[.+\]$`)
 
-// Child path regular expression
-var childPathRegexp = regexp.MustCompile(`^.*\[(.+)\]$`)
+	// Child path regular expression
+	childPathRegexp = regexp.MustCompile(`^.*\[(.+)\]$`)
 
-// Analyzer method parameters
-func analyzeParams(path string, params map[string]interface{}, pathParamNames []string) ([]*ActionParam, []*ActionParam, []*ActionParam, []*ActionParam) {
-	actionParams := parseParams(path, params)
-	queryParams := []*ActionParam{}
-	payloadParams := []*ActionParam{}
-	for n, p := range actionParams {
-		isPathParam := false
-		for _, pp := range pathParamNames {
-			if pp == n {
-				isPathParam = true
-				break
-			}
-		}
-		if isPathParam {
-			continue
-		}
-		if isQueryParam(n) {
-			queryParams = append(queryParams, p)
-		} else {
-			payloadParams = append(payloadParams, p)
-		}
-	}
-	pathParams := make([]*ActionParam, len(pathParamNames))
-	for i, n := range pathParamNames {
-		pathParams[i] = actionParams[n]
-	}
-	allParams := make([]*ActionParam, len(pathParams)+len(queryParams)+len(payloadParams))
-	for i, p := range pathParams {
-		allParams[i] = p
-	}
-	offset := len(pathParams)
-	for i, p := range payloadParams {
-		allParams[offset+i] = p
-	}
-	offset += len(payloadParams)
-	for i, p := range queryParams {
-		allParams[offset+i] = p
-	}
-	return allParams, pathParams, queryParams, payloadParams
+	// Capture all alphanumerical parts to build go identifier from raw param name
+	partsRegexp = regexp.MustCompile("[^[:alnum:]]+")
+)
+
+// Analyzer exposes "analyze" method which initialized all the fields but 'rawParams' which is
+// initialized by factory method.
+// The analyzer takes a map describing the parameters of a method as found in the API JSON and
+// produces the corresponding set of ActionParam structs.
+// The analyzer also produces a set of parameters per location where they can be found (path,
+// query string and payload). It does that by using a heuristic for query parameters and using
+// the name of path params extracted from the URL its is given.
+type ParamAnalyzer struct {
+	// Path to method, e.g. /servers/:serverId
+	path string
+
+	// Raw parameter hashes as found in JSON
+	rawParams map[string]interface{}
+
+	/* Fields below are computed by 'analyze' */
+
+	// Parameters indexed by name
+	Params map[string]*ActionParam
+
+	// Parameter types indexed by name
+	ParamTypes map[string]*ObjectDataType
+
+	// go expression that builds request URL (e.g. `"servers/" + serverId`)
+	UrlExp string
+
+	// Path parameters sorted alphabetically by name (appear in URL)
+	PathParams []*ActionParam
+
+	// Query parameters sorted alphabetically by name (appear in query string)
+	QueryParams []*ActionParam
+
+	// Payload parameters sorted alphabetically by name (used in request body)
+	PayloadParams []*ActionParam
 }
 
-// First extract parameters from action path (i.e. ":server_id" in "/servers/:server_id") then
-// build a set of parameters from the list of all field names.
-// Example parameters declaration:
-//  "parameters": {
-//      "security_group_rule[description]": {
-//          "class": "String",
-//          "non_blank": true
-//      },
-//      "security_group_rule": {
-//          "class": "Hash",
-//          "non_blank": true,
-//          "mandatory": true
-//      }
-//  }
-// Example of tricky cases:
-// inputs: { "class": "Enumerable" },
-// inputs[*]: { "class": "String" },
-// inputs[][name]: { "class": "String" },
-// inputs[][value]: { "class": "String" }
-// server_array[elasticity_params][schedule][][max_count]: { "class": "String" },
-// server_array[elasticity_params][schedule][][min_count]: { "class": "String" },
-// server_array[elasticity_params][schedule][][day]: { "class": "String" },
-// server_array[elasticity_params][schedule]: { "class": "Array" },
-func parseParams(path string, params map[string]interface{}) map[string]*ActionParam {
-	// Add path parameters
+// Factory method, initialize 'path' and 'rawParams' fields
+func NewAnalyzer(path string, params map[string]interface{}) *ParamAnalyzer {
+	// Parse path and add corresponding params to raw params map
 	elems := strings.Split(path, "/")
 	for _, e := range elems {
 		if strings.HasPrefix(e, ":") {
@@ -94,7 +71,14 @@ func parseParams(path string, params map[string]interface{}) map[string]*ActionP
 		}
 	}
 
-	// Order keys using their length so "foo[bar]" is analyzed before "foo"
+	return &ParamAnalyzer{path: path, rawParams: params}
+}
+
+// Analyze all parameters and categorize them
+// Initialize all fields of ParamAnalyzer struct
+func (p *ParamAnalyzer) Analyze() {
+	// Order params using their length so "foo[bar]" is analyzed before "foo"
+	params := p.rawParams
 	paths := make([]string, len(params))
 	i := 0
 	for n, _ := range params {
@@ -103,88 +87,145 @@ func parseParams(path string, params map[string]interface{}) map[string]*ActionP
 	}
 	sort.Sort(ByReverseLength(paths))
 
-	//
+	// Iterate through all params and build corresponding ActionParam structs
 	parsed := map[string]*ActionParam{}
 	top := map[string]*ActionParam{}
 	for _, path := range paths {
+		if strings.HasSuffix(path, "[*]") {
+			continue // parent path is enumerable, already handled with it
+		}
 		var child *ActionParam
 		origPath := path
-		// fmt.Printf("origPath: %s\n", origPath)
 		origParam := params[path].(map[string]interface{})
-		// fmt.Printf("origParam: %v\n", origParam)
 		matches := parentPathRegexp.FindStringSubmatch(path)
-		// fmt.Printf("matches: %v\n", matches)
 		isTop := (matches == nil)
+		if prev, ok := parsed[path]; ok {
+			if isTop {
+				top[path] = prev
+			}
+			continue
+		}
 		for matches != nil {
-			// fmt.Printf("\nPROCESSING %s - CHILD %v\n", path, child)
 			param := params[path].(map[string]interface{})
 			parentPath := matches[1]
 			var isArrayChild bool
 			if strings.HasSuffix(parentPath, "[]") {
 				isArrayChild = true
 			}
-			// fmt.Printf("isArrayChild: %v\n", isArrayChild)
 			if parent, ok := parsed[parentPath]; ok {
-				// fmt.Printf("parent: %+v:%v\n", parent, parent.Type.Inspect())
 				a, ok := parent.Type.(*ArrayDataType)
 				if ok {
 					parent = a.ElemType
 				}
-				dType := parseDataType(params, child, parsed, path)
-				child = parseParam(path, param, dType)
+				child = p.parseParam(path, param, child)
 				if _, ok = parent.Type.(*EnumerableDataType); !ok {
 					o := parent.Type.(*ObjectDataType)
-					o.Fields = append(o.Fields, child)
+					o.Fields = appendSorted(o.Fields, child)
 					parsed[path] = child
-					// fmt.Printf("parsed[%s] = %+v: %v\n", path, child, child.Type.Inspect())
-					break // No need to keep going back, we already have a parent
 				}
+				break // No need to keep going back, we already have a parent
 			} else {
-				dType := parseDataType(params, child, parsed, path)
-				child = parseParam(path, param, dType)
-				// fmt.Printf("no parent - parsed[%s] = %+v: %v\n", path, child, child.Type.Inspect())
+				child = p.parseParam(path, param, child)
 				parsed[path] = child
 				if isArrayChild {
-					typeName := parseParamName(matches[1] + "[item]")
-					parent = parseParam(matches[1]+"[item]",
-						map[string]interface{}{},
+					itemPath := nativeNameFromPath(matches[1]) + "[item]"
+					typeName := fmt.Sprintf("%sParam", strings.Title(parseParamName(itemPath)))
+					parent = p.newParam(itemPath, map[string]interface{}{},
 						&ObjectDataType{typeName, []*ActionParam{child}})
 					parsed[parentPath] = parent
-					// fmt.Printf("parsed[%s] = %+v:%v\n", parentPath, parent, parent.Type.Inspect())
 					child = parent
+					parentPath = parentPath[:len(parentPath)-2]
 				}
 			}
-			matches = parentPathRegexp.FindStringSubmatch(parentPath)
+			path = parentPath
+			matches = parentPathRegexp.FindStringSubmatch(path)
 		}
-		// fmt.Printf("\nDONE PROCESSING CHILDREN CHILD: %v\n", child)
 		if isTop {
 			if _, ok := parsed[path]; !ok {
-				dType := parseDataType(params, nil, parsed, path)
-				actionParam := parseParam(path, origParam, dType)
+				actionParam := p.parseParam(path, origParam, nil)
 				parsed[path] = actionParam
-				// fmt.Printf("parsed[%s] = %+v:%v\n", path, actionParam, actionParam.Type.Inspect())
 			}
 			top[path] = parsed[path]
 		} else {
-			// fmt.Printf("PARSED BEFORE FINALIZE: %+v\n", parsed)
 			matches := rootRegexp.FindStringSubmatch(origPath)
 			rootPath := matches[1]
-			// fmt.Printf("\nrootPath: %s\n", rootPath)
 			if _, ok := parsed[rootPath]; !ok {
-				parsed[rootPath] = parseParam(rootPath, params[rootPath].(map[string]interface{}),
-					parseDataType(params, child, parsed, rootPath))
+				parsed[rootPath] = p.parseParam(rootPath,
+					params[rootPath].(map[string]interface{}), child)
 			}
 		}
 	}
 
-	return top
+	// Now do a second pass on parsed params to generate their declarations
+	p.ParamTypes = make(map[string]*ObjectDataType)
+	p.Params = make(map[string]*ActionParam, len(top))
+	for n, param := range top {
+		if o, ok := param.Type.(*ObjectDataType); ok {
+			p.recordTypes(o)
+		}
+		p.Params[n] = param
+	}
+
+	// Now build URL expression and cartegorize parameters
+	urlExp, pathParamNames := p.parseUrl()
+	p.UrlExp = urlExp
+
+	allParams := make([]*ActionParam, len(p.Params))
+	idx := 0
+	for _, param := range p.Params {
+		allParams[idx] = param
+		idx += 1
+	}
+	sort.Sort(ByName(allParams))
+	pathParams := []*ActionParam{}
+	queryParams := []*ActionParam{}
+	payloadParams := []*ActionParam{}
+	for _, param := range allParams {
+		pname := param.Name
+		if isQueryParam(pname) {
+			queryParams = append(queryParams, param)
+		} else {
+			isPathParam := false
+			for _, p := range pathParamNames {
+				if p == pname {
+					isPathParam = true
+					break
+				}
+			}
+			if isPathParam {
+				pathParams = append(pathParams, param)
+			} else {
+				payloadParams = append(payloadParams, param)
+			}
+		}
+	}
+	p.PathParams = pathParams
+	p.QueryParams = queryParams
+	p.PayloadParams = payloadParams
+}
+
+// Recursively record all type declarations
+func (p *ParamAnalyzer) recordTypes(root *ObjectDataType) {
+	if _, ok := p.ParamTypes[root.Name]; !ok {
+		p.ParamTypes[root.Name] = root
+		for _, f := range root.Fields {
+			if o, ok := f.Type.(*ObjectDataType); ok {
+				p.recordTypes(o)
+			}
+		}
+	}
+}
+
+// Sort action params by name
+func appendSorted(params []*ActionParam, param *ActionParam) []*ActionParam {
+	params = append(params, param)
+	sort.Sort(ByName(params))
+	return params
 }
 
 // Parse data type in context
-func parseDataType(params map[string]interface{}, child *ActionParam, parsed map[string]*ActionParam,
-	path string) DataType {
-	// fmt.Printf("PATH: %s\n", path)
-	param := params[path].(map[string]interface{})
+func (p *ParamAnalyzer) parseDataType(path string, child *ActionParam) DataType {
+	param := p.rawParams[path].(map[string]interface{})
 	class := "String"
 	if c, ok := param["class"].(string); ok {
 		class = c
@@ -202,26 +243,33 @@ func parseDataType(params map[string]interface{}, child *ActionParam, parsed map
 			res = &ArrayDataType{child}
 		} else {
 			s := BasicDataType("string")
-			p := parseParam(fmt.Sprintf("%s[item]", path),
+			p := p.newParam(fmt.Sprintf("%s[item]", path),
 				map[string]interface{}{}, &s)
 			res = &ArrayDataType{p}
 		}
 	case "Enumerable":
 		res = new(EnumerableDataType)
 	case "Hash":
-		if current, ok := parsed[path]; ok {
+		if current, ok := p.Params[path]; ok {
 			res = current.Type
 			o := res.(*ObjectDataType)
-			o.Fields = append(o.Fields, child)
+			o.Fields = appendSorted(o.Fields, child)
 		} else {
-			res = &ObjectDataType{parseParamName(path), []*ActionParam{child}}
+			oname := fmt.Sprintf("%sParam", strings.Title(parseParamName(path)))
+			res = &ObjectDataType{oname, []*ActionParam{child}}
 		}
 	}
-	// fmt.Printf("PARSED DATA TYPE %v\n", res.Inspect())
 	return res
 }
 
-func parseParam(path string, param map[string]interface{}, dType DataType) *ActionParam {
+// Build action param struct from json data
+func (p *ParamAnalyzer) parseParam(path string, param map[string]interface{}, child *ActionParam) *ActionParam {
+	dType := p.parseDataType(path, child)
+	return p.newParam(path, param, dType)
+}
+
+// New parameter from raw values
+func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dType DataType) *ActionParam {
 	var description, regexp string
 	var mandatory, nonBlank bool
 	var validValues []interface{}
@@ -240,11 +288,7 @@ func parseParam(path string, param map[string]interface{}, dType DataType) *Acti
 	if v, ok := param["valid_values"]; ok {
 		validValues = v.([]interface{})
 	}
-	native := path
-	matches := childPathRegexp.FindStringSubmatch(path)
-	if matches != nil {
-		native = matches[1]
-	}
+	native := nativeNameFromPath(path)
 	return &ActionParam{
 		Name:        parseParamName(native),
 		Description: description,
@@ -257,11 +301,69 @@ func parseParam(path string, param map[string]interface{}, dType DataType) *Acti
 	}
 }
 
+// Extract name (leaf) from path
+func nativeNameFromPath(path string) string {
+	native := path
+	matches := childPathRegexp.FindStringSubmatch(path)
+	if matches != nil {
+		native = matches[1]
+	}
+	return native
+}
+
+// Parse native names into go parameter names
 func parseParamName(name string) string {
-	r := regexp.MustCompile("[^[:alnum:]]+")
-	p := r.ReplaceAllString(name, "_")
-	if p == "r_s_version" {
+	if name == "r_s_version" {
 		return "rsVersion"
 	}
+	if name == "type" {
+		return "type_"
+	}
+	p := partsRegexp.ReplaceAllString(name, "_")
 	return inflect.CamelizeDownFirst(p)
+}
+
+// Parse action path and return go expression to build url
+// E.g /servers/:severId returns "servers/" + serverId
+func (p *ParamAnalyzer) parseUrl() (string, []string) {
+	if strings.HasSuffix(p.path, "(.:format)?") {
+		p.path = p.path[:len(p.path)-11]
+	}
+	elems := strings.Split(p.path, "/")
+	urlElems := make([]string, len(elems))
+	params := []string{}
+	j := 0
+	acc := ""
+	for i, e := range elems {
+		if strings.HasPrefix(e, ":") {
+			prefix := acc
+			acc = ""
+			if len(prefix) > 0 {
+				prefix = fmt.Sprintf("\"/%s/\"", prefix)
+			}
+			if i > 0 || len(prefix) > 0 {
+				prefix += "+"
+			}
+			suffix := ""
+			if i < len(elems)-1 {
+				suffix = "+"
+			}
+			p := parseParamName(e[1:])
+			params = append(params, e[1:])
+			urlElems[j] = fmt.Sprintf("%s%s%s", prefix, p, suffix)
+			j += 1
+		} else {
+			if len(acc) > 0 {
+				acc = fmt.Sprintf("%s%s%s", acc, "/", e)
+			} else {
+				acc = e
+			}
+		}
+	}
+	if len(acc) > 0 {
+		urlElems[j] = fmt.Sprintf("\"/%s\"", acc)
+		j += 1
+	}
+	urlElems = urlElems[:j]
+	return strings.Join(urlElems, ""), params
 }

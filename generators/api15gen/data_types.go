@@ -21,12 +21,12 @@ type ResourceAction struct {
 	Description   string
 	HttpMethod    string
 	Path          string
-	Url           string
-	NativeParams  map[string]interface{} // Params as defined in JSON
-	AllParams     []*ActionParam         // All parameters
-	PathParams    []*ActionParam         // Params used to build URL
-	PayloadParams []*ActionParam         // Params that should be sent in payload
-	QueryParams   []*ActionParam         // Params that should be sent in query string
+	UrlExp        string
+	NativeParams  map[string]interface{}  // Params as defined in JSON
+	AllParams     map[string]*ActionParam // All parameters
+	PathParams    []*ActionParam          // Params used to build URL
+	PayloadParams []*ActionParam          // Params that should be sent in payload
+	QueryParams   []*ActionParam          // Params that should be sent in query string
 	Return        string
 }
 
@@ -43,11 +43,61 @@ type ActionParam struct {
 	Description string
 	NativeName  string
 	Type        DataType
+	Declaration string
 	Mandatory   bool
 	NonBlank    bool
 	Regexp      string
 	ValidValues []interface{}
 }
+
+// Same name and type => identical (validations and description are not taken into account)
+func (p *ActionParam) Compare(other *ActionParam) bool {
+	if p.Name != other.Name {
+		return false
+	}
+	if p.NativeName != other.NativeName {
+		return false
+	}
+	switch t := p.Type.(type) {
+	case *BasicDataType:
+		b, ok := other.Type.(*BasicDataType)
+		if !ok {
+			return false
+		}
+		if *t != *b {
+			return false
+		}
+	case *EnumerableDataType:
+		_, ok := other.Type.(*EnumerableDataType)
+		if !ok {
+			return false
+		}
+	case *ArrayDataType:
+		a, ok := other.Type.(*ArrayDataType)
+		if !ok {
+			return false
+		}
+		if !a.ElemType.Compare(t.ElemType) {
+			return false
+		}
+	case *ObjectDataType:
+		a, ok := other.Type.(*ObjectDataType)
+		if !ok {
+			return false
+		}
+		if !a.Compare(t) {
+			return false
+		}
+	}
+	return true
+}
+
+// Make it possible to sort action parameters by name
+type ByName []*ActionParam
+
+func (b ByName) Len() int           { return len(b) }
+func (b ByName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
+func (b ByName) Less(i, j int) bool { return b[i].Name < b[j].Name }
 
 // All type structures implement the DataType interface
 type DataType interface {
@@ -104,9 +154,27 @@ func (o *ObjectDataType) Inspect() string {
 func (o *ObjectDataType) Declaration() string {
 	fields := make([]string, len(o.Fields))
 	for i, f := range o.Fields {
-		fields[i] = fmt.Sprintf("%s %s", f.Name, f.Type.Signature())
+		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.Name),
+			f.Type.Signature(), f.NativeName)
 	}
-	return fmt.Sprintf("type %s struct {\n%s\n}", o.Name, strings.Join(fields, "\n\t"))
+	return fmt.Sprintf("type %s struct {\n%s\n}", o.Name,
+		strings.Join(fields, "\n\t"))
+}
+
+// Object data type comparison
+func (o *ObjectDataType) Compare(other *ObjectDataType) bool {
+	if o.Name != other.Name {
+		return false
+	}
+	if len(o.Fields) != len(other.Fields) {
+		return false
+	}
+	for i, f := range o.Fields {
+		if !f.Compare(other.Fields[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 // An enumerable is just a map

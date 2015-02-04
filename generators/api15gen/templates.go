@@ -49,13 +49,23 @@ func (c *CodeWriter) WriteHeader(w io.Writer) error {
 	return c.headerTmpl.Execute(w, nil)
 }
 
+// Write resource header
+func (c *CodeWriter) WriteResourceHeader(name string, w io.Writer) {
+	fmt.Fprintf(w, "/******  %s ******/\n\n", name)
+}
+
+// Write type declaration for resource action arguments
+func (c *CodeWriter) WriteType(t *ObjectDataType, w io.Writer) {
+	fmt.Fprintf(w, "%s\n\n", t.Declaration())
+}
+
 // Write code for a resource
 func (c *CodeWriter) WriteResource(resource *ResourceData, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
 }
 
 // Produce line comments by concatenating given strings and producing 80 characters long lines
-// wrapped in "/*" "*/"
+// starting with "//"
 func comment(elems ...string) string {
 	t := strings.Join(elems, "")
 	return text.Indent(text.Wrap(t, 77), "// ")
@@ -132,8 +142,6 @@ type Href string
 `
 
 const resourceTmpl = `{{define "actionBody"}}` + actionBodyTmpl + `{{end}}
-// == {{.Name}} ==
-
 {{comment .Description}}
 type {{.Name}} struct { {{range .Attributes}}
 {{.Name}} {{.Signature}} ` + "`" + `json:"{{.JsonName}},omitempty"` + "`" + `{{end}}
@@ -143,10 +151,6 @@ type {{.Name}} struct { {{range .Attributes}}
 {{comment .Description}}
 func (c *Client) {{.Name}}({{joinParams .AllParams}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
 	{{template "actionBody" . }}
-}
-func (c *Client) {{.Name}}G(p *Params){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
-	{{range .AllParams}}{{.Name}} := (*p)["{{.Name}}"].({{.Type.Signature}})
-	{{end}}return c.{{.Name}}({{joinParamNames .AllParams}})
 }
 {{end}}
 `
