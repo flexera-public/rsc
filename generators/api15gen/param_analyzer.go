@@ -214,6 +214,7 @@ func (p *ParamAnalyzer) Analyze() {
 				}
 			}
 			if isPathParam {
+				param.Mandatory = true
 				pathParams = append(pathParams, param)
 			} else {
 				payloadParams = append(payloadParams, param)

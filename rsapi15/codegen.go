@@ -1,10 +1,9 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 4, 2015 at 5:36pm (PST)
+// Generated Feb 4, 2015 at 6:48pm (PST)
 // Command:
-// $ api15gen -keep=T -metadata=../../rsapi15/api_data.json
-// -attributes=../../rsapi15/attributes.json -output=../../rsapi15/codegen.go
+// $ api15gen -keep=T -metadata=../../rsapi15/api_data.json -attributes=../../rsapi15/attributes.json -output=../../rsapi15/codegen.go
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -22,6 +21,17 @@ import (
 
 // Href
 type Href string
+
+// Convenience type
+type ApiParams map[string]interface{}
+
+// Helper function that merges optional parameters into payload
+func mergeOptionals(params, options ApiParams) ApiParams {
+	for name, value := range options {
+		params[name] = value
+	}
+	return params
+}
 
 /******  Account ******/
 
@@ -61,9 +71,7 @@ func (c *Client) ShowAccount(id string) (*Account, error) {
 
 /******  AccountGroup ******/
 
-// An Account Group specifies which RightScale accounts will have access to
-// import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.)
-// from the MultiCloud Marketplace.
+// An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.
 type AccountGroup struct {
 	Actions     []string            `json:"actions,omitempty"`
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
@@ -75,7 +83,10 @@ type AccountGroup struct {
 
 // GET api/account_groups(.:format)?
 // Lists the AccountGroups owned by this Account.
-func (c *Client) IndexAccountGroups(filter []string, view string) ([]AccountGroup, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexAccountGroups(options ApiParams) ([]AccountGroup, error) {
 	var res []AccountGroup
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -83,10 +94,11 @@ func (c *Client) IndexAccountGroups(filter []string, view string) ([]AccountGrou
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -104,7 +116,9 @@ func (c *Client) IndexAccountGroups(filter []string, view string) ([]AccountGrou
 
 // GET api/account_groups/:id(.:format)?
 // Show information about a single AccountGroup.
-func (c *Client) ShowAccountGroup(id string, view string) (*AccountGroup, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowAccountGroup(id string, options ApiParams) (*AccountGroup, error) {
 	var res *AccountGroup
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -112,7 +126,7 @@ func (c *Client) ShowAccountGroup(id string, view string) (*AccountGroup, error)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -179,7 +193,10 @@ func (c *Client) EnableAlert(cloudId string, id string, instanceId string) error
 
 // GET api/clouds/:cloud_id/instances/:instance_id/alerts(.:format)?
 // Lists all Alerts.
-func (c *Client) IndexAlerts(cloudId string, filter []string, instanceId string, view string) ([]Alert, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexAlerts(cloudId string, instanceId string, options ApiParams) ([]Alert, error) {
 	var res []Alert
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -187,10 +204,11 @@ func (c *Client) IndexAlerts(cloudId string, filter []string, instanceId string,
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -207,11 +225,11 @@ func (c *Client) IndexAlerts(cloudId string, filter []string, instanceId string,
 }
 
 // POST api/clouds/:cloud_id/instances/:instance_id/alerts/:id/quench(.:format)?
-// Suppresses the Alert from being triggered for a given time period.
-// Idempotent.
+// Suppresses the Alert from being triggered for a given time period. Idempotent.
+// 	duration: The time period in seconds to suppress Alert from being triggered.
 func (c *Client) QuenchAlert(cloudId string, duration string, id string, instanceId string) (string, error) {
 	var res string
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"duration": duration,
 	}
 	b, err := json.Marshal(payload)
@@ -242,7 +260,9 @@ func (c *Client) QuenchAlert(cloudId string, duration string, id string, instanc
 
 // GET api/clouds/:cloud_id/instances/:instance_id/alerts/:id(.:format)?
 // Shows the attributes of a specified Alert.
-func (c *Client) ShowAlert(cloudId string, id string, instanceId string, view string) (*Alert, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowAlert(cloudId string, id string, instanceId string, options ApiParams) (*Alert, error) {
 	var res *Alert
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -250,7 +270,7 @@ func (c *Client) ShowAlert(cloudId string, id string, instanceId string, view st
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -268,10 +288,8 @@ func (c *Client) ShowAlert(cloudId string, id string, instanceId string, view st
 
 /******  AlertSpec ******/
 
-// An AlertSpec defines the conditions under which an Alert is triggered
-// and escalated. Condition sentence: if &lt;file&gt;.&lt;variable&gt;
-// &lt;condition&gt; '&lt;threshold&gt;' for &lt;duration&gt; min then escalate
-// to '&lt;escalation_name&gt;'.
+// An AlertSpec defines the conditions under which an Alert is triggered and escalated.
+// Condition sentence: if &lt;file&gt;.&lt;variable&gt; &lt;condition&gt; '&lt;threshold&gt;' for &lt;duration&gt; min then escalate to '&lt;escalation_name&gt;'.
 type AlertSpec struct {
 	Actions        []string            `json:"actions,omitempty"`
 	Condition      string              `json:"condition,omitempty"`
@@ -293,7 +311,7 @@ type AlertSpec struct {
 // Creates a new AlertSpec with the given parameters.
 func (c *Client) CreateAlertSpec(alertSpec *AlertSpecParam, serverId string) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"alert_spec": alertSpec,
 	}
 	b, err := json.Marshal(payload)
@@ -341,11 +359,13 @@ func (c *Client) DestroyAlertSpec(id string, serverId string) error {
 
 // GET api/servers/:server_id/alert_specs(.:format)?
 // <no description>
-func (c *Client) IndexAlertSpecs(filter []string, serverId string, view string, withInherited string) ([]AlertSpec, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+// 	withInherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
+func (c *Client) IndexAlertSpecs(serverId string, options ApiParams) ([]AlertSpec, error) {
 	var res []AlertSpec
-	payload := map[string]interface{}{
-		"with_inherited": withInherited,
-	}
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -356,10 +376,11 @@ func (c *Client) IndexAlertSpecs(filter []string, serverId string, view string, 
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -378,7 +399,9 @@ func (c *Client) IndexAlertSpecs(filter []string, serverId string, view string, 
 
 // GET api/servers/:server_id/alert_specs/:id(.:format)?
 // <no description>
-func (c *Client) ShowAlertSpec(id string, serverId string, view string) (*AlertSpec, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowAlertSpec(id string, serverId string, options ApiParams) (*AlertSpec, error) {
 	var res *AlertSpec
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -386,7 +409,7 @@ func (c *Client) ShowAlertSpec(id string, serverId string, view string) (*AlertS
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -405,7 +428,7 @@ func (c *Client) ShowAlertSpec(id string, serverId string, view string) (*AlertS
 // PUT api/servers/:server_id/alert_specs/:id(.:format)?
 // Updates an AlertSpec with the given parameters.
 func (c *Client) UpdateAlertSpec(alertSpec *AlertSpecParam2, id string, serverId string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"alert_spec": alertSpec,
 	}
 	b, err := json.Marshal(payload)
@@ -441,19 +464,18 @@ type AuditEntry struct {
 }
 
 // POST api/audit_entries/:id/append(.:format)?
-// Updates the summary and appends more details to a given AuditEntry. Each
-// audit entry detail is stored as one chunk, the offset determines the location
-// of that chunk within the overall audit entry details section. For example,
-// if you create an AuditEntry and append "DEF" at offset 10, and later append
-// "ABC" at offset 9, the overall audit entry details will be "ABCDEF". Use the
-// \n character to separate details by new lines.
-func (c *Client) AppendAuditEntry(detail string, id string, notify string, offset int, summary string) error {
-	payload := map[string]interface{}{
-		"detail":  detail,
-		"notify":  notify,
-		"offset":  offset,
-		"summary": summary,
-	}
+// Updates the summary and appends more details to a given AuditEntry. Each audit entry detail is stored
+// as one chunk, the offset determines the location of that chunk within the overall audit entry details section.
+// For example, if you create an AuditEntry and append "DEF" at offset 10, and later append
+// "ABC" at offset 9, the overall audit entry details will be "ABCDEF". Use the \n character to
+// separate details by new lines.
+// -- Optional parameters:
+// 	detail: The details to be appended to the audit entry record.
+// 	notify: The event notification category. Defaults to 'None'.
+// 	offset: The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.
+// 	summary: The updated summary for the audit entry, maximum length is 255 characters.
+func (c *Client) AppendAuditEntry(id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -476,13 +498,14 @@ func (c *Client) AppendAuditEntry(detail string, id string, notify string, offse
 
 // POST api/audit_entries(.:format)?
 // Creates a new AuditEntry with the given parameters.
-func (c *Client) CreateAuditEntry(auditEntry *AuditEntryParam, notify string, userEmail string) (Href, error) {
+// -- Optional parameters:
+// 	notify: The event notification category. Defaults to 'None'.
+// 	userEmail: The email of the user (who created/triggered the audit entry). Only usable with instance role.
+func (c *Client) CreateAuditEntry(auditEntry *AuditEntryParam, options ApiParams) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
-		"notify":      notify,
-		"user_email":  userEmail,
-	}
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -509,8 +532,8 @@ func (c *Client) CreateAuditEntry(auditEntry *AuditEntryParam, notify string, us
 }
 
 // GET api/audit_entries/:id/detail(.:format)?
-// shows the details of a given AuditEntry. Note that the media type of the
-// response is simply text.
+// shows the details of a given AuditEntry.
+// Note that the media type of the response is simply text.
 func (c *Client) DetailAuditEntry(id string) (string, error) {
 	var res string
 	b := []byte{}
@@ -535,15 +558,21 @@ func (c *Client) DetailAuditEntry(id string) (string, error) {
 }
 
 // GET api/audit_entries(.:format)?
-// Lists AuditEntries of the account. Due to the potentially large number of
-// audit entries, a start and end date must be provided during an index call
-// to limit the search. The format of the dates must be YYYY/MM/DD HH:MM:SS
-// [+/-]ZZZZ e.g. 2011/07/11 00:00:00 +0000. A maximum of 1000 records will be
-// returned by each index call.  Using the available filters, one can select or
-// group which audit entries to retrieve.
-func (c *Client) IndexAuditEntries(endDate string, filter []string, limit string, startDate string, view string) ([]AuditEntry, error) {
+// Lists AuditEntries of the account. Due to the potentially large number of audit entries, a start and end date must
+// be provided during an index call to limit the search. The format of the dates must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
+// 2011/07/11 00:00:00 +0000.
+// A maximum of 1000 records will be returned by each index call.
+
+// Using the available filters, one can select or group which audit entries to retrieve.
+// 	endDate: The end date for retrieving audit entries (the format must be the same as start date). The time period between start and end date must be less than 3 months (93 days).
+// 	limit: Limit the audit entries to this number. The limit should >= 1 and <= 1000
+// 	startDate: The start date for retrieving audit entries, the format must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g., 2011/06/25 00:00:00 +0000
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexAuditEntries(endDate string, limit string, startDate string, options ApiParams) ([]AuditEntry, error) {
 	var res []AuditEntry
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"end_date":   endDate,
 		"limit":      limit,
 		"start_date": startDate,
@@ -558,10 +587,11 @@ func (c *Client) IndexAuditEntries(endDate string, filter []string, limit string
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -580,7 +610,9 @@ func (c *Client) IndexAuditEntries(endDate string, filter []string, limit string
 
 // GET api/audit_entries/:id(.:format)?
 // Lists the attributes of a given audit entry.
-func (c *Client) ShowAuditEntry(id string, view string) (*AuditEntry, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowAuditEntry(id string, options ApiParams) (*AuditEntry, error) {
 	var res *AuditEntry
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -588,7 +620,7 @@ func (c *Client) ShowAuditEntry(id string, view string) (*AuditEntry, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -606,11 +638,12 @@ func (c *Client) ShowAuditEntry(id string, view string) (*AuditEntry, error) {
 
 // PUT api/audit_entries/:id(.:format)?
 // Updates the summary of a given AuditEntry.
-func (c *Client) UpdateAuditEntry(auditEntry *AuditEntryParam2, id string, notify string) error {
-	payload := map[string]interface{}{
+// -- Optional parameters:
+// 	notify: The event notification category. Defaults to 'None'.
+func (c *Client) UpdateAuditEntry(auditEntry *AuditEntryParam2, id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
-		"notify":      notify,
-	}
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -648,46 +681,51 @@ type Backup struct {
 }
 
 // POST api/backups/cleanup(.:format)?
-// Deletes old backups that meet the given criteria. For example, if a
-// user calls cleanup with keep monthlies set to 12, then the latest backup
-// for each month, for 12 months, will be kept.  All backups belong to a
-// particular 'lineage'. Backups are not constrained to a specific cloud
-// or a specific deployment. A lineage is account-specific. Hence, backups
-// having the same lineage but belonging to different clouds are still
-// considered for cleanup.  If backups specific to a single cloud should be
-// cleaned up, see the cloud_href parameter.   Definitions: A snapshot is
-// completed if its status is "available" A snapshot is committed if it has
-// a tag "rs_backup:committed=true" A snapshot belongs to a backup "X" if
-// it has a tag "rs_backup:backup_id=X" A snapshot is part of a backup with
-// size "Y" if it has a tag "rs_backup:count=Y" A snapshot's position in a
-// backup is "Z" if it has a tag "rs_backup:position=Z"  Backups are of 3
-// types: Perfect backup: A backup which is completed (all the snapshots are
-// completed) and committed (all the snapshots are committed) and the number
-// of snapshots it found is equal to the number in the "rs_backup:count=" tag
-// on each of the Snapshots. Imperfect backup: A backup which is not committed
-// or if the number of snapshots it found is not equal to the number in the
-// "rs_backup:count=" tag on each of the snapshots. Partial Perfect backup:
-// A snapshot which is neither perfect nor imperfect  An imperfect backup is
-// picked up for cleanup only if there exists a perfect backup with a newer
-// created_at timestamp. No constraints will be applied on such imperfect
-// backups and all of them will be destroyed.  For all the perfect backups,
-// the constraints of keep_last and dailies etc. will be applied. The algorithm
-// for choosing the perfect backups to keep is simple. It is the union of those
-// set of backups if each of those conditions are applied independently. i.e
-// backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies)
-// U backups_to_keep(weeklies) U backups_to_keep(monthlies) U
-// backups_to_keep(yearlies)  Hence, it is important to "commit" a backup to
-// make it eligible for cleanup.
-func (c *Client) CleanupBackup(cloudHref string, dailies string, keepLast string, lineage string, monthlies string, weeklies string, yearlies string) error {
-	payload := map[string]interface{}{
-		"cloud_href": cloudHref,
-		"dailies":    dailies,
-		"keep_last":  keepLast,
-		"lineage":    lineage,
-		"monthlies":  monthlies,
-		"weeklies":   weeklies,
-		"yearlies":   yearlies,
-	}
+// Deletes old backups that meet the given criteria. For example, if a user calls cleanup with keep monthlies set to 12,
+// then the latest backup for each month, for 12 months, will be kept.
+
+// All backups belong to a particular 'lineage'. Backups are not constrained to a specific cloud or a specific deployment.
+// A lineage is account-specific. Hence, backups having the same lineage but belonging to different clouds are still considered
+// for cleanup.
+
+// If backups specific to a single cloud should be cleaned up, see the cloud_href parameter.
+
+// Definitions:
+// A snapshot is completed if its status is "available"
+// A snapshot is committed if it has a tag "rs_backup:committed=true"
+// A snapshot belongs to a backup "X" if it has a tag "rs_backup:backup_id=X"
+// A snapshot is part of a backup with size "Y" if it has a tag "rs_backup:count=Y"
+// A snapshot's position in a backup is "Z" if it has a tag "rs_backup:position=Z"
+
+// Backups are of 3 types:
+// Perfect backup: A backup which is completed (all the snapshots are completed) and committed (all the snapshots are committed) and the number of snapshots it found is equal to the number
+// in the "rs_backup:count=" tag on each of the Snapshots.
+// Imperfect backup: A backup which is not committed or if the number of snapshots it found is not equal to the number in the "rs_backup:count=" tag on each of the snapshots.
+// Partial Perfect backup: A snapshot which is neither perfect nor imperfect
+
+// An imperfect backup is picked up for cleanup only if there exists a perfect backup with a newer created_at timestamp.
+// No constraints will be applied on such imperfect backups and all of them will be destroyed.
+
+// For all the perfect backups, the constraints of keep_last and dailies etc. will be applied.
+// The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
+// independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
+
+// Hence, it is important to "commit" a backup to make it eligible for cleanup.
+
+// 	keepLast: The number of backups that should be kept.
+// 	lineage: The lineage of the backups that are to be cleaned-up.
+// -- Optional parameters:
+// 	cloudHref: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
+// 	dailies: The number of daily backups(the latest one in each day) that should be kept.
+// 	monthlies: The number of monthly backups(the latest one in each month) that should be kept.
+// 	weeklies: The number of weekly backups(the latest one in each week) that should be kept.
+// 	yearlies: The number of yearly backups(the latest one in each year) that should be kept.
+func (c *Client) CleanupBackup(keepLast string, lineage string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{
+
+		"keep_last": keepLast,
+		"lineage":   lineage,
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -709,11 +747,11 @@ func (c *Client) CleanupBackup(cloudHref string, dailies string, keepLast string
 }
 
 // POST api/backups(.:format)?
-// Takes in an array of volumeattachmenthrefs and takes a snapshot of each. The
-// volumeattachmenthrefs must belong to the same instance.
+// Takes in an array of volumeattachmenthrefs and takes a snapshot of each.
+// The volumeattachmenthrefs must belong to the same instance.
 func (c *Client) CreateBackup(backup *BackupParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"backup": backup,
 	}
 	b, err := json.Marshal(payload)
@@ -742,8 +780,7 @@ func (c *Client) CreateBackup(backup *BackupParam) (Href, error) {
 }
 
 // DELETE api/backups/:id(.:format)?
-// Deletes a given backup by deleting all of its snapshots, this call will
-// succeed even if the backup has not completed.
+// Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
 func (c *Client) DestroyBackup(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -761,18 +798,21 @@ func (c *Client) DestroyBackup(id string) error {
 }
 
 // GET api/backups(.:format)?
-// Lists all of the backups with the given lineage tag. Filters can be used to
-// search for a particular backup. If the 'latest_before' filter is set, only
-// one backup is returned (the latest backup before the given timestamp).  To
-// get the latest completed backup, the 'completed' filter should be set to
-// 'true' and the 'latest_before' filter should be set to the current timestamp.
-// The format of the timestamp must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
-// 2011/07/11 00:00:00 +0000.  To get the latest completed backup just before,
-// say 25 June 2009, then the 'completed' filter should be set to 'true' and the
-// 'latest_before' filter should be set to 2009/06/25 00:00:00 +0000.
-func (c *Client) IndexBackups(filter []string, lineage string) ([]Backup, error) {
+// Lists all of the backups with the given lineage tag. Filters can be used to search for a particular backup. If the
+// 'latest_before' filter is set, only one backup is returned (the latest backup before the given timestamp).
+
+// To get the latest completed backup, the 'completed' filter should be set to 'true' and the 'latest_before' filter
+// should be set to the current timestamp. The format of the timestamp must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
+// 2011/07/11 00:00:00 +0000.
+
+// To get the latest completed backup just before, say 25 June 2009, then the 'completed' filter
+// should be set to 'true' and the 'latest_before' filter should be set to 2009/06/25 00:00:00 +0000.
+// 	lineage: Backups belonging to this lineage.
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexBackups(lineage string, options ApiParams) ([]Backup, error) {
 	var res []Backup
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"lineage": lineage,
 	}
 	b, err := json.Marshal(payload)
@@ -785,7 +825,8 @@ func (c *Client) IndexBackups(filter []string, lineage string) ([]Backup, error)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -805,16 +846,21 @@ func (c *Client) IndexBackups(filter []string, lineage string) ([]Backup, error)
 }
 
 // POST api/backups/:id/restore(.:format)?
-// Restores the given Backup. This call will:   create the required number of
-// Volumes from the volume_snapshots_hrefs in the given Backup, attach them to
-// the given Instance at the device specified in the Snapshot. If the devices
-// are already being used    on the Instance, the Task will denote that the
-// restore has failed.
-func (c *Client) RestoreBackup(backup *BackupParam2, id string, instanceHref string) error {
-	payload := map[string]interface{}{
-		"backup":        backup,
+// Restores the given Backup.
+// This call will:
+
+// create the required number of Volumes from the volume_snapshots_hrefs in the given Backup,
+// attach them to the given Instance at the device specified in the Snapshot. If the devices are already being used
+//    on the Instance, the Task will denote that the restore has failed.
+
+// 	instanceHref: The instance href that the backup will be restored to.
+// -- Optional parameters:
+// 	backup
+func (c *Client) RestoreBackup(id string, instanceHref string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{
+
 		"instance_href": instanceHref,
-	}
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -861,10 +907,9 @@ func (c *Client) ShowBackup(id string) (*Backup, error) {
 }
 
 // PUT api/backups/:id(.:format)?
-// Updates the committed tag for all of the VolumeSnapshots in the given Backup
-// to the given value.
+// Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.
 func (c *Client) UpdateBackup(backup *BackupParam3, id string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"backup": backup,
 	}
 	b, err := json.Marshal(payload)
@@ -893,10 +938,16 @@ type ChildAccount struct {
 }
 
 // POST api/child_accounts(.:format)?
+// Create an enterprise ChildAccount for this Account. The User will by default get an 'admin' role
+// on the ChildAccount to enable him/her to add, delete Users and Permissions.
+
+// For more information on the valid values for 'cluster_href', refer to the following:
+
+// http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/ChildAccounts/Create
 
 func (c *Client) CreateChildAccount(childAccount *ChildAccountParam) (map[string]interface{}, error) {
 	var res map[string]interface{}
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"child_account": childAccount,
 	}
 	b, err := json.Marshal(payload)
@@ -927,7 +978,9 @@ func (c *Client) CreateChildAccount(childAccount *ChildAccountParam) (map[string
 
 // GET api/child_accounts(.:format)?
 // Lists the enterprise ChildAccounts available for this Account.
-func (c *Client) IndexChildAccounts(filter []string) ([]map[string]string, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexChildAccounts(options ApiParams) ([]map[string]string, error) {
 	var res []map[string]string
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -935,7 +988,8 @@ func (c *Client) IndexChildAccounts(filter []string) ([]map[string]string, error
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -956,7 +1010,7 @@ func (c *Client) IndexChildAccounts(filter []string) ([]map[string]string, error
 // PUT api/accounts/:id(.:format)?
 // Update an enterprise ChildAccount for this Account.
 func (c *Client) UpdateChildAccount(childAccount *ChildAccountParam2, id string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"child_account": childAccount,
 	}
 	b, err := json.Marshal(payload)
@@ -993,7 +1047,10 @@ type Cloud struct {
 
 // GET api/clouds(.:format)?
 // Lists the clouds available to this account.
-func (c *Client) IndexClouds(filter []string, view string) ([]Cloud, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexClouds(options ApiParams) ([]Cloud, error) {
 	var res []Cloud
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1001,10 +1058,11 @@ func (c *Client) IndexClouds(filter []string, view string) ([]Cloud, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1022,7 +1080,9 @@ func (c *Client) IndexClouds(filter []string, view string) ([]Cloud, error) {
 
 // GET api/clouds/:id(.:format)?
 // Show information about a single cloud.
-func (c *Client) ShowCloud(id string, view string) (*Cloud, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowCloud(id string, options ApiParams) (*Cloud, error) {
 	var res *Cloud
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1030,7 +1090,7 @@ func (c *Client) ShowCloud(id string, view string) (*Cloud, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1056,10 +1116,15 @@ type CloudAccount struct {
 }
 
 // POST api/cloud_accounts(.:format)?
+// Create a CloudAccount by passing in the respective credentials for each cloud.
+
+// For more information on the specific parameters for each cloud, refer to the following:
+
+// http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
 
 func (c *Client) CreateCloudAccount(cloudAccount *CloudAccountParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"cloud_account": cloudAccount,
 	}
 	b, err := json.Marshal(payload)
@@ -1174,8 +1239,7 @@ type Cookbook struct {
 }
 
 // DELETE api/cookbooks/:id(.:format)?
-// Destroys a Cookbook. Only available for cookbooks that have no Cookbook
-// Attachments.
+// Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.
 func (c *Client) DestroyCookbook(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1193,10 +1257,10 @@ func (c *Client) DestroyCookbook(id string) error {
 }
 
 // POST api/cookbooks/:id/follow(.:format)?
-// Follows (or unfollows) a Cookbook. Only available for cookbooks that are in
-// the Alternate namespace.
+// Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.
+// 	value: Indicates if this action should follow (true) or unfollow (false) a Cookbook.
 func (c *Client) FollowCookbook(id string, value string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"value": value,
 	}
 	b, err := json.Marshal(payload)
@@ -1220,10 +1284,10 @@ func (c *Client) FollowCookbook(id string, value string) error {
 }
 
 // POST api/cookbooks/:id/freeze(.:format)?
-// Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in
-// the Primary namespace.
+// Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.
+// 	value: Indicates if this action should freeze (true) or unfreeze (false) a Cookbook.
 func (c *Client) FreezeCookbook(id string, value string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"value": value,
 	}
 	b, err := json.Marshal(payload)
@@ -1247,9 +1311,13 @@ func (c *Client) FreezeCookbook(id string, value string) error {
 }
 
 // GET api/cookbooks(.:format)?
-// Lists the Cookbooks available to this account.  The extended_designer view is
-// only available to accounts with the designer permission.
-func (c *Client) IndexCookbooks(filter []string, view string) ([]Cookbook, error) {
+// Lists the Cookbooks available to this account.
+
+// The extended_designer view is only available to accounts with the designer permission.
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexCookbooks(options ApiParams) ([]Cookbook, error) {
 	var res []Cookbook
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1257,10 +1325,11 @@ func (c *Client) IndexCookbooks(filter []string, view string) ([]Cookbook, error
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1278,8 +1347,9 @@ func (c *Client) IndexCookbooks(filter []string, view string) ([]Cookbook, error
 
 // POST api/cookbooks/:id/obsolete(.:format)?
 // Marks a Cookbook as obsolete (or un-obsolete).
+// 	value: Indicates if this action should obsolete (true) or un-obsolete (false) a Cookbook.
 func (c *Client) ObsoleteCookbook(id string, value string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"value": value,
 	}
 	b, err := json.Marshal(payload)
@@ -1303,9 +1373,12 @@ func (c *Client) ObsoleteCookbook(id string, value string) error {
 }
 
 // GET api/cookbooks/:id(.:format)?
-// Show information about a single Cookbook.  The extended_designer view is only
-// available to accounts with the designer permission.
-func (c *Client) ShowCookbook(id string, view string) (*Cookbook, error) {
+// Show information about a single Cookbook.
+
+// The extended_designer view is only available to accounts with the designer permission.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowCookbook(id string, options ApiParams) (*Cookbook, error) {
 	var res *Cookbook
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1313,7 +1386,7 @@ func (c *Client) ShowCookbook(id string, view string) (*Cookbook, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1331,9 +1404,7 @@ func (c *Client) ShowCookbook(id string, view string) (*Cookbook, error) {
 
 /******  CookbookAttachment ******/
 
-// Cookbook Attachment is used to associate a particular cookbook with a
-// ServerTemplate. A Cookbook Attachment must be in place before a recipe can be
-// bound to a runlist using RunnableBinding.
+// Cookbook Attachment is used to associate a particular cookbook with a ServerTemplate. A Cookbook Attachment must be in place before a recipe can be bound to a runlist using RunnableBinding.
 type CookbookAttachment struct {
 	Actions    []string            `json:"actions,omitempty"`
 	Dependency bool                `json:"dependency,omitempty"`
@@ -1343,11 +1414,11 @@ type CookbookAttachment struct {
 
 // POST api/cookbooks/:cookbook_id/cookbook_attachments(.:format)?
 // Attach a cookbook to a given resource.
-func (c *Client) CreateCookbookAttachment(cookbookAttachment *CookbookAttachmentParam, cookbookId string) (Href, error) {
+// -- Optional parameters:
+// 	cookbookAttachment
+func (c *Client) CreateCookbookAttachment(cookbookId string, options ApiParams) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
-		"cookbook_attachment": cookbookAttachment,
-	}
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -1393,7 +1464,9 @@ func (c *Client) DestroyCookbookAttachment(cookbookId string, id string) error {
 
 // GET api/cookbooks/:cookbook_id/cookbook_attachments(.:format)?
 // Lists Cookbook Attachments.
-func (c *Client) IndexCookbookAttachments(cookbookId string, view string) ([]CookbookAttachment, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) IndexCookbookAttachments(cookbookId string, options ApiParams) ([]CookbookAttachment, error) {
 	var res []CookbookAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1401,7 +1474,7 @@ func (c *Client) IndexCookbookAttachments(cookbookId string, view string) ([]Coo
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1420,7 +1493,7 @@ func (c *Client) IndexCookbookAttachments(cookbookId string, view string) ([]Coo
 // POST api/server_templates/:server_template_id/cookbook_attachments/multi_attach(.:format)?
 // Attach multiple cookbooks to a given resource.
 func (c *Client) MultiAttachCookbookAttachments(cookbookAttachments *CookbookAttachments, serverTemplateId string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
 	b, err := json.Marshal(payload)
@@ -1446,7 +1519,7 @@ func (c *Client) MultiAttachCookbookAttachments(cookbookAttachments *CookbookAtt
 // POST api/server_templates/:server_template_id/cookbook_attachments/multi_detach(.:format)?
 // Detach multiple cookbooks from a given resource.
 func (c *Client) MultiDetachCookbookAttachments(cookbookAttachments *CookbookAttachments2, serverTemplateId string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
 	b, err := json.Marshal(payload)
@@ -1471,7 +1544,9 @@ func (c *Client) MultiDetachCookbookAttachments(cookbookAttachments *CookbookAtt
 
 // GET api/cookbooks/:cookbook_id/cookbook_attachments/:id(.:format)?
 // Displays information about a single cookbook attachment to a ServerTemplate.
-func (c *Client) ShowCookbookAttachment(cookbookId string, id string, view string) (*CookbookAttachment, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowCookbookAttachment(cookbookId string, id string, options ApiParams) (*CookbookAttachment, error) {
 	var res *CookbookAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1479,7 +1554,7 @@ func (c *Client) ShowCookbookAttachment(cookbookId string, id string, view strin
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1497,12 +1572,12 @@ func (c *Client) ShowCookbookAttachment(cookbookId string, id string, view strin
 
 /******  Credential ******/
 
-// A Credential provides an abstraction for sensitive textual information, such
-// as passphrases or cloud credentials, whose value should be encrypted when
-// stored in the database and not generally shown in the UI or through the API.
-// Credentials may then be used as inputs of type "Cred" in RightScripts or Chef
-// recipes. NOTE: Credential values may be updated through the API, but values
-// cannot be retrieved via the API.
+// A Credential provides an abstraction for sensitive textual information,
+// such as passphrases or cloud credentials, whose value should be encrypted
+// when stored in the database and not generally shown in the UI or through the
+// API. Credentials may then be used as inputs of type "Cred" in RightScripts
+// or Chef recipes. NOTE: Credential values may be updated through the API, but
+// values cannot be retrieved via the API.
 type Credential struct {
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -1516,7 +1591,7 @@ type Credential struct {
 // Creates a new Credential with the given parameters.
 func (c *Client) CreateCredential(credential *CredentialParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"credential": credential,
 	}
 	b, err := json.Marshal(payload)
@@ -1564,7 +1639,10 @@ func (c *Client) DestroyCredential(id string) error {
 
 // GET api/credentials(.:format)?
 // Lists the Credentials available to this account.
-func (c *Client) IndexCredentials(filter []string, view string) ([]Credential, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexCredentials(options ApiParams) ([]Credential, error) {
 	var res []Credential
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1572,10 +1650,11 @@ func (c *Client) IndexCredentials(filter []string, view string) ([]Credential, e
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1592,9 +1671,10 @@ func (c *Client) IndexCredentials(filter []string, view string) ([]Credential, e
 }
 
 // GET api/credentials/:id(.:format)?
-// Show information about a single Credential. NOTE: Credential values may be
-// updated through the API, but values cannot be retrieved via the API.
-func (c *Client) ShowCredential(id string, view string) (*Credential, error) {
+// Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowCredential(id string, options ApiParams) (*Credential, error) {
 	var res *Credential
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1602,7 +1682,7 @@ func (c *Client) ShowCredential(id string, view string) (*Credential, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1621,7 +1701,7 @@ func (c *Client) ShowCredential(id string, view string) (*Credential, error) {
 // PUT api/credentials/:id(.:format)?
 // Updates attributes of a Credential.
 func (c *Client) UpdateCredential(credential *CredentialParam2, id string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"credential": credential,
 	}
 	b, err := json.Marshal(payload)
@@ -1646,12 +1726,11 @@ func (c *Client) UpdateCredential(credential *CredentialParam2, id string) error
 
 /******  Datacenter ******/
 
-// Datacenters represent isolated facilities within a cloud. The level and type
-// of isolation is cloud dependent.  While Datacenters in large public clouds
-// might correspond to different physical buildings, with different power,
-// internet links...etc., Datacenters within the context of a private cloud
-// might simply correspond to having different network providers.  Spreading
-// servers across distinct Datacenters helps minimize outages.
+// Datacenters represent isolated facilities within a cloud. The level and type of isolation is cloud dependent.
+// While Datacenters in large public clouds might correspond to different physical buildings, with different power,
+// internet links...etc., Datacenters within the context of a private cloud might simply correspond to having different network providers.
+
+// Spreading servers across distinct Datacenters helps minimize outages.
 type Datacenter struct {
 	Actions     []string            `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -1662,7 +1741,10 @@ type Datacenter struct {
 
 // GET api/clouds/:cloud_id/datacenters(.:format)?
 // Lists all Datacenters for a particular cloud.
-func (c *Client) IndexDatacenters(cloudId string, filter []string, view string) ([]Datacenter, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexDatacenters(cloudId string, options ApiParams) ([]Datacenter, error) {
 	var res []Datacenter
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1670,10 +1752,11 @@ func (c *Client) IndexDatacenters(cloudId string, filter []string, view string) 
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1691,7 +1774,9 @@ func (c *Client) IndexDatacenters(cloudId string, filter []string, view string) 
 
 // GET api/clouds/:cloud_id/datacenters/:id(.:format)?
 // Displays information about a single Datacenter.
-func (c *Client) ShowDatacenter(cloudId string, id string, view string) (*Datacenter, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowDatacenter(cloudId string, id string, options ApiParams) (*Datacenter, error) {
 	var res *Datacenter
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1699,7 +1784,7 @@ func (c *Client) ShowDatacenter(cloudId string, id string, view string) (*Datace
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1717,8 +1802,7 @@ func (c *Client) ShowDatacenter(cloudId string, id string, view string) (*Datace
 
 /******  Deployment ******/
 
-// Deployments represent logical groupings of related assets such as servers,
-// server arrays, default configuration settings...etc.
+// Deployments represent logical groupings of related assets such as servers, server arrays, default configuration settings...etc.
 type Deployment struct {
 	Actions        []string            `json:"actions,omitempty"`
 	Description    string              `json:"description,omitempty"`
@@ -1731,10 +1815,10 @@ type Deployment struct {
 
 // POST api/deployments/:id/clone(.:format)?
 // Clones a given deployment.
-func (c *Client) CloneDeployment(deployment *DeploymentParam, id string) error {
-	payload := map[string]interface{}{
-		"deployment": deployment,
-	}
+// -- Optional parameters:
+// 	deployment
+func (c *Client) CloneDeployment(id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -1759,7 +1843,7 @@ func (c *Client) CloneDeployment(deployment *DeploymentParam, id string) error {
 // Creates a new deployment with the given parameters.
 func (c *Client) CreateDeployment(deployment *DeploymentParam2) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"deployment": deployment,
 	}
 	b, err := json.Marshal(payload)
@@ -1806,11 +1890,15 @@ func (c *Client) DestroyDeployment(id string) error {
 }
 
 // GET api/deployments(.:format)?
-// Lists deployments of the account.  Using the available filters, one can
-// select or group which deployments to retrieve. The 'inputs_2_0' view is
-// for retrieving inputs in 2.0 serialization (for more details please see
-// Inputs#index.)
-func (c *Client) IndexDeployments(filter []string, view string) ([]Deployment, error) {
+// Lists deployments of the account.
+
+// Using the available filters, one can select or group which deployments to retrieve.
+// The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+// details please see Inputs#index.)
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexDeployments(options ApiParams) ([]Deployment, error) {
 	var res []Deployment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1818,10 +1906,11 @@ func (c *Client) IndexDeployments(filter []string, view string) ([]Deployment, e
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1838,9 +1927,9 @@ func (c *Client) IndexDeployments(filter []string, view string) ([]Deployment, e
 }
 
 // POST api/deployments/:id/lock(.:format)?
-// Locks a given deployment. Idempotent. Locking prevents servers from being
-// deleted or moved from the deployment. Other actions such as adding servers or
-// renaming the deployment are still allowed.
+// Locks a given deployment. Idempotent.
+// Locking prevents servers from being deleted or moved from the deployment.
+// Other actions such as adding servers or renaming the deployment are still allowed.
 func (c *Client) LockDeployment(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1858,10 +1947,8 @@ func (c *Client) LockDeployment(id string) error {
 }
 
 // GET api/deployments/:id/servers
-// Lists the servers belonging to this deployment. This call is equivalent to
-// servers#index call, where the servers returned will automatically be filtered
-// by this deployment. See servers#index for details on other options and
-// parameters.
+// Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
+// automatically be filtered by this deployment. See servers#index for details on other options and parameters.
 func (c *Client) ServersDeployment(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1879,10 +1966,13 @@ func (c *Client) ServersDeployment(id string) error {
 }
 
 // GET api/deployments/:id(.:format)?
-// Lists the attributes of a given deployment.  The 'inputs_2_0' view is
-// for retrieving inputs in 2.0 serialization (for more details please see
-// Inputs#index.)
-func (c *Client) ShowDeployment(id string, view string) (*Deployment, error) {
+// Lists the attributes of a given deployment.
+
+// The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+// details please see Inputs#index.)
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowDeployment(id string, options ApiParams) (*Deployment, error) {
 	var res *Deployment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -1890,7 +1980,7 @@ func (c *Client) ShowDeployment(id string, view string) (*Deployment, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1927,7 +2017,7 @@ func (c *Client) UnlockDeployment(id string) error {
 // PUT api/deployments/:id(.:format)?
 // Updates attributes of a given deployment.
 func (c *Client) UpdateDeployment(deployment *DeploymentParam, id string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"deployment": deployment,
 	}
 	b, err := json.Marshal(payload)
@@ -1982,10 +2072,9 @@ func (c *Client) IndexHealthCheck() ([]map[string]string, error) {
 
 /******  IdentityProvider ******/
 
-// An Identity Provider represents a SAML identity provider (IdP) that is linked
-// to your RightScale Enterprise account, and is trusted by the RightScale
-// dashboard to authenticate your enterprise's end users. To register an
-// Identity Provider, contact your account manager.
+// An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,
+// and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
+// To register an Identity Provider, contact your account manager.
 type IdentityProvider struct {
 	Actions       []string            `json:"actions,omitempty"`
 	CreatedAt     *time.Time          `json:"created_at,omitempty"`
@@ -1997,7 +2086,10 @@ type IdentityProvider struct {
 
 // GET api/identity_providers(.:format)?
 // Lists the identity providers associated with this enterprise account.
-func (c *Client) IndexIdentityProviders(filter []string, view string) ([]IdentityProvider, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexIdentityProviders(options ApiParams) ([]IdentityProvider, error) {
 	var res []IdentityProvider
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2005,10 +2097,11 @@ func (c *Client) IndexIdentityProviders(filter []string, view string) ([]Identit
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2025,9 +2118,10 @@ func (c *Client) IndexIdentityProviders(filter []string, view string) ([]Identit
 }
 
 // GET api/identity_providers/:id(.:format)?
-// Show the specified identity provider, if associated with this enterprise
-// account.
-func (c *Client) ShowIdentityProvider(id string, view string) (*IdentityProvider, error) {
+// Show the specified identity provider, if associated with this enterprise account.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowIdentityProvider(id string, options ApiParams) (*IdentityProvider, error) {
 	var res *IdentityProvider
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2035,7 +2129,7 @@ func (c *Client) ShowIdentityProvider(id string, view string) (*IdentityProvider
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2053,9 +2147,8 @@ func (c *Client) ShowIdentityProvider(id string, view string) (*IdentityProvider
 
 /******  Image ******/
 
-// Images represent base VM image existing in a cloud. An image will define the
-// initial Operating System and root disk contents  for a new Instance to have,
-// and therefore it represents the basic starting point for creating a new one.
+// Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents
+// for a new Instance to have, and therefore it represents the basic starting point for creating a new one.
 type Image struct {
 	Actions            []string            `json:"actions,omitempty"`
 	CpuArchitecture    string              `json:"cpu_architecture,omitempty"`
@@ -2072,7 +2165,10 @@ type Image struct {
 
 // GET api/clouds/:cloud_id/images(.:format)?
 // Lists all Images for the given Cloud.
-func (c *Client) IndexImages(cloudId string, filter []string, view string) ([]Image, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexImages(cloudId string, options ApiParams) ([]Image, error) {
 	var res []Image
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2080,10 +2176,11 @@ func (c *Client) IndexImages(cloudId string, filter []string, view string) ([]Im
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2101,7 +2198,9 @@ func (c *Client) IndexImages(cloudId string, filter []string, view string) ([]Im
 
 // GET api/clouds/:cloud_id/images/:id(.:format)?
 // Shows information about a single Image.
-func (c *Client) ShowImage(cloudId string, id string, view string) (*Image, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowImage(cloudId string, id string, options ApiParams) (*Image, error) {
 	var res *Image
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2109,7 +2208,7 @@ func (c *Client) ShowImage(cloudId string, id string, view string) (*Image, erro
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2127,14 +2226,10 @@ func (c *Client) ShowImage(cloudId string, id string, view string) (*Image, erro
 
 /******  Input ******/
 
-// Inputs help extract dynamic information, usually specified at runtime,
-// from repeatable configuration operations that can be codified. Inputs
-// are variables defined in and used by RightScripts/Recipes. The two main
-// attributes of an input are 'name' and 'value'. The 'name' identifies the
-// input and the 'value', although a string encodes what type it is. It could
-// be a text encoded as 'text:myvalue' or a credential encoded as 'cred:MY_CRED'
-// or a key etc. Please see support.rightscale.com for more info on input
-// hierarchies and their different types.
+// Inputs help extract dynamic information, usually specified at runtime, from repeatable configuration operations that can be codified.
+// Inputs are variables defined in and used by RightScripts/Recipes. The two main attributes of an input are 'name' and 'value'. The 'name'
+// identifies the input and the 'value', although a string encodes what type it is. It could be a text encoded as 'text:myvalue' or a credential
+// encoded as 'cred:MY_CRED' or a key etc. Please see support.rightscale.com for more info on input hierarchies and their different types.
 type Input struct {
 	Name  string `json:"name,omitempty"`
 	Value string `json:"value,omitempty"`
@@ -2142,7 +2237,9 @@ type Input struct {
 
 // GET api/clouds/:cloud_id/instances/:instance_id/inputs(.:format)?
 // Retrieves the full list of existing inputs of the specified resource.
-func (c *Client) IndexInputs(cloudId string, instanceId string, view string) ([]Input, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) IndexInputs(cloudId string, instanceId string, options ApiParams) ([]Input, error) {
 	var res []Input
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2150,7 +2247,7 @@ func (c *Client) IndexInputs(cloudId string, instanceId string, view string) ([]
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2167,52 +2264,89 @@ func (c *Client) IndexInputs(cloudId string, instanceId string, view string) ([]
 }
 
 // PUT api/clouds/:cloud_id/instances/:instance_id/inputs/multi_update(.:format)?
-// Performs a bulk update of inputs on the specified resource.  If an input
-// exists with the same name, its value will be updated. If an input does
-// not exist with a specified name, it will be ignored.  Input values are
-// represented as strings.  There are two notations for inputs:  1.0 notation
-// - The deprecated notation used in API 1.0 and in 1.5     2.0 notation -
-// The new notation that is partially supported in API 1.5, and will
-//   be the only notation supported in 2.0  Although the two notations are
-// similar, they have a few important differences, in particular:     With
-// 2.0 notation, values MUST begin with a prefix identifying their type,
-// followed   by a colon (example: "text:foo"). With 1.0 notation, unprefixed
-// values are generally   taken to be text-type.   With 2.0 notation, a
-// sentinel value "inherit" is used to express that an input   should use an
-// inherited value. With 1.0 notation the empty string was used to express
-//  the same thing. (Due to requirement 1, empty string is no longer a valid
-// input.)   With 2.0 notation, each element of an array is an entire input
-// value; arrays can   contain cred, env, or even other arrays. With 1.0
-// notation, array elements are   implicitly text values and there is no way
-// to specify anything else.Note that the UI   does not support complex-valued
-// arrays; please use this feature with caution!   The following types of
-// inputs are supported:    Type Format 1.0 Example(s) 2.0 Example(s)   Text
-// string &lt;value&gt; (1.0 only)text:&lt;value&gt; footext:footext:multi
-// word value text:footext:multi word value   Blank string(input is present
-// but its value is empty-string) text:blank (2.0 only) text: blank
-// Ignore (input is not present) ignore$ignore (1.0 only)ignore:$ignore
-// (1.0 only) ignore$ignoreignore:$ignore ignore   Dynamically-substituted
-// environment value env:&lt;value&gt;env:&lt;component&gt;:&lt;value&gt;
-// env:MY_ENV_VARenv:my_server:MY_ENV_VAR env:MY_ENV_VARenv:my_server:MY_ENV_VAR
-//   Credential value cred:&lt;value&gt; cred:abcd1234wxyz cred:abcd1234wxyz
-//   Private SSH key key:&lt;value&gt;key:&lt;value&gt;:&lt;cloud_id&gt;
-// key:1234abcd5678key:1234abcd5678:1 key:1234abcd5678key:1234abcd5678:1
-//   Array of values array:&lt;value&gt;,... (1.0
-// only)array:["&lt;type&gt;:&lt;value&gt;",...] (2.0 only)
+// Performs a bulk update of inputs on the specified resource.
+
+// If an input exists with the same name, its value will be updated. If an input does not
+// exist with a specified name, it will be ignored.
+
+// Input values are represented as strings.
+
+// There are two notations for inputs:
+
+// 1.0 notation - The deprecated notation used in API 1.0 and in 1.5
+//     2.0 notation - The new notation that is partially supported in API 1.5, and will
+//         be the only notation supported in 2.0
+
+// Although the two notations are similar, they have a few important differences, in particular:
+
+//   With 2.0 notation, values MUST begin with a prefix identifying their type, followed
+//   by a colon (example: "text:foo"). With 1.0 notation, unprefixed values are generally
+//   taken to be text-type.
+//   With 2.0 notation, a sentinel value "inherit" is used to express that an input
+//   should use an inherited value. With 1.0 notation the empty string was used to express
+//   the same thing. (Due to requirement 1, empty string is no longer a valid input.)
+//   With 2.0 notation, each element of an array is an entire input value; arrays can
+//   contain cred, env, or even other arrays. With 1.0 notation, array elements are
+//   implicitly text values and there is no way to specify anything else.Note that the UI
+//   does not support complex-valued arrays; please use this feature with caution!
+
+// The following types of inputs are supported:
+
+// Type
+// Format
+// 1.0 Example(s)
+// 2.0 Example(s)
+
+// Text string
+// &lt;value&gt; (1.0 only)text:&lt;value&gt;
+// footext:footext:multi word value
+// text:footext:multi word value
+
+// Blank string(input is present but its value is empty-string)
+// text:blank (2.0 only)
+// text:
+// blank
+
+// Ignore (input is not present)
+// ignore$ignore (1.0 only)ignore:$ignore (1.0 only)
+// ignore$ignoreignore:$ignore
+// ignore
+
+// Dynamically-substituted environment value
+// env:&lt;value&gt;env:&lt;component&gt;:&lt;value&gt;
+// env:MY_ENV_VARenv:my_server:MY_ENV_VAR
+// env:MY_ENV_VARenv:my_server:MY_ENV_VAR
+
+// Credential value
+// cred:&lt;value&gt;
+// cred:abcd1234wxyz
+// cred:abcd1234wxyz
+
+// Private SSH key
+// key:&lt;value&gt;key:&lt;value&gt;:&lt;cloud_id&gt;
+// key:1234abcd5678key:1234abcd5678:1
+// key:1234abcd5678key:1234abcd5678:1
+
+// Array of values
+// array:&lt;value&gt;,... (1.0 only)array:["&lt;type&gt;:&lt;value&gt;",...] (2.0 only)
 // array:x,y(NOTE: 1.0 only supports text inputs for arrays)
-// array:["text:v1","text:v2"]array:["text:x","env:server_x:MY_VAR"]    Note
-// that in the case of array inputs, the portion after the colon must be valid
-// JSON. In particular, when enclosing the input within double-quotes (e.g.
-// for use in cURL or Ruby), the double-quotes must be escaped. Single-quotes
-// may not be used within the array input, since they are not valid for JSON
-// strings.  The legacy format for providing inputs is as an array of name-value
-// pairs (ex: -d inputs[][name]="MY_INPUT" -d inputs[][value]="text:foobar"),
-// however the new format is supported for inputs provided as a hash (ex: -d
-// inputs[MY_INPUT]="text:foobar").  If the old format is used, the input is
-// parsed using 1.0 semantics. If the new format is used, the input is parsed
-// using the new 2.0 semantics.
+// array:["text:v1","text:v2"]array:["text:x","env:server_x:MY_VAR"]
+
+// Note that in the case of array inputs, the portion after the colon must be
+// valid JSON. In particular, when enclosing the input within double-quotes
+// (e.g. for use in cURL or Ruby), the double-quotes must be escaped.
+// Single-quotes may not be used within the array input, since they are not
+// valid for JSON strings.
+
+// The legacy format for providing inputs is as an array of name-value pairs
+// (ex: -d inputs[][name]="MY_INPUT" -d inputs[][value]="text:foobar"), however
+// the new format is supported for inputs provided as a hash
+// (ex: -d inputs[MY_INPUT]="text:foobar").
+
+// If the old format is used, the input is parsed using 1.0 semantics.
+// If the new format is used, the input is parsed using the new 2.0 semantics.
 func (c *Client) MultiUpdateInputs(cloudId string, inputs map[string]string, instanceId string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"inputs": inputs,
 	}
 	b, err := json.Marshal(payload)
@@ -2237,13 +2371,13 @@ func (c *Client) MultiUpdateInputs(cloudId string, inputs map[string]string, ins
 
 /******  Instance ******/
 
-// Instances represent an entity that is runnable in the cloud.  An instance
-// of type "next" is a container of information that expresses how to configure
-// a future instance when we decide to launch or start it. A "next" instance
-// generally only exists in the RightScale realm, and usually doesn't have any
-// corresponding representation existing in the cloud. However, if an instance
-// is not of type "next", it will generally represent an existing running (or
-// provisioned) virtual machine existing in the cloud.
+// Instances represent an entity that is runnable in the cloud.
+
+// An instance of type "next" is a container of information that expresses how to configure a future instance when we decide
+// to launch or start it.
+// A "next" instance generally only exists in the RightScale realm, and usually doesn't have any corresponding representation
+// existing in the cloud. However, if an instance is not of type "next", it will generally represent an existing running
+// (or provisioned) virtual machine existing in the cloud.
 type Instance struct {
 	Actions                  []string            `json:"actions,omitempty"`
 	AssociatePublicIpAddress bool                `json:"associate_public_ip_address,omitempty"`
@@ -2275,9 +2409,9 @@ type Instance struct {
 
 // POST api/clouds/:cloud_id/instances(.:format)?
 // Creates and launches a raw instance using the provided parameters.
-func (c *Client) CreateInstance(cloudId string, instance *InstanceParam2) (Href, error) {
+func (c *Client) CreateInstance(cloudId string, instance *InstanceParam4) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"instance": instance,
 	}
 	b, err := json.Marshal(payload)
@@ -2306,19 +2440,24 @@ func (c *Client) CreateInstance(cloudId string, instance *InstanceParam2) (Href,
 }
 
 // GET api/clouds/:cloud_id/instances(.:format)?
-// Lists instances of a given cloud, server array.  Using the available
-// filters, it is possible to craft powerful queries about which instances
-// to retrieve. For example, one can easily list:   instances that
-// have names that contain "app" all instances of a given deployment
-// instances belonging to a given server array (i.e., have the same
-// parent_url)   To see the instances of a server array including
-// the next_instance, use the URL "/api/clouds/:cloud_id/instances"
-// with the filter "parent_href==/api/server_arrays/XX". To list
-// only the running instances of a server array, use the URL
-// "/api/server_arrays/:server_array_id/current_instances"  The
-// 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for
-// more details please see Inputs#index.)
-func (c *Client) IndexInstances(cloudId string, filter []string, view string) ([]Instance, error) {
+// Lists instances of a given cloud, server array.
+
+// Using the available filters, it is possible to craft powerful queries about which instances to retrieve.
+// For example, one can easily list:
+
+// instances that have names that contain "app"
+// all instances of a given deployment
+// instances belonging to a given server array (i.e., have the same parent_url)
+
+// To see the instances of a server array including the next_instance, use the URL "/api/clouds/:cloud_id/instances" with the filter "parent_href==/api/server_arrays/XX". To list only the running
+// instances of a server array, use the URL "/api/server_arrays/:server_array_id/current_instances"
+
+// The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+// details please see Inputs#index.)
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexInstances(cloudId string, options ApiParams) ([]Instance, error) {
 	var res []Instance
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2326,10 +2465,11 @@ func (c *Client) IndexInstances(cloudId string, filter []string, view string) ([
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2346,14 +2486,14 @@ func (c *Client) IndexInstances(cloudId string, filter []string, view string) ([
 }
 
 // POST api/clouds/:cloud_id/instances/:id/launch(.:format)?
-// Launches an instance using the parameters that this instance has been
-// configured with.  Note that this action can only be performed in "next"
-// instances, and not on instances that are already running.
-func (c *Client) LaunchInstance(apiBehavior string, cloudId string, id string, inputs map[string]string) error {
-	payload := map[string]interface{}{
-		"api_behavior": apiBehavior,
-		"inputs":       inputs,
-	}
+// Launches an instance using the parameters that this instance has been configured with.
+
+// Note that this action can only be performed in "next" instances, and not on instances that are already running.
+// -- Optional parameters:
+// 	apiBehavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+// 	inputs
+func (c *Client) LaunchInstance(cloudId string, id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -2393,17 +2533,18 @@ func (c *Client) LockInstance(cloudId string, id string) error {
 }
 
 // POST api/clouds/:cloud_id/instances/multi_run_executable(.:format)?
-// Runs a script or a recipe in the running instances.  This is an asynchronous
-// function, which returns immediately after queuing the executable for
-// execution. Status of the execution can be tracked at the URL returned in the
-// "Location" header.
-func (c *Client) MultiRunExecutableInstances(cloudId string, filter []string, ignoreLock string, inputs map[string]string, recipeName string, rightScriptHref string) error {
-	payload := map[string]interface{}{
-		"ignore_lock":       ignoreLock,
-		"inputs":            inputs,
-		"recipe_name":       recipeName,
-		"right_script_href": rightScriptHref,
-	}
+// Runs a script or a recipe in the running instances.
+
+// This is an asynchronous function, which returns immediately after queuing the executable for execution.
+// Status of the execution can be tracked at the URL returned in the "Location" header.
+// -- Optional parameters:
+// 	filter
+// 	ignoreLock: Specifies the ability to ignore the lock(s) on the Instance(s).
+// 	inputs
+// 	recipeName: The name of the recipe to be run.
+// 	rightScriptHref: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
+func (c *Client) MultiRunExecutableInstances(cloudId string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -2414,7 +2555,8 @@ func (c *Client) MultiRunExecutableInstances(cloudId string, filter []string, ig
 	if err != nil {
 		return err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -2428,12 +2570,13 @@ func (c *Client) MultiRunExecutableInstances(cloudId string, filter []string, ig
 }
 
 // POST api/clouds/:cloud_id/instances/multi_terminate(.:format)?
-// Terminates running instances. Either a filter or the parameter
-// 'terminate_all' must be provided.
-func (c *Client) MultiTerminateInstances(cloudId string, filter []string, terminateAll string) error {
-	payload := map[string]interface{}{
-		"terminate_all": terminateAll,
-	}
+// Terminates running instances.
+// Either a filter or the parameter 'terminate_all' must be provided.
+// -- Optional parameters:
+// 	filter
+// 	terminateAll: Specifies the ability to terminate all instances.
+func (c *Client) MultiTerminateInstances(cloudId string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -2444,7 +2587,8 @@ func (c *Client) MultiTerminateInstances(cloudId string, filter []string, termin
 	if err != nil {
 		return err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -2458,8 +2602,9 @@ func (c *Client) MultiTerminateInstances(cloudId string, filter []string, termin
 }
 
 // POST api/clouds/:cloud_id/instances/:id/reboot(.:format)?
-// Reboot a running instance.  Note that this action can only succeed if the
-// instance is running. One cannot reboot instances of type "next".
+// Reboot a running instance.
+
+// Note that this action can only succeed if the instance is running. One cannot reboot instances of type "next".
 func (c *Client) RebootInstance(cloudId string, id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2477,17 +2622,18 @@ func (c *Client) RebootInstance(cloudId string, id string) error {
 }
 
 // POST api/clouds/:cloud_id/instances/:id/run_executable(.:format)?
-// Runs a script or a recipe in the running instance.  This is an asynchronous
-// function, which returns immediately after queuing the executable for
-// execution. Status of the execution can be tracked at the URL returned in the
-// "Location" header. Note that this can only be performed on running instances.
-func (c *Client) RunExecutableInstance(cloudId string, id string, ignoreLock string, inputs map[string]string, recipeName string, rightScriptHref string) error {
-	payload := map[string]interface{}{
-		"ignore_lock":       ignoreLock,
-		"inputs":            inputs,
-		"recipe_name":       recipeName,
-		"right_script_href": rightScriptHref,
-	}
+// Runs a script or a recipe in the running instance.
+
+// This is an asynchronous function, which returns immediately after queuing the executable for execution.
+// Status of the execution can be tracked at the URL returned in the "Location" header.
+// Note that this can only be performed on running instances.
+// -- Optional parameters:
+// 	ignoreLock: Specifies the ability to ignore the lock on the Instance.
+// 	inputs
+// 	recipeName: The name of the recipe to run.
+// 	rightScriptHref: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
+func (c *Client) RunExecutableInstance(cloudId string, id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -2510,8 +2656,10 @@ func (c *Client) RunExecutableInstance(cloudId string, id string, ignoreLock str
 
 // POST api/clouds/:cloud_id/instances/:id/set_custom_lodgement(.:format)?
 // This method is deprecated.  Please use InstanceCustomLodgement.
+// 	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
+// 	timeframe: The timeframe (either a month or a single day) for which the quantity value is valid (currently for the PDT timezone only).
 func (c *Client) SetCustomLodgementInstance(cloudId string, id string, quantity []*Quantity, timeframe string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
@@ -2536,10 +2684,13 @@ func (c *Client) SetCustomLodgementInstance(cloudId string, id string, quantity 
 }
 
 // GET api/clouds/:cloud_id/instances/:id(.:format)?
-// Shows attributes of a single instance.  The 'full_inputs_2_0' view is
-// for retrieving inputs in 2.0 serialization (for more details please see
-// Inputs#index.)
-func (c *Client) ShowInstance(cloudId string, id string, view string) (*Instance, error) {
+// Shows attributes of a single instance.
+
+// The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+// details please see Inputs#index.)
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowInstance(cloudId string, id string, options ApiParams) (*Instance, error) {
 	var res *Instance
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2547,7 +2698,7 @@ func (c *Client) ShowInstance(cloudId string, id string, view string) (*Instance
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2564,13 +2715,13 @@ func (c *Client) ShowInstance(cloudId string, id string, view string) (*Instance
 }
 
 // POST api/clouds/:cloud_id/instances/:id/start(.:format)?
-// Starts an instance that has been stopped, resuming it to its previously saved
-// volume state.  After an instance is started, the reference to your instance
-// will have a different id.  The new id can be found by performing an index
-// query with the appropriate filters on the Instances resource, performing
-// a show action on the Server resource for Server Instances, or performing
-// a current_instances action on the ServerArray resource for ServerArray
-// Instances.
+// Starts an instance that has been stopped, resuming it to its previously saved volume state.
+
+// After an instance is started, the reference to your instance will have a different id.
+
+// The new id can be found by performing an index query with the appropriate filters on the
+// Instances resource, performing a show action on the Server resource for Server Instances, or
+// performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (c *Client) StartInstance(cloudId string, id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2588,13 +2739,12 @@ func (c *Client) StartInstance(cloudId string, id string) error {
 }
 
 // POST api/clouds/:cloud_id/instances/:id/stop(.:format)?
-// Stores the instance's current volume state to resume later using the 'start'
-// action.  After an instance is stopped, the reference to your instance
-// will have a different id.  The new id can be found by performing an index
-// query with the appropriate filters on the Instances resource, performing
-// a show action on the Server resource for Server Instances, or performing
-// a current_instances action on the ServerArray resource for ServerArray
-// Instances.
+// Stores the instance's current volume state to resume later using the 'start' action.
+
+// After an instance is stopped, the reference to your instance will have a different id.
+
+// The new id can be found by performing an index query with the appropriate filters on the
+// Instances resource, performing a show action on the Server resource for Server Instances, or performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (c *Client) StopInstance(cloudId string, id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2612,8 +2762,9 @@ func (c *Client) StopInstance(cloudId string, id string) error {
 }
 
 // POST api/clouds/:cloud_id/instances/:id/terminate(.:format)?
-// Terminates a running instance.  Note that this action can succeed only if the
-// instance is running. One cannot terminate instances of type "next".
+// Terminates a running instance.
+
+// Note that this action can succeed only if the instance is running. One cannot terminate instances of type "next".
 func (c *Client) TerminateInstance(cloudId string, id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2650,8 +2801,8 @@ func (c *Client) UnlockInstance(cloudId string, id string) error {
 
 // PUT api/clouds/:cloud_id/instances/:id(.:format)?
 // Updates attributes of a single instance.
-func (c *Client) UpdateInstance(cloudId string, id string, instance *InstanceParam3) error {
-	payload := map[string]interface{}{
+func (c *Client) UpdateInstance(cloudId string, id string, instance *InstanceParam5) error {
+	payload := ApiParams{
 		"instance": instance,
 	}
 	b, err := json.Marshal(payload)
@@ -2676,9 +2827,7 @@ func (c *Client) UpdateInstance(cloudId string, id string, instance *InstancePar
 
 /******  InstanceCustomLodgement ******/
 
-// An InstanceCustomLodgement represents a way to create custom reports about
-// a specific instance with a user defined quantity.  Replaces the legacy
-// Instances#setcustomlodgement interface.
+// An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#setcustomlodgement interface.
 type InstanceCustomLodgement struct {
 	AccountOwner                         string                   `json:"account_owner,omitempty"`
 	Actions                              []string                 `json:"actions,omitempty"`
@@ -2698,9 +2847,11 @@ type InstanceCustomLodgement struct {
 
 // POST api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements(.:format)?
 // Create a lodgement with the quantity and timeframe specified.
+// 	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
+// 	timeframe: The time-frame (either a month "YYYY_MM" or a single day "YYYY_MM_DD") for which the quantity value is valid (currently for the PDT timezone only).
 func (c *Client) CreateInstanceCustomLodgement(cloudId string, instanceId string, quantity []*Quantity, timeframe string) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
@@ -2749,7 +2900,9 @@ func (c *Client) DestroyInstanceCustomLodgement(cloudId string, id string, insta
 
 // GET api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements(.:format)?
 // List InstanceCustomLodgements of a given cloud and instance.
-func (c *Client) IndexInstanceCustomLodgements(cloudId string, instanceId string, view string) ([]InstanceCustomLodgement, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) IndexInstanceCustomLodgements(cloudId string, instanceId string, options ApiParams) ([]InstanceCustomLodgement, error) {
 	var res []InstanceCustomLodgement
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2757,7 +2910,7 @@ func (c *Client) IndexInstanceCustomLodgements(cloudId string, instanceId string
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2800,8 +2953,9 @@ func (c *Client) ShowInstanceCustomLodgement(cloudId string, id string, instance
 
 // PUT api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)?
 // Update a lodgement with the quantity specified.
+// 	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 func (c *Client) UpdateInstanceCustomLodgement(cloudId string, id string, instanceId string, quantity []*Quantity2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"quantity": quantity,
 	}
 	b, err := json.Marshal(payload)
@@ -2842,7 +2996,10 @@ type InstanceType struct {
 
 // GET api/clouds/:cloud_id/instance_types(.:format)?
 // Lists instance types.
-func (c *Client) IndexInstanceTypes(cloudId string, filter []string, view string) ([]InstanceType, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexInstanceTypes(cloudId string, options ApiParams) ([]InstanceType, error) {
 	var res []InstanceType
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2850,10 +3007,11 @@ func (c *Client) IndexInstanceTypes(cloudId string, filter []string, view string
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2871,7 +3029,9 @@ func (c *Client) IndexInstanceTypes(cloudId string, filter []string, view string
 
 // GET api/clouds/:cloud_id/instance_types/:id(.:format)?
 // Displays information about a single Instance type.
-func (c *Client) ShowInstanceType(cloudId string, id string, view string) (*InstanceType, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowInstanceType(cloudId string, id string, options ApiParams) (*InstanceType, error) {
 	var res *InstanceType
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2879,7 +3039,7 @@ func (c *Client) ShowInstanceType(cloudId string, id string, view string) (*Inst
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2897,8 +3057,7 @@ func (c *Client) ShowInstanceType(cloudId string, id string, view string) (*Inst
 
 /******  IpAddress ******/
 
-// An IpAddress provides an abstraction for IPv4 addresses bindable to Instance
-// resources running in a Cloud.
+// An IpAddress provides an abstraction for IPv4 addresses bindable to Instance resources running in a Cloud.
 type IpAddress struct {
 	Address   string              `json:"address,omitempty"`
 	CreatedAt *time.Time          `json:"created_at,omitempty"`
@@ -2912,7 +3071,7 @@ type IpAddress struct {
 // Creates a new IpAddress with the given parameters.
 func (c *Client) CreateIpAddress(cloudId string, ipAddress *IpAddressParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"ip_address": ipAddress,
 	}
 	b, err := json.Marshal(payload)
@@ -2960,7 +3119,9 @@ func (c *Client) DestroyIpAddress(cloudId string, id string) error {
 
 // GET api/clouds/:cloud_id/ip_addresses(.:format)?
 // Lists the IpAddresses available to this account.
-func (c *Client) IndexIpAddresses(cloudId string, filter []string) ([]IpAddress, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexIpAddresses(cloudId string, options ApiParams) ([]IpAddress, error) {
 	var res []IpAddress
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -2968,7 +3129,8 @@ func (c *Client) IndexIpAddresses(cloudId string, filter []string) ([]IpAddress,
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -3014,7 +3176,7 @@ func (c *Client) ShowIpAddress(cloudId string, id string) (*IpAddress, error) {
 // PUT api/clouds/:cloud_id/ip_addresses/:id(.:format)?
 // Updates attributes of a given IpAddress.
 func (c *Client) UpdateIpAddress(cloudId string, id string, ipAddress *IpAddressParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"ip_address": ipAddress,
 	}
 	b, err := json.Marshal(payload)
@@ -3039,10 +3201,9 @@ func (c *Client) UpdateIpAddress(cloudId string, id string, ipAddress *IpAddress
 
 /******  IpAddressBinding ******/
 
-// An IpAddressBinding represents an abstraction for binding an IpAddress to an
-// instance. The IpAddress is bound immediately for a current instance, or on
-// launch for a next instance. It also allows specifying port forwarding rules
-// for that particular IpAddress and Instance pair.
+// An IpAddressBinding represents an abstraction for binding an IpAddress to an instance.
+// The IpAddress is bound immediately for a current instance, or on launch for a next instance.
+// It also allows specifying port forwarding rules for that particular IpAddress and Instance pair.
 type IpAddressBinding struct {
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -3056,12 +3217,12 @@ type IpAddressBinding struct {
 // Creates an ip address binding which attaches a specified IpAddress resource
 // to a specified instance, and also allows for configuration of port forwarding
 // rules. If the instance specified is a current (running) instance, a one-time
-// IpAddressBinding will be created. If the instance is a next instance, then a
-// recurring IpAddressBinding is created, which will cause the IpAddress to be
-// bound each time the incarnator boots.
+// IpAddressBinding will be created. If the instance is a next instance, then
+// a recurring IpAddressBinding is created, which will cause the IpAddress to
+// be bound each time the incarnator boots.
 func (c *Client) CreateIpAddressBinding(cloudId string, ipAddressBinding *IpAddressBindingParam, ipAddressId string) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"ip_address_binding": ipAddressBinding,
 	}
 	b, err := json.Marshal(payload)
@@ -3109,7 +3270,9 @@ func (c *Client) DestroyIpAddressBinding(cloudId string, id string, ipAddressId 
 
 // GET api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings(.:format)?
 // Lists the ip address bindings available to this account.
-func (c *Client) IndexIpAddressBindings(cloudId string, filter []string, ipAddressId string) ([]IpAddressBinding, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexIpAddressBindings(cloudId string, ipAddressId string, options ApiParams) ([]IpAddressBinding, error) {
 	var res []IpAddressBinding
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -3117,7 +3280,8 @@ func (c *Client) IndexIpAddressBindings(cloudId string, filter []string, ipAddre
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -3162,9 +3326,7 @@ func (c *Client) ShowIpAddressBinding(cloudId string, id string, ipAddressId str
 
 /******  MonitoringMetric ******/
 
-// A monitoring metric is a stream of data that is captured in an instance.
-// Metrics can be monitored, graphed and can be used as the basis for triggering
-// alerts.
+// A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.
 type MonitoringMetric struct {
 	Actions   []string            `json:"actions,omitempty"`
 	GraphHref string              `json:"graph_href,omitempty"`
@@ -3174,14 +3336,16 @@ type MonitoringMetric struct {
 }
 
 // GET api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id/data(.:format)?
-// Gives the raw monitoring data for a particular metric. The response will
-// include different variables associated with that metric and the data points
-// for each of those variables.  To get the data for a certain duration, for
-// e.g. for the last 10 minutes(600 secs), provide the variables start="-600"
-// and end="0".
+// Gives the raw monitoring data for a particular metric. The response will include different variables
+// associated with that metric and the data points for each of those variables.
+
+// To get the data for a certain duration, for e.g. for the last 10 minutes(600 secs), provide the variables
+// start="-600" and end="0".
+// 	end: An integer number of seconds from current time. e.g. -150 or 0
+// 	start: An integer number of seconds from current time. e.g. -300
 func (c *Client) DataMonitoringMetric(cloudId string, end string, id string, instanceId string, start string) (map[string]string, error) {
 	var res map[string]string
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"end":   end,
 		"start": start,
 	}
@@ -3212,17 +3376,17 @@ func (c *Client) DataMonitoringMetric(cloudId string, end string, id string, ins
 }
 
 // GET api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics(.:format)?
-// Lists the monitoring metrics available for the instance and their
-// corresponding graph hrefs. Making a request to the graph_href will return a
-// png image corresponding to that monitoring metric.
-func (c *Client) IndexMonitoringMetrics(cloudId string, filter []string, instanceId string, period string, size string, title string, tz string) ([]MonitoringMetric, error) {
+// Lists the monitoring metrics available for the instance and their corresponding graph hrefs.
+// Making a request to the graph_href will return a png image corresponding to that monitoring metric.
+// -- Optional parameters:
+// 	filter
+// 	period: The time scale for which the graph is generated. Default is 'day'
+// 	size: The size of the graph to be generated. Default is 'small'.
+// 	title: The title of the graph.
+// 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
+func (c *Client) IndexMonitoringMetrics(cloudId string, instanceId string, options ApiParams) ([]MonitoringMetric, error) {
 	var res []MonitoringMetric
-	payload := map[string]interface{}{
-		"period": period,
-		"size":   size,
-		"title":  title,
-		"tz":     tz,
-	}
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -3233,7 +3397,8 @@ func (c *Client) IndexMonitoringMetrics(cloudId string, filter []string, instanc
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -3253,16 +3418,16 @@ func (c *Client) IndexMonitoringMetrics(cloudId string, filter []string, instanc
 }
 
 // GET api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id(.:format)?
-// Shows attributes of a single monitoring metric. Making a request to the
-// graph_href will return a png image corresponding to that monitoring metric.
-func (c *Client) ShowMonitoringMetric(cloudId string, id string, instanceId string, period string, size string, title string, tz string) (*MonitoringMetric, error) {
+// Shows attributes of a single monitoring metric.
+// Making a request to the graph_href will return a png image corresponding to that monitoring metric.
+// -- Optional parameters:
+// 	period: The time scale for which the graph is generated. Default is 'day'.
+// 	size: The size of the graph to be generated. Default is 'small'.
+// 	title: The title of the graph.
+// 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
+func (c *Client) ShowMonitoringMetric(cloudId string, id string, instanceId string, options ApiParams) (*MonitoringMetric, error) {
 	var res *MonitoringMetric
-	payload := map[string]interface{}{
-		"period": period,
-		"size":   size,
-		"title":  title,
-		"tz":     tz,
-	}
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -3291,10 +3456,9 @@ func (c *Client) ShowMonitoringMetric(cloudId string, id string, instanceId stri
 
 /******  MultiCloudImage ******/
 
-// A MultiCloudImage is a RightScale component that functions as a pointer
-// to machine images in specific clouds (e.g. AWS US-East, Rackspace). Each
-// ServerTemplate can reference many MultiCloudImages that defines which image
-// should be used when a server is launched in a particular cloud.
+// A MultiCloudImage is a RightScale component that functions as a pointer to machine images in specific clouds
+// (e.g. AWS US-East, Rackspace). Each ServerTemplate can reference many MultiCloudImages that defines which
+// image should be used when a server is launched in a particular cloud.
 type MultiCloudImage struct {
 	Actions     []string            `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -3306,7 +3470,7 @@ type MultiCloudImage struct {
 // POST api/multi_cloud_images/:id/clone(.:format)?
 // Clones a given MultiCloudImage.
 func (c *Client) CloneMultiCloudImage(id string, multiCloudImage *MultiCloudImageParam) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	b, err := json.Marshal(payload)
@@ -3331,8 +3495,9 @@ func (c *Client) CloneMultiCloudImage(id string, multiCloudImage *MultiCloudImag
 
 // POST api/multi_cloud_images/:id/commit(.:format)?
 // Commits a given MultiCloudImage. Only HEAD revisions can be committed.
+// 	commitMessage: The message associated with the commit.
 func (c *Client) CommitMultiCloudImage(commitMessage string, id string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"commit_message": commitMessage,
 	}
 	b, err := json.Marshal(payload)
@@ -3359,7 +3524,7 @@ func (c *Client) CommitMultiCloudImage(commitMessage string, id string) error {
 // Creates a new MultiCloudImage with the given parameters.
 func (c *Client) CreateMultiCloudImage(multiCloudImage *MultiCloudImageParam2, serverTemplateId string) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	b, err := json.Marshal(payload)
@@ -3406,9 +3571,10 @@ func (c *Client) DestroyMultiCloudImage(id string, serverTemplateId string) erro
 }
 
 // GET api/server_templates/:server_template_id/multi_cloud_images(.:format)?
-// Lists the MultiCloudImages available to this account. HEAD revisions have a
-// revision of 0.
-func (c *Client) IndexMultiCloudImages(filter []string, serverTemplateId string) ([]MultiCloudImage, error) {
+// Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexMultiCloudImages(serverTemplateId string, options ApiParams) ([]MultiCloudImage, error) {
 	var res []MultiCloudImage
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -3416,7 +3582,8 @@ func (c *Client) IndexMultiCloudImages(filter []string, serverTemplateId string)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -3435,8 +3602,7 @@ func (c *Client) IndexMultiCloudImages(filter []string, serverTemplateId string)
 }
 
 // GET api/server_templates/:server_template_id/multi_cloud_images/:id(.:format)?
-// Show information about a single MultiCloudImage. HEAD revisions have a
-// revision of 0.
+// Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.
 func (c *Client) ShowMultiCloudImage(id string, serverTemplateId string) (*MultiCloudImage, error) {
 	var res *MultiCloudImage
 	b := []byte{}
@@ -3461,11 +3627,10 @@ func (c *Client) ShowMultiCloudImage(id string, serverTemplateId string) (*Multi
 }
 
 // PUT api/server_templates/:server_template_id/multi_cloud_images/:id(.:format)?
-// Updates attributes of a given MultiCloudImage. Only HEAD revisions can be
-// updated (revision 0). Currently, the attributes you can update are only the
-// 'direct' attributes of a server template.
+// Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).
+// Currently, the attributes you can update are only the 'direct' attributes of a server template.
 func (c *Client) UpdateMultiCloudImage(id string, multiCloudImage *MultiCloudImageParam, serverTemplateId string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	b, err := json.Marshal(payload)
@@ -3490,8 +3655,8 @@ func (c *Client) UpdateMultiCloudImage(id string, multiCloudImage *MultiCloudIma
 
 /******  MultiCloudImageSetting ******/
 
-// A MultiCloudImageSetting defines which settings should be used when a server
-// is launched in a cloud.
+// A MultiCloudImageSetting defines which
+// settings should be used when a server is launched in a cloud.
 type MultiCloudImageSetting struct {
 	Actions []string            `json:"actions,omitempty"`
 	Links   []map[string]string `json:"links,omitempty"`
@@ -3501,7 +3666,7 @@ type MultiCloudImageSetting struct {
 // Creates a new setting for an existing MultiCloudImage.
 func (c *Client) CreateMultiCloudImageSetting(multiCloudImageId string, multiCloudImageSetting *MultiCloudImageSettingParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
 	b, err := json.Marshal(payload)
@@ -3549,7 +3714,9 @@ func (c *Client) DestroyMultiCloudImageSetting(id string, multiCloudImageId stri
 
 // GET api/multi_cloud_images/:multi_cloud_image_id/settings(.:format)?
 // Lists the MultiCloudImage settings.
-func (c *Client) IndexMultiCloudImageSettings(filter []string, multiCloudImageId string) ([]MultiCloudImageSetting, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexMultiCloudImageSettings(multiCloudImageId string, options ApiParams) ([]MultiCloudImageSetting, error) {
 	var res []MultiCloudImageSetting
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -3557,7 +3724,8 @@ func (c *Client) IndexMultiCloudImageSettings(filter []string, multiCloudImageId
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -3603,7 +3771,7 @@ func (c *Client) ShowMultiCloudImageSetting(id string, multiCloudImageId string)
 // PUT api/multi_cloud_images/:multi_cloud_image_id/settings/:id(.:format)?
 // Updates a settings for a MultiCLoudImage.
 func (c *Client) UpdateMultiCloudImageSetting(id string, multiCloudImageId string, multiCloudImageSetting *MultiCloudImageSettingParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
 	b, err := json.Marshal(payload)
@@ -3644,7 +3812,7 @@ type Network struct {
 // Creates a new network.
 func (c *Client) CreateNetwork(network *NetworkParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network": network,
 	}
 	b, err := json.Marshal(payload)
@@ -3692,7 +3860,9 @@ func (c *Client) DestroyNetwork(id string) error {
 
 // GET api/networks(.:format)?
 // Lists networks in this account.
-func (c *Client) IndexNetworks(filter []string) ([]Network, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexNetworks(options ApiParams) ([]Network, error) {
 	var res []Network
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -3700,7 +3870,8 @@ func (c *Client) IndexNetworks(filter []string) ([]Network, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -3746,7 +3917,7 @@ func (c *Client) ShowNetwork(id string) (*Network, error) {
 // PUT api/networks/:id(.:format)?
 // Updates the given network.
 func (c *Client) UpdateNetwork(id string, network *NetworkParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network": network,
 	}
 	b, err := json.Marshal(payload)
@@ -3771,8 +3942,7 @@ func (c *Client) UpdateNetwork(id string, network *NetworkParam2) error {
 
 /******  NetworkGateway ******/
 
-// A NetworkGateway is an interface that allows traffic to be routed between
-// networks.
+// A NetworkGateway is an interface that allows traffic to be routed between networks.
 type NetworkGateway struct {
 	Actions     []string            `json:"actions,omitempty"`
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
@@ -3789,7 +3959,7 @@ type NetworkGateway struct {
 // Create a new NetworkGateway.
 func (c *Client) CreateNetworkGateway(networkGateway *NetworkGatewayParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network_gateway": networkGateway,
 	}
 	b, err := json.Marshal(payload)
@@ -3837,7 +4007,9 @@ func (c *Client) DestroyNetworkGateway(id string) error {
 
 // GET api/network_gateways(.:format)?
 // Lists the NetworkGateways available to this account.
-func (c *Client) IndexNetworkGateways(filter []string) ([]NetworkGateway, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexNetworkGateways(options ApiParams) ([]NetworkGateway, error) {
 	var res []NetworkGateway
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -3845,7 +4017,8 @@ func (c *Client) IndexNetworkGateways(filter []string) ([]NetworkGateway, error)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -3891,7 +4064,7 @@ func (c *Client) ShowNetworkGateway(id string) (*NetworkGateway, error) {
 // PUT api/network_gateways/:id(.:format)?
 // Update an existing NetworkGateway.
 func (c *Client) UpdateNetworkGateway(id string, networkGateway *NetworkGatewayParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network_gateway": networkGateway,
 	}
 	b, err := json.Marshal(payload)
@@ -3916,12 +4089,15 @@ func (c *Client) UpdateNetworkGateway(id string, networkGateway *NetworkGatewayP
 
 /******  NetworkOptionGroup ******/
 
-// A key/value pair hash containing options for configuring a Network.  The
-// key/value pairs are stored in the "options" parameter.  Keys correspond
-// to the type of option to set, and values correspond to the value of the
-// particular option being set.  Option keys that are supported vary depending
-// on cloud -- please consult your particular cloud's documentation for
-// available option keys.
+// A key/value pair hash containing options for configuring a Network.
+
+// The key/value pairs are stored in the "options" parameter.
+
+// Keys correspond to the type of option to set, and values correspond
+// to the value of the particular option being set.
+
+// Option keys that are supported vary depending on cloud -- please consult
+// your particular cloud's documentation for available option keys.
 type NetworkOptionGroup struct {
 	Actions     []string            `json:"actions,omitempty"`
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
@@ -3938,7 +4114,7 @@ type NetworkOptionGroup struct {
 // Create a new NetworkOptionGroup.
 func (c *Client) CreateNetworkOptionGroup(networkOptionGroup *NetworkOptionGroupParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
 	b, err := json.Marshal(payload)
@@ -3986,7 +4162,9 @@ func (c *Client) DestroyNetworkOptionGroup(id string) error {
 
 // GET api/network_option_groups(.:format)?
 // List NetworkOptionGroups available in this account.
-func (c *Client) IndexNetworkOptionGroups(filter []string) ([]NetworkOptionGroup, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexNetworkOptionGroups(options ApiParams) ([]NetworkOptionGroup, error) {
 	var res []NetworkOptionGroup
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -3994,7 +4172,8 @@ func (c *Client) IndexNetworkOptionGroups(filter []string) ([]NetworkOptionGroup
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -4040,7 +4219,7 @@ func (c *Client) ShowNetworkOptionGroup(id string) (*NetworkOptionGroup, error) 
 // PUT api/network_option_groups/:id(.:format)?
 // Update an existing NetworkOptionGroup.
 func (c *Client) UpdateNetworkOptionGroup(id string, networkOptionGroup *NetworkOptionGroupParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
 	b, err := json.Marshal(payload)
@@ -4065,13 +4244,17 @@ func (c *Client) UpdateNetworkOptionGroup(id string, networkOptionGroup *Network
 
 /******  NetworkOptionGroupAttachment ******/
 
-// Resource for attaching NetworkOptionGroups to Networks.  A single
-// NetworkOptionGroup can be attached to many Networks. A Network/Subnet can
-// have many NetworkOptionGroups attached, as long as the NetworkOptionGroups
-// each have different types.  This resource describes the attachment details
-// between a particular NetworkOptionGroup and Network.  Amazon currently only
-// supports attaching NetworkOptionGroups to Networks. Other clouds in the
-// future may support attaching to Subnets.
+// Resource for attaching NetworkOptionGroups to Networks.
+
+// A single NetworkOptionGroup can be attached to many Networks.
+// A Network/Subnet can have many NetworkOptionGroups attached, as long as the
+// NetworkOptionGroups each have different types.
+
+// This resource describes the attachment details between a particular
+// NetworkOptionGroup and Network.
+
+// Amazon currently only supports attaching NetworkOptionGroups to Networks.
+// Other clouds in the future may support attaching to Subnets.
 type NetworkOptionGroupAttachment struct {
 	Actions            []string            `json:"actions,omitempty"`
 	CreatedAt          *time.Time          `json:"created_at,omitempty"`
@@ -4085,7 +4268,7 @@ type NetworkOptionGroupAttachment struct {
 // Create a new NetworkOptionGroupAttachment.
 func (c *Client) CreateNetworkOptionGroupAttachment(networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
 	b, err := json.Marshal(payload)
@@ -4133,7 +4316,10 @@ func (c *Client) DestroyNetworkOptionGroupAttachment(id string) error {
 
 // GET api/network_option_group_attachments(.:format)?
 // List NetworkOptionGroupAttachments in this account.
-func (c *Client) IndexNetworkOptionGroupAttachments(filter []string, view string) ([]NetworkOptionGroupAttachment, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexNetworkOptionGroupAttachments(options ApiParams) ([]NetworkOptionGroupAttachment, error) {
 	var res []NetworkOptionGroupAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4141,10 +4327,11 @@ func (c *Client) IndexNetworkOptionGroupAttachments(filter []string, view string
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4162,7 +4349,9 @@ func (c *Client) IndexNetworkOptionGroupAttachments(filter []string, view string
 
 // GET api/network_option_group_attachments/:id(.:format)?
 // Show information about a single NetworkOptionGroupAttachment.
-func (c *Client) ShowNetworkOptionGroupAttachment(id string, view string) (*NetworkOptionGroupAttachment, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowNetworkOptionGroupAttachment(id string, options ApiParams) (*NetworkOptionGroupAttachment, error) {
 	var res *NetworkOptionGroupAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4170,7 +4359,7 @@ func (c *Client) ShowNetworkOptionGroupAttachment(id string, view string) (*Netw
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4189,7 +4378,7 @@ func (c *Client) ShowNetworkOptionGroupAttachment(id string, view string) (*Netw
 // PUT api/network_option_group_attachments/:id(.:format)?
 // Update an existing NetworkOptionGroupAttachment.
 func (c *Client) UpdateNetworkOptionGroupAttachment(id string, networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
 	b, err := json.Marshal(payload)
@@ -4214,60 +4403,80 @@ func (c *Client) UpdateNetworkOptionGroupAttachment(id string, networkOptionGrou
 
 /******  Oauth2 ******/
 
-// Note that all API calls irrespective of the resource it is acting on,
-// should pass a header "X-Api-Version" with the value "1.5".   This is
-// an OAuth 2.0 token endpoint that can be used to perform token-refresh
-// operations and obtain a bearer access token, which can be used in lieu of
-// a session cookie when interacting with API resources.  This is not an API
-// resource; in order to maintain compatibility with OAuth 2.0, it does not
-// conform to the conventions established by other RightScale API resources.
-// However, an API-version header is still required when interacting with the
-// OAuth endpoint.  OAuth 2.0 endpoints always use the POST verb, accept a
-// www-urlencoded request body (similarly to a browser form submission) and
-// the OAuth action is indicated by the "grant_type" parameter. This endpoint
-// supports the following OAuth 2.0 operations:   refresh_token - for end-user
-// login using a previously-negotiated OAuth grant client_credentials - for
-// instance login using API credentials transmitted via user-data   RightScale's
-// OAuth implementation has two proprietary aspects that you should be aware
-// of:   clients MUST transmit an X-Api-Version header with every OAuth request
+// Note that all API calls irrespective of the resource it is acting on, should pass a header
+// "X-Api-Version" with the value "1.5".
+
+// This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
+// a bearer access token, which can be used in lieu of a session cookie when interacting with API
+// resources.
+
+// This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
+// to the conventions established by other RightScale API resources. However, an API-version header is
+// still required when interacting with the OAuth endpoint.
+
+// OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
+// browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
+// endpoint supports the following OAuth 2.0 operations:
+
+// refresh_token - for end-user login using a previously-negotiated OAuth grant
+// client_credentials - for instance login using API credentials transmitted via user-data
+
+// RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
+
+// clients MUST transmit an X-Api-Version header with every OAuth request
 // clients MAY transmit an account_id parameter as part of their POST form data
-//   If you choose to post an account_id, then the API may respond with a 301
-// redirect if your account is hosted in another RightScale cluster. If you omit
-// this parameter and your account is hosted elsewhere, then you will simply
-// receive a 400 Bad Request (because your grant is not known to this cluster).
-//  For more information on how to use OAuth 2.0 with RightScale, refer to the
-// following: http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
+
+// If you choose to post an account_id, then the API may respond with a 301 redirect if your account
+// is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
+// elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
+// this cluster).
+
+// For more information on how to use OAuth 2.0 with RightScale, refer to the following:
+// http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
 // http://tools.ietf.org/html/draft-ietf-oauth-v2-23
 type Oauth2 struct {
 }
 
 // POST api/oauth2/
-// Perform an OAuth 2.0 token_refresh operation to obtain an access token
-// that can be used in lieu of an API session cookie. (In other words, creates
-// a session using OAuth 2.0).  Note that an API-Version header is required
-// with your request, and that the server may respond with a 301 Moved
-// Permanently if you include an account_id parameter and your account is
-// hosted in another RightScale cluster.  The request parameters and response
-// format are all as per the OAuth 2.0 Internet Draft standard v23. In brief:
-//   Successful responses include an access token, an expires-in timestamp,
-// and a token type The token type is always "bearer" To use a bearer token,
-// include header "Authorization: Bearer " with your API requests The client
-// must refresh the access token before it expires    # Example Request
-// using Curl (with prettified response): curl -i -H X-API-Version:1.5 -x
-// POST https://my.rightscale.com/api/oauth2 -d "grant_type=refresh_token"
-// -d "refresh_token=abcd1234deadbeef"  {   "access_token": "xyzzy",
-// "expires_in":   3600,   "token_type":   "bearer" }
-func (c *Client) CreateOauth2(accountId int, clientId string, clientSecret string, grantType string, refreshToken string, rightLinkVersion string, rsVersion int) (map[string]interface{}, error) {
+// Perform an OAuth 2.0 token_refresh operation to obtain an access token that
+// can be used in lieu of an API session cookie. (In other words, creates a
+// session using OAuth 2.0).
+
+// Note that an API-Version header is required with your request, and that the server
+// may respond with a 301 Moved Permanently if you include an account_id parameter and
+// your account is hosted in another RightScale cluster.
+
+// The request parameters and response format are all as per the OAuth 2.0
+// Internet Draft standard v23. In brief:
+
+// Successful responses include an access token, an expires-in timestamp, and a token type
+// The token type is always "bearer"
+// To use a bearer token, include header "Authorization: Bearer " with your API requests
+// The client must refresh the access token before it expires
+
+// # Example Request using Curl (with prettified response):
+// curl -i -H X-API-Version:1.5 -x POST https://my.rightscale.com/api/oauth2 -d "grant_type=refresh_token" -d "refresh_token=abcd1234deadbeef"
+
+// {
+//   "access_token": "xyzzy",
+//   "expires_in":   3600,
+//   "token_type":   "bearer"
+// }
+
+// 	grantType: Type of grant.
+// -- Optional parameters:
+// 	accountId: The client's account ID (only needed for instance agent clients).
+// 	clientId: The client ID (only needed for confidential clients).
+// 	clientSecret: The client secret (only needed for confidential clients).
+// 	refreshToken: The refresh token obtained from OAuth grant.
+// 	rightLinkVersion: The RightLink gem version the client conforms to (only needed for instance agent clients).
+// 	rsVersion: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
+func (c *Client) CreateOauth2(grantType string, options ApiParams) (map[string]interface{}, error) {
 	var res map[string]interface{}
-	payload := map[string]interface{}{
-		"account_id":         accountId,
-		"client_id":          clientId,
-		"client_secret":      clientSecret,
-		"grant_type":         grantType,
-		"refresh_token":      refreshToken,
-		"right_link_version": rightLinkVersion,
-		"r_s_version":        rsVersion,
-	}
+	payload := mergeOptionals(ApiParams{
+
+		"grant_type": grantType,
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -4304,17 +4513,22 @@ type Permission struct {
 }
 
 // POST api/permissions(.:format)?
-// Create a permission, thereby granting some user a particular role with
-// respect to the current account.  The 'observer' role has a special status; it
-// must be granted before a user is eligible for any other permission in a given
-// account.   When provisioning users, always create the observer permission
-// FIRST;  creating any other permission before it will result in an error.  For
-// more information about the roles available and the privileges they confer,
-// please refer to the following page of the RightScale support portal:
-// http://support.rightscale.com/15-References/Lists/ListofUser_Roles
+// Create a permission, thereby granting some user a particular role
+// with respect to the current account.
+
+// The 'observer' role has a special status; it must be granted before
+// a user is eligible for any other permission in a given account.
+
+// When provisioning users, always create the observer permission FIRST;
+// creating any other permission before it will result in an error.
+
+// For more information about the roles available and the privileges
+// they confer, please refer to the following page of the RightScale
+// support portal:
+//   http://support.rightscale.com/15-References/Lists/ListofUser_Roles
 func (c *Client) CreatePermission(permission *PermissionParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"permission": permission,
 	}
 	b, err := json.Marshal(payload)
@@ -4343,12 +4557,15 @@ func (c *Client) CreatePermission(permission *PermissionParam) (Href, error) {
 }
 
 // DELETE api/permissions/:id(.:format)?
-// Destroy a permission, thereby revoking a user's role with respect to the
-// current account.  The 'observer' role has a special status; it cannot
-// be revoked if a user has any other roles, because other roles become
-// useless without being able to read data pertaining to the account.  When
-// deprovisioning user, always destroy the observer permission LAST; destroying
-// it while the user has other permissions will result in an error.
+// Destroy a permission, thereby revoking a user's role with respect
+// to the current account.
+
+// The 'observer' role has a special status; it cannot be revoked if
+// a user has any other roles, because other roles become useless without
+// being able to read data pertaining to the account.
+
+// When deprovisioning user, always destroy the observer permission LAST;
+// destroying it while the user has other permissions will result in an error.
 func (c *Client) DestroyPermission(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4367,7 +4584,9 @@ func (c *Client) DestroyPermission(id string) error {
 
 // GET api/permissions(.:format)?
 // List all permissions for all users of the current acount.
-func (c *Client) IndexPermissions(filter []string) ([]Permission, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexPermissions(options ApiParams) ([]Permission, error) {
 	var res []Permission
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4375,7 +4594,8 @@ func (c *Client) IndexPermissions(filter []string) ([]Permission, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -4435,7 +4655,7 @@ type PlacementGroup struct {
 // Creates a PlacementGroup.
 func (c *Client) CreatePlacementGroup(placementGroup *PlacementGroupParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"placement_group": placementGroup,
 	}
 	b, err := json.Marshal(payload)
@@ -4483,7 +4703,10 @@ func (c *Client) DestroyPlacementGroup(id string) error {
 
 // GET api/placement_groups(.:format)?
 // Lists all PlacementGroups in an account.
-func (c *Client) IndexPlacementGroups(filter []string, view string) ([]PlacementGroup, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexPlacementGroups(options ApiParams) ([]PlacementGroup, error) {
 	var res []PlacementGroup
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4491,10 +4714,11 @@ func (c *Client) IndexPlacementGroups(filter []string, view string) ([]Placement
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4512,7 +4736,9 @@ func (c *Client) IndexPlacementGroups(filter []string, view string) ([]Placement
 
 // GET api/placement_groups/:id(.:format)?
 // Shows information about a single PlacementGroup.
-func (c *Client) ShowPlacementGroup(id string, view string) (*PlacementGroup, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowPlacementGroup(id string, options ApiParams) (*PlacementGroup, error) {
 	var res *PlacementGroup
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4520,7 +4746,7 @@ func (c *Client) ShowPlacementGroup(id string, view string) (*PlacementGroup, er
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4538,9 +4764,7 @@ func (c *Client) ShowPlacementGroup(id string, view string) (*PlacementGroup, er
 
 /******  Preference ******/
 
-// A Preference is a user and account-specific setting. Preferences are used in
-// many part of the RightScale platform and can be used for custom purposes if
-// desired.
+// A Preference is a user and account-specific setting. Preferences are used in many part of the RightScale platform and can be used for custom purposes if desired.
 type Preference struct {
 	Actions   []string            `json:"actions,omitempty"`
 	Contents  string              `json:"contents,omitempty"`
@@ -4569,7 +4793,9 @@ func (c *Client) DestroyPreference(id string) error {
 
 // GET api/preferences(.:format)?
 // Lists all preferences.
-func (c *Client) IndexPreferences(filter []string) ([]Preference, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexPreferences(options ApiParams) ([]Preference, error) {
 	var res []Preference
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4577,7 +4803,8 @@ func (c *Client) IndexPreferences(filter []string) ([]Preference, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -4621,11 +4848,11 @@ func (c *Client) ShowPreference(id string) (*Preference, error) {
 }
 
 // PUT api/preferences/:id(.:format)?
-// If 'id' is known, updates preference with given contents. Otherwise, creates
-// new preference. Note: If create, will return '201 Created' and the location
-// of the new preference.
+// If 'id' is known, updates preference with given contents.
+// Otherwise, creates new preference.
+// Note: If create, will return '201 Created' and the location of the new preference.
 func (c *Client) UpdatePreference(id string, preference *PreferenceParam) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"preference": preference,
 	}
 	b, err := json.Marshal(payload)
@@ -4667,8 +4894,8 @@ type Publication struct {
 }
 
 // POST api/publications/:id/import(.:format)?
-// Imports the given publication and its subordinates to this account. Only
-// non-HEAD revisions that are shared with the account can be imported.
+// Imports the given publication and its subordinates to this account.
+// Only non-HEAD revisions that are shared with the account can be imported.
 func (c *Client) ImportPublication(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4686,9 +4913,11 @@ func (c *Client) ImportPublication(id string) error {
 }
 
 // GET api/publications(.:format)?
-// Lists the publications available to this account. Only non-HEAD revisions are
-// possible.
-func (c *Client) IndexPublications(filter []string, view string) ([]Publication, error) {
+// Lists the publications available to this account. Only non-HEAD revisions are possible.
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexPublications(options ApiParams) ([]Publication, error) {
 	var res []Publication
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4696,10 +4925,11 @@ func (c *Client) IndexPublications(filter []string, view string) ([]Publication,
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4716,9 +4946,10 @@ func (c *Client) IndexPublications(filter []string, view string) ([]Publication,
 }
 
 // GET api/publications/:id(.:format)?
-// Show information about a single publication. Only non-HEAD revisions are
-// possible.
-func (c *Client) ShowPublication(id string, view string) (*Publication, error) {
+// Show information about a single publication. Only non-HEAD revisions are possible.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowPublication(id string, options ApiParams) (*Publication, error) {
 	var res *Publication
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4726,7 +4957,7 @@ func (c *Client) ShowPublication(id string, view string) (*Publication, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4744,10 +4975,9 @@ func (c *Client) ShowPublication(id string, view string) (*Publication, error) {
 
 /******  PublicationLineage ******/
 
-// A Publication Lineage contains lineage information for a Publication in the
-// MultiCloudMarketplace. It is shared among all revisions of a Publication
-// within the marketplace. Publication Lineages are different than lineages that
-// exist within an account.
+// A Publication Lineage contains lineage information for a Publication in the MultiCloudMarketplace.
+// It is shared among all revisions of a Publication within the marketplace.
+// Publication Lineages are different than lineages that exist within an account.
 type PublicationLineage struct {
 	Actions          []string            `json:"actions,omitempty"`
 	CommentsEmailed  bool                `json:"comments_emailed,omitempty"`
@@ -4761,9 +4991,10 @@ type PublicationLineage struct {
 }
 
 // GET api/publication_lineages/:id(.:format)?
-// Show information about a single publication lineage. Only non-HEAD revisions
-// are possible.
-func (c *Client) ShowPublicationLineage(id string, view string) (*PublicationLineage, error) {
+// Show information about a single publication lineage. Only non-HEAD revisions are possible.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowPublicationLineage(id string, options ApiParams) (*PublicationLineage, error) {
 	var res *PublicationLineage
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4771,7 +5002,7 @@ func (c *Client) ShowPublicationLineage(id string, view string) (*PublicationLin
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4789,8 +5020,7 @@ func (c *Client) ShowPublicationLineage(id string, view string) (*PublicationLin
 
 /******  RecurringVolumeAttachment ******/
 
-// A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a
-// Server/ServerArray the next time an instance is launched.
+// A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.
 type RecurringVolumeAttachment struct {
 	Actions      []string            `json:"actions,omitempty"`
 	CreatedAt    *time.Time          `json:"created_at,omitempty"`
@@ -4809,7 +5039,7 @@ type RecurringVolumeAttachment struct {
 // Creates a new recurring volume attachment.
 func (c *Client) CreateRecurringVolumeAttachment(cloudId string, recurringVolumeAttachment *RecurringVolumeAttachmentParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"recurring_volume_attachment": recurringVolumeAttachment,
 	}
 	b, err := json.Marshal(payload)
@@ -4857,7 +5087,10 @@ func (c *Client) DestroyRecurringVolumeAttachment(cloudId string, id string) err
 
 // GET api/clouds/:cloud_id/recurring_volume_attachments(.:format)?
 // Lists all recurring volume attachments.
-func (c *Client) IndexRecurringVolumeAttachments(cloudId string, filter []string, view string) ([]RecurringVolumeAttachment, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexRecurringVolumeAttachments(cloudId string, options ApiParams) ([]RecurringVolumeAttachment, error) {
 	var res []RecurringVolumeAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4865,10 +5098,11 @@ func (c *Client) IndexRecurringVolumeAttachments(cloudId string, filter []string
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4886,7 +5120,9 @@ func (c *Client) IndexRecurringVolumeAttachments(cloudId string, filter []string
 
 // GET api/clouds/:cloud_id/recurring_volume_attachments/:id(.:format)?
 // Displays information about a single recurring volume attachment.
-func (c *Client) ShowRecurringVolumeAttachment(cloudId string, id string, view string) (*RecurringVolumeAttachment, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowRecurringVolumeAttachment(cloudId string, id string, options ApiParams) (*RecurringVolumeAttachment, error) {
 	var res *RecurringVolumeAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -4894,7 +5130,7 @@ func (c *Client) ShowRecurringVolumeAttachment(cloudId string, id string, view s
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4912,11 +5148,9 @@ func (c *Client) ShowRecurringVolumeAttachment(cloudId string, id string, view s
 
 /******  Repository ******/
 
-// A Repository is a location from which you can download and import design
-// objects such as Chef cookbooks. Using this resource you can add and modify
-// repository information and import assets discovered in the repository.
-// RightScale currently supports the following types of repositores: git, svn,
-// and URLs of compressed files (tar, tgz, gzip).
+// A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.
+
+// RightScale currently supports the following types of repositores: git, svn, and URLs of compressed files (tar, tgz, gzip).
 type Repository struct {
 	Actions         []string            `json:"actions,omitempty"`
 	AssetCounts     int                 `json:"asset_counts,omitempty"`
@@ -4936,16 +5170,17 @@ type Repository struct {
 }
 
 // POST api/repositories/:id/cookbook_import(.:format)?
-// Performs a Cookbook import, which allows you to use the specified cookbooks
-// in your design objects.
-func (c *Client) CookbookImportRepository(assetHrefs []string, follow string, id string, namespace string, repositoryCommitReference string, withDependencies string) error {
-	payload := map[string]interface{}{
-		"asset_hrefs":                 assetHrefs,
-		"follow":                      follow,
-		"namespace":                   namespace,
-		"repository_commit_reference": repositoryCommitReference,
-		"with_dependencies":           withDependencies,
-	}
+// Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.
+// 	assetHrefs: Hrefs of the assets that should be imported.
+// -- Optional parameters:
+// 	follow: A flag indicating whether imported cookbooks should be followed.
+// 	namespace: The namespace to import into.
+// 	repositoryCommitReference: Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.
+// 	withDependencies: A flag indicating whether dependencies should automatically be imported.
+func (c *Client) CookbookImportRepository(assetHrefs []string, id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{
+		"asset_hrefs": assetHrefs,
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -4967,13 +5202,17 @@ func (c *Client) CookbookImportRepository(assetHrefs []string, follow string, id
 }
 
 // POST api/repositories/:id/cookbook_import_preview(.:format)?
-// Retrieves a preview of the effects of a Cookbook import.  NOTE: This action
-// is for RightScale internal use only. The response is free-form JSON with
-// no associated mediatype.  DO NOT USE, THIS ACTION IS SUBJECT TO CHANGE AT
-// ANYTIME.
+// Retrieves a preview of the effects of a Cookbook import.
+
+// NOTE: This action is for RightScale internal use only. The response is
+// free-form JSON with no associated mediatype.
+
+// DO NOT USE, THIS ACTION IS SUBJECT TO CHANGE AT ANYTIME.
+// 	assetHrefs: Hrefs of the assets that should be imported.
+// 	namespace: The namespace to import into.
 func (c *Client) CookbookImportPreviewRepository(assetHrefs []string, id string, namespace string) ([]map[string]string, error) {
 	var res []map[string]string
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"asset_hrefs": assetHrefs,
 		"namespace":   namespace,
 	}
@@ -5004,13 +5243,25 @@ func (c *Client) CookbookImportPreviewRepository(assetHrefs []string, id string,
 }
 
 // POST api/repositories(.:format)?
-// Creates a Repository.  The following types of inputs are supported for the
-// credential fields:    Type Format Example(s)   Text string text:&lt;value&gt;
-// text:-----BEGIN RSA PRIVATE KEY-----text:secret   Credential value
-// cred:&lt;value&gt; cred:my ssh keycred:svn_1_password
+// Creates a Repository.
+
+// The following types of inputs are supported for the credential fields:
+
+// Type
+// Format
+// Example(s)
+
+// Text string
+// text:&lt;value&gt;
+// text:-----BEGIN RSA PRIVATE KEY-----text:secret
+
+// Credential value
+// cred:&lt;value&gt;
+// cred:my ssh keycred:svn_1_password
+
 func (c *Client) CreateRepository(repository *RepositoryParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"repository": repository,
 	}
 	b, err := json.Marshal(payload)
@@ -5058,7 +5309,10 @@ func (c *Client) DestroyRepository(id string) error {
 
 // GET api/repositories(.:format)?
 // Lists all Repositories for this Account.
-func (c *Client) IndexRepositories(filter []string, view string) ([]Repository, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexRepositories(options ApiParams) ([]Repository, error) {
 	var res []Repository
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5066,10 +5320,11 @@ func (c *Client) IndexRepositories(filter []string, view string) ([]Repository, 
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5086,14 +5341,13 @@ func (c *Client) IndexRepositories(filter []string, view string) ([]Repository, 
 }
 
 // POST api/repositories/:id/refetch(.:format)?
-// Refetches all RepositoryAssets associated with the Repository. Note that a
-// refetch simply updates RightScale's view of the contents of the repository.
-// You must perform an import to use the assets in your design objects (or use
-// the auto import parameter).
-func (c *Client) RefetchRepository(autoImport string, id string) error {
-	payload := map[string]interface{}{
-		"auto_import": autoImport,
-	}
+// Refetches all RepositoryAssets associated with the Repository.
+// Note that a refetch simply updates RightScale's view of the contents of the repository.
+// You must perform an import to use the assets in your design objects (or use the auto import parameter).
+// -- Optional parameters:
+// 	autoImport: Whether cookbooks should automatically be imported after repositories are fetched.
+func (c *Client) RefetchRepository(id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -5115,14 +5369,16 @@ func (c *Client) RefetchRepository(autoImport string, id string) error {
 }
 
 // POST api/repositories/resolve(.:format)?
-// Show a list of repositories that have imported cookbooks with the given
-// names.  This operation returns a list of repositories that would later
-// satisfy a call to the swap_repository action on a ServerTemplate.
-func (c *Client) ResolveRepository(importedCookbookName []string) ([]Repository, error) {
+// Show a list of repositories that have imported cookbooks with the given names.
+
+// This operation returns a list of repositories that would later satisfy a call
+// to the swap_repository
+// action on a ServerTemplate.
+// -- Optional parameters:
+// 	importedCookbookName: A list of cookbook names that were imported by the repository.
+func (c *Client) ResolveRepository(options ApiParams) ([]Repository, error) {
 	var res []Repository
-	payload := map[string]interface{}{
-		"imported_cookbook_name": importedCookbookName,
-	}
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -5151,7 +5407,9 @@ func (c *Client) ResolveRepository(importedCookbookName []string) ([]Repository,
 
 // GET api/repositories/:id(.:format)?
 // Shows a specified Repository.
-func (c *Client) ShowRepository(id string, view string) (*Repository, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowRepository(id string, options ApiParams) (*Repository, error) {
 	var res *Repository
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5159,7 +5417,7 @@ func (c *Client) ShowRepository(id string, view string) (*Repository, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5176,12 +5434,24 @@ func (c *Client) ShowRepository(id string, view string) (*Repository, error) {
 }
 
 // PUT api/repositories/:id(.:format)?
-// Updates a specified Repository.  The following types of inputs are
-// supported for the credential fields:    Type Format Example(s)   Text
-// string text:&lt;value&gt; text:-----BEGIN RSA PRIVATE KEY-----text:secret
-// Credential value cred:&lt;value&gt; cred:my ssh keycred:svn_1_password
+// Updates a specified Repository.
+
+// The following types of inputs are supported for the credential fields:
+
+// Type
+// Format
+// Example(s)
+
+// Text string
+// text:&lt;value&gt;
+// text:-----BEGIN RSA PRIVATE KEY-----text:secret
+
+// Credential value
+// cred:&lt;value&gt;
+// cred:my ssh keycred:svn_1_password
+
 func (c *Client) UpdateRepository(id string, repository *RepositoryParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"repository": repository,
 	}
 	b, err := json.Marshal(payload)
@@ -5206,9 +5476,8 @@ func (c *Client) UpdateRepository(id string, repository *RepositoryParam2) error
 
 /******  RepositoryAsset ******/
 
-// A RepositoryAsset represents an item discovered in a Repository. These assets
-// represent only a view of the Repository the last time it was scraped. In
-// order to use these assets, you must import them into your account.
+// A RepositoryAsset represents an item discovered in a Repository. These assets represent only a view of the Repository
+// the last time it was scraped. In order to use these assets, you must import them into your account.
 type RepositoryAsset struct {
 	Actions     []string            `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -5219,9 +5488,13 @@ type RepositoryAsset struct {
 }
 
 // GET api/repositories/:repository_id/repository_assets(.:format)?
-// List a repository's current assets.  Repository assests are the cookbook
-// details that were scraped from a given repository.
-func (c *Client) IndexRepositoryAssets(repositoryId string, view string) ([]RepositoryAsset, error) {
+// List a repository's current assets.
+
+// Repository assests are the cookbook details that were scraped from a
+// given repository.
+// -- Optional parameters:
+// 	view
+func (c *Client) IndexRepositoryAssets(repositoryId string, options ApiParams) ([]RepositoryAsset, error) {
 	var res []RepositoryAsset
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5229,7 +5502,7 @@ func (c *Client) IndexRepositoryAssets(repositoryId string, view string) ([]Repo
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5246,9 +5519,13 @@ func (c *Client) IndexRepositoryAssets(repositoryId string, view string) ([]Repo
 }
 
 // GET api/repositories/:repository_id/repository_assets/:id(.:format)?
-// Show information about a single asset.  A repository assest are the cookbook
-// details that were scraped from a repository.
-func (c *Client) ShowRepositoryAsset(id string, repositoryId string, view string) (*RepositoryAsset, error) {
+// Show information about a single asset.
+
+// A repository assest are the cookbook details that were scraped from a
+// repository.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowRepositoryAsset(id string, repositoryId string, options ApiParams) (*RepositoryAsset, error) {
 	var res *RepositoryAsset
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5256,7 +5533,7 @@ func (c *Client) ShowRepositoryAsset(id string, repositoryId string, view string
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5275,10 +5552,12 @@ func (c *Client) ShowRepositoryAsset(id string, repositoryId string, view string
 /******  RightScript ******/
 
 // A RightScript is an executable piece of code that can be run on a server
-// during the boot, operational, or decommission phases.  All revisions of a
-// RightScript belong to a RightScript lineage that is exposed by the "lineage"
-// attribute (NOTE: This attribute is merely a string to locate all revisions of
-// a RightScript and NOT a working URL).
+// during the boot, operational, or decommission phases.
+
+// All revisions of
+// a RightScript belong to a RightScript lineage that is exposed by the
+// "lineage" attribute (NOTE: This attribute is merely a string to locate
+// all revisions of a RightScript and NOT a working URL).
 type RightScript struct {
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -5292,10 +5571,9 @@ type RightScript struct {
 }
 
 // POST api/right_scripts/:id/commit(.:format)?
-// Commits the given RightScript. Only HEAD revisions (revision 0) can be
-// committed.
+// Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
 func (c *Client) CommitRightScript(id string, rightScript *RightScriptParam) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"right_script": rightScript,
 	}
 	b, err := json.Marshal(payload)
@@ -5320,11 +5598,13 @@ func (c *Client) CommitRightScript(id string, rightScript *RightScriptParam) err
 
 // GET api/right_scripts(.:format)?
 // Lists RightScripts.
-func (c *Client) IndexRightScripts(filter []string, latestOnly string, view string) ([]RightScript, error) {
+// -- Optional parameters:
+// 	filter
+// 	latestOnly: Whether or not to return only the latest version for each lineage.
+// 	view
+func (c *Client) IndexRightScripts(options ApiParams) ([]RightScript, error) {
 	var res []RightScript
-	payload := map[string]interface{}{
-		"latest_only": latestOnly,
-	}
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -5335,10 +5615,11 @@ func (c *Client) IndexRightScripts(filter []string, latestOnly string, view stri
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -5401,7 +5682,7 @@ func (c *Client) ShowSourceRightScript(id string) error {
 // PUT api/right_scripts/:id(.:format)?
 // Updates RightScript name/description
 func (c *Client) UpdateRightScript(id string, rightScript *RightScriptParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"right_script": rightScript,
 	}
 	b, err := json.Marshal(payload)
@@ -5444,8 +5725,8 @@ func (c *Client) UpdateSourceRightScript(id string) error {
 
 /******  Route ******/
 
-// A Route defines how networking traffic should be routed from one destination
-// to another. See nexthoptype for available endpoint targets.
+// A Route defines how networking traffic should be routed from one
+// destination to another. See nexthoptype for available endpoint targets.
 type Route struct {
 	CreatedAt            *time.Time          `json:"created_at,omitempty"`
 	Description          string              `json:"description,omitempty"`
@@ -5462,7 +5743,7 @@ type Route struct {
 // Create a new Route.
 func (c *Client) CreateRoute(route *RouteParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"route": route,
 	}
 	b, err := json.Marshal(payload)
@@ -5510,7 +5791,9 @@ func (c *Client) DestroyRoute(id string) error {
 
 // GET api/routes(.:format)?
 // List Routes available in this account.
-func (c *Client) IndexRoutes(filter []string) ([]Route, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexRoutes(options ApiParams) ([]Route, error) {
 	var res []Route
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5518,7 +5801,8 @@ func (c *Client) IndexRoutes(filter []string) ([]Route, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -5564,7 +5848,7 @@ func (c *Client) ShowRoute(id string) (*Route, error) {
 // PUT api/routes/:id(.:format)?
 // Update an existing Route.
 func (c *Client) UpdateRoute(id string, route *RouteParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"route": route,
 	}
 	b, err := json.Marshal(payload)
@@ -5605,7 +5889,7 @@ type RouteTable struct {
 // Create a new RouteTable.
 func (c *Client) CreateRouteTable(routeTable *RouteTableParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"route_table": routeTable,
 	}
 	b, err := json.Marshal(payload)
@@ -5653,7 +5937,10 @@ func (c *Client) DestroyRouteTable(id string) error {
 
 // GET api/route_tables(.:format)?
 // List RouteTables available in this account.
-func (c *Client) IndexRouteTables(filter []string, view string) ([]RouteTable, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexRouteTables(options ApiParams) ([]RouteTable, error) {
 	var res []RouteTable
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5661,10 +5948,11 @@ func (c *Client) IndexRouteTables(filter []string, view string) ([]RouteTable, e
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5682,7 +5970,9 @@ func (c *Client) IndexRouteTables(filter []string, view string) ([]RouteTable, e
 
 // GET api/route_tables/:id(.:format)?
 // Show information about a single RouteTable.
-func (c *Client) ShowRouteTable(id string, view string) (*RouteTable, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowRouteTable(id string, options ApiParams) (*RouteTable, error) {
 	var res *RouteTable
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5690,7 +5980,7 @@ func (c *Client) ShowRouteTable(id string, view string) (*RouteTable, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5709,7 +5999,7 @@ func (c *Client) ShowRouteTable(id string, view string) (*RouteTable, error) {
 // PUT api/route_tables/:id(.:format)?
 // Update an existing RouteTable.
 func (c *Client) UpdateRouteTable(id string, routeTable *RouteTableParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"route_table": routeTable,
 	}
 	b, err := json.Marshal(payload)
@@ -5734,10 +6024,9 @@ func (c *Client) UpdateRouteTable(id string, routeTable *RouteTableParam2) error
 
 /******  RunnableBinding ******/
 
-// A RunnableBinding represents an item in a runlist of a ServerTemplate.
-// These items could be RightScript or Chef recipes, and could be associated
-// with any one of the three runlists of a  ServerTemplate (boot, operational,
-// decommission).
+// A RunnableBinding represents an item in a runlist of a ServerTemplate. These items could be
+// RightScript or Chef recipes, and could be associated with any one of the three runlists of a
+// ServerTemplate (boot, operational, decommission).
 type RunnableBinding struct {
 	Actions     []string            `json:"actions,omitempty"`
 	Id          string              `json:"id,omitempty"`
@@ -5749,11 +6038,14 @@ type RunnableBinding struct {
 }
 
 // POST api/server_templates/:server_template_id/runnable_bindings(.:format)?
-// Bind an executable to the given ServerTemplate.  An executable may be either
-// a RightScript or Chef Recipe.  The resource must be editable.
+// Bind an executable to the given ServerTemplate.
+
+// An executable may be either a RightScript or Chef Recipe.
+
+// The resource must be editable.
 func (c *Client) CreateRunnableBinding(runnableBinding *RunnableBindingParam, serverTemplateId string) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"runnable_binding": runnableBinding,
 	}
 	b, err := json.Marshal(payload)
@@ -5782,7 +6074,9 @@ func (c *Client) CreateRunnableBinding(runnableBinding *RunnableBindingParam, se
 }
 
 // DELETE api/server_templates/:server_template_id/runnable_bindings/:id(.:format)?
-// Unbind an executable from the given resource.  The resource must be editable.
+// Unbind an executable from the given resource.
+
+// The resource must be editable.
 func (c *Client) DestroyRunnableBinding(id string, serverTemplateId string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5800,9 +6094,12 @@ func (c *Client) DestroyRunnableBinding(id string, serverTemplateId string) erro
 }
 
 // GET api/server_templates/:server_template_id/runnable_bindings(.:format)?
-// Lists the executables bound to the ServerTemplate.  An excutable may be
-// either a RightScript or Chef Recipe.
-func (c *Client) IndexRunnableBindings(serverTemplateId string, view string) ([]RunnableBinding, error) {
+// Lists the executables bound to the ServerTemplate.
+
+// An excutable may be either a RightScript or Chef Recipe.
+// -- Optional parameters:
+// 	view
+func (c *Client) IndexRunnableBindings(serverTemplateId string, options ApiParams) ([]RunnableBinding, error) {
 	var res []RunnableBinding
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5810,7 +6107,7 @@ func (c *Client) IndexRunnableBindings(serverTemplateId string, view string) ([]
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5827,10 +6124,11 @@ func (c *Client) IndexRunnableBindings(serverTemplateId string, view string) ([]
 }
 
 // PUT api/server_templates/:server_template_id/runnable_bindings/multi_update(.:format)?
-// Update attributes for multiple bound executables.  The resource must be
-// editable.
+// Update attributes for multiple bound executables.
+
+// The resource must be editable.
 func (c *Client) MultiUpdateRunnableBindings(runnableBindings []*RunnableBindings, serverTemplateId string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"runnable_bindings": runnableBindings,
 	}
 	b, err := json.Marshal(payload)
@@ -5854,9 +6152,12 @@ func (c *Client) MultiUpdateRunnableBindings(runnableBindings []*RunnableBinding
 }
 
 // GET api/server_templates/:server_template_id/runnable_bindings/:id(.:format)?
-// Show information about a single executable binding.  An excutable may be
-// either a RightScript or Chef Recipe.
-func (c *Client) ShowRunnableBinding(id string, serverTemplateId string, view string) (*RunnableBinding, error) {
+// Show information about a single executable binding.
+
+// An excutable may be either a RightScript or Chef Recipe.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowRunnableBinding(id string, serverTemplateId string, options ApiParams) (*RunnableBinding, error) {
 	var res *RunnableBinding
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5864,7 +6165,7 @@ func (c *Client) ShowRunnableBinding(id string, serverTemplateId string, view st
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5882,9 +6183,8 @@ func (c *Client) ShowRunnableBinding(id string, serverTemplateId string, view st
 
 /******  SecurityGroup ******/
 
-// Security Groups represent network security profiles that contain lists of
-// firewall rules for different ports and source IP addresses, as well as trust
-// relationships amongst different security groups.
+// Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
+// trust relationships amongst different security groups.
 type SecurityGroup struct {
 	Actions     []string            `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -5898,7 +6198,7 @@ type SecurityGroup struct {
 // Create a security group.
 func (c *Client) CreateSecurityGroup(cloudId string, securityGroup *SecurityGroupParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"security_group": securityGroup,
 	}
 	b, err := json.Marshal(payload)
@@ -5946,7 +6246,10 @@ func (c *Client) DestroySecurityGroup(cloudId string, id string) error {
 
 // GET api/clouds/:cloud_id/security_groups(.:format)?
 // Lists Security Groups.
-func (c *Client) IndexSecurityGroups(cloudId string, filter []string, view string) ([]SecurityGroup, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexSecurityGroups(cloudId string, options ApiParams) ([]SecurityGroup, error) {
 	var res []SecurityGroup
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5954,10 +6257,11 @@ func (c *Client) IndexSecurityGroups(cloudId string, filter []string, view strin
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5975,7 +6279,9 @@ func (c *Client) IndexSecurityGroups(cloudId string, filter []string, view strin
 
 // GET api/clouds/:cloud_id/security_groups/:id(.:format)?
 // Displays information about a single Security Group.
-func (c *Client) ShowSecurityGroup(cloudId string, id string, view string) (*SecurityGroup, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowSecurityGroup(cloudId string, id string, options ApiParams) (*SecurityGroup, error) {
 	var res *SecurityGroup
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -5983,7 +6289,7 @@ func (c *Client) ShowSecurityGroup(cloudId string, id string, view string) (*Sec
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6020,12 +6326,17 @@ type SecurityGroupRule struct {
 }
 
 // POST api/security_group_rules(.:format)?
-// Create a security group rule for a security group. The following flavors
-// are supported:   group-based TCP/UDP group-based ICMP CIDR-based TCP/UDP
+// Create a security group rule for a security group.
+// The following flavors are supported:
+
+// group-based TCP/UDP
+// group-based ICMP
+// CIDR-based TCP/UDP
 // CIDR-based ICMP
+
 func (c *Client) CreateSecurityGroupRule(securityGroupRule *SecurityGroupRuleParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
 	b, err := json.Marshal(payload)
@@ -6073,7 +6384,9 @@ func (c *Client) DestroySecurityGroupRule(id string) error {
 
 // GET api/security_group_rules(.:format)?
 // Lists SecurityGroupRules.
-func (c *Client) IndexSecurityGroupRules(view string) ([]SecurityGroupRule, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) IndexSecurityGroupRules(options ApiParams) ([]SecurityGroupRule, error) {
 	var res []SecurityGroupRule
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6081,7 +6394,7 @@ func (c *Client) IndexSecurityGroupRules(view string) ([]SecurityGroupRule, erro
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6099,7 +6412,9 @@ func (c *Client) IndexSecurityGroupRules(view string) ([]SecurityGroupRule, erro
 
 // GET api/security_group_rules/:id(.:format)?
 // Displays information about a single SecurityGroupRule.
-func (c *Client) ShowSecurityGroupRule(id string, view string) (*SecurityGroupRule, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowSecurityGroupRule(id string, options ApiParams) (*SecurityGroupRule, error) {
 	var res *SecurityGroupRule
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6107,7 +6422,7 @@ func (c *Client) ShowSecurityGroupRule(id string, view string) (*SecurityGroupRu
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6126,7 +6441,7 @@ func (c *Client) ShowSecurityGroupRule(id string, view string) (*SecurityGroupRu
 // PUT api/security_group_rules/:id(.:format)?
 
 func (c *Client) UpdateSecurityGroupRule(id string, securityGroupRule *SecurityGroupRuleParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
 	b, err := json.Marshal(payload)
@@ -6151,19 +6466,16 @@ func (c *Client) UpdateSecurityGroupRule(id string, securityGroupRule *SecurityG
 
 /******  Server ******/
 
-// Servers represent the notion of a server/machine from the RightScale's
-// perspective. A Server, does not always have a corresponding VM running
-// or provisioned in a cloud. Some clouds use the word "servers" to refer to
-// created VM's. These allocated VM's are not called Servers in the RightScale
-// API, they are called Instances.  A Server always has a next_instance
-// association, which will define the configuration to apply to a new instance
-// when the server is launched or started (starting servers is not yet supported
-// through this API). Once a Server is launched/started a current_instance
-// relationship will exist. Accessing the current_instance of a server results
-// in immediate runtime modification of this running server. Changes to the
-// next_instance association prepares the configuration for the next instance
-// launch/start (therefore they have no effect until such operation is
-// performed).
+// Servers represent the notion of a server/machine from the RightScale's perspective. A Server, does not always
+// have a corresponding VM running or provisioned in a cloud. Some clouds use the word "servers" to refer to created VM's. These allocated VM's
+// are not called Servers in the RightScale API, they are called Instances.
+
+// A Server always has a next_instance association, which will define the configuration to apply to a new instance when
+// the server is launched or started (starting servers is not yet supported through this API).
+// Once a Server is launched/started a current_instance relationship will exist.
+// Accessing the current_instance of a server results in immediate runtime modification of this running server.
+// Changes to the next_instance association prepares the
+// configuration for the next instance launch/start (therefore they have no effect until such operation is performed).
 type Server struct {
 	Actions         []string            `json:"actions,omitempty"`
 	CreatedAt       *time.Time          `json:"created_at,omitempty"`
@@ -6196,11 +6508,10 @@ func (c *Client) CloneServer(id string) error {
 }
 
 // POST api/servers(.:format)?
-// Creates a new server, and configures its corresponding "next" instance with
-// the received parameters.
+// Creates a new server, and configures its corresponding "next" instance with the received parameters.
 func (c *Client) CreateServer(server *ServerParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server": server,
 	}
 	b, err := json.Marshal(payload)
@@ -6247,13 +6558,20 @@ func (c *Client) DestroyServer(id string) error {
 }
 
 // GET api/servers(.:format)?
-// Lists servers.  By using the available filters, it is possible to retrieve
-// servers that have common characteristics. For example, one can list:
-// servers that have names that contain "app_server" all servers of a given
-// deployment   For more filters, please see the 'index' action on 'Instances'
-// resource as most of the attributes belong to a 'current_instance' than to a
-// server.
-func (c *Client) IndexServers(filter []string, view string) ([]Server, error) {
+// Lists servers.
+
+// By using the available filters, it is possible to retrieve servers that have common characteristics.
+// For example, one can list:
+
+// servers that have names that contain "app_server"
+// all servers of a given deployment
+
+// For more filters, please see the 'index' action on 'Instances' resource as most of the attributes belong to
+// a 'current_instance' than to a server.
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexServers(options ApiParams) ([]Server, error) {
 	var res []Server
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6261,10 +6579,11 @@ func (c *Client) IndexServers(filter []string, view string) ([]Server, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6281,9 +6600,8 @@ func (c *Client) IndexServers(filter []string, view string) ([]Server, error) {
 }
 
 // POST api/servers/:id/launch
-// Launches the "next" instance of this server. This function is equivalent
-// to invoking the launch action on the URL of this servers next_instance. See
-// Instances#launch for details.
+// Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
+// URL of this servers next_instance. See Instances#launch for details.
 func (c *Client) LaunchServer(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6302,7 +6620,9 @@ func (c *Client) LaunchServer(id string) error {
 
 // GET api/servers/:id(.:format)?
 // Shows the information of a single server.
-func (c *Client) ShowServer(id string, view string) (*Server, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowServer(id string, options ApiParams) (*Server, error) {
 	var res *Server
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6310,7 +6630,7 @@ func (c *Client) ShowServer(id string, view string) (*Server, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6327,9 +6647,8 @@ func (c *Client) ShowServer(id string, view string) (*Server, error) {
 }
 
 // POST api/servers/:id/teminate
-// Terminates the current instance of this server. This function is equivalent
-// to invoking the terminate action on the URL of this servers current_instance.
-// See Instances#terminate for details.
+// Terminates the current instance of this server. This function is equivalent to invoking the terminate action on the
+// URL of this servers current_instance. See Instances#terminate for details.
 func (c *Client) TerminateServer(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6349,7 +6668,7 @@ func (c *Client) TerminateServer(id string) error {
 // PUT api/servers/:id(.:format)?
 // Updates attributes of a single server.
 func (c *Client) UpdateServer(id string, server *ServerParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server": server,
 	}
 	b, err := json.Marshal(payload)
@@ -6375,7 +6694,7 @@ func (c *Client) UpdateServer(id string, server *ServerParam2) error {
 // POST api/servers/wrap_instance(.:format)?
 // Wrap an existing instance and set current instance for new server
 func (c *Client) WrapInstanceServer(server *ServerParam3) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server": server,
 	}
 	b, err := json.Marshal(payload)
@@ -6400,16 +6719,13 @@ func (c *Client) WrapInstanceServer(server *ServerParam3) error {
 
 /******  ServerArray ******/
 
-// A server array represents a logical group of instances and allows to
-// resize(grow/shrink) that group based on certain elasticity parameters.  A
-// server array just like a server always has a next_instance association, which
-// will define the configuration to apply when a new instance is launched. But
-// unlike a server which has a current_instance relationship, the server array
-// has a current_instances relationship that gives the information about all
-// the running instances in the array. Changes to the next_instance association
-// prepares the configuration for the next instance that is to be launched
-// in the array and will therefore not affect any of the currently running
-// instances.
+// A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.
+
+// A server array just like a server always has a next_instance association, which will define the configuration to apply when a new instance is launched.
+// But unlike a server which has a current_instance relationship, the server array has a
+// current_instances relationship that gives the information about
+// all the running instances in the array. Changes to the next_instance association prepares the configuration for the next instance that is to be launched
+// in the array and will therefore not affect any of the currently running instances.
 type ServerArray struct {
 	Actions          []string               `json:"actions,omitempty"`
 	ArrayType        string                 `json:"array_type,omitempty"`
@@ -6444,11 +6760,10 @@ func (c *Client) CloneServerArray(id string) error {
 }
 
 // POST api/server_arrays(.:format)?
-// Creates a new server array, and configures its corresponding "next" instance
-// with the received parameters.
+// Creates a new server array, and configures its corresponding "next" instance with the received parameters.
 func (c *Client) CreateServerArray(serverArray *ServerArrayParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server_array": serverArray,
 	}
 	b, err := json.Marshal(payload)
@@ -6477,11 +6792,9 @@ func (c *Client) CreateServerArray(serverArray *ServerArrayParam) (Href, error) 
 }
 
 // GET api/server_arrays/:id/current_instances
-// List the running instances belonging to the server array. See Instances#index
-// for details. This action is slightly different from invoking the
-// index action on the Instances resource with the filter "parent_href ==
-// /api/server_arrays/XX" because the latter will include 'next_instance' as
-// well.
+// List the running instances belonging to the server array. See Instances#index for details.
+// This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
+// latter will include 'next_instance' as well.
 func (c *Client) CurrentInstancesServerArray(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6517,11 +6830,18 @@ func (c *Client) DestroyServerArray(id string) error {
 }
 
 // GET api/server_arrays(.:format)?
-// Lists server arrays.  By using the available filters, it is possible to
-// retrieve server arrays that have common characteristics. For example, one can
-// list:   arrays that have names that contain "my_server_array" all arrays of a
-// given deployment
-func (c *Client) IndexServerArrays(filter []string, view string) ([]ServerArray, error) {
+// Lists server arrays.
+
+// By using the available filters, it is possible to retrieve server arrays that have common characteristics.
+// For example, one can list:
+
+// arrays that have names that contain "my_server_array"
+// all arrays of a given deployment
+
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexServerArrays(options ApiParams) ([]ServerArray, error) {
 	var res []ServerArray
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6529,10 +6849,11 @@ func (c *Client) IndexServerArrays(filter []string, view string) ([]ServerArray,
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6549,10 +6870,8 @@ func (c *Client) IndexServerArrays(filter []string, view string) ([]ServerArray,
 }
 
 // POST api/server_arrays/:id/launch
-// Launches a new instance in the server array with the configuration defined
-// in the 'next_instance'. This function is equivalent to invoking the launch
-// action on the URL of this server_array's next_instance. See Instances#launch
-// for details.
+// Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
+// URL of this server_array's next_instance. See Instances#launch for details.
 func (c *Client) LaunchServerArray(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6570,13 +6889,9 @@ func (c *Client) LaunchServerArray(id string) error {
 }
 
 // POST api/server_arrays/:id/multi_run_executable
-// Run an executable on all instances of this array. This function is
-// equivalent to invoking the "multi_run_executable" action on the instances
-// resource (Instances#multi_run_executable with the filter "parent_href ==
-// /api/server_arrays/XX"). To run an executable on a subset of the instances
-// of the array, provide additional filters. To run an executable a single
-// instance, invoke the action "run_executable" directly on the instance (see
-// Instances#run_executable)
+// Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
+// (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
+// a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)
 func (c *Client) MultiRunExecutableServerArrays(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6594,12 +6909,9 @@ func (c *Client) MultiRunExecutableServerArrays(id string) error {
 }
 
 // POST api/server_arrays/:id/multi_terminate
-// Terminate all instances of this array. This function is equivalent
-// to invoking the "multi_terminate" action on the instances resource
-// ( Instances#multi_terminate with the filter "parent_href ==
-// /api/server_arrays/XX"). To terminate a subset of the instances of the array,
-// provide additional filters. To terminate a single instance, invoke the action
-// "terminate" directly on the instance (see Instances#terminate)
+// Terminate all instances of this array. This function is equivalent to invoking the "multi_terminate" action on the instances resource ( Instances#multi_terminate with
+// the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,
+// invoke the action "terminate" directly on the instance (see Instances#terminate)
 func (c *Client) MultiTerminateServerArrays(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6618,7 +6930,9 @@ func (c *Client) MultiTerminateServerArrays(id string) error {
 
 // GET api/server_arrays/:id(.:format)?
 // Shows the information of a single server array.
-func (c *Client) ShowServerArray(id string, view string) (*ServerArray, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowServerArray(id string, options ApiParams) (*ServerArray, error) {
 	var res *ServerArray
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6626,7 +6940,7 @@ func (c *Client) ShowServerArray(id string, view string) (*ServerArray, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6645,7 +6959,7 @@ func (c *Client) ShowServerArray(id string, view string) (*ServerArray, error) {
 // PUT api/server_arrays/:id(.:format)?
 // Updates attributes of a single server array.
 func (c *Client) UpdateServerArray(id string, serverArray *ServerArrayParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server_array": serverArray,
 	}
 	b, err := json.Marshal(payload)
@@ -6670,13 +6984,12 @@ func (c *Client) UpdateServerArray(id string, serverArray *ServerArrayParam2) er
 
 /******  ServerTemplate ******/
 
-// ServerTemplates allow you to pre-configure servers by starting from a base
-// image and adding scripts that run during the boot, operational, and shutdown
-// phases. A ServerTemplate is a description of how a new instance will be
-// configured when it is provisioned by your cloud provider.  All revisions of
-// a ServerTemplate belong to a ServerTemplate lineage that is exposed by the
-// "lineage" attribute. (NOTE: This attribute is merely a string to locate all
-// revisions of a ServerTemplate and NOT a working URL)
+// ServerTemplates allow you to pre-configure servers by starting from a base image and adding scripts that run during the boot,
+// operational, and shutdown phases. A ServerTemplate is a description of how a new instance will be configured when it is
+// provisioned by your cloud provider.
+
+// All revisions of a ServerTemplate belong to a ServerTemplate lineage that is exposed by the "lineage" attribute.
+// (NOTE: This attribute is merely a string to locate all revisions of a ServerTemplate and NOT a working URL)
 type ServerTemplate struct {
 	Actions     []string            `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -6690,7 +7003,7 @@ type ServerTemplate struct {
 // POST api/server_templates/:id/clone(.:format)?
 // Clones a given ServerTemplate.
 func (c *Client) CloneServerTemplate(id string, serverTemplate *ServerTemplateParam) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server_template": serverTemplate,
 	}
 	b, err := json.Marshal(payload)
@@ -6714,10 +7027,12 @@ func (c *Client) CloneServerTemplate(id string, serverTemplate *ServerTemplatePa
 }
 
 // POST api/server_templates/:id/commit(.:format)?
-// Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are
-// owned by the account can be committed.
+// Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.
+// 	commitHeadDependencies: Commit all HEAD revisions (if any) of the associated MultiCloud Images, RightScripts and Chef repo sequences.
+// 	commitMessage: The message associated with the commit.
+// 	freezeRepositories: Freeze the repositories.
 func (c *Client) CommitServerTemplate(commitHeadDependencies string, commitMessage string, freezeRepositories string, id string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"commit_head_dependencies": commitHeadDependencies,
 		"commit_message":           commitMessage,
 		"freeze_repositories":      freezeRepositories,
@@ -6746,7 +7061,7 @@ func (c *Client) CommitServerTemplate(commitHeadDependencies string, commitMessa
 // Creates a new ServerTemplate with the given parameters.
 func (c *Client) CreateServerTemplate(serverTemplate *ServerTemplateParam2) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server_template": serverTemplate,
 	}
 	b, err := json.Marshal(payload)
@@ -6794,9 +7109,9 @@ func (c *Client) DestroyServerTemplate(id string) error {
 
 // POST api/server_templates/:id/detect_changes_in_head(.:format)?
 // Identifies RightScripts attached to the resource that differ from their HEAD.
-//  If the attached revision of the RightScript is the HEAD, then this will
-// indicate a difference between it and the latest committed revision in the
-// same lineage.
+
+// If the attached revision of the RightScript is the HEAD, then this will indicate
+// a difference between it and the latest committed revision in the same lineage.
 func (c *Client) DetectChangesInHeadServerTemplate(id string) ([]map[string]string, error) {
 	var res []map[string]string
 	b := []byte{}
@@ -6821,10 +7136,14 @@ func (c *Client) DetectChangesInHeadServerTemplate(id string) ([]map[string]stri
 }
 
 // GET api/server_templates(.:format)?
-// Lists the ServerTemplates available to this account. HEAD revisions have
-// a revision of 0.  The 'inputs_2_0' view is for retrieving inputs in 2.0
-// serialization (for more details please see Inputs#index.)
-func (c *Client) IndexServerTemplates(filter []string, view string) ([]ServerTemplate, error) {
+// Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.
+
+// The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+// details please see Inputs#index.)
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexServerTemplates(options ApiParams) ([]ServerTemplate, error) {
 	var res []ServerTemplate
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6832,10 +7151,11 @@ func (c *Client) IndexServerTemplates(filter []string, view string) ([]ServerTem
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6852,16 +7172,19 @@ func (c *Client) IndexServerTemplates(filter []string, view string) ([]ServerTem
 }
 
 // POST api/server_templates/:id/publish(.:format)?
-// Publishes a given ServerTemplate and its subordinates. Only non-HEAD
-// revisions that are owned by the account can be published.
-func (c *Client) PublishServerTemplate(accountGroupHrefs []string, allowComments string, categories []string, descriptions *Descriptions, emailComments string, id string) error {
-	payload := map[string]interface{}{
+// Publishes a given ServerTemplate and its subordinates.
+// Only non-HEAD revisions that are owned by the account can be published.
+// 	accountGroupHrefs: List of hrefs of account groups to publish to.
+// -- Optional parameters:
+// 	allowComments: Allow users to leave comments on this ServerTemplate.
+// 	categories: List of Categories.
+// 	emailComments: Email me when a user comments on this ServerTemplate.
+func (c *Client) PublishServerTemplate(accountGroupHrefs []string, descriptions *Descriptions, id string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{
 		"account_group_hrefs": accountGroupHrefs,
-		"allow_comments":      allowComments,
-		"categories":          categories,
-		"descriptions":        descriptions,
-		"email_comments":      emailComments,
-	}
+
+		"descriptions": descriptions,
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -6883,10 +7206,11 @@ func (c *Client) PublishServerTemplate(accountGroupHrefs []string, allowComments
 }
 
 // POST api/server_templates/:id/resolve(.:format)?
-// Enumerates all attached cookbooks, missing dependencies and bound
-// executables.  Version constraints on missing dependencies and the state of
-// the Chef Recipes; whether or not the cookbook or recipe itself could be found
-// among the attachments, will also be reported.
+// Enumerates all attached cookbooks, missing dependencies and bound executables.
+
+// Version constraints on missing dependencies and the state of the Chef Recipes;
+// whether or not the cookbook or recipe itself could be found among the
+// attachments, will also be reported.
 func (c *Client) ResolveServerTemplate(id string) ([]map[string]string, error) {
 	var res []map[string]string
 	b := []byte{}
@@ -6911,10 +7235,13 @@ func (c *Client) ResolveServerTemplate(id string) ([]map[string]string, error) {
 }
 
 // GET api/server_templates/:id(.:format)?
-// Show information about a single ServerTemplate. HEAD revisions have a
-// revision of 0.  The 'inputs_2_0' view is for retrieving inputs in 2.0
-// serialization (for more details please see Inputs#index.)
-func (c *Client) ShowServerTemplate(id string, view string) (*ServerTemplate, error) {
+// Show information about a single ServerTemplate. HEAD revisions have a revision of 0.
+
+// The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+// details please see Inputs#index.)
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowServerTemplate(id string, options ApiParams) (*ServerTemplate, error) {
 	var res *ServerTemplate
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -6922,7 +7249,7 @@ func (c *Client) ShowServerTemplate(id string, view string) (*ServerTemplate, er
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6939,19 +7266,28 @@ func (c *Client) ShowServerTemplate(id string, view string) (*ServerTemplate, er
 }
 
 // POST api/server_templates/:id/swap_repository(.:format)?
-// In-place replacement of attached cookbooks from a given repository.  For each
-// attached cookbook coming from the source repository, replace it by attaching
-// a cookbook of identical name coming from the target repository.  In order
-// for the operation to be successful, all attachments that came from the source
-// repository must exist in the target repository.  If multiple cookbooks of
-// a given name exist in the target repository, preference is given by the
-// following order (top most being the highest preference):     Name & Version
-// Match / Primary Namespace   Name & Version Match / Alternate Namespace   Name
-// Match / Primary Namespace   Name Match / Alternate Namespace   If multiple
-// cookbooks still have the same preference for the replacement, the operation
-// is indeterministic.
+// In-place replacement of attached cookbooks from a given repository.
+
+// For each attached cookbook coming from the source repository, replace it by
+// attaching a cookbook of identical name coming from the target repository.
+
+// In order for the operation to be successful, all attachments that came from the
+// source repository must exist in the target repository.
+
+// If multiple cookbooks of a given name exist in the target repository, preference
+// is given by the following order (top most being the highest preference):
+
+//   Name & Version Match / Primary Namespace
+//   Name & Version Match / Alternate Namespace
+//   Name Match / Primary Namespace
+//   Name Match / Alternate Namespace
+
+// If multiple cookbooks still have the same preference for the replacement, the operation is
+// indeterministic.
+// 	sourceRepositoryHref: The repository whose cookbook attachments are to be replaced.
+// 	targetRepositoryHref: The repository whose cookbook attachments are to be utilized.
 func (c *Client) SwapRepositoryServerTemplate(id string, sourceRepositoryHref string, targetRepositoryHref string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"source_repository_href": sourceRepositoryHref,
 		"target_repository_href": targetRepositoryHref,
 	}
@@ -6976,12 +7312,11 @@ func (c *Client) SwapRepositoryServerTemplate(id string, sourceRepositoryHref st
 }
 
 // PUT api/server_templates/:id(.:format)?
-// Updates attributes of a given ServerTemplate. Only HEAD revisions can be
-// updated (revision 0). Currently, the attributes you can update are only the
-// 'direct' attributes of a server template. To manage multi cloud images of a
-// ServerTemplate, please see the resource 'ServerTemplateMultiCloudImages'.
+// Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).
+// Currently, the attributes you can update are only the 'direct' attributes of a server template. To
+// manage multi cloud images of a ServerTemplate, please see the resource 'ServerTemplateMultiCloudImages'.
 func (c *Client) UpdateServerTemplate(id string, serverTemplate *ServerTemplateParam) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server_template": serverTemplate,
 	}
 	b, err := json.Marshal(payload)
@@ -7006,9 +7341,8 @@ func (c *Client) UpdateServerTemplate(id string, serverTemplate *ServerTemplateP
 
 /******  ServerTemplateMultiCloudImage ******/
 
-// This resource represents links between ServerTemplates and MultiCloud Images
-// and enables you to effectively add/delete MultiCloudImages to ServerTemplates
-// and make them the default one.
+// This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively
+// add/delete MultiCloudImages to ServerTemplates and make them the default one.
 type ServerTemplateMultiCloudImage struct {
 	Actions   []string            `json:"actions,omitempty"`
 	CreatedAt *time.Time          `json:"created_at,omitempty"`
@@ -7021,7 +7355,7 @@ type ServerTemplateMultiCloudImage struct {
 // Creates a new ServerTemplateMultiCloudImage with the given parameters.
 func (c *Client) CreateServerTemplateMultiCloudImage(serverTemplateMultiCloudImage *ServerTemplateMultiCloudImageParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"server_template_multi_cloud_image": serverTemplateMultiCloudImage,
 	}
 	b, err := json.Marshal(payload)
@@ -7069,7 +7403,10 @@ func (c *Client) DestroyServerTemplateMultiCloudImage(id string) error {
 
 // GET api/server_template_multi_cloud_images(.:format)?
 // Lists the ServerTemplateMultiCloudImages available to this account.
-func (c *Client) IndexServerTemplateMultiCloudImages(filter []string, view string) ([]ServerTemplateMultiCloudImage, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexServerTemplateMultiCloudImages(options ApiParams) ([]ServerTemplateMultiCloudImage, error) {
 	var res []ServerTemplateMultiCloudImage
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7077,10 +7414,11 @@ func (c *Client) IndexServerTemplateMultiCloudImages(filter []string, view strin
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7097,8 +7435,7 @@ func (c *Client) IndexServerTemplateMultiCloudImages(filter []string, view strin
 }
 
 // POST api/server_template_multi_cloud_images/:id/make_default(.:format)?
-// Makes a given ServerTemplateMultiCloudImage the default for the
-// ServerTemplate.
+// Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.
 func (c *Client) MakeDefaultServerTemplateMultiCloudImage(id string) error {
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7116,9 +7453,10 @@ func (c *Client) MakeDefaultServerTemplateMultiCloudImage(id string) error {
 }
 
 // GET api/server_template_multi_cloud_images/:id(.:format)?
-// Show information about a single ServerTemplateMultiCloudImage which
-// represents an association between a ServerTemplate and a MultiCloudImage.
-func (c *Client) ShowServerTemplateMultiCloudImage(id string, view string) (*ServerTemplateMultiCloudImage, error) {
+// Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowServerTemplateMultiCloudImage(id string, options ApiParams) (*ServerTemplateMultiCloudImage, error) {
 	var res *ServerTemplateMultiCloudImage
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7126,7 +7464,7 @@ func (c *Client) ShowServerTemplateMultiCloudImage(id string, view string) (*Ser
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7144,21 +7482,16 @@ func (c *Client) ShowServerTemplateMultiCloudImage(id string, view string) (*Ser
 
 /******  Session ******/
 
-// The sessions resource is in charge of creating API sessions that are
-// bound to a given account. The sequence for login into the API is the
-// following:   Perform a POST request to /api/sessions ('create' action) to
-// my.rightscale.com or to any more specific hosts saved from previous sessions.
-// If the targeted host is not appropriate for the specific account being
-// accessed it will return a 302 http code with a URL with which the client must
-// retry the same POST request. If the targeted host is the right one and the
-// login is successful, it will return a 204 http code, along with two cookies
-// that will need to be saved and passed in any subsequent API request. If there
-// is an authentication or authorization problem with the POST request an error
-// (typically 401 or 422 ) may be returned at any point in the above sequence.
-// If the session expires, it will return a 403 http code with a "Session cookie
-// is expired or invalid" message.    Note that all API calls irrespective of
-// the resource it is acting on, should pass a header "X_API_VERSION" with the
-// value "1.5".
+// The sessions resource is in charge of creating API sessions that are bound to a given account. The sequence for login into the API is the following:
+
+// Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
+// If the targeted host is not appropriate for the specific account being accessed it will return a 302 http code with a URL with which the client must retry the same POST request.
+// If the targeted host is the right one and the login is successful, it will return a 204 http code, along with two cookies that will need to be saved and passed in any subsequent API request.
+// If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
+// If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
+
+// Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".
+
 type Session struct {
 	Actions []string            `json:"actions,omitempty"`
 	Links   []map[string]string `json:"links,omitempty"`
@@ -7166,25 +7499,27 @@ type Session struct {
 }
 
 // GET api/sessions/accounts(.:format)?
-// List all the accounts that a user has access to.  This call may be executed
-// outside of an existing session. Doing so requires passing a username and
-// password in the request body. The idea is that it should be possible to
-// list accounts that can be used to create a session.  Upon successfully
-// authenticating the credentials, the system will return a 200 OK code and
-// return the list of accounts. If an 302 redirect code is returned, the
-// client is responsible of re-issuing the GET request against the content
-// of the received Location header, passing the exact same parameters again.
-//   Example Request using Curl (not using an existing session): curl -i -H
-// X_API_VERSION:1.5 -X GET -d email='email@me.com' -d password='mypassword'
-// https://my.rightscale.com/api/sessions/accounts  Example Request using Curl
-// (using an existing session): curl -i -H X_API_VERSION:1.5 -X GET -b mycookies
-// https://my.rightscale.com/api/sessions/accounts
-func (c *Client) AccountsSession(email string, password string, view string) ([]Account, error) {
+// List all the accounts that a user has access to.
+
+// This call may be executed outside of an existing session. Doing so requires passing a username and password in the
+// request body. The idea is that it should be possible to list accounts that can be used to create a session.
+
+// Upon successfully authenticating the credentials, the system will return a 200 OK code and return the list of accounts.
+// If an 302 redirect code is returned, the client is responsible of re-issuing the GET request against the content of the received Location header, passing the exact same parameters again.
+
+// Example Request using Curl (not using an existing session):
+// curl -i -H X_API_VERSION:1.5 -X GET -d email='email@me.com' -d password='mypassword' https://my.rightscale.com/api/sessions/accounts
+
+// Example Request using Curl (using an existing session):
+// curl -i -H X_API_VERSION:1.5 -X GET -b mycookies https://my.rightscale.com/api/sessions/accounts
+
+// -- Optional parameters:
+// 	email: The email to login with if not using existing session.
+// 	password: The corresponding password.
+// 	view: Extended view shows account permissions and products
+func (c *Client) AccountsSession(options ApiParams) ([]Account, error) {
 	var res []Account
-	payload := map[string]interface{}{
-		"email":    email,
-		"password": password,
-	}
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -7195,7 +7530,7 @@ func (c *Client) AccountsSession(email string, password string, view string) ([]
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -7213,21 +7548,22 @@ func (c *Client) AccountsSession(email string, password string, view string) ([]
 }
 
 // POST api/sessions(.:format)?
-// Creates API session scoped to a given account. (API login)  This call
-// requires a form of authentication (user and password), as well as the account
-// for which the session needs to be created. Upon successfully authenticating
-// the credentials, the system will return a 204 code and set of two cookies
-// that will serve as the credentials for the session. Both of these cookies
-// must be passed in any of the subsequent requests for this session. If an
-// 302 redirect code is returned, the client is responsible of re-issuing
-// the POST request against the content of the received Location header,
-// passing the exact same parameters again.   Example Request using Curl:
-// curl -i -H X_API_VERSION:1.5 -c mycookies -X POST -d email='email@me.com'
-// -d password='mypassword' -d account_href=/api/accounts/11
-// https://my.rightscale.com/api/sessions
+// Creates API session scoped to a given account. (API login)
+
+// This call requires a form of authentication (user and password), as well as the account for which the session needs to be created.
+// Upon successfully authenticating the credentials, the system will return a 204 code and set of two cookies that will serve as the credentials for the session. Both of these cookies
+// must be passed in any of the subsequent requests for this session.
+// If an 302 redirect code is returned, the client is responsible of re-issuing the POST request against the content of the received Location header, passing the exact same parameters again.
+
+// Example Request using Curl:
+// curl -i -H X_API_VERSION:1.5 -c mycookies -X POST -d email='email@me.com' -d password='mypassword' -d account_href=/api/accounts/11 https://my.rightscale.com/api/sessions
+
+// 	accountHref: The account href for which the session needs to be created.
+// 	email: The email to login with.
+// 	password: The corresponding password.
 func (c *Client) CreateSession(accountHref string, email string, password string) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"account_href": accountHref,
 		"email":        email,
 		"password":     password,
@@ -7258,22 +7594,24 @@ func (c *Client) CreateSession(accountHref string, email string, password string
 }
 
 // POST api/sessions/instance(.:format)?
-// Creates API session scoped to a given account and instance.  This call
-// requires a form of authentication (token), as well as the account for
-// which the session needs to be created. Upon successfully authenticating
-// the credentials, the system will return a 204 code and set of two cookies
-// that will serve as the credentials for the session. Both of these cookies
-// must be passed in any of the subsequent requests for this session. If an
-// 302 redirect code is returned, the client is responsible of re-issuing
-// the POST request against the content of the received Location header,
-// passing the exact same parameters again.   Users can find their account
-// ID and instance\_token from their instance's user_data: account ID regex:
-// /RS_API_TOKEN=(\d+):/ instance_token regex: /RS_API_TOKEN=(?:\d+):(\w+)&/
-//  Example Request using Curl: curl -i -H X_API_VERSION:1.5 -c mycookies
-// -X POST -d instance_token='randomtoken' -d account_href=/api/accounts/11
-// https://my.rightscale.com/api/sessions/instance
+// Creates API session scoped to a given account and instance.
+
+// This call requires a form of authentication (token), as well as the account for which the session needs to be created.
+// Upon successfully authenticating the credentials, the system will return a 204 code and set of two cookies that will serve as the credentials for the session. Both of these cookies
+// must be passed in any of the subsequent requests for this session.
+// If an 302 redirect code is returned, the client is responsible of re-issuing the POST request against the content of the received Location header, passing the exact same parameters again.
+
+// Users can find their account ID and instance\_token from their instance's user_data:
+// account ID regex: /RS_API_TOKEN=(\d+):/
+// instance_token regex: /RS_API_TOKEN=(?:\d+):(\w+)&/
+
+// Example Request using Curl:
+// curl -i -H X_API_VERSION:1.5 -c mycookies -X POST -d instance_token='randomtoken' -d account_href=/api/accounts/11 https://my.rightscale.com/api/sessions/instance
+
+// 	accountHref: The account href for which the session needs to be created.
+// 	instanceToken: The instance token to login with.
 func (c *Client) CreateInstanceSessionSession(accountHref string, instanceToken string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"account_href":   accountHref,
 		"instance_token": instanceToken,
 	}
@@ -7298,10 +7636,12 @@ func (c *Client) CreateInstanceSessionSession(accountHref string, instanceToken 
 }
 
 // GET api/sessions(.:format)?
-// Returns a list of root resources so an authenticated session can use them
-// as a starting point or a way to know what features are available within its
-// privileges.   Example Request using Curl: curl -i -H X_API_VERSION:1.5 -b
-// mycookies -X GET https://my.rightscale.com/api/sessions
+// Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what
+// features are available within its privileges.
+
+// Example Request using Curl:
+// curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
+
 func (c *Client) IndexSessions() ([]Session, error) {
 	var res []Session
 	b := []byte{}
@@ -7326,10 +7666,12 @@ func (c *Client) IndexSessions() ([]Session, error) {
 }
 
 // GET api/sessions/instance(.:format)?
-// Shows the full attributes of the instance (that has the token used to
-// log-in). This call can be used by an instance to get it's own details.
-// Example Request using Curl: curl -i -H X_API_VERSION:1.5 -b mycookies -X GET
-// https://my.rightscale.com/api/sessions/instance
+// Shows the full attributes of the instance (that has the token used to log-in).
+// This call can be used by an instance to get it's own details.
+
+// Example Request using Curl:
+// curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions/instance
+
 func (c *Client) IndexInstanceSessionSession() (Instance, error) {
 	var res Instance
 	b := []byte{}
@@ -7355,9 +7697,9 @@ func (c *Client) IndexInstanceSessionSession() (Instance, error) {
 
 /******  SshKey ******/
 
-// Ssh Keys represent a created SSH Key that exists in the cloud.  An ssh key
-// might also contain the private part of the key, and can be used to login to
-// instances launched with it.
+// Ssh Keys represent a created SSH Key that exists in the cloud.
+
+// An ssh key might also contain the private part of the key, and can be used to login to instances launched with it.
 type SshKey struct {
 	Actions     []string            `json:"actions,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -7369,7 +7711,7 @@ type SshKey struct {
 // Creates a new ssh key.
 func (c *Client) CreateSshKey(cloudId string, sshKey *SshKeyParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"ssh_key": sshKey,
 	}
 	b, err := json.Marshal(payload)
@@ -7417,7 +7759,10 @@ func (c *Client) DestroySshKey(cloudId string, id string) error {
 
 // GET api/clouds/:cloud_id/ssh_keys(.:format)?
 // Lists ssh keys.
-func (c *Client) IndexSshKeys(cloudId string, filter []string, view string) ([]SshKey, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexSshKeys(cloudId string, options ApiParams) ([]SshKey, error) {
 	var res []SshKey
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7425,10 +7770,11 @@ func (c *Client) IndexSshKeys(cloudId string, filter []string, view string) ([]S
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7446,7 +7792,9 @@ func (c *Client) IndexSshKeys(cloudId string, filter []string, view string) ([]S
 
 // GET api/clouds/:cloud_id/ssh_keys/:id(.:format)?
 // Displays information about a single ssh key.
-func (c *Client) ShowSshKey(cloudId string, id string, view string) (*SshKey, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowSshKey(cloudId string, id string, options ApiParams) (*SshKey, error) {
 	var res *SshKey
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7454,7 +7802,7 @@ func (c *Client) ShowSshKey(cloudId string, id string, view string) (*SshKey, er
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7489,7 +7837,7 @@ type Subnet struct {
 // Creates a new subnet.
 func (c *Client) CreateSubnet(cloudId string, instanceId string, subnet *SubnetParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"subnet": subnet,
 	}
 	b, err := json.Marshal(payload)
@@ -7537,7 +7885,9 @@ func (c *Client) DestroySubnet(cloudId string, id string, instanceId string) err
 
 // GET api/clouds/:cloud_id/instances/:instance_id/subnets(.:format)?
 // Lists subnets of a given cloud.
-func (c *Client) IndexSubnets(cloudId string, filter []string, instanceId string) ([]Subnet, error) {
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexSubnets(cloudId string, instanceId string, options ApiParams) ([]Subnet, error) {
 	var res []Subnet
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7545,7 +7895,8 @@ func (c *Client) IndexSubnets(cloudId string, filter []string, instanceId string
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -7591,7 +7942,7 @@ func (c *Client) ShowSubnet(cloudId string, id string, instanceId string) (*Subn
 // PUT api/clouds/:cloud_id/instances/:instance_id/subnets/:id(.:format)?
 // Updates name and description for the current subnet.
 func (c *Client) UpdateSubnet(cloudId string, id string, instanceId string, subnet *SubnetParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"subnet": subnet,
 	}
 	b, err := json.Marshal(payload)
@@ -7616,19 +7967,19 @@ func (c *Client) UpdateSubnet(cloudId string, id string, instanceId string, subn
 
 /******  Tag ******/
 
-// A tag or machine tag is a useful way of attaching useful metadata to an
-// object/resource. Tags are commonly used as an extra label or identifier. For
-// example, you might want to add a tag to an EBS Snapshot or AMI so that you
-// can find it more quickly.
+// A tag or machine tag is a useful way of attaching useful metadata to an object/resource.
+// Tags are commonly used as an extra label or identifier.
+// For example, you might want to add a tag to an EBS Snapshot or AMI so that you can find it more quickly.
 type Tag struct {
 }
 
 // POST api/tags/by_resource(.:format)?
-// Get tags for a list of resource hrefs. The hrefs can belong to various
-// resource types and the tags for a non-existent href will be empty.
+// Get tags for a list of resource hrefs.
+// The hrefs can belong to various resource types and the tags for a non-existent href will be empty.
+// 	resourceHrefs: Hrefs of the resources for which tags are to be returned.
 func (c *Client) ByResourceTag(resourceHrefs []string) ([]map[string]string, error) {
 	var res []map[string]string
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"resource_hrefs": resourceHrefs,
 	}
 	b, err := json.Marshal(payload)
@@ -7659,28 +8010,35 @@ func (c *Client) ByResourceTag(resourceHrefs []string) ([]map[string]string, err
 
 // POST api/tags/by_tag(.:format)?
 // Search for resources having a list of tags in a specific resource_type.
-// The search criteria can contain plain tags ("my_db_server"), machine tags
-// ("server:db=true"), or namespace &amp; predicate wildcards ("server:db=*").
-// The result set includes links to the resources.  If match_all is "true",
-// then the search is an "AND" operation -- only resources having all the
-// tags are returned. If match_all has any other value or is missing, the
-// search is performed as an "OR" operation.  PLEASE NOTE the behavior of the
-// include_tags_with_prefix parameter: if it is absent, or blank, then you will
-// find resources that match your query but receive no information about the
-// tags that apply to those resources. (Your search will also complete much more
-// quickly in this case.)  For example, a search with tag[]="server:db=true"
-// and include_tags_with_prefix="backup:" will return resources that are tagged
-// as a DB server, and also return all "backup" related tags for every matching
-// resource.
-func (c *Client) ByTagTag(includeTagsWithPrefix string, matchAll string, resourceType string, tags []string, withDeleted string) ([]map[string]string, error) {
+
+// The search criteria can contain plain tags ("my_db_server"), machine tags ("server:db=true"), or
+// namespace &amp; predicate wildcards ("server:db=*"). The result set includes links to the resources.
+
+// If match_all is "true", then the search is an "AND" operation -- only resources having all the
+// tags are returned. If match_all has any other value or is missing, the search is performed
+// as an "OR" operation.
+
+// PLEASE NOTE the behavior of the include_tags_with_prefix parameter: if it is absent,
+// or blank, then you will find resources that match your query but receive no information about
+// the tags that apply to those resources. (Your search will also complete much more quickly in
+// this case.)
+
+// For example, a search with tag[]="server:db=true" and include_tags_with_prefix="backup:"
+// will return resources that are tagged as a DB server, and also return all "backup" related tags
+// for every matching resource.
+// 	resourceType: Search among a single resource type.
+// 	tags: The tags which must be present on the resource.
+// -- Optional parameters:
+// 	includeTagsWithPrefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
+// 	matchAll: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
+// 	withDeleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
+func (c *Client) ByTagTag(resourceType string, tags []string, options ApiParams) ([]map[string]string, error) {
 	var res []map[string]string
-	payload := map[string]interface{}{
-		"include_tags_with_prefix": includeTagsWithPrefix,
-		"match_all":                matchAll,
-		"resource_type":            resourceType,
-		"tags":                     tags,
-		"with_deleted":             withDeleted,
-	}
+	payload := mergeOptionals(ApiParams{
+
+		"resource_type": resourceType,
+		"tags":          tags,
+	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return res, err
@@ -7708,14 +8066,17 @@ func (c *Client) ByTagTag(includeTagsWithPrefix string, matchAll string, resourc
 }
 
 // POST api/tags/multi_add(.:format)?
-// Add a list of tags to a list of hrefs. The tags must be either plain_tags or
-// machine_tags. The hrefs can belong to various resource types. If a resource
-// for a href could not be found, an error is returned and no tags are added for
-// any resource.  No error will be raised if the resource already has the tag(s)
-// you are trying to add.  Note: At this point, tags on 'next_instance' are not
-// supported and one has to add tags to the 'server'.
+// Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.
+// The hrefs can belong to various resource types. If a resource for a href could not be found, an
+// error is returned and no tags are added for any resource.
+
+// No error will be raised if the resource already has the tag(s) you are trying to add.
+
+// Note: At this point, tags on 'next_instance' are not supported and one has to add tags to the 'server'.
+// 	resourceHrefs: Hrefs of the resources for which the tags are to be added.
+// 	tags: Tags to be added.
 func (c *Client) MultiAddTags(resourceHrefs []string, tags []string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
@@ -7740,13 +8101,15 @@ func (c *Client) MultiAddTags(resourceHrefs []string, tags []string) error {
 }
 
 // POST api/tags/multi_delete(.:format)?
-// Delete a list of tags on a list of hrefs. The tags must be either plain_tags
-// or machine_tags. The hrefs can belong to various resource types. If a
-// resource for a href could not be found, an error is returned and no tags are
-// deleted for any resource.  Note that no error will be raised if the resource
-// does not have the tag(s) you are trying to delete.
+// Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.
+// The hrefs can belong to various resource types. If a resource for a href could not be found, an
+// error is returned and no tags are deleted for any resource.
+
+// Note that no error will be raised if the resource does not have the tag(s) you are trying to delete.
+// 	resourceHrefs: Hrefs of the resources for which tags are to be deleted.
+// 	tags: Tags to be deleted.
 func (c *Client) MultiDeleteTags(resourceHrefs []string, tags []string) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
@@ -7772,11 +8135,11 @@ func (c *Client) MultiDeleteTags(resourceHrefs []string, tags []string) error {
 
 /******  Task ******/
 
-// Tasks represent processes that happen (or have happened) asynchronously
-// within the context of an Instance.  An example of a type of task is an
-// operational script that runs in an instance.  Task resources can be returned
-// by certain API calls, such as Instances.run_executable, Backups.restore, and
-// others.
+// Tasks represent processes that happen (or have happened) asynchronously within the context of an Instance.
+
+// An example of a type of task is an operational script that runs in an instance.
+
+// Task resources can be returned by certain API calls, such as Instances.run_executable, Backups.restore, and others.
 type Task struct {
 	Actions []string            `json:"actions,omitempty"`
 	Detail  string              `json:"detail,omitempty"`
@@ -7786,7 +8149,9 @@ type Task struct {
 
 // GET api/clouds/:cloud_id/instances/:instance_id/live/tasks/:id(.:format)?
 // Displays information of a given task within the context of an instance.
-func (c *Client) ShowTask(cloudId string, id string, instanceId string, view string) (*Task, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowTask(cloudId string, id string, instanceId string, options ApiParams) (*Task, error) {
 	var res *Task
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7794,7 +8159,7 @@ func (c *Client) ShowTask(cloudId string, id string, instanceId string, view str
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7812,8 +8177,8 @@ func (c *Client) ShowTask(cloudId string, id string, instanceId string, view str
 
 /******  User ******/
 
-// A User represents an individual RightScale user. Users must be given access
-// to RightScale accounts in order to  access RightScale resources.
+// A User represents an individual RightScale user. Users must be given access to RightScale accounts in order to
+// access RightScale resources.
 type User struct {
 	Actions      []string            `json:"actions,omitempty"`
 	Company      string              `json:"company,omitempty"`
@@ -7829,27 +8194,28 @@ type User struct {
 }
 
 // POST api/users(.:format)?
-// Create a user. If a user already exists with the same email, that user will
-// be returned.  Creating a user alone will not enable the user to access this
-// account. You have to create 'permissions' for that user before it can be
-// used. Performing a 'show' on a new user will fail unless you immediately
-// create an 'observer' permission on the current account.  Note that
-// information about users and their permissions must be propagated globally
-// across all RightScale clusters, and this can take some time (less than 60
-// seconds under normal circumstances) so the users you create may not be able
-// to login for a minute or two after you create them. However, you may create
-// or destroy permissions for newly-created users with no delay.  To create a
-// user that will login using password authentication, include the 'password'
-// parameter with your request.  To create an SSO-enabled user, you must specify
-// the identity_provider that will be vouching for this user's identity, as well
-// as the principal_uid (SAML NameID or OpenID identity URL) that the identity
-// provider will assert for this user. Identity providers should be specified
-// by their API href; you can obtain a list of the identity providers available
-// to your account by invoking the 'index' action of the identity_providers API
-// resource.
+// Create a user. If a user already exists with the same email, that user will be returned.
+
+// Creating a user alone will not enable the user to access this account. You have to create
+// 'permissions' for that user before it can be used. Performing a 'show' on a new user
+// will fail unless you immediately create an 'observer' permission on the current account.
+
+// Note that information about users and their permissions must be propagated globally across all
+// RightScale clusters, and this can take some time (less than 60 seconds under normal circumstances)
+// so the users you create may not be able to login for a minute or two after you create them. However,
+// you may create or destroy permissions for newly-created users with no delay.
+
+// To create a user that will login using password authentication, include the 'password' parameter
+// with your request.
+
+// To create an SSO-enabled user, you must specify the identity_provider that will be vouching for
+// this user's identity, as well as the principal_uid (SAML NameID or OpenID identity URL) that
+// the identity provider will assert for this user. Identity providers should be specified by
+// their API href; you can obtain a list of the identity providers available to your account by
+// invoking the 'index' action of the identity_providers API resource.
 func (c *Client) CreateUser(user *UserParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"user": user,
 	}
 	b, err := json.Marshal(payload)
@@ -7878,10 +8244,11 @@ func (c *Client) CreateUser(user *UserParam) (Href, error) {
 }
 
 // GET api/users(.:format)?
-// List the users available to the account the user is logged in to. Therefore,
-// to list the users of a child account, the user has to login to the child
-// account first.
-func (c *Client) IndexUsers(filter []string) ([]User, error) {
+// List the users available to the account the user is logged in to. Therefore, to list the users of
+// a child account, the user has to login to the child account first.
+// -- Optional parameters:
+// 	filter
+func (c *Client) IndexUsers(options ApiParams) ([]User, error) {
 	var res []User
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -7889,7 +8256,8 @@ func (c *Client) IndexUsers(filter []string) ([]User, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
 	ctx := c.beforeRequest(req)
@@ -7933,28 +8301,34 @@ func (c *Client) ShowUser(id string) (*User, error) {
 }
 
 // PUT api/users/:id(.:format)?
-// Update a user's contact information, change her password, or update SSO her
-// settings. In order to update a user record, one of the following criteria
-// must be met:   You're logged in AS the user being modified and you provide
-// a valid current_password. You're an admin and the user is linked to your
-// enterprise SSO provider You're an admin and the user's email matches the
-// email_domain of your enterprise SSO provider   In other words: you can update
-// yourself if you know your own password; you can update yourself or others
-// if they're linked to your SSO providers, and you can update any user if
-// her email address is known to belong to your organization.  For information
-// about enabling canonical email domain ownership for your enterprise,
-// please talk to your RightScale account manager or contact our support
-// team.  To update a user's contact information, simply pass the desired
-// values for email, first_name, and so forth.  To update a user's password,
-// provide a valid current_password and specify the desired new_password.
-// To update a user's SSO information, you may provide a just a principal_uid
-// (to maintain the user's existing identity provider) or you may provide an
-// identity_provider_href and a principal_uid (to switch identity providers as
-// well as specify a new user identity).  In the context of SAML. principal_uid
-// is equivalent to the SAML NameID or Subject claim; RightScale cannot predict
-// or influence the NameID value that your SAML IdP will send to us for
+// Update a user's contact information, change her password, or update SSO her settings. In order
+// to update a user record, one of the following criteria must be met:
+
+// You're logged in AS the user being modified and you provide a valid current_password.
+// You're an admin and the user is linked to your enterprise SSO provider
+// You're an admin and the user's email matches the email_domain of your enterprise SSO provider
+
+// In other words: you can update yourself if you know your own password; you can update
+// yourself or others if they're linked to your SSO providers, and you can update any user
+// if her email address is known to belong to your organization.
+
+// For information about enabling canonical email domain ownership for your enterprise, please
+// talk to your RightScale account manager or contact our support team.
+
+// To update a user's contact information, simply pass the desired values for email, first_name,
+// and so forth.
+
+// To update a user's password, provide a valid current_password and specify the desired
+// new_password.
+
+// To update a user's SSO information, you may provide a just a principal_uid (to maintain the
+// user's existing identity provider) or you may provide an identity_provider_href and a
+// principal_uid (to switch identity providers as well as specify a new user identity).
+
+// In the context of SAML. principal_uid is equivalent to the SAML NameID or Subject claim;
+// RightScale cannot predict or influence the NameID value that your SAML IdP will send to us for
 func (c *Client) UpdateUser(id string, user *UserParam2) error {
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"user": user,
 	}
 	b, err := json.Marshal(payload)
@@ -8009,9 +8383,7 @@ func (c *Client) ShowUserData() (*map[string]string, error) {
 
 /******  Volume ******/
 
-// A Volume provides a highly reliable, efficient and persistent storage
-// solution that can be mounted to a cloud instance (in the same datacenter /
-// zone).
+// A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).
 type Volume struct {
 	Actions     []string            `json:"actions,omitempty"`
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
@@ -8030,7 +8402,7 @@ type Volume struct {
 // Creates a new volume.
 func (c *Client) CreateVolume(cloudId string, volume *VolumeParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"volume": volume,
 	}
 	b, err := json.Marshal(payload)
@@ -8078,7 +8450,10 @@ func (c *Client) DestroyVolume(cloudId string, id string) error {
 
 // GET api/clouds/:cloud_id/volumes(.:format)?
 // Lists volumes.
-func (c *Client) IndexVolumes(cloudId string, filter []string, view string) ([]Volume, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexVolumes(cloudId string, options ApiParams) ([]Volume, error) {
 	var res []Volume
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8086,10 +8461,11 @@ func (c *Client) IndexVolumes(cloudId string, filter []string, view string) ([]V
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8107,7 +8483,9 @@ func (c *Client) IndexVolumes(cloudId string, filter []string, view string) ([]V
 
 // GET api/clouds/:cloud_id/volumes/:id(.:format)?
 // Displays information about a single volume.
-func (c *Client) ShowVolume(cloudId string, id string, view string) (*Volume, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowVolume(cloudId string, id string, options ApiParams) (*Volume, error) {
 	var res *Volume
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8115,7 +8493,7 @@ func (c *Client) ShowVolume(cloudId string, id string, view string) (*Volume, er
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8133,8 +8511,7 @@ func (c *Client) ShowVolume(cloudId string, id string, view string) (*Volume, er
 
 /******  VolumeAttachment ******/
 
-// A VolumeAttachment represents a relationship between a volume and an
-// instance.
+// A VolumeAttachment represents a relationship between a volume and an instance.
 type VolumeAttachment struct {
 	Actions     []string            `json:"actions,omitempty"`
 	CreatedAt   *time.Time          `json:"created_at,omitempty"`
@@ -8150,7 +8527,7 @@ type VolumeAttachment struct {
 // Creates a new volume attachment.
 func (c *Client) CreateVolumeAttachment(cloudId string, instanceId string, volumeAttachment *VolumeAttachmentParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"volume_attachment": volumeAttachment,
 	}
 	b, err := json.Marshal(payload)
@@ -8180,10 +8557,10 @@ func (c *Client) CreateVolumeAttachment(cloudId string, instanceId string, volum
 
 // DELETE api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id(.:format)?
 // Deletes a given volume attachment.
-func (c *Client) DestroyVolumeAttachment(cloudId string, force string, id string, instanceId string) error {
-	payload := map[string]interface{}{
-		"force": force,
-	}
+// -- Optional parameters:
+// 	force: Specifies whether to force the detachment of a volume.
+func (c *Client) DestroyVolumeAttachment(cloudId string, id string, instanceId string, options ApiParams) error {
+	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
 		return err
@@ -8206,7 +8583,10 @@ func (c *Client) DestroyVolumeAttachment(cloudId string, force string, id string
 
 // GET api/clouds/:cloud_id/instances/:instance_id/volume_attachments(.:format)?
 // Lists all volume attachments.
-func (c *Client) IndexVolumeAttachments(cloudId string, filter []string, instanceId string, view string) ([]VolumeAttachment, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexVolumeAttachments(cloudId string, instanceId string, options ApiParams) ([]VolumeAttachment, error) {
 	var res []VolumeAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8214,10 +8594,11 @@ func (c *Client) IndexVolumeAttachments(cloudId string, filter []string, instanc
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8235,7 +8616,9 @@ func (c *Client) IndexVolumeAttachments(cloudId string, filter []string, instanc
 
 // GET api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id(.:format)?
 // Displays information about a single volume attachment.
-func (c *Client) ShowVolumeAttachment(cloudId string, id string, instanceId string, view string) (*VolumeAttachment, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowVolumeAttachment(cloudId string, id string, instanceId string, options ApiParams) (*VolumeAttachment, error) {
 	var res *VolumeAttachment
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8243,7 +8626,7 @@ func (c *Client) ShowVolumeAttachment(cloudId string, id string, instanceId stri
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8261,11 +8644,8 @@ func (c *Client) ShowVolumeAttachment(cloudId string, id string, instanceId stri
 
 /******  VolumeSnapshot ******/
 
-// A VolumeSnapshot represents a Cloud storage volume at a particular point
-// in time. One can create a snapshot regardless of whether or not a volume
-// is attached to an Instance. When a snapshot is created, various meta data
-// is retained such as a Created At timestamp, a unique Resource UID (e.g.
-// vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
+// A VolumeSnapshot represents a Cloud storage volume at a particular point in time. One can create a snapshot regardless of whether or not a volume is attached to an Instance. When a snapshot is created,
+// various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
 // Snapshots consist of a series of data blocks that are incrementally saved.
 type VolumeSnapshot struct {
 	Actions     []string            `json:"actions,omitempty"`
@@ -8284,7 +8664,7 @@ type VolumeSnapshot struct {
 // Creates a new volume_snapshot.
 func (c *Client) CreateVolumeSnapshot(cloudId string, volumeId string, volumeSnapshot *VolumeSnapshotParam) (Href, error) {
 	var res Href
-	payload := map[string]interface{}{
+	payload := ApiParams{
 		"volume_snapshot": volumeSnapshot,
 	}
 	b, err := json.Marshal(payload)
@@ -8332,7 +8712,10 @@ func (c *Client) DestroyVolumeSnapshot(cloudId string, id string, volumeId strin
 
 // GET api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots(.:format)?
 // Lists all volume_snapshots.
-func (c *Client) IndexVolumeSnapshots(cloudId string, filter []string, view string, volumeId string) ([]VolumeSnapshot, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexVolumeSnapshots(cloudId string, volumeId string, options ApiParams) ([]VolumeSnapshot, error) {
 	var res []VolumeSnapshot
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8340,10 +8723,11 @@ func (c *Client) IndexVolumeSnapshots(cloudId string, filter []string, view stri
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8361,7 +8745,9 @@ func (c *Client) IndexVolumeSnapshots(cloudId string, filter []string, view stri
 
 // GET api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id(.:format)?
 // Displays information about a single volume_snapshot.
-func (c *Client) ShowVolumeSnapshot(cloudId string, id string, view string, volumeId string) (*VolumeSnapshot, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowVolumeSnapshot(cloudId string, id string, volumeId string, options ApiParams) (*VolumeSnapshot, error) {
 	var res *VolumeSnapshot
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8369,7 +8755,7 @@ func (c *Client) ShowVolumeSnapshot(cloudId string, id string, view string, volu
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8401,7 +8787,10 @@ type VolumeType struct {
 
 // GET api/clouds/:cloud_id/volume_types(.:format)?
 // Lists Volume Types.
-func (c *Client) IndexVolumeTypes(cloudId string, filter []string, view string) ([]VolumeType, error) {
+// -- Optional parameters:
+// 	filter
+// 	view
+func (c *Client) IndexVolumeTypes(cloudId string, options ApiParams) ([]VolumeType, error) {
 	var res []VolumeType
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8409,10 +8798,11 @@ func (c *Client) IndexVolumeTypes(cloudId string, filter []string, view string) 
 	if err != nil {
 		return res, err
 	}
-	for _, v := range filter {
+	for _, v := range options["filter"].([]string) {
+		v = options["filter"].(string)
 		req.URL.Query().Add("filter", v)
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8430,7 +8820,9 @@ func (c *Client) IndexVolumeTypes(cloudId string, filter []string, view string) 
 
 // GET api/clouds/:cloud_id/volume_types/:id(.:format)?
 // Displays information about a single Volume Type.
-func (c *Client) ShowVolumeType(cloudId string, id string, view string) (*VolumeType, error) {
+// -- Optional parameters:
+// 	view
+func (c *Client) ShowVolumeType(cloudId string, id string, options ApiParams) (*VolumeType, error) {
 	var res *VolumeType
 	b := []byte{}
 	body := bytes.NewReader(b)
@@ -8438,7 +8830,7 @@ func (c *Client) ShowVolumeType(cloudId string, id string, view string) (*Volume
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", view)
+	req.URL.Query().Set("view", options["view"].(string))
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8567,6 +8959,14 @@ type CloudSpecificAttributes struct {
 
 type CloudSpecificAttributes2 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
+}
+
+type CloudSpecificAttributes3 struct {
+	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
 	EbsOptimized                  string `json:"ebs_optimized,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
@@ -8680,7 +9080,34 @@ type InstanceParam struct {
 
 type InstanceParam2 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
+	CloudHref                string                    `json:"cloud_href,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes2 `json:"cloud_specific_attributes,omitempty"`
+	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
+	ImageHref                string                    `json:"image_href,omitempty"`
+	Inputs                   map[string]string         `json:"inputs,omitempty"`
+	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
+	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
+	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
+	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
+	PlacementGroupHref       string                    `json:"placement_group_href,omitempty"`
+	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
+	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
+	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
+	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
+	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
+	UserData                 string                    `json:"user_data,omitempty"`
+}
+
+type InstanceParam3 struct {
+	Href                string            `json:"href,omitempty"`
+	Inputs              map[string]string `json:"inputs,omitempty"`
+	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
+	ServerTemplateHref  string            `json:"server_template_href,omitempty"`
+}
+
+type InstanceParam4 struct {
+	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
 	DeploymentHref           string                    `json:"deployment_href,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
@@ -8695,7 +9122,7 @@ type InstanceParam2 struct {
 	UserData                 string                    `json:"user_data,omitempty"`
 }
 
-type InstanceParam3 struct {
+type InstanceParam5 struct {
 	AssociatePublicIpAddress string                   `json:"associate_public_ip_address,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                   `json:"datacenter_href,omitempty"`
@@ -8712,13 +9139,6 @@ type InstanceParam3 struct {
 	SshKeyHref               string                   `json:"ssh_key_href,omitempty"`
 	SubnetHrefs              []string                 `json:"subnet_hrefs,omitempty"`
 	UserData                 string                   `json:"user_data,omitempty"`
-}
-
-type InstanceParam4 struct {
-	Href                string            `json:"href,omitempty"`
-	Inputs              map[string]string `json:"inputs,omitempty"`
-	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
-	ServerTemplateHref  string            `json:"server_template_href,omitempty"`
 }
 
 type IpAddressBindingParam struct {
@@ -9033,11 +9453,11 @@ type ServerArrayParam2 struct {
 }
 
 type ServerParam struct {
-	DeploymentHref string         `json:"deployment_href,omitempty"`
-	Description    string         `json:"description,omitempty"`
-	Instance       *InstanceParam `json:"instance,omitempty"`
-	Name           string         `json:"name,omitempty"`
-	Optimized      string         `json:"optimized,omitempty"`
+	DeploymentHref string          `json:"deployment_href,omitempty"`
+	Description    string          `json:"description,omitempty"`
+	Instance       *InstanceParam2 `json:"instance,omitempty"`
+	Name           string          `json:"name,omitempty"`
+	Optimized      string          `json:"optimized,omitempty"`
 }
 
 type ServerParam2 struct {
@@ -9051,7 +9471,7 @@ type ServerParam2 struct {
 type ServerParam3 struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam4 `json:"instance,omitempty"`
+	Instance       *InstanceParam3 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 }
 

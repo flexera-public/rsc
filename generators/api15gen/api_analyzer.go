@@ -178,6 +178,32 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}) {
 			}
 		}
 
+		// Update description with parameter descriptions
+		mandatory := []string{}
+		optional := []string{}
+		for n, p := range paramAnalyzer.Params {
+			desc := n
+			if p.Description != "" {
+				desc = fmt.Sprintf("%s: %s", n, p.Description)
+			}
+			if p.Mandatory {
+				if p.Description != "" {
+					mandatory = append(mandatory, desc)
+				}
+			} else {
+				optional = append(optional, desc)
+			}
+		}
+		sort.Strings(mandatory)
+		sort.Strings(optional)
+		if len(mandatory) > 0 {
+			description += "\n\t" + strings.Join(mandatory, "\n\t")
+		}
+		if len(optional) > 0 {
+			description += "\n-- Optional parameters:\n\t" +
+				strings.Join(optional, "\n\t")
+		}
+
 		// Record action
 		actions[idx] = &ResourceAction{
 			Name:          methodName(actionName, name),

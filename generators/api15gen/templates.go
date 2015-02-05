@@ -24,7 +24,7 @@ func NewCodeWriter() (*CodeWriter, error) {
 		"now":             time.Now,
 		"join":            strings.Join,
 		"commandLine":     commandLine,
-		"joinParams":      joinParams,
+		"parameters":      parameters,
 		"joinParamNames":  joinParamNames,
 		"paramsAsPayload": paramsAsPayload,
 		"isPointer":       isPointer,
@@ -69,19 +69,31 @@ func (c *CodeWriter) WriteResource(resource *ResourceData, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
 }
 
+/***** Format helpers *****/
+
 // Produce line comments by concatenating given strings and producing 80 characters long lines
 // starting with "//"
 func comment(elems ...string) string {
 	t := strings.Join(elems, "")
-	return text.Indent(text.Wrap(t, 77), "// ")
+	return text.Indent(t, "// ")
 }
 
 // Serialize action parameters
-func joinParams(a *ResourceAction) string {
-	params := make([]string, len(a.AllParams))
-	for i, name := range a.ParamNames {
-		params[i] = fmt.Sprintf("%s %s", name, a.AllParams[name].Type.Signature())
+func parameters(a *ResourceAction) string {
+	params := []string{}
+	hasOptional := false
+	for _, name := range a.ParamNames {
+		param := a.AllParams[name]
+		if param.Mandatory {
+			params = append(params, fmt.Sprintf("%s %s", name, param.Type.Signature()))
+		} else {
+			hasOptional = true
+		}
 	}
+	if hasOptional {
+		params = append(params, "options ApiParams")
+	}
+
 	return strings.Join(params, ", ")
 }
 
@@ -97,10 +109,19 @@ func joinParamNames(p []*ActionParam) string {
 // Create map out of parameter names
 func paramsAsPayload(p []*ActionParam) string {
 	fields := make([]string, len(p))
+	hasOptional := false
 	for i, param := range p {
-		fields[i] = fmt.Sprintf("\"%s\": %s,", param.NativeName, param.Name)
+		if param.Mandatory {
+			fields[i] = fmt.Sprintf("\"%s\": %s,", param.NativeName, param.Name)
+		} else {
+			hasOptional = true
+		}
 	}
-	return fmt.Sprintf("map[string]interface{}{\n%s\n}", strings.Join(fields, "\n\t"))
+	mandatory := fmt.Sprintf("ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
+	if !hasOptional {
+		return mandatory
+	}
+	return fmt.Sprintf("mergeOptionals(%s, options)", mandatory)
 }
 
 // Return true if signature contains pointer, false otherwise
@@ -144,6 +165,17 @@ import (
 
 // Href
 type Href string
+
+// Convenience type
+type ApiParams map[string]interface{}
+
+// Helper function that merges optional parameters into payload
+func mergeOptionals(params, options ApiParams) ApiParams {
+	for name, value := range options {
+		params[name] = value
+	}
+	return params
+}
 `
 
 const resourceTmpl = `{{define "actionBody"}}` + actionBodyTmpl + `{{end}}
@@ -154,7 +186,7 @@ type {{.Name}} struct { {{range .Attributes}}
 {{range .Actions}}
 // {{.HttpMethod}} {{.Path}}
 {{comment .Description}}
-func (c *Client) {{.Name}}({{joinParams .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
+func (c *Client) {{.Name}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
 	{{template "actionBody" . }}
 }
 {{end}}
@@ -172,10 +204,11 @@ const actionBodyTmpl = `{{if .Return}}var res {{.Return}}
 	if err != nil {
 		return {{if .Return}}res, {{end}}err
 	}
-	{{if .QueryParams}}{{range .QueryParams}}{{if isArray .Type.Signature}}for _, v := range {{.Name}} {
+	{{if .QueryParams}}{{range .QueryParams}}{{if isArray .Type.Signature}}for _, v := range {{if not .Mandatory}}options["{{.Name}}"].([]string){{else}}{{.Name}}{{end}} {
+		{{if not .Mandatory}}v = options["{{.Name}}"].(string){{end}}
 		req.URL.Query().Add("{{.NativeName}}", v)
 	}
-	{{else}}req.URL.Query().Set("{{.Name}}", {{.Name}})
+	{{else}}req.URL.Query().Set("{{.NativeName}}", {{if not .Mandatory}}options["{{.Name}}"].(string){{else}}{{.Name}}{{end}})
 	{{end}}{{end}}{{end}}{{if .PayloadParams}}req.Header.Set("Content-Type", "application/json")
 	{{end}}ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
