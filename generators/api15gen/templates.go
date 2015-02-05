@@ -192,8 +192,14 @@ func (c *Client) {{.Name}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} 
 {{end}}
 `
 
-const actionBodyTmpl = `{{if .Return}}var res {{.Return}}
-	{{end}}{{if .PayloadParams}}payload := {{paramsAsPayload .PayloadParams}}
+const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
+	{{end}}{{range .PathParams}}if {{.Name}} == "" {
+		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.Name}} cannot be blank")
+	}
+	{{end}}{{if .PayloadParams}}{{range .PayloadParams}}{{if and .Mandatory (.Type.BlankConditionExp .Name)}}{{.Type.BlankConditionExp .Name}}
+		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.Name}} is required")
+	}
+	{{end}}{{end}}payload := {{paramsAsPayload .PayloadParams}}
 	b, err := json.Marshal(payload)
 	if err != nil {
 		{{if .Return}}return res, err{{else}}return err{{end}}
@@ -204,11 +210,14 @@ const actionBodyTmpl = `{{if .Return}}var res {{.Return}}
 	if err != nil {
 		return {{if .Return}}res, {{end}}err
 	}
-	{{if .QueryParams}}{{range .QueryParams}}{{if isArray .Type.Signature}}for _, v := range {{if not .Mandatory}}options["{{.Name}}"].([]string){{else}}{{.Name}}{{end}} {
-		{{if not .Mandatory}}v = options["{{.Name}}"].(string){{end}}
-		req.URL.Query().Add("{{.NativeName}}", v)
+	{{if .QueryParams}}{{range .QueryParams}}{{if isArray .Type.Signature}}if temp, ok := options["{{.Name}}"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("{{.NativeName}}", v)
+		}
 	}
-	{{else}}req.URL.Query().Set("{{.NativeName}}", {{if not .Mandatory}}options["{{.Name}}"].(string){{else}}{{.Name}}{{end}})
+	{{else}}if temp, ok := options["{{.Name}}"]; ok {
+		req.URL.Query().Set("{{.NativeName}}", temp.(string))
+	}
 	{{end}}{{end}}{{end}}{{if .PayloadParams}}req.Header.Set("Content-Type", "application/json")
 	{{end}}ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)

@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 4, 2015 at 6:48pm (PST)
+// Generated Feb 4, 2015 at 11:28pm (PST)
 // Command:
 // $ api15gen -keep=T -metadata=../../rsapi15/api_data.json -attributes=../../rsapi15/attributes.json -output=../../rsapi15/codegen.go
 //
@@ -48,6 +48,9 @@ type Account struct {
 // Show information about a single Account.
 func (c *Client) ShowAccount(id string) (*Account, error) {
 	var res *Account
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/accounts/"+id, body)
@@ -94,11 +97,14 @@ func (c *Client) IndexAccountGroups(options ApiParams) ([]AccountGroup, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -120,13 +126,18 @@ func (c *Client) IndexAccountGroups(options ApiParams) ([]AccountGroup, error) {
 // 	view
 func (c *Client) ShowAccountGroup(id string, options ApiParams) (*AccountGroup, error) {
 	var res *AccountGroup
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/account_groups/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -158,6 +169,15 @@ type Alert struct {
 // POST api/clouds/:cloud_id/instances/:instance_id/alerts/:id/disable(.:format)?
 // Disables the Alert indefinitely. Idempotent.
 func (c *Client) DisableAlert(cloudId string, id string, instanceId string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/alerts/"+id+"/disable", body)
@@ -176,6 +196,15 @@ func (c *Client) DisableAlert(cloudId string, id string, instanceId string) erro
 // POST api/clouds/:cloud_id/instances/:instance_id/alerts/:id/enable(.:format)?
 // Enables the Alert indefinitely. Idempotent.
 func (c *Client) EnableAlert(cloudId string, id string, instanceId string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/alerts/"+id+"/enable", body)
@@ -198,17 +227,26 @@ func (c *Client) EnableAlert(cloudId string, id string, instanceId string) error
 // 	view
 func (c *Client) IndexAlerts(cloudId string, instanceId string, options ApiParams) ([]Alert, error) {
 	var res []Alert
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/alerts", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -229,6 +267,18 @@ func (c *Client) IndexAlerts(cloudId string, instanceId string, options ApiParam
 // 	duration: The time period in seconds to suppress Alert from being triggered.
 func (c *Client) QuenchAlert(cloudId string, duration string, id string, instanceId string) (string, error) {
 	var res string
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
+	if duration == "" {
+		return res, fmt.Errorf("duration is required")
+	}
 	payload := ApiParams{
 		"duration": duration,
 	}
@@ -264,13 +314,24 @@ func (c *Client) QuenchAlert(cloudId string, duration string, id string, instanc
 // 	view
 func (c *Client) ShowAlert(cloudId string, id string, instanceId string, options ApiParams) (*Alert, error) {
 	var res *Alert
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/alerts/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -311,6 +372,12 @@ type AlertSpec struct {
 // Creates a new AlertSpec with the given parameters.
 func (c *Client) CreateAlertSpec(alertSpec *AlertSpecParam, serverId string) (Href, error) {
 	var res Href
+	if serverId == "" {
+		return res, fmt.Errorf("serverId cannot be blank")
+	}
+	if alertSpec == nil {
+		return res, fmt.Errorf("alertSpec is required")
+	}
 	payload := ApiParams{
 		"alert_spec": alertSpec,
 	}
@@ -342,6 +409,12 @@ func (c *Client) CreateAlertSpec(alertSpec *AlertSpecParam, serverId string) (Hr
 // DELETE api/servers/:server_id/alert_specs/:id(.:format)?
 // Deletes a given AlertSpec.
 func (c *Client) DestroyAlertSpec(id string, serverId string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverId == "" {
+		return fmt.Errorf("serverId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/servers/"+serverId+"/alert_specs/"+id, body)
@@ -365,6 +438,9 @@ func (c *Client) DestroyAlertSpec(id string, serverId string) error {
 // 	withInherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
 func (c *Client) IndexAlertSpecs(serverId string, options ApiParams) ([]AlertSpec, error) {
 	var res []AlertSpec
+	if serverId == "" {
+		return res, fmt.Errorf("serverId cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -376,11 +452,14 @@ func (c *Client) IndexAlertSpecs(serverId string, options ApiParams) ([]AlertSpe
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -403,13 +482,21 @@ func (c *Client) IndexAlertSpecs(serverId string, options ApiParams) ([]AlertSpe
 // 	view
 func (c *Client) ShowAlertSpec(id string, serverId string, options ApiParams) (*AlertSpec, error) {
 	var res *AlertSpec
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if serverId == "" {
+		return res, fmt.Errorf("serverId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/servers/"+serverId+"/alert_specs/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -428,6 +515,15 @@ func (c *Client) ShowAlertSpec(id string, serverId string, options ApiParams) (*
 // PUT api/servers/:server_id/alert_specs/:id(.:format)?
 // Updates an AlertSpec with the given parameters.
 func (c *Client) UpdateAlertSpec(alertSpec *AlertSpecParam2, id string, serverId string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverId == "" {
+		return fmt.Errorf("serverId cannot be blank")
+	}
+	if alertSpec == nil {
+		return fmt.Errorf("alertSpec is required")
+	}
 	payload := ApiParams{
 		"alert_spec": alertSpec,
 	}
@@ -475,6 +571,9 @@ type AuditEntry struct {
 // 	offset: The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.
 // 	summary: The updated summary for the audit entry, maximum length is 255 characters.
 func (c *Client) AppendAuditEntry(id string, options ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -503,6 +602,9 @@ func (c *Client) AppendAuditEntry(id string, options ApiParams) error {
 // 	userEmail: The email of the user (who created/triggered the audit entry). Only usable with instance role.
 func (c *Client) CreateAuditEntry(auditEntry *AuditEntryParam, options ApiParams) (Href, error) {
 	var res Href
+	if auditEntry == nil {
+		return res, fmt.Errorf("auditEntry is required")
+	}
 	payload := mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
@@ -536,6 +638,9 @@ func (c *Client) CreateAuditEntry(auditEntry *AuditEntryParam, options ApiParams
 // Note that the media type of the response is simply text.
 func (c *Client) DetailAuditEntry(id string) (string, error) {
 	var res string
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/audit_entries/"+id+"/detail", body)
@@ -572,6 +677,15 @@ func (c *Client) DetailAuditEntry(id string) (string, error) {
 // 	view
 func (c *Client) IndexAuditEntries(endDate string, limit string, startDate string, options ApiParams) ([]AuditEntry, error) {
 	var res []AuditEntry
+	if endDate == "" {
+		return res, fmt.Errorf("endDate is required")
+	}
+	if limit == "" {
+		return res, fmt.Errorf("limit is required")
+	}
+	if startDate == "" {
+		return res, fmt.Errorf("startDate is required")
+	}
 	payload := ApiParams{
 		"end_date":   endDate,
 		"limit":      limit,
@@ -587,11 +701,14 @@ func (c *Client) IndexAuditEntries(endDate string, limit string, startDate strin
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -614,13 +731,18 @@ func (c *Client) IndexAuditEntries(endDate string, limit string, startDate strin
 // 	view
 func (c *Client) ShowAuditEntry(id string, options ApiParams) (*AuditEntry, error) {
 	var res *AuditEntry
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/audit_entries/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -641,6 +763,12 @@ func (c *Client) ShowAuditEntry(id string, options ApiParams) (*AuditEntry, erro
 // -- Optional parameters:
 // 	notify: The event notification category. Defaults to 'None'.
 func (c *Client) UpdateAuditEntry(auditEntry *AuditEntryParam2, id string, options ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if auditEntry == nil {
+		return fmt.Errorf("auditEntry is required")
+	}
 	payload := mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
@@ -721,6 +849,12 @@ type Backup struct {
 // 	weeklies: The number of weekly backups(the latest one in each week) that should be kept.
 // 	yearlies: The number of yearly backups(the latest one in each year) that should be kept.
 func (c *Client) CleanupBackup(keepLast string, lineage string, options ApiParams) error {
+	if keepLast == "" {
+		return fmt.Errorf("keepLast is required")
+	}
+	if lineage == "" {
+		return fmt.Errorf("lineage is required")
+	}
 	payload := mergeOptionals(ApiParams{
 
 		"keep_last": keepLast,
@@ -751,6 +885,9 @@ func (c *Client) CleanupBackup(keepLast string, lineage string, options ApiParam
 // The volumeattachmenthrefs must belong to the same instance.
 func (c *Client) CreateBackup(backup *BackupParam) (Href, error) {
 	var res Href
+	if backup == nil {
+		return res, fmt.Errorf("backup is required")
+	}
 	payload := ApiParams{
 		"backup": backup,
 	}
@@ -782,6 +919,9 @@ func (c *Client) CreateBackup(backup *BackupParam) (Href, error) {
 // DELETE api/backups/:id(.:format)?
 // Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
 func (c *Client) DestroyBackup(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/backups/"+id, body)
@@ -812,6 +952,9 @@ func (c *Client) DestroyBackup(id string) error {
 // 	filter
 func (c *Client) IndexBackups(lineage string, options ApiParams) ([]Backup, error) {
 	var res []Backup
+	if lineage == "" {
+		return res, fmt.Errorf("lineage is required")
+	}
 	payload := ApiParams{
 		"lineage": lineage,
 	}
@@ -825,9 +968,10 @@ func (c *Client) IndexBackups(lineage string, options ApiParams) ([]Backup, erro
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
@@ -857,6 +1001,12 @@ func (c *Client) IndexBackups(lineage string, options ApiParams) ([]Backup, erro
 // -- Optional parameters:
 // 	backup
 func (c *Client) RestoreBackup(id string, instanceHref string, options ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceHref == "" {
+		return fmt.Errorf("instanceHref is required")
+	}
 	payload := mergeOptionals(ApiParams{
 
 		"instance_href": instanceHref,
@@ -885,6 +1035,9 @@ func (c *Client) RestoreBackup(id string, instanceHref string, options ApiParams
 // Lists the attributes of a given backup
 func (c *Client) ShowBackup(id string) (*Backup, error) {
 	var res *Backup
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/backups/"+id, body)
@@ -909,6 +1062,12 @@ func (c *Client) ShowBackup(id string) (*Backup, error) {
 // PUT api/backups/:id(.:format)?
 // Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.
 func (c *Client) UpdateBackup(backup *BackupParam3, id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if backup == nil {
+		return fmt.Errorf("backup is required")
+	}
 	payload := ApiParams{
 		"backup": backup,
 	}
@@ -947,6 +1106,9 @@ type ChildAccount struct {
 
 func (c *Client) CreateChildAccount(childAccount *ChildAccountParam) (map[string]interface{}, error) {
 	var res map[string]interface{}
+	if childAccount == nil {
+		return res, fmt.Errorf("childAccount is required")
+	}
 	payload := ApiParams{
 		"child_account": childAccount,
 	}
@@ -988,9 +1150,10 @@ func (c *Client) IndexChildAccounts(options ApiParams) ([]map[string]string, err
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -1010,6 +1173,12 @@ func (c *Client) IndexChildAccounts(options ApiParams) ([]map[string]string, err
 // PUT api/accounts/:id(.:format)?
 // Update an enterprise ChildAccount for this Account.
 func (c *Client) UpdateChildAccount(childAccount *ChildAccountParam2, id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if childAccount == nil {
+		return fmt.Errorf("childAccount is required")
+	}
 	payload := ApiParams{
 		"child_account": childAccount,
 	}
@@ -1058,11 +1227,14 @@ func (c *Client) IndexClouds(options ApiParams) ([]Cloud, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1084,13 +1256,18 @@ func (c *Client) IndexClouds(options ApiParams) ([]Cloud, error) {
 // 	view
 func (c *Client) ShowCloud(id string, options ApiParams) (*Cloud, error) {
 	var res *Cloud
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1124,6 +1301,9 @@ type CloudAccount struct {
 
 func (c *Client) CreateCloudAccount(cloudAccount *CloudAccountParam) (Href, error) {
 	var res Href
+	if cloudAccount == nil {
+		return res, fmt.Errorf("cloudAccount is required")
+	}
 	payload := ApiParams{
 		"cloud_account": cloudAccount,
 	}
@@ -1155,6 +1335,9 @@ func (c *Client) CreateCloudAccount(cloudAccount *CloudAccountParam) (Href, erro
 // DELETE api/cloud_accounts/:id(.:format)?
 // Delete a CloudAccount.
 func (c *Client) DestroyCloudAccount(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/cloud_accounts/"+id, body)
@@ -1199,6 +1382,9 @@ func (c *Client) IndexCloudAccounts() ([]CloudAccount, error) {
 
 func (c *Client) ShowCloudAccount(id string) (*CloudAccount, error) {
 	var res *CloudAccount
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/cloud_accounts/"+id, body)
@@ -1241,6 +1427,9 @@ type Cookbook struct {
 // DELETE api/cookbooks/:id(.:format)?
 // Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.
 func (c *Client) DestroyCookbook(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/cookbooks/"+id, body)
@@ -1260,6 +1449,12 @@ func (c *Client) DestroyCookbook(id string) error {
 // Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.
 // 	value: Indicates if this action should follow (true) or unfollow (false) a Cookbook.
 func (c *Client) FollowCookbook(id string, value string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if value == "" {
+		return fmt.Errorf("value is required")
+	}
 	payload := ApiParams{
 		"value": value,
 	}
@@ -1287,6 +1482,12 @@ func (c *Client) FollowCookbook(id string, value string) error {
 // Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.
 // 	value: Indicates if this action should freeze (true) or unfreeze (false) a Cookbook.
 func (c *Client) FreezeCookbook(id string, value string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if value == "" {
+		return fmt.Errorf("value is required")
+	}
 	payload := ApiParams{
 		"value": value,
 	}
@@ -1325,11 +1526,14 @@ func (c *Client) IndexCookbooks(options ApiParams) ([]Cookbook, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1349,6 +1553,12 @@ func (c *Client) IndexCookbooks(options ApiParams) ([]Cookbook, error) {
 // Marks a Cookbook as obsolete (or un-obsolete).
 // 	value: Indicates if this action should obsolete (true) or un-obsolete (false) a Cookbook.
 func (c *Client) ObsoleteCookbook(id string, value string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if value == "" {
+		return fmt.Errorf("value is required")
+	}
 	payload := ApiParams{
 		"value": value,
 	}
@@ -1380,13 +1590,18 @@ func (c *Client) ObsoleteCookbook(id string, value string) error {
 // 	view
 func (c *Client) ShowCookbook(id string, options ApiParams) (*Cookbook, error) {
 	var res *Cookbook
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/cookbooks/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1418,6 +1633,9 @@ type CookbookAttachment struct {
 // 	cookbookAttachment
 func (c *Client) CreateCookbookAttachment(cookbookId string, options ApiParams) (Href, error) {
 	var res Href
+	if cookbookId == "" {
+		return res, fmt.Errorf("cookbookId cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -1447,6 +1665,12 @@ func (c *Client) CreateCookbookAttachment(cookbookId string, options ApiParams) 
 // DELETE api/cookbooks/:cookbook_id/cookbook_attachments/:id(.:format)?
 // Detach a cookbook from a given resource.
 func (c *Client) DestroyCookbookAttachment(cookbookId string, id string) error {
+	if cookbookId == "" {
+		return fmt.Errorf("cookbookId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/cookbooks/"+cookbookId+"/cookbook_attachments/"+id, body)
@@ -1468,13 +1692,18 @@ func (c *Client) DestroyCookbookAttachment(cookbookId string, id string) error {
 // 	view
 func (c *Client) IndexCookbookAttachments(cookbookId string, options ApiParams) ([]CookbookAttachment, error) {
 	var res []CookbookAttachment
+	if cookbookId == "" {
+		return res, fmt.Errorf("cookbookId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/cookbooks/"+cookbookId+"/cookbook_attachments", body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1493,6 +1722,12 @@ func (c *Client) IndexCookbookAttachments(cookbookId string, options ApiParams) 
 // POST api/server_templates/:server_template_id/cookbook_attachments/multi_attach(.:format)?
 // Attach multiple cookbooks to a given resource.
 func (c *Client) MultiAttachCookbookAttachments(cookbookAttachments *CookbookAttachments, serverTemplateId string) error {
+	if serverTemplateId == "" {
+		return fmt.Errorf("serverTemplateId cannot be blank")
+	}
+	if cookbookAttachments == nil {
+		return fmt.Errorf("cookbookAttachments is required")
+	}
 	payload := ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
@@ -1519,6 +1754,12 @@ func (c *Client) MultiAttachCookbookAttachments(cookbookAttachments *CookbookAtt
 // POST api/server_templates/:server_template_id/cookbook_attachments/multi_detach(.:format)?
 // Detach multiple cookbooks from a given resource.
 func (c *Client) MultiDetachCookbookAttachments(cookbookAttachments *CookbookAttachments2, serverTemplateId string) error {
+	if serverTemplateId == "" {
+		return fmt.Errorf("serverTemplateId cannot be blank")
+	}
+	if cookbookAttachments == nil {
+		return fmt.Errorf("cookbookAttachments is required")
+	}
 	payload := ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
@@ -1548,13 +1789,21 @@ func (c *Client) MultiDetachCookbookAttachments(cookbookAttachments *CookbookAtt
 // 	view
 func (c *Client) ShowCookbookAttachment(cookbookId string, id string, options ApiParams) (*CookbookAttachment, error) {
 	var res *CookbookAttachment
+	if cookbookId == "" {
+		return res, fmt.Errorf("cookbookId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/cookbooks/"+cookbookId+"/cookbook_attachments/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1591,6 +1840,9 @@ type Credential struct {
 // Creates a new Credential with the given parameters.
 func (c *Client) CreateCredential(credential *CredentialParam) (Href, error) {
 	var res Href
+	if credential == nil {
+		return res, fmt.Errorf("credential is required")
+	}
 	payload := ApiParams{
 		"credential": credential,
 	}
@@ -1622,6 +1874,9 @@ func (c *Client) CreateCredential(credential *CredentialParam) (Href, error) {
 // DELETE api/credentials/:id(.:format)?
 // Deletes a Credential.
 func (c *Client) DestroyCredential(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/credentials/"+id, body)
@@ -1650,11 +1905,14 @@ func (c *Client) IndexCredentials(options ApiParams) ([]Credential, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1676,13 +1934,18 @@ func (c *Client) IndexCredentials(options ApiParams) ([]Credential, error) {
 // 	view
 func (c *Client) ShowCredential(id string, options ApiParams) (*Credential, error) {
 	var res *Credential
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/credentials/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1701,6 +1964,12 @@ func (c *Client) ShowCredential(id string, options ApiParams) (*Credential, erro
 // PUT api/credentials/:id(.:format)?
 // Updates attributes of a Credential.
 func (c *Client) UpdateCredential(credential *CredentialParam2, id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if credential == nil {
+		return fmt.Errorf("credential is required")
+	}
 	payload := ApiParams{
 		"credential": credential,
 	}
@@ -1746,17 +2015,23 @@ type Datacenter struct {
 // 	view
 func (c *Client) IndexDatacenters(cloudId string, options ApiParams) ([]Datacenter, error) {
 	var res []Datacenter
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/datacenters", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1778,13 +2053,21 @@ func (c *Client) IndexDatacenters(cloudId string, options ApiParams) ([]Datacent
 // 	view
 func (c *Client) ShowDatacenter(cloudId string, id string, options ApiParams) (*Datacenter, error) {
 	var res *Datacenter
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/datacenters/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1818,6 +2101,9 @@ type Deployment struct {
 // -- Optional parameters:
 // 	deployment
 func (c *Client) CloneDeployment(id string, options ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -1843,6 +2129,9 @@ func (c *Client) CloneDeployment(id string, options ApiParams) error {
 // Creates a new deployment with the given parameters.
 func (c *Client) CreateDeployment(deployment *DeploymentParam2) (Href, error) {
 	var res Href
+	if deployment == nil {
+		return res, fmt.Errorf("deployment is required")
+	}
 	payload := ApiParams{
 		"deployment": deployment,
 	}
@@ -1874,6 +2163,9 @@ func (c *Client) CreateDeployment(deployment *DeploymentParam2) (Href, error) {
 // DELETE api/deployments/:id(.:format)?
 // Deletes a given deployment.
 func (c *Client) DestroyDeployment(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/deployments/"+id, body)
@@ -1906,11 +2198,14 @@ func (c *Client) IndexDeployments(options ApiParams) ([]Deployment, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1931,6 +2226,9 @@ func (c *Client) IndexDeployments(options ApiParams) ([]Deployment, error) {
 // Locking prevents servers from being deleted or moved from the deployment.
 // Other actions such as adding servers or renaming the deployment are still allowed.
 func (c *Client) LockDeployment(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/deployments/"+id+"/lock", body)
@@ -1950,6 +2248,9 @@ func (c *Client) LockDeployment(id string) error {
 // Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
 // automatically be filtered by this deployment. See servers#index for details on other options and parameters.
 func (c *Client) ServersDeployment(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/deployments/"+id+"/servers", body)
@@ -1974,13 +2275,18 @@ func (c *Client) ServersDeployment(id string) error {
 // 	view
 func (c *Client) ShowDeployment(id string, options ApiParams) (*Deployment, error) {
 	var res *Deployment
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/deployments/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -1999,6 +2305,9 @@ func (c *Client) ShowDeployment(id string, options ApiParams) (*Deployment, erro
 // POST api/deployments/:id/unlock(.:format)?
 // Unlocks a given deployment. Idempotent.
 func (c *Client) UnlockDeployment(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/deployments/"+id+"/unlock", body)
@@ -2017,6 +2326,12 @@ func (c *Client) UnlockDeployment(id string) error {
 // PUT api/deployments/:id(.:format)?
 // Updates attributes of a given deployment.
 func (c *Client) UpdateDeployment(deployment *DeploymentParam, id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if deployment == nil {
+		return fmt.Errorf("deployment is required")
+	}
 	payload := ApiParams{
 		"deployment": deployment,
 	}
@@ -2097,11 +2412,14 @@ func (c *Client) IndexIdentityProviders(options ApiParams) ([]IdentityProvider, 
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2123,13 +2441,18 @@ func (c *Client) IndexIdentityProviders(options ApiParams) ([]IdentityProvider, 
 // 	view
 func (c *Client) ShowIdentityProvider(id string, options ApiParams) (*IdentityProvider, error) {
 	var res *IdentityProvider
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/identity_providers/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2170,17 +2493,23 @@ type Image struct {
 // 	view
 func (c *Client) IndexImages(cloudId string, options ApiParams) ([]Image, error) {
 	var res []Image
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/images", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2202,13 +2531,21 @@ func (c *Client) IndexImages(cloudId string, options ApiParams) ([]Image, error)
 // 	view
 func (c *Client) ShowImage(cloudId string, id string, options ApiParams) (*Image, error) {
 	var res *Image
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/images/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2241,13 +2578,21 @@ type Input struct {
 // 	view
 func (c *Client) IndexInputs(cloudId string, instanceId string, options ApiParams) ([]Input, error) {
 	var res []Input
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/inputs", body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2346,6 +2691,15 @@ func (c *Client) IndexInputs(cloudId string, instanceId string, options ApiParam
 // If the old format is used, the input is parsed using 1.0 semantics.
 // If the new format is used, the input is parsed using the new 2.0 semantics.
 func (c *Client) MultiUpdateInputs(cloudId string, inputs map[string]string, instanceId string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
+	if len(inputs) == 0 {
+		return fmt.Errorf("inputs is required")
+	}
 	payload := ApiParams{
 		"inputs": inputs,
 	}
@@ -2409,8 +2763,14 @@ type Instance struct {
 
 // POST api/clouds/:cloud_id/instances(.:format)?
 // Creates and launches a raw instance using the provided parameters.
-func (c *Client) CreateInstance(cloudId string, instance *InstanceParam4) (Href, error) {
+func (c *Client) CreateInstance(cloudId string, instance *InstanceParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instance == nil {
+		return res, fmt.Errorf("instance is required")
+	}
 	payload := ApiParams{
 		"instance": instance,
 	}
@@ -2459,17 +2819,23 @@ func (c *Client) CreateInstance(cloudId string, instance *InstanceParam4) (Href,
 // 	view
 func (c *Client) IndexInstances(cloudId string, options ApiParams) ([]Instance, error) {
 	var res []Instance
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2493,6 +2859,12 @@ func (c *Client) IndexInstances(cloudId string, options ApiParams) ([]Instance, 
 // 	apiBehavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
 // 	inputs
 func (c *Client) LaunchInstance(cloudId string, id string, options ApiParams) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -2517,6 +2889,12 @@ func (c *Client) LaunchInstance(cloudId string, id string, options ApiParams) er
 // POST api/clouds/:cloud_id/instances/:id/lock(.:format)?
 
 func (c *Client) LockInstance(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+id+"/lock", body)
@@ -2544,6 +2922,9 @@ func (c *Client) LockInstance(cloudId string, id string) error {
 // 	recipeName: The name of the recipe to be run.
 // 	rightScriptHref: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (c *Client) MultiRunExecutableInstances(cloudId string, options ApiParams) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -2555,9 +2936,10 @@ func (c *Client) MultiRunExecutableInstances(cloudId string, options ApiParams) 
 	if err != nil {
 		return err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
@@ -2576,6 +2958,9 @@ func (c *Client) MultiRunExecutableInstances(cloudId string, options ApiParams) 
 // 	filter
 // 	terminateAll: Specifies the ability to terminate all instances.
 func (c *Client) MultiTerminateInstances(cloudId string, options ApiParams) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -2587,9 +2972,10 @@ func (c *Client) MultiTerminateInstances(cloudId string, options ApiParams) erro
 	if err != nil {
 		return err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
@@ -2606,6 +2992,12 @@ func (c *Client) MultiTerminateInstances(cloudId string, options ApiParams) erro
 
 // Note that this action can only succeed if the instance is running. One cannot reboot instances of type "next".
 func (c *Client) RebootInstance(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+id+"/reboot", body)
@@ -2633,6 +3025,12 @@ func (c *Client) RebootInstance(cloudId string, id string) error {
 // 	recipeName: The name of the recipe to run.
 // 	rightScriptHref: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (c *Client) RunExecutableInstance(cloudId string, id string, options ApiParams) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -2659,6 +3057,18 @@ func (c *Client) RunExecutableInstance(cloudId string, id string, options ApiPar
 // 	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 // 	timeframe: The timeframe (either a month or a single day) for which the quantity value is valid (currently for the PDT timezone only).
 func (c *Client) SetCustomLodgementInstance(cloudId string, id string, quantity []*Quantity, timeframe string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if len(quantity) == 0 {
+		return fmt.Errorf("quantity is required")
+	}
+	if timeframe == "" {
+		return fmt.Errorf("timeframe is required")
+	}
 	payload := ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
@@ -2692,13 +3102,21 @@ func (c *Client) SetCustomLodgementInstance(cloudId string, id string, quantity 
 // 	view
 func (c *Client) ShowInstance(cloudId string, id string, options ApiParams) (*Instance, error) {
 	var res *Instance
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2723,6 +3141,12 @@ func (c *Client) ShowInstance(cloudId string, id string, options ApiParams) (*In
 // Instances resource, performing a show action on the Server resource for Server Instances, or
 // performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (c *Client) StartInstance(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+id+"/start", body)
@@ -2746,6 +3170,12 @@ func (c *Client) StartInstance(cloudId string, id string) error {
 // The new id can be found by performing an index query with the appropriate filters on the
 // Instances resource, performing a show action on the Server resource for Server Instances, or performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (c *Client) StopInstance(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+id+"/stop", body)
@@ -2766,6 +3196,12 @@ func (c *Client) StopInstance(cloudId string, id string) error {
 
 // Note that this action can succeed only if the instance is running. One cannot terminate instances of type "next".
 func (c *Client) TerminateInstance(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+id+"/terminate", body)
@@ -2784,6 +3220,12 @@ func (c *Client) TerminateInstance(cloudId string, id string) error {
 // POST api/clouds/:cloud_id/instances/:id/unlock(.:format)?
 
 func (c *Client) UnlockInstance(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+id+"/unlock", body)
@@ -2801,7 +3243,16 @@ func (c *Client) UnlockInstance(cloudId string, id string) error {
 
 // PUT api/clouds/:cloud_id/instances/:id(.:format)?
 // Updates attributes of a single instance.
-func (c *Client) UpdateInstance(cloudId string, id string, instance *InstanceParam5) error {
+func (c *Client) UpdateInstance(cloudId string, id string, instance *InstanceParam2) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instance == nil {
+		return fmt.Errorf("instance is required")
+	}
 	payload := ApiParams{
 		"instance": instance,
 	}
@@ -2851,6 +3302,18 @@ type InstanceCustomLodgement struct {
 // 	timeframe: The time-frame (either a month "YYYY_MM" or a single day "YYYY_MM_DD") for which the quantity value is valid (currently for the PDT timezone only).
 func (c *Client) CreateInstanceCustomLodgement(cloudId string, instanceId string, quantity []*Quantity, timeframe string) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
+	if len(quantity) == 0 {
+		return res, fmt.Errorf("quantity is required")
+	}
+	if timeframe == "" {
+		return res, fmt.Errorf("timeframe is required")
+	}
 	payload := ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
@@ -2883,6 +3346,15 @@ func (c *Client) CreateInstanceCustomLodgement(cloudId string, instanceId string
 // DELETE api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)?
 // Destroy the specified lodgement.
 func (c *Client) DestroyInstanceCustomLodgement(cloudId string, id string, instanceId string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/instance_custom_lodgements/"+id, body)
@@ -2904,13 +3376,21 @@ func (c *Client) DestroyInstanceCustomLodgement(cloudId string, id string, insta
 // 	view
 func (c *Client) IndexInstanceCustomLodgements(cloudId string, instanceId string, options ApiParams) ([]InstanceCustomLodgement, error) {
 	var res []InstanceCustomLodgement
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/instance_custom_lodgements", body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -2930,6 +3410,15 @@ func (c *Client) IndexInstanceCustomLodgements(cloudId string, instanceId string
 // Show the specified lodgement.
 func (c *Client) ShowInstanceCustomLodgement(cloudId string, id string, instanceId string) (*InstanceCustomLodgement, error) {
 	var res *InstanceCustomLodgement
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/instance_custom_lodgements/"+id, body)
@@ -2955,6 +3444,18 @@ func (c *Client) ShowInstanceCustomLodgement(cloudId string, id string, instance
 // Update a lodgement with the quantity specified.
 // 	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 func (c *Client) UpdateInstanceCustomLodgement(cloudId string, id string, instanceId string, quantity []*Quantity2) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
+	if len(quantity) == 0 {
+		return fmt.Errorf("quantity is required")
+	}
 	payload := ApiParams{
 		"quantity": quantity,
 	}
@@ -3001,17 +3502,23 @@ type InstanceType struct {
 // 	view
 func (c *Client) IndexInstanceTypes(cloudId string, options ApiParams) ([]InstanceType, error) {
 	var res []InstanceType
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instance_types", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -3033,13 +3540,21 @@ func (c *Client) IndexInstanceTypes(cloudId string, options ApiParams) ([]Instan
 // 	view
 func (c *Client) ShowInstanceType(cloudId string, id string, options ApiParams) (*InstanceType, error) {
 	var res *InstanceType
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instance_types/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -3071,6 +3586,12 @@ type IpAddress struct {
 // Creates a new IpAddress with the given parameters.
 func (c *Client) CreateIpAddress(cloudId string, ipAddress *IpAddressParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if ipAddress == nil {
+		return res, fmt.Errorf("ipAddress is required")
+	}
 	payload := ApiParams{
 		"ip_address": ipAddress,
 	}
@@ -3102,6 +3623,12 @@ func (c *Client) CreateIpAddress(cloudId string, ipAddress *IpAddressParam) (Hre
 // DELETE api/clouds/:cloud_id/ip_addresses/:id(.:format)?
 // Deletes a given IpAddress.
 func (c *Client) DestroyIpAddress(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/ip_addresses/"+id, body)
@@ -3123,15 +3650,19 @@ func (c *Client) DestroyIpAddress(cloudId string, id string) error {
 // 	filter
 func (c *Client) IndexIpAddresses(cloudId string, options ApiParams) ([]IpAddress, error) {
 	var res []IpAddress
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/ip_addresses", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -3152,6 +3683,12 @@ func (c *Client) IndexIpAddresses(cloudId string, options ApiParams) ([]IpAddres
 // Show information about a single IpAddress.
 func (c *Client) ShowIpAddress(cloudId string, id string) (*IpAddress, error) {
 	var res *IpAddress
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/ip_addresses/"+id, body)
@@ -3176,6 +3713,15 @@ func (c *Client) ShowIpAddress(cloudId string, id string) (*IpAddress, error) {
 // PUT api/clouds/:cloud_id/ip_addresses/:id(.:format)?
 // Updates attributes of a given IpAddress.
 func (c *Client) UpdateIpAddress(cloudId string, id string, ipAddress *IpAddressParam2) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if ipAddress == nil {
+		return fmt.Errorf("ipAddress is required")
+	}
 	payload := ApiParams{
 		"ip_address": ipAddress,
 	}
@@ -3222,6 +3768,15 @@ type IpAddressBinding struct {
 // be bound each time the incarnator boots.
 func (c *Client) CreateIpAddressBinding(cloudId string, ipAddressBinding *IpAddressBindingParam, ipAddressId string) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if ipAddressId == "" {
+		return res, fmt.Errorf("ipAddressId cannot be blank")
+	}
+	if ipAddressBinding == nil {
+		return res, fmt.Errorf("ipAddressBinding is required")
+	}
 	payload := ApiParams{
 		"ip_address_binding": ipAddressBinding,
 	}
@@ -3253,6 +3808,15 @@ func (c *Client) CreateIpAddressBinding(cloudId string, ipAddressBinding *IpAddr
 // DELETE api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id(.:format)?
 // <no description>
 func (c *Client) DestroyIpAddressBinding(cloudId string, id string, ipAddressId string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if ipAddressId == "" {
+		return fmt.Errorf("ipAddressId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/ip_addresses/"+ipAddressId+"/ip_address_bindings/"+id, body)
@@ -3274,15 +3838,22 @@ func (c *Client) DestroyIpAddressBinding(cloudId string, id string, ipAddressId 
 // 	filter
 func (c *Client) IndexIpAddressBindings(cloudId string, ipAddressId string, options ApiParams) ([]IpAddressBinding, error) {
 	var res []IpAddressBinding
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if ipAddressId == "" {
+		return res, fmt.Errorf("ipAddressId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/ip_addresses/"+ipAddressId+"/ip_address_bindings", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -3303,6 +3874,15 @@ func (c *Client) IndexIpAddressBindings(cloudId string, ipAddressId string, opti
 // Show information about a single ip address binding.
 func (c *Client) ShowIpAddressBinding(cloudId string, id string, ipAddressId string) (*IpAddressBinding, error) {
 	var res *IpAddressBinding
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if ipAddressId == "" {
+		return res, fmt.Errorf("ipAddressId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/ip_addresses/"+ipAddressId+"/ip_address_bindings/"+id, body)
@@ -3345,6 +3925,21 @@ type MonitoringMetric struct {
 // 	start: An integer number of seconds from current time. e.g. -300
 func (c *Client) DataMonitoringMetric(cloudId string, end string, id string, instanceId string, start string) (map[string]string, error) {
 	var res map[string]string
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
+	if end == "" {
+		return res, fmt.Errorf("end is required")
+	}
+	if start == "" {
+		return res, fmt.Errorf("start is required")
+	}
 	payload := ApiParams{
 		"end":   end,
 		"start": start,
@@ -3386,6 +3981,12 @@ func (c *Client) DataMonitoringMetric(cloudId string, end string, id string, ins
 // 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
 func (c *Client) IndexMonitoringMetrics(cloudId string, instanceId string, options ApiParams) ([]MonitoringMetric, error) {
 	var res []MonitoringMetric
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -3397,9 +3998,10 @@ func (c *Client) IndexMonitoringMetrics(cloudId string, instanceId string, optio
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
@@ -3427,6 +4029,15 @@ func (c *Client) IndexMonitoringMetrics(cloudId string, instanceId string, optio
 // 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
 func (c *Client) ShowMonitoringMetric(cloudId string, id string, instanceId string, options ApiParams) (*MonitoringMetric, error) {
 	var res *MonitoringMetric
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -3470,6 +4081,12 @@ type MultiCloudImage struct {
 // POST api/multi_cloud_images/:id/clone(.:format)?
 // Clones a given MultiCloudImage.
 func (c *Client) CloneMultiCloudImage(id string, multiCloudImage *MultiCloudImageParam) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if multiCloudImage == nil {
+		return fmt.Errorf("multiCloudImage is required")
+	}
 	payload := ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
@@ -3497,6 +4114,12 @@ func (c *Client) CloneMultiCloudImage(id string, multiCloudImage *MultiCloudImag
 // Commits a given MultiCloudImage. Only HEAD revisions can be committed.
 // 	commitMessage: The message associated with the commit.
 func (c *Client) CommitMultiCloudImage(commitMessage string, id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if commitMessage == "" {
+		return fmt.Errorf("commitMessage is required")
+	}
 	payload := ApiParams{
 		"commit_message": commitMessage,
 	}
@@ -3524,6 +4147,12 @@ func (c *Client) CommitMultiCloudImage(commitMessage string, id string) error {
 // Creates a new MultiCloudImage with the given parameters.
 func (c *Client) CreateMultiCloudImage(multiCloudImage *MultiCloudImageParam2, serverTemplateId string) (Href, error) {
 	var res Href
+	if serverTemplateId == "" {
+		return res, fmt.Errorf("serverTemplateId cannot be blank")
+	}
+	if multiCloudImage == nil {
+		return res, fmt.Errorf("multiCloudImage is required")
+	}
 	payload := ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
@@ -3555,6 +4184,12 @@ func (c *Client) CreateMultiCloudImage(multiCloudImage *MultiCloudImageParam2, s
 // DELETE api/server_templates/:server_template_id/multi_cloud_images/:id(.:format)?
 // Deletes a given MultiCloudImage.
 func (c *Client) DestroyMultiCloudImage(id string, serverTemplateId string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverTemplateId == "" {
+		return fmt.Errorf("serverTemplateId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/server_templates/"+serverTemplateId+"/multi_cloud_images/"+id, body)
@@ -3576,15 +4211,19 @@ func (c *Client) DestroyMultiCloudImage(id string, serverTemplateId string) erro
 // 	filter
 func (c *Client) IndexMultiCloudImages(serverTemplateId string, options ApiParams) ([]MultiCloudImage, error) {
 	var res []MultiCloudImage
+	if serverTemplateId == "" {
+		return res, fmt.Errorf("serverTemplateId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_templates/"+serverTemplateId+"/multi_cloud_images", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -3605,6 +4244,12 @@ func (c *Client) IndexMultiCloudImages(serverTemplateId string, options ApiParam
 // Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.
 func (c *Client) ShowMultiCloudImage(id string, serverTemplateId string) (*MultiCloudImage, error) {
 	var res *MultiCloudImage
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if serverTemplateId == "" {
+		return res, fmt.Errorf("serverTemplateId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_templates/"+serverTemplateId+"/multi_cloud_images/"+id, body)
@@ -3630,6 +4275,15 @@ func (c *Client) ShowMultiCloudImage(id string, serverTemplateId string) (*Multi
 // Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).
 // Currently, the attributes you can update are only the 'direct' attributes of a server template.
 func (c *Client) UpdateMultiCloudImage(id string, multiCloudImage *MultiCloudImageParam, serverTemplateId string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverTemplateId == "" {
+		return fmt.Errorf("serverTemplateId cannot be blank")
+	}
+	if multiCloudImage == nil {
+		return fmt.Errorf("multiCloudImage is required")
+	}
 	payload := ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
@@ -3666,6 +4320,12 @@ type MultiCloudImageSetting struct {
 // Creates a new setting for an existing MultiCloudImage.
 func (c *Client) CreateMultiCloudImageSetting(multiCloudImageId string, multiCloudImageSetting *MultiCloudImageSettingParam) (Href, error) {
 	var res Href
+	if multiCloudImageId == "" {
+		return res, fmt.Errorf("multiCloudImageId cannot be blank")
+	}
+	if multiCloudImageSetting == nil {
+		return res, fmt.Errorf("multiCloudImageSetting is required")
+	}
 	payload := ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
@@ -3697,6 +4357,12 @@ func (c *Client) CreateMultiCloudImageSetting(multiCloudImageId string, multiClo
 // DELETE api/multi_cloud_images/:multi_cloud_image_id/settings/:id(.:format)?
 // Deletes a MultiCloudImage setting.
 func (c *Client) DestroyMultiCloudImageSetting(id string, multiCloudImageId string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if multiCloudImageId == "" {
+		return fmt.Errorf("multiCloudImageId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/multi_cloud_images/"+multiCloudImageId+"/settings/"+id, body)
@@ -3718,15 +4384,19 @@ func (c *Client) DestroyMultiCloudImageSetting(id string, multiCloudImageId stri
 // 	filter
 func (c *Client) IndexMultiCloudImageSettings(multiCloudImageId string, options ApiParams) ([]MultiCloudImageSetting, error) {
 	var res []MultiCloudImageSetting
+	if multiCloudImageId == "" {
+		return res, fmt.Errorf("multiCloudImageId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/multi_cloud_images/"+multiCloudImageId+"/settings", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -3747,6 +4417,12 @@ func (c *Client) IndexMultiCloudImageSettings(multiCloudImageId string, options 
 // Show information about a single MultiCloudImage setting.
 func (c *Client) ShowMultiCloudImageSetting(id string, multiCloudImageId string) (*MultiCloudImageSetting, error) {
 	var res *MultiCloudImageSetting
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if multiCloudImageId == "" {
+		return res, fmt.Errorf("multiCloudImageId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/multi_cloud_images/"+multiCloudImageId+"/settings/"+id, body)
@@ -3771,6 +4447,15 @@ func (c *Client) ShowMultiCloudImageSetting(id string, multiCloudImageId string)
 // PUT api/multi_cloud_images/:multi_cloud_image_id/settings/:id(.:format)?
 // Updates a settings for a MultiCLoudImage.
 func (c *Client) UpdateMultiCloudImageSetting(id string, multiCloudImageId string, multiCloudImageSetting *MultiCloudImageSettingParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if multiCloudImageId == "" {
+		return fmt.Errorf("multiCloudImageId cannot be blank")
+	}
+	if multiCloudImageSetting == nil {
+		return fmt.Errorf("multiCloudImageSetting is required")
+	}
 	payload := ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
@@ -3812,6 +4497,9 @@ type Network struct {
 // Creates a new network.
 func (c *Client) CreateNetwork(network *NetworkParam) (Href, error) {
 	var res Href
+	if network == nil {
+		return res, fmt.Errorf("network is required")
+	}
 	payload := ApiParams{
 		"network": network,
 	}
@@ -3843,6 +4531,9 @@ func (c *Client) CreateNetwork(network *NetworkParam) (Href, error) {
 // DELETE api/networks/:id(.:format)?
 // Deletes the given network(s).
 func (c *Client) DestroyNetwork(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/networks/"+id, body)
@@ -3870,9 +4561,10 @@ func (c *Client) IndexNetworks(options ApiParams) ([]Network, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -3893,6 +4585,9 @@ func (c *Client) IndexNetworks(options ApiParams) ([]Network, error) {
 // Shows attributes of a single network.
 func (c *Client) ShowNetwork(id string) (*Network, error) {
 	var res *Network
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/networks/"+id, body)
@@ -3917,6 +4612,12 @@ func (c *Client) ShowNetwork(id string) (*Network, error) {
 // PUT api/networks/:id(.:format)?
 // Updates the given network.
 func (c *Client) UpdateNetwork(id string, network *NetworkParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if network == nil {
+		return fmt.Errorf("network is required")
+	}
 	payload := ApiParams{
 		"network": network,
 	}
@@ -3959,6 +4660,9 @@ type NetworkGateway struct {
 // Create a new NetworkGateway.
 func (c *Client) CreateNetworkGateway(networkGateway *NetworkGatewayParam) (Href, error) {
 	var res Href
+	if networkGateway == nil {
+		return res, fmt.Errorf("networkGateway is required")
+	}
 	payload := ApiParams{
 		"network_gateway": networkGateway,
 	}
@@ -3990,6 +4694,9 @@ func (c *Client) CreateNetworkGateway(networkGateway *NetworkGatewayParam) (Href
 // DELETE api/network_gateways/:id(.:format)?
 // Delete an existing NetworkGateway.
 func (c *Client) DestroyNetworkGateway(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/network_gateways/"+id, body)
@@ -4017,9 +4724,10 @@ func (c *Client) IndexNetworkGateways(options ApiParams) ([]NetworkGateway, erro
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -4040,6 +4748,9 @@ func (c *Client) IndexNetworkGateways(options ApiParams) ([]NetworkGateway, erro
 // Show information about a single NetworkGateway.
 func (c *Client) ShowNetworkGateway(id string) (*NetworkGateway, error) {
 	var res *NetworkGateway
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/network_gateways/"+id, body)
@@ -4064,6 +4775,12 @@ func (c *Client) ShowNetworkGateway(id string) (*NetworkGateway, error) {
 // PUT api/network_gateways/:id(.:format)?
 // Update an existing NetworkGateway.
 func (c *Client) UpdateNetworkGateway(id string, networkGateway *NetworkGatewayParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if networkGateway == nil {
+		return fmt.Errorf("networkGateway is required")
+	}
 	payload := ApiParams{
 		"network_gateway": networkGateway,
 	}
@@ -4114,6 +4831,9 @@ type NetworkOptionGroup struct {
 // Create a new NetworkOptionGroup.
 func (c *Client) CreateNetworkOptionGroup(networkOptionGroup *NetworkOptionGroupParam) (Href, error) {
 	var res Href
+	if networkOptionGroup == nil {
+		return res, fmt.Errorf("networkOptionGroup is required")
+	}
 	payload := ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
@@ -4145,6 +4865,9 @@ func (c *Client) CreateNetworkOptionGroup(networkOptionGroup *NetworkOptionGroup
 // DELETE api/network_option_groups/:id(.:format)?
 // Delete an existing NetworkOptionGroup.
 func (c *Client) DestroyNetworkOptionGroup(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/network_option_groups/"+id, body)
@@ -4172,9 +4895,10 @@ func (c *Client) IndexNetworkOptionGroups(options ApiParams) ([]NetworkOptionGro
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -4195,6 +4919,9 @@ func (c *Client) IndexNetworkOptionGroups(options ApiParams) ([]NetworkOptionGro
 // Show information about a single NetworkOptionGroup.
 func (c *Client) ShowNetworkOptionGroup(id string) (*NetworkOptionGroup, error) {
 	var res *NetworkOptionGroup
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/network_option_groups/"+id, body)
@@ -4219,6 +4946,12 @@ func (c *Client) ShowNetworkOptionGroup(id string) (*NetworkOptionGroup, error) 
 // PUT api/network_option_groups/:id(.:format)?
 // Update an existing NetworkOptionGroup.
 func (c *Client) UpdateNetworkOptionGroup(id string, networkOptionGroup *NetworkOptionGroupParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if networkOptionGroup == nil {
+		return fmt.Errorf("networkOptionGroup is required")
+	}
 	payload := ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
@@ -4268,6 +5001,9 @@ type NetworkOptionGroupAttachment struct {
 // Create a new NetworkOptionGroupAttachment.
 func (c *Client) CreateNetworkOptionGroupAttachment(networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam) (Href, error) {
 	var res Href
+	if networkOptionGroupAttachment == nil {
+		return res, fmt.Errorf("networkOptionGroupAttachment is required")
+	}
 	payload := ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
@@ -4299,6 +5035,9 @@ func (c *Client) CreateNetworkOptionGroupAttachment(networkOptionGroupAttachment
 // DELETE api/network_option_group_attachments/:id(.:format)?
 // Delete an existing NetworkOptionGroupAttachment.
 func (c *Client) DestroyNetworkOptionGroupAttachment(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/network_option_group_attachments/"+id, body)
@@ -4327,11 +5066,14 @@ func (c *Client) IndexNetworkOptionGroupAttachments(options ApiParams) ([]Networ
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4353,13 +5095,18 @@ func (c *Client) IndexNetworkOptionGroupAttachments(options ApiParams) ([]Networ
 // 	view
 func (c *Client) ShowNetworkOptionGroupAttachment(id string, options ApiParams) (*NetworkOptionGroupAttachment, error) {
 	var res *NetworkOptionGroupAttachment
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/network_option_group_attachments/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4378,6 +5125,12 @@ func (c *Client) ShowNetworkOptionGroupAttachment(id string, options ApiParams) 
 // PUT api/network_option_group_attachments/:id(.:format)?
 // Update an existing NetworkOptionGroupAttachment.
 func (c *Client) UpdateNetworkOptionGroupAttachment(id string, networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if networkOptionGroupAttachment == nil {
+		return fmt.Errorf("networkOptionGroupAttachment is required")
+	}
 	payload := ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
@@ -4473,6 +5226,9 @@ type Oauth2 struct {
 // 	rsVersion: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
 func (c *Client) CreateOauth2(grantType string, options ApiParams) (map[string]interface{}, error) {
 	var res map[string]interface{}
+	if grantType == "" {
+		return res, fmt.Errorf("grantType is required")
+	}
 	payload := mergeOptionals(ApiParams{
 
 		"grant_type": grantType,
@@ -4528,6 +5284,9 @@ type Permission struct {
 //   http://support.rightscale.com/15-References/Lists/ListofUser_Roles
 func (c *Client) CreatePermission(permission *PermissionParam) (Href, error) {
 	var res Href
+	if permission == nil {
+		return res, fmt.Errorf("permission is required")
+	}
 	payload := ApiParams{
 		"permission": permission,
 	}
@@ -4567,6 +5326,9 @@ func (c *Client) CreatePermission(permission *PermissionParam) (Href, error) {
 // When deprovisioning user, always destroy the observer permission LAST;
 // destroying it while the user has other permissions will result in an error.
 func (c *Client) DestroyPermission(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/permissions/"+id, body)
@@ -4594,9 +5356,10 @@ func (c *Client) IndexPermissions(options ApiParams) ([]Permission, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -4617,6 +5380,9 @@ func (c *Client) IndexPermissions(options ApiParams) ([]Permission, error) {
 // Show information about a single permission.
 func (c *Client) ShowPermission(id string) (*Permission, error) {
 	var res *Permission
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/permissions/"+id, body)
@@ -4655,6 +5421,9 @@ type PlacementGroup struct {
 // Creates a PlacementGroup.
 func (c *Client) CreatePlacementGroup(placementGroup *PlacementGroupParam) (Href, error) {
 	var res Href
+	if placementGroup == nil {
+		return res, fmt.Errorf("placementGroup is required")
+	}
 	payload := ApiParams{
 		"placement_group": placementGroup,
 	}
@@ -4686,6 +5455,9 @@ func (c *Client) CreatePlacementGroup(placementGroup *PlacementGroupParam) (Href
 // DELETE api/placement_groups/:id(.:format)?
 // Destroys a PlacementGroup.
 func (c *Client) DestroyPlacementGroup(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/placement_groups/"+id, body)
@@ -4714,11 +5486,14 @@ func (c *Client) IndexPlacementGroups(options ApiParams) ([]PlacementGroup, erro
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4740,13 +5515,18 @@ func (c *Client) IndexPlacementGroups(options ApiParams) ([]PlacementGroup, erro
 // 	view
 func (c *Client) ShowPlacementGroup(id string, options ApiParams) (*PlacementGroup, error) {
 	var res *PlacementGroup
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/placement_groups/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4776,6 +5556,9 @@ type Preference struct {
 // DELETE api/preferences/:id(.:format)?
 // Deletes the given preference.
 func (c *Client) DestroyPreference(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/preferences/"+id, body)
@@ -4803,9 +5586,10 @@ func (c *Client) IndexPreferences(options ApiParams) ([]Preference, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -4826,6 +5610,9 @@ func (c *Client) IndexPreferences(options ApiParams) ([]Preference, error) {
 // Shows a single preference.
 func (c *Client) ShowPreference(id string) (*Preference, error) {
 	var res *Preference
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/preferences/"+id, body)
@@ -4852,6 +5639,12 @@ func (c *Client) ShowPreference(id string) (*Preference, error) {
 // Otherwise, creates new preference.
 // Note: If create, will return '201 Created' and the location of the new preference.
 func (c *Client) UpdatePreference(id string, preference *PreferenceParam) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if preference == nil {
+		return fmt.Errorf("preference is required")
+	}
 	payload := ApiParams{
 		"preference": preference,
 	}
@@ -4897,6 +5690,9 @@ type Publication struct {
 // Imports the given publication and its subordinates to this account.
 // Only non-HEAD revisions that are shared with the account can be imported.
 func (c *Client) ImportPublication(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/publications/"+id+"/import", body)
@@ -4925,11 +5721,14 @@ func (c *Client) IndexPublications(options ApiParams) ([]Publication, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4951,13 +5750,18 @@ func (c *Client) IndexPublications(options ApiParams) ([]Publication, error) {
 // 	view
 func (c *Client) ShowPublication(id string, options ApiParams) (*Publication, error) {
 	var res *Publication
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/publications/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -4996,13 +5800,18 @@ type PublicationLineage struct {
 // 	view
 func (c *Client) ShowPublicationLineage(id string, options ApiParams) (*PublicationLineage, error) {
 	var res *PublicationLineage
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/publication_lineages/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5039,6 +5848,12 @@ type RecurringVolumeAttachment struct {
 // Creates a new recurring volume attachment.
 func (c *Client) CreateRecurringVolumeAttachment(cloudId string, recurringVolumeAttachment *RecurringVolumeAttachmentParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if recurringVolumeAttachment == nil {
+		return res, fmt.Errorf("recurringVolumeAttachment is required")
+	}
 	payload := ApiParams{
 		"recurring_volume_attachment": recurringVolumeAttachment,
 	}
@@ -5070,6 +5885,12 @@ func (c *Client) CreateRecurringVolumeAttachment(cloudId string, recurringVolume
 // DELETE api/clouds/:cloud_id/recurring_volume_attachments/:id(.:format)?
 // Deletes a given recurring volume attachment.
 func (c *Client) DestroyRecurringVolumeAttachment(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/recurring_volume_attachments/"+id, body)
@@ -5092,17 +5913,23 @@ func (c *Client) DestroyRecurringVolumeAttachment(cloudId string, id string) err
 // 	view
 func (c *Client) IndexRecurringVolumeAttachments(cloudId string, options ApiParams) ([]RecurringVolumeAttachment, error) {
 	var res []RecurringVolumeAttachment
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/recurring_volume_attachments", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5124,13 +5951,21 @@ func (c *Client) IndexRecurringVolumeAttachments(cloudId string, options ApiPara
 // 	view
 func (c *Client) ShowRecurringVolumeAttachment(cloudId string, id string, options ApiParams) (*RecurringVolumeAttachment, error) {
 	var res *RecurringVolumeAttachment
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/recurring_volume_attachments/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5178,6 +6013,12 @@ type Repository struct {
 // 	repositoryCommitReference: Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.
 // 	withDependencies: A flag indicating whether dependencies should automatically be imported.
 func (c *Client) CookbookImportRepository(assetHrefs []string, id string, options ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if len(assetHrefs) == 0 {
+		return fmt.Errorf("assetHrefs is required")
+	}
 	payload := mergeOptionals(ApiParams{
 		"asset_hrefs": assetHrefs,
 	}, options)
@@ -5212,6 +6053,15 @@ func (c *Client) CookbookImportRepository(assetHrefs []string, id string, option
 // 	namespace: The namespace to import into.
 func (c *Client) CookbookImportPreviewRepository(assetHrefs []string, id string, namespace string) ([]map[string]string, error) {
 	var res []map[string]string
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if len(assetHrefs) == 0 {
+		return res, fmt.Errorf("assetHrefs is required")
+	}
+	if namespace == "" {
+		return res, fmt.Errorf("namespace is required")
+	}
 	payload := ApiParams{
 		"asset_hrefs": assetHrefs,
 		"namespace":   namespace,
@@ -5261,6 +6111,9 @@ func (c *Client) CookbookImportPreviewRepository(assetHrefs []string, id string,
 
 func (c *Client) CreateRepository(repository *RepositoryParam) (Href, error) {
 	var res Href
+	if repository == nil {
+		return res, fmt.Errorf("repository is required")
+	}
 	payload := ApiParams{
 		"repository": repository,
 	}
@@ -5292,6 +6145,9 @@ func (c *Client) CreateRepository(repository *RepositoryParam) (Href, error) {
 // DELETE api/repositories/:id(.:format)?
 // Deletes the specified Repositories.
 func (c *Client) DestroyRepository(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/repositories/"+id, body)
@@ -5320,11 +6176,14 @@ func (c *Client) IndexRepositories(options ApiParams) ([]Repository, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5347,6 +6206,9 @@ func (c *Client) IndexRepositories(options ApiParams) ([]Repository, error) {
 // -- Optional parameters:
 // 	autoImport: Whether cookbooks should automatically be imported after repositories are fetched.
 func (c *Client) RefetchRepository(id string, options ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -5411,13 +6273,18 @@ func (c *Client) ResolveRepository(options ApiParams) ([]Repository, error) {
 // 	view
 func (c *Client) ShowRepository(id string, options ApiParams) (*Repository, error) {
 	var res *Repository
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/repositories/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5451,6 +6318,12 @@ func (c *Client) ShowRepository(id string, options ApiParams) (*Repository, erro
 // cred:my ssh keycred:svn_1_password
 
 func (c *Client) UpdateRepository(id string, repository *RepositoryParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if repository == nil {
+		return fmt.Errorf("repository is required")
+	}
 	payload := ApiParams{
 		"repository": repository,
 	}
@@ -5496,13 +6369,18 @@ type RepositoryAsset struct {
 // 	view
 func (c *Client) IndexRepositoryAssets(repositoryId string, options ApiParams) ([]RepositoryAsset, error) {
 	var res []RepositoryAsset
+	if repositoryId == "" {
+		return res, fmt.Errorf("repositoryId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/repositories/"+repositoryId+"/repository_assets", body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5527,13 +6405,21 @@ func (c *Client) IndexRepositoryAssets(repositoryId string, options ApiParams) (
 // 	view
 func (c *Client) ShowRepositoryAsset(id string, repositoryId string, options ApiParams) (*RepositoryAsset, error) {
 	var res *RepositoryAsset
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if repositoryId == "" {
+		return res, fmt.Errorf("repositoryId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/repositories/"+repositoryId+"/repository_assets/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5573,6 +6459,12 @@ type RightScript struct {
 // POST api/right_scripts/:id/commit(.:format)?
 // Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
 func (c *Client) CommitRightScript(id string, rightScript *RightScriptParam) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if rightScript == nil {
+		return fmt.Errorf("rightScript is required")
+	}
 	payload := ApiParams{
 		"right_script": rightScript,
 	}
@@ -5615,11 +6507,14 @@ func (c *Client) IndexRightScripts(options ApiParams) ([]RightScript, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -5640,6 +6535,9 @@ func (c *Client) IndexRightScripts(options ApiParams) ([]RightScript, error) {
 // Displays information about a single RightScript.
 func (c *Client) ShowRightScript(id string) (*RightScript, error) {
 	var res *RightScript
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/right_scripts/"+id, body)
@@ -5664,6 +6562,9 @@ func (c *Client) ShowRightScript(id string) (*RightScript, error) {
 // GET api/right_scripts/:id/source(.:format)?
 // Returns the script source for a RightScript
 func (c *Client) ShowSourceRightScript(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/right_scripts/"+id+"/source", body)
@@ -5682,6 +6583,12 @@ func (c *Client) ShowSourceRightScript(id string) error {
 // PUT api/right_scripts/:id(.:format)?
 // Updates RightScript name/description
 func (c *Client) UpdateRightScript(id string, rightScript *RightScriptParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if rightScript == nil {
+		return fmt.Errorf("rightScript is required")
+	}
 	payload := ApiParams{
 		"right_script": rightScript,
 	}
@@ -5708,6 +6615,9 @@ func (c *Client) UpdateRightScript(id string, rightScript *RightScriptParam2) er
 // PUT api/right_scripts/:id/source(.:format)?
 // Updates the source of the given RightScript
 func (c *Client) UpdateSourceRightScript(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("PUT", c.endpoint+"/api/right_scripts/"+id+"/source", body)
@@ -5743,6 +6653,9 @@ type Route struct {
 // Create a new Route.
 func (c *Client) CreateRoute(route *RouteParam) (Href, error) {
 	var res Href
+	if route == nil {
+		return res, fmt.Errorf("route is required")
+	}
 	payload := ApiParams{
 		"route": route,
 	}
@@ -5774,6 +6687,9 @@ func (c *Client) CreateRoute(route *RouteParam) (Href, error) {
 // DELETE api/routes/:id(.:format)?
 // Delete an existing Route.
 func (c *Client) DestroyRoute(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/routes/"+id, body)
@@ -5801,9 +6717,10 @@ func (c *Client) IndexRoutes(options ApiParams) ([]Route, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -5824,6 +6741,9 @@ func (c *Client) IndexRoutes(options ApiParams) ([]Route, error) {
 // Show information about a single Route.
 func (c *Client) ShowRoute(id string) (*Route, error) {
 	var res *Route
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/routes/"+id, body)
@@ -5848,6 +6768,12 @@ func (c *Client) ShowRoute(id string) (*Route, error) {
 // PUT api/routes/:id(.:format)?
 // Update an existing Route.
 func (c *Client) UpdateRoute(id string, route *RouteParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if route == nil {
+		return fmt.Errorf("route is required")
+	}
 	payload := ApiParams{
 		"route": route,
 	}
@@ -5889,6 +6815,9 @@ type RouteTable struct {
 // Create a new RouteTable.
 func (c *Client) CreateRouteTable(routeTable *RouteTableParam) (Href, error) {
 	var res Href
+	if routeTable == nil {
+		return res, fmt.Errorf("routeTable is required")
+	}
 	payload := ApiParams{
 		"route_table": routeTable,
 	}
@@ -5920,6 +6849,9 @@ func (c *Client) CreateRouteTable(routeTable *RouteTableParam) (Href, error) {
 // DELETE api/route_tables/:id(.:format)?
 // Delete an existing RouteTable.
 func (c *Client) DestroyRouteTable(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/route_tables/"+id, body)
@@ -5948,11 +6880,14 @@ func (c *Client) IndexRouteTables(options ApiParams) ([]RouteTable, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5974,13 +6909,18 @@ func (c *Client) IndexRouteTables(options ApiParams) ([]RouteTable, error) {
 // 	view
 func (c *Client) ShowRouteTable(id string, options ApiParams) (*RouteTable, error) {
 	var res *RouteTable
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/route_tables/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -5999,6 +6939,12 @@ func (c *Client) ShowRouteTable(id string, options ApiParams) (*RouteTable, erro
 // PUT api/route_tables/:id(.:format)?
 // Update an existing RouteTable.
 func (c *Client) UpdateRouteTable(id string, routeTable *RouteTableParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if routeTable == nil {
+		return fmt.Errorf("routeTable is required")
+	}
 	payload := ApiParams{
 		"route_table": routeTable,
 	}
@@ -6045,6 +6991,12 @@ type RunnableBinding struct {
 // The resource must be editable.
 func (c *Client) CreateRunnableBinding(runnableBinding *RunnableBindingParam, serverTemplateId string) (Href, error) {
 	var res Href
+	if serverTemplateId == "" {
+		return res, fmt.Errorf("serverTemplateId cannot be blank")
+	}
+	if runnableBinding == nil {
+		return res, fmt.Errorf("runnableBinding is required")
+	}
 	payload := ApiParams{
 		"runnable_binding": runnableBinding,
 	}
@@ -6078,6 +7030,12 @@ func (c *Client) CreateRunnableBinding(runnableBinding *RunnableBindingParam, se
 
 // The resource must be editable.
 func (c *Client) DestroyRunnableBinding(id string, serverTemplateId string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverTemplateId == "" {
+		return fmt.Errorf("serverTemplateId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/server_templates/"+serverTemplateId+"/runnable_bindings/"+id, body)
@@ -6101,13 +7059,18 @@ func (c *Client) DestroyRunnableBinding(id string, serverTemplateId string) erro
 // 	view
 func (c *Client) IndexRunnableBindings(serverTemplateId string, options ApiParams) ([]RunnableBinding, error) {
 	var res []RunnableBinding
+	if serverTemplateId == "" {
+		return res, fmt.Errorf("serverTemplateId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_templates/"+serverTemplateId+"/runnable_bindings", body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6128,6 +7091,12 @@ func (c *Client) IndexRunnableBindings(serverTemplateId string, options ApiParam
 
 // The resource must be editable.
 func (c *Client) MultiUpdateRunnableBindings(runnableBindings []*RunnableBindings, serverTemplateId string) error {
+	if serverTemplateId == "" {
+		return fmt.Errorf("serverTemplateId cannot be blank")
+	}
+	if len(runnableBindings) == 0 {
+		return fmt.Errorf("runnableBindings is required")
+	}
 	payload := ApiParams{
 		"runnable_bindings": runnableBindings,
 	}
@@ -6159,13 +7128,21 @@ func (c *Client) MultiUpdateRunnableBindings(runnableBindings []*RunnableBinding
 // 	view
 func (c *Client) ShowRunnableBinding(id string, serverTemplateId string, options ApiParams) (*RunnableBinding, error) {
 	var res *RunnableBinding
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if serverTemplateId == "" {
+		return res, fmt.Errorf("serverTemplateId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_templates/"+serverTemplateId+"/runnable_bindings/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6198,6 +7175,12 @@ type SecurityGroup struct {
 // Create a security group.
 func (c *Client) CreateSecurityGroup(cloudId string, securityGroup *SecurityGroupParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if securityGroup == nil {
+		return res, fmt.Errorf("securityGroup is required")
+	}
 	payload := ApiParams{
 		"security_group": securityGroup,
 	}
@@ -6229,6 +7212,12 @@ func (c *Client) CreateSecurityGroup(cloudId string, securityGroup *SecurityGrou
 // DELETE api/clouds/:cloud_id/security_groups/:id(.:format)?
 // Delete security group(s)
 func (c *Client) DestroySecurityGroup(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/security_groups/"+id, body)
@@ -6251,17 +7240,23 @@ func (c *Client) DestroySecurityGroup(cloudId string, id string) error {
 // 	view
 func (c *Client) IndexSecurityGroups(cloudId string, options ApiParams) ([]SecurityGroup, error) {
 	var res []SecurityGroup
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/security_groups", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6283,13 +7278,21 @@ func (c *Client) IndexSecurityGroups(cloudId string, options ApiParams) ([]Secur
 // 	view
 func (c *Client) ShowSecurityGroup(cloudId string, id string, options ApiParams) (*SecurityGroup, error) {
 	var res *SecurityGroup
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/security_groups/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6336,6 +7339,9 @@ type SecurityGroupRule struct {
 
 func (c *Client) CreateSecurityGroupRule(securityGroupRule *SecurityGroupRuleParam) (Href, error) {
 	var res Href
+	if securityGroupRule == nil {
+		return res, fmt.Errorf("securityGroupRule is required")
+	}
 	payload := ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
@@ -6367,6 +7373,9 @@ func (c *Client) CreateSecurityGroupRule(securityGroupRule *SecurityGroupRulePar
 // DELETE api/security_group_rules/:id(.:format)?
 // Delete security group rule(s)
 func (c *Client) DestroySecurityGroupRule(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/security_group_rules/"+id, body)
@@ -6394,7 +7403,9 @@ func (c *Client) IndexSecurityGroupRules(options ApiParams) ([]SecurityGroupRule
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6416,13 +7427,18 @@ func (c *Client) IndexSecurityGroupRules(options ApiParams) ([]SecurityGroupRule
 // 	view
 func (c *Client) ShowSecurityGroupRule(id string, options ApiParams) (*SecurityGroupRule, error) {
 	var res *SecurityGroupRule
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/security_group_rules/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6441,6 +7457,12 @@ func (c *Client) ShowSecurityGroupRule(id string, options ApiParams) (*SecurityG
 // PUT api/security_group_rules/:id(.:format)?
 
 func (c *Client) UpdateSecurityGroupRule(id string, securityGroupRule *SecurityGroupRuleParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if securityGroupRule == nil {
+		return fmt.Errorf("securityGroupRule is required")
+	}
 	payload := ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
@@ -6492,6 +7514,9 @@ type Server struct {
 // POST api/servers/:id/clone(.:format)?
 // Clones a given server.
 func (c *Client) CloneServer(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/servers/"+id+"/clone", body)
@@ -6511,6 +7536,9 @@ func (c *Client) CloneServer(id string) error {
 // Creates a new server, and configures its corresponding "next" instance with the received parameters.
 func (c *Client) CreateServer(server *ServerParam) (Href, error) {
 	var res Href
+	if server == nil {
+		return res, fmt.Errorf("server is required")
+	}
 	payload := ApiParams{
 		"server": server,
 	}
@@ -6542,6 +7570,9 @@ func (c *Client) CreateServer(server *ServerParam) (Href, error) {
 // DELETE api/servers/:id(.:format)?
 // Deletes a given server.
 func (c *Client) DestroyServer(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/servers/"+id, body)
@@ -6579,11 +7610,14 @@ func (c *Client) IndexServers(options ApiParams) ([]Server, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6603,6 +7637,9 @@ func (c *Client) IndexServers(options ApiParams) ([]Server, error) {
 // Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
 // URL of this servers next_instance. See Instances#launch for details.
 func (c *Client) LaunchServer(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/servers/"+id+"/launch", body)
@@ -6624,13 +7661,18 @@ func (c *Client) LaunchServer(id string) error {
 // 	view
 func (c *Client) ShowServer(id string, options ApiParams) (*Server, error) {
 	var res *Server
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/servers/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6650,6 +7692,9 @@ func (c *Client) ShowServer(id string, options ApiParams) (*Server, error) {
 // Terminates the current instance of this server. This function is equivalent to invoking the terminate action on the
 // URL of this servers current_instance. See Instances#terminate for details.
 func (c *Client) TerminateServer(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/servers/"+id+"/teminate", body)
@@ -6668,6 +7713,12 @@ func (c *Client) TerminateServer(id string) error {
 // PUT api/servers/:id(.:format)?
 // Updates attributes of a single server.
 func (c *Client) UpdateServer(id string, server *ServerParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if server == nil {
+		return fmt.Errorf("server is required")
+	}
 	payload := ApiParams{
 		"server": server,
 	}
@@ -6694,6 +7745,9 @@ func (c *Client) UpdateServer(id string, server *ServerParam2) error {
 // POST api/servers/wrap_instance(.:format)?
 // Wrap an existing instance and set current instance for new server
 func (c *Client) WrapInstanceServer(server *ServerParam3) error {
+	if server == nil {
+		return fmt.Errorf("server is required")
+	}
 	payload := ApiParams{
 		"server": server,
 	}
@@ -6744,6 +7798,9 @@ type ServerArray struct {
 // POST api/server_arrays/:id/clone(.:format)?
 // Clones a given server array.
 func (c *Client) CloneServerArray(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/server_arrays/"+id+"/clone", body)
@@ -6763,6 +7820,9 @@ func (c *Client) CloneServerArray(id string) error {
 // Creates a new server array, and configures its corresponding "next" instance with the received parameters.
 func (c *Client) CreateServerArray(serverArray *ServerArrayParam) (Href, error) {
 	var res Href
+	if serverArray == nil {
+		return res, fmt.Errorf("serverArray is required")
+	}
 	payload := ApiParams{
 		"server_array": serverArray,
 	}
@@ -6796,6 +7856,9 @@ func (c *Client) CreateServerArray(serverArray *ServerArrayParam) (Href, error) 
 // This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
 // latter will include 'next_instance' as well.
 func (c *Client) CurrentInstancesServerArray(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_arrays/"+id+"/current_instances", body)
@@ -6814,6 +7877,9 @@ func (c *Client) CurrentInstancesServerArray(id string) error {
 // DELETE api/server_arrays/:id(.:format)?
 // Deletes a given server array.
 func (c *Client) DestroyServerArray(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/server_arrays/"+id, body)
@@ -6849,11 +7915,14 @@ func (c *Client) IndexServerArrays(options ApiParams) ([]ServerArray, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6873,6 +7942,9 @@ func (c *Client) IndexServerArrays(options ApiParams) ([]ServerArray, error) {
 // Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
 // URL of this server_array's next_instance. See Instances#launch for details.
 func (c *Client) LaunchServerArray(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/server_arrays/"+id+"/launch", body)
@@ -6893,6 +7965,9 @@ func (c *Client) LaunchServerArray(id string) error {
 // (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
 // a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)
 func (c *Client) MultiRunExecutableServerArrays(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/server_arrays/"+id+"/multi_run_executable", body)
@@ -6913,6 +7988,9 @@ func (c *Client) MultiRunExecutableServerArrays(id string) error {
 // the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,
 // invoke the action "terminate" directly on the instance (see Instances#terminate)
 func (c *Client) MultiTerminateServerArrays(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/server_arrays/"+id+"/multi_terminate", body)
@@ -6934,13 +8012,18 @@ func (c *Client) MultiTerminateServerArrays(id string) error {
 // 	view
 func (c *Client) ShowServerArray(id string, options ApiParams) (*ServerArray, error) {
 	var res *ServerArray
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_arrays/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -6959,6 +8042,12 @@ func (c *Client) ShowServerArray(id string, options ApiParams) (*ServerArray, er
 // PUT api/server_arrays/:id(.:format)?
 // Updates attributes of a single server array.
 func (c *Client) UpdateServerArray(id string, serverArray *ServerArrayParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverArray == nil {
+		return fmt.Errorf("serverArray is required")
+	}
 	payload := ApiParams{
 		"server_array": serverArray,
 	}
@@ -7003,6 +8092,12 @@ type ServerTemplate struct {
 // POST api/server_templates/:id/clone(.:format)?
 // Clones a given ServerTemplate.
 func (c *Client) CloneServerTemplate(id string, serverTemplate *ServerTemplateParam) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverTemplate == nil {
+		return fmt.Errorf("serverTemplate is required")
+	}
 	payload := ApiParams{
 		"server_template": serverTemplate,
 	}
@@ -7032,6 +8127,18 @@ func (c *Client) CloneServerTemplate(id string, serverTemplate *ServerTemplatePa
 // 	commitMessage: The message associated with the commit.
 // 	freezeRepositories: Freeze the repositories.
 func (c *Client) CommitServerTemplate(commitHeadDependencies string, commitMessage string, freezeRepositories string, id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if commitHeadDependencies == "" {
+		return fmt.Errorf("commitHeadDependencies is required")
+	}
+	if commitMessage == "" {
+		return fmt.Errorf("commitMessage is required")
+	}
+	if freezeRepositories == "" {
+		return fmt.Errorf("freezeRepositories is required")
+	}
 	payload := ApiParams{
 		"commit_head_dependencies": commitHeadDependencies,
 		"commit_message":           commitMessage,
@@ -7061,6 +8168,9 @@ func (c *Client) CommitServerTemplate(commitHeadDependencies string, commitMessa
 // Creates a new ServerTemplate with the given parameters.
 func (c *Client) CreateServerTemplate(serverTemplate *ServerTemplateParam2) (Href, error) {
 	var res Href
+	if serverTemplate == nil {
+		return res, fmt.Errorf("serverTemplate is required")
+	}
 	payload := ApiParams{
 		"server_template": serverTemplate,
 	}
@@ -7092,6 +8202,9 @@ func (c *Client) CreateServerTemplate(serverTemplate *ServerTemplateParam2) (Hre
 // DELETE api/server_templates/:id(.:format)?
 // Deletes a given ServerTemplate.
 func (c *Client) DestroyServerTemplate(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/server_templates/"+id, body)
@@ -7114,6 +8227,9 @@ func (c *Client) DestroyServerTemplate(id string) error {
 // a difference between it and the latest committed revision in the same lineage.
 func (c *Client) DetectChangesInHeadServerTemplate(id string) ([]map[string]string, error) {
 	var res []map[string]string
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/server_templates/"+id+"/detect_changes_in_head", body)
@@ -7151,11 +8267,14 @@ func (c *Client) IndexServerTemplates(options ApiParams) ([]ServerTemplate, erro
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7180,6 +8299,15 @@ func (c *Client) IndexServerTemplates(options ApiParams) ([]ServerTemplate, erro
 // 	categories: List of Categories.
 // 	emailComments: Email me when a user comments on this ServerTemplate.
 func (c *Client) PublishServerTemplate(accountGroupHrefs []string, descriptions *Descriptions, id string, options ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if len(accountGroupHrefs) == 0 {
+		return fmt.Errorf("accountGroupHrefs is required")
+	}
+	if descriptions == nil {
+		return fmt.Errorf("descriptions is required")
+	}
 	payload := mergeOptionals(ApiParams{
 		"account_group_hrefs": accountGroupHrefs,
 
@@ -7213,6 +8341,9 @@ func (c *Client) PublishServerTemplate(accountGroupHrefs []string, descriptions 
 // attachments, will also be reported.
 func (c *Client) ResolveServerTemplate(id string) ([]map[string]string, error) {
 	var res []map[string]string
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/server_templates/"+id+"/resolve", body)
@@ -7243,13 +8374,18 @@ func (c *Client) ResolveServerTemplate(id string) ([]map[string]string, error) {
 // 	view
 func (c *Client) ShowServerTemplate(id string, options ApiParams) (*ServerTemplate, error) {
 	var res *ServerTemplate
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_templates/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7287,6 +8423,15 @@ func (c *Client) ShowServerTemplate(id string, options ApiParams) (*ServerTempla
 // 	sourceRepositoryHref: The repository whose cookbook attachments are to be replaced.
 // 	targetRepositoryHref: The repository whose cookbook attachments are to be utilized.
 func (c *Client) SwapRepositoryServerTemplate(id string, sourceRepositoryHref string, targetRepositoryHref string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if sourceRepositoryHref == "" {
+		return fmt.Errorf("sourceRepositoryHref is required")
+	}
+	if targetRepositoryHref == "" {
+		return fmt.Errorf("targetRepositoryHref is required")
+	}
 	payload := ApiParams{
 		"source_repository_href": sourceRepositoryHref,
 		"target_repository_href": targetRepositoryHref,
@@ -7316,6 +8461,12 @@ func (c *Client) SwapRepositoryServerTemplate(id string, sourceRepositoryHref st
 // Currently, the attributes you can update are only the 'direct' attributes of a server template. To
 // manage multi cloud images of a ServerTemplate, please see the resource 'ServerTemplateMultiCloudImages'.
 func (c *Client) UpdateServerTemplate(id string, serverTemplate *ServerTemplateParam) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if serverTemplate == nil {
+		return fmt.Errorf("serverTemplate is required")
+	}
 	payload := ApiParams{
 		"server_template": serverTemplate,
 	}
@@ -7355,6 +8506,9 @@ type ServerTemplateMultiCloudImage struct {
 // Creates a new ServerTemplateMultiCloudImage with the given parameters.
 func (c *Client) CreateServerTemplateMultiCloudImage(serverTemplateMultiCloudImage *ServerTemplateMultiCloudImageParam) (Href, error) {
 	var res Href
+	if serverTemplateMultiCloudImage == nil {
+		return res, fmt.Errorf("serverTemplateMultiCloudImage is required")
+	}
 	payload := ApiParams{
 		"server_template_multi_cloud_image": serverTemplateMultiCloudImage,
 	}
@@ -7386,6 +8540,9 @@ func (c *Client) CreateServerTemplateMultiCloudImage(serverTemplateMultiCloudIma
 // DELETE api/server_template_multi_cloud_images/:id(.:format)?
 // Deletes a given ServerTemplateMultiCloudImage.
 func (c *Client) DestroyServerTemplateMultiCloudImage(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/server_template_multi_cloud_images/"+id, body)
@@ -7414,11 +8571,14 @@ func (c *Client) IndexServerTemplateMultiCloudImages(options ApiParams) ([]Serve
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7437,6 +8597,9 @@ func (c *Client) IndexServerTemplateMultiCloudImages(options ApiParams) ([]Serve
 // POST api/server_template_multi_cloud_images/:id/make_default(.:format)?
 // Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.
 func (c *Client) MakeDefaultServerTemplateMultiCloudImage(id string) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("POST", c.endpoint+"/api/server_template_multi_cloud_images/"+id+"/make_default", body)
@@ -7458,13 +8621,18 @@ func (c *Client) MakeDefaultServerTemplateMultiCloudImage(id string) error {
 // 	view
 func (c *Client) ShowServerTemplateMultiCloudImage(id string, options ApiParams) (*ServerTemplateMultiCloudImage, error) {
 	var res *ServerTemplateMultiCloudImage
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/server_template_multi_cloud_images/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7530,7 +8698,9 @@ func (c *Client) AccountsSession(options ApiParams) ([]Account, error) {
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	req.Header.Set("Content-Type", "application/json")
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -7563,6 +8733,15 @@ func (c *Client) AccountsSession(options ApiParams) ([]Account, error) {
 // 	password: The corresponding password.
 func (c *Client) CreateSession(accountHref string, email string, password string) (Href, error) {
 	var res Href
+	if accountHref == "" {
+		return res, fmt.Errorf("accountHref is required")
+	}
+	if email == "" {
+		return res, fmt.Errorf("email is required")
+	}
+	if password == "" {
+		return res, fmt.Errorf("password is required")
+	}
 	payload := ApiParams{
 		"account_href": accountHref,
 		"email":        email,
@@ -7611,6 +8790,12 @@ func (c *Client) CreateSession(accountHref string, email string, password string
 // 	accountHref: The account href for which the session needs to be created.
 // 	instanceToken: The instance token to login with.
 func (c *Client) CreateInstanceSessionSession(accountHref string, instanceToken string) error {
+	if accountHref == "" {
+		return fmt.Errorf("accountHref is required")
+	}
+	if instanceToken == "" {
+		return fmt.Errorf("instanceToken is required")
+	}
 	payload := ApiParams{
 		"account_href":   accountHref,
 		"instance_token": instanceToken,
@@ -7711,6 +8896,12 @@ type SshKey struct {
 // Creates a new ssh key.
 func (c *Client) CreateSshKey(cloudId string, sshKey *SshKeyParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if sshKey == nil {
+		return res, fmt.Errorf("sshKey is required")
+	}
 	payload := ApiParams{
 		"ssh_key": sshKey,
 	}
@@ -7742,6 +8933,12 @@ func (c *Client) CreateSshKey(cloudId string, sshKey *SshKeyParam) (Href, error)
 // DELETE api/clouds/:cloud_id/ssh_keys/:id(.:format)?
 // Deletes a given ssh key.
 func (c *Client) DestroySshKey(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/ssh_keys/"+id, body)
@@ -7764,17 +8961,23 @@ func (c *Client) DestroySshKey(cloudId string, id string) error {
 // 	view
 func (c *Client) IndexSshKeys(cloudId string, options ApiParams) ([]SshKey, error) {
 	var res []SshKey
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/ssh_keys", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7796,13 +8999,21 @@ func (c *Client) IndexSshKeys(cloudId string, options ApiParams) ([]SshKey, erro
 // 	view
 func (c *Client) ShowSshKey(cloudId string, id string, options ApiParams) (*SshKey, error) {
 	var res *SshKey
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/ssh_keys/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -7837,6 +9048,15 @@ type Subnet struct {
 // Creates a new subnet.
 func (c *Client) CreateSubnet(cloudId string, instanceId string, subnet *SubnetParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
+	if subnet == nil {
+		return res, fmt.Errorf("subnet is required")
+	}
 	payload := ApiParams{
 		"subnet": subnet,
 	}
@@ -7868,6 +9088,15 @@ func (c *Client) CreateSubnet(cloudId string, instanceId string, subnet *SubnetP
 // DELETE api/clouds/:cloud_id/instances/:instance_id/subnets/:id(.:format)?
 // Deletes the given subnet(s).
 func (c *Client) DestroySubnet(cloudId string, id string, instanceId string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/subnets/"+id, body)
@@ -7889,15 +9118,22 @@ func (c *Client) DestroySubnet(cloudId string, id string, instanceId string) err
 // 	filter
 func (c *Client) IndexSubnets(cloudId string, instanceId string, options ApiParams) ([]Subnet, error) {
 	var res []Subnet
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/subnets", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -7918,6 +9154,15 @@ func (c *Client) IndexSubnets(cloudId string, instanceId string, options ApiPara
 // Shows attributes of a single subnet.
 func (c *Client) ShowSubnet(cloudId string, id string, instanceId string) (*Subnet, error) {
 	var res *Subnet
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/subnets/"+id, body)
@@ -7942,6 +9187,18 @@ func (c *Client) ShowSubnet(cloudId string, id string, instanceId string) (*Subn
 // PUT api/clouds/:cloud_id/instances/:instance_id/subnets/:id(.:format)?
 // Updates name and description for the current subnet.
 func (c *Client) UpdateSubnet(cloudId string, id string, instanceId string, subnet *SubnetParam2) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
+	if subnet == nil {
+		return fmt.Errorf("subnet is required")
+	}
 	payload := ApiParams{
 		"subnet": subnet,
 	}
@@ -7979,6 +9236,9 @@ type Tag struct {
 // 	resourceHrefs: Hrefs of the resources for which tags are to be returned.
 func (c *Client) ByResourceTag(resourceHrefs []string) ([]map[string]string, error) {
 	var res []map[string]string
+	if len(resourceHrefs) == 0 {
+		return res, fmt.Errorf("resourceHrefs is required")
+	}
 	payload := ApiParams{
 		"resource_hrefs": resourceHrefs,
 	}
@@ -8034,6 +9294,12 @@ func (c *Client) ByResourceTag(resourceHrefs []string) ([]map[string]string, err
 // 	withDeleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
 func (c *Client) ByTagTag(resourceType string, tags []string, options ApiParams) ([]map[string]string, error) {
 	var res []map[string]string
+	if resourceType == "" {
+		return res, fmt.Errorf("resourceType is required")
+	}
+	if len(tags) == 0 {
+		return res, fmt.Errorf("tags is required")
+	}
 	payload := mergeOptionals(ApiParams{
 
 		"resource_type": resourceType,
@@ -8076,6 +9342,12 @@ func (c *Client) ByTagTag(resourceType string, tags []string, options ApiParams)
 // 	resourceHrefs: Hrefs of the resources for which the tags are to be added.
 // 	tags: Tags to be added.
 func (c *Client) MultiAddTags(resourceHrefs []string, tags []string) error {
+	if len(resourceHrefs) == 0 {
+		return fmt.Errorf("resourceHrefs is required")
+	}
+	if len(tags) == 0 {
+		return fmt.Errorf("tags is required")
+	}
 	payload := ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
@@ -8109,6 +9381,12 @@ func (c *Client) MultiAddTags(resourceHrefs []string, tags []string) error {
 // 	resourceHrefs: Hrefs of the resources for which tags are to be deleted.
 // 	tags: Tags to be deleted.
 func (c *Client) MultiDeleteTags(resourceHrefs []string, tags []string) error {
+	if len(resourceHrefs) == 0 {
+		return fmt.Errorf("resourceHrefs is required")
+	}
+	if len(tags) == 0 {
+		return fmt.Errorf("tags is required")
+	}
 	payload := ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
@@ -8153,13 +9431,24 @@ type Task struct {
 // 	view
 func (c *Client) ShowTask(cloudId string, id string, instanceId string, options ApiParams) (*Task, error) {
 	var res *Task
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/live/tasks/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8215,6 +9504,9 @@ type User struct {
 // invoking the 'index' action of the identity_providers API resource.
 func (c *Client) CreateUser(user *UserParam) (Href, error) {
 	var res Href
+	if user == nil {
+		return res, fmt.Errorf("user is required")
+	}
 	payload := ApiParams{
 		"user": user,
 	}
@@ -8256,9 +9548,10 @@ func (c *Client) IndexUsers(options ApiParams) ([]User, error) {
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
@@ -8279,6 +9572,9 @@ func (c *Client) IndexUsers(options ApiParams) ([]User, error) {
 // Show information about a single user.
 func (c *Client) ShowUser(id string) (*User, error) {
 	var res *User
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/users/"+id, body)
@@ -8328,6 +9624,12 @@ func (c *Client) ShowUser(id string) (*User, error) {
 // In the context of SAML. principal_uid is equivalent to the SAML NameID or Subject claim;
 // RightScale cannot predict or influence the NameID value that your SAML IdP will send to us for
 func (c *Client) UpdateUser(id string, user *UserParam2) error {
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if user == nil {
+		return fmt.Errorf("user is required")
+	}
 	payload := ApiParams{
 		"user": user,
 	}
@@ -8402,6 +9704,12 @@ type Volume struct {
 // Creates a new volume.
 func (c *Client) CreateVolume(cloudId string, volume *VolumeParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if volume == nil {
+		return res, fmt.Errorf("volume is required")
+	}
 	payload := ApiParams{
 		"volume": volume,
 	}
@@ -8433,6 +9741,12 @@ func (c *Client) CreateVolume(cloudId string, volume *VolumeParam) (Href, error)
 // DELETE api/clouds/:cloud_id/volumes/:id(.:format)?
 // Deletes a given volume.
 func (c *Client) DestroyVolume(cloudId string, id string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/volumes/"+id, body)
@@ -8455,17 +9769,23 @@ func (c *Client) DestroyVolume(cloudId string, id string) error {
 // 	view
 func (c *Client) IndexVolumes(cloudId string, options ApiParams) ([]Volume, error) {
 	var res []Volume
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/volumes", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8487,13 +9807,21 @@ func (c *Client) IndexVolumes(cloudId string, options ApiParams) ([]Volume, erro
 // 	view
 func (c *Client) ShowVolume(cloudId string, id string, options ApiParams) (*Volume, error) {
 	var res *Volume
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/volumes/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8527,6 +9855,15 @@ type VolumeAttachment struct {
 // Creates a new volume attachment.
 func (c *Client) CreateVolumeAttachment(cloudId string, instanceId string, volumeAttachment *VolumeAttachmentParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
+	if volumeAttachment == nil {
+		return res, fmt.Errorf("volumeAttachment is required")
+	}
 	payload := ApiParams{
 		"volume_attachment": volumeAttachment,
 	}
@@ -8560,6 +9897,15 @@ func (c *Client) CreateVolumeAttachment(cloudId string, instanceId string, volum
 // -- Optional parameters:
 // 	force: Specifies whether to force the detachment of a volume.
 func (c *Client) DestroyVolumeAttachment(cloudId string, id string, instanceId string, options ApiParams) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return fmt.Errorf("instanceId cannot be blank")
+	}
 	payload := mergeOptionals(ApiParams{}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -8588,17 +9934,26 @@ func (c *Client) DestroyVolumeAttachment(cloudId string, id string, instanceId s
 // 	view
 func (c *Client) IndexVolumeAttachments(cloudId string, instanceId string, options ApiParams) ([]VolumeAttachment, error) {
 	var res []VolumeAttachment
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/volume_attachments", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8620,13 +9975,24 @@ func (c *Client) IndexVolumeAttachments(cloudId string, instanceId string, optio
 // 	view
 func (c *Client) ShowVolumeAttachment(cloudId string, id string, instanceId string, options ApiParams) (*VolumeAttachment, error) {
 	var res *VolumeAttachment
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if instanceId == "" {
+		return res, fmt.Errorf("instanceId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/instances/"+instanceId+"/volume_attachments/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8664,6 +10030,15 @@ type VolumeSnapshot struct {
 // Creates a new volume_snapshot.
 func (c *Client) CreateVolumeSnapshot(cloudId string, volumeId string, volumeSnapshot *VolumeSnapshotParam) (Href, error) {
 	var res Href
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if volumeId == "" {
+		return res, fmt.Errorf("volumeId cannot be blank")
+	}
+	if volumeSnapshot == nil {
+		return res, fmt.Errorf("volumeSnapshot is required")
+	}
 	payload := ApiParams{
 		"volume_snapshot": volumeSnapshot,
 	}
@@ -8695,6 +10070,15 @@ func (c *Client) CreateVolumeSnapshot(cloudId string, volumeId string, volumeSna
 // DELETE api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id(.:format)?
 // Deletes a given volume_snapshot.
 func (c *Client) DestroyVolumeSnapshot(cloudId string, id string, volumeId string) error {
+	if cloudId == "" {
+		return fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return fmt.Errorf("id cannot be blank")
+	}
+	if volumeId == "" {
+		return fmt.Errorf("volumeId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("DELETE", c.endpoint+"/api/clouds/"+cloudId+"/volumes/"+volumeId+"/volume_snapshots/"+id, body)
@@ -8717,17 +10101,26 @@ func (c *Client) DestroyVolumeSnapshot(cloudId string, id string, volumeId strin
 // 	view
 func (c *Client) IndexVolumeSnapshots(cloudId string, volumeId string, options ApiParams) ([]VolumeSnapshot, error) {
 	var res []VolumeSnapshot
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if volumeId == "" {
+		return res, fmt.Errorf("volumeId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/volumes/"+volumeId+"/volume_snapshots", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8749,13 +10142,24 @@ func (c *Client) IndexVolumeSnapshots(cloudId string, volumeId string, options A
 // 	view
 func (c *Client) ShowVolumeSnapshot(cloudId string, id string, volumeId string, options ApiParams) (*VolumeSnapshot, error) {
 	var res *VolumeSnapshot
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
+	if volumeId == "" {
+		return res, fmt.Errorf("volumeId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/volumes/"+volumeId+"/volume_snapshots/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8792,17 +10196,23 @@ type VolumeType struct {
 // 	view
 func (c *Client) IndexVolumeTypes(cloudId string, options ApiParams) ([]VolumeType, error) {
 	var res []VolumeType
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/volume_types", body)
 	if err != nil {
 		return res, err
 	}
-	for _, v := range options["filter"].([]string) {
-		v = options["filter"].(string)
-		req.URL.Query().Add("filter", v)
+	if temp, ok := options["filter"]; ok {
+		for _, v := range temp.([]string) {
+			req.URL.Query().Add("filter", v)
+		}
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8824,13 +10234,21 @@ func (c *Client) IndexVolumeTypes(cloudId string, options ApiParams) ([]VolumeTy
 // 	view
 func (c *Client) ShowVolumeType(cloudId string, id string, options ApiParams) (*VolumeType, error) {
 	var res *VolumeType
+	if cloudId == "" {
+		return res, fmt.Errorf("cloudId cannot be blank")
+	}
+	if id == "" {
+		return res, fmt.Errorf("id cannot be blank")
+	}
 	b := []byte{}
 	body := bytes.NewReader(b)
 	req, err := http.NewRequest("GET", c.endpoint+"/api/clouds/"+cloudId+"/volume_types/"+id, body)
 	if err != nil {
 		return res, err
 	}
-	req.URL.Query().Set("view", options["view"].(string))
+	if temp, ok := options["view"]; ok {
+		req.URL.Query().Set("view", temp.(string))
+	}
 	ctx := c.beforeRequest(req)
 	resp, err := c.client.Do(req)
 	c.afterRequest(resp, ctx)
@@ -8951,6 +10369,7 @@ type CloudAccountParam struct {
 
 type CloudSpecificAttributes struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	EbsOptimized                  string `json:"ebs_optimized,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
@@ -8967,7 +10386,14 @@ type CloudSpecificAttributes2 struct {
 
 type CloudSpecificAttributes3 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
-	EbsOptimized                  string `json:"ebs_optimized,omitempty"`
+	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
+}
+
+type CloudSpecificAttributes4 struct {
+	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
@@ -9060,19 +10486,16 @@ type ElasticityParams2 struct {
 
 type InstanceParam struct {
 	AssociatePublicIpAddress string                   `json:"associate_public_ip_address,omitempty"`
-	CloudHref                string                   `json:"cloud_href,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                   `json:"datacenter_href,omitempty"`
+	DeploymentHref           string                   `json:"deployment_href,omitempty"`
 	ImageHref                string                   `json:"image_href,omitempty"`
-	Inputs                   map[string]string        `json:"inputs,omitempty"`
 	InstanceTypeHref         string                   `json:"instance_type_href,omitempty"`
-	IpForwardingEnabled      string                   `json:"ip_forwarding_enabled,omitempty"`
 	KernelImageHref          string                   `json:"kernel_image_href,omitempty"`
-	MultiCloudImageHref      string                   `json:"multi_cloud_image_href,omitempty"`
+	Name                     string                   `json:"name,omitempty"`
 	PlacementGroupHref       string                   `json:"placement_group_href,omitempty"`
 	RamdiskImageHref         string                   `json:"ramdisk_image_href,omitempty"`
 	SecurityGroupHrefs       []string                 `json:"security_group_hrefs,omitempty"`
-	ServerTemplateHref       string                   `json:"server_template_href,omitempty"`
 	SshKeyHref               string                   `json:"ssh_key_href,omitempty"`
 	SubnetHrefs              []string                 `json:"subnet_hrefs,omitempty"`
 	UserData                 string                   `json:"user_data,omitempty"`
@@ -9080,8 +10503,27 @@ type InstanceParam struct {
 
 type InstanceParam2 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
-	CloudHref                string                    `json:"cloud_href,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes2 `json:"cloud_specific_attributes,omitempty"`
+	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
+	DeploymentHref           string                    `json:"deployment_href,omitempty"`
+	ImageHref                string                    `json:"image_href,omitempty"`
+	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
+	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
+	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
+	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
+	Name                     string                    `json:"name,omitempty"`
+	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
+	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
+	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
+	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
+	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
+	UserData                 string                    `json:"user_data,omitempty"`
+}
+
+type InstanceParam3 struct {
+	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
+	CloudHref                string                    `json:"cloud_href,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	Inputs                   map[string]string         `json:"inputs,omitempty"`
@@ -9098,47 +10540,31 @@ type InstanceParam2 struct {
 	UserData                 string                    `json:"user_data,omitempty"`
 }
 
-type InstanceParam3 struct {
+type InstanceParam4 struct {
 	Href                string            `json:"href,omitempty"`
 	Inputs              map[string]string `json:"inputs,omitempty"`
 	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
 	ServerTemplateHref  string            `json:"server_template_href,omitempty"`
 }
 
-type InstanceParam4 struct {
+type InstanceParam5 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
+	CloudHref                string                    `json:"cloud_href,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
-	DeploymentHref           string                    `json:"deployment_href,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
+	Inputs                   map[string]string         `json:"inputs,omitempty"`
 	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
+	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
 	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
-	Name                     string                    `json:"name,omitempty"`
+	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
 	PlacementGroupHref       string                    `json:"placement_group_href,omitempty"`
 	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
 	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
+	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
 	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
 	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
 	UserData                 string                    `json:"user_data,omitempty"`
-}
-
-type InstanceParam5 struct {
-	AssociatePublicIpAddress string                   `json:"associate_public_ip_address,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes `json:"cloud_specific_attributes,omitempty"`
-	DatacenterHref           string                   `json:"datacenter_href,omitempty"`
-	DeploymentHref           string                   `json:"deployment_href,omitempty"`
-	ImageHref                string                   `json:"image_href,omitempty"`
-	InstanceTypeHref         string                   `json:"instance_type_href,omitempty"`
-	IpForwardingEnabled      string                   `json:"ip_forwarding_enabled,omitempty"`
-	KernelImageHref          string                   `json:"kernel_image_href,omitempty"`
-	MultiCloudImageHref      string                   `json:"multi_cloud_image_href,omitempty"`
-	Name                     string                   `json:"name,omitempty"`
-	RamdiskImageHref         string                   `json:"ramdisk_image_href,omitempty"`
-	SecurityGroupHrefs       []string                 `json:"security_group_hrefs,omitempty"`
-	ServerTemplateHref       string                   `json:"server_template_href,omitempty"`
-	SshKeyHref               string                   `json:"ssh_key_href,omitempty"`
-	SubnetHrefs              []string                 `json:"subnet_hrefs,omitempty"`
-	UserData                 string                   `json:"user_data,omitempty"`
 }
 
 type IpAddressBindingParam struct {
@@ -9435,7 +10861,7 @@ type ServerArrayParam struct {
 	DeploymentHref   string              `json:"deployment_href,omitempty"`
 	Description      string              `json:"description,omitempty"`
 	ElasticityParams *ElasticityParams   `json:"elasticity_params,omitempty"`
-	Instance         *InstanceParam      `json:"instance,omitempty"`
+	Instance         *InstanceParam5     `json:"instance,omitempty"`
 	Name             string              `json:"name,omitempty"`
 	Optimized        string              `json:"optimized,omitempty"`
 	State            string              `json:"state,omitempty"`
@@ -9455,7 +10881,7 @@ type ServerArrayParam2 struct {
 type ServerParam struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam2 `json:"instance,omitempty"`
+	Instance       *InstanceParam3 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 	Optimized      string          `json:"optimized,omitempty"`
 }
@@ -9471,7 +10897,7 @@ type ServerParam2 struct {
 type ServerParam3 struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam3 `json:"instance,omitempty"`
+	Instance       *InstanceParam4 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 }
 

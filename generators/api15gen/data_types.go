@@ -102,8 +102,9 @@ func (b ByName) Less(i, j int) bool { return b[i].Name < b[j].Name }
 
 // All type structures implement the DataType interface
 type DataType interface {
-	Signature() string // Produce go compatible signature, e.g. to define function
-	Inspect() string   // Produce pretty print, mainly for debug
+	Signature() string                    // Produce go compatible signature, e.g. to define function
+	Inspect() string                      // Produce pretty print, mainly for debug
+	BlankConditionExp(name string) string // Go condition to test whether type value is blank. Empty string if type values can't be blank.
 }
 
 // A basic data type only has a name, e.g. "int" or "string"
@@ -118,6 +119,14 @@ func (b *BasicDataType) Inspect() string {
 	return string(*b)
 }
 
+func (b *BasicDataType) BlankConditionExp(name string) string {
+	if *b == "string" {
+		return fmt.Sprintf("if %s == \"\" {", name)
+	} else {
+		return ""
+	}
+}
+
 // An array data type defines the type of its elements
 type ArrayDataType struct {
 	ElemType *ActionParam
@@ -130,6 +139,10 @@ func (a *ArrayDataType) Signature() string {
 
 func (a *ArrayDataType) Inspect() string {
 	return fmt.Sprintf("Array of %s", a.ElemType.Type.Inspect())
+}
+
+func (b *ArrayDataType) BlankConditionExp(name string) string {
+	return fmt.Sprintf("if len(%s) == 0 {", name)
 }
 
 // An object data type has a name and fields
@@ -149,6 +162,10 @@ func (o *ObjectDataType) Inspect() string {
 		fields = append(fields, fmt.Sprintf("%s: %s", f.Name, f.Type.Inspect()))
 	}
 	return fmt.Sprintf("%s:{\n\t%s\n}", o.Name, strings.Join(fields, "\n\t"))
+}
+
+func (b *ObjectDataType) BlankConditionExp(name string) string {
+	return fmt.Sprintf("if %s == nil {", name)
 }
 
 // Object data type declaration
@@ -188,4 +205,8 @@ func (e *EnumerableDataType) Signature() string {
 
 func (e *EnumerableDataType) Inspect() string {
 	return fmt.Sprintf("Enumeration")
+}
+
+func (b *EnumerableDataType) BlankConditionExp(name string) string {
+	return fmt.Sprintf("if len(%s) == 0 {", name)
 }
