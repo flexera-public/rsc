@@ -83,11 +83,7 @@ func (c *Client) handleRedirect(req *http.Request, via []*http.Request) error {
 
 // Refresh access token, handles redirection
 func (c *Client) refresh() error {
-	session, err := c.CreateOauth2G(&Params{
-		"refresh_token": c.refreshToken,
-		"account_id":    c.accountId,
-		"grant_type":    "refresh_token",
-	})
+	session, err := c.CreateOauth2(c.accountId, "", "", "refresh_token", c.refreshToken, "", 0)
 	if err != nil {
 		return err
 	}

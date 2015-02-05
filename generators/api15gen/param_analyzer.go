@@ -42,6 +42,9 @@ type ParamAnalyzer struct {
 	// Parameters indexed by name
 	Params map[string]*ActionParam
 
+	// Parameter names ordered alphabetically
+	ParamNames []string
+
 	// Parameter types indexed by name
 	ParamTypes map[string]*ObjectDataType
 
@@ -92,7 +95,23 @@ func (p *ParamAnalyzer) Analyze() {
 	top := map[string]*ActionParam{}
 	for _, path := range paths {
 		if strings.HasSuffix(path, "[*]") {
-			continue // parent path is enumerable, already handled with it
+			// Cheat a little bit - there a couple of cases where parent type is
+			// Hash instead of Enumerable, make that enumerable everywhere
+			// There are also cases where there's no parent path, fix that up also
+			matches := parentPathRegexp.FindStringSubmatch(path)
+			if hashParam, ok := params[matches[1]].(map[string]interface{}); ok {
+				hashParam["class"] = "Enumerable"
+			} else {
+				// Create parent
+				rawParams := map[string]interface{}{}
+				parentPath := matches[1]
+				parsed[parentPath] = p.newParam(parentPath, rawParams,
+					new(EnumerableDataType))
+				if parentPathRegexp.FindStringSubmatch(parentPath) == nil {
+					top[parentPath] = parsed[parentPath]
+				}
+			}
+			continue
 		}
 		var child *ActionParam
 		origPath := path
@@ -128,8 +147,9 @@ func (p *ParamAnalyzer) Analyze() {
 				child = p.parseParam(path, param, child)
 				parsed[path] = child
 				if isArrayChild {
+					// Generate array item as it's not listed explicitly in JSON
 					itemPath := nativeNameFromPath(matches[1]) + "[item]"
-					typeName := fmt.Sprintf("%sParam", strings.Title(parseParamName(itemPath)))
+					typeName := p.typeName(matches[1])
 					parent = p.newParam(itemPath, map[string]interface{}{},
 						&ObjectDataType{typeName, []*ActionParam{child}})
 					parsed[parentPath] = parent
@@ -159,11 +179,9 @@ func (p *ParamAnalyzer) Analyze() {
 	// Now do a second pass on parsed params to generate their declarations
 	p.ParamTypes = make(map[string]*ObjectDataType)
 	p.Params = make(map[string]*ActionParam, len(top))
-	for n, param := range top {
-		if o, ok := param.Type.(*ObjectDataType); ok {
-			p.recordTypes(o)
-		}
-		p.Params[n] = param
+	for _, param := range top {
+		p.recordTypes(param.Type)
+		p.Params[param.Name] = param
 	}
 
 	// Now build URL expression and cartegorize parameters
@@ -172,10 +190,13 @@ func (p *ParamAnalyzer) Analyze() {
 
 	allParams := make([]*ActionParam, len(p.Params))
 	idx := 0
-	for _, param := range p.Params {
+	paramNames := make([]string, len(allParams))
+	for n, param := range p.Params {
 		allParams[idx] = param
+		paramNames[idx] = n
 		idx += 1
 	}
+	sort.Strings(paramNames)
 	sort.Sort(ByName(allParams))
 	pathParams := []*ActionParam{}
 	queryParams := []*ActionParam{}
@@ -187,7 +208,7 @@ func (p *ParamAnalyzer) Analyze() {
 		} else {
 			isPathParam := false
 			for _, p := range pathParamNames {
-				if p == pname {
+				if parseParamName(p) == pname {
 					isPathParam = true
 					break
 				}
@@ -202,17 +223,39 @@ func (p *ParamAnalyzer) Analyze() {
 	p.PathParams = pathParams
 	p.QueryParams = queryParams
 	p.PayloadParams = payloadParams
+	p.ParamNames = paramNames
+}
+
+// Sort array of string by length
+type ByReverseLength []string
+
+func (s ByReverseLength) Len() int {
+	return len(s)
+}
+func (s ByReverseLength) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+func (s ByReverseLength) Less(i, j int) bool {
+	return len(s[i]) > len(s[j])
+}
+
+// Heuristic to determine whether given param is a query string param
+// For now only consider view and filter...
+func isQueryParam(n string) bool {
+	return n == "view" || n == "filter"
 }
 
 // Recursively record all type declarations
-func (p *ParamAnalyzer) recordTypes(root *ObjectDataType) {
-	if _, ok := p.ParamTypes[root.Name]; !ok {
-		p.ParamTypes[root.Name] = root
-		for _, f := range root.Fields {
-			if o, ok := f.Type.(*ObjectDataType); ok {
-				p.recordTypes(o)
+func (p *ParamAnalyzer) recordTypes(root DataType) {
+	if o, ok := root.(*ObjectDataType); ok {
+		if _, found := p.ParamTypes[o.Name]; !found {
+			p.ParamTypes[o.Name] = o
+			for _, f := range o.Fields {
+				p.recordTypes(f.Type)
 			}
 		}
+	} else if a, ok := root.(*ArrayDataType); ok {
+		p.recordTypes(a.ElemType.Type)
 	}
 }
 
@@ -255,11 +298,20 @@ func (p *ParamAnalyzer) parseDataType(path string, child *ActionParam) DataType 
 			o := res.(*ObjectDataType)
 			o.Fields = appendSorted(o.Fields, child)
 		} else {
-			oname := fmt.Sprintf("%sParam", strings.Title(parseParamName(path)))
+			oname := p.typeName(path)
 			res = &ObjectDataType{oname, []*ActionParam{child}}
 		}
 	}
 	return res
+}
+
+func (p *ParamAnalyzer) typeName(path string) string {
+	matches := childPathRegexp.FindStringSubmatch(path)
+	res := path
+	if matches != nil {
+		res = matches[1]
+	}
+	return strings.Title(parseParamName(res))
 }
 
 // Build action param struct from json data

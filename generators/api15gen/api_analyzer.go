@@ -32,13 +32,24 @@ type ApiAnalyzer struct {
 	// Attribute type mappings defined in attributes.json
 	attributeTypes map[string]string
 
+	// Temporary analysis construct
+	// Holds all types indexed by name, multiple actions could generate types with the same
+	// name. Keep them all here then make names unique as needed once we gathered all of them.
+	rawTypes map[string][]*ObjectDataType
+
 	/* Analysis results */
 
 	// Resources indexed by name
 	Resources map[string]*ResourceData
 
+	// Resource names ordered alphabetically
+	ResourceNames []string
+
 	// Types used by resource actions indexed by name
 	Types map[string]*ObjectDataType
+
+	// Type names ordered alphabetically
+	TypeNames []string
 }
 
 // Factory method for API analyzer
@@ -46,8 +57,9 @@ func NewApiAnalyzer(resources map[string]interface{}, attributes map[string]stri
 	return &ApiAnalyzer{
 		rawResources:   resources,
 		attributeTypes: attributes,
+		rawTypes:       make(map[string][]*ObjectDataType),
 		Resources:      make(map[string]*ResourceData),
-		Types:          make(map[string]*ObjectDataType),
+		ResourceNames:  make([]string, 0),
 	}
 }
 
@@ -57,6 +69,55 @@ func (a *ApiAnalyzer) Analyze() {
 	for name, resource := range a.rawResources {
 		a.AnalyzeResource(name, resource)
 	}
+	sort.Strings(a.ResourceNames)
+	// Make sure data type names don't clash with resource names
+	for tn, types := range a.rawTypes {
+		for rn, _ := range a.Resources {
+			if tn == rn {
+				oldTn := tn
+				if strings.HasSuffix(tn, "Param") {
+					tn = fmt.Sprintf("%s2", tn)
+				} else {
+					tn = fmt.Sprintf("%sParam", tn)
+				}
+				for _, ty := range types {
+					ty.Name = tn
+				}
+				a.rawTypes[tn] = types
+				delete(a.rawTypes, oldTn)
+			}
+		}
+	}
+	// Now make types that are different named differently
+	a.Types = make(map[string]*ObjectDataType)
+	for tn, types := range a.rawTypes {
+		first := types[0]
+		a.Types[tn] = first
+		if len(types) > 1 {
+			for i, ty := range types[1:] {
+				found := false
+				for j := 0; j < i; j++ {
+					if ty.Compare(types[j]) {
+						found = true
+						break
+					}
+				}
+				if !found {
+					newName := a.uniqueTypeName(tn)
+					ty.Name = newName
+					a.Types[newName] = ty
+					a.TypeNames = append(a.TypeNames, newName)
+				}
+			}
+		}
+	}
+	a.TypeNames = make([]string, len(a.Types))
+	idx := 0
+	for tn, _ := range a.Types {
+		a.TypeNames[idx] = tn
+		idx += 1
+	}
+	sort.Strings(a.TypeNames)
 }
 
 // AnalyzeResource analyzes the given resource and updates the Resources and ParamTypes analyzer
@@ -110,12 +171,10 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}) {
 
 		// Record new parameter types
 		for name, pType := range paramAnalyzer.ParamTypes {
-			if existing, ok := a.Types[name]; ok {
-				if !existing.Compare(pType) {
-					panic(fmt.Sprintf("SHOOT \n%+v\nvs.\n%+v\n", existing, pType))
-				}
+			if _, ok := a.rawTypes[name]; ok {
+				a.rawTypes[name] = append(a.rawTypes[name], pType)
 			} else {
-				a.Types[name] = pType
+				a.rawTypes[name] = []*ObjectDataType{pType}
 			}
 		}
 
@@ -127,6 +186,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}) {
 			Path:          path,
 			NativeParams:  params,
 			AllParams:     paramAnalyzer.Params,
+			ParamNames:    paramAnalyzer.ParamNames,
 			PathParams:    paramAnalyzer.PathParams,
 			QueryParams:   paramAnalyzer.QueryParams,
 			PayloadParams: paramAnalyzer.PayloadParams,
@@ -138,53 +198,13 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}) {
 
 	// We're done!
 	name = inflect.Singularize(name)
+	a.ResourceNames = append(a.ResourceNames, name)
 	a.Resources[name] = &ResourceData{
 		Name:        name,
 		Description: description,
 		Actions:     actions,
 		Attributes:  attributes,
 	}
-}
-
-// Categorize parameters between path, query and payload.
-func categorizeParams(params map[string]*ActionParam, pathParamNames []string) ([]*ActionParam, []*ActionParam, []*ActionParam, []*ActionParam) {
-	allParams := make([]*ActionParam, len(params))
-	idx := 0
-	for _, param := range params {
-		allParams[idx] = param
-		idx += 1
-	}
-	sort.Sort(ByName(allParams))
-	pathParams := []*ActionParam{}
-	queryParams := []*ActionParam{}
-	payloadParams := []*ActionParam{}
-	for _, param := range allParams {
-		pname := param.Name
-		if isQueryParam(pname) {
-			queryParams = append(queryParams, param)
-		} else {
-			isPathParam := false
-			for _, p := range pathParamNames {
-				if p == pname {
-					isPathParam = true
-					break
-				}
-			}
-			if isPathParam {
-				pathParams = append(pathParams, param)
-			} else {
-				payloadParams = append(payloadParams, param)
-			}
-		}
-	}
-
-	return allParams, pathParams, queryParams, payloadParams
-}
-
-// Heuristic to determine whether given param is a query string param
-// For now only consider view and filter...
-func isQueryParam(n string) bool {
-	return n == "view" || n == "filter"
 }
 
 func parseRoute(moniker string, route string) (string, string) {
@@ -326,15 +346,29 @@ func sortedKeys(m map[string]interface{}) []string {
 	return keys
 }
 
-// Sort array of string by length
-type ByReverseLength []string
-
-func (s ByReverseLength) Len() int {
-	return len(s)
-}
-func (s ByReverseLength) Swap(i, j int) {
-	s[i], s[j] = s[j], s[i]
-}
-func (s ByReverseLength) Less(i, j int) bool {
-	return len(s[i]) > len(s[j])
+// Build unique type name by appending "next available index" to given prefix
+func (a *ApiAnalyzer) uniqueTypeName(prefix string) string {
+	u := fmt.Sprintf("%s%d", prefix, 2)
+	taken := false
+	for _, tn := range a.TypeNames {
+		if tn == u {
+			taken = true
+			break
+		}
+	}
+	idx := 3
+	for taken {
+		u = fmt.Sprintf("%s%d", prefix, idx)
+		taken = false
+		for _, tn := range a.TypeNames {
+			if tn == u {
+				taken = true
+				break
+			}
+		}
+		if taken {
+			idx += 1
+		}
+	}
+	return u
 }

@@ -24,6 +24,7 @@ type ResourceAction struct {
 	UrlExp        string
 	NativeParams  map[string]interface{}  // Params as defined in JSON
 	AllParams     map[string]*ActionParam // All parameters
+	ParamNames    []string                // Names of all parameters ordered alphabetically
 	PathParams    []*ActionParam          // Params used to build URL
 	PayloadParams []*ActionParam          // Params that should be sent in payload
 	QueryParams   []*ActionParam          // Params that should be sent in query string

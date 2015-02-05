@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"sort"
 )
 
 var (
@@ -54,18 +53,13 @@ func main() {
 	c, err := NewCodeWriter()
 	check(err)
 	check(c.WriteHeader(f))
-	names := sortedKeys(content)
-	for _, name := range names {
+	for _, name := range analyzer.ResourceNames {
 		resource := analyzer.Resources[name]
 		c.WriteResourceHeader(name, f)
 		check(c.WriteResource(resource, f))
 	}
-	typeNames := make([]string, len(analyzer.Types))
-	for n, _ := range analyzer.Types {
-		typeNames = append(typeNames, n)
-	}
-	sort.Strings(typeNames)
-	for _, name := range typeNames {
+	c.WriteTypeSectionHeader(f)
+	for _, name := range analyzer.TypeNames {
 		t := analyzer.Types[name]
 		c.WriteType(t, f)
 	}

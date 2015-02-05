@@ -139,7 +139,7 @@ var _ = Describe("ParamAnalyzer", func() {
 				NativeName: "baz",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(
-				&ObjectDataType{"FooParam", []*ActionParam{&bar, &baz}}))
+				&ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}))
 		})
 	})
 
@@ -193,7 +193,46 @@ var _ = Describe("ParamAnalyzer", func() {
 				NativeName: "baz",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(
-				&ObjectDataType{"FooParam", []*ActionParam{&bar, &baz}}))
+				&ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}))
+		})
+	})
+
+	Context("with a hash star param", func() {
+		BeforeEach(func() {
+			path = ""
+			params = map[string]interface{}{
+				"foo":    map[string]interface{}{"class": "Hash"},
+				"foo[*]": map[string]interface{}{"class": "String"},
+			}
+		})
+
+		It("Analyze returns the parsed param", func() {
+			analyzer.Analyze()
+			params := analyzer.Params
+			Ω(params).Should(HaveLen(1))
+			Ω(params).Should(HaveKey("foo"))
+			param := params["foo"]
+			Ω(param.Name).Should(Equal("foo"))
+			Ω(param.Type).Should(BeEquivalentTo(new(EnumerableDataType)))
+		})
+	})
+
+	Context("with a orphan star param", func() {
+		BeforeEach(func() {
+			path = ""
+			params = map[string]interface{}{
+				"foo[*]": map[string]interface{}{"class": "String"},
+			}
+		})
+
+		It("Analyze returns the parsed param", func() {
+			analyzer.Analyze()
+			params := analyzer.Params
+			Ω(params).Should(HaveLen(1))
+			Ω(params).Should(HaveKey("foo"))
+			param := params["foo"]
+			Ω(param.Name).Should(Equal("foo"))
+			Ω(param.Type).Should(BeEquivalentTo(new(EnumerableDataType)))
 		})
 	})
 
@@ -226,7 +265,7 @@ var _ = Describe("ParamAnalyzer", func() {
 				Type:       &i,
 				NativeName: "baz",
 			}
-			t := ObjectDataType{"FooItemParam", []*ActionParam{&bar, &baz}}
+			t := ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}
 			item := ActionParam{
 				Name:       "item",
 				Type:       &t,
@@ -265,7 +304,7 @@ var _ = Describe("ParamAnalyzer", func() {
 				Type:       &s,
 				NativeName: "goo",
 			}
-			t := ObjectDataType{"BazItemParam", []*ActionParam{&goo}}
+			t := ObjectDataType{"Baz", []*ActionParam{&goo}}
 			bazItem := ActionParam{
 				Name:       "item",
 				Type:       &t,
@@ -276,7 +315,7 @@ var _ = Describe("ParamAnalyzer", func() {
 				Type:       &ArrayDataType{&bazItem},
 				NativeName: "baz",
 			}
-			p := ObjectDataType{"FooItemParam", []*ActionParam{&bar, &baz}}
+			p := ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}
 			item := ActionParam{
 				Name:       "item",
 				Type:       &p,
@@ -339,7 +378,7 @@ var _ = Describe("ParamAnalyzer", func() {
 				Type:       &i,
 				NativeName: "baz",
 			}
-			p := ObjectDataType{"Foo3Param", []*ActionParam{&baz}}
+			p := ObjectDataType{"Foo3", []*ActionParam{&baz}}
 			Ω(param.Type).Should(BeEquivalentTo(&p))
 
 			Ω(params).Should(HaveKey("foo4"))
@@ -360,7 +399,7 @@ var _ = Describe("ParamAnalyzer", func() {
 				Type:       new(EnumerableDataType),
 				NativeName: "zoo",
 			}
-			t := ObjectDataType{"BazItemParam", []*ActionParam{&goo, &zoo}}
+			t := ObjectDataType{"Baz", []*ActionParam{&goo, &zoo}}
 			bazItem := ActionParam{
 				Name:       "item",
 				Type:       &t,
@@ -371,7 +410,7 @@ var _ = Describe("ParamAnalyzer", func() {
 				Type:       &ArrayDataType{&bazItem},
 				NativeName: "baz",
 			}
-			p = ObjectDataType{"Foo4ItemParam", []*ActionParam{&bar, &baz}}
+			p = ObjectDataType{"Foo4", []*ActionParam{&bar, &baz}}
 			item = ActionParam{
 				Name:       "item",
 				Type:       &p,

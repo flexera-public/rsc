@@ -54,6 +54,11 @@ func (c *CodeWriter) WriteResourceHeader(name string, w io.Writer) {
 	fmt.Fprintf(w, "/******  %s ******/\n\n", name)
 }
 
+// Write separator between resources and data types
+func (c *CodeWriter) WriteTypeSectionHeader(w io.Writer) {
+	fmt.Fprintln(w, "\n/****** Parameter Data Types ******/\n\n")
+}
+
 // Write type declaration for resource action arguments
 func (c *CodeWriter) WriteType(t *ObjectDataType, w io.Writer) {
 	fmt.Fprintf(w, "%s\n\n", t.Declaration())
@@ -72,10 +77,10 @@ func comment(elems ...string) string {
 }
 
 // Serialize action parameters
-func joinParams(p []*ActionParam) string {
-	params := make([]string, len(p))
-	for i, param := range p {
-		params[i] = fmt.Sprintf("%s %s", param.Name, param.Type.Signature())
+func joinParams(a *ResourceAction) string {
+	params := make([]string, len(a.AllParams))
+	for i, name := range a.ParamNames {
+		params[i] = fmt.Sprintf("%s %s", name, a.AllParams[name].Type.Signature())
 	}
 	return strings.Join(params, ", ")
 }
@@ -149,7 +154,7 @@ type {{.Name}} struct { {{range .Attributes}}
 {{range .Actions}}
 // {{.HttpMethod}} {{.Path}}
 {{comment .Description}}
-func (c *Client) {{.Name}}({{joinParams .AllParams}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
+func (c *Client) {{.Name}}({{joinParams .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
 	{{template "actionBody" . }}
 }
 {{end}}
@@ -163,7 +168,7 @@ const actionBodyTmpl = `{{if .Return}}var res {{.Return}}
 	}
 	{{else}}b := []byte{}{{end}}
 	body := bytes.NewReader(b)
-	req, err := http.NewRequest("{{.HttpMethod}}", c.endpoint+{{.Url}}, body)
+	req, err := http.NewRequest("{{.HttpMethod}}", c.endpoint+{{.UrlExp}}, body)
 	if err != nil {
 		return {{if .Return}}res, {{end}}err
 	}
