@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 4, 2015 at 11:28pm (PST)
+// Generated Feb 5, 2015 at 12:09am (PST)
 // Command:
 // $ api15gen -keep=T -metadata=../../rsapi15/api_data.json -attributes=../../rsapi15/attributes.json -output=../../rsapi15/codegen.go
 //
@@ -856,7 +856,6 @@ func (c *Client) CleanupBackup(keepLast string, lineage string, options ApiParam
 		return fmt.Errorf("lineage is required")
 	}
 	payload := mergeOptionals(ApiParams{
-
 		"keep_last": keepLast,
 		"lineage":   lineage,
 	}, options)
@@ -1008,7 +1007,6 @@ func (c *Client) RestoreBackup(id string, instanceHref string, options ApiParams
 		return fmt.Errorf("instanceHref is required")
 	}
 	payload := mergeOptionals(ApiParams{
-
 		"instance_href": instanceHref,
 	}, options)
 	b, err := json.Marshal(payload)
@@ -5230,7 +5228,6 @@ func (c *Client) CreateOauth2(grantType string, options ApiParams) (map[string]i
 		return res, fmt.Errorf("grantType is required")
 	}
 	payload := mergeOptionals(ApiParams{
-
 		"grant_type": grantType,
 	}, options)
 	b, err := json.Marshal(payload)
@@ -8310,8 +8307,7 @@ func (c *Client) PublishServerTemplate(accountGroupHrefs []string, descriptions 
 	}
 	payload := mergeOptionals(ApiParams{
 		"account_group_hrefs": accountGroupHrefs,
-
-		"descriptions": descriptions,
+		"descriptions":        descriptions,
 	}, options)
 	b, err := json.Marshal(payload)
 	if err != nil {
@@ -9301,7 +9297,6 @@ func (c *Client) ByTagTag(resourceType string, tags []string, options ApiParams)
 		return res, fmt.Errorf("tags is required")
 	}
 	payload := mergeOptionals(ApiParams{
-
 		"resource_type": resourceType,
 		"tags":          tags,
 	}, options)
@@ -10541,13 +10536,6 @@ type InstanceParam3 struct {
 }
 
 type InstanceParam4 struct {
-	Href                string            `json:"href,omitempty"`
-	Inputs              map[string]string `json:"inputs,omitempty"`
-	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
-	ServerTemplateHref  string            `json:"server_template_href,omitempty"`
-}
-
-type InstanceParam5 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
 	CloudHref                string                    `json:"cloud_href,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
@@ -10565,6 +10553,13 @@ type InstanceParam5 struct {
 	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
 	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
 	UserData                 string                    `json:"user_data,omitempty"`
+}
+
+type InstanceParam5 struct {
+	Href                string            `json:"href,omitempty"`
+	Inputs              map[string]string `json:"inputs,omitempty"`
+	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
+	ServerTemplateHref  string            `json:"server_template_href,omitempty"`
 }
 
 type IpAddressBindingParam struct {
@@ -10861,7 +10856,7 @@ type ServerArrayParam struct {
 	DeploymentHref   string              `json:"deployment_href,omitempty"`
 	Description      string              `json:"description,omitempty"`
 	ElasticityParams *ElasticityParams   `json:"elasticity_params,omitempty"`
-	Instance         *InstanceParam5     `json:"instance,omitempty"`
+	Instance         *InstanceParam3     `json:"instance,omitempty"`
 	Name             string              `json:"name,omitempty"`
 	Optimized        string              `json:"optimized,omitempty"`
 	State            string              `json:"state,omitempty"`
@@ -10881,7 +10876,7 @@ type ServerArrayParam2 struct {
 type ServerParam struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam3 `json:"instance,omitempty"`
+	Instance       *InstanceParam4 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 	Optimized      string          `json:"optimized,omitempty"`
 }
@@ -10897,7 +10892,7 @@ type ServerParam2 struct {
 type ServerParam3 struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam4 `json:"instance,omitempty"`
+	Instance       *InstanceParam5 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 }
 

@@ -108,11 +108,11 @@ func joinParamNames(p []*ActionParam) string {
 
 // Create map out of parameter names
 func paramsAsPayload(p []*ActionParam) string {
-	fields := make([]string, len(p))
+	fields := []string{}
 	hasOptional := false
-	for i, param := range p {
+	for _, param := range p {
 		if param.Mandatory {
-			fields[i] = fmt.Sprintf("\"%s\": %s,", param.NativeName, param.Name)
+			fields = append(fields, fmt.Sprintf("\"%s\": %s,", param.NativeName, param.Name))
 		} else {
 			hasOptional = true
 		}

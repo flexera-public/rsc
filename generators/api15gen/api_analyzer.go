@@ -66,12 +66,28 @@ func NewApiAnalyzer(resources map[string]interface{}, attributes map[string]stri
 // Analyze iterate through all resources and initializes the Resources and ParamTypes fields of
 // the ApiAnalyzer struct accordingly.
 func (a *ApiAnalyzer) Analyze() {
-	for name, resource := range a.rawResources {
+	rawResourceNames := make([]string, len(a.rawResources))
+	idx := 0
+	for n, _ := range a.rawResources {
+		rawResourceNames[idx] = n
+		idx += 1
+	}
+	sort.Strings(rawResourceNames)
+	for _, name := range rawResourceNames {
+		resource := a.rawResources[name]
 		a.AnalyzeResource(name, resource)
 	}
 	sort.Strings(a.ResourceNames)
 	// Make sure data type names don't clash with resource names
-	for tn, types := range a.rawTypes {
+	rawTypeNames := make([]string, len(a.rawTypes))
+	idx = 0
+	for n, _ := range a.rawTypes {
+		rawTypeNames[idx] = n
+		idx += 1
+	}
+	sort.Strings(rawTypeNames)
+	for _, tn := range rawTypeNames {
+		types := a.rawTypes[tn]
 		for rn, _ := range a.Resources {
 			if tn == rn {
 				oldTn := tn
@@ -90,7 +106,14 @@ func (a *ApiAnalyzer) Analyze() {
 	}
 	// Now make types that are different named differently
 	a.Types = make(map[string]*ObjectDataType)
-	for tn, types := range a.rawTypes {
+	idx = 0
+	for n, _ := range a.rawTypes {
+		rawTypeNames[idx] = n
+		idx += 1
+	}
+	sort.Strings(rawTypeNames)
+	for _, tn := range rawTypeNames {
+		types := a.rawTypes[tn]
 		first := types[0]
 		a.Types[tn] = first
 		if len(types) > 1 {
@@ -112,7 +135,7 @@ func (a *ApiAnalyzer) Analyze() {
 		}
 	}
 	a.TypeNames = make([]string, len(a.Types))
-	idx := 0
+	idx = 0
 	for tn, _ := range a.Types {
 		a.TypeNames[idx] = tn
 		idx += 1
@@ -170,7 +193,15 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}) {
 		paramAnalyzer.Analyze()
 
 		// Record new parameter types
-		for name, pType := range paramAnalyzer.ParamTypes {
+		paramTypeNames := make([]string, len(paramAnalyzer.ParamTypes))
+		idx2 := 0
+		for n, _ := range paramAnalyzer.ParamTypes {
+			paramTypeNames[idx2] = n
+			idx2 += 1
+		}
+		sort.Strings(paramTypeNames)
+		for _, name := range paramTypeNames {
+			pType := paramAnalyzer.ParamTypes[name]
 			if _, ok := a.rawTypes[name]; ok {
 				a.rawTypes[name] = append(a.rawTypes[name], pType)
 			} else {
@@ -181,7 +212,8 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}) {
 		// Update description with parameter descriptions
 		mandatory := []string{}
 		optional := []string{}
-		for n, p := range paramAnalyzer.Params {
+		for _, n := range paramAnalyzer.ParamNames {
+			p := paramAnalyzer.Params[n]
 			desc := n
 			if p.Description != "" {
 				desc = fmt.Sprintf("%s: %s", n, p.Description)

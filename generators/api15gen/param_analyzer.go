@@ -88,6 +88,7 @@ func (p *ParamAnalyzer) Analyze() {
 		paths[i] = n
 		i += 1
 	}
+	sort.Strings(paths)
 	sort.Sort(ByReverseLength(paths))
 
 	// Iterate through all params and build corresponding ActionParam structs
