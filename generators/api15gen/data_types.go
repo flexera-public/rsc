@@ -19,6 +19,7 @@ type ResourceData struct {
 // Data structure used to render resource method
 type ResourceAction struct {
 	Name          string
+	NativeName    string
 	Description   string
 	HttpMethod    string
 	Path          string
@@ -101,10 +102,12 @@ type FlagDefs []*FlagDef
 // A flag definition contains either a literal flag name or a flag pattern. It also defines the
 // type of the value returned by the command line parser for that flag.
 type FlagDef struct {
-	Path      string // Used to build variable name
-	Value     string // Actual flag name
-	Type      string // Flag type, "int", "string", "ints" or "strings"
-	IsPattern bool   // Whether value is a regexp
+	Path        string // Used to build variable name
+	Value       string // Actual flag name
+	Type        string // Flag type, "int", "string", "ints" or "strings"
+	Description string // Flag description if any
+	IsPattern   bool   // Whether value is a regexp
+	IsRequired  bool   // Whether value is required
 }
 
 // Generate flag definitions needed to create a command line parser that will gather all the
@@ -120,21 +123,46 @@ func (p *ActionParam) Flags() FlagDefs {
 			if len(value) == 0 {
 				value = path
 			} else {
-				if c.IsPattern {
-					value = regexp.QuoteMeta(path+".") + c.Value
-				} else {
-					value = path + "." + c.Value
-				}
+				value = path + "." + value
 			}
 			if len(c.Path) > 0 {
 				path += "." + c.Path
 			}
-			res[i] = &FlagDef{path, value, c.Type, c.IsPattern}
+			if c.IsPattern {
+				value = escapeValue(value)
+			}
+			res[i] = &FlagDef{path, value, c.Type, c.Description, c.IsPattern, c.IsRequired}
 		}
 	} else {
-		res = FlagDefs{&FlagDef{p.Name, p.Name, string(*p.Type.(*BasicDataType)), false}}
+		res = FlagDefs{&FlagDef{
+			Path:        p.Name,
+			Value:       p.Name,
+			Type:        string(*p.Type.(*BasicDataType)),
+			Description: p.Description,
+			IsPattern:   false,
+			IsRequired:  p.Mandatory,
+		}}
 	}
 	return res
+}
+
+// Helper routine that uses a heuristic to escape a flag value to be used as a regexp.
+// The difficulty is that some parts of the flag may be regular expressions while others are literal
+// strings that need to be escaped. This algorithm relies on the fact that parts are separated by a
+// dot and that flag value regexp parts start with "(".
+// A more generic way of doing this is to keep all value parts in an array instead of a string and
+// keeping track of which one is a regexp and which one isn't. Seems overkill here though.
+func escapeValue(value string) string {
+	parts := strings.Split(value, ".")
+	escaped := make([]string, len(parts))
+	for i, p := range parts {
+		if p[0] == '(' {
+			escaped[i] = p
+		} else {
+			escaped[i] = regexp.QuoteMeta(p)
+		}
+	}
+	return strings.Join(escaped, `\.`)
 }
 
 // Child flags, used for recursion
@@ -142,7 +170,7 @@ func (p *ActionParam) childFlags() []*FlagDef {
 	var res []*FlagDef
 	switch t := p.Type.(type) {
 	case *BasicDataType:
-		res = []*FlagDef{}
+		res = FlagDefs{}
 	case *ArrayDataType:
 		flags := t.ElemType.childFlags()
 		if len(flags) > 0 {
@@ -152,35 +180,72 @@ func (p *ActionParam) childFlags() []*FlagDef {
 				if !strings.HasSuffix(fType, "s") {
 					fType += "s"
 				}
-				value := f.Value
-				if !f.IsPattern {
-					value = regexp.QuoteMeta(value)
+				res[i] = &FlagDef{
+					Path:        f.Path,
+					Value:       fmt.Sprintf(`(\d+).%s`, f.Value),
+					Type:        fType,
+					Description: f.Description,
+					IsPattern:   true,
+					IsRequired:  f.IsRequired,
 				}
-				res[i] = &FlagDef{f.Path, fmt.Sprintf(`(\d+)\.%s`, value), fType, true}
 			}
 		} else {
-			res = []*FlagDef{&FlagDef{"", `(\d+)`, "strings", true}}
+			res = FlagDefs{&FlagDef{
+				Path:        "",
+				Value:       `(\d+)`,
+				Type:        "strings",
+				Description: p.Description,
+				IsPattern:   true,
+				IsRequired:  p.Mandatory,
+			}}
 		}
 	case *ObjectDataType:
-		res := []*FlagDef{}
+		res = FlagDefs{}
 		for _, field := range t.Fields {
 			flags := field.childFlags()
 			temp := make([]*FlagDef, len(flags))
 			if len(flags) > 0 {
 				for i, f := range flags {
-					temp[i] = &FlagDef{field.Name + "." + f.Path,
-						fmt.Sprintf("%s.%s", field.Name, f.Value),
-						f.Type, f.IsPattern}
+					fName := field.Name
+					if a, ok := field.Type.(*ArrayDataType); ok {
+						fName = a.ElemType.Name
+					}
+					path := fName
+					if len(f.Path) > 0 {
+						path += "." + f.Path
+					}
+					temp[i] = &FlagDef{
+						Path:        path,
+						Value:       fmt.Sprintf("%s.%s", fName, f.Value),
+						Type:        f.Type,
+						Description: f.Description,
+						IsPattern:   f.IsPattern,
+						IsRequired:  f.IsRequired,
+					}
 				}
 				res = append(res, temp...)
 			} else {
 				// No child means field's type is a basic type
 				fType := string(*field.Type.(*BasicDataType))
-				res = append(res, &FlagDef{field.Name, field.Name, fType, false})
+				res = append(res, &FlagDef{
+					Path:        field.Name,
+					Value:       field.Name,
+					Type:        fType,
+					Description: field.Description,
+					IsPattern:   false,
+					IsRequired:  field.Mandatory,
+				})
 			}
 		}
 	case *EnumerableDataType:
-		res = []*FlagDef{&FlagDef{"", `(.+)`, "strings", true}}
+		res = FlagDefs{&FlagDef{
+			Path:        "",
+			Value:       `([a-z0-9_]+)`,
+			Type:        "strings",
+			Description: p.Description,
+			IsPattern:   true,
+			IsRequired:  p.Mandatory,
+		}}
 	}
 	return res
 }

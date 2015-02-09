@@ -165,6 +165,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		// Record action
 		actions[idx] = &ResourceAction{
 			Name:          methodName(actionName, name),
+			NativeName:    actionName,
 			Description:   description,
 			HttpMethod:    httpMethod,
 			Path:          path,
