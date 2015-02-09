@@ -6,79 +6,70 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
-	"path/filepath"
-)
-
-var (
-	// Path to generated file
-	targetFile string
-
-	// Whether to keep generated file even if there were errors during generation
-	keep bool
+	"path"
 )
 
 func main() {
 	// 1. Parse command line arguments
-	destDefault, _ := filepath.Abs("codegen.go")
-	metadata := flag.String("metadata", "./api_data.json",
-		"Path to API 1.5 metadata file")
-	attributes := flag.String("attributes", "./attributes.json",
-		"Path to API 1.5 attribute types file")
-	targetFilePtr := flag.String("output", destDefault,
+	curDir, err := os.Getwd()
+	check(err)
+	metadataDirVal := flag.String("metadata", curDir,
+		"Path to directory containig metadata files (api_data.json and attributes.json)")
+	destDirVal := flag.String("output", curDir,
 		"Path to output file")
-	keepPtr := flag.Bool("keep", false, "Keep generated code even if generation produced errors")
 	flag.Parse()
-	targetFile = *targetFilePtr
-	keep = *keepPtr
-	if len(*metadata) == 0 {
-		check(fmt.Errorf("Specify path to metadata json with '-metadata /path/to/api_data.json'"))
+
+	metadataDir := *metadataDirVal
+	if stat, _ := os.Stat(metadataDir); !stat.IsDir() {
+		check(fmt.Errorf("%s is not a valid directory", metadataDir))
 	}
-	at, err := ioutil.ReadFile(*attributes)
-	check(err)
-	var attributeTypes map[string]string
-	check(json.Unmarshal(at, &attributeTypes))
-	js, err := ioutil.ReadFile(*metadata)
-	check(err)
-	var content map[string]interface{}
-	check(json.Unmarshal(js, &content))
+
+	destDir := *destDirVal
+	if stat, _ := os.Stat(destDir); !stat.IsDir() {
+		check(fmt.Errorf("%s is not a valid directory", destDir))
+	}
+
+	apiDataFile := path.Join(metadataDir, "api_data.json")
+	var apiData map[string]interface{}
+	i := interface{}(apiData)
+	check(loadJson(apiDataFile, &i))
+
+	attributesFile := path.Join(metadataDir, "attributes.json")
+	var attributes map[string]string
+	i = interface{}(attributes)
+	check(loadJson(attributesFile, &i))
 
 	// 2. Analyze
-	analyzer := NewApiAnalyzer(content, attributeTypes)
-	analyzer.Analyze()
+	analyzer := NewApiAnalyzer(apiData, attributes)
+	descriptor := analyzer.Analyze()
 
 	// 3. Write codegen.go
-	f, err := os.Create(targetFile)
-	check(err)
-	c, err := NewCodeWriter()
-	check(err)
-	check(c.WriteHeader(f))
-	for _, name := range analyzer.ResourceNames {
-		resource := analyzer.Resources[name]
-		c.WriteResourceHeader(name, f)
-		check(c.WriteResource(resource, f))
-	}
-	c.WriteTypeSectionHeader(f)
-	for _, name := range analyzer.TypeNames {
-		t := analyzer.Types[name]
-		c.WriteType(t, f)
-	}
-	f.Close()
+	check(NewClientGenerator("codegen.go").Generate(descriptor, destDir))
 
-	// 4. "go fmt" codegen.go
-	o, err := exec.Command("go", "fmt", targetFile).CombinedOutput()
-	if err != nil {
-		check(fmt.Errorf("Failed to format generated code:\n%s", o))
+	// 4. Write codegen_cmds.go
+	check(NewCmdGenerator("codegen_cmds.go").Generate(descriptor, destDir))
+}
+
+// Helper function that reads and unmashals json from given file
+func loadJson(file string, val *interface{}) error {
+	if _, err := os.Stat(file); err != nil {
+		return fmt.Errorf("Cannot find '%s'", file)
 	}
+	js, err := ioutil.ReadFile(file)
+	if err != nil {
+		return fmt.Errorf("Cannot read '%s': %s", file, err.Error())
+	}
+	err = json.Unmarshal(js, val)
+	if err != nil {
+		return fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", file, err.Error())
+	}
+	return nil
 }
 
 // Panic if error is not nil
 func check(err error) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "api15gen: %s\n", err.Error())
-		if !keep {
-			os.Remove(targetFile)
-		}
 		os.Exit(1)
 	}
 }

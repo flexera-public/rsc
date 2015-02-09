@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -93,6 +94,97 @@ func (p *ActionParam) Compare(other *ActionParam) bool {
 	return true
 }
 
+// Flag definitions consist of a map of definition to unique name.
+// Names can be used to prefix command line args.
+type FlagDefs []*FlagDef
+
+// A flag definition contains either a literal flag name or a flag pattern. It also defines the
+// type of the value returned by the command line parser for that flag.
+type FlagDef struct {
+	Path      string // Used to build variable name
+	Value     string // Actual flag name
+	Type      string // Flag type, "int", "string", "ints" or "strings"
+	IsPattern bool   // Whether value is a regexp
+}
+
+// Generate flag definitions needed to create a command line parser that will gather all the
+// data needed to build an instance of the parameter value.
+func (p *ActionParam) Flags() FlagDefs {
+	children := p.childFlags()
+	var res FlagDefs
+	if len(children) > 0 {
+		res = make(FlagDefs, len(children))
+		for i, c := range children {
+			value := c.Value
+			path := p.Name
+			if len(value) == 0 {
+				value = path
+			} else {
+				if c.IsPattern {
+					value = regexp.QuoteMeta(path+".") + c.Value
+				} else {
+					value = path + "." + c.Value
+				}
+			}
+			if len(c.Path) > 0 {
+				path += "." + c.Path
+			}
+			res[i] = &FlagDef{path, value, c.Type, c.IsPattern}
+		}
+	} else {
+		res = FlagDefs{&FlagDef{p.Name, p.Name, string(*p.Type.(*BasicDataType)), false}}
+	}
+	return res
+}
+
+// Child flags, used for recursion
+func (p *ActionParam) childFlags() []*FlagDef {
+	var res []*FlagDef
+	switch t := p.Type.(type) {
+	case *BasicDataType:
+		res = []*FlagDef{}
+	case *ArrayDataType:
+		flags := t.ElemType.childFlags()
+		if len(flags) > 0 {
+			res = make([]*FlagDef, len(flags))
+			for i, f := range flags {
+				fType := f.Type
+				if !strings.HasSuffix(fType, "s") {
+					fType += "s"
+				}
+				value := f.Value
+				if !f.IsPattern {
+					value = regexp.QuoteMeta(value)
+				}
+				res[i] = &FlagDef{f.Path, fmt.Sprintf(`(\d+)\.%s`, value), fType, true}
+			}
+		} else {
+			res = []*FlagDef{&FlagDef{"", `(\d+)`, "strings", true}}
+		}
+	case *ObjectDataType:
+		res := []*FlagDef{}
+		for _, field := range t.Fields {
+			flags := field.childFlags()
+			temp := make([]*FlagDef, len(flags))
+			if len(flags) > 0 {
+				for i, f := range flags {
+					temp[i] = &FlagDef{field.Name + "." + f.Path,
+						fmt.Sprintf("%s.%s", field.Name, f.Value),
+						f.Type, f.IsPattern}
+				}
+				res = append(res, temp...)
+			} else {
+				// No child means field's type is a basic type
+				fType := string(*field.Type.(*BasicDataType))
+				res = append(res, &FlagDef{field.Name, field.Name, fType, false})
+			}
+		}
+	case *EnumerableDataType:
+		res = []*FlagDef{&FlagDef{"", `(.+)`, "strings", true}}
+	}
+	return res
+}
+
 // Make it possible to sort action parameters by name
 type ByName []*ActionParam
 
@@ -141,7 +233,7 @@ func (a *ArrayDataType) Inspect() string {
 	return fmt.Sprintf("Array of %s", a.ElemType.Type.Inspect())
 }
 
-func (b *ArrayDataType) BlankConditionExp(name string) string {
+func (a *ArrayDataType) BlankConditionExp(name string) string {
 	return fmt.Sprintf("if len(%s) == 0 {", name)
 }
 
@@ -164,7 +256,7 @@ func (o *ObjectDataType) Inspect() string {
 	return fmt.Sprintf("%s:{\n\t%s\n}", o.Name, strings.Join(fields, "\n\t"))
 }
 
-func (b *ObjectDataType) BlankConditionExp(name string) string {
+func (o *ObjectDataType) BlankConditionExp(name string) string {
 	return fmt.Sprintf("if %s == nil {", name)
 }
 
@@ -207,6 +299,6 @@ func (e *EnumerableDataType) Inspect() string {
 	return fmt.Sprintf("Enumeration")
 }
 
-func (b *EnumerableDataType) BlankConditionExp(name string) string {
+func (e *EnumerableDataType) BlankConditionExp(name string) string {
 	return fmt.Sprintf("if len(%s) == 0 {", name)
 }

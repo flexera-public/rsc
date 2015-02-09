@@ -12,6 +12,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/raphael/kingpin"
 )
 
 // RightScale API 1.5 client
@@ -62,6 +64,15 @@ func NewClient(token string, accountId int, endpoint string, timeout time.Durati
 	} else {
 		return c, nil
 	}
+}
+
+// Register kingpin subcommands for all API 1.5 resources and actions
+func RegisterCommands(app *kingpin.Application) {
+}
+
+// Run given command, this consists of grabbing the flags, building the parameters and calling the
+// corresponding method.
+func (c *Client) RunCommand(cmd string) map[string]interface{} {
 }
 
 // SetAccount sets the active account for all API calls.

@@ -2,75 +2,126 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
+	"strings"
 
-	"github.com/codegangsta/cli"
+	"github.com/raphael/kingpin"
 	"github.com/rightscale/rsclient/rsapi15"
 )
 
-// Command line client entry point.
-func main() {
-	app := cli.NewApp()
-	app.EnableBashCompletion = true
-	app.Name = "rsclient"
-	app.Usage = "RightScale API client"
-	app.Author = "RightScale"
-	app.Email = "support@rightscale.com"
-	app.Version = "0.1.0"
-
-	app.Commands = []cli.Command{
-		{
-			Name: "setup",
-			Usage: "setup config file, defaults to $HOME/.rsclient, use '--config' " +
-				"to override",
-			Description: "Build a rsclient config file and test it. Multiple config " +
-				"files can be created by specifying different values for the " +
-				"--config flag.",
-			Flags: []cli.Flag{
-				cli.StringFlag{"config, c", fmt.Sprintf("%v/.rsclient",
-					os.Getenv("HOME")), "path to rsclient config file", ""}},
-			Action: createConfig,
-		}, {
-			Name:  "api15",
-			Usage: "use RightScale API 1.5",
-			Description: "Setup client to use API 1.5 " +
-				"- http://reference.rightscale.com/api1.5/index.html",
-			Subcommands: rsapi15.Commands(),
-		},
-	}
-
-	app.Run(os.Args)
+// Basic configuration settings required by all clients
+type ClientConfig struct {
+	Account  int    // RightScale account ID
+	Endpoint string // RightScale API endpoint, e.g. "us-3.rightscale.com"
+	Token    string // RightScale API refresh token
 }
 
-// Read existing configuration file
-func readConfig(path string) (map[string]string, error) {
+// LoadConfig loads the client configuration from disk
+func LoadConfig(path string) (*ClientConfig, error) {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
-	var config map[string]string
-	err = json.Unmarshal(content, &config)
+	var config *ClientConfig
+	err = json.Unmarshal(content, config)
 	if err != nil {
 		return nil, err
 	}
-	if config["token"] == "" {
-		return nil, errors.New("missing refresh token")
-	}
-	config["token"], err = decrypt(config["token"])
+	config.Token, err = decrypt(config.Token)
 	return config, err
 }
 
-// Create configuration file
-func createConfig(c *cli.Context) {
-	path := c.String("config")
-	if path == "" {
-		path = fmt.Sprintf("%v/.rsclient", os.Getenv("HOME"))
+// Save config encrypts the token and persists the config to file
+func (cfg *ClientConfig) Save(path string) error {
+	encrypted, err := encrypt(cfg.Token)
+	if err != nil {
+		return fmt.Errorf("Failed to encrypt token: %s", err.Error())
 	}
-	config, err := readConfig(path)
-	var token, account, accountDef string
+	cfg.Token = encrypted
+	bytes, err := json.Marshal(cfg)
+	if err != nil {
+		return fmt.Errorf("Failed to serialize config: %s", err.Error())
+	}
+	err = ioutil.WriteFile(path, bytes, 0644)
+	if err != nil {
+		return fmt.Errorf("Failed to write config file: %s", err.Error())
+	}
+	return nil
+}
+
+// Command line client entry point.
+func main() {
+	app := kingpin.New("rsclient", "A RightScale API client")
+	app.Version("0.1.0")
+
+	account := app.Flag("account", "RightScale account ID, overrides config").Int()
+	endpoint := app.Flag("endpoint", "RightScale API endpoint (e.g. 'us-3.rightscale.com'), overrides config").String()
+	token := app.Flag("token", "Oauth access token (overrides config)").String()
+
+	pretty := app.Flag("pretty", "Pretty print response body").Short('p').Bool()
+	extract := app.Flag("extract", "Extract value(s) from response media type at given path, path consists of dot separated attribute names, e.g. \"security_groups.href\"").Short('e').String()
+
+	setup := app.Command("setup",
+		"setup config file, defaults to $HOME/.rsclient, use '--config' to override")
+	cfgPath := setup.Flag("config", "path to rsclient config file").Default(fmt.Sprintf("%v/.rsclient", os.Getenv("HOME"))).String()
+
+	rsapi15.RegisterCommands(app)
+
+	cmd := kingpin.MustParse(app.Parse(os.Args[1:]))
+
+	if cmd == "setup" {
+		createConfig(*cfgPath)
+	} else {
+		config, err := LoadConfig(*cfgPath)
+		if account != nil {
+			config.Account = *account
+		}
+		if endpoint != nil {
+			config.Endpoint = *endpoint
+		}
+		if token != nil {
+			config.Token = *token
+		}
+		client, err := rsapi15.NewClient(config.Token, config.Account, config.Endpoint, 0)
+		if err != nil {
+			PrintError("Failed to create API session: %v", err.Error())
+		} else {
+			res := client.RunCommand(cmd)
+			pp := pretty != nil && *pretty
+			if extract != nil {
+				paths := strings.Split(extract, ".")
+				for res != nil && len(paths) > 0 {
+					res = res[paths[0]]
+					paths = paths[1:]
+				}
+				if res == nil {
+					PrintError("No value at path '%s', response was:", extract)
+					pp = true // Force pretty print
+				}
+			}
+			var err error
+			var output string
+			if pp {
+				output, err := json.MarshalIndent(res, "", "  ")
+			} else {
+				output, err := json.Marshal(res)
+			}
+			if err != nil {
+				PrintError("Failed to JSON encode response\n%+v", res)
+				return
+			}
+			fmt.Println(output)
+		}
+	}
+}
+
+// Create configuration file
+func createConfig(path string) {
+	config, _ := LoadConfig(path)
+	var tokenDef, accountDef, endpointDef string
 	if config != nil {
 		PromptWarning("Found existing configuration file %v, overwrite? (y/N): ", path)
 		var yn string
@@ -78,48 +129,44 @@ func createConfig(c *cli.Context) {
 		if yn != "y" {
 			PrintSuccess("Exiting")
 			return
-		} else {
-			account = config["account"]
-			accountDef = fmt.Sprintf(" (%v)", account)
-			token = config["token"]
-			tokenDef = " (leave blank to leave unchanged)"
 		}
+		accountDef = fmt.Sprintf(" (%v)", config.Account)
+		tokenDef = " (leave blank to leave unchanged)"
+		if config.Endpoint == "" {
+			config.Endpoint = "my.rightscale.com"
+		}
+		endpointDef = fmt.Sprintf(" (%v)", config.Endpoint)
 	}
 
 	fmt.Printf("Account id%v: ", accountDef)
 	var newAccount string
 	fmt.Scanf("%s", &newAccount)
 	if newAccount != "" {
-		account = newAccount
+		a, err := strconv.Atoi(newAccount)
+		if err != nil {
+			PrintError("Account ID must be an integer, exiting.")
+			return
+		}
+		config.Account = a
 	}
 
 	fmt.Printf("Refresh Token%v: ", tokenDef)
 	var newToken string
 	fmt.Scanf("%s", &newToken)
 	if newToken != "" {
-		token = newToken
+		config.Token = newToken
 	}
 
-	token, err := encrypt(token)
-	if err != nil {
-		PrintError("Failed to encrypt token: %v", err)
-		return
+	fmt.Printf("API Endpoint%v: ", endpointDef)
+	var newEndpoint string
+	fmt.Scanf("%s", &newEndpoint)
+	if newEndpoint != "" {
+		config.Endpoint = newEndpoint
 	}
-	config = map[string]string{
-		"account": account,
-		"token":   token,
-	}
-	bytes, err := json.Marshal(config)
-	if err != nil {
-		PrintError("Failed to serialize config: %v", err)
-		return
-	}
-	err = ioutil.WriteFile(path, bytes, 0644)
-	if err != nil {
-		PrintError("Failed to write config file: %v", err)
-		return
-	}
-	client, err := rsapi15.NewClient()
+
+	config.Save(path)
+
+	_, err := rsapi15.NewClient(config.Token, config.Account, config.Endpoint, 0)
 	if err != nil {
 		PrintError("Failed to contact RightScale: %v", err.Error())
 	} else {
