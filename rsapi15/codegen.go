@@ -1,9 +1,9 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 5, 2015 at 12:09am (PST)
+// Generated Feb 11, 2015 at 1:26pm (PST)
 // Command:
-// $ api15gen -keep=T -metadata=../../rsapi15/api_data.json -attributes=../../rsapi15/attributes.json -output=../../rsapi15/codegen.go
+// $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -667,7 +667,6 @@ func (c *Client) DetailAuditEntry(id string) (string, error) {
 // be provided during an index call to limit the search. The format of the dates must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
 // 2011/07/11 00:00:00 +0000.
 // A maximum of 1000 records will be returned by each index call.
-
 // Using the available filters, one can select or group which audit entries to retrieve.
 // 	endDate: The end date for retrieving audit entries (the format must be the same as start date). The time period between start and end date must be less than 3 months (93 days).
 // 	limit: Limit the audit entries to this number. The limit should >= 1 and <= 1000
@@ -811,35 +810,27 @@ type Backup struct {
 // POST api/backups/cleanup(.:format)?
 // Deletes old backups that meet the given criteria. For example, if a user calls cleanup with keep monthlies set to 12,
 // then the latest backup for each month, for 12 months, will be kept.
-
 // All backups belong to a particular 'lineage'. Backups are not constrained to a specific cloud or a specific deployment.
 // A lineage is account-specific. Hence, backups having the same lineage but belonging to different clouds are still considered
 // for cleanup.
-
 // If backups specific to a single cloud should be cleaned up, see the cloud_href parameter.
-
 // Definitions:
 // A snapshot is completed if its status is "available"
 // A snapshot is committed if it has a tag "rs_backup:committed=true"
 // A snapshot belongs to a backup "X" if it has a tag "rs_backup:backup_id=X"
 // A snapshot is part of a backup with size "Y" if it has a tag "rs_backup:count=Y"
 // A snapshot's position in a backup is "Z" if it has a tag "rs_backup:position=Z"
-
 // Backups are of 3 types:
 // Perfect backup: A backup which is completed (all the snapshots are completed) and committed (all the snapshots are committed) and the number of snapshots it found is equal to the number
 // in the "rs_backup:count=" tag on each of the Snapshots.
 // Imperfect backup: A backup which is not committed or if the number of snapshots it found is not equal to the number in the "rs_backup:count=" tag on each of the snapshots.
 // Partial Perfect backup: A snapshot which is neither perfect nor imperfect
-
 // An imperfect backup is picked up for cleanup only if there exists a perfect backup with a newer created_at timestamp.
 // No constraints will be applied on such imperfect backups and all of them will be destroyed.
-
 // For all the perfect backups, the constraints of keep_last and dailies etc. will be applied.
 // The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
 // independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
-
 // Hence, it is important to "commit" a backup to make it eligible for cleanup.
-
 // 	keepLast: The number of backups that should be kept.
 // 	lineage: The lineage of the backups that are to be cleaned-up.
 // -- Optional parameters:
@@ -939,11 +930,9 @@ func (c *Client) DestroyBackup(id string) error {
 // GET api/backups(.:format)?
 // Lists all of the backups with the given lineage tag. Filters can be used to search for a particular backup. If the
 // 'latest_before' filter is set, only one backup is returned (the latest backup before the given timestamp).
-
 // To get the latest completed backup, the 'completed' filter should be set to 'true' and the 'latest_before' filter
 // should be set to the current timestamp. The format of the timestamp must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
 // 2011/07/11 00:00:00 +0000.
-
 // To get the latest completed backup just before, say 25 June 2009, then the 'completed' filter
 // should be set to 'true' and the 'latest_before' filter should be set to 2009/06/25 00:00:00 +0000.
 // 	lineage: Backups belonging to this lineage.
@@ -991,11 +980,9 @@ func (c *Client) IndexBackups(lineage string, options ApiParams) ([]Backup, erro
 // POST api/backups/:id/restore(.:format)?
 // Restores the given Backup.
 // This call will:
-
 // create the required number of Volumes from the volume_snapshots_hrefs in the given Backup,
 // attach them to the given Instance at the device specified in the Snapshot. If the devices are already being used
 //    on the Instance, the Task will denote that the restore has failed.
-
 // 	instanceHref: The instance href that the backup will be restored to.
 // -- Optional parameters:
 // 	backup
@@ -1059,7 +1046,7 @@ func (c *Client) ShowBackup(id string) (*Backup, error) {
 
 // PUT api/backups/:id(.:format)?
 // Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.
-func (c *Client) UpdateBackup(backup *BackupParam3, id string) error {
+func (c *Client) UpdateBackup(backup *BackupParam2, id string) error {
 	if id == "" {
 		return fmt.Errorf("id cannot be blank")
 	}
@@ -1097,11 +1084,8 @@ type ChildAccount struct {
 // POST api/child_accounts(.:format)?
 // Create an enterprise ChildAccount for this Account. The User will by default get an 'admin' role
 // on the ChildAccount to enable him/her to add, delete Users and Permissions.
-
 // For more information on the valid values for 'cluster_href', refer to the following:
-
 // http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/ChildAccounts/Create
-
 func (c *Client) CreateChildAccount(childAccount *ChildAccountParam) (map[string]interface{}, error) {
 	var res map[string]interface{}
 	if childAccount == nil {
@@ -1292,11 +1276,8 @@ type CloudAccount struct {
 
 // POST api/cloud_accounts(.:format)?
 // Create a CloudAccount by passing in the respective credentials for each cloud.
-
 // For more information on the specific parameters for each cloud, refer to the following:
-
 // http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
-
 func (c *Client) CreateCloudAccount(cloudAccount *CloudAccountParam) (Href, error) {
 	var res Href
 	if cloudAccount == nil {
@@ -1511,7 +1492,6 @@ func (c *Client) FreezeCookbook(id string, value string) error {
 
 // GET api/cookbooks(.:format)?
 // Lists the Cookbooks available to this account.
-
 // The extended_designer view is only available to accounts with the designer permission.
 // -- Optional parameters:
 // 	filter
@@ -1582,7 +1562,6 @@ func (c *Client) ObsoleteCookbook(id string, value string) error {
 
 // GET api/cookbooks/:id(.:format)?
 // Show information about a single Cookbook.
-
 // The extended_designer view is only available to accounts with the designer permission.
 // -- Optional parameters:
 // 	view
@@ -1996,7 +1975,6 @@ func (c *Client) UpdateCredential(credential *CredentialParam2, id string) error
 // Datacenters represent isolated facilities within a cloud. The level and type of isolation is cloud dependent.
 // While Datacenters in large public clouds might correspond to different physical buildings, with different power,
 // internet links...etc., Datacenters within the context of a private cloud might simply correspond to having different network providers.
-
 // Spreading servers across distinct Datacenters helps minimize outages.
 type Datacenter struct {
 	Actions     []string            `json:"actions,omitempty"`
@@ -2181,7 +2159,6 @@ func (c *Client) DestroyDeployment(id string) error {
 
 // GET api/deployments(.:format)?
 // Lists deployments of the account.
-
 // Using the available filters, one can select or group which deployments to retrieve.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
@@ -2266,7 +2243,6 @@ func (c *Client) ServersDeployment(id string) error {
 
 // GET api/deployments/:id(.:format)?
 // Lists the attributes of a given deployment.
-
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
 // -- Optional parameters:
@@ -2608,20 +2584,14 @@ func (c *Client) IndexInputs(cloudId string, instanceId string, options ApiParam
 
 // PUT api/clouds/:cloud_id/instances/:instance_id/inputs/multi_update(.:format)?
 // Performs a bulk update of inputs on the specified resource.
-
 // If an input exists with the same name, its value will be updated. If an input does not
 // exist with a specified name, it will be ignored.
-
 // Input values are represented as strings.
-
 // There are two notations for inputs:
-
 // 1.0 notation - The deprecated notation used in API 1.0 and in 1.5
 //     2.0 notation - The new notation that is partially supported in API 1.5, and will
 //         be the only notation supported in 2.0
-
 // Although the two notations are similar, they have a few important differences, in particular:
-
 //   With 2.0 notation, values MUST begin with a prefix identifying their type, followed
 //   by a colon (example: "text:foo"). With 1.0 notation, unprefixed values are generally
 //   taken to be text-type.
@@ -2632,60 +2602,48 @@ func (c *Client) IndexInputs(cloudId string, instanceId string, options ApiParam
 //   contain cred, env, or even other arrays. With 1.0 notation, array elements are
 //   implicitly text values and there is no way to specify anything else.Note that the UI
 //   does not support complex-valued arrays; please use this feature with caution!
-
 // The following types of inputs are supported:
-
 // Type
 // Format
 // 1.0 Example(s)
 // 2.0 Example(s)
-
 // Text string
 // &lt;value&gt; (1.0 only)text:&lt;value&gt;
 // footext:footext:multi word value
 // text:footext:multi word value
-
 // Blank string(input is present but its value is empty-string)
 // text:blank (2.0 only)
 // text:
 // blank
-
 // Ignore (input is not present)
 // ignore$ignore (1.0 only)ignore:$ignore (1.0 only)
 // ignore$ignoreignore:$ignore
 // ignore
-
 // Dynamically-substituted environment value
 // env:&lt;value&gt;env:&lt;component&gt;:&lt;value&gt;
 // env:MY_ENV_VARenv:my_server:MY_ENV_VAR
 // env:MY_ENV_VARenv:my_server:MY_ENV_VAR
-
 // Credential value
 // cred:&lt;value&gt;
 // cred:abcd1234wxyz
 // cred:abcd1234wxyz
-
 // Private SSH key
 // key:&lt;value&gt;key:&lt;value&gt;:&lt;cloud_id&gt;
 // key:1234abcd5678key:1234abcd5678:1
 // key:1234abcd5678key:1234abcd5678:1
-
 // Array of values
 // array:&lt;value&gt;,... (1.0 only)array:["&lt;type&gt;:&lt;value&gt;",...] (2.0 only)
 // array:x,y(NOTE: 1.0 only supports text inputs for arrays)
 // array:["text:v1","text:v2"]array:["text:x","env:server_x:MY_VAR"]
-
 // Note that in the case of array inputs, the portion after the colon must be
 // valid JSON. In particular, when enclosing the input within double-quotes
 // (e.g. for use in cURL or Ruby), the double-quotes must be escaped.
 // Single-quotes may not be used within the array input, since they are not
 // valid for JSON strings.
-
 // The legacy format for providing inputs is as an array of name-value pairs
 // (ex: -d inputs[][name]="MY_INPUT" -d inputs[][value]="text:foobar"), however
 // the new format is supported for inputs provided as a hash
 // (ex: -d inputs[MY_INPUT]="text:foobar").
-
 // If the old format is used, the input is parsed using 1.0 semantics.
 // If the new format is used, the input is parsed using the new 2.0 semantics.
 func (c *Client) MultiUpdateInputs(cloudId string, inputs map[string]string, instanceId string) error {
@@ -2724,7 +2682,6 @@ func (c *Client) MultiUpdateInputs(cloudId string, inputs map[string]string, ins
 /******  Instance ******/
 
 // Instances represent an entity that is runnable in the cloud.
-
 // An instance of type "next" is a container of information that expresses how to configure a future instance when we decide
 // to launch or start it.
 // A "next" instance generally only exists in the RightScale realm, and usually doesn't have any corresponding representation
@@ -2799,17 +2756,13 @@ func (c *Client) CreateInstance(cloudId string, instance *InstanceParam) (Href, 
 
 // GET api/clouds/:cloud_id/instances(.:format)?
 // Lists instances of a given cloud, server array.
-
 // Using the available filters, it is possible to craft powerful queries about which instances to retrieve.
 // For example, one can easily list:
-
 // instances that have names that contain "app"
 // all instances of a given deployment
 // instances belonging to a given server array (i.e., have the same parent_url)
-
 // To see the instances of a server array including the next_instance, use the URL "/api/clouds/:cloud_id/instances" with the filter "parent_href==/api/server_arrays/XX". To list only the running
 // instances of a server array, use the URL "/api/server_arrays/:server_array_id/current_instances"
-
 // The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
 // -- Optional parameters:
@@ -2851,7 +2804,6 @@ func (c *Client) IndexInstances(cloudId string, options ApiParams) ([]Instance, 
 
 // POST api/clouds/:cloud_id/instances/:id/launch(.:format)?
 // Launches an instance using the parameters that this instance has been configured with.
-
 // Note that this action can only be performed in "next" instances, and not on instances that are already running.
 // -- Optional parameters:
 // 	apiBehavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
@@ -2910,7 +2862,6 @@ func (c *Client) LockInstance(cloudId string, id string) error {
 
 // POST api/clouds/:cloud_id/instances/multi_run_executable(.:format)?
 // Runs a script or a recipe in the running instances.
-
 // This is an asynchronous function, which returns immediately after queuing the executable for execution.
 // Status of the execution can be tracked at the URL returned in the "Location" header.
 // -- Optional parameters:
@@ -2987,7 +2938,6 @@ func (c *Client) MultiTerminateInstances(cloudId string, options ApiParams) erro
 
 // POST api/clouds/:cloud_id/instances/:id/reboot(.:format)?
 // Reboot a running instance.
-
 // Note that this action can only succeed if the instance is running. One cannot reboot instances of type "next".
 func (c *Client) RebootInstance(cloudId string, id string) error {
 	if cloudId == "" {
@@ -3013,7 +2963,6 @@ func (c *Client) RebootInstance(cloudId string, id string) error {
 
 // POST api/clouds/:cloud_id/instances/:id/run_executable(.:format)?
 // Runs a script or a recipe in the running instance.
-
 // This is an asynchronous function, which returns immediately after queuing the executable for execution.
 // Status of the execution can be tracked at the URL returned in the "Location" header.
 // Note that this can only be performed on running instances.
@@ -3093,7 +3042,6 @@ func (c *Client) SetCustomLodgementInstance(cloudId string, id string, quantity 
 
 // GET api/clouds/:cloud_id/instances/:id(.:format)?
 // Shows attributes of a single instance.
-
 // The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
 // -- Optional parameters:
@@ -3132,9 +3080,7 @@ func (c *Client) ShowInstance(cloudId string, id string, options ApiParams) (*In
 
 // POST api/clouds/:cloud_id/instances/:id/start(.:format)?
 // Starts an instance that has been stopped, resuming it to its previously saved volume state.
-
 // After an instance is started, the reference to your instance will have a different id.
-
 // The new id can be found by performing an index query with the appropriate filters on the
 // Instances resource, performing a show action on the Server resource for Server Instances, or
 // performing a current_instances action on the ServerArray resource for ServerArray Instances.
@@ -3162,9 +3108,7 @@ func (c *Client) StartInstance(cloudId string, id string) error {
 
 // POST api/clouds/:cloud_id/instances/:id/stop(.:format)?
 // Stores the instance's current volume state to resume later using the 'start' action.
-
 // After an instance is stopped, the reference to your instance will have a different id.
-
 // The new id can be found by performing an index query with the appropriate filters on the
 // Instances resource, performing a show action on the Server resource for Server Instances, or performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (c *Client) StopInstance(cloudId string, id string) error {
@@ -3191,7 +3135,6 @@ func (c *Client) StopInstance(cloudId string, id string) error {
 
 // POST api/clouds/:cloud_id/instances/:id/terminate(.:format)?
 // Terminates a running instance.
-
 // Note that this action can succeed only if the instance is running. One cannot terminate instances of type "next".
 func (c *Client) TerminateInstance(cloudId string, id string) error {
 	if cloudId == "" {
@@ -3916,7 +3859,6 @@ type MonitoringMetric struct {
 // GET api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id/data(.:format)?
 // Gives the raw monitoring data for a particular metric. The response will include different variables
 // associated with that metric and the data points for each of those variables.
-
 // To get the data for a certain duration, for e.g. for the last 10 minutes(600 secs), provide the variables
 // start="-600" and end="0".
 // 	end: An integer number of seconds from current time. e.g. -150 or 0
@@ -4805,12 +4747,9 @@ func (c *Client) UpdateNetworkGateway(id string, networkGateway *NetworkGatewayP
 /******  NetworkOptionGroup ******/
 
 // A key/value pair hash containing options for configuring a Network.
-
 // The key/value pairs are stored in the "options" parameter.
-
 // Keys correspond to the type of option to set, and values correspond
 // to the value of the particular option being set.
-
 // Option keys that are supported vary depending on cloud -- please consult
 // your particular cloud's documentation for available option keys.
 type NetworkOptionGroup struct {
@@ -4976,14 +4915,11 @@ func (c *Client) UpdateNetworkOptionGroup(id string, networkOptionGroup *Network
 /******  NetworkOptionGroupAttachment ******/
 
 // Resource for attaching NetworkOptionGroups to Networks.
-
 // A single NetworkOptionGroup can be attached to many Networks.
 // A Network/Subnet can have many NetworkOptionGroups attached, as long as the
 // NetworkOptionGroups each have different types.
-
 // This resource describes the attachment details between a particular
 // NetworkOptionGroup and Network.
-
 // Amazon currently only supports attaching NetworkOptionGroups to Networks.
 // Other clouds in the future may support attaching to Subnets.
 type NetworkOptionGroupAttachment struct {
@@ -5156,32 +5092,24 @@ func (c *Client) UpdateNetworkOptionGroupAttachment(id string, networkOptionGrou
 
 // Note that all API calls irrespective of the resource it is acting on, should pass a header
 // "X-Api-Version" with the value "1.5".
-
 // This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
 // a bearer access token, which can be used in lieu of a session cookie when interacting with API
 // resources.
-
 // This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
 // to the conventions established by other RightScale API resources. However, an API-version header is
 // still required when interacting with the OAuth endpoint.
-
 // OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
 // browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
 // endpoint supports the following OAuth 2.0 operations:
-
 // refresh_token - for end-user login using a previously-negotiated OAuth grant
 // client_credentials - for instance login using API credentials transmitted via user-data
-
 // RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
-
 // clients MUST transmit an X-Api-Version header with every OAuth request
 // clients MAY transmit an account_id parameter as part of their POST form data
-
 // If you choose to post an account_id, then the API may respond with a 301 redirect if your account
 // is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
 // elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
 // this cluster).
-
 // For more information on how to use OAuth 2.0 with RightScale, refer to the following:
 // http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
 // http://tools.ietf.org/html/draft-ietf-oauth-v2-23
@@ -5192,28 +5120,22 @@ type Oauth2 struct {
 // Perform an OAuth 2.0 token_refresh operation to obtain an access token that
 // can be used in lieu of an API session cookie. (In other words, creates a
 // session using OAuth 2.0).
-
 // Note that an API-Version header is required with your request, and that the server
 // may respond with a 301 Moved Permanently if you include an account_id parameter and
 // your account is hosted in another RightScale cluster.
-
 // The request parameters and response format are all as per the OAuth 2.0
 // Internet Draft standard v23. In brief:
-
 // Successful responses include an access token, an expires-in timestamp, and a token type
 // The token type is always "bearer"
 // To use a bearer token, include header "Authorization: Bearer " with your API requests
 // The client must refresh the access token before it expires
-
 // # Example Request using Curl (with prettified response):
 // curl -i -H X-API-Version:1.5 -x POST https://my.rightscale.com/api/oauth2 -d "grant_type=refresh_token" -d "refresh_token=abcd1234deadbeef"
-
 // {
 //   "access_token": "xyzzy",
 //   "expires_in":   3600,
 //   "token_type":   "bearer"
 // }
-
 // 	grantType: Type of grant.
 // -- Optional parameters:
 // 	accountId: The client's account ID (only needed for instance agent clients).
@@ -5268,13 +5190,10 @@ type Permission struct {
 // POST api/permissions(.:format)?
 // Create a permission, thereby granting some user a particular role
 // with respect to the current account.
-
 // The 'observer' role has a special status; it must be granted before
 // a user is eligible for any other permission in a given account.
-
 // When provisioning users, always create the observer permission FIRST;
 // creating any other permission before it will result in an error.
-
 // For more information about the roles available and the privileges
 // they confer, please refer to the following page of the RightScale
 // support portal:
@@ -5315,11 +5234,9 @@ func (c *Client) CreatePermission(permission *PermissionParam) (Href, error) {
 // DELETE api/permissions/:id(.:format)?
 // Destroy a permission, thereby revoking a user's role with respect
 // to the current account.
-
 // The 'observer' role has a special status; it cannot be revoked if
 // a user has any other roles, because other roles become useless without
 // being able to read data pertaining to the account.
-
 // When deprovisioning user, always destroy the observer permission LAST;
 // destroying it while the user has other permissions will result in an error.
 func (c *Client) DestroyPermission(id string) error {
@@ -5981,7 +5898,6 @@ func (c *Client) ShowRecurringVolumeAttachment(cloudId string, id string, option
 /******  Repository ******/
 
 // A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.
-
 // RightScale currently supports the following types of repositores: git, svn, and URLs of compressed files (tar, tgz, gzip).
 type Repository struct {
 	Actions         []string            `json:"actions,omitempty"`
@@ -6041,10 +5957,8 @@ func (c *Client) CookbookImportRepository(assetHrefs []string, id string, option
 
 // POST api/repositories/:id/cookbook_import_preview(.:format)?
 // Retrieves a preview of the effects of a Cookbook import.
-
 // NOTE: This action is for RightScale internal use only. The response is
 // free-form JSON with no associated mediatype.
-
 // DO NOT USE, THIS ACTION IS SUBJECT TO CHANGE AT ANYTIME.
 // 	assetHrefs: Hrefs of the assets that should be imported.
 // 	namespace: The namespace to import into.
@@ -6091,21 +6005,16 @@ func (c *Client) CookbookImportPreviewRepository(assetHrefs []string, id string,
 
 // POST api/repositories(.:format)?
 // Creates a Repository.
-
 // The following types of inputs are supported for the credential fields:
-
 // Type
 // Format
 // Example(s)
-
 // Text string
 // text:&lt;value&gt;
 // text:-----BEGIN RSA PRIVATE KEY-----text:secret
-
 // Credential value
 // cred:&lt;value&gt;
 // cred:my ssh keycred:svn_1_password
-
 func (c *Client) CreateRepository(repository *RepositoryParam) (Href, error) {
 	var res Href
 	if repository == nil {
@@ -6229,7 +6138,6 @@ func (c *Client) RefetchRepository(id string, options ApiParams) error {
 
 // POST api/repositories/resolve(.:format)?
 // Show a list of repositories that have imported cookbooks with the given names.
-
 // This operation returns a list of repositories that would later satisfy a call
 // to the swap_repository
 // action on a ServerTemplate.
@@ -6299,21 +6207,16 @@ func (c *Client) ShowRepository(id string, options ApiParams) (*Repository, erro
 
 // PUT api/repositories/:id(.:format)?
 // Updates a specified Repository.
-
 // The following types of inputs are supported for the credential fields:
-
 // Type
 // Format
 // Example(s)
-
 // Text string
 // text:&lt;value&gt;
 // text:-----BEGIN RSA PRIVATE KEY-----text:secret
-
 // Credential value
 // cred:&lt;value&gt;
 // cred:my ssh keycred:svn_1_password
-
 func (c *Client) UpdateRepository(id string, repository *RepositoryParam2) error {
 	if id == "" {
 		return fmt.Errorf("id cannot be blank")
@@ -6359,7 +6262,6 @@ type RepositoryAsset struct {
 
 // GET api/repositories/:repository_id/repository_assets(.:format)?
 // List a repository's current assets.
-
 // Repository assests are the cookbook details that were scraped from a
 // given repository.
 // -- Optional parameters:
@@ -6395,7 +6297,6 @@ func (c *Client) IndexRepositoryAssets(repositoryId string, options ApiParams) (
 
 // GET api/repositories/:repository_id/repository_assets/:id(.:format)?
 // Show information about a single asset.
-
 // A repository assest are the cookbook details that were scraped from a
 // repository.
 // -- Optional parameters:
@@ -6436,7 +6337,6 @@ func (c *Client) ShowRepositoryAsset(id string, repositoryId string, options Api
 
 // A RightScript is an executable piece of code that can be run on a server
 // during the boot, operational, or decommission phases.
-
 // All revisions of
 // a RightScript belong to a RightScript lineage that is exposed by the
 // "lineage" attribute (NOTE: This attribute is merely a string to locate
@@ -6982,9 +6882,7 @@ type RunnableBinding struct {
 
 // POST api/server_templates/:server_template_id/runnable_bindings(.:format)?
 // Bind an executable to the given ServerTemplate.
-
 // An executable may be either a RightScript or Chef Recipe.
-
 // The resource must be editable.
 func (c *Client) CreateRunnableBinding(runnableBinding *RunnableBindingParam, serverTemplateId string) (Href, error) {
 	var res Href
@@ -7024,7 +6922,6 @@ func (c *Client) CreateRunnableBinding(runnableBinding *RunnableBindingParam, se
 
 // DELETE api/server_templates/:server_template_id/runnable_bindings/:id(.:format)?
 // Unbind an executable from the given resource.
-
 // The resource must be editable.
 func (c *Client) DestroyRunnableBinding(id string, serverTemplateId string) error {
 	if id == "" {
@@ -7050,7 +6947,6 @@ func (c *Client) DestroyRunnableBinding(id string, serverTemplateId string) erro
 
 // GET api/server_templates/:server_template_id/runnable_bindings(.:format)?
 // Lists the executables bound to the ServerTemplate.
-
 // An excutable may be either a RightScript or Chef Recipe.
 // -- Optional parameters:
 // 	view
@@ -7085,7 +6981,6 @@ func (c *Client) IndexRunnableBindings(serverTemplateId string, options ApiParam
 
 // PUT api/server_templates/:server_template_id/runnable_bindings/multi_update(.:format)?
 // Update attributes for multiple bound executables.
-
 // The resource must be editable.
 func (c *Client) MultiUpdateRunnableBindings(runnableBindings []*RunnableBindings, serverTemplateId string) error {
 	if serverTemplateId == "" {
@@ -7119,7 +7014,6 @@ func (c *Client) MultiUpdateRunnableBindings(runnableBindings []*RunnableBinding
 
 // GET api/server_templates/:server_template_id/runnable_bindings/:id(.:format)?
 // Show information about a single executable binding.
-
 // An excutable may be either a RightScript or Chef Recipe.
 // -- Optional parameters:
 // 	view
@@ -7328,12 +7222,10 @@ type SecurityGroupRule struct {
 // POST api/security_group_rules(.:format)?
 // Create a security group rule for a security group.
 // The following flavors are supported:
-
 // group-based TCP/UDP
 // group-based ICMP
 // CIDR-based TCP/UDP
 // CIDR-based ICMP
-
 func (c *Client) CreateSecurityGroupRule(securityGroupRule *SecurityGroupRuleParam) (Href, error) {
 	var res Href
 	if securityGroupRule == nil {
@@ -7488,7 +7380,6 @@ func (c *Client) UpdateSecurityGroupRule(id string, securityGroupRule *SecurityG
 // Servers represent the notion of a server/machine from the RightScale's perspective. A Server, does not always
 // have a corresponding VM running or provisioned in a cloud. Some clouds use the word "servers" to refer to created VM's. These allocated VM's
 // are not called Servers in the RightScale API, they are called Instances.
-
 // A Server always has a next_instance association, which will define the configuration to apply to a new instance when
 // the server is launched or started (starting servers is not yet supported through this API).
 // Once a Server is launched/started a current_instance relationship will exist.
@@ -7587,13 +7478,10 @@ func (c *Client) DestroyServer(id string) error {
 
 // GET api/servers(.:format)?
 // Lists servers.
-
 // By using the available filters, it is possible to retrieve servers that have common characteristics.
 // For example, one can list:
-
 // servers that have names that contain "app_server"
 // all servers of a given deployment
-
 // For more filters, please see the 'index' action on 'Instances' resource as most of the attributes belong to
 // a 'current_instance' than to a server.
 // -- Optional parameters:
@@ -7741,7 +7629,7 @@ func (c *Client) UpdateServer(id string, server *ServerParam2) error {
 
 // POST api/servers/wrap_instance(.:format)?
 // Wrap an existing instance and set current instance for new server
-func (c *Client) WrapInstanceServer(server *ServerParam3) error {
+func (c *Client) WrapInstanceServer(server *ServerParam2) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
 	}
@@ -7771,7 +7659,6 @@ func (c *Client) WrapInstanceServer(server *ServerParam3) error {
 /******  ServerArray ******/
 
 // A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.
-
 // A server array just like a server always has a next_instance association, which will define the configuration to apply when a new instance is launched.
 // But unlike a server which has a current_instance relationship, the server array has a
 // current_instances relationship that gives the information about
@@ -7894,13 +7781,10 @@ func (c *Client) DestroyServerArray(id string) error {
 
 // GET api/server_arrays(.:format)?
 // Lists server arrays.
-
 // By using the available filters, it is possible to retrieve server arrays that have common characteristics.
 // For example, one can list:
-
 // arrays that have names that contain "my_server_array"
 // all arrays of a given deployment
-
 // -- Optional parameters:
 // 	filter
 // 	view
@@ -8073,7 +7957,6 @@ func (c *Client) UpdateServerArray(id string, serverArray *ServerArrayParam2) er
 // ServerTemplates allow you to pre-configure servers by starting from a base image and adding scripts that run during the boot,
 // operational, and shutdown phases. A ServerTemplate is a description of how a new instance will be configured when it is
 // provisioned by your cloud provider.
-
 // All revisions of a ServerTemplate belong to a ServerTemplate lineage that is exposed by the "lineage" attribute.
 // (NOTE: This attribute is merely a string to locate all revisions of a ServerTemplate and NOT a working URL)
 type ServerTemplate struct {
@@ -8219,7 +8102,6 @@ func (c *Client) DestroyServerTemplate(id string) error {
 
 // POST api/server_templates/:id/detect_changes_in_head(.:format)?
 // Identifies RightScripts attached to the resource that differ from their HEAD.
-
 // If the attached revision of the RightScript is the HEAD, then this will indicate
 // a difference between it and the latest committed revision in the same lineage.
 func (c *Client) DetectChangesInHeadServerTemplate(id string) ([]map[string]string, error) {
@@ -8250,7 +8132,6 @@ func (c *Client) DetectChangesInHeadServerTemplate(id string) ([]map[string]stri
 
 // GET api/server_templates(.:format)?
 // Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.
-
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
 // -- Optional parameters:
@@ -8331,7 +8212,6 @@ func (c *Client) PublishServerTemplate(accountGroupHrefs []string, descriptions 
 
 // POST api/server_templates/:id/resolve(.:format)?
 // Enumerates all attached cookbooks, missing dependencies and bound executables.
-
 // Version constraints on missing dependencies and the state of the Chef Recipes;
 // whether or not the cookbook or recipe itself could be found among the
 // attachments, will also be reported.
@@ -8363,7 +8243,6 @@ func (c *Client) ResolveServerTemplate(id string) ([]map[string]string, error) {
 
 // GET api/server_templates/:id(.:format)?
 // Show information about a single ServerTemplate. HEAD revisions have a revision of 0.
-
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
 // -- Optional parameters:
@@ -8399,21 +8278,16 @@ func (c *Client) ShowServerTemplate(id string, options ApiParams) (*ServerTempla
 
 // POST api/server_templates/:id/swap_repository(.:format)?
 // In-place replacement of attached cookbooks from a given repository.
-
 // For each attached cookbook coming from the source repository, replace it by
 // attaching a cookbook of identical name coming from the target repository.
-
 // In order for the operation to be successful, all attachments that came from the
 // source repository must exist in the target repository.
-
 // If multiple cookbooks of a given name exist in the target repository, preference
 // is given by the following order (top most being the highest preference):
-
 //   Name & Version Match / Primary Namespace
 //   Name & Version Match / Alternate Namespace
 //   Name Match / Primary Namespace
 //   Name Match / Alternate Namespace
-
 // If multiple cookbooks still have the same preference for the replacement, the operation is
 // indeterministic.
 // 	sourceRepositoryHref: The repository whose cookbook attachments are to be replaced.
@@ -8647,15 +8521,12 @@ func (c *Client) ShowServerTemplateMultiCloudImage(id string, options ApiParams)
 /******  Session ******/
 
 // The sessions resource is in charge of creating API sessions that are bound to a given account. The sequence for login into the API is the following:
-
 // Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
 // If the targeted host is not appropriate for the specific account being accessed it will return a 302 http code with a URL with which the client must retry the same POST request.
 // If the targeted host is the right one and the login is successful, it will return a 204 http code, along with two cookies that will need to be saved and passed in any subsequent API request.
 // If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
 // If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
-
 // Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".
-
 type Session struct {
 	Actions []string            `json:"actions,omitempty"`
 	Links   []map[string]string `json:"links,omitempty"`
@@ -8664,19 +8535,14 @@ type Session struct {
 
 // GET api/sessions/accounts(.:format)?
 // List all the accounts that a user has access to.
-
 // This call may be executed outside of an existing session. Doing so requires passing a username and password in the
 // request body. The idea is that it should be possible to list accounts that can be used to create a session.
-
 // Upon successfully authenticating the credentials, the system will return a 200 OK code and return the list of accounts.
 // If an 302 redirect code is returned, the client is responsible of re-issuing the GET request against the content of the received Location header, passing the exact same parameters again.
-
 // Example Request using Curl (not using an existing session):
 // curl -i -H X_API_VERSION:1.5 -X GET -d email='email@me.com' -d password='mypassword' https://my.rightscale.com/api/sessions/accounts
-
 // Example Request using Curl (using an existing session):
 // curl -i -H X_API_VERSION:1.5 -X GET -b mycookies https://my.rightscale.com/api/sessions/accounts
-
 // -- Optional parameters:
 // 	email: The email to login with if not using existing session.
 // 	password: The corresponding password.
@@ -8715,15 +8581,12 @@ func (c *Client) AccountsSession(options ApiParams) ([]Account, error) {
 
 // POST api/sessions(.:format)?
 // Creates API session scoped to a given account. (API login)
-
 // This call requires a form of authentication (user and password), as well as the account for which the session needs to be created.
 // Upon successfully authenticating the credentials, the system will return a 204 code and set of two cookies that will serve as the credentials for the session. Both of these cookies
 // must be passed in any of the subsequent requests for this session.
 // If an 302 redirect code is returned, the client is responsible of re-issuing the POST request against the content of the received Location header, passing the exact same parameters again.
-
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -c mycookies -X POST -d email='email@me.com' -d password='mypassword' -d account_href=/api/accounts/11 https://my.rightscale.com/api/sessions
-
 // 	accountHref: The account href for which the session needs to be created.
 // 	email: The email to login with.
 // 	password: The corresponding password.
@@ -8770,19 +8633,15 @@ func (c *Client) CreateSession(accountHref string, email string, password string
 
 // POST api/sessions/instance(.:format)?
 // Creates API session scoped to a given account and instance.
-
 // This call requires a form of authentication (token), as well as the account for which the session needs to be created.
 // Upon successfully authenticating the credentials, the system will return a 204 code and set of two cookies that will serve as the credentials for the session. Both of these cookies
 // must be passed in any of the subsequent requests for this session.
 // If an 302 redirect code is returned, the client is responsible of re-issuing the POST request against the content of the received Location header, passing the exact same parameters again.
-
 // Users can find their account ID and instance\_token from their instance's user_data:
 // account ID regex: /RS_API_TOKEN=(\d+):/
 // instance_token regex: /RS_API_TOKEN=(?:\d+):(\w+)&/
-
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -c mycookies -X POST -d instance_token='randomtoken' -d account_href=/api/accounts/11 https://my.rightscale.com/api/sessions/instance
-
 // 	accountHref: The account href for which the session needs to be created.
 // 	instanceToken: The instance token to login with.
 func (c *Client) CreateInstanceSessionSession(accountHref string, instanceToken string) error {
@@ -8819,10 +8678,8 @@ func (c *Client) CreateInstanceSessionSession(accountHref string, instanceToken 
 // GET api/sessions(.:format)?
 // Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what
 // features are available within its privileges.
-
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
-
 func (c *Client) IndexSessions() ([]Session, error) {
 	var res []Session
 	b := []byte{}
@@ -8849,10 +8706,8 @@ func (c *Client) IndexSessions() ([]Session, error) {
 // GET api/sessions/instance(.:format)?
 // Shows the full attributes of the instance (that has the token used to log-in).
 // This call can be used by an instance to get it's own details.
-
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions/instance
-
 func (c *Client) IndexInstanceSessionSession() (Instance, error) {
 	var res Instance
 	b := []byte{}
@@ -8879,7 +8734,6 @@ func (c *Client) IndexInstanceSessionSession() (Instance, error) {
 /******  SshKey ******/
 
 // Ssh Keys represent a created SSH Key that exists in the cloud.
-
 // An ssh key might also contain the private part of the key, and can be used to login to instances launched with it.
 type SshKey struct {
 	Actions     []string            `json:"actions,omitempty"`
@@ -9266,19 +9120,15 @@ func (c *Client) ByResourceTag(resourceHrefs []string) ([]map[string]string, err
 
 // POST api/tags/by_tag(.:format)?
 // Search for resources having a list of tags in a specific resource_type.
-
 // The search criteria can contain plain tags ("my_db_server"), machine tags ("server:db=true"), or
 // namespace &amp; predicate wildcards ("server:db=*"). The result set includes links to the resources.
-
 // If match_all is "true", then the search is an "AND" operation -- only resources having all the
 // tags are returned. If match_all has any other value or is missing, the search is performed
 // as an "OR" operation.
-
 // PLEASE NOTE the behavior of the include_tags_with_prefix parameter: if it is absent,
 // or blank, then you will find resources that match your query but receive no information about
 // the tags that apply to those resources. (Your search will also complete much more quickly in
 // this case.)
-
 // For example, a search with tag[]="server:db=true" and include_tags_with_prefix="backup:"
 // will return resources that are tagged as a DB server, and also return all "backup" related tags
 // for every matching resource.
@@ -9330,9 +9180,7 @@ func (c *Client) ByTagTag(resourceType string, tags []string, options ApiParams)
 // Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.
 // The hrefs can belong to various resource types. If a resource for a href could not be found, an
 // error is returned and no tags are added for any resource.
-
 // No error will be raised if the resource already has the tag(s) you are trying to add.
-
 // Note: At this point, tags on 'next_instance' are not supported and one has to add tags to the 'server'.
 // 	resourceHrefs: Hrefs of the resources for which the tags are to be added.
 // 	tags: Tags to be added.
@@ -9371,7 +9219,6 @@ func (c *Client) MultiAddTags(resourceHrefs []string, tags []string) error {
 // Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.
 // The hrefs can belong to various resource types. If a resource for a href could not be found, an
 // error is returned and no tags are deleted for any resource.
-
 // Note that no error will be raised if the resource does not have the tag(s) you are trying to delete.
 // 	resourceHrefs: Hrefs of the resources for which tags are to be deleted.
 // 	tags: Tags to be deleted.
@@ -9409,9 +9256,7 @@ func (c *Client) MultiDeleteTags(resourceHrefs []string, tags []string) error {
 /******  Task ******/
 
 // Tasks represent processes that happen (or have happened) asynchronously within the context of an Instance.
-
 // An example of a type of task is an operational script that runs in an instance.
-
 // Task resources can be returned by certain API calls, such as Instances.run_executable, Backups.restore, and others.
 type Task struct {
 	Actions []string            `json:"actions,omitempty"`
@@ -9479,19 +9324,15 @@ type User struct {
 
 // POST api/users(.:format)?
 // Create a user. If a user already exists with the same email, that user will be returned.
-
 // Creating a user alone will not enable the user to access this account. You have to create
 // 'permissions' for that user before it can be used. Performing a 'show' on a new user
 // will fail unless you immediately create an 'observer' permission on the current account.
-
 // Note that information about users and their permissions must be propagated globally across all
 // RightScale clusters, and this can take some time (less than 60 seconds under normal circumstances)
 // so the users you create may not be able to login for a minute or two after you create them. However,
 // you may create or destroy permissions for newly-created users with no delay.
-
 // To create a user that will login using password authentication, include the 'password' parameter
 // with your request.
-
 // To create an SSO-enabled user, you must specify the identity_provider that will be vouching for
 // this user's identity, as well as the principal_uid (SAML NameID or OpenID identity URL) that
 // the identity provider will assert for this user. Identity providers should be specified by
@@ -9594,28 +9435,21 @@ func (c *Client) ShowUser(id string) (*User, error) {
 // PUT api/users/:id(.:format)?
 // Update a user's contact information, change her password, or update SSO her settings. In order
 // to update a user record, one of the following criteria must be met:
-
 // You're logged in AS the user being modified and you provide a valid current_password.
 // You're an admin and the user is linked to your enterprise SSO provider
 // You're an admin and the user's email matches the email_domain of your enterprise SSO provider
-
 // In other words: you can update yourself if you know your own password; you can update
 // yourself or others if they're linked to your SSO providers, and you can update any user
 // if her email address is known to belong to your organization.
-
 // For information about enabling canonical email domain ownership for your enterprise, please
 // talk to your RightScale account manager or contact our support team.
-
 // To update a user's contact information, simply pass the desired values for email, first_name,
 // and so forth.
-
 // To update a user's password, provide a valid current_password and specify the desired
 // new_password.
-
 // To update a user's SSO information, you may provide a just a principal_uid (to maintain the
 // user's existing identity provider) or you may provide an identity_provider_href and a
 // principal_uid (to switch identity providers as well as specify a new user identity).
-
 // In the context of SAML. principal_uid is equivalent to the SAML NameID or Subject claim;
 // RightScale cannot predict or influence the NameID value that your SAML IdP will send to us for
 func (c *Client) UpdateUser(id string, user *UserParam2) error {
@@ -10326,14 +10160,6 @@ type BackupParam struct {
 }
 
 type BackupParam2 struct {
-	Description    string `json:"description,omitempty"`
-	Iops           string `json:"iops,omitempty"`
-	Name           string `json:"name,omitempty"`
-	Size           string `json:"size,omitempty"`
-	VolumeTypeHref string `json:"volume_type_href,omitempty"`
-}
-
-type BackupParam3 struct {
 	Committed string `json:"committed,omitempty"`
 }
 
@@ -10372,22 +10198,6 @@ type CloudSpecificAttributes struct {
 }
 
 type CloudSpecificAttributes2 struct {
-	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
-	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
-	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
-	RootVolumeSize                string `json:"root_volume_size,omitempty"`
-	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
-}
-
-type CloudSpecificAttributes3 struct {
-	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
-	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
-	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
-	RootVolumeSize                string `json:"root_volume_size,omitempty"`
-	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
-}
-
-type CloudSpecificAttributes4 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
@@ -10497,65 +10307,6 @@ type InstanceParam struct {
 }
 
 type InstanceParam2 struct {
-	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes2 `json:"cloud_specific_attributes,omitempty"`
-	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
-	DeploymentHref           string                    `json:"deployment_href,omitempty"`
-	ImageHref                string                    `json:"image_href,omitempty"`
-	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
-	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
-	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
-	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
-	Name                     string                    `json:"name,omitempty"`
-	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
-	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
-	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
-	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
-	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
-	UserData                 string                    `json:"user_data,omitempty"`
-}
-
-type InstanceParam3 struct {
-	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
-	CloudHref                string                    `json:"cloud_href,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
-	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
-	ImageHref                string                    `json:"image_href,omitempty"`
-	Inputs                   map[string]string         `json:"inputs,omitempty"`
-	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
-	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
-	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
-	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
-	PlacementGroupHref       string                    `json:"placement_group_href,omitempty"`
-	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
-	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
-	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
-	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
-	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
-	UserData                 string                    `json:"user_data,omitempty"`
-}
-
-type InstanceParam4 struct {
-	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
-	CloudHref                string                    `json:"cloud_href,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
-	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
-	ImageHref                string                    `json:"image_href,omitempty"`
-	Inputs                   map[string]string         `json:"inputs,omitempty"`
-	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
-	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
-	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
-	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
-	PlacementGroupHref       string                    `json:"placement_group_href,omitempty"`
-	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
-	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
-	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
-	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
-	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
-	UserData                 string                    `json:"user_data,omitempty"`
-}
-
-type InstanceParam5 struct {
 	Href                string            `json:"href,omitempty"`
 	Inputs              map[string]string `json:"inputs,omitempty"`
 	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
@@ -10856,7 +10607,7 @@ type ServerArrayParam struct {
 	DeploymentHref   string              `json:"deployment_href,omitempty"`
 	Description      string              `json:"description,omitempty"`
 	ElasticityParams *ElasticityParams   `json:"elasticity_params,omitempty"`
-	Instance         *InstanceParam3     `json:"instance,omitempty"`
+	Instance         *InstanceParam2     `json:"instance,omitempty"`
 	Name             string              `json:"name,omitempty"`
 	Optimized        string              `json:"optimized,omitempty"`
 	State            string              `json:"state,omitempty"`
@@ -10876,23 +10627,15 @@ type ServerArrayParam2 struct {
 type ServerParam struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam4 `json:"instance,omitempty"`
+	Instance       *InstanceParam2 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 	Optimized      string          `json:"optimized,omitempty"`
 }
 
 type ServerParam2 struct {
-	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
-	Description                   string `json:"description,omitempty"`
-	Name                          string `json:"name,omitempty"`
-	Optimized                     string `json:"optimized,omitempty"`
-	RootVolumeSize                string `json:"root_volume_size,omitempty"`
-}
-
-type ServerParam3 struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam5 `json:"instance,omitempty"`
+	Instance       *InstanceParam2 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 }
 

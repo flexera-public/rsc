@@ -345,7 +345,7 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 	native := nativeNameFromPath(path)
 	return &ActionParam{
 		Name:        parseParamName(native),
-		Description: description,
+		Description: removeBlankLines(description),
 		Type:        dType,
 		NativeName:  native,
 		Mandatory:   mandatory,
@@ -353,6 +353,23 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 		Regexp:      regexp,
 		ValidValues: validValues,
 	}
+}
+
+// Check whether string only contains blank characters
+var blankRegexp = regexp.MustCompile(`^\s*$`)
+
+// Helper method that removes blank lines from strings
+func removeBlankLines(doc string) string {
+	lines := strings.Split(doc, "\n")
+	fullLines := make([]string, len(lines))
+	i := 0
+	for _, line := range lines {
+		if len(line) > 0 && !blankRegexp.MatchString(line) {
+			fullLines[i] = line
+			i += 1
+		}
+	}
+	return strings.Join(fullLines[:i], "\n")
 }
 
 // Extract name (leaf) from path

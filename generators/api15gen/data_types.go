@@ -102,12 +102,14 @@ type FlagDefs []*FlagDef
 // A flag definition contains either a literal flag name or a flag pattern. It also defines the
 // type of the value returned by the command line parser for that flag.
 type FlagDef struct {
-	Path        string // Used to build variable name
-	Value       string // Actual flag name
-	Type        string // Flag type, "int", "string", "ints" or "strings"
-	Description string // Flag description if any
-	IsPattern   bool   // Whether value is a regexp
-	IsRequired  bool   // Whether value is required
+	Param       *ActionParam // Param or param field being defined by this flag
+	Path        string       // Path to param field being defined by this flag, e.g. "server_array.datacenter_policy.weight"
+	Value       string       // Actual flag name, e.g. "server_array.datacenter_policy.(\d+).weight"
+	Type        string       // Flag type, "int" or "string" at the moment
+	Description string       // Flag description if any
+	IsArray     bool         // Whether param or param field is an array or child of an array element type
+	IsEnum      bool         // Whether param or param field is an enum
+	IsRequired  bool         // Whether value is required
 }
 
 // Generate flag definitions needed to create a command line parser that will gather all the
@@ -118,28 +120,29 @@ func (p *ActionParam) Flags() FlagDefs {
 	if len(children) > 0 {
 		res = make(FlagDefs, len(children))
 		for i, c := range children {
-			value := c.Value
+			value := p.Name
 			path := p.Name
-			if len(value) == 0 {
-				value = path
-			} else {
-				value = path + "." + value
+			if len(c.Value) > 0 {
+				value += "." + c.Value
+			}
+			if c.IsArray || c.IsEnum {
+				value = escapeValue(value)
 			}
 			if len(c.Path) > 0 {
 				path += "." + c.Path
 			}
-			if c.IsPattern {
-				value = escapeValue(value)
-			}
-			res[i] = &FlagDef{path, value, c.Type, c.Description, c.IsPattern, c.IsRequired}
+			res[i] = &FlagDef{c.Param, path, value, c.Type, c.Description, c.IsArray,
+				c.IsEnum, c.IsRequired}
 		}
 	} else {
 		res = FlagDefs{&FlagDef{
+			Param:       p,
 			Path:        p.Name,
 			Value:       p.Name,
 			Type:        string(*p.Type.(*BasicDataType)),
 			Description: p.Description,
-			IsPattern:   false,
+			IsArray:     false,
+			IsEnum:      false,
 			IsRequired:  p.Mandatory,
 		}}
 	}
@@ -176,26 +179,26 @@ func (p *ActionParam) childFlags() []*FlagDef {
 		if len(flags) > 0 {
 			res = make([]*FlagDef, len(flags))
 			for i, f := range flags {
-				fType := f.Type
-				if !strings.HasSuffix(fType, "s") {
-					fType += "s"
-				}
 				res[i] = &FlagDef{
+					Param:       f.Param,
 					Path:        f.Path,
 					Value:       fmt.Sprintf(`(\d+).%s`, f.Value),
-					Type:        fType,
+					Type:        f.Type,
 					Description: f.Description,
-					IsPattern:   true,
+					IsArray:     true,
+					IsEnum:      false,
 					IsRequired:  f.IsRequired,
 				}
 			}
 		} else {
 			res = FlagDefs{&FlagDef{
+				Param:       p,
 				Path:        "",
 				Value:       `(\d+)`,
-				Type:        "strings",
+				Type:        "string",
 				Description: p.Description,
-				IsPattern:   true,
+				IsArray:     true,
+				IsEnum:      false,
 				IsRequired:  p.Mandatory,
 			}}
 		}
@@ -215,11 +218,13 @@ func (p *ActionParam) childFlags() []*FlagDef {
 						path += "." + f.Path
 					}
 					temp[i] = &FlagDef{
+						Param:       f.Param,
 						Path:        path,
-						Value:       fmt.Sprintf("%s.%s", fName, f.Value),
+						Value:       fName + "." + f.Value,
 						Type:        f.Type,
 						Description: f.Description,
-						IsPattern:   f.IsPattern,
+						IsArray:     f.IsArray,
+						IsEnum:      f.IsEnum,
 						IsRequired:  f.IsRequired,
 					}
 				}
@@ -228,22 +233,26 @@ func (p *ActionParam) childFlags() []*FlagDef {
 				// No child means field's type is a basic type
 				fType := string(*field.Type.(*BasicDataType))
 				res = append(res, &FlagDef{
+					Param:       field,
 					Path:        field.Name,
 					Value:       field.Name,
 					Type:        fType,
 					Description: field.Description,
-					IsPattern:   false,
+					IsArray:     false,
+					IsEnum:      false,
 					IsRequired:  field.Mandatory,
 				})
 			}
 		}
 	case *EnumerableDataType:
 		res = FlagDefs{&FlagDef{
+			Param:       p,
 			Path:        "",
 			Value:       `([a-z0-9_]+)`,
-			Type:        "strings",
+			Type:        "string",
 			Description: p.Description,
-			IsPattern:   true,
+			IsArray:     false,
+			IsEnum:      true,
 			IsRequired:  p.Mandatory,
 		}}
 	}

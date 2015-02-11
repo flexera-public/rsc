@@ -25,19 +25,27 @@ func main() {
 	}
 
 	destDir := *destDirVal
-	if stat, _ := os.Stat(destDir); !stat.IsDir() {
+	if stat, _ := os.Stat(destDir); stat != nil && !stat.IsDir() {
 		check(fmt.Errorf("%s is not a valid directory", destDir))
 	}
 
 	apiDataFile := path.Join(metadataDir, "api_data.json")
 	var apiData map[string]interface{}
-	i := interface{}(apiData)
-	check(loadJson(apiDataFile, &i))
+	apiDataText, err := loadFile(apiDataFile)
+	check(err)
+	err = json.Unmarshal(apiDataText, &apiData)
+	if err != nil {
+		check(fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", apiDataFile, err.Error()))
+	}
 
 	attributesFile := path.Join(metadataDir, "attributes.json")
 	var attributes map[string]string
-	i = interface{}(attributes)
-	check(loadJson(attributesFile, &i))
+	attributesText, err := loadFile(attributesFile)
+	check(err)
+	err = json.Unmarshal(attributesText, &attributes)
+	if err != nil {
+		check(fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", attributesFile, err.Error()))
+	}
 
 	// 2. Analyze
 	analyzer := NewApiAnalyzer(apiData, attributes)
@@ -50,20 +58,16 @@ func main() {
 	check(NewCmdGenerator("codegen_cmds.go").Generate(descriptor, destDir))
 }
 
-// Helper function that reads and unmashals json from given file
-func loadJson(file string, val *interface{}) error {
+// Helper function that reads content from given file
+func loadFile(file string) ([]byte, error) {
 	if _, err := os.Stat(file); err != nil {
-		return fmt.Errorf("Cannot find '%s'", file)
+		return nil, fmt.Errorf("Cannot find '%s'", file)
 	}
 	js, err := ioutil.ReadFile(file)
 	if err != nil {
-		return fmt.Errorf("Cannot read '%s': %s", file, err.Error())
+		return nil, fmt.Errorf("Cannot read '%s': %s", file, err.Error())
 	}
-	err = json.Unmarshal(js, val)
-	if err != nil {
-		return fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", file, err.Error())
-	}
-	return nil
+	return js, nil
 }
 
 // Panic if error is not nil

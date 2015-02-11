@@ -166,7 +166,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		actions[idx] = &ResourceAction{
 			Name:          methodName(actionName, name),
 			NativeName:    actionName,
-			Description:   description,
+			Description:   removeBlankLines(description),
 			HttpMethod:    httpMethod,
 			Path:          path,
 			NativeParams:  params,
@@ -185,7 +185,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 	name = inflect.Singularize(name)
 	descriptor.Resources[name] = &ResourceData{
 		Name:        name,
-		Description: description,
+		Description: removeBlankLines(description),
 		Actions:     actions,
 		Attributes:  attributes,
 	}

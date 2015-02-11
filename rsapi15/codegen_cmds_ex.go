@@ -28,98 +28,98 @@ func main() {
 	registry[cmdName].Run()
 }
 
-type cloneServerArrayRunner struct {
-	id string
-}
-
-func (c *cloneServerArrayRunner) Run(cl *Client) (interface{}, error) {
-	return nil, cl.CloneServerArray(c.id)
-}
-
 type createServerArrayRunner struct {
-	serverArray                        *ServerArrayParam
-	serverArrayJson                    string
-	datacenterPolicyDatacenterHrefsPos []string
-	datacenterPolicyDatacenterHrefs    []string
-	datacenterPolicyMaxPos             []string
-	datacenterPolicyMax                []string
-	datacenterPolicyWeightPos          []string
-	datacenterPolicyWeight             []string
-	scheduleMaxBound                   []string
-	scheduleMaxBoundPos                []string
-	scheduleMinBound                   []string
-	scheduleMinBoundPos                []string
-	scheduleDay                        []string
-	scheduleDayPos                     []string
+	Name                         string
+	ServerArrayJson              string
+	ServerArrayArrayType         string
+	ServerArrayInstanceCloudHref string
+	ServerArrayInstanceSshKey    string
+	ServerArraySchedulesNames    []string
+	ServerArraySchedulesNamesPos []string
+	ServerArrayInputsValues      []string
+	ServerArrayInputsNames       []string
 }
 
-func (c *createServerArrayRunner) Run(cl *Client) (interface{}, error) {
-	maxDatacenterHrefsPos := 0
+func (r *createServerArrayRunner) Run(cl *Client) (interface{}, error) {
+
+	/** Handle serverArray parameter **/
+
+	var serverArray ServerArrayParam
+
+	// Load JSON if provided
+	if len(r.ServerArrayJson) > 0 {
+		if err := Json.Unmarshal(r.ServerArrayJson, &serverArray); err != nil {
+			return nil, fmt.Errorf("Could not load ServerArray json: %s", err.Error())
+		}
+	}
+
+	// Override with any provided basic fields
+	if len(r.ServerArrayArrayType) > 0 {
+		serverArray.ArrayType = r.ServerArrayArrayType
+	}
+	if len(r.ServerArrayInstanceCloudHref) > 0 {
+		serverArray.Instance.CloudHref = r.ServerArrayInstanceCloudHref
+	}
+	if len(r.ServerArrayInstanceSshKey) > 0 {
+		serverArray.Instance.SshKey = r.ServerArrayInstanceSshKey
+	}
+
+	// Create array fields from value and position flags
+	maxServerArraySchedulesNamesPos := 0
 	var seenPos map[int]bool
-	for _, p := range c.datacenterPolicyDatacenterHrefsPos {
+	for _, p := range r.ServerArraySchedulesNamesPos {
 		pos, err := strconv.Atoi(p)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid position '%s'", p)
 		}
 		if _, ok := seenPos[pos]; ok {
-			return nil, fmt.Errorf("Datacenter Href for DatacenterPolicy #%s defined multiple times", p)
+			return nil, fmt.Errorf("SchedulesNames defined multiple times for position %s", p)
 		}
-		seen[pos] = true
-		if pos > maxDatacenterHrefsPos {
-			maxDatacenterHrefsPos = pos
-		}
-	}
-	if len(c.datacenterPolicyDatacenterHrefs) != maxDatacenterHrefsPos {
-		return nil, fmt.Errof("Invalid DatacenterPolicy DatacenterHrefs options, %s were defined but max position is %s",
-			len(c.datacenterPolicyDatacenterHrefs), maxDatacenterHrefsPos)
-	}
-	// SAME AS ABOVE FOR MAX AND WEIGHT
-	datacenterPolicy := make([]*DatacenterPolicy, maxDatacenterHrefsPos+1)
-	for i := 0; i < maxDatacenterHrefsPos+1; i++ {
-		datacenterPolicy[i] = &DatacenterPolicy{
-			DatacenterHref: c.datacenterPolicyDatacenterHrefs[c.datacenterPolicyDatacenterHrefsPos[i]],
-			Max:            c.datacenterPolicyDatacenterMax[c.datacenterPolicyDatacenterMaxPos[i]],
-			Weight:         c.datacenterPolicyDatacenterWeigth[c.datacenterPolicyDatacenterWeigthPos[i]],
+		seenPos[pos] = true
+		if pos > maxServerArraySchedulesNamesPos {
+			maxServerArraySchedulesNamesPos = pos
 		}
 	}
-	c.serverArray.DatacenterPolicy = datacenterPolicy
+	if len(r.ServerArraySchedulesNames) != maxServerArraySchedulesNamesPos {
+		return nil, fmt.Errof("Invalid SchedulesNames options, %s were defined but max position is %s",
+			len(r.ServerArraySchedulesNames), maxServerArraySchedulesNamesPos)
+	}
+	serverArraySchedules := make([]*ServerArraySchedules, maxServerArraySchedulesNamesPos+1)
+	for i := 0; i < maxServerArraySchedulesNamesPos+1; i++ {
+		serverArraySchedules[i] = &Schedule{
+			Name: r.ServerArraySchedulesNames[r.ServerArraySchedulesNamesPos[i]],
+		}
+	}
+	if maxServerArraySchedulesNamesPos > 0 {
+		serverArray.Schedules = serverArraySchedules
+	}
 
-	return cl.CreateServerArray(c.serverArray)
+	// Create Enum fields from name and value flags
+	serverArrayInputs := make(map[string]string, len(r.ServerArrayInputsNames))
+	for i, n := range ServerArrayInputsNames {
+		serverArrayInputs[n] = r.ServerArrayInputsValues[i]
+	}
+	serverArray.Inputs = serverArrayInputs
+
+	// All done, call API
+	return cl.CreateServerArray(r.Name, &serverArray)
 }
 
 func registerServerArrayCmds(app *kingpin.Application) {
 	resCmd := app.Command("ServerArray", "")
 
-	cloneRunner := cloneServerArrayRunner{}
-	cloneCmd := resCmd.Command("clone", "Clones a given server array")
-	cloneCmd.Flag("id", "").Required().StringVar(&cloneRunner.id)
-	registry[cloneServerArrayCmd.FullCommand()] = &cloneRunner
-
-	createElasticityParamSchedules := []*Schedule{}
-	createElasticityParam := ElasticityParam{Schedule: createElasticityParamSchedules}
-	createServerArrayParam := ServerArrayParam{elasticityParam: &createElasticityParam}
-	createRunner := createServerArrayRunner{serverArray: &createServerArrayParam}
+	createRunner := new(createServerArrayRunner)
 
 	createCmd := resCmd.Command("create", "Creates a new server array, and configures its corresponding \"next\" instance with the received parameters")
-	createCmd.Flag("serverArray", "JSON").StringVar(&createRunner.serverArrayJson)
-	createCmd.Flag("serverArray.ArrayType", "").Required().StringVar(&serverArrayParam.ArrayType)
-	createCmd.FlagPattern(`serverArray\.DatacenterPolicy\.(\d+)\.DatacenterHef`, "").Required().
-		Capture(&createRunner.datacenterPolicyDatacenterHrefsPos).
-		StringsVar(&createRunner.datacenterPolicyDatacenterHrefs)
-	createCmd.FlagPattern(`serverArray\.DatacenterPolicy\.(\d+)\.Max`, "").Required().
-		Capture(&createRunner.datacenterPolicyMaxPos).
-		StringsVar(&createRunner.datacenterPolicyMax)
-	createCmd.FlagPattern(`serverArray\.DatacenterPolicy\.(\d+)\.Weight`, "").Required().
-		Capture(&createRunner.datacenterPolicyWeightPos).
-		StringsVar(&createRunner.datacenterPolicyWeight)
-	createCmd.Flag("serverArray.ElasticityParam.Name", "").StringVar(&elasticityParam.Name)
-	createCmd.FlagPattern(`serverArray\.ElasticityParam\.Schedule\.(\d+)\.MinBound`, "").Required().
-		Capture(&createRunner.scheduleMinBoundPos).
-		StringsVar(&createRunner.scheduleMinBound)
-	createCmd.FlagPattern(`serverArray\.ElasticityParam\.Schedule\.(\d+)\.MaxBound`, "").Required().
-		Capture(&createRunner.scheduleMaxBoundPos).
-		StringsVar(&createRunner.scheduleMaxBound)
-	createCmd.FlagPattern(`serverArray\.ElasticityParam\.Schedule\.(\d+)\.Day`, "").Required().
-		Capture(&createRunner.scheduleDayPos).
-		StringsVar(&createRunner.scheduleDay)
+	createCmd.Flag("name", "Name").StringVar(&createRunner.Name)
+	createCmd.Flag("serverArray", "JSON").StringVar(&createRunner.ServerArrayJson)
+	createCmd.Flag("serverArray.ArrayType", "").Required().StringVar(&createRunner.ServerArrayArrayType)
+	createCmd.Flag("serverArray.Instance.CloudHref", "").Required().StringVar(&createRunner.ServerArrayInstanceCloudHref)
+	createCmd.Flag("serverArray.Instance.SshKey", "").StringVar(&createRunner.ServerArrayInstanceSshKey)
+	createCmd.FlagPattern(`serverArray\.Schedules\.(\d+)\.Name`, "").Required().
+		Capture(&createRunner.ServerArraySchedulesNamesPos).StringsVar(&createRunner.ServerArraySchedulesNames)
+	createCmd.FlagPattern(`serverArray\.Inputs\.([a-z0-9_]+)`, "").
+		Capture(&createRunner.ServerArrayInputsNames).StringsVar(&createRunner.ServerArrayInputsValues)
+
+	registry[createCmd.FullCommand()] = createRunner
 }
