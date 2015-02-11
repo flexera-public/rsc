@@ -73,6 +73,7 @@ func RegisterCommands(app *kingpin.Application) {
 // Run given command, this consists of grabbing the flags, building the parameters and calling the
 // corresponding method.
 func (c *Client) RunCommand(cmd string) map[string]interface{} {
+	return nil // TBD
 }
 
 // SetAccount sets the active account for all API calls.
