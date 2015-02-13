@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path"
 )
 
@@ -52,10 +53,64 @@ func main() {
 	descriptor := analyzer.Analyze()
 
 	// 3. Write codegen.go
-	check(NewClientGenerator("codegen.go").Generate(descriptor, destDir))
+	check(generateCode(descriptor, path.Join(destDir, "codegen.go")))
 
 	// 4. Write codegen_cmds.go
-	check(NewCmdGenerator("codegen_cmds.go").Generate(descriptor, destDir))
+	check(generateCmds(descriptor, path.Join(destDir, "codegen_cmds.go")))
+}
+
+// Generate API client code, drives the code writer.
+func generateCode(descriptor *ApiDescriptor, codegen string) error {
+	f, err := os.Create(codegen)
+	if err != nil {
+		return err
+	}
+	c, err := NewCodeWriter()
+	if err != nil {
+		return err
+	}
+	check(c.WriteHeader(f))
+	for _, name := range descriptor.ResourceNames {
+		resource := descriptor.Resources[name]
+		c.WriteResourceHeader(name, f)
+		check(c.WriteResource(resource, f))
+	}
+	c.WriteTypeSectionHeader(f)
+	for _, name := range descriptor.TypeNames {
+		t := descriptor.Types[name]
+		c.WriteType(t, f)
+	}
+	f.Close()
+	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("Failed to format generated code:\n%s", o)
+	}
+	return nil
+}
+
+// Generate kingpin subcommands, drives the cmd writer.
+func generateCmds(descriptor *ApiDescriptor, codegen string) error {
+	// TBD
+	/*	f, err := os.Create(codegen)
+		if err != nil {
+			return err
+		}
+		c, err := NewCmdsWriter(descriptor)
+		if err != nil {
+			return err
+		}
+		check(c.WriteHeader(descriptor, f))
+		for _, name := range descriptor.ResourceNames {
+			resource := descriptor.Resources[name]
+			c.WriteResourceHeader(name, f)
+			check(c.WriteResource(resource, f))
+		}
+		f.Close()
+		o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("Failed to format generated code:\n%s", o)
+		}*/
+	return nil
 }
 
 // Helper function that reads content from given file

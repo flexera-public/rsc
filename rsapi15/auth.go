@@ -11,12 +11,11 @@ import (
 
 // Authenticator interface
 type Authenticator interface {
-	Sign(req *http.Request, endpoint string) error    // Sign http Request (add auth headers)
-	ResolveEndpoint(accountId string) (string, error) // Return endpoint that hosts given account (e.g. "us-3.rightscale.com")
+	Sign(req *http.Request, endpoint string) error // Sign http Request (add auth headers)
 }
 
-// Account authenticator uses the user oauth refresh token
-type AccountAuthenticator struct {
+// OAuth authenticator uses the user oauth refresh token
+type OAuthAuthenticator struct {
 	RefreshToken string
 	AccessToken  string
 	RefreshAt    time.Time
@@ -24,7 +23,7 @@ type AccountAuthenticator struct {
 }
 
 // Account authenticator uses RS oauth
-func (a *AccountAuthenticator) Sign(r *http.Request, endpoint string) error {
+func (a *OAuthAuthenticator) Sign(r *http.Request, endpoint string) error {
 	if time.Now().After(a.RefreshAt) {
 		jsonStr := []byte(fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken))
 		authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", endpoint), bytes.NewBuffer(jsonStr))
@@ -58,6 +57,7 @@ func (a *AccountAuthenticator) Sign(r *http.Request, endpoint string) error {
 	return nil
 }
 
-func (a *AccountAuthenticator) ResolveEndpoint(accountId string) (string, error) {
+// Return endpoint that hosts given account (e.g. "us-3.rightscale.com")
+func (a *OAuthAuthenticator) ResolveEndpoint(accountId int) (string, error) {
 	return "my.rightscale.com", nil // TBD
 }

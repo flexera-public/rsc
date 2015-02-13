@@ -68,7 +68,7 @@ func main() {
 		"create config file, defaults to $HOME/.rsclient, use '--config' to override")
 	cfgPath := setup.Flag("config", "path to rsclient config file").Default(fmt.Sprintf("%v/.rsclient", os.Getenv("HOME"))).String()
 
-	rsapi15.RegisterCommands(app)
+	//rsapi15.RegisterCommands(app)
 
 	cmd := kingpin.MustParse(app.Parse(os.Args[1:]))
 
@@ -85,11 +85,11 @@ func main() {
 		if token != nil {
 			config.Token = *token
 		}
-		client, err := rsapi15.NewClient(config.Token, config.Account, config.Endpoint, 0)
+		client, err := rsapi15.New(config.Token, config.Account, config.Endpoint, 0)
 		if err != nil {
 			PrintError("Failed to create API session: %v", err.Error())
 		} else {
-			res := client.RunCommand(cmd)
+			//res := client.RunCommand(cmd)
 			pp := pretty != nil && *pretty
 			if extract != nil {
 				paths := strings.Split(extract, ".")

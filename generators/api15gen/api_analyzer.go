@@ -11,7 +11,7 @@ import (
 // The analyzer struct holds the analysis results
 type ApiAnalyzer struct {
 	// Raw resources as defined in API json metadata
-	resources map[string]interface{}
+	rawResources map[string]interface{}
 	// Attribute type mappings defined in attributes.json
 	attributeTypes map[string]string
 	// Temporary analysis construct
@@ -45,19 +45,19 @@ func NewApiAnalyzer(resources map[string]interface{}, attributeTypes map[string]
 // Analyze iterate through all resources and initializes the Resources and ParamTypes fields of
 // the ApiAnalyzer struct accordingly.
 func (a *ApiAnalyzer) Analyze() *ApiDescriptor {
-	descriptor := &ApiDescriptor{
+	var descriptor = &ApiDescriptor{
 		Resources: make(map[string]*Resource),
 		Types:     make(map[string]*ObjectDataType),
 	}
-	rawResourceNames := make([]string, len(a.rawResources))
-	idx := 0
+	var rawResourceNames = make([]string, len(a.rawResources))
+	var idx = 0
 	for n, _ := range a.rawResources {
 		rawResourceNames[idx] = n
 		idx += 1
 	}
 	sort.Strings(rawResourceNames)
 	for _, name := range rawResourceNames {
-		resource := a.rawResources[name]
+		var resource = a.rawResources[name]
 		a.AnalyzeResource(name, resource, descriptor)
 	}
 	descriptor.FinalizeTypeNames(a.rawTypes)
@@ -67,7 +67,7 @@ func (a *ApiAnalyzer) Analyze() *ApiDescriptor {
 // AnalyzeResource analyzes the given resource and updates the Resources and ParamTypes analyzer
 // fields accordingly
 func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descriptor *ApiDescriptor) {
-	res := resource.(map[string]interface{})
+	var res = resource.(map[string]interface{})
 
 	// Compute description
 	var description string
@@ -89,56 +89,62 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 	}
 
 	// Compute hrefs
-	var resourceHref, collectionHref string
-	methods := res["methods"].(map[string]interface{})
-	if show, ok := methods["show"].(map[string]interface{}); ok {
-		_, resourceHref := parseRoute("", meth["route"].(string))
-	}
+	var baseHref, resourceHref string
+	var methods = res["methods"].(map[string]interface{})
 	if index, ok := methods["index"].(map[string]interface{}); ok {
-		_, collectionHref := parseRoute("", meth["route"].(string))
+		_, baseHref = parseRoute("", index["route"].(string))
+	} else if show, ok := methods["show"].(map[string]interface{}); ok {
+		_, baseHref = parseRoute("", show["route"].(string))
+		var index = strings.LastIndex(baseHref, "/")
+		baseHref = baseHref[:index]
+	}
+	if baseHref != "" {
+		resourceHref = baseHref + "/:id"
 	}
 
 	// Compute actions
-	actionNames := sortedKeys(methods)
-	resourceActions := make([]*Action)
-	collectionActions := make([]*Action)
+	var actionNames = sortedKeys(methods)
+	var resourceActions = []*Action{}
+	var collectionActions = []*Action{}
 	for _, actionName := range actionNames {
-		m := methods[actionName]
-		meth := m.(map[string]interface{})
+		var m = methods[actionName]
+		var meth = m.(map[string]interface{})
 		var params map[string]interface{}
 		if p, ok := meth["parameters"]; ok {
 			params = p.(map[string]interface{})
 		}
-		description := "No description provided for " + actionName + "."
+		var description = "No description provided for " + actionName + "."
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
 		var isResourceAction bool
 		httpMethod, path := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
 			meth["route"].(string))
-		if len(resourceHref) > 0 && strings.HasSuffix(path, resourceHref) {
-			path = path[len(resourceHref):]
-			isResourceAction = true
-		} else if strings.HasSuffix(path, collectionHref) {
-			path = path[len(collectionHref):]
+		if len(baseHref) > 0 {
+			if strings.HasPrefix(path, resourceHref) {
+				path = path[len(resourceHref):]
+				isResourceAction = true
+			} else if strings.HasSuffix(path, baseHref) {
+				path = path[len(baseHref):]
+			}
 		}
 		var contentType string
 		if c, ok := meth["content_type"].(string); ok {
 			contentType = c
 		}
-		paramAnalyzer := NewAnalyzer(params)
+		var paramAnalyzer = NewAnalyzer(params)
 		paramAnalyzer.Analyze()
 
 		// Record new parameter types
-		paramTypeNames := make([]string, len(paramAnalyzer.ParamTypes))
-		idx := 0
+		var paramTypeNames = make([]string, len(paramAnalyzer.ParamTypes))
+		var idx = 0
 		for n, _ := range paramAnalyzer.ParamTypes {
 			paramTypeNames[idx] = n
 			idx += 1
 		}
 		sort.Strings(paramTypeNames)
 		for _, name := range paramTypeNames {
-			pType := paramAnalyzer.ParamTypes[name]
+			var pType = paramAnalyzer.ParamTypes[name]
 			if _, ok := a.rawTypes[name]; ok {
 				a.rawTypes[name] = append(a.rawTypes[name], pType)
 			} else {
@@ -147,17 +153,16 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 
 		// Update description with parameter descriptions
-		mandatory := []string{}
-		optional := []string{}
-		for _, n := range paramAnalyzer.ParamNames {
-			p := paramAnalyzer.Params[n]
+		var mandatory = []string{}
+		var optional = []string{}
+		for _, p := range append(paramAnalyzer.QueryParams, paramAnalyzer.PayloadParams...) {
 			if p.Mandatory {
 				if p.Description != "" {
-					desc := fmt.Sprintf("%s: %s", n, p.Description)
+					var desc = fmt.Sprintf("%s: %s", p.VarName, p.Description)
 					mandatory = append(mandatory, desc)
 				}
 			} else {
-				desc := p.NativeName
+				var desc = p.VarName
 				if p.Description != "" {
 					desc += ": " + p.Description
 				}
@@ -175,7 +180,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 
 		// Record action
-		action := Action{
+		var action = Action{
 			Name:          actionName,
 			MethodName:    methodName(actionName, name),
 			Description:   removeBlankLines(description),
@@ -198,7 +203,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		Name:              name,
 		CollectionName:    inflect.Pluralize(name),
 		Description:       removeBlankLines(description),
-		BaseHref:          collectionHref,
+		BaseHref:          baseHref,
 		ResourceActions:   resourceActions,
 		CollectionActions: collectionActions,
 		Attributes:        attributes,
@@ -209,18 +214,18 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType) {
 
 	// 1. Make sure data type names don't clash with resource names
-	rawTypeNames := make([]string, len(rawTypes))
-	idx := 0
+	var rawTypeNames = make([]string, len(rawTypes))
+	var idx = 0
 	for n, _ := range rawTypes {
 		rawTypeNames[idx] = n
 		idx += 1
 	}
 	sort.Strings(rawTypeNames)
 	for _, tn := range rawTypeNames {
-		types := rawTypes[tn]
+		var types = rawTypes[tn]
 		for rn, _ := range d.Resources {
 			if tn == rn {
-				oldTn := tn
+				var oldTn = tn
 				if strings.HasSuffix(tn, "Param") {
 					tn = fmt.Sprintf("%s2", tn)
 				} else {
@@ -243,12 +248,12 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 	}
 	sort.Strings(rawTypeNames)
 	for _, tn := range rawTypeNames {
-		types := rawTypes[tn]
-		first := types[0]
+		var types = rawTypes[tn]
+		var first = types[0]
 		d.Types[tn] = first
 		if len(types) > 1 {
 			for i, ty := range types[1:] {
-				found := false
+				var found = false
 				for j := 0; j < i; j++ {
 					if ty.IsEquivalent(types[j]) {
 						found = true
@@ -256,7 +261,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 					}
 				}
 				if !found {
-					newName := d.uniqueTypeName(tn)
+					var newName = d.uniqueTypeName(tn)
 					ty.Name = newName
 					d.Types[newName] = ty
 				}
@@ -266,7 +271,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 
 	// 3. Finally initialize .ResourceNames and .TypeNames
 	idx = 0
-	resourceNames := make([]string, len(d.Resources))
+	var resourceNames = make([]string, len(d.Resources))
 	for n, _ := range d.Resources {
 		resourceNames[idx] = n
 		idx += 1
@@ -274,7 +279,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 	sort.Strings(resourceNames)
 	d.ResourceNames = resourceNames
 
-	typeNames := make([]string, len(d.Types))
+	var typeNames = make([]string, len(d.Types))
 	idx = 0
 	for tn, _ := range d.Types {
 		typeNames[idx] = tn
@@ -286,15 +291,15 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 
 // Build unique type name by appending "next available index" to given prefix
 func (d *ApiDescriptor) uniqueTypeName(prefix string) string {
-	u := fmt.Sprintf("%s%d", prefix, 2)
-	taken := false
+	var u = fmt.Sprintf("%s%d", prefix, 2)
+	var taken = false
 	for _, tn := range d.TypeNames {
 		if tn == u {
 			taken = true
 			break
 		}
 	}
-	idx := 3
+	var idx = 3
 	for taken {
 		u = fmt.Sprintf("%s%d", prefix, idx)
 		taken = false
@@ -313,7 +318,7 @@ func (d *ApiDescriptor) uniqueTypeName(prefix string) string {
 
 /** Helper methods for parsing raw JSON **/
 
-func parseRoute(moniker string, route string) (string, string) {
+func parseRoute(moniker string, route string) (method string, path string) {
 	// :(((( some routes are empty
 	switch moniker {
 	case "Deployments#servers":
@@ -332,10 +337,10 @@ func parseRoute(moniker string, route string) (string, string) {
 		return "POST", "api/servers/:id/teminate"
 
 	}
-	method := strings.TrimRight(route[0:7], " ")
-	path := strings.TrimRight(strings.Split(route[8:], "{")[0], " ")
+	method = strings.TrimRight(route[0:7], " ")
+	path = strings.TrimRight(strings.Split(route[8:], "{")[0], " ")
 
-	return method, path
+	return
 }
 
 // Resources that don't have a media type
@@ -374,8 +379,8 @@ func parseReturn(kind, resName, contentType string) string {
 			if contentType == "application/vnd.rightscale.text" {
 				return "string"
 			}
-			elems := strings.SplitN(contentType[27:], ";", 2)
-			name := resourceType(inflect.Camelize(elems[0]))
+			var elems = strings.SplitN(contentType[27:], ";", 2)
+			var name = resourceType(inflect.Camelize(elems[0]))
 			if len(elems) > 1 && elems[1] == "type=collection" {
 				name = "[]" + name
 			}
@@ -413,8 +418,8 @@ func attributeName(name string) string {
 
 // Return keys of given maps sorted
 func sortedKeys(m map[string]interface{}) []string {
-	keys := make([]string, len(m))
-	idx := 0
+	var keys = make([]string, len(m))
+	var idx = 0
 	for k, _ := range m {
 		keys[idx] = k
 		idx += 1

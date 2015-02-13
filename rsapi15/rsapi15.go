@@ -17,7 +17,7 @@ import (
 // RightScale API 1.5 client
 // Instances of this struct should be created through `New`.
 type Api15 struct {
-	AccountId string        // Account in which client is currently operating
+	AccountId int           // Account in which client is currently operating
 	Auth      Authenticator // Authenticator, signs requests for auth
 	Logger    *log.Logger   // Optional logger, if specified requests and responses get logged
 	Endpoint  string        // API endpoint, e.g. "us-3.rightscale.com"
@@ -29,9 +29,9 @@ type Api15 struct {
 // If no HTTP client is specified then the default client is used.
 func New(accountId int, refreshToken string, logger *log.Logger, client *http.Client) (*Api15, error) {
 	if client == nil {
-		client := http.DefaultClient
+		client = http.DefaultClient
 	}
-	auth := AccountAuthenticator{
+	auth := OAuthAuthenticator{
 		RefreshToken: refreshToken,
 		RefreshAt:    time.Now().Add(-1 * time.Hour),
 		Client:       client,
@@ -42,7 +42,7 @@ func New(accountId int, refreshToken string, logger *log.Logger, client *http.Cl
 	}
 	return &Api15{
 		AccountId: accountId,
-		Auth:      auth,
+		Auth:      &auth,
 		Logger:    logger,
 		Endpoint:  endpoint,
 		Client:    client,
@@ -51,31 +51,31 @@ func New(accountId int, refreshToken string, logger *log.Logger, client *http.Cl
 
 // Low-level GET request
 func (a *Api15) Get(uri string) (map[string]interface{}, error) {
-	return sendRequest("GET", uri, nil)
+	return a.makeRequest("GET", uri, nil)
 }
 
 // Low-level POST request
 // Any "Location" header present in the HTTP response is returned in the map under the "Location" key.
 func (a *Api15) Post(uri string, body map[string]interface{}) (map[string]interface{}, error) {
-	return sendRequest("POST", uri, body)
+	return a.makeRequest("POST", uri, body)
 }
 
 // Low-level PUT request
 func (a *Api15) Put(uri string, body map[string]interface{}) error {
-	_, err := sendRequest("PUT", uri, body)
+	_, err := a.makeRequest("PUT", uri, body)
 	return err
 }
 
 // Low-level DELETE request
 func (a *Api15) Delete(uri string) error {
-	_, err := sendRequest("DELETE", uri, nil)
+	_, err := a.makeRequest("DELETE", uri, nil)
 	return err
 }
 
-// Helper function that signs, sends and logs HTTP request
-func (a *Api15) sendRequest(verb, uri string, body map[string]interface{}) (map[string]interface{}, error) {
+// Helper function that signs, makes and logs HTTP request
+func (a *Api15) makeRequest(verb, uri string, body map[string]interface{}) (map[string]interface{}, error) {
 	url := fmt.Sprintf("https://%s/%s", a.Endpoint, uri)
-	err, jsonStr := json.Marshal(body)
+	jsonStr, err := json.Marshal(body)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to serialize response (%s)", err.Error())
 	}
@@ -87,19 +87,20 @@ func (a *Api15) sendRequest(verb, uri string, body map[string]interface{}) (map[
 		return nil, err
 	}
 	var id string
-	if a.logger != nil {
+	var startedAt = time.Now()
+	if a.Logger != nil {
 		b := make([]byte, 6)
 		io.ReadFull(rand.Reader, b)
 		id = base64.StdEncoding.EncodeToString(b)
-		a.logger.Printf("[%s] %s %s", id, r.Method, r.URL.String())
+		a.Logger.Printf("[%s] %s %s", id, r.Method, r.URL.String())
 	}
 	resp, err := a.Client.Do(r)
 	if err != nil {
 		return nil, err
 	}
-	if a.logger != nil {
+	if a.Logger != nil {
 		d := time.Since(startedAt)
-		a.logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
+		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
 	}
 	defer resp.Body.Close()
 	var respBody map[string]interface{}
@@ -108,7 +109,7 @@ func (a *Api15) sendRequest(verb, uri string, body map[string]interface{}) (map[
 		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
 	}
 	if len(jsonResp) > 0 {
-		err = json.Unmarshal(string(jsonResp), &respBody)
+		err = json.Unmarshal(jsonResp, &respBody)
 		if err != nil {
 			return nil, fmt.Errorf("Failed to load response (%s)", err.Error())
 		}
@@ -118,7 +119,7 @@ func (a *Api15) sendRequest(verb, uri string, body map[string]interface{}) (map[
 		loc := resp.Header.Get("Location")
 		if len(loc) > 0 {
 			if respBody == nil {
-				respBody := make(map[string]interface{})
+				respBody = make(map[string]interface{})
 			}
 			respBody["Location"] = loc
 		}

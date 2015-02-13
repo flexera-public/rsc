@@ -61,11 +61,11 @@ func (c *CodeWriter) WriteTypeSectionHeader(w io.Writer) {
 }
 
 // Write type declaration for resource action arguments
-func (c *CodeWriter) WriteType(t *ObjectDataType, w io.Writer) {
-	fields := make([]string, len(o.Fields))
+func (c *CodeWriter) WriteType(o *ObjectDataType, w io.Writer) {
+	var fields = make([]string, len(o.Fields))
 	for i, f := range o.Fields {
-		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.Name),
-			f.Signature(), f.NativeName)
+		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.VarName),
+			f.Signature(), f.Name)
 	}
 	decl := fmt.Sprintf("type %s struct {\n%s\n}", o.Name,
 		strings.Join(fields, "\n\t"))
@@ -73,7 +73,7 @@ func (c *CodeWriter) WriteType(t *ObjectDataType, w io.Writer) {
 }
 
 // Write code for a resource
-func (c *CodeWriter) WriteResource(resource *ResourceData, w io.Writer) error {
+func (c *CodeWriter) WriteResource(resource *Resource, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
 }
 
@@ -87,13 +87,12 @@ func comment(elems ...string) string {
 }
 
 // Serialize action parameters
-func parameters(a *ResourceAction) string {
+func parameters(a *Action) string {
 	params := []string{}
 	hasOptional := false
-	for _, name := range a.ParamNames {
-		param := a.AllParams[name]
+	for _, param := range append(a.QueryParams, a.PayloadParams...) {
 		if param.Mandatory {
-			params = append(params, fmt.Sprintf("%s %s", name, param.Signature()))
+			params = append(params, fmt.Sprintf("%s %s", param.VarName, param.Signature()))
 		} else {
 			hasOptional = true
 		}
@@ -120,7 +119,7 @@ func paramsAsPayload(p []*ActionParam) string {
 	hasOptional := false
 	for _, param := range p {
 		if param.Mandatory {
-			fields = append(fields, fmt.Sprintf("\"%s\": %s,", param.NativeName, param.Name))
+			fields = append(fields, fmt.Sprintf("\"%s\": %s,", param.Name, param.VarName))
 		} else {
 			hasOptional = true
 		}
@@ -150,27 +149,20 @@ func commandLine() string {
 // Code that checks whether variable with given name and type contains a blank value (empty string,
 // empty array or empy map).
 // Return empty string if type of variable cannot produce blank values
-func blankCondition(name string, t DataType) string {
+func blankCondition(name string, t DataType) (blank string) {
 	switch actual := t.(type) {
 	case *BasicDataType:
 		if *actual == "string" {
-			return fmt.Sprintf("if %s == \"\" {", name)
-		} else {
-			return ""
+			blank = fmt.Sprintf("if %s == \"\" {", name)
 		}
 	case *ArrayDataType:
-		return fmt.Sprintf("if len(%s) == 0 {", name)
-
+		blank = fmt.Sprintf("if len(%s) == 0 {", name)
 	case *ObjectDataType:
-		return fmt.Sprintf("if %s == nil {", name)
+		blank = fmt.Sprintf("if %s == nil {", name)
 	case *EnumerableDataType:
-		return fmt.Sprintf("if len(%s) == 0 {", name)
+		blank = fmt.Sprintf("if len(%s) == 0 {", name)
 	}
-}
-
-// Object data type declaration
-func declaration(o *ObjectDataType) string {
-
+	return
 }
 
 // Inline templates

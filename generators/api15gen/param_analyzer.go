@@ -30,6 +30,8 @@ var (
 type ParamAnalyzer struct {
 	// Raw parameter hashes as found in JSON
 	rawParams map[string]interface{}
+	// Temporary data structure used by analysis
+	parsed map[string]*ActionParam
 
 	/* Fields below are computed by 'analyze' */
 
@@ -52,7 +54,7 @@ func (p *ParamAnalyzer) Analyze() {
 	// Order params using their length so "foo[bar]" is analyzed before "foo"
 	params := p.rawParams
 	paths := make([]string, len(params))
-	i := 0
+	var i = 0
 	for n, _ := range params {
 		paths[i] = n
 		i += 1
@@ -61,34 +63,34 @@ func (p *ParamAnalyzer) Analyze() {
 	sort.Sort(ByReverseLength(paths))
 
 	// Iterate through all params and build corresponding ActionParam structs
-	parsed := map[string]*ActionParam{}
-	top := map[string]*ActionParam{}
+	p.parsed = map[string]*ActionParam{}
+	var top = map[string]*ActionParam{}
 	for _, path := range paths {
 		if strings.HasSuffix(path, "[*]") {
 			// Cheat a little bit - there a couple of cases where parent type is
 			// Hash instead of Enumerable, make that enumerable everywhere
 			// There are also cases where there's no parent path, fix that up also
-			matches := parentPathRegexp.FindStringSubmatch(path)
+			var matches = parentPathRegexp.FindStringSubmatch(path)
 			if hashParam, ok := params[matches[1]].(map[string]interface{}); ok {
 				hashParam["class"] = "Enumerable"
 			} else {
 				// Create parent
-				rawParams := map[string]interface{}{}
-				parentPath := matches[1]
-				parsed[parentPath] = p.newParam(parentPath, rawParams,
+				var rawParams = map[string]interface{}{}
+				var parentPath = matches[1]
+				p.parsed[parentPath] = p.newParam(parentPath, rawParams,
 					new(EnumerableDataType))
 				if parentPathRegexp.FindStringSubmatch(parentPath) == nil {
-					top[parentPath] = parsed[parentPath]
+					top[parentPath] = p.parsed[parentPath]
 				}
 			}
 			continue
 		}
 		var child *ActionParam
-		origPath := path
-		origParam := params[path].(map[string]interface{})
-		matches := parentPathRegexp.FindStringSubmatch(path)
-		isTop := (matches == nil)
-		if prev, ok := parsed[path]; ok {
+		var origPath = path
+		var origParam = params[path].(map[string]interface{})
+		var matches = parentPathRegexp.FindStringSubmatch(path)
+		var isTop = (matches == nil)
+		if prev, ok := p.parsed[path]; ok {
 			if isTop {
 				top[path] = prev
 			}
@@ -101,7 +103,7 @@ func (p *ParamAnalyzer) Analyze() {
 			if strings.HasSuffix(parentPath, "[]") {
 				isArrayChild = true
 			}
-			if parent, ok := parsed[parentPath]; ok {
+			if parent, ok := p.parsed[parentPath]; ok {
 				a, ok := parent.Type.(*ArrayDataType)
 				if ok {
 					parent = a.ElemType
@@ -110,19 +112,19 @@ func (p *ParamAnalyzer) Analyze() {
 				if _, ok = parent.Type.(*EnumerableDataType); !ok {
 					o := parent.Type.(*ObjectDataType)
 					o.Fields = appendSorted(o.Fields, child)
-					parsed[path] = child
+					p.parsed[path] = child
 				}
 				break // No need to keep going back, we already have a parent
 			} else {
 				child = p.parseParam(path, param, child)
-				parsed[path] = child
+				p.parsed[path] = child
 				if isArrayChild {
 					// Generate array item as it's not listed explicitly in JSON
-					itemPath := nativeNameFromPath(matches[1]) + "[item]"
-					typeName := p.typeName(matches[1])
+					var itemPath = nativeNameFromPath(matches[1]) + "[item]"
+					var typeName = p.typeName(matches[1])
 					parent = p.newParam(itemPath, map[string]interface{}{},
 						&ObjectDataType{typeName, []*ActionParam{child}})
-					parsed[parentPath] = parent
+					p.parsed[parentPath] = parent
 					child = parent
 					parentPath = parentPath[:len(parentPath)-2]
 				}
@@ -131,16 +133,16 @@ func (p *ParamAnalyzer) Analyze() {
 			matches = parentPathRegexp.FindStringSubmatch(path)
 		}
 		if isTop {
-			if _, ok := parsed[path]; !ok {
-				actionParam := p.parseParam(path, origParam, nil)
-				parsed[path] = actionParam
+			if _, ok := p.parsed[path]; !ok {
+				var actionParam = p.parseParam(path, origParam, nil)
+				p.parsed[path] = actionParam
 			}
-			top[path] = parsed[path]
+			top[path] = p.parsed[path]
 		} else {
-			matches := rootRegexp.FindStringSubmatch(origPath)
-			rootPath := matches[1]
-			if _, ok := parsed[rootPath]; !ok {
-				parsed[rootPath] = p.parseParam(rootPath,
+			var matches = rootRegexp.FindStringSubmatch(origPath)
+			var rootPath = matches[1]
+			if _, ok := p.parsed[rootPath]; !ok {
+				p.parsed[rootPath] = p.parseParam(rootPath,
 					params[rootPath].(map[string]interface{}), child)
 			}
 		}
@@ -148,29 +150,22 @@ func (p *ParamAnalyzer) Analyze() {
 
 	// Now do a second pass on parsed params to generate their declarations
 	p.ParamTypes = make(map[string]*ObjectDataType)
-	p.Params = make(map[string]*ActionParam, len(top))
 	for _, param := range top {
 		p.recordTypes(param.Type)
-		p.Params[param.Name] = param
 	}
 
-	allParams := make([]*ActionParam, len(p.Params))
-	idx := 0
-	for n, param := range p.Params {
-		allParams[idx] = param
-		idx += 1
-	}
-	sort.Sort(ByName(allParams))
-	queryParams := []*ActionParam{}
-	payloadParams := []*ActionParam{}
-	for _, param := range allParams {
-		pname := param.Name
+	var queryParams = []*ActionParam{}
+	var payloadParams = []*ActionParam{}
+	for _, param := range top {
+		var pname = param.Name
 		if isQueryParam(pname) {
 			queryParams = append(queryParams, param)
 		} else {
 			payloadParams = append(payloadParams, param)
 		}
 	}
+	sort.Sort(ByName(queryParams))
+	sort.Sort(ByName(payloadParams))
 	p.QueryParams = queryParams
 	p.PayloadParams = payloadParams
 }
@@ -217,37 +212,37 @@ func appendSorted(params []*ActionParam, param *ActionParam) []*ActionParam {
 
 // Parse data type in context
 func (p *ParamAnalyzer) parseDataType(path string, child *ActionParam) DataType {
-	param := p.rawParams[path].(map[string]interface{})
-	class := "String"
+	var param = p.rawParams[path].(map[string]interface{})
+	var class = "String"
 	if c, ok := param["class"].(string); ok {
 		class = c
 	}
 	var res DataType
 	switch class {
 	case "Integer":
-		i := BasicDataType("int")
+		var i = BasicDataType("int")
 		res = &i
 	case "String":
-		s := BasicDataType("string")
+		var s = BasicDataType("string")
 		res = &s
 	case "Array":
 		if child != nil {
 			res = &ArrayDataType{child}
 		} else {
-			s := BasicDataType("string")
-			p := p.newParam(fmt.Sprintf("%s[item]", path),
+			var s = BasicDataType("string")
+			var p = p.newParam(fmt.Sprintf("%s[item]", path),
 				map[string]interface{}{}, &s)
 			res = &ArrayDataType{p}
 		}
 	case "Enumerable":
 		res = new(EnumerableDataType)
 	case "Hash":
-		if current, ok := p.Params[path]; ok {
+		if current, ok := p.parsed[path]; ok {
 			res = current.Type
-			o := res.(*ObjectDataType)
+			var o = res.(*ObjectDataType)
 			o.Fields = appendSorted(o.Fields, child)
 		} else {
-			oname := p.typeName(path)
+			var oname = p.typeName(path)
 			res = &ObjectDataType{oname, []*ActionParam{child}}
 		}
 	}
@@ -256,7 +251,7 @@ func (p *ParamAnalyzer) parseDataType(path string, child *ActionParam) DataType 
 
 func (p *ParamAnalyzer) typeName(path string) string {
 	matches := childPathRegexp.FindStringSubmatch(path)
-	res := path
+	var res = path
 	if matches != nil {
 		res = matches[1]
 	}

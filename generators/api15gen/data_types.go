@@ -8,7 +8,7 @@ type Resource struct {
 	CollectionName    string       // Name of collection. e.g. "ServerArrays"
 	Description       string       // Resource description
 	BaseHref          string       // Base href if any, e.g. "/api/server_arrays", "/api/clouds/:cloud_id/instances"
-	ResourceActions   []*Action    // Resource actions, e.g. "show", "update"
+	ResourceActions   []*Action    // Resource actions, e.g. "show", "update", "delete"
 	CollectionActions []*Action    // Collection actions, e.g. "index", "create"
 	Attributes        []*Attribute // Resource attributes
 }
@@ -49,34 +49,12 @@ type DataType interface {
 	IsEquivalent(other DataType) bool // true if datatyoe and other represent the same data structure
 }
 
-// A basic data type only has a name, e.g. "int" or "string"
+// A basic data type only has a name, i.e. "int" or "string"
 type BasicDataType string
 
 // An array data type defines the type of its elements
 type ArrayDataType struct {
 	ElemType *ActionParam
-}
-
-// true if both b and other represent the same type
-func (b *BasicDataType) IsEquivalent(other DataType) {
-	b, ok := other.Type.(*BasicDataType)
-	if !ok {
-		return false
-	}
-	if *t != *b {
-		return false
-	}
-}
-
-// true if other is also a array data type and element types of both arrays are equivalent
-func (a *ArrayDataType) IsEquivalent(other DataType) bool {
-	a, ok := other.Type.(*ArrayDataType)
-	if !ok {
-		return false
-	}
-	if !a.ElemType.IsEquivalent(t.ElemType) {
-		return false
-	}
 }
 
 // An object data type has a name and fields
@@ -85,9 +63,39 @@ type ObjectDataType struct {
 	Fields []*ActionParam
 }
 
+// An enumerable is just a map
+type EnumerableDataType int
+
+// true if both b and other represent the same type
+func (b *BasicDataType) IsEquivalent(other DataType) bool {
+	t, ok := other.(*BasicDataType)
+	if !ok {
+		return false
+	}
+	if *t != *b {
+		return false
+	}
+	return true
+}
+
+// true if other is also a array data type and element types of both arrays are equivalent
+func (a *ArrayDataType) IsEquivalent(other DataType) bool {
+	t, ok := other.(*ArrayDataType)
+	if !ok {
+		return false
+	}
+	if !a.ElemType.IsEquivalent(t.ElemType) {
+		return false
+	}
+	return true
+}
+
 // true if other is a object data type and each field is equivalent recursively
 func (o *ObjectDataType) IsEquivalent(other DataType) bool {
-	a, ok := other.Type.(*ObjectDataType)
+	a, ok := other.(*ObjectDataType)
+	if !ok {
+		return false
+	}
 	if o.Name != a.Name {
 		return false
 	}
@@ -102,12 +110,9 @@ func (o *ObjectDataType) IsEquivalent(other DataType) bool {
 	return true
 }
 
-// An enumerable is just a map
-type EnumerableDataType int
-
 // true if other is also an enumerable data type
 func (e *EnumerableDataType) IsEquivalent(other DataType) bool {
-	_, ok := other.Type.(*EnumerableDataType)
+	_, ok := other.(*EnumerableDataType)
 	return ok
 }
 
@@ -134,6 +139,11 @@ func (p *ActionParam) Signature() (sig string) {
 		sig = "map[string]string"
 	}
 	return
+}
+
+// true if action params have the same name and type
+func (p *ActionParam) IsEquivalent(other *ActionParam) bool {
+	return p.Name == other.Name && p.Type.IsEquivalent(other.Type)
 }
 
 // Make it possible to sort action parameters by name
