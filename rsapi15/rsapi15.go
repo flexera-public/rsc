@@ -8,9 +8,8 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"path"
+	"net/url"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/raphael/kingpin"
@@ -40,6 +39,9 @@ type Client struct {
 //    CreateSession(&Params{account_id: 71, token: "foo"})
 type Params map[string]interface{}
 
+// max redirects before error for an individual request.
+const maxRedirects = 10
+
 // NewClient returns a API 1.5 client from a refresh token and an account id.
 // It attempts to authenticate with RightScale and returns an error if that fails.
 // If no endpoint is provided (i.e. `endpoint` argument is the empty string) then the correct
@@ -47,7 +49,7 @@ type Params map[string]interface{}
 // initial redirect and save time).
 // The timeout semantic is the same as the `net/http` package `Client` type `timeout` field. In
 // particular a timeout value of zero means no timeout.
-func NewClient(token string, accountId int, endpoint string, timeout time.Duration) (*Client, error) {
+func NewClient(token string, accountId int, endpoint string, timeout time.Duration, logger *log.Logger) (*Client, error) {
 	if endpoint == "" {
 		endpoint = "https://my.rightscale.com"
 	}
@@ -57,7 +59,7 @@ func NewClient(token string, accountId int, endpoint string, timeout time.Durati
 		refreshToken: token,
 		endpoint:     endpoint,
 		client:       client,
-	}
+		logger:       logger}
 	client.CheckRedirect = c.handleRedirect
 	if err := c.refresh(); err != nil {
 		return nil, err
@@ -88,8 +90,17 @@ func (c *Client) SetLogger(l *log.Logger) {
 
 // Update endpoint to match redirect
 func (c *Client) handleRedirect(req *http.Request, via []*http.Request) error {
-	elems := strings.SplitN(req.URL.String(), "/api", 2)
-	c.endpoint = elems[0]
+	// prevent infinite redirects (since are overriding the default checking).
+	if len(via) >= maxRedirects {
+		return fmt.Errorf("Stopped after %d redirects.", maxRedirects)
+	}
+
+	// keep redirected endpoint. there is no way for the CheckRedirect callback
+	// to check the response status code so we are assuming it is one of
+	// [301, 302] and not 307 (temporary redirect).
+	endpointUrl := url.URL{Scheme: req.URL.Scheme, Host: req.URL.Host}
+	c.endpoint = endpointUrl.String()
+
 	return nil
 }
 
@@ -121,9 +132,13 @@ type requestContext struct {
 // Return short unique id used for logging, pass it back in afterRequest to log it together
 // with response.
 func (c *Client) beforeRequest(r *http.Request) *requestContext {
+	// assume generated code has correctly inserted c.endpoint in r.URL so that
+	// we can avoid carefully reassembling URL with r.RawQuery field, etc.
+	// note this method is not called-back on 30x, which is handled internally by
+	// the http.Client code.
 	r.Header.Add("X-Account", strconv.Itoa(c.accountId))
 	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
-	r.URL.Path = path.Join(c.endpoint, r.URL.Path)
+
 	if c.refreshAt.After(time.Now()) {
 		err := c.refresh()
 		if err != nil && c.logger != nil {
