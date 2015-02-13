@@ -29,6 +29,7 @@ func NewCodeWriter() (*CodeWriter, error) {
 		"paramsAsPayload": paramsAsPayload,
 		"isPointer":       isPointer,
 		"isArray":         isArray,
+		"blankCondition":  blankCondition,
 	}
 	headerT, err := template.New("header-code").Funcs(funcMap).Parse(headerTmpl)
 	if err != nil {
@@ -61,7 +62,14 @@ func (c *CodeWriter) WriteTypeSectionHeader(w io.Writer) {
 
 // Write type declaration for resource action arguments
 func (c *CodeWriter) WriteType(t *ObjectDataType, w io.Writer) {
-	fmt.Fprintf(w, "%s\n\n", t.Declaration())
+	fields := make([]string, len(o.Fields))
+	for i, f := range o.Fields {
+		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.Name),
+			f.Signature(), f.NativeName)
+	}
+	decl := fmt.Sprintf("type %s struct {\n%s\n}", o.Name,
+		strings.Join(fields, "\n\t"))
+	fmt.Fprintf(w, "%s\n\n", decl)
 }
 
 // Write code for a resource
@@ -139,6 +147,32 @@ func commandLine() string {
 	return fmt.Sprintf("$ api15gen %s", strings.Join(os.Args[1:], " "))
 }
 
+// Code that checks whether variable with given name and type contains a blank value (empty string,
+// empty array or empy map).
+// Return empty string if type of variable cannot produce blank values
+func blankCondition(name string, t DataType) string {
+	switch actual := t.(type) {
+	case *BasicDataType:
+		if *actual == "string" {
+			return fmt.Sprintf("if %s == \"\" {", name)
+		} else {
+			return ""
+		}
+	case *ArrayDataType:
+		return fmt.Sprintf("if len(%s) == 0 {", name)
+
+	case *ObjectDataType:
+		return fmt.Sprintf("if %s == nil {", name)
+	case *EnumerableDataType:
+		return fmt.Sprintf("if len(%s) == 0 {", name)
+	}
+}
+
+// Object data type declaration
+func declaration(o *ObjectDataType) string {
+
+}
+
 // Inline templates
 
 const headerTmpl = `
@@ -163,19 +197,14 @@ import (
 	"time"
 )
 
-// Href
-type Href string
+// Collection locator exposes collection actions, e.g. "index", "create"
+type CollectionLocator string
+
+// Resource locator exposes resource actions, e.g. "show", "update", "delete"
+type ResourceLocator string
 
 // Convenience type
 type ApiParams map[string]interface{}
-
-// Helper function that merges optional parameters into payload
-func mergeOptionals(params, options ApiParams) ApiParams {
-	for name, value := range options {
-		params[name] = value
-	}
-	return params
-}
 `
 
 const resourceTmpl = `{{define "actionBody"}}` + actionBodyTmpl + `{{end}}
@@ -183,7 +212,23 @@ const resourceTmpl = `{{define "actionBody"}}` + actionBodyTmpl + `{{end}}
 type {{.Name}} struct { {{range .Attributes}}
 {{.Name}} {{.Signature}} ` + "`" + `json:"{{.JsonName}},omitempty"` + "`" + `{{end}}
 }
-{{range .Actions}}
+{{if .CollectionActions}}
+// {{.Name}} collection locator, exposes collection actions.
+type {{.CollectionName}}Locator CollectionLocator
+{{end}}{{if .ResourceActions}}
+// {{.Name}} resource locator, exposes resource actions.
+type {{.Name}}Locator ResourceLocator
+{{end}}{{if .CollectionActions}}
+//===== Collection actions
+{{end}}{{range .CollectionActions}}
+// {{.HttpMethod}} {{.Path}}
+{{comment .Description}}
+func (c *Client) {{.Name}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
+	{{template "actionBody" . }}
+}
+{{end}}{{if .ResourceActions}}
+//===== Resource actions
+{{end}}{{range .ResourceActions}}
 // {{.HttpMethod}} {{.Path}}
 {{comment .Description}}
 func (c *Client) {{.Name}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
@@ -196,7 +241,7 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	{{end}}{{range .PathParams}}if {{.Name}} == "" {
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.Name}} cannot be blank")
 	}
-	{{end}}{{if .PayloadParams}}{{range .PayloadParams}}{{if and .Mandatory (.Type.BlankConditionExp .Name)}}{{.Type.BlankConditionExp .Name}}
+	{{end}}{{if .PayloadParams}}{{range .PayloadParams}}{{if and .Mandatory (blankCondition .Name .Type)}}{{blankCondition .Name .Type}}
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.Name}} is required")
 	}
 	{{end}}{{end}}payload := {{paramsAsPayload .PayloadParams}}

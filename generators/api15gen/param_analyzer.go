@@ -27,54 +27,23 @@ var (
 // initialized by factory method.
 // The analyzer takes a map describing the parameters of a method as found in the API JSON and
 // produces the corresponding set of ActionParam structs.
-// The analyzer also produces a set of parameters per location where they can be found (path,
-// query string and payload). It does that by using a heuristic for query parameters and using
-// the name of path params extracted from the URL its is given.
 type ParamAnalyzer struct {
-	// Path to method, e.g. /servers/:serverId
-	path string
-
 	// Raw parameter hashes as found in JSON
 	rawParams map[string]interface{}
 
 	/* Fields below are computed by 'analyze' */
 
-	// Parameters indexed by name
-	Params map[string]*ActionParam
-
-	// Parameter names ordered alphabetically
-	ParamNames []string
-
 	// Parameter types indexed by name
 	ParamTypes map[string]*ObjectDataType
-
-	// go expression that builds request URL (e.g. `"servers/" + serverId`)
-	UrlExp string
-
-	// Path parameters sorted alphabetically by name (appear in URL)
-	PathParams []*ActionParam
-
 	// Query parameters sorted alphabetically by name (appear in query string)
 	QueryParams []*ActionParam
-
 	// Payload parameters sorted alphabetically by name (used in request body)
 	PayloadParams []*ActionParam
 }
 
 // Factory method, initialize 'path' and 'rawParams' fields
-func NewAnalyzer(path string, params map[string]interface{}) *ParamAnalyzer {
-	// Parse path and add corresponding params to raw params map
-	elems := strings.Split(path, "/")
-	for _, e := range elems {
-		if strings.HasPrefix(e, ":") {
-			if strings.HasSuffix(e, "(.:format)?") {
-				e = e[:len(e)-11]
-			}
-			params[e[1:]] = map[string]interface{}{"class": "String", "mandatory": true, "non_blank": true}
-		}
-	}
-
-	return &ParamAnalyzer{path: path, rawParams: params}
+func NewAnalyzer(params map[string]interface{}) *ParamAnalyzer {
+	return &ParamAnalyzer{rawParams: params}
 }
 
 // Analyze all parameters and categorize them
@@ -185,21 +154,13 @@ func (p *ParamAnalyzer) Analyze() {
 		p.Params[param.Name] = param
 	}
 
-	// Now build URL expression and cartegorize parameters
-	urlExp, pathParamNames := p.parseUrl()
-	p.UrlExp = urlExp
-
 	allParams := make([]*ActionParam, len(p.Params))
 	idx := 0
-	paramNames := make([]string, len(allParams))
 	for n, param := range p.Params {
 		allParams[idx] = param
-		paramNames[idx] = n
 		idx += 1
 	}
-	sort.Strings(paramNames)
 	sort.Sort(ByName(allParams))
-	pathParams := []*ActionParam{}
 	queryParams := []*ActionParam{}
 	payloadParams := []*ActionParam{}
 	for _, param := range allParams {
@@ -207,25 +168,11 @@ func (p *ParamAnalyzer) Analyze() {
 		if isQueryParam(pname) {
 			queryParams = append(queryParams, param)
 		} else {
-			isPathParam := false
-			for _, p := range pathParamNames {
-				if parseParamName(p) == pname {
-					isPathParam = true
-					break
-				}
-			}
-			if isPathParam {
-				param.Mandatory = true
-				pathParams = append(pathParams, param)
-			} else {
-				payloadParams = append(payloadParams, param)
-			}
+			payloadParams = append(payloadParams, param)
 		}
 	}
-	p.PathParams = pathParams
 	p.QueryParams = queryParams
 	p.PayloadParams = payloadParams
-	p.ParamNames = paramNames
 }
 
 // Sort array of string by length
@@ -344,10 +291,10 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 	}
 	native := nativeNameFromPath(path)
 	return &ActionParam{
-		Name:        parseParamName(native),
+		Name:        native,
 		Description: removeBlankLines(description),
+		VarName:     parseParamName(native),
 		Type:        dType,
-		NativeName:  native,
 		Mandatory:   mandatory,
 		NonBlank:    nonBlank,
 		Regexp:      regexp,
@@ -392,49 +339,4 @@ func parseParamName(name string) string {
 	}
 	p := partsRegexp.ReplaceAllString(name, "_")
 	return inflect.CamelizeDownFirst(p)
-}
-
-// Parse action path and return go expression to build url
-// E.g /servers/:severId returns "servers/" + serverId
-func (p *ParamAnalyzer) parseUrl() (string, []string) {
-	if strings.HasSuffix(p.path, "(.:format)?") {
-		p.path = p.path[:len(p.path)-11]
-	}
-	elems := strings.Split(p.path, "/")
-	urlElems := make([]string, len(elems))
-	params := []string{}
-	j := 0
-	acc := ""
-	for i, e := range elems {
-		if strings.HasPrefix(e, ":") {
-			prefix := acc
-			acc = ""
-			if len(prefix) > 0 {
-				prefix = fmt.Sprintf("\"/%s/\"", prefix)
-			}
-			if i > 0 || len(prefix) > 0 {
-				prefix += "+"
-			}
-			suffix := ""
-			if i < len(elems)-1 {
-				suffix = "+"
-			}
-			p := parseParamName(e[1:])
-			params = append(params, e[1:])
-			urlElems[j] = fmt.Sprintf("%s%s%s", prefix, p, suffix)
-			j += 1
-		} else {
-			if len(acc) > 0 {
-				acc = fmt.Sprintf("%s%s%s", acc, "/", e)
-			} else {
-				acc = e
-			}
-		}
-	}
-	if len(acc) > 0 {
-		urlElems[j] = fmt.Sprintf("\"/%s\"", acc)
-		j += 1
-	}
-	urlElems = urlElems[:j]
-	return strings.Join(urlElems, ""), params
 }

@@ -11,11 +11,9 @@ import (
 // The analyzer struct holds the analysis results
 type ApiAnalyzer struct {
 	// Raw resources as defined in API json metadata
-	rawResources map[string]interface{}
-
+	resources map[string]interface{}
 	// Attribute type mappings defined in attributes.json
 	attributeTypes map[string]string
-
 	// Temporary analysis construct
 	// Holds all types indexed by name, multiple actions could generate types with the same
 	// name. Keep them all here then make names unique as needed once we gathered all of them.
@@ -26,23 +24,20 @@ type ApiAnalyzer struct {
 // This includes all the API resources, actions and types.
 type ApiDescriptor struct {
 	// Resources indexed by name
-	Resources map[string]*ResourceData
-
+	Resources map[string]*Resource
 	// Resource names ordered alphabetically
 	ResourceNames []string
-
 	// Types used by resource actions indexed by name
 	Types map[string]*ObjectDataType
-
 	// Type names ordered alphabetically
 	TypeNames []string
 }
 
 // Factory method for API analyzer
-func NewApiAnalyzer(resources map[string]interface{}, attributes map[string]string) *ApiAnalyzer {
+func NewApiAnalyzer(resources map[string]interface{}, attributeTypes map[string]string) *ApiAnalyzer {
 	return &ApiAnalyzer{
 		rawResources:   resources,
-		attributeTypes: attributes,
+		attributeTypes: attributeTypes,
 		rawTypes:       make(map[string][]*ObjectDataType),
 	}
 }
@@ -51,7 +46,7 @@ func NewApiAnalyzer(resources map[string]interface{}, attributes map[string]stri
 // the ApiAnalyzer struct accordingly.
 func (a *ApiAnalyzer) Analyze() *ApiDescriptor {
 	descriptor := &ApiDescriptor{
-		Resources: make(map[string]*ResourceData),
+		Resources: make(map[string]*Resource),
 		Types:     make(map[string]*ObjectDataType),
 	}
 	rawResourceNames := make([]string, len(a.rawResources))
@@ -81,23 +76,32 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 	}
 
 	// Compute attributes
-	var attributes []*ResourceAttribute
+	var attributes []*Attribute
 	var atts map[string]interface{}
 	if m, ok := res["media_type"].(map[string]interface{}); ok {
 		atts = m["attributes"].(map[string]interface{})
-		attributes = make([]*ResourceAttribute, len(atts))
+		attributes = make([]*Attribute, len(atts))
 		for idx, n := range sortedKeys(atts) {
-			attributes[idx] = &ResourceAttribute{attributeName(n), n, a.attributeTypes[n]}
+			attributes[idx] = &Attribute{attributeName(n), n, a.attributeTypes[n]}
 		}
 	} else {
-		attributes = []*ResourceAttribute{}
+		attributes = []*Attribute{}
+	}
+
+	// Compute hrefs
+	var resourceHref, collectionHref string
+	methods := res["methods"].(map[string]interface{})
+	if show, ok := methods["show"].(map[string]interface{}); ok {
+		_, resourceHref := parseRoute("", meth["route"].(string))
+	}
+	if index, ok := methods["index"].(map[string]interface{}); ok {
+		_, collectionHref := parseRoute("", meth["route"].(string))
 	}
 
 	// Compute actions
-	methods := res["methods"].(map[string]interface{})
 	actionNames := sortedKeys(methods)
-	actions := make([]*ResourceAction, len(methods))
-	idx := 0
+	resourceActions := make([]*Action)
+	collectionActions := make([]*Action)
 	for _, actionName := range actionNames {
 		m := methods[actionName]
 		meth := m.(map[string]interface{})
@@ -105,25 +109,32 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		if p, ok := meth["parameters"]; ok {
 			params = p.(map[string]interface{})
 		}
-		description := "<no description>"
+		description := "No description provided for " + actionName + "."
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
+		var isResourceAction bool
 		httpMethod, path := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
 			meth["route"].(string))
+		if len(resourceHref) > 0 && strings.HasSuffix(path, resourceHref) {
+			path = path[len(resourceHref):]
+			isResourceAction = true
+		} else if strings.HasSuffix(path, collectionHref) {
+			path = path[len(collectionHref):]
+		}
 		var contentType string
 		if c, ok := meth["content_type"].(string); ok {
 			contentType = c
 		}
-		paramAnalyzer := NewAnalyzer(path, params)
+		paramAnalyzer := NewAnalyzer(params)
 		paramAnalyzer.Analyze()
 
 		// Record new parameter types
 		paramTypeNames := make([]string, len(paramAnalyzer.ParamTypes))
-		idx2 := 0
+		idx := 0
 		for n, _ := range paramAnalyzer.ParamTypes {
-			paramTypeNames[idx2] = n
-			idx2 += 1
+			paramTypeNames[idx] = n
+			idx += 1
 		}
 		sort.Strings(paramTypeNames)
 		for _, name := range paramTypeNames {
@@ -164,31 +175,33 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 
 		// Record action
-		actions[idx] = &ResourceAction{
-			Name:          methodName(actionName, name),
-			NativeName:    actionName,
+		action := Action{
+			Name:          actionName,
+			MethodName:    methodName(actionName, name),
 			Description:   removeBlankLines(description),
 			HttpMethod:    httpMethod,
 			Path:          path,
-			NativeParams:  params,
-			AllParams:     paramAnalyzer.Params,
-			ParamNames:    paramAnalyzer.ParamNames,
-			PathParams:    paramAnalyzer.PathParams,
-			QueryParams:   paramAnalyzer.QueryParams,
 			PayloadParams: paramAnalyzer.PayloadParams,
-			UrlExp:        paramAnalyzer.UrlExp,
+			QueryParams:   paramAnalyzer.QueryParams,
 			Return:        parseReturn(actionName, name, contentType),
 		}
-		idx += 1
+		if isResourceAction {
+			resourceActions = append(resourceActions, &action)
+		} else {
+			collectionActions = append(collectionActions, &action)
+		}
 	}
 
 	// We're done!
 	name = inflect.Singularize(name)
-	descriptor.Resources[name] = &ResourceData{
-		Name:        name,
-		Description: removeBlankLines(description),
-		Actions:     actions,
-		Attributes:  attributes,
+	descriptor.Resources[name] = &Resource{
+		Name:              name,
+		CollectionName:    inflect.Pluralize(name),
+		Description:       removeBlankLines(description),
+		BaseHref:          collectionHref,
+		ResourceActions:   resourceActions,
+		CollectionActions: collectionActions,
+		Attributes:        attributes,
 	}
 }
 
@@ -237,7 +250,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 			for i, ty := range types[1:] {
 				found := false
 				for j := 0; j < i; j++ {
-					if ty.Compare(types[j]) {
+					if ty.IsEquivalent(types[j]) {
 						found = true
 						break
 					}
@@ -323,49 +336,6 @@ func parseRoute(moniker string, route string) (string, string) {
 	path := strings.TrimRight(strings.Split(route[8:], "{")[0], " ")
 
 	return method, path
-}
-
-func parseUrl(path string) (string, []string) {
-	if strings.HasSuffix(path, "(.:format)?") {
-		path = path[:len(path)-11]
-	}
-	elems := strings.Split(path, "/")
-	urlElems := make([]string, len(elems))
-	params := []string{}
-	j := 0
-	acc := ""
-	for i, e := range elems {
-		if strings.HasPrefix(e, ":") {
-			prefix := acc
-			acc = ""
-			if len(prefix) > 0 {
-				prefix = fmt.Sprintf("\"/%s/\"", prefix)
-			}
-			if i > 0 || len(prefix) > 0 {
-				prefix += "+"
-			}
-			suffix := ""
-			if i < len(elems)-1 {
-				suffix = "+"
-			}
-			p := parseParamName(e[1:])
-			params = append(params, e[1:])
-			urlElems[j] = fmt.Sprintf("%s%s%s", prefix, p, suffix)
-			j += 1
-		} else {
-			if len(acc) > 0 {
-				acc = fmt.Sprintf("%s%s%s", acc, "/", e)
-			} else {
-				acc = e
-			}
-		}
-	}
-	if len(acc) > 0 {
-		urlElems[j] = fmt.Sprintf("\"/%s\"", acc)
-		j += 1
-	}
-	urlElems = urlElems[:j]
-	return strings.Join(urlElems, ""), params
 }
 
 // Resources that don't have a media type
