@@ -2,6 +2,7 @@ package rsapi15
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -24,7 +25,7 @@ type AccountAuthenticator struct {
 
 // Account authenticator uses RS oauth
 func (a *AccountAuthenticator) Sign(r *http.Request, endpoint string) error {
-	if time.Now.After(a.RefreshAt) {
+	if time.Now().After(a.RefreshAt) {
 		jsonStr := []byte(fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken))
 		authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", endpoint), bytes.NewBuffer(jsonStr))
 		if err != nil {
@@ -37,11 +38,11 @@ func (a *AccountAuthenticator) Sign(r *http.Request, endpoint string) error {
 		}
 		defer resp.Body.Close()
 		var session map[string]interface{}
-		json, err := ioutil.ReadAll(resp.Body)
+		jsonBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to read response): %s", err.Error())
 		}
-		err = json.Unmarshal(string(json), &session)
+		err = json.Unmarshal(jsonBytes, &session)
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to load response JSON): %s", err.Error())
 		}
