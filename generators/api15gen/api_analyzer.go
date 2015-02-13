@@ -140,15 +140,16 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		optional := []string{}
 		for _, n := range paramAnalyzer.ParamNames {
 			p := paramAnalyzer.Params[n]
-			desc := n
-			if p.Description != "" {
-				desc = fmt.Sprintf("%s: %s", n, p.Description)
-			}
 			if p.Mandatory {
 				if p.Description != "" {
+					desc := fmt.Sprintf("%s: %s", n, p.Description)
 					mandatory = append(mandatory, desc)
 				}
 			} else {
+				desc := p.NativeName
+				if p.Description != "" {
+					desc += ": " + p.Description
+				}
 				optional = append(optional, desc)
 			}
 		}

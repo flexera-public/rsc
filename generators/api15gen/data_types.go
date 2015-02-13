@@ -53,6 +53,31 @@ type ActionParam struct {
 	ValidValues []interface{}
 }
 
+// Generate signature used e.g. when specifying param in function signatures
+func (p *ActionParam) Signature() (sig string) {
+	switch t := p.Type.(type) {
+	case *BasicDataType:
+		if p.Mandatory {
+			sig = string(*t)
+		} else {
+			sig = "*" + string(*t)
+		}
+	case *ArrayDataType:
+		cs := t.ElemType.Signature()
+		if _, ok := t.ElemType.Type.(*BasicDataType); ok {
+			if cs[0] == '*' {
+				cs = cs[1:]
+			}
+		}
+		sig = fmt.Sprintf("[]%s", cs)
+	case *ObjectDataType:
+		sig = fmt.Sprintf("*%s", t.Name)
+	case *EnumerableDataType:
+		sig = "map[string]string"
+	}
+	return
+}
+
 // Same name and type => identical (validations and description are not taken into account)
 func (p *ActionParam) Compare(other *ActionParam) bool {
 	if p.Name != other.Name {
@@ -210,9 +235,6 @@ func (p *ActionParam) childFlags() []*FlagDef {
 			if len(flags) > 0 {
 				for i, f := range flags {
 					fName := field.Name
-					if a, ok := field.Type.(*ArrayDataType); ok {
-						fName = a.ElemType.Name
-					}
 					path := fName
 					if len(f.Path) > 0 {
 						path += "." + f.Path
@@ -268,18 +290,12 @@ func (b ByName) Less(i, j int) bool { return b[i].Name < b[j].Name }
 
 // All type structures implement the DataType interface
 type DataType interface {
-	Signature() string                    // Produce go compatible signature, e.g. to define function
 	Inspect() string                      // Produce pretty print, mainly for debug
 	BlankConditionExp(name string) string // Go condition to test whether type value is blank. Empty string if type values can't be blank.
 }
 
 // A basic data type only has a name, e.g. "int" or "string"
 type BasicDataType string
-
-// Implement DataType
-func (b *BasicDataType) Signature() string {
-	return string(*b)
-}
 
 func (b *BasicDataType) Inspect() string {
 	return string(*b)
@@ -299,10 +315,6 @@ type ArrayDataType struct {
 }
 
 // Implement DataType
-func (a *ArrayDataType) Signature() string {
-	return fmt.Sprintf("[]%s", a.ElemType.Type.Signature())
-}
-
 func (a *ArrayDataType) Inspect() string {
 	return fmt.Sprintf("Array of %s", a.ElemType.Type.Inspect())
 }
@@ -318,10 +330,6 @@ type ObjectDataType struct {
 }
 
 // Implement DataType
-func (o *ObjectDataType) Signature() string {
-	return fmt.Sprintf("*%s", o.Name)
-}
-
 func (o *ObjectDataType) Inspect() string {
 	var fields []string
 	for _, f := range o.Fields {
@@ -339,7 +347,7 @@ func (o *ObjectDataType) Declaration() string {
 	fields := make([]string, len(o.Fields))
 	for i, f := range o.Fields {
 		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.Name),
-			f.Type.Signature(), f.NativeName)
+			f.Signature(), f.NativeName)
 	}
 	return fmt.Sprintf("type %s struct {\n%s\n}", o.Name,
 		strings.Join(fields, "\n\t"))

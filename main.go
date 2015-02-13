@@ -65,7 +65,7 @@ func main() {
 	extract := app.Flag("extract", "Extract value(s) from response media type at given path, path consists of dot separated attribute names, e.g. \"security_groups.href\"").Short('e').String()
 
 	setup := app.Command("setup",
-		"setup config file, defaults to $HOME/.rsclient, use '--config' to override")
+		"create config file, defaults to $HOME/.rsclient, use '--config' to override")
 	cfgPath := setup.Flag("config", "path to rsclient config file").Default(fmt.Sprintf("%v/.rsclient", os.Getenv("HOME"))).String()
 
 	rsapi15.RegisterCommands(app)

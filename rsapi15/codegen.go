@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 11, 2015 at 1:26pm (PST)
+// Generated Feb 12, 2015 at 10:40am (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -435,7 +435,7 @@ func (c *Client) DestroyAlertSpec(id string, serverId string) error {
 // -- Optional parameters:
 // 	filter
 // 	view
-// 	withInherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
+// 	with_inherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
 func (c *Client) IndexAlertSpecs(serverId string, options ApiParams) ([]AlertSpec, error) {
 	var res []AlertSpec
 	if serverId == "" {
@@ -599,7 +599,7 @@ func (c *Client) AppendAuditEntry(id string, options ApiParams) error {
 // Creates a new AuditEntry with the given parameters.
 // -- Optional parameters:
 // 	notify: The event notification category. Defaults to 'None'.
-// 	userEmail: The email of the user (who created/triggered the audit entry). Only usable with instance role.
+// 	user_email: The email of the user (who created/triggered the audit entry). Only usable with instance role.
 func (c *Client) CreateAuditEntry(auditEntry *AuditEntryParam, options ApiParams) (Href, error) {
 	var res Href
 	if auditEntry == nil {
@@ -834,7 +834,7 @@ type Backup struct {
 // 	keepLast: The number of backups that should be kept.
 // 	lineage: The lineage of the backups that are to be cleaned-up.
 // -- Optional parameters:
-// 	cloudHref: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
+// 	cloud_href: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
 // 	dailies: The number of daily backups(the latest one in each day) that should be kept.
 // 	monthlies: The number of monthly backups(the latest one in each month) that should be kept.
 // 	weeklies: The number of weekly backups(the latest one in each week) that should be kept.
@@ -1607,7 +1607,7 @@ type CookbookAttachment struct {
 // POST api/cookbooks/:cookbook_id/cookbook_attachments(.:format)?
 // Attach a cookbook to a given resource.
 // -- Optional parameters:
-// 	cookbookAttachment
+// 	cookbook_attachment
 func (c *Client) CreateCookbookAttachment(cookbookId string, options ApiParams) (Href, error) {
 	var res Href
 	if cookbookId == "" {
@@ -2806,7 +2806,7 @@ func (c *Client) IndexInstances(cloudId string, options ApiParams) ([]Instance, 
 // Launches an instance using the parameters that this instance has been configured with.
 // Note that this action can only be performed in "next" instances, and not on instances that are already running.
 // -- Optional parameters:
-// 	apiBehavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+// 	api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
 // 	inputs
 func (c *Client) LaunchInstance(cloudId string, id string, options ApiParams) error {
 	if cloudId == "" {
@@ -2866,10 +2866,10 @@ func (c *Client) LockInstance(cloudId string, id string) error {
 // Status of the execution can be tracked at the URL returned in the "Location" header.
 // -- Optional parameters:
 // 	filter
-// 	ignoreLock: Specifies the ability to ignore the lock(s) on the Instance(s).
+// 	ignore_lock: Specifies the ability to ignore the lock(s) on the Instance(s).
 // 	inputs
-// 	recipeName: The name of the recipe to be run.
-// 	rightScriptHref: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
+// 	recipe_name: The name of the recipe to be run.
+// 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (c *Client) MultiRunExecutableInstances(cloudId string, options ApiParams) error {
 	if cloudId == "" {
 		return fmt.Errorf("cloudId cannot be blank")
@@ -2905,7 +2905,7 @@ func (c *Client) MultiRunExecutableInstances(cloudId string, options ApiParams) 
 // Either a filter or the parameter 'terminate_all' must be provided.
 // -- Optional parameters:
 // 	filter
-// 	terminateAll: Specifies the ability to terminate all instances.
+// 	terminate_all: Specifies the ability to terminate all instances.
 func (c *Client) MultiTerminateInstances(cloudId string, options ApiParams) error {
 	if cloudId == "" {
 		return fmt.Errorf("cloudId cannot be blank")
@@ -2967,10 +2967,10 @@ func (c *Client) RebootInstance(cloudId string, id string) error {
 // Status of the execution can be tracked at the URL returned in the "Location" header.
 // Note that this can only be performed on running instances.
 // -- Optional parameters:
-// 	ignoreLock: Specifies the ability to ignore the lock on the Instance.
+// 	ignore_lock: Specifies the ability to ignore the lock on the Instance.
 // 	inputs
-// 	recipeName: The name of the recipe to run.
-// 	rightScriptHref: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
+// 	recipe_name: The name of the recipe to run.
+// 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (c *Client) RunExecutableInstance(cloudId string, id string, options ApiParams) error {
 	if cloudId == "" {
 		return fmt.Errorf("cloudId cannot be blank")
@@ -5138,12 +5138,12 @@ type Oauth2 struct {
 // }
 // 	grantType: Type of grant.
 // -- Optional parameters:
-// 	accountId: The client's account ID (only needed for instance agent clients).
-// 	clientId: The client ID (only needed for confidential clients).
-// 	clientSecret: The client secret (only needed for confidential clients).
-// 	refreshToken: The refresh token obtained from OAuth grant.
-// 	rightLinkVersion: The RightLink gem version the client conforms to (only needed for instance agent clients).
-// 	rsVersion: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
+// 	account_id: The client's account ID (only needed for instance agent clients).
+// 	client_id: The client ID (only needed for confidential clients).
+// 	client_secret: The client secret (only needed for confidential clients).
+// 	r_s_version: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
+// 	refresh_token: The refresh token obtained from OAuth grant.
+// 	right_link_version: The RightLink gem version the client conforms to (only needed for instance agent clients).
 func (c *Client) CreateOauth2(grantType string, options ApiParams) (map[string]interface{}, error) {
 	var res map[string]interface{}
 	if grantType == "" {
@@ -5923,8 +5923,8 @@ type Repository struct {
 // -- Optional parameters:
 // 	follow: A flag indicating whether imported cookbooks should be followed.
 // 	namespace: The namespace to import into.
-// 	repositoryCommitReference: Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.
-// 	withDependencies: A flag indicating whether dependencies should automatically be imported.
+// 	repository_commit_reference: Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.
+// 	with_dependencies: A flag indicating whether dependencies should automatically be imported.
 func (c *Client) CookbookImportRepository(assetHrefs []string, id string, options ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id cannot be blank")
@@ -6110,7 +6110,7 @@ func (c *Client) IndexRepositories(options ApiParams) ([]Repository, error) {
 // Note that a refetch simply updates RightScale's view of the contents of the repository.
 // You must perform an import to use the assets in your design objects (or use the auto import parameter).
 // -- Optional parameters:
-// 	autoImport: Whether cookbooks should automatically be imported after repositories are fetched.
+// 	auto_import: Whether cookbooks should automatically be imported after repositories are fetched.
 func (c *Client) RefetchRepository(id string, options ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id cannot be blank")
@@ -6142,7 +6142,7 @@ func (c *Client) RefetchRepository(id string, options ApiParams) error {
 // to the swap_repository
 // action on a ServerTemplate.
 // -- Optional parameters:
-// 	importedCookbookName: A list of cookbook names that were imported by the repository.
+// 	imported_cookbook_name: A list of cookbook names that were imported by the repository.
 func (c *Client) ResolveRepository(options ApiParams) ([]Repository, error) {
 	var res []Repository
 	payload := mergeOptionals(ApiParams{}, options)
@@ -6389,7 +6389,7 @@ func (c *Client) CommitRightScript(id string, rightScript *RightScriptParam) err
 // Lists RightScripts.
 // -- Optional parameters:
 // 	filter
-// 	latestOnly: Whether or not to return only the latest version for each lineage.
+// 	latest_only: Whether or not to return only the latest version for each lineage.
 // 	view
 func (c *Client) IndexRightScripts(options ApiParams) ([]RightScript, error) {
 	var res []RightScript
@@ -8173,9 +8173,9 @@ func (c *Client) IndexServerTemplates(options ApiParams) ([]ServerTemplate, erro
 // Only non-HEAD revisions that are owned by the account can be published.
 // 	accountGroupHrefs: List of hrefs of account groups to publish to.
 // -- Optional parameters:
-// 	allowComments: Allow users to leave comments on this ServerTemplate.
+// 	allow_comments: Allow users to leave comments on this ServerTemplate.
 // 	categories: List of Categories.
-// 	emailComments: Email me when a user comments on this ServerTemplate.
+// 	email_comments: Email me when a user comments on this ServerTemplate.
 func (c *Client) PublishServerTemplate(accountGroupHrefs []string, descriptions *Descriptions, id string, options ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id cannot be blank")
@@ -9135,9 +9135,9 @@ func (c *Client) ByResourceTag(resourceHrefs []string) ([]map[string]string, err
 // 	resourceType: Search among a single resource type.
 // 	tags: The tags which must be present on the resource.
 // -- Optional parameters:
-// 	includeTagsWithPrefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
-// 	matchAll: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
-// 	withDeleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
+// 	include_tags_with_prefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
+// 	match_all: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
+// 	with_deleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
 func (c *Client) ByTagTag(resourceType string, tags []string, options ApiParams) ([]map[string]string, error) {
 	var res []map[string]string
 	if resourceType == "" {
@@ -10096,40 +10096,40 @@ func (c *Client) ShowVolumeType(cloudId string, id string, options ApiParams) (*
 /****** Parameter Data Types ******/
 
 type AlertSpecParam struct {
-	Condition      string `json:"condition,omitempty"`
-	Description    string `json:"description,omitempty"`
-	Duration       string `json:"duration,omitempty"`
-	EscalationName string `json:"escalation_name,omitempty"`
-	File           string `json:"file,omitempty"`
-	Name           string `json:"name,omitempty"`
-	SubjectHref    string `json:"subject_href,omitempty"`
-	Threshold      string `json:"threshold,omitempty"`
-	Variable       string `json:"variable,omitempty"`
-	VoteTag        string `json:"vote_tag,omitempty"`
-	VoteType       string `json:"vote_type,omitempty"`
+	Condition      string  `json:"condition,omitempty"`
+	Description    *string `json:"description,omitempty"`
+	Duration       string  `json:"duration,omitempty"`
+	EscalationName *string `json:"escalation_name,omitempty"`
+	File           string  `json:"file,omitempty"`
+	Name           string  `json:"name,omitempty"`
+	SubjectHref    *string `json:"subject_href,omitempty"`
+	Threshold      string  `json:"threshold,omitempty"`
+	Variable       string  `json:"variable,omitempty"`
+	VoteTag        *string `json:"vote_tag,omitempty"`
+	VoteType       *string `json:"vote_type,omitempty"`
 }
 
 type AlertSpecParam2 struct {
-	Condition      string `json:"condition,omitempty"`
-	Description    string `json:"description,omitempty"`
-	Duration       string `json:"duration,omitempty"`
-	EscalationName string `json:"escalation_name,omitempty"`
-	File           string `json:"file,omitempty"`
-	Name           string `json:"name,omitempty"`
-	Threshold      string `json:"threshold,omitempty"`
-	Variable       string `json:"variable,omitempty"`
-	VoteTag        string `json:"vote_tag,omitempty"`
-	VoteType       string `json:"vote_type,omitempty"`
+	Condition      *string `json:"condition,omitempty"`
+	Description    *string `json:"description,omitempty"`
+	Duration       *string `json:"duration,omitempty"`
+	EscalationName *string `json:"escalation_name,omitempty"`
+	File           *string `json:"file,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	Threshold      *string `json:"threshold,omitempty"`
+	Variable       *string `json:"variable,omitempty"`
+	VoteTag        *string `json:"vote_tag,omitempty"`
+	VoteType       *string `json:"vote_type,omitempty"`
 }
 
 type AlertSpecificParams struct {
-	DecisionThreshold  string `json:"decision_threshold,omitempty"`
-	VotersTagPredicate string `json:"voters_tag_predicate,omitempty"`
+	DecisionThreshold  *string `json:"decision_threshold,omitempty"`
+	VotersTagPredicate *string `json:"voters_tag_predicate,omitempty"`
 }
 
 type AlertSpecificParams2 struct {
-	DecisionThreshold  string `json:"decision_threshold,omitempty"`
-	VotersTagPredicate string `json:"voters_tag_predicate,omitempty"`
+	DecisionThreshold  *string `json:"decision_threshold,omitempty"`
+	VotersTagPredicate *string `json:"voters_tag_predicate,omitempty"`
 }
 
 type AssetPaths struct {
@@ -10141,19 +10141,19 @@ type AssetPaths2 struct {
 }
 
 type AuditEntryParam struct {
-	AuditeeHref string `json:"auditee_href,omitempty"`
-	Detail      string `json:"detail,omitempty"`
-	Summary     string `json:"summary,omitempty"`
+	AuditeeHref string  `json:"auditee_href,omitempty"`
+	Detail      *string `json:"detail,omitempty"`
+	Summary     string  `json:"summary,omitempty"`
 }
 
 type AuditEntryParam2 struct {
-	Offset  int    `json:"offset,omitempty"`
+	Offset  *int   `json:"offset,omitempty"`
 	Summary string `json:"summary,omitempty"`
 }
 
 type BackupParam struct {
-	Description           string   `json:"description,omitempty"`
-	FromMaster            string   `json:"from_master,omitempty"`
+	Description           *string  `json:"description,omitempty"`
+	FromMaster            *string  `json:"from_master,omitempty"`
 	Lineage               string   `json:"lineage,omitempty"`
 	Name                  string   `json:"name,omitempty"`
 	VolumeAttachmentHrefs []string `json:"volume_attachment_hrefs,omitempty"`
@@ -10164,55 +10164,55 @@ type BackupParam2 struct {
 }
 
 type Bounds struct {
-	MaxCount string `json:"max_count,omitempty"`
-	MinCount string `json:"min_count,omitempty"`
+	MaxCount *string `json:"max_count,omitempty"`
+	MinCount *string `json:"min_count,omitempty"`
 }
 
 type Bounds2 struct {
-	MaxCount string `json:"max_count,omitempty"`
-	MinCount string `json:"min_count,omitempty"`
+	MaxCount *string `json:"max_count,omitempty"`
+	MinCount *string `json:"min_count,omitempty"`
 }
 
 type ChildAccountParam struct {
-	ClusterHref string `json:"cluster_href,omitempty"`
-	Name        string `json:"name,omitempty"`
+	ClusterHref *string `json:"cluster_href,omitempty"`
+	Name        string  `json:"name,omitempty"`
 }
 
 type ChildAccountParam2 struct {
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 }
 
 type CloudAccountParam struct {
-	CloudHref string            `json:"cloud_href,omitempty"`
+	CloudHref *string           `json:"cloud_href,omitempty"`
 	Creds     map[string]string `json:"creds,omitempty"`
-	Token     string            `json:"token,omitempty"`
+	Token     *string           `json:"token,omitempty"`
 }
 
 type CloudSpecificAttributes struct {
-	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
-	EbsOptimized                  string `json:"ebs_optimized,omitempty"`
-	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
-	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
-	RootVolumeSize                string `json:"root_volume_size,omitempty"`
-	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
+	AutomaticInstanceStoreMapping *string `json:"automatic_instance_store_mapping,omitempty"`
+	EbsOptimized                  *string `json:"ebs_optimized,omitempty"`
+	IamInstanceProfile            *string `json:"iam_instance_profile,omitempty"`
+	RootVolumePerformance         *string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                *string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid             *string `json:"root_volume_type_uid,omitempty"`
 }
 
 type CloudSpecificAttributes2 struct {
-	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
-	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
-	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
-	RootVolumeSize                string `json:"root_volume_size,omitempty"`
-	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
+	AutomaticInstanceStoreMapping *string `json:"automatic_instance_store_mapping,omitempty"`
+	IamInstanceProfile            *string `json:"iam_instance_profile,omitempty"`
+	RootVolumePerformance         *string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                *string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid             *string `json:"root_volume_type_uid,omitempty"`
 }
 
 type CookbookAttachmentParam struct {
-	CookbookHref       string `json:"cookbook_href,omitempty"`
-	ServerTemplateHref string `json:"server_template_href,omitempty"`
+	CookbookHref       *string `json:"cookbook_href,omitempty"`
+	ServerTemplateHref *string `json:"server_template_href,omitempty"`
 }
 
 type CookbookAttachments struct {
 	CookbookHrefs      []string `json:"cookbook_hrefs,omitempty"`
-	ServerTemplateHref string   `json:"server_template_href,omitempty"`
+	ServerTemplateHref *string  `json:"server_template_href,omitempty"`
 }
 
 type CookbookAttachments2 struct {
@@ -10220,27 +10220,27 @@ type CookbookAttachments2 struct {
 }
 
 type CredentialParam struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Value       string `json:"value,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
+	Value       string  `json:"value,omitempty"`
 }
 
 type CredentialParam2 struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Value       string `json:"value,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	Value       *string `json:"value,omitempty"`
 }
 
 type Credentials struct {
-	Password string `json:"password,omitempty"`
-	SshKey   string `json:"ssh_key,omitempty"`
-	Username string `json:"username,omitempty"`
+	Password *string `json:"password,omitempty"`
+	SshKey   *string `json:"ssh_key,omitempty"`
+	Username *string `json:"username,omitempty"`
 }
 
 type Credentials2 struct {
-	Password string `json:"password,omitempty"`
-	SshKey   string `json:"ssh_key,omitempty"`
-	Username string `json:"username,omitempty"`
+	Password *string `json:"password,omitempty"`
+	SshKey   *string `json:"ssh_key,omitempty"`
+	Username *string `json:"username,omitempty"`
 }
 
 type DatacenterPolicy struct {
@@ -10256,15 +10256,15 @@ type DatacenterPolicy2 struct {
 }
 
 type DeploymentParam struct {
-	Description    string `json:"description,omitempty"`
-	Name           string `json:"name,omitempty"`
-	ServerTagScope string `json:"server_tag_scope,omitempty"`
+	Description    *string `json:"description,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	ServerTagScope *string `json:"server_tag_scope,omitempty"`
 }
 
 type DeploymentParam2 struct {
-	Description    string `json:"description,omitempty"`
-	Name           string `json:"name,omitempty"`
-	ServerTagScope string `json:"server_tag_scope,omitempty"`
+	Description    *string `json:"description,omitempty"`
+	Name           string  `json:"name,omitempty"`
+	ServerTagScope *string `json:"server_tag_scope,omitempty"`
 }
 
 type Descriptions struct {
@@ -10290,148 +10290,148 @@ type ElasticityParams2 struct {
 }
 
 type InstanceParam struct {
-	AssociatePublicIpAddress string                   `json:"associate_public_ip_address,omitempty"`
+	AssociatePublicIpAddress *string                  `json:"associate_public_ip_address,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes `json:"cloud_specific_attributes,omitempty"`
-	DatacenterHref           string                   `json:"datacenter_href,omitempty"`
-	DeploymentHref           string                   `json:"deployment_href,omitempty"`
+	DatacenterHref           *string                  `json:"datacenter_href,omitempty"`
+	DeploymentHref           *string                  `json:"deployment_href,omitempty"`
 	ImageHref                string                   `json:"image_href,omitempty"`
 	InstanceTypeHref         string                   `json:"instance_type_href,omitempty"`
-	KernelImageHref          string                   `json:"kernel_image_href,omitempty"`
+	KernelImageHref          *string                  `json:"kernel_image_href,omitempty"`
 	Name                     string                   `json:"name,omitempty"`
-	PlacementGroupHref       string                   `json:"placement_group_href,omitempty"`
-	RamdiskImageHref         string                   `json:"ramdisk_image_href,omitempty"`
+	PlacementGroupHref       *string                  `json:"placement_group_href,omitempty"`
+	RamdiskImageHref         *string                  `json:"ramdisk_image_href,omitempty"`
 	SecurityGroupHrefs       []string                 `json:"security_group_hrefs,omitempty"`
-	SshKeyHref               string                   `json:"ssh_key_href,omitempty"`
+	SshKeyHref               *string                  `json:"ssh_key_href,omitempty"`
 	SubnetHrefs              []string                 `json:"subnet_hrefs,omitempty"`
-	UserData                 string                   `json:"user_data,omitempty"`
+	UserData                 *string                  `json:"user_data,omitempty"`
 }
 
 type InstanceParam2 struct {
 	Href                string            `json:"href,omitempty"`
 	Inputs              map[string]string `json:"inputs,omitempty"`
-	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
+	MultiCloudImageHref *string           `json:"multi_cloud_image_href,omitempty"`
 	ServerTemplateHref  string            `json:"server_template_href,omitempty"`
 }
 
 type IpAddressBindingParam struct {
-	InstanceHref        string `json:"instance_href,omitempty"`
-	PrivatePort         string `json:"private_port,omitempty"`
-	Protocol            string `json:"protocol,omitempty"`
-	PublicIpAddressHref string `json:"public_ip_address_href,omitempty"`
-	PublicPort          string `json:"public_port,omitempty"`
+	InstanceHref        string  `json:"instance_href,omitempty"`
+	PrivatePort         *string `json:"private_port,omitempty"`
+	Protocol            *string `json:"protocol,omitempty"`
+	PublicIpAddressHref *string `json:"public_ip_address_href,omitempty"`
+	PublicPort          *string `json:"public_port,omitempty"`
 }
 
 type IpAddressParam struct {
-	DeploymentHref string `json:"deployment_href,omitempty"`
-	Domain         string `json:"domain,omitempty"`
-	Name           string `json:"name,omitempty"`
-	NetworkHref    string `json:"network_href,omitempty"`
+	DeploymentHref *string `json:"deployment_href,omitempty"`
+	Domain         *string `json:"domain,omitempty"`
+	Name           string  `json:"name,omitempty"`
+	NetworkHref    *string `json:"network_href,omitempty"`
 }
 
 type IpAddressParam2 struct {
-	DeploymentHref string `json:"deployment_href,omitempty"`
-	Name           string `json:"name,omitempty"`
+	DeploymentHref *string `json:"deployment_href,omitempty"`
+	Name           string  `json:"name,omitempty"`
 }
 
 type ItemAge struct {
-	Algorithm string `json:"algorithm,omitempty"`
-	MaxAge    string `json:"max_age,omitempty"`
-	Regexp    string `json:"regexp,omitempty"`
+	Algorithm *string `json:"algorithm,omitempty"`
+	MaxAge    *string `json:"max_age,omitempty"`
+	Regexp    *string `json:"regexp,omitempty"`
 }
 
 type ItemAge2 struct {
-	Algorithm string `json:"algorithm,omitempty"`
-	MaxAge    string `json:"max_age,omitempty"`
-	Regexp    string `json:"regexp,omitempty"`
+	Algorithm *string `json:"algorithm,omitempty"`
+	MaxAge    *string `json:"max_age,omitempty"`
+	Regexp    *string `json:"regexp,omitempty"`
 }
 
 type MultiCloudImageParam struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
 }
 
 type MultiCloudImageParam2 struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
 }
 
 type MultiCloudImageSettingParam struct {
-	CloudHref        string `json:"cloud_href,omitempty"`
-	ImageHref        string `json:"image_href,omitempty"`
-	InstanceTypeHref string `json:"instance_type_href,omitempty"`
-	KernelImageHref  string `json:"kernel_image_href,omitempty"`
-	RamdiskImageHref string `json:"ramdisk_image_href,omitempty"`
-	UserData         string `json:"user_data,omitempty"`
+	CloudHref        *string `json:"cloud_href,omitempty"`
+	ImageHref        *string `json:"image_href,omitempty"`
+	InstanceTypeHref *string `json:"instance_type_href,omitempty"`
+	KernelImageHref  *string `json:"kernel_image_href,omitempty"`
+	RamdiskImageHref *string `json:"ramdisk_image_href,omitempty"`
+	UserData         *string `json:"user_data,omitempty"`
 }
 
 type MultiCloudImageSettingParam2 struct {
-	CloudHref        string `json:"cloud_href,omitempty"`
-	ImageHref        string `json:"image_href,omitempty"`
-	InstanceTypeHref string `json:"instance_type_href,omitempty"`
-	KernelImageHref  string `json:"kernel_image_href,omitempty"`
-	RamdiskImageHref string `json:"ramdisk_image_href,omitempty"`
-	UserData         string `json:"user_data,omitempty"`
+	CloudHref        *string `json:"cloud_href,omitempty"`
+	ImageHref        *string `json:"image_href,omitempty"`
+	InstanceTypeHref *string `json:"instance_type_href,omitempty"`
+	KernelImageHref  *string `json:"kernel_image_href,omitempty"`
+	RamdiskImageHref *string `json:"ramdisk_image_href,omitempty"`
+	UserData         *string `json:"user_data,omitempty"`
 }
 
 type NetworkGatewayParam struct {
-	CloudHref   string `json:"cloud_href,omitempty"`
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Type_       string `json:"type,omitempty"`
+	CloudHref   string  `json:"cloud_href,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
+	Type_       string  `json:"type,omitempty"`
 }
 
 type NetworkGatewayParam2 struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	NetworkHref string `json:"network_href,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
+	NetworkHref *string `json:"network_href,omitempty"`
 }
 
 type NetworkOptionGroupAttachmentParam struct {
-	NetworkHref            string `json:"network_href,omitempty"`
-	NetworkOptionGroupHref string `json:"network_option_group_href,omitempty"`
+	NetworkHref            string  `json:"network_href,omitempty"`
+	NetworkOptionGroupHref *string `json:"network_option_group_href,omitempty"`
 }
 
 type NetworkOptionGroupAttachmentParam2 struct {
-	NetworkOptionGroupHref string `json:"network_option_group_href,omitempty"`
+	NetworkOptionGroupHref *string `json:"network_option_group_href,omitempty"`
 }
 
 type NetworkOptionGroupParam struct {
 	CloudHref   string            `json:"cloud_href,omitempty"`
-	Description string            `json:"description,omitempty"`
-	Name        string            `json:"name,omitempty"`
+	Description *string           `json:"description,omitempty"`
+	Name        *string           `json:"name,omitempty"`
 	Options     map[string]string `json:"options,omitempty"`
 	Type_       string            `json:"type,omitempty"`
 }
 
 type NetworkOptionGroupParam2 struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
 }
 
 type NetworkParam struct {
-	CidrBlock       string `json:"cidr_block,omitempty"`
-	CloudHref       string `json:"cloud_href,omitempty"`
-	Description     string `json:"description,omitempty"`
-	InstanceTenancy string `json:"instance_tenancy,omitempty"`
-	Name            string `json:"name,omitempty"`
+	CidrBlock       *string `json:"cidr_block,omitempty"`
+	CloudHref       string  `json:"cloud_href,omitempty"`
+	Description     *string `json:"description,omitempty"`
+	InstanceTenancy *string `json:"instance_tenancy,omitempty"`
+	Name            *string `json:"name,omitempty"`
 }
 
 type NetworkParam2 struct {
-	Description    string `json:"description,omitempty"`
-	Name           string `json:"name,omitempty"`
-	RouteTableHref string `json:"route_table_href,omitempty"`
+	Description    *string `json:"description,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	RouteTableHref *string `json:"route_table_href,omitempty"`
 }
 
 type Pacing struct {
-	ResizeCalmTime string `json:"resize_calm_time,omitempty"`
-	ResizeDownBy   string `json:"resize_down_by,omitempty"`
-	ResizeUpBy     string `json:"resize_up_by,omitempty"`
+	ResizeCalmTime *string `json:"resize_calm_time,omitempty"`
+	ResizeDownBy   *string `json:"resize_down_by,omitempty"`
+	ResizeUpBy     *string `json:"resize_up_by,omitempty"`
 }
 
 type Pacing2 struct {
-	ResizeCalmTime string `json:"resize_calm_time,omitempty"`
-	ResizeDownBy   string `json:"resize_down_by,omitempty"`
-	ResizeUpBy     string `json:"resize_up_by,omitempty"`
+	ResizeCalmTime *string `json:"resize_calm_time,omitempty"`
+	ResizeDownBy   *string `json:"resize_down_by,omitempty"`
+	ResizeUpBy     *string `json:"resize_up_by,omitempty"`
 }
 
 type PermissionParam struct {
@@ -10440,9 +10440,9 @@ type PermissionParam struct {
 }
 
 type PlacementGroupParam struct {
-	CloudHref   string `json:"cloud_href,omitempty"`
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	CloudHref   string  `json:"cloud_href,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
 }
 
 type PreferenceParam struct {
@@ -10450,38 +10450,38 @@ type PreferenceParam struct {
 }
 
 type ProtocolDetails struct {
-	EndPort   string `json:"end_port,omitempty"`
-	IcmpCode  string `json:"icmp_code,omitempty"`
-	IcmpType  string `json:"icmp_type,omitempty"`
-	StartPort string `json:"start_port,omitempty"`
+	EndPort   *string `json:"end_port,omitempty"`
+	IcmpCode  *string `json:"icmp_code,omitempty"`
+	IcmpType  *string `json:"icmp_type,omitempty"`
+	StartPort *string `json:"start_port,omitempty"`
 }
 
 type Quantity struct {
-	Name  string `json:"name,omitempty"`
-	Value string `json:"value,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 type Quantity2 struct {
-	Name  string `json:"name,omitempty"`
-	Value string `json:"value,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
 }
 
 type QueueSize struct {
-	ItemsPerInstance string `json:"items_per_instance,omitempty"`
+	ItemsPerInstance *string `json:"items_per_instance,omitempty"`
 }
 
 type QueueSize2 struct {
-	ItemsPerInstance string `json:"items_per_instance,omitempty"`
+	ItemsPerInstance *string `json:"items_per_instance,omitempty"`
 }
 
 type QueueSpecificParams struct {
-	CollectAuditEntries string     `json:"collect_audit_entries,omitempty"`
+	CollectAuditEntries *string    `json:"collect_audit_entries,omitempty"`
 	ItemAge             *ItemAge   `json:"item_age,omitempty"`
 	QueueSize           *QueueSize `json:"queue_size,omitempty"`
 }
 
 type QueueSpecificParams2 struct {
-	CollectAuditEntries string      `json:"collect_audit_entries,omitempty"`
+	CollectAuditEntries *string     `json:"collect_audit_entries,omitempty"`
 	ItemAge             *ItemAge2   `json:"item_age,omitempty"`
 	QueueSize           *QueueSize2 `json:"queue_size,omitempty"`
 }
@@ -10494,10 +10494,10 @@ type RecurringVolumeAttachmentParam struct {
 
 type RepositoryParam struct {
 	AssetPaths      *AssetPaths  `json:"asset_paths,omitempty"`
-	AutoImport      string       `json:"auto_import,omitempty"`
-	CommitReference string       `json:"commit_reference,omitempty"`
+	AutoImport      *string      `json:"auto_import,omitempty"`
+	CommitReference *string      `json:"commit_reference,omitempty"`
 	Credentials     *Credentials `json:"credentials,omitempty"`
-	Description     string       `json:"description,omitempty"`
+	Description     *string      `json:"description,omitempty"`
 	Name            string       `json:"name,omitempty"`
 	Source          string       `json:"source,omitempty"`
 	SourceType      string       `json:"source_type,omitempty"`
@@ -10505,12 +10505,12 @@ type RepositoryParam struct {
 
 type RepositoryParam2 struct {
 	AssetPaths      *AssetPaths2  `json:"asset_paths,omitempty"`
-	CommitReference string        `json:"commit_reference,omitempty"`
+	CommitReference *string       `json:"commit_reference,omitempty"`
 	Credentials     *Credentials2 `json:"credentials,omitempty"`
-	Description     string        `json:"description,omitempty"`
-	Name            string        `json:"name,omitempty"`
-	Source          string        `json:"source,omitempty"`
-	SourceType      string        `json:"source_type,omitempty"`
+	Description     *string       `json:"description,omitempty"`
+	Name            *string       `json:"name,omitempty"`
+	Source          *string       `json:"source,omitempty"`
+	SourceType      *string       `json:"source_type,omitempty"`
 }
 
 type RightScriptParam struct {
@@ -10518,52 +10518,52 @@ type RightScriptParam struct {
 }
 
 type RightScriptParam2 struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
 }
 
 type RouteParam struct {
-	Description          string `json:"description,omitempty"`
-	DestinationCidrBlock string `json:"destination_cidr_block,omitempty"`
-	NextHopHref          string `json:"next_hop_href,omitempty"`
-	NextHopIp            string `json:"next_hop_ip,omitempty"`
-	NextHopType          string `json:"next_hop_type,omitempty"`
-	RouteTableHref       string `json:"route_table_href,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	DestinationCidrBlock string  `json:"destination_cidr_block,omitempty"`
+	NextHopHref          *string `json:"next_hop_href,omitempty"`
+	NextHopIp            *string `json:"next_hop_ip,omitempty"`
+	NextHopType          string  `json:"next_hop_type,omitempty"`
+	RouteTableHref       string  `json:"route_table_href,omitempty"`
 }
 
 type RouteParam2 struct {
-	Description          string `json:"description,omitempty"`
-	DestinationCidrBlock string `json:"destination_cidr_block,omitempty"`
-	NextHopHref          string `json:"next_hop_href,omitempty"`
-	NextHopIp            string `json:"next_hop_ip,omitempty"`
-	NextHopType          string `json:"next_hop_type,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	DestinationCidrBlock *string `json:"destination_cidr_block,omitempty"`
+	NextHopHref          *string `json:"next_hop_href,omitempty"`
+	NextHopIp            *string `json:"next_hop_ip,omitempty"`
+	NextHopType          *string `json:"next_hop_type,omitempty"`
 }
 
 type RouteTableParam struct {
-	CloudHref   string `json:"cloud_href,omitempty"`
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	NetworkHref string `json:"network_href,omitempty"`
+	CloudHref   string  `json:"cloud_href,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
+	NetworkHref string  `json:"network_href,omitempty"`
 }
 
 type RouteTableParam2 struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        *string `json:"name,omitempty"`
 }
 
 type RunnableBindingParam struct {
-	Position        string `json:"position,omitempty"`
-	Recipe          string `json:"recipe,omitempty"`
-	RightScriptHref string `json:"right_script_href,omitempty"`
-	Sequence        string `json:"sequence,omitempty"`
+	Position        *string `json:"position,omitempty"`
+	Recipe          *string `json:"recipe,omitempty"`
+	RightScriptHref *string `json:"right_script_href,omitempty"`
+	Sequence        *string `json:"sequence,omitempty"`
 }
 
 type RunnableBindings struct {
-	Id              string `json:"id,omitempty"`
-	Position        string `json:"position,omitempty"`
-	Recipe          string `json:"recipe,omitempty"`
-	RightScriptHref string `json:"right_script_href,omitempty"`
-	Sequence        string `json:"sequence,omitempty"`
+	Id              string  `json:"id,omitempty"`
+	Position        *string `json:"position,omitempty"`
+	Recipe          *string `json:"recipe,omitempty"`
+	RightScriptHref *string `json:"right_script_href,omitempty"`
+	Sequence        *string `json:"sequence,omitempty"`
 }
 
 type Schedule struct {
@@ -10581,62 +10581,62 @@ type Schedule2 struct {
 }
 
 type SecurityGroupParam struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	NetworkHref string `json:"network_href,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
+	NetworkHref *string `json:"network_href,omitempty"`
 }
 
 type SecurityGroupRuleParam struct {
-	CidrIps           string           `json:"cidr_ips,omitempty"`
-	Direction         string           `json:"direction,omitempty"`
-	GroupName         string           `json:"group_name,omitempty"`
-	GroupOwner        string           `json:"group_owner,omitempty"`
+	CidrIps           *string          `json:"cidr_ips,omitempty"`
+	Direction         *string          `json:"direction,omitempty"`
+	GroupName         *string          `json:"group_name,omitempty"`
+	GroupOwner        *string          `json:"group_owner,omitempty"`
 	Protocol          string           `json:"protocol,omitempty"`
 	ProtocolDetails   *ProtocolDetails `json:"protocol_details,omitempty"`
-	SecurityGroupHref string           `json:"security_group_href,omitempty"`
+	SecurityGroupHref *string          `json:"security_group_href,omitempty"`
 	SourceType        string           `json:"source_type,omitempty"`
 }
 
 type SecurityGroupRuleParam2 struct {
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 }
 
 type ServerArrayParam struct {
 	ArrayType        string              `json:"array_type,omitempty"`
 	DatacenterPolicy []*DatacenterPolicy `json:"datacenter_policy,omitempty"`
-	DeploymentHref   string              `json:"deployment_href,omitempty"`
-	Description      string              `json:"description,omitempty"`
+	DeploymentHref   *string             `json:"deployment_href,omitempty"`
+	Description      *string             `json:"description,omitempty"`
 	ElasticityParams *ElasticityParams   `json:"elasticity_params,omitempty"`
 	Instance         *InstanceParam2     `json:"instance,omitempty"`
 	Name             string              `json:"name,omitempty"`
-	Optimized        string              `json:"optimized,omitempty"`
+	Optimized        *string             `json:"optimized,omitempty"`
 	State            string              `json:"state,omitempty"`
 }
 
 type ServerArrayParam2 struct {
-	ArrayType        string               `json:"array_type,omitempty"`
+	ArrayType        *string              `json:"array_type,omitempty"`
 	DatacenterPolicy []*DatacenterPolicy2 `json:"datacenter_policy,omitempty"`
-	DeploymentHref   string               `json:"deployment_href,omitempty"`
-	Description      string               `json:"description,omitempty"`
+	DeploymentHref   *string              `json:"deployment_href,omitempty"`
+	Description      *string              `json:"description,omitempty"`
 	ElasticityParams *ElasticityParams2   `json:"elasticity_params,omitempty"`
-	Name             string               `json:"name,omitempty"`
-	Optimized        string               `json:"optimized,omitempty"`
-	State            string               `json:"state,omitempty"`
+	Name             *string              `json:"name,omitempty"`
+	Optimized        *string              `json:"optimized,omitempty"`
+	State            *string              `json:"state,omitempty"`
 }
 
 type ServerParam struct {
-	DeploymentHref string          `json:"deployment_href,omitempty"`
-	Description    string          `json:"description,omitempty"`
+	DeploymentHref *string         `json:"deployment_href,omitempty"`
+	Description    *string         `json:"description,omitempty"`
 	Instance       *InstanceParam2 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
-	Optimized      string          `json:"optimized,omitempty"`
+	Optimized      *string         `json:"optimized,omitempty"`
 }
 
 type ServerParam2 struct {
-	DeploymentHref string          `json:"deployment_href,omitempty"`
-	Description    string          `json:"description,omitempty"`
+	DeploymentHref *string         `json:"deployment_href,omitempty"`
+	Description    *string         `json:"description,omitempty"`
 	Instance       *InstanceParam2 `json:"instance,omitempty"`
-	Name           string          `json:"name,omitempty"`
+	Name           *string         `json:"name,omitempty"`
 }
 
 type ServerTemplateMultiCloudImageParam struct {
@@ -10645,13 +10645,13 @@ type ServerTemplateMultiCloudImageParam struct {
 }
 
 type ServerTemplateParam struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
 }
 
 type ServerTemplateParam2 struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
 }
 
 type SshKeyParam struct {
@@ -10659,67 +10659,67 @@ type SshKeyParam struct {
 }
 
 type SubnetParam struct {
-	CidrBlock      string `json:"cidr_block,omitempty"`
-	DatacenterHref string `json:"datacenter_href,omitempty"`
-	Description    string `json:"description,omitempty"`
-	Name           string `json:"name,omitempty"`
-	NetworkHref    string `json:"network_href,omitempty"`
+	CidrBlock      string  `json:"cidr_block,omitempty"`
+	DatacenterHref *string `json:"datacenter_href,omitempty"`
+	Description    *string `json:"description,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	NetworkHref    string  `json:"network_href,omitempty"`
 }
 
 type SubnetParam2 struct {
-	Description    string `json:"description,omitempty"`
-	Name           string `json:"name,omitempty"`
-	RouteTableHref string `json:"route_table_href,omitempty"`
+	Description    *string `json:"description,omitempty"`
+	Name           *string `json:"name,omitempty"`
+	RouteTableHref *string `json:"route_table_href,omitempty"`
 }
 
 type UserParam struct {
-	Company              string `json:"company,omitempty"`
-	Email                string `json:"email,omitempty"`
-	FirstName            string `json:"first_name,omitempty"`
-	IdentityProviderHref string `json:"identity_provider_href,omitempty"`
-	LastName             string `json:"last_name,omitempty"`
-	Password             string `json:"password,omitempty"`
-	Phone                string `json:"phone,omitempty"`
-	PrincipalUid         string `json:"principal_uid,omitempty"`
-	TimezoneName         string `json:"timezone_name,omitempty"`
+	Company              string  `json:"company,omitempty"`
+	Email                string  `json:"email,omitempty"`
+	FirstName            string  `json:"first_name,omitempty"`
+	IdentityProviderHref *string `json:"identity_provider_href,omitempty"`
+	LastName             string  `json:"last_name,omitempty"`
+	Password             *string `json:"password,omitempty"`
+	Phone                string  `json:"phone,omitempty"`
+	PrincipalUid         *string `json:"principal_uid,omitempty"`
+	TimezoneName         *string `json:"timezone_name,omitempty"`
 }
 
 type UserParam2 struct {
-	Company              string `json:"company,omitempty"`
-	CurrentEmail         string `json:"current_email,omitempty"`
-	CurrentPassword      string `json:"current_password,omitempty"`
-	FirstName            string `json:"first_name,omitempty"`
-	IdentityProviderHref string `json:"identity_provider_href,omitempty"`
-	LastName             string `json:"last_name,omitempty"`
-	NewEmail             string `json:"new_email,omitempty"`
-	NewPassword          string `json:"new_password,omitempty"`
-	Phone                string `json:"phone,omitempty"`
-	PrincipalUid         string `json:"principal_uid,omitempty"`
-	TimezoneName         string `json:"timezone_name,omitempty"`
+	Company              *string `json:"company,omitempty"`
+	CurrentEmail         string  `json:"current_email,omitempty"`
+	CurrentPassword      *string `json:"current_password,omitempty"`
+	FirstName            *string `json:"first_name,omitempty"`
+	IdentityProviderHref *string `json:"identity_provider_href,omitempty"`
+	LastName             *string `json:"last_name,omitempty"`
+	NewEmail             *string `json:"new_email,omitempty"`
+	NewPassword          *string `json:"new_password,omitempty"`
+	Phone                *string `json:"phone,omitempty"`
+	PrincipalUid         *string `json:"principal_uid,omitempty"`
+	TimezoneName         *string `json:"timezone_name,omitempty"`
 }
 
 type VolumeAttachmentParam struct {
-	Device       string `json:"device,omitempty"`
-	InstanceHref string `json:"instance_href,omitempty"`
-	VolumeHref   string `json:"volume_href,omitempty"`
+	Device       *string `json:"device,omitempty"`
+	InstanceHref *string `json:"instance_href,omitempty"`
+	VolumeHref   *string `json:"volume_href,omitempty"`
 }
 
 type VolumeParam struct {
-	DatacenterHref           string `json:"datacenter_href,omitempty"`
-	DeploymentHref           string `json:"deployment_href,omitempty"`
-	Description              string `json:"description,omitempty"`
-	Encrypted                string `json:"encrypted,omitempty"`
-	Iops                     string `json:"iops,omitempty"`
-	Name                     string `json:"name,omitempty"`
-	ParentVolumeSnapshotHref string `json:"parent_volume_snapshot_href,omitempty"`
-	PlacementGroupHref       string `json:"placement_group_href,omitempty"`
-	Size                     string `json:"size,omitempty"`
-	VolumeTypeHref           string `json:"volume_type_href,omitempty"`
+	DatacenterHref           *string `json:"datacenter_href,omitempty"`
+	DeploymentHref           *string `json:"deployment_href,omitempty"`
+	Description              *string `json:"description,omitempty"`
+	Encrypted                *string `json:"encrypted,omitempty"`
+	Iops                     *string `json:"iops,omitempty"`
+	Name                     string  `json:"name,omitempty"`
+	ParentVolumeSnapshotHref *string `json:"parent_volume_snapshot_href,omitempty"`
+	PlacementGroupHref       *string `json:"placement_group_href,omitempty"`
+	Size                     *string `json:"size,omitempty"`
+	VolumeTypeHref           *string `json:"volume_type_href,omitempty"`
 }
 
 type VolumeSnapshotParam struct {
-	DeploymentHref   string `json:"deployment_href,omitempty"`
-	Description      string `json:"description,omitempty"`
-	Name             string `json:"name,omitempty"`
-	ParentVolumeHref string `json:"parent_volume_href,omitempty"`
+	DeploymentHref   *string `json:"deployment_href,omitempty"`
+	Description      *string `json:"description,omitempty"`
+	Name             string  `json:"name,omitempty"`
+	ParentVolumeHref *string `json:"parent_volume_href,omitempty"`
 }
