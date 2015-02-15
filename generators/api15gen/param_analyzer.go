@@ -37,10 +37,8 @@ type ParamAnalyzer struct {
 
 	// Parameter types indexed by name
 	ParamTypes map[string]*ObjectDataType
-	// Query parameters sorted alphabetically by name (appear in query string)
-	QueryParams []*ActionParam
-	// Payload parameters sorted alphabetically by name (used in request body)
-	PayloadParams []*ActionParam
+	// Parameters sorted alphabetically by name
+	Params []*ActionParam
 }
 
 // Factory method, initialize 'path' and 'rawParams' fields
@@ -154,20 +152,14 @@ func (p *ParamAnalyzer) Analyze() {
 		p.recordTypes(param.Type)
 	}
 
-	var queryParams = []*ActionParam{}
-	var payloadParams = []*ActionParam{}
+	i = 0
+	var res = make([]*ActionParam, len(top))
 	for _, param := range top {
-		var pname = param.Name
-		if isQueryParam(pname) {
-			queryParams = append(queryParams, param)
-		} else {
-			payloadParams = append(payloadParams, param)
-		}
+		res[i] = param
+		i += 1
 	}
-	sort.Sort(ByName(queryParams))
-	sort.Sort(ByName(payloadParams))
-	p.QueryParams = queryParams
-	p.PayloadParams = payloadParams
+	sort.Sort(ByName(res))
+	p.Params = res
 }
 
 // Sort array of string by length

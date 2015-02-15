@@ -24,7 +24,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -41,7 +41,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -67,7 +67,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -99,7 +99,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -120,7 +120,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -151,7 +151,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -169,7 +169,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -189,7 +189,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -228,7 +228,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed param", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
@@ -285,7 +285,7 @@ var _ = Describe("ParamAnalyzer", func() {
 
 		It("Analyze returns the parsed params", func() {
 			analyzer.Analyze()
-			params := analyzer.PayloadParams
+			params := analyzer.Params
 			Ω(params).Should(HaveLen(5))
 
 			s := BasicDataType("string")

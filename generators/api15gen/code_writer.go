@@ -25,11 +25,13 @@ func NewCodeWriter() (*CodeWriter, error) {
 		"join":            strings.Join,
 		"commandLine":     commandLine,
 		"parameters":      parameters,
-		"joinParamNames":  joinParamNames,
+		"joinParams":      joinParams,
 		"paramsAsPayload": paramsAsPayload,
 		"isPointer":       isPointer,
 		"isArray":         isArray,
 		"blankCondition":  blankCondition,
+		"toVerb":          toVerb,
+		"stripStar":       stripStar,
 	}
 	headerT, err := template.New("header-code").Funcs(funcMap).Parse(headerTmpl)
 	if err != nil {
@@ -90,7 +92,7 @@ func comment(elems ...string) string {
 func parameters(a *Action) string {
 	params := []string{}
 	hasOptional := false
-	for _, param := range append(a.QueryParams, a.PayloadParams...) {
+	for _, param := range a.Params {
 		if param.Mandatory {
 			params = append(params, fmt.Sprintf("%s %s", param.VarName, param.Signature()))
 		} else {
@@ -105,16 +107,19 @@ func parameters(a *Action) string {
 }
 
 // Serialize action parameter names
-func joinParamNames(p []*ActionParam) string {
-	paramNames := make([]string, len(p))
+func joinParams(p []*ActionParam) string {
+	var params = make([]string, len(p))
 	for i, param := range p {
-		paramNames[i] = param.Name
+		params[i] = fmt.Sprintf("%s %s", param.Name, param.Signature())
 	}
-	return strings.Join(paramNames, ", ")
+	return strings.Join(params, ", ")
 }
 
 // Create map out of parameter names
 func paramsAsPayload(p []*ActionParam) string {
+	if len(p) == 0 {
+		return "map[string]interface{}{}"
+	}
 	fields := []string{}
 	hasOptional := false
 	for _, param := range p {
@@ -165,6 +170,23 @@ func blankCondition(name string, t DataType) (blank string) {
 	return
 }
 
+// GET => Get
+func toVerb(text string) (res string) {
+	res = strings.ToUpper(string(text[0])) + strings.ToLower(text[1:])
+	if text == "GET" || text == "POST" {
+		res += "Raw"
+	}
+	return
+}
+
+// *ServerArrayLocator => ServerArrayLocator
+func stripStar(text string) string {
+	if text[0] == '*' {
+		return text[1:]
+	}
+	return text
+}
+
 // Inline templates
 
 const headerTmpl = `
@@ -181,92 +203,97 @@ const headerTmpl = `
 package rsapi15
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"time"
+	"net/url"
 )
 
-// Collection locator exposes collection actions, e.g. "index", "create"
-type CollectionLocator string
+// Helper function that merges optional parameters into payload
+func mergeOptionals(params, options ApiParams) ApiParams {
+	for name, value := range options {
+		params[name] = value
+	}
+	return params
+}
 
-// Resource locator exposes resource actions, e.g. "show", "update", "delete"
-type ResourceLocator string
-
-// Convenience type
-type ApiParams map[string]interface{}
 `
 
-const resourceTmpl = `{{define "actionBody"}}` + actionBodyTmpl + `{{end}}
-{{comment .Description}}
+const resourceTmpl = `{{$resource := .}}{{define "ActionBody"}}` + actionBodyTmpl + `{{end}}
+{{comment .Description}}{{if .Attributes}}
 type {{.Name}} struct { {{range .Attributes}}
-{{.Name}} {{.Signature}} ` + "`" + `json:"{{.JsonName}},omitempty"` + "`" + `{{end}}
+{{.FieldName}} {{.FieldType}} ` + "`" + `json:"{{.Name}},omitempty"` + "`" + `{{end}}
 }
-{{if .CollectionActions}}
+{{end}}{{if .CollectionActions}}
 // {{.Name}} collection locator, exposes collection actions.
-type {{.CollectionName}}Locator CollectionLocator
+type {{.CollectionName}}Locator struct {
+	api *Api15
+	Href string
+}
+
+// {{.Name}} collection locator factory
+func (api *Api15) {{.CollectionName}}Locator(href string) *{{.CollectionName}}Locator {
+	return &{{.CollectionName}}Locator{api, href}
+}
 {{end}}{{if .ResourceActions}}
 // {{.Name}} resource locator, exposes resource actions.
-type {{.Name}}Locator ResourceLocator
+type {{.Name}}Locator struct {
+	api *Api15
+	Href string
+}
+
+// {{.Name}} resource locator factory
+func (api *Api15) {{.Name}}Locator(href string) *{{.Name}}Locator {
+	return &{{.Name}}Locator{api, href}
+}
 {{end}}{{if .CollectionActions}}
 //===== Collection actions
-{{end}}{{range .CollectionActions}}
-// {{.HttpMethod}} {{.Path}}
+{{end}}{{range .CollectionActions}}{{$httpMethod := .HttpMethod}}{{range .Paths}}
+// {{$httpMethod}} {{.}}{{end}}
 {{comment .Description}}
-func (c *Client) {{.Name}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
-	{{template "actionBody" . }}
+func (loc *{{$resource.CollectionName}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
+	{{template "ActionBody" . }}
 }
 {{end}}{{if .ResourceActions}}
 //===== Resource actions
-{{end}}{{range .ResourceActions}}
-// {{.HttpMethod}} {{.Path}}
+{{end}}{{range .ResourceActions}}{{$httpMethod := .HttpMethod}}{{range .Paths}}
+// {{$httpMethod}} {{.}}{{end}}
 {{comment .Description}}
-func (c *Client) {{.Name}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
-	{{template "actionBody" . }}
+func (loc *{{$resource.Name}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
+	{{template "ActionBody" . }}
 }
 {{end}}
 `
 
 const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
-	{{end}}{{range .PathParams}}if {{.Name}} == "" {
-		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.Name}} cannot be blank")
+	{{end}}{{if .HasPayload}}{{range .Params}}{{if and .Mandatory (blankCondition .VarName .Type)}}{{blankCondition .VarName .Type}}
+		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.VarName}} is required")
 	}
-	{{end}}{{if .PayloadParams}}{{range .PayloadParams}}{{if and .Mandatory (blankCondition .Name .Type)}}{{blankCondition .Name .Type}}
-		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.Name}} is required")
-	}
-	{{end}}{{end}}payload := {{paramsAsPayload .PayloadParams}}
-	b, err := json.Marshal(payload)
+	{{end}}{{end}}{{/* end range .Params */}}var payload = {{paramsAsPayload .Params}}
+	{{end}}{{/* end if .HasPayload */}}var href = loc.Href{{with $suffix := .Suffix}}{{if $suffix}}+"{{$suffix}}"{{end}}{{end}}
+	{{if not .HasPayload}}{{if .Params}}var u, err = url.Parse(href)
 	if err != nil {
-		{{if .Return}}return res, err{{else}}return err{{end}}
+		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
 	}
-	{{else}}b := []byte{}{{end}}
-	body := bytes.NewReader(b)
-	req, err := http.NewRequest("{{.HttpMethod}}", c.endpoint+{{.UrlExp}}, body)
-	if err != nil {
-		return {{if .Return}}res, {{end}}err
-	}
-	{{if .QueryParams}}{{range .QueryParams}}{{if isArray .Signature}}if temp, ok := options["{{.Name}}"]; ok {
+	{{range .Params}}{{if isArray .Signature}}if temp, ok := options["{{.Name}}"]; ok {
 		for _, v := range temp.([]string) {
-			req.URL.Query().Add("{{.NativeName}}", v)
+			u.Query().Add("{{.Name}}", v)
 		}
 	}
 	{{else}}if temp, ok := options["{{.Name}}"]; ok {
-		req.URL.Query().Set("{{.NativeName}}", temp.(string))
+		u.Query().Set("{{.Name}}", temp.(string))
 	}
-	{{end}}{{end}}{{end}}{{if .PayloadParams}}req.Header.Set("Content-Type", "application/json")
-	{{end}}ctx := c.beforeRequest(req)
-	resp, err := c.client.Do(req)
-	c.afterRequest(resp, ctx)
+	href = u.String()
+	{{end}}{{end}}{{end}}{{end}}{{/* end not .HasPayload */}}{{if .HasResponse}}resp, {{end}}err := loc.api.{{toVerb .HttpMethod}}(href{{if .HasPayload}}, payload{{end}})
 	if err != nil {
-		return {{if .Return}}res, {{end}}err
+		return {{if $action.Return}}res, {{end}}err
 	}
-	{{if eq .Return "Href"}}loc := resp.Header.Get("Location")
-	if len(loc) == 0 {
+	{{if eq $action.Name "Create"}}var location = resp.Header.Get("Location")
+	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return Href(loc), nil
+		return &{{stripStar .Return}}{loc.api, location}, nil
 	}{{else if .Return}}defer resp.Body.Close()
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

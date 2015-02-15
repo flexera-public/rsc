@@ -2,10 +2,16 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
 	"strings"
 
 	"bitbucket.org/pkg/inflect"
+)
+
+var (
+	// Regexp used to replace e.g. ':cloud_id' from action URLs
+	pathParamsRegex = regexp.MustCompile(`:[^/]+`)
 )
 
 // The analyzer struct holds the analysis results
@@ -82,24 +88,34 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		atts = m["attributes"].(map[string]interface{})
 		attributes = make([]*Attribute, len(atts))
 		for idx, n := range sortedKeys(atts) {
-			attributes[idx] = &Attribute{attributeName(n), n, a.attributeTypes[n]}
+			attributes[idx] = &Attribute{n, inflect.Camelize(n), a.attributeTypes[n]}
 		}
 	} else {
 		attributes = []*Attribute{}
 	}
 
-	// Compute hrefs
-	var baseHref, resourceHref string
+	// Compute baseHref used to compute action URL suffix
+	var baseHref string
 	var methods = res["methods"].(map[string]interface{})
-	if index, ok := methods["index"].(map[string]interface{}); ok {
-		_, baseHref = parseRoute("", index["route"].(string))
-	} else if show, ok := methods["show"].(map[string]interface{}); ok {
-		_, baseHref = parseRoute("", show["route"].(string))
-		var index = strings.LastIndex(baseHref, "/")
-		baseHref = baseHref[:index]
+	var snake = inflect.Underscore(name)
+	if index, ok := methods["index"]; ok {
+		var meth = index.(map[string]interface{})
+		_, baseHrefs := parseRoute("", meth["route"].(string))
+		if len(baseHrefs) > 1 {
+			for _, h := range baseHrefs {
+				if strings.Contains(h, snake) {
+					baseHref = h
+					break
+				}
+			}
+		} else {
+			baseHref = baseHrefs[0]
+		}
 	}
-	if baseHref != "" {
-		resourceHref = baseHref + "/:id"
+	if baseHref == "" {
+		// This works because all cloud resources have an index action and all other
+		// resources follow the /api/<resource_name> convention.
+		baseHref = "/api/" + snake
 	}
 
 	// Compute actions
@@ -118,15 +134,10 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			description = d.(string)
 		}
 		var isResourceAction bool
-		httpMethod, path := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
+		httpMethod, paths := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
 			meth["route"].(string))
-		if len(baseHref) > 0 {
-			if strings.HasPrefix(path, resourceHref) {
-				path = path[len(resourceHref):]
-				isResourceAction = true
-			} else if strings.HasSuffix(path, baseHref) {
-				path = path[len(baseHref):]
-			}
+		if strings.Contains(paths[0], "/:id") {
+			isResourceAction = true
 		}
 		var contentType string
 		if c, ok := meth["content_type"].(string); ok {
@@ -155,14 +166,14 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		// Update description with parameter descriptions
 		var mandatory = []string{}
 		var optional = []string{}
-		for _, p := range append(paramAnalyzer.QueryParams, paramAnalyzer.PayloadParams...) {
+		for _, p := range paramAnalyzer.Params {
 			if p.Mandatory {
 				if p.Description != "" {
 					var desc = fmt.Sprintf("%s: %s", p.VarName, p.Description)
 					mandatory = append(mandatory, desc)
 				}
 			} else {
-				var desc = p.VarName
+				var desc = p.Name
 				if p.Description != "" {
 					desc += ": " + p.Description
 				}
@@ -179,16 +190,23 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				strings.Join(optional, "\n\t")
 		}
 
+		// Compute action URL suffix
+		var suffix string
+		if actionName != "create" && actionName != "show" && actionName != "index" &&
+			actionName != "update" && actionName != "delete" {
+			suffix = paths[0][strings.LastIndex(paths[0], "/"):]
+		}
+
 		// Record action
 		var action = Action{
-			Name:          actionName,
-			MethodName:    methodName(actionName, name),
-			Description:   removeBlankLines(description),
-			HttpMethod:    httpMethod,
-			Path:          path,
-			PayloadParams: paramAnalyzer.PayloadParams,
-			QueryParams:   paramAnalyzer.QueryParams,
-			Return:        parseReturn(actionName, name, contentType),
+			Name:        actionName,
+			MethodName:  inflect.Camelize(actionName),
+			Description: removeBlankLines(description),
+			HttpMethod:  httpMethod,
+			Paths:       paths,
+			Suffix:      suffix,
+			Params:      paramAnalyzer.Params,
+			Return:      parseReturn(actionName, name, contentType),
 		}
 		if isResourceAction {
 			resourceActions = append(resourceActions, &action)
@@ -203,7 +221,6 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		Name:              name,
 		CollectionName:    inflect.Pluralize(name),
 		Description:       removeBlankLines(description),
-		BaseHref:          baseHref,
 		ResourceActions:   resourceActions,
 		CollectionActions: collectionActions,
 		Attributes:        attributes,
@@ -254,7 +271,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 		if len(types) > 1 {
 			for i, ty := range types[1:] {
 				var found = false
-				for j := 0; j < i; j++ {
+				for j := 0; j < i+1; j++ {
 					if ty.IsEquivalent(types[j]) {
 						found = true
 						break
@@ -318,28 +335,40 @@ func (d *ApiDescriptor) uniqueTypeName(prefix string) string {
 
 /** Helper methods for parsing raw JSON **/
 
-func parseRoute(moniker string, route string) (method string, path string) {
+// Regular expression used to extract routes from JSON
+var routeRegexp = regexp.MustCompile(`\{[^\}]+\}`)
+
+func parseRoute(moniker string, route string) (method string, paths []string) {
 	// :(((( some routes are empty
 	switch moniker {
 	case "Deployments#servers":
-		return "GET", "api/deployments/:id/servers"
+		return "GET", []string{"/api/deployments/:id/servers"}
 	case "ServerArrays#current_instances":
-		return "GET", "api/server_arrays/:id/current_instances"
+		return "GET", []string{"/api/server_arrays/:id/current_instances"}
 	case "ServerArrays#launch":
-		return "POST", "api/server_arrays/:id/launch"
+		return "POST", []string{"/api/server_arrays/:id/launch"}
 	case "ServerArrays#multi_run_executable":
-		return "POST", "api/server_arrays/:id/multi_run_executable"
+		return "POST", []string{"/api/server_arrays/:id/multi_run_executable"}
 	case "ServerArrays#multi_terminate":
-		return "POST", "api/server_arrays/:id/multi_terminate"
+		return "POST", []string{"/api/server_arrays/:id/multi_terminate"}
 	case "Servers#launch":
-		return "POST", "api/servers/:id/launch"
+		return "POST", []string{"/api/servers/:id/launch"}
 	case "Servers#terminate":
-		return "POST", "api/servers/:id/teminate"
+		return "POST", []string{"/api/servers/:id/teminate"}
 
 	}
-	method = strings.TrimRight(route[0:7], " ")
-	path = strings.TrimRight(strings.Split(route[8:], "{")[0], " ")
-
+	var bounds = routeRegexp.FindAllStringIndex(route, -1)
+	var matches = make([]string, len(bounds))
+	var prev = 0
+	paths = make([]string, len(bounds))
+	for i, bound := range bounds {
+		matches[i] = route[prev:bound[0]]
+		prev = bound[1]
+	}
+	method = strings.TrimRight(matches[0][0:7], " ")
+	for i, r := range matches {
+		paths[i] = strings.TrimRight(r[7:], "(.:format)? ")
+	}
 	return
 }
 
@@ -349,7 +378,6 @@ var noMediaTypeResources = map[string]bool{
 	"Oauth2":               true,
 	"Tag":                  true,
 	"UserDatas":            true,
-	"ChildAccounts":        true,
 	"MonitoringMetricData": true,
 	"ImportPreview":        true,
 	"Changes":              true,
@@ -367,7 +395,7 @@ func parseReturn(kind, resName, contentType string) string {
 		if _, ok := noMediaTypeResources[resName]; ok {
 			return "map[string]interface{}"
 		} else {
-			return "Href"
+			return "*" + inflect.Singularize(resName) + "Locator"
 		}
 	case "update", "destroy":
 		return ""
@@ -396,24 +424,14 @@ func parseReturn(kind, resName, contentType string) string {
 // It should always be the same (camelized) but there are some resources that don't have a media
 // type so for these we use a map.
 func resourceType(resName string) string {
+	if resName == "ChildAccounts" {
+		return "Account"
+	}
 	if _, ok := noMediaTypeResources[resName]; ok {
 		return "map[string]string"
 	} else {
 		return inflect.Singularize(resName)
 	}
-}
-
-// Heuristic to create method name from action and resource names
-func methodName(action, resource string) string {
-	if action != "index" && strings.Index(action, "multi") != 0 {
-		resource = inflect.Singularize(resource)
-	}
-	return inflect.Camelize(action) + inflect.Camelize(resource)
-}
-
-// Escape attribute names using go keywords
-func attributeName(name string) string {
-	return inflect.Camelize(name)
 }
 
 // Return keys of given maps sorted

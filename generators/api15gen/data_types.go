@@ -7,22 +7,32 @@ type Resource struct {
 	Name              string       // Resource name, e.g. "ServerArray"
 	CollectionName    string       // Name of collection. e.g. "ServerArrays"
 	Description       string       // Resource description
-	BaseHref          string       // Base href if any, e.g. "/api/server_arrays", "/api/clouds/:cloud_id/instances"
 	ResourceActions   []*Action    // Resource actions, e.g. "show", "update", "delete"
 	CollectionActions []*Action    // Collection actions, e.g. "index", "create"
 	Attributes        []*Attribute // Resource attributes
+	BaseHref          string       // Common prefix to all resource action URLs
 }
 
 // Data structure used to describe collection and resource actions
 type Action struct {
-	Name          string         // Action name, e.g. "create", "multi_terminate"
-	MethodName    string         // Go method name, e.g. "Create", "MultiTerminate"
-	Description   string         // Action description
-	HttpMethod    string         // Action HTTP method, e.g. "GET", "POST"
-	Path          string         // Action path relative to resource or collection href, e.g. "", "/clone"
-	PayloadParams []*ActionParam // Params that should be sent in payload
-	QueryParams   []*ActionParam // Params that should be sent in query string
-	Return        string         // Type of method results, e.g. "*ServerArray"
+	Name        string         // Action name, e.g. "create", "multi_terminate"
+	MethodName  string         // Go method name, e.g. "Create", "MultiTerminate"
+	Description string         // Action description
+	HttpMethod  string         // Action HTTP method, e.g. "GET", "POST"
+	Paths       []string       // Action paths
+	Suffix      string         // Action url suffix
+	Params      []*ActionParam // Action parameters
+	Return      string         // Type of method results, e.g. "*ServerArray"
+}
+
+// Whether action requests takes a payload
+func (a *Action) HasPayload() bool {
+	return a.HttpMethod == "POST" || a.HttpMethod == "PUT"
+}
+
+// Whether action has a response body or header
+func (a *Action) HasResponse() bool {
+	return a.HttpMethod == "POST" || a.HttpMethod == "GET"
 }
 
 // Resource attributes

@@ -49,19 +49,40 @@ func New(accountId int, refreshToken string, logger *log.Logger, client *http.Cl
 	}, nil
 }
 
+// Generic API parameters type
+type ApiParams map[string]interface{}
+
+// Low-level GET request that loads response JSON into generic object
+func (a *Api15) Get(uri string) (interface{}, error) {
+	resp, err := a.GetRaw(uri)
+	if err != nil {
+		return nil, err
+	}
+	return a.loadResponse(resp)
+}
+
 // Low-level GET request
-func (a *Api15) Get(uri string) (map[string]interface{}, error) {
+func (a *Api15) GetRaw(uri string) (*http.Response, error) {
 	return a.makeRequest("GET", uri, nil)
 }
 
+// Low-level POST request that loads response JSON into generic object
+// Any "Location" header present in the HTTP response is returned in a map under the "Location" key.
+func (a *Api15) Post(uri string, body ApiParams) (interface{}, error) {
+	resp, err := a.PostRaw(uri, body)
+	if err != nil {
+		return nil, err
+	}
+	return a.loadResponse(resp)
+}
+
 // Low-level POST request
-// Any "Location" header present in the HTTP response is returned in the map under the "Location" key.
-func (a *Api15) Post(uri string, body map[string]interface{}) (map[string]interface{}, error) {
+func (a *Api15) PostRaw(uri string, body ApiParams) (*http.Response, error) {
 	return a.makeRequest("POST", uri, body)
 }
 
 // Low-level PUT request
-func (a *Api15) Put(uri string, body map[string]interface{}) error {
+func (a *Api15) Put(uri string, body ApiParams) error {
 	_, err := a.makeRequest("PUT", uri, body)
 	return err
 }
@@ -73,7 +94,7 @@ func (a *Api15) Delete(uri string) error {
 }
 
 // Helper function that signs, makes and logs HTTP request
-func (a *Api15) makeRequest(verb, uri string, body map[string]interface{}) (map[string]interface{}, error) {
+func (a *Api15) makeRequest(verb, uri string, body ApiParams) (*http.Response, error) {
 	url := fmt.Sprintf("https://%s/%s", a.Endpoint, uri)
 	jsonStr, err := json.Marshal(body)
 	if err != nil {
@@ -102,8 +123,15 @@ func (a *Api15) makeRequest(verb, uri string, body map[string]interface{}) (map[
 		d := time.Since(startedAt)
 		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
 	}
+	return resp, err
+}
+
+// Deserialize JSON response into generic object.
+// If the response has a "Location" header then the returned object is a map with one key "Location"
+// containing the value of the header.
+func (a *Api15) loadResponse(resp *http.Response) (interface{}, error) {
 	defer resp.Body.Close()
-	var respBody map[string]interface{}
+	var respBody interface{}
 	jsonResp, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
@@ -114,16 +142,12 @@ func (a *Api15) makeRequest(verb, uri string, body map[string]interface{}) (map[
 			return nil, fmt.Errorf("Failed to load response (%s)", err.Error())
 		}
 	}
-	// Special case for "Location" header
-	if verb == "POST" {
-		loc := resp.Header.Get("Location")
-		if len(loc) > 0 {
-			if respBody == nil {
-				respBody = make(map[string]interface{})
-			}
-			respBody["Location"] = loc
-		}
+	// Special case for "Location" header, assume that if there is a location there is no body
+	loc := resp.Header.Get("Location")
+	if len(loc) > 0 {
+		var bodyMap = make(map[string]interface{})
+		bodyMap["Location"] = loc
+		respBody = interface{}(bodyMap)
 	}
-
 	return respBody, err
 }
