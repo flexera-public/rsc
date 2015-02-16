@@ -411,7 +411,7 @@ func parseReturn(kind, resName, contentType string) string {
 	case "show":
 		return fmt.Sprintf("*%s", resourceType(resName))
 	case "index":
-		return fmt.Sprintf("[]%s", resourceType(resName))
+		return fmt.Sprintf("[]*%s", resourceType(resName))
 	case "create":
 		if _, ok := noMediaTypeResources[resName]; ok {
 			return "map[string]interface{}"
@@ -431,7 +431,7 @@ func parseReturn(kind, resName, contentType string) string {
 			var elems = strings.SplitN(contentType[27:], ";", 2)
 			var name = resourceType(inflect.Camelize(elems[0]))
 			if len(elems) > 1 && elems[1] == "type=collection" {
-				name = "[]" + name
+				name = "[]*" + name
 			}
 			return name
 		default: // Shouldn't be here

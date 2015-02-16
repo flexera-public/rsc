@@ -290,7 +290,7 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	if err2 != nil {
 		return {{if $action.Return}}res, {{end}}err2
 	}
-	{{if eq $action.Name "Create"}}var location = resp.Header.Get("Location")
+	{{if eq $action.MethodName "Create"}}var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
