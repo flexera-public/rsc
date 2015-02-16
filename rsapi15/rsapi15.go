@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -52,18 +53,58 @@ func New(accountId int, refreshToken string, logger *log.Logger, client *http.Cl
 // Generic API parameters type
 type ApiParams map[string]interface{}
 
+// Do is a generic client method and is meant for command line tools and other higher level clients.
+// It accepts a resource or resource collection href (e.g. "/api/servers"), the name of an action
+// (e.g. "create") and the request parameters (payload or query string).
+// The method makes the request and returns the raw HTTP response or an error. The "LoadResponse"
+// Api15 method can be used to load the response body if needed.
+func (a *Api15) Do(href, action string, params ApiParams) (*http.Response, error) {
+	// First figure out action verb and uri
+	var uri = href
+	var method string
+	switch action {
+	case "show", "index":
+		method = "GET"
+	case "create":
+		method = "POST"
+	case "update":
+		method = "PUT"
+	case "destroy":
+		method = "DELETE"
+	default:
+		if pair, ok := actionMap[action]; ok {
+			uri = href + pair[0]
+			method = pair[1]
+		}
+	}
+
+	// Now call corresponding low-level request method
+	switch method {
+	case "GET":
+		return a.GetRaw(uri, params)
+	case "POST":
+		return a.PostRaw(uri, params)
+	case "PUT":
+		return nil, a.Put(uri, params)
+	case "DELETE":
+		return nil, a.Delete(uri)
+	default:
+		return nil, fmt.Errorf("Unknown href '%s' or action '%s'", href, action)
+	}
+}
+
 // Low-level GET request that loads response JSON into generic object
-func (a *Api15) Get(uri string) (interface{}, error) {
-	resp, err := a.GetRaw(uri)
+func (a *Api15) Get(uri string, params ApiParams) (interface{}, error) {
+	resp, err := a.GetRaw(uri, params)
 	if err != nil {
 		return nil, err
 	}
-	return a.loadResponse(resp)
+	return a.LoadResponse(resp)
 }
 
 // Low-level GET request
-func (a *Api15) GetRaw(uri string) (*http.Response, error) {
-	return a.makeRequest("GET", uri, nil)
+func (a *Api15) GetRaw(uri string, params ApiParams) (*http.Response, error) {
+	return a.makeRequest("GET", uri, params)
 }
 
 // Low-level POST request that loads response JSON into generic object
@@ -73,7 +114,7 @@ func (a *Api15) Post(uri string, body ApiParams) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	return a.loadResponse(resp)
+	return a.LoadResponse(resp)
 }
 
 // Low-level POST request
@@ -93,43 +134,10 @@ func (a *Api15) Delete(uri string) error {
 	return err
 }
 
-// Helper function that signs, makes and logs HTTP request
-func (a *Api15) makeRequest(verb, uri string, body ApiParams) (*http.Response, error) {
-	url := fmt.Sprintf("https://%s/%s", a.Endpoint, uri)
-	jsonStr, err := json.Marshal(body)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to serialize response (%s)", err.Error())
-	}
-	r, err := http.NewRequest(verb, url, bytes.NewBuffer([]byte(jsonStr)))
-	if err != nil {
-		return nil, err
-	}
-	if err := a.Auth.Sign(r, a.Endpoint); err != nil {
-		return nil, err
-	}
-	var id string
-	var startedAt = time.Now()
-	if a.Logger != nil {
-		b := make([]byte, 6)
-		io.ReadFull(rand.Reader, b)
-		id = base64.StdEncoding.EncodeToString(b)
-		a.Logger.Printf("[%s] %s %s", id, r.Method, r.URL.String())
-	}
-	resp, err := a.Client.Do(r)
-	if err != nil {
-		return nil, err
-	}
-	if a.Logger != nil {
-		d := time.Since(startedAt)
-		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
-	}
-	return resp, err
-}
-
 // Deserialize JSON response into generic object.
 // If the response has a "Location" header then the returned object is a map with one key "Location"
 // containing the value of the header.
-func (a *Api15) loadResponse(resp *http.Response) (interface{}, error) {
+func (a *Api15) LoadResponse(resp *http.Response) (interface{}, error) {
 	defer resp.Body.Close()
 	var respBody interface{}
 	jsonResp, err := ioutil.ReadAll(resp.Body)
@@ -150,4 +158,61 @@ func (a *Api15) loadResponse(resp *http.Response) (interface{}, error) {
 		respBody = interface{}(bodyMap)
 	}
 	return respBody, err
+}
+
+// Helper function that signs, makes and logs HTTP request
+func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response, error) {
+	var body = bytes.NewBuffer([]byte{})
+	if (verb == "POST" || verb == "PUT") && params != nil {
+		var jsonBytes, err = json.Marshal(params)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to serialize response (%s)", err.Error())
+		}
+		body = bytes.NewBuffer([]byte(jsonBytes))
+	}
+	var u = url.URL{
+		Scheme: "https",
+		Host:   a.Endpoint,
+		Path:   uri,
+	}
+	if verb == "GET" && params != nil {
+		for n, p := range params {
+			switch t := p.(type) {
+			case string:
+				u.Query().Set(n, t)
+			case []string:
+				for _, e := range t {
+					u.Query().Add(n, e)
+				}
+			default:
+				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string or an array of strings", p)
+			}
+		}
+	}
+	var sUrl = u.String()
+	var req, err = http.NewRequest(verb, sUrl, body)
+	if err != nil {
+		return nil, err
+	}
+	if err = a.Auth.Sign(req, a.Endpoint); err != nil {
+		return nil, err
+	}
+	var id string
+	var startedAt time.Time
+	if a.Logger != nil {
+		startedAt = time.Now()
+		b := make([]byte, 6)
+		io.ReadFull(rand.Reader, b)
+		id = base64.StdEncoding.EncodeToString(b)
+		a.Logger.Printf("[%s] %s %s", id, req.Method, sUrl)
+	}
+	resp, err := a.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if a.Logger != nil {
+		d := time.Since(startedAt)
+		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
+	}
+	return resp, err
 }

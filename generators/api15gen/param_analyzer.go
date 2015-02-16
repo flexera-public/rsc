@@ -14,10 +14,10 @@ var (
 	rootRegexp = regexp.MustCompile("([^\\[]+)\\[")
 
 	// Parent path regular expression
-	parentPathRegexp = regexp.MustCompile(`^(.*)\[.+\]$`)
+	parentPathRegexp = regexp.MustCompile(`^(.*)\[[^\]]+\]$`)
 
 	// Child path regular expression
-	childPathRegexp = regexp.MustCompile(`^.*\[(.+)\]$`)
+	childPathRegexp = regexp.MustCompile(`^.*\[([^\]]+)\]$`)
 
 	// Capture all alphanumerical parts to build go identifier from raw param name
 	partsRegexp = regexp.MustCompile("[^[:alnum:]]+")
@@ -279,6 +279,7 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 	native := nativeNameFromPath(path)
 	return &ActionParam{
 		Name:        native,
+		QueryName:   path,
 		Description: removeBlankLines(description),
 		VarName:     parseParamName(native),
 		Type:        dType,
@@ -313,6 +314,7 @@ func nativeNameFromPath(path string) string {
 	if matches != nil {
 		native = matches[1]
 	}
+
 	return native
 }
 

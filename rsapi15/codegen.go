@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 15, 2015 at 5:43pm (PST)
+// Generated Feb 16, 2015 at 3:35pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -14,7 +14,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/url"
 	"time"
 )
 
@@ -54,18 +53,19 @@ func (api *Api15) AccountLocator(href string) *AccountLocator {
 // Show information about a single Account.
 func (loc *AccountLocator) Show() (*Account, error) {
 	var res *Account
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  AccountGroup ******/
@@ -111,32 +111,19 @@ func (api *Api15) AccountGroupLocator(href string) *AccountGroupLocator {
 // 	view
 func (loc *AccountGroupsLocator) Index(options ApiParams) ([]*AccountGroup, error) {
 	var res []*AccountGroup
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -147,26 +134,19 @@ func (loc *AccountGroupsLocator) Index(options ApiParams) ([]*AccountGroup, erro
 // 	view
 func (loc *AccountGroupLocator) Show(options ApiParams) (*AccountGroup, error) {
 	var res *AccountGroup
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Alert ******/
@@ -217,32 +197,19 @@ func (api *Api15) AlertLocator(href string) *AlertLocator {
 // 	view
 func (loc *AlertsLocator) Index(options ApiParams) ([]*Alert, error) {
 	var res []*Alert
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -254,11 +221,11 @@ func (loc *AlertsLocator) Index(options ApiParams) ([]*Alert, error) {
 // POST /api/alerts/:id/disable
 // Disables the Alert indefinitely. Idempotent.
 func (loc *AlertLocator) Disable() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/disable"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -270,11 +237,11 @@ func (loc *AlertLocator) Disable() error {
 // POST /api/alerts/:id/enable
 // Enables the Alert indefinitely. Idempotent.
 func (loc *AlertLocator) Enable() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/enable"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -291,21 +258,21 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	if duration == "" {
 		return res, fmt.Errorf("duration is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"duration": duration,
 	}
 	var href = loc.Href + "/quench"
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
@@ -318,26 +285,19 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 // 	view
 func (loc *AlertLocator) Show(options ApiParams) (*Alert, error) {
 	var res *Alert
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  AlertSpec ******/
@@ -395,13 +355,13 @@ func (loc *AlertSpecsLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocat
 	if alertSpec == nil {
 		return res, fmt.Errorf("alertSpec is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"alert_spec": alertSpec,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -422,36 +382,19 @@ func (loc *AlertSpecsLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocat
 // 	with_inherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
 func (loc *AlertSpecsLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 	var res []*AlertSpec
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["with_inherited"]; ok {
-		u.Query().Set("with_inherited", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -462,10 +405,11 @@ func (loc *AlertSpecsLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 // DELETE /api/alert_specs/:id
 // Deletes a given AlertSpec.
 func (loc *AlertSpecLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -479,26 +423,19 @@ func (loc *AlertSpecLocator) Destroy() error {
 // 	view
 func (loc *AlertSpecLocator) Show(options ApiParams) (*AlertSpec, error) {
 	var res *AlertSpec
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/servers/:server_id/alert_specs/:id
@@ -510,13 +447,13 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	if alertSpec == nil {
 		return fmt.Errorf("alertSpec is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"alert_spec": alertSpec,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -567,13 +504,13 @@ func (loc *AuditEntriesLocator) Create(auditEntry *AuditEntryParam, options ApiP
 	if auditEntry == nil {
 		return res, fmt.Errorf("auditEntry is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -597,35 +534,32 @@ func (loc *AuditEntriesLocator) Create(auditEntry *AuditEntryParam, options ApiP
 // 	view
 func (loc *AuditEntriesLocator) Index(endDate string, limit string, startDate string, options ApiParams) ([]*AuditEntry, error) {
 	var res []*AuditEntry
+	if endDate == "" {
+		return res, fmt.Errorf("endDate is required")
+	}
+	if limit == "" {
+		return res, fmt.Errorf("limit is required")
+	}
+	if startDate == "" {
+		return res, fmt.Errorf("startDate is required")
+	}
+	var params = mergeOptionals(ApiParams{
+		"end_date":   endDate,
+		"limit":      limit,
+		"start_date": startDate,
+	}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	u.Query().Set("end_date", endDate)
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	u.Query().Set("limit", limit)
-	u.Query().Set("start_date", startDate)
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -642,11 +576,11 @@ func (loc *AuditEntriesLocator) Index(endDate string, limit string, startDate st
 // 	offset: The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.
 // 	summary: The updated summary for the audit entry, maximum length is 255 characters.
 func (loc *AuditEntryLocator) Append(options ApiParams) error {
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/append"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -656,18 +590,19 @@ func (loc *AuditEntryLocator) Append(options ApiParams) error {
 // Note that the media type of the response is simply text.
 func (loc *AuditEntryLocator) Detail() (string, error) {
 	var res string
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/detail"
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/audit_entries/:id
@@ -676,26 +611,19 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 // 	view
 func (loc *AuditEntryLocator) Show(options ApiParams) (*AuditEntry, error) {
 	var res *AuditEntry
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/audit_entries/:id
@@ -706,13 +634,13 @@ func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options ApiPa
 	if auditEntry == nil {
 		return fmt.Errorf("auditEntry is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -796,14 +724,14 @@ func (loc *BackupsLocator) Cleanup(keepLast string, lineage string, options ApiP
 	if lineage == "" {
 		return fmt.Errorf("lineage is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"keep_last": keepLast,
 		"lineage":   lineage,
 	}, options)
 	var href = loc.Href + "/cleanup"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -816,13 +744,13 @@ func (loc *BackupsLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	if backup == nil {
 		return res, fmt.Errorf("backup is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"backup": backup,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -845,29 +773,24 @@ func (loc *BackupsLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 // 	filter
 func (loc *BackupsLocator) Index(lineage string, options ApiParams) ([]*Backup, error) {
 	var res []*Backup
+	if lineage == "" {
+		return res, fmt.Errorf("lineage is required")
+	}
+	var params = mergeOptionals(ApiParams{
+		"lineage": lineage,
+	}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	u.Query().Set("lineage", lineage)
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -875,10 +798,11 @@ func (loc *BackupsLocator) Index(lineage string, options ApiParams) ([]*Backup, 
 // DELETE /api/backups/:id
 // Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
 func (loc *BackupLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -896,13 +820,13 @@ func (loc *BackupLocator) Restore(instanceHref string, options ApiParams) error 
 	if instanceHref == "" {
 		return fmt.Errorf("instanceHref is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"instance_href": instanceHref,
 	}, options)
 	var href = loc.Href + "/restore"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -911,18 +835,19 @@ func (loc *BackupLocator) Restore(instanceHref string, options ApiParams) error 
 // Lists the attributes of a given backup
 func (loc *BackupLocator) Show() (*Backup, error) {
 	var res *Backup
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/backups/:id
@@ -931,13 +856,13 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 	if backup == nil {
 		return fmt.Errorf("backup is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"backup": backup,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -978,13 +903,13 @@ func (loc *ChildAccountsLocator) Create(childAccount *ChildAccountParam) (*Child
 	if childAccount == nil {
 		return res, fmt.Errorf("childAccount is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"child_account": childAccount,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -1000,28 +925,19 @@ func (loc *ChildAccountsLocator) Create(childAccount *ChildAccountParam) (*Child
 // 	filter
 func (loc *ChildAccountsLocator) Index(options ApiParams) ([]*Account, error) {
 	var res []*Account
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -1033,13 +949,13 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	if childAccount == nil {
 		return fmt.Errorf("childAccount is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"child_account": childAccount,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1087,32 +1003,19 @@ func (api *Api15) CloudLocator(href string) *CloudLocator {
 // 	view
 func (loc *CloudsLocator) Index(options ApiParams) ([]*Cloud, error) {
 	var res []*Cloud
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -1123,26 +1026,19 @@ func (loc *CloudsLocator) Index(options ApiParams) ([]*Cloud, error) {
 // 	view
 func (loc *CloudLocator) Show(options ApiParams) (*Cloud, error) {
 	var res *Cloud
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  CloudAccount ******/
@@ -1187,13 +1083,13 @@ func (loc *CloudAccountsLocator) Create(cloudAccount *CloudAccountParam) (*Cloud
 	if cloudAccount == nil {
 		return res, fmt.Errorf("cloudAccount is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"cloud_account": cloudAccount,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -1207,18 +1103,19 @@ func (loc *CloudAccountsLocator) Create(cloudAccount *CloudAccountParam) (*Cloud
 // Lists the CloudAccounts (non-aws) available to this Account.
 func (loc *CloudAccountsLocator) Index() ([]*CloudAccount, error) {
 	var res []*CloudAccount
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -1226,10 +1123,11 @@ func (loc *CloudAccountsLocator) Index() ([]*CloudAccount, error) {
 // DELETE /api/cloud_accounts/:id
 // Delete a CloudAccount.
 func (loc *CloudAccountLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1238,18 +1136,19 @@ func (loc *CloudAccountLocator) Destroy() error {
 
 func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	var res *CloudAccount
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Cookbook ******/
@@ -1302,32 +1201,19 @@ func (api *Api15) CookbookLocator(href string) *CookbookLocator {
 // 	view
 func (loc *CookbooksLocator) Index(options ApiParams) ([]*Cookbook, error) {
 	var res []*Cookbook
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -1335,10 +1221,11 @@ func (loc *CookbooksLocator) Index(options ApiParams) ([]*Cookbook, error) {
 // DELETE /api/cookbooks/:id
 // Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.
 func (loc *CookbookLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1350,13 +1237,13 @@ func (loc *CookbookLocator) Follow(value string) error {
 	if value == "" {
 		return fmt.Errorf("value is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"value": value,
 	}
 	var href = loc.Href + "/follow"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1368,13 +1255,13 @@ func (loc *CookbookLocator) Freeze(value string) error {
 	if value == "" {
 		return fmt.Errorf("value is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"value": value,
 	}
 	var href = loc.Href + "/freeze"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1386,13 +1273,13 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 	if value == "" {
 		return fmt.Errorf("value is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"value": value,
 	}
 	var href = loc.Href + "/obsolete"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1404,26 +1291,19 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 // 	view
 func (loc *CookbookLocator) Show(options ApiParams) (*Cookbook, error) {
 	var res *Cookbook
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  CookbookAttachment ******/
@@ -1468,11 +1348,11 @@ func (api *Api15) CookbookAttachmentLocator(href string) *CookbookAttachmentLoca
 // 	cookbook_attachment
 func (loc *CookbookAttachmentsLocator) Create(options ApiParams) (*CookbookAttachmentLocator, error) {
 	var res *CookbookAttachmentLocator
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -1490,26 +1370,19 @@ func (loc *CookbookAttachmentsLocator) Create(options ApiParams) (*CookbookAttac
 // 	view
 func (loc *CookbookAttachmentsLocator) Index(options ApiParams) ([]*CookbookAttachment, error) {
 	var res []*CookbookAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_attach
@@ -1519,13 +1392,13 @@ func (loc *CookbookAttachmentsLocator) MultiAttach(cookbookAttachments *Cookbook
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
 	var href = loc.Href + "/multi_attach"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1537,13 +1410,13 @@ func (loc *CookbookAttachmentsLocator) MultiDetach(cookbookAttachments *Cookbook
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
 	var href = loc.Href + "/multi_detach"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1555,10 +1428,11 @@ func (loc *CookbookAttachmentsLocator) MultiDetach(cookbookAttachments *Cookbook
 // DELETE /api/cookbook_attachments/:id
 // Detach a cookbook from a given resource.
 func (loc *CookbookAttachmentLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1571,26 +1445,19 @@ func (loc *CookbookAttachmentLocator) Destroy() error {
 // 	view
 func (loc *CookbookAttachmentLocator) Show(options ApiParams) (*CookbookAttachment, error) {
 	var res *CookbookAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Credential ******/
@@ -1641,13 +1508,13 @@ func (loc *CredentialsLocator) Create(credential *CredentialParam) (*CredentialL
 	if credential == nil {
 		return res, fmt.Errorf("credential is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"credential": credential,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -1664,32 +1531,19 @@ func (loc *CredentialsLocator) Create(credential *CredentialParam) (*CredentialL
 // 	view
 func (loc *CredentialsLocator) Index(options ApiParams) ([]*Credential, error) {
 	var res []*Credential
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -1697,10 +1551,11 @@ func (loc *CredentialsLocator) Index(options ApiParams) ([]*Credential, error) {
 // DELETE /api/credentials/:id
 // Deletes a Credential.
 func (loc *CredentialLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1711,26 +1566,19 @@ func (loc *CredentialLocator) Destroy() error {
 // 	view
 func (loc *CredentialLocator) Show(options ApiParams) (*Credential, error) {
 	var res *Credential
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/credentials/:id
@@ -1739,13 +1587,13 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	if credential == nil {
 		return fmt.Errorf("credential is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"credential": credential,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1795,32 +1643,19 @@ func (api *Api15) DatacenterLocator(href string) *DatacenterLocator {
 // 	view
 func (loc *DatacentersLocator) Index(options ApiParams) ([]*Datacenter, error) {
 	var res []*Datacenter
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -1831,26 +1666,19 @@ func (loc *DatacentersLocator) Index(options ApiParams) ([]*Datacenter, error) {
 // 	view
 func (loc *DatacenterLocator) Show(options ApiParams) (*Datacenter, error) {
 	var res *Datacenter
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Deployment ******/
@@ -1897,13 +1725,13 @@ func (loc *DeploymentsLocator) Create(deployment *DeploymentParam) (*DeploymentL
 	if deployment == nil {
 		return res, fmt.Errorf("deployment is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"deployment": deployment,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -1923,32 +1751,19 @@ func (loc *DeploymentsLocator) Create(deployment *DeploymentParam) (*DeploymentL
 // 	view
 func (loc *DeploymentsLocator) Index(options ApiParams) ([]*Deployment, error) {
 	var res []*Deployment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -1958,11 +1773,11 @@ func (loc *DeploymentsLocator) Index(options ApiParams) ([]*Deployment, error) {
 // -- Optional parameters:
 // 	deployment
 func (loc *DeploymentLocator) Clone(options ApiParams) error {
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/clone"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1970,10 +1785,11 @@ func (loc *DeploymentLocator) Clone(options ApiParams) error {
 // DELETE /api/deployments/:id
 // Deletes a given deployment.
 func (loc *DeploymentLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1983,11 +1799,11 @@ func (loc *DeploymentLocator) Destroy() error {
 // Locking prevents servers from being deleted or moved from the deployment.
 // Other actions such as adding servers or renaming the deployment are still allowed.
 func (loc *DeploymentLocator) Lock() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/lock"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1996,10 +1812,11 @@ func (loc *DeploymentLocator) Lock() error {
 // Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
 // automatically be filtered by this deployment. See servers#index for details on other options and parameters.
 func (loc *DeploymentLocator) Servers() error {
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/servers"
-	var _, err2 = loc.api.GetRaw(href)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2012,36 +1829,29 @@ func (loc *DeploymentLocator) Servers() error {
 // 	view
 func (loc *DeploymentLocator) Show(options ApiParams) (*Deployment, error) {
 	var res *Deployment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // POST /api/deployments/:id/unlock
 // Unlocks a given deployment. Idempotent.
 func (loc *DeploymentLocator) Unlock() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/unlock"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2052,13 +1862,13 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 	if deployment == nil {
 		return fmt.Errorf("deployment is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"deployment": deployment,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2082,18 +1892,19 @@ func (api *Api15) HealthChecksLocator(href string) *HealthChecksLocator {
 // Check health of RightApi controllers
 func (loc *HealthChecksLocator) Index() ([]*map[string]string, error) {
 	var res []*map[string]string
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 /******  IdentityProvider ******/
@@ -2141,32 +1952,19 @@ func (api *Api15) IdentityProviderLocator(href string) *IdentityProviderLocator 
 // 	view
 func (loc *IdentityProvidersLocator) Index(options ApiParams) ([]*IdentityProvider, error) {
 	var res []*IdentityProvider
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -2177,26 +1975,19 @@ func (loc *IdentityProvidersLocator) Index(options ApiParams) ([]*IdentityProvid
 // 	view
 func (loc *IdentityProviderLocator) Show(options ApiParams) (*IdentityProvider, error) {
 	var res *IdentityProvider
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Image ******/
@@ -2248,32 +2039,19 @@ func (api *Api15) ImageLocator(href string) *ImageLocator {
 // 	view
 func (loc *ImagesLocator) Index(options ApiParams) ([]*Image, error) {
 	var res []*Image
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -2284,26 +2062,19 @@ func (loc *ImagesLocator) Index(options ApiParams) ([]*Image, error) {
 // 	view
 func (loc *ImageLocator) Show(options ApiParams) (*Image, error) {
 	var res *Image
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Input ******/
@@ -2338,26 +2109,19 @@ func (api *Api15) InputsLocator(href string) *InputsLocator {
 // 	view
 func (loc *InputsLocator) Index(options ApiParams) ([]*Input, error) {
 	var res []*Input
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/inputs/multi_update
@@ -2430,13 +2194,13 @@ func (loc *InputsLocator) MultiUpdate(inputs map[string]string) error {
 	if len(inputs) == 0 {
 		return fmt.Errorf("inputs is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"inputs": inputs,
 	}
 	var href = loc.Href + "/multi_update"
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2509,13 +2273,13 @@ func (loc *InstancesLocator) Create(instance *InstanceParam) (*InstanceLocator, 
 	if instance == nil {
 		return res, fmt.Errorf("instance is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"instance": instance,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -2543,32 +2307,19 @@ func (loc *InstancesLocator) Create(instance *InstanceParam) (*InstanceLocator, 
 // 	view
 func (loc *InstancesLocator) Index(options ApiParams) ([]*Instance, error) {
 	var res []*Instance
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/clouds/:cloud_id/instances/multi_run_executable
@@ -2583,11 +2334,11 @@ func (loc *InstancesLocator) Index(options ApiParams) ([]*Instance, error) {
 // 	recipe_name: The name of the recipe to be run.
 // 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (loc *InstancesLocator) MultiRunExecutable(options ApiParams) error {
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/multi_run_executable"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2600,11 +2351,11 @@ func (loc *InstancesLocator) MultiRunExecutable(options ApiParams) error {
 // 	filter
 // 	terminate_all: Specifies the ability to terminate all instances.
 func (loc *InstancesLocator) MultiTerminate(options ApiParams) error {
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/multi_terminate"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2620,11 +2371,11 @@ func (loc *InstancesLocator) MultiTerminate(options ApiParams) error {
 // 	api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
 // 	inputs
 func (loc *InstanceLocator) Launch(options ApiParams) error {
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/launch"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2632,25 +2383,25 @@ func (loc *InstanceLocator) Launch(options ApiParams) error {
 // POST /api/clouds/:cloud_id/instances/:id/lock
 
 func (loc *InstanceLocator) Lock() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/lock"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-// POST /api/clouds/:cloud_id/instances/:id/reb
-// POST /api/servers/:server_id/reb
+// POST /api/clouds/:cloud_id/instances/:id/reboot
+// POST /api/servers/:server_id/reboot
 // Reboot a running instance.
 // Note that this action can only succeed if the instance is running. One cannot reboot instances of type "next".
 func (loc *InstanceLocator) Reboot() error {
-	var payload = map[string]interface{}{}
-	var href = loc.Href + "/reb"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var params = map[string]interface{}{}
+	var href = loc.Href + "/reboot"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2666,16 +2417,16 @@ func (loc *InstanceLocator) Reboot() error {
 // 	recipe_name: The name of the recipe to run.
 // 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (loc *InstanceLocator) RunExecutable(options ApiParams) error {
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/run_executable"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-// POST /api/clouds/:cloud_id/instances/:id/set_custom_lodgemen
+// POST /api/clouds/:cloud_id/instances/:id/set_custom_lodgement
 // This method is deprecated.  Please use InstanceCustomLodgement.
 // 	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 // 	timeframe: The timeframe (either a month or a single day) for which the quantity value is valid (currently for the PDT timezone only).
@@ -2686,14 +2437,14 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 	if timeframe == "" {
 		return fmt.Errorf("timeframe is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
-	var href = loc.Href + "/set_custom_lodgemen"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var href = loc.Href + "/set_custom_lodgement"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2706,40 +2457,33 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 // 	view
 func (loc *InstanceLocator) Show(options ApiParams) (*Instance, error) {
 	var res *Instance
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
-// POST /api/clouds/:cloud_id/instances/:id/s
+// POST /api/clouds/:cloud_id/instances/:id/start
 // Starts an instance that has been stopped, resuming it to its previously saved volume state.
 // After an instance is started, the reference to your instance will have a different id.
 // The new id can be found by performing an index query with the appropriate filters on the
 // Instances resource, performing a show action on the Server resource for Server Instances, or
 // performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (loc *InstanceLocator) Start() error {
-	var payload = map[string]interface{}{}
-	var href = loc.Href + "/s"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var params = map[string]interface{}{}
+	var href = loc.Href + "/start"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2750,11 +2494,11 @@ func (loc *InstanceLocator) Start() error {
 // The new id can be found by performing an index query with the appropriate filters on the
 // Instances resource, performing a show action on the Server resource for Server Instances, or performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (loc *InstanceLocator) Stop() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/stop"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2764,11 +2508,11 @@ func (loc *InstanceLocator) Stop() error {
 // Terminates a running instance.
 // Note that this action can succeed only if the instance is running. One cannot terminate instances of type "next".
 func (loc *InstanceLocator) Terminate() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/terminate"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2776,11 +2520,11 @@ func (loc *InstanceLocator) Terminate() error {
 // POST /api/clouds/:cloud_id/instances/:id/unlock
 
 func (loc *InstanceLocator) Unlock() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/unlock"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2791,13 +2535,13 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	if instance == nil {
 		return fmt.Errorf("instance is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"instance": instance,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2858,14 +2602,14 @@ func (loc *InstanceCustomLodgementsLocator) Create(quantity []*Quantity, timefra
 	if timeframe == "" {
 		return res, fmt.Errorf("timeframe is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -2881,26 +2625,19 @@ func (loc *InstanceCustomLodgementsLocator) Create(quantity []*Quantity, timefra
 // 	view
 func (loc *InstanceCustomLodgementsLocator) Index(options ApiParams) ([]*InstanceCustomLodgement, error) {
 	var res []*InstanceCustomLodgement
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -2908,10 +2645,11 @@ func (loc *InstanceCustomLodgementsLocator) Index(options ApiParams) ([]*Instanc
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
 // Destroy the specified lodgement.
 func (loc *InstanceCustomLodgementLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2920,18 +2658,19 @@ func (loc *InstanceCustomLodgementLocator) Destroy() error {
 // Show the specified lodgement.
 func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, error) {
 	var res *InstanceCustomLodgement
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
@@ -2941,13 +2680,13 @@ func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 	if len(quantity) == 0 {
 		return fmt.Errorf("quantity is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"quantity": quantity,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2999,32 +2738,19 @@ func (api *Api15) InstanceTypeLocator(href string) *InstanceTypeLocator {
 // 	view
 func (loc *InstanceTypesLocator) Index(options ApiParams) ([]*InstanceType, error) {
 	var res []*InstanceType
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -3035,26 +2761,19 @@ func (loc *InstanceTypesLocator) Index(options ApiParams) ([]*InstanceType, erro
 // 	view
 func (loc *InstanceTypeLocator) Show(options ApiParams) (*InstanceType, error) {
 	var res *InstanceType
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  IpAddress ******/
@@ -3100,13 +2819,13 @@ func (loc *IpAddressesLocator) Create(ipAddress *IpAddressParam) (*IpAddressLoca
 	if ipAddress == nil {
 		return res, fmt.Errorf("ipAddress is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"ip_address": ipAddress,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -3122,28 +2841,19 @@ func (loc *IpAddressesLocator) Create(ipAddress *IpAddressParam) (*IpAddressLoca
 // 	filter
 func (loc *IpAddressesLocator) Index(options ApiParams) ([]*IpAddress, error) {
 	var res []*IpAddress
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -3151,10 +2861,11 @@ func (loc *IpAddressesLocator) Index(options ApiParams) ([]*IpAddress, error) {
 // DELETE /api/clouds/:cloud_id/ip_addresses/:id
 // Deletes a given IpAddress.
 func (loc *IpAddressLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3163,18 +2874,19 @@ func (loc *IpAddressLocator) Destroy() error {
 // Show information about a single IpAddress.
 func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 	var res *IpAddress
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/clouds/:cloud_id/ip_addresses/:id
@@ -3183,13 +2895,13 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	if ipAddress == nil {
 		return fmt.Errorf("ipAddress is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"ip_address": ipAddress,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3245,13 +2957,13 @@ func (loc *IpAddressBindingsLocator) Create(ipAddressBinding *IpAddressBindingPa
 	if ipAddressBinding == nil {
 		return res, fmt.Errorf("ipAddressBinding is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"ip_address_binding": ipAddressBinding,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -3268,28 +2980,19 @@ func (loc *IpAddressBindingsLocator) Create(ipAddressBinding *IpAddressBindingPa
 // 	filter
 func (loc *IpAddressBindingsLocator) Index(options ApiParams) ([]*IpAddressBinding, error) {
 	var res []*IpAddressBinding
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -3298,10 +3001,11 @@ func (loc *IpAddressBindingsLocator) Index(options ApiParams) ([]*IpAddressBindi
 // DELETE /api/clouds/:cloud_id/ip_address_bindings/:id
 // No description provided for destroy.
 func (loc *IpAddressBindingLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3311,18 +3015,19 @@ func (loc *IpAddressBindingLocator) Destroy() error {
 // Show information about a single ip address binding.
 func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	var res *IpAddressBinding
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  MonitoringMetric ******/
@@ -3371,49 +3076,24 @@ func (api *Api15) MonitoringMetricLocator(href string) *MonitoringMetricLocator 
 // 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
 func (loc *MonitoringMetricsLocator) Index(options ApiParams) ([]*MonitoringMetric, error) {
 	var res []*MonitoringMetric
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["period"]; ok {
-		u.Query().Set("period", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["size"]; ok {
-		u.Query().Set("size", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["title"]; ok {
-		u.Query().Set("title", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["tz"]; ok {
-		u.Query().Set("tz", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
 
-// GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id/d
+// GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id/data
 // Gives the raw monitoring data for a particular metric. The response will include different variables
 // associated with that metric and the data points for each of those variables.
 // To get the data for a certain duration, for e.g. for the last 10 minutes(600 secs), provide the variables
@@ -3422,24 +3102,28 @@ func (loc *MonitoringMetricsLocator) Index(options ApiParams) ([]*MonitoringMetr
 // 	start: An integer number of seconds from current time. e.g. -300
 func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]string, error) {
 	var res map[string]string
-	var href = loc.Href + "/d"
-	var u, err = url.Parse(href)
-	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+	if end == "" {
+		return res, fmt.Errorf("end is required")
 	}
-	u.Query().Set("end", end)
-	u.Query().Set("start", start)
-	var resp, err2 = loc.api.GetRaw(href)
+	if start == "" {
+		return res, fmt.Errorf("start is required")
+	}
+	var params = ApiParams{
+		"end":   end,
+		"start": start,
+	}
+	var href = loc.Href + "/data"
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id
@@ -3452,38 +3136,19 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 // 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
 func (loc *MonitoringMetricLocator) Show(options ApiParams) (*MonitoringMetric, error) {
 	var res *MonitoringMetric
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["period"]; ok {
-		u.Query().Set("period", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["size"]; ok {
-		u.Query().Set("size", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["title"]; ok {
-		u.Query().Set("title", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["tz"]; ok {
-		u.Query().Set("tz", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  MultiCloudImage ******/
@@ -3531,13 +3196,13 @@ func (loc *MultiCloudImagesLocator) Create(multiCloudImage *MultiCloudImageParam
 	if multiCloudImage == nil {
 		return res, fmt.Errorf("multiCloudImage is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -3554,28 +3219,19 @@ func (loc *MultiCloudImagesLocator) Create(multiCloudImage *MultiCloudImageParam
 // 	filter
 func (loc *MultiCloudImagesLocator) Index(options ApiParams) ([]*MultiCloudImage, error) {
 	var res []*MultiCloudImage
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -3586,31 +3242,31 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 	if multiCloudImage == nil {
 		return fmt.Errorf("multiCloudImage is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	var href = loc.Href + "/clone"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-// POST /api/multi_cloud_images/:id/commi
+// POST /api/multi_cloud_images/:id/commit
 // Commits a given MultiCloudImage. Only HEAD revisions can be committed.
 // 	commitMessage: The message associated with the commit.
 func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	if commitMessage == "" {
 		return fmt.Errorf("commitMessage is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"commit_message": commitMessage,
 	}
-	var href = loc.Href + "/commi"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var href = loc.Href + "/commit"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3619,10 +3275,11 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 // DELETE /api/multi_cloud_images/:id
 // Deletes a given MultiCloudImage.
 func (loc *MultiCloudImageLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3632,18 +3289,19 @@ func (loc *MultiCloudImageLocator) Destroy() error {
 // Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.
 func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 	var res *MultiCloudImage
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/server_templates/:server_template_id/multi_cloud_images/:id
@@ -3654,13 +3312,13 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	if multiCloudImage == nil {
 		return fmt.Errorf("multiCloudImage is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3705,13 +3363,13 @@ func (loc *MultiCloudImageSettingsLocator) Create(multiCloudImageSetting *MultiC
 	if multiCloudImageSetting == nil {
 		return res, fmt.Errorf("multiCloudImageSetting is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -3727,28 +3385,19 @@ func (loc *MultiCloudImageSettingsLocator) Create(multiCloudImageSetting *MultiC
 // 	filter
 func (loc *MultiCloudImageSettingsLocator) Index(options ApiParams) ([]*MultiCloudImageSetting, error) {
 	var res []*MultiCloudImageSetting
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -3756,10 +3405,11 @@ func (loc *MultiCloudImageSettingsLocator) Index(options ApiParams) ([]*MultiClo
 // DELETE /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
 // Deletes a MultiCloudImage setting.
 func (loc *MultiCloudImageSettingLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3768,18 +3418,19 @@ func (loc *MultiCloudImageSettingLocator) Destroy() error {
 // Show information about a single MultiCloudImage setting.
 func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error) {
 	var res *MultiCloudImageSetting
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
@@ -3788,13 +3439,13 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 	if multiCloudImageSetting == nil {
 		return fmt.Errorf("multiCloudImageSetting is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3844,13 +3495,13 @@ func (loc *NetworksLocator) Create(network *NetworkParam) (*NetworkLocator, erro
 	if network == nil {
 		return res, fmt.Errorf("network is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network": network,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -3866,28 +3517,19 @@ func (loc *NetworksLocator) Create(network *NetworkParam) (*NetworkLocator, erro
 // 	filter
 func (loc *NetworksLocator) Index(options ApiParams) ([]*Network, error) {
 	var res []*Network
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -3895,10 +3537,11 @@ func (loc *NetworksLocator) Index(options ApiParams) ([]*Network, error) {
 // DELETE /api/networks/:id
 // Deletes the given network(s).
 func (loc *NetworkLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3907,18 +3550,19 @@ func (loc *NetworkLocator) Destroy() error {
 // Shows attributes of a single network.
 func (loc *NetworkLocator) Show() (*Network, error) {
 	var res *Network
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/networks/:id
@@ -3927,13 +3571,13 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	if network == nil {
 		return fmt.Errorf("network is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network": network,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3984,13 +3628,13 @@ func (loc *NetworkGatewaysLocator) Create(networkGateway *NetworkGatewayParam) (
 	if networkGateway == nil {
 		return res, fmt.Errorf("networkGateway is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network_gateway": networkGateway,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -4006,28 +3650,19 @@ func (loc *NetworkGatewaysLocator) Create(networkGateway *NetworkGatewayParam) (
 // 	filter
 func (loc *NetworkGatewaysLocator) Index(options ApiParams) ([]*NetworkGateway, error) {
 	var res []*NetworkGateway
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -4035,10 +3670,11 @@ func (loc *NetworkGatewaysLocator) Index(options ApiParams) ([]*NetworkGateway, 
 // DELETE /api/network_gateways/:id
 // Delete an existing NetworkGateway.
 func (loc *NetworkGatewayLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4047,18 +3683,19 @@ func (loc *NetworkGatewayLocator) Destroy() error {
 // Show information about a single NetworkGateway.
 func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 	var res *NetworkGateway
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/network_gateways/:id
@@ -4067,13 +3704,13 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 	if networkGateway == nil {
 		return fmt.Errorf("networkGateway is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network_gateway": networkGateway,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4129,13 +3766,13 @@ func (loc *NetworkOptionGroupsLocator) Create(networkOptionGroup *NetworkOptionG
 	if networkOptionGroup == nil {
 		return res, fmt.Errorf("networkOptionGroup is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -4151,28 +3788,19 @@ func (loc *NetworkOptionGroupsLocator) Create(networkOptionGroup *NetworkOptionG
 // 	filter
 func (loc *NetworkOptionGroupsLocator) Index(options ApiParams) ([]*NetworkOptionGroup, error) {
 	var res []*NetworkOptionGroup
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -4180,10 +3808,11 @@ func (loc *NetworkOptionGroupsLocator) Index(options ApiParams) ([]*NetworkOptio
 // DELETE /api/network_option_groups/:id
 // Delete an existing NetworkOptionGroup.
 func (loc *NetworkOptionGroupLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4192,18 +3821,19 @@ func (loc *NetworkOptionGroupLocator) Destroy() error {
 // Show information about a single NetworkOptionGroup.
 func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 	var res *NetworkOptionGroup
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/network_option_groups/:id
@@ -4212,13 +3842,13 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 	if networkOptionGroup == nil {
 		return fmt.Errorf("networkOptionGroup is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4273,13 +3903,13 @@ func (loc *NetworkOptionGroupAttachmentsLocator) Create(networkOptionGroupAttach
 	if networkOptionGroupAttachment == nil {
 		return res, fmt.Errorf("networkOptionGroupAttachment is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -4296,32 +3926,19 @@ func (loc *NetworkOptionGroupAttachmentsLocator) Create(networkOptionGroupAttach
 // 	view
 func (loc *NetworkOptionGroupAttachmentsLocator) Index(options ApiParams) ([]*NetworkOptionGroupAttachment, error) {
 	var res []*NetworkOptionGroupAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -4329,10 +3946,11 @@ func (loc *NetworkOptionGroupAttachmentsLocator) Index(options ApiParams) ([]*Ne
 // DELETE /api/network_option_group_attachments/:id
 // Delete an existing NetworkOptionGroupAttachment.
 func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4343,26 +3961,19 @@ func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 // 	view
 func (loc *NetworkOptionGroupAttachmentLocator) Show(options ApiParams) (*NetworkOptionGroupAttachment, error) {
 	var res *NetworkOptionGroupAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/network_option_group_attachments/:id
@@ -4371,13 +3982,13 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 	if networkOptionGroupAttachment == nil {
 		return fmt.Errorf("networkOptionGroupAttachment is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4453,20 +4064,21 @@ func (loc *Oauth2sLocator) Create(grantType string, options ApiParams) (map[stri
 	if grantType == "" {
 		return res, fmt.Errorf("grantType is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"grant_type": grantType,
 	}, options)
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	var location = resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &map[string]interface{}{loc.api, location}, nil
-	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 /******  Permission ******/
@@ -4518,13 +4130,13 @@ func (loc *PermissionsLocator) Create(permission *PermissionParam) (*PermissionL
 	if permission == nil {
 		return res, fmt.Errorf("permission is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"permission": permission,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -4540,28 +4152,19 @@ func (loc *PermissionsLocator) Create(permission *PermissionParam) (*PermissionL
 // 	filter
 func (loc *PermissionsLocator) Index(options ApiParams) ([]*Permission, error) {
 	var res []*Permission
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -4575,10 +4178,11 @@ func (loc *PermissionsLocator) Index(options ApiParams) ([]*Permission, error) {
 // When deprovisioning user, always destroy the observer permission LAST;
 // destroying it while the user has other permissions will result in an error.
 func (loc *PermissionLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4587,18 +4191,19 @@ func (loc *PermissionLocator) Destroy() error {
 // Show information about a single permission.
 func (loc *PermissionLocator) Show() (*Permission, error) {
 	var res *Permission
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  PlacementGroup ******/
@@ -4645,13 +4250,13 @@ func (loc *PlacementGroupsLocator) Create(placementGroup *PlacementGroupParam) (
 	if placementGroup == nil {
 		return res, fmt.Errorf("placementGroup is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"placement_group": placementGroup,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -4668,32 +4273,19 @@ func (loc *PlacementGroupsLocator) Create(placementGroup *PlacementGroupParam) (
 // 	view
 func (loc *PlacementGroupsLocator) Index(options ApiParams) ([]*PlacementGroup, error) {
 	var res []*PlacementGroup
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -4701,10 +4293,11 @@ func (loc *PlacementGroupsLocator) Index(options ApiParams) ([]*PlacementGroup, 
 // DELETE /api/placement_groups/:id
 // Destroys a PlacementGroup.
 func (loc *PlacementGroupLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4715,26 +4308,19 @@ func (loc *PlacementGroupLocator) Destroy() error {
 // 	view
 func (loc *PlacementGroupLocator) Show(options ApiParams) (*PlacementGroup, error) {
 	var res *PlacementGroup
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Preference ******/
@@ -4778,28 +4364,19 @@ func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
 // 	filter
 func (loc *PreferencesLocator) Index(options ApiParams) ([]*Preference, error) {
 	var res []*Preference
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -4807,10 +4384,11 @@ func (loc *PreferencesLocator) Index(options ApiParams) ([]*Preference, error) {
 // DELETE /api/preferences/:id
 // Deletes the given preference.
 func (loc *PreferenceLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4819,18 +4397,19 @@ func (loc *PreferenceLocator) Destroy() error {
 // Shows a single preference.
 func (loc *PreferenceLocator) Show() (*Preference, error) {
 	var res *Preference
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/preferences/:id
@@ -4841,13 +4420,13 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	if preference == nil {
 		return fmt.Errorf("preference is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"preference": preference,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4901,45 +4480,32 @@ func (api *Api15) PublicationLocator(href string) *PublicationLocator {
 // 	view
 func (loc *PublicationsLocator) Index(options ApiParams) ([]*Publication, error) {
 	var res []*Publication
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
 
-// POST /api/publications/:id/imp
+// POST /api/publications/:id/import
 // Imports the given publication and its subordinates to this account.
 // Only non-HEAD revisions that are shared with the account can be imported.
 func (loc *PublicationLocator) Import() error {
-	var payload = map[string]interface{}{}
-	var href = loc.Href + "/imp"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var params = map[string]interface{}{}
+	var href = loc.Href + "/import"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4950,26 +4516,19 @@ func (loc *PublicationLocator) Import() error {
 // 	view
 func (loc *PublicationLocator) Show(options ApiParams) (*Publication, error) {
 	var res *Publication
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  PublicationLineage ******/
@@ -5008,26 +4567,19 @@ func (api *Api15) PublicationLineageLocator(href string) *PublicationLineageLoca
 // 	view
 func (loc *PublicationLineageLocator) Show(options ApiParams) (*PublicationLineage, error) {
 	var res *PublicationLineage
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  RecurringVolumeAttachment ******/
@@ -5080,13 +4632,13 @@ func (loc *RecurringVolumeAttachmentsLocator) Create(recurringVolumeAttachment *
 	if recurringVolumeAttachment == nil {
 		return res, fmt.Errorf("recurringVolumeAttachment is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"recurring_volume_attachment": recurringVolumeAttachment,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -5105,32 +4657,19 @@ func (loc *RecurringVolumeAttachmentsLocator) Create(recurringVolumeAttachment *
 // 	view
 func (loc *RecurringVolumeAttachmentsLocator) Index(options ApiParams) ([]*RecurringVolumeAttachment, error) {
 	var res []*RecurringVolumeAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -5140,10 +4679,11 @@ func (loc *RecurringVolumeAttachmentsLocator) Index(options ApiParams) ([]*Recur
 // DELETE /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments/:id
 // Deletes a given recurring volume attachment.
 func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5156,26 +4696,19 @@ func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 // 	view
 func (loc *RecurringVolumeAttachmentLocator) Show(options ApiParams) (*RecurringVolumeAttachment, error) {
 	var res *RecurringVolumeAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Repository ******/
@@ -5241,13 +4774,13 @@ func (loc *RepositoriesLocator) Create(repository *RepositoryParam) (*Repository
 	if repository == nil {
 		return res, fmt.Errorf("repository is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"repository": repository,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -5264,32 +4797,19 @@ func (loc *RepositoriesLocator) Create(repository *RepositoryParam) (*Repository
 // 	view
 func (loc *RepositoriesLocator) Index(options ApiParams) ([]*Repository, error) {
 	var res []*Repository
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/repositories/resolve
@@ -5301,24 +4821,24 @@ func (loc *RepositoriesLocator) Index(options ApiParams) ([]*Repository, error) 
 // 	imported_cookbook_name: A list of cookbook names that were imported by the repository.
 func (loc *RepositoriesLocator) Resolve(options ApiParams) ([]*Repository, error) {
 	var res []*Repository
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/resolve"
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
 
-// POST /api/repositories/:id/cookbook_imp
+// POST /api/repositories/:id/cookbook_import
 // Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.
 // 	assetHrefs: Hrefs of the assets that should be imported.
 // -- Optional parameters:
@@ -5330,13 +4850,13 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options ApiPar
 	if len(assetHrefs) == 0 {
 		return fmt.Errorf("assetHrefs is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"asset_hrefs": assetHrefs,
 	}, options)
-	var href = loc.Href + "/cookbook_imp"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var href = loc.Href + "/cookbook_import"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5356,31 +4876,32 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 	if namespace == "" {
 		return res, fmt.Errorf("namespace is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"asset_hrefs": assetHrefs,
 		"namespace":   namespace,
 	}
 	var href = loc.Href + "/cookbook_import_preview"
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // DELETE /api/repositories/:id
 // Deletes the specified Repositories.
 func (loc *RepositoryLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5392,11 +4913,11 @@ func (loc *RepositoryLocator) Destroy() error {
 // -- Optional parameters:
 // 	auto_import: Whether cookbooks should automatically be imported after repositories are fetched.
 func (loc *RepositoryLocator) Refetch(options ApiParams) error {
-	var payload = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/refetch"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5407,26 +4928,19 @@ func (loc *RepositoryLocator) Refetch(options ApiParams) error {
 // 	view
 func (loc *RepositoryLocator) Show(options ApiParams) (*Repository, error) {
 	var res *Repository
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/repositories/:id
@@ -5445,13 +4959,13 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	if repository == nil {
 		return fmt.Errorf("repository is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"repository": repository,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5501,26 +5015,19 @@ func (api *Api15) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 // 	view
 func (loc *RepositoryAssetsLocator) Index(options ApiParams) ([]*RepositoryAsset, error) {
 	var res []*RepositoryAsset
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -5533,26 +5040,19 @@ func (loc *RepositoryAssetsLocator) Index(options ApiParams) ([]*RepositoryAsset
 // 	view
 func (loc *RepositoryAssetLocator) Show(options ApiParams) (*RepositoryAsset, error) {
 	var res *RepositoryAsset
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  RightScript ******/
@@ -5607,53 +5107,36 @@ func (api *Api15) RightScriptLocator(href string) *RightScriptLocator {
 // 	view
 func (loc *RightScriptsLocator) Index(options ApiParams) ([]*RightScript, error) {
 	var res []*RightScript
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["latest_only"]; ok {
-		u.Query().Set("latest_only", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
 
-// POST /api/right_scripts/:id/commi
+// POST /api/right_scripts/:id/commit
 // Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
 func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"right_script": rightScript,
 	}
-	var href = loc.Href + "/commi"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var href = loc.Href + "/commit"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5662,27 +5145,29 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 // Displays information about a single RightScript.
 func (loc *RightScriptLocator) Show() (*RightScript, error) {
 	var res *RightScript
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // GET /api/right_scripts/:id/source
 // Returns the script source for a RightScript
 func (loc *RightScriptLocator) ShowSource() error {
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/source"
-	var _, err2 = loc.api.GetRaw(href)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5693,13 +5178,13 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"right_script": rightScript,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5707,11 +5192,11 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 // PUT /api/right_scripts/:id/source
 // Updates the source of the given RightScript
 func (loc *RightScriptLocator) UpdateSource() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/source"
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5764,13 +5249,13 @@ func (loc *RoutesLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	if route == nil {
 		return res, fmt.Errorf("route is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"route": route,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -5787,28 +5272,19 @@ func (loc *RoutesLocator) Create(route *RouteParam) (*RouteLocator, error) {
 // 	filter
 func (loc *RoutesLocator) Index(options ApiParams) ([]*Route, error) {
 	var res []*Route
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -5817,10 +5293,11 @@ func (loc *RoutesLocator) Index(options ApiParams) ([]*Route, error) {
 // DELETE /api/route_tables/:route_table_id/routes/:id
 // Delete an existing Route.
 func (loc *RouteLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5830,18 +5307,19 @@ func (loc *RouteLocator) Destroy() error {
 // Show information about a single Route.
 func (loc *RouteLocator) Show() (*Route, error) {
 	var res *Route
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/routes/:id
@@ -5851,13 +5329,13 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 	if route == nil {
 		return fmt.Errorf("route is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"route": route,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5907,13 +5385,13 @@ func (loc *RouteTablesLocator) Create(routeTable *RouteTableParam) (*RouteTableL
 	if routeTable == nil {
 		return res, fmt.Errorf("routeTable is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"route_table": routeTable,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -5930,32 +5408,19 @@ func (loc *RouteTablesLocator) Create(routeTable *RouteTableParam) (*RouteTableL
 // 	view
 func (loc *RouteTablesLocator) Index(options ApiParams) ([]*RouteTable, error) {
 	var res []*RouteTable
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -5963,10 +5428,11 @@ func (loc *RouteTablesLocator) Index(options ApiParams) ([]*RouteTable, error) {
 // DELETE /api/route_tables/:id
 // Delete an existing RouteTable.
 func (loc *RouteTableLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5977,26 +5443,19 @@ func (loc *RouteTableLocator) Destroy() error {
 // 	view
 func (loc *RouteTableLocator) Show(options ApiParams) (*RouteTable, error) {
 	var res *RouteTable
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/route_tables/:id
@@ -6005,13 +5464,13 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	if routeTable == nil {
 		return fmt.Errorf("routeTable is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"route_table": routeTable,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6064,13 +5523,13 @@ func (loc *RunnableBindingsLocator) Create(runnableBinding *RunnableBindingParam
 	if runnableBinding == nil {
 		return res, fmt.Errorf("runnableBinding is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"runnable_binding": runnableBinding,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -6087,26 +5546,19 @@ func (loc *RunnableBindingsLocator) Create(runnableBinding *RunnableBindingParam
 // 	view
 func (loc *RunnableBindingsLocator) Index(options ApiParams) ([]*RunnableBinding, error) {
 	var res []*RunnableBinding
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // PUT /api/server_templates/:server_template_id/runnable_bindings/multi_update
@@ -6116,13 +5568,13 @@ func (loc *RunnableBindingsLocator) MultiUpdate(runnableBindings []*RunnableBind
 	if len(runnableBindings) == 0 {
 		return fmt.Errorf("runnableBindings is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"runnable_bindings": runnableBindings,
 	}
 	var href = loc.Href + "/multi_update"
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6133,10 +5585,11 @@ func (loc *RunnableBindingsLocator) MultiUpdate(runnableBindings []*RunnableBind
 // Unbind an executable from the given resource.
 // The resource must be editable.
 func (loc *RunnableBindingLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6148,26 +5601,19 @@ func (loc *RunnableBindingLocator) Destroy() error {
 // 	view
 func (loc *RunnableBindingLocator) Show(options ApiParams) (*RunnableBinding, error) {
 	var res *RunnableBinding
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  SecurityGroup ******/
@@ -6214,13 +5660,13 @@ func (loc *SecurityGroupsLocator) Create(securityGroup *SecurityGroupParam) (*Se
 	if securityGroup == nil {
 		return res, fmt.Errorf("securityGroup is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"security_group": securityGroup,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -6237,32 +5683,19 @@ func (loc *SecurityGroupsLocator) Create(securityGroup *SecurityGroupParam) (*Se
 // 	view
 func (loc *SecurityGroupsLocator) Index(options ApiParams) ([]*SecurityGroup, error) {
 	var res []*SecurityGroup
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -6270,10 +5703,11 @@ func (loc *SecurityGroupsLocator) Index(options ApiParams) ([]*SecurityGroup, er
 // DELETE /api/clouds/:cloud_id/security_groups/:id
 // Delete security group(s)
 func (loc *SecurityGroupLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6284,26 +5718,19 @@ func (loc *SecurityGroupLocator) Destroy() error {
 // 	view
 func (loc *SecurityGroupLocator) Show(options ApiParams) (*SecurityGroup, error) {
 	var res *SecurityGroup
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  SecurityGroupRule ******/
@@ -6363,13 +5790,13 @@ func (loc *SecurityGroupRulesLocator) Create(securityGroupRule *SecurityGroupRul
 	if securityGroupRule == nil {
 		return res, fmt.Errorf("securityGroupRule is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -6386,26 +5813,19 @@ func (loc *SecurityGroupRulesLocator) Create(securityGroupRule *SecurityGroupRul
 // 	view
 func (loc *SecurityGroupRulesLocator) Index(options ApiParams) ([]*SecurityGroupRule, error) {
 	var res []*SecurityGroupRule
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -6414,10 +5834,11 @@ func (loc *SecurityGroupRulesLocator) Index(options ApiParams) ([]*SecurityGroup
 // DELETE /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
 // Delete security group rule(s)
 func (loc *SecurityGroupRuleLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6429,26 +5850,19 @@ func (loc *SecurityGroupRuleLocator) Destroy() error {
 // 	view
 func (loc *SecurityGroupRuleLocator) Show(options ApiParams) (*SecurityGroupRule, error) {
 	var res *SecurityGroupRule
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/security_group_rules/:id
@@ -6458,13 +5872,13 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 	if securityGroupRule == nil {
 		return fmt.Errorf("securityGroupRule is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6525,13 +5939,13 @@ func (loc *ServersLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	if server == nil {
 		return res, fmt.Errorf("server is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server": server,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -6555,32 +5969,19 @@ func (loc *ServersLocator) Create(server *ServerParam) (*ServerLocator, error) {
 // 	view
 func (loc *ServersLocator) Index(options ApiParams) ([]*Server, error) {
 	var res []*Server
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/servers/wrap_instance
@@ -6590,13 +5991,13 @@ func (loc *ServersLocator) WrapInstance(server *ServerParam2) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server": server,
 	}
 	var href = loc.Href + "/wrap_instance"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6606,11 +6007,11 @@ func (loc *ServersLocator) WrapInstance(server *ServerParam2) error {
 // POST /api/servers/:id/clone
 // Clones a given server.
 func (loc *ServerLocator) Clone() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/clone"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6619,10 +6020,11 @@ func (loc *ServerLocator) Clone() error {
 // DELETE /api/deployments/:deployment_id/servers/:id
 // Deletes a given server.
 func (loc *ServerLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6631,11 +6033,11 @@ func (loc *ServerLocator) Destroy() error {
 // Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
 // URL of this servers next_instance. See Instances#launch for details.
 func (loc *ServerLocator) Launch() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/launch"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6647,37 +6049,30 @@ func (loc *ServerLocator) Launch() error {
 // 	view
 func (loc *ServerLocator) Show(options ApiParams) (*Server, error) {
 	var res *Server
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // POST /api/servers/:id/teminate
 // Terminates the current instance of this server. This function is equivalent to invoking the terminate action on the
 // URL of this servers current_instance. See Instances#terminate for details.
 func (loc *ServerLocator) Terminate() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/teminate"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6689,13 +6084,13 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server": server,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6755,13 +6150,13 @@ func (loc *ServerArraysLocator) Create(serverArray *ServerArrayParam) (*ServerAr
 	if serverArray == nil {
 		return res, fmt.Errorf("serverArray is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server_array": serverArray,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -6783,32 +6178,19 @@ func (loc *ServerArraysLocator) Create(serverArray *ServerArrayParam) (*ServerAr
 // 	view
 func (loc *ServerArraysLocator) Index(options ApiParams) ([]*ServerArray, error) {
 	var res []*ServerArray
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -6816,11 +6198,11 @@ func (loc *ServerArraysLocator) Index(options ApiParams) ([]*ServerArray, error)
 // POST /api/server_arrays/:id/clone
 // Clones a given server array.
 func (loc *ServerArrayLocator) Clone() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/clone"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6830,10 +6212,11 @@ func (loc *ServerArrayLocator) Clone() error {
 // This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
 // latter will include 'next_instance' as well.
 func (loc *ServerArrayLocator) CurrentInstances() error {
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/current_instances"
-	var _, err2 = loc.api.GetRaw(href)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6842,10 +6225,11 @@ func (loc *ServerArrayLocator) CurrentInstances() error {
 // DELETE /api/deployments/:deployment_id/server_arrays/:id
 // Deletes a given server array.
 func (loc *ServerArrayLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6854,11 +6238,11 @@ func (loc *ServerArrayLocator) Destroy() error {
 // Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
 // URL of this server_array's next_instance. See Instances#launch for details.
 func (loc *ServerArrayLocator) Launch() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/launch"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6868,11 +6252,11 @@ func (loc *ServerArrayLocator) Launch() error {
 // (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
 // a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)
 func (loc *ServerArrayLocator) MultiRunExecutable() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/multi_run_executable"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6882,11 +6266,11 @@ func (loc *ServerArrayLocator) MultiRunExecutable() error {
 // the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,
 // invoke the action "terminate" directly on the instance (see Instances#terminate)
 func (loc *ServerArrayLocator) MultiTerminate() error {
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/multi_terminate"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6898,26 +6282,19 @@ func (loc *ServerArrayLocator) MultiTerminate() error {
 // 	view
 func (loc *ServerArrayLocator) Show(options ApiParams) (*ServerArray, error) {
 	var res *ServerArray
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/server_arrays/:id
@@ -6927,13 +6304,13 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	if serverArray == nil {
 		return fmt.Errorf("serverArray is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server_array": serverArray,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6986,13 +6363,13 @@ func (loc *ServerTemplatesLocator) Create(serverTemplate *ServerTemplateParam) (
 	if serverTemplate == nil {
 		return res, fmt.Errorf("serverTemplate is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server_template": serverTemplate,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -7011,32 +6388,19 @@ func (loc *ServerTemplatesLocator) Create(serverTemplate *ServerTemplateParam) (
 // 	view
 func (loc *ServerTemplatesLocator) Index(options ApiParams) ([]*ServerTemplate, error) {
 	var res []*ServerTemplate
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -7047,18 +6411,18 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 	if serverTemplate == nil {
 		return fmt.Errorf("serverTemplate is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server_template": serverTemplate,
 	}
 	var href = loc.Href + "/clone"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-// POST /api/server_templates/:id/commi
+// POST /api/server_templates/:id/commit
 // Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.
 // 	commitHeadDependencies: Commit all HEAD revisions (if any) of the associated MultiCloud Images, RightScripts and Chef repo sequences.
 // 	commitMessage: The message associated with the commit.
@@ -7073,15 +6437,15 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 	if freezeRepositories == "" {
 		return fmt.Errorf("freezeRepositories is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"commit_head_dependencies": commitHeadDependencies,
 		"commit_message":           commitMessage,
 		"freeze_repositories":      freezeRepositories,
 	}
-	var href = loc.Href + "/commi"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var href = loc.Href + "/commit"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7089,10 +6453,11 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 // DELETE /api/server_templates/:id
 // Deletes a given ServerTemplate.
 func (loc *ServerTemplateLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7103,19 +6468,19 @@ func (loc *ServerTemplateLocator) Destroy() error {
 // a difference between it and the latest committed revision in the same lineage.
 func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, error) {
 	var res []*map[string]string
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/detect_changes_in_head"
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/server_templates/:id/publish
@@ -7133,14 +6498,14 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 	if descriptions == nil {
 		return fmt.Errorf("descriptions is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"account_group_hrefs": accountGroupHrefs,
 		"descriptions":        descriptions,
 	}, options)
 	var href = loc.Href + "/publish"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7152,19 +6517,19 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 // attachments, will also be reported.
 func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 	var res []*map[string]string
-	var payload = map[string]interface{}{}
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/resolve"
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/server_templates/:id
@@ -7175,26 +6540,19 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 // 	view
 func (loc *ServerTemplateLocator) Show(options ApiParams) (*ServerTemplate, error) {
 	var res *ServerTemplate
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // POST /api/server_templates/:id/swap_repository
@@ -7220,14 +6578,14 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 	if targetRepositoryHref == "" {
 		return fmt.Errorf("targetRepositoryHref is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"source_repository_href": sourceRepositoryHref,
 		"target_repository_href": targetRepositoryHref,
 	}
 	var href = loc.Href + "/swap_repository"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7240,13 +6598,13 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 	if serverTemplate == nil {
 		return fmt.Errorf("serverTemplate is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server_template": serverTemplate,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7294,13 +6652,13 @@ func (loc *ServerTemplateMultiCloudImagesLocator) Create(serverTemplateMultiClou
 	if serverTemplateMultiCloudImage == nil {
 		return res, fmt.Errorf("serverTemplateMultiCloudImage is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"server_template_multi_cloud_image": serverTemplateMultiCloudImage,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -7317,32 +6675,19 @@ func (loc *ServerTemplateMultiCloudImagesLocator) Create(serverTemplateMultiClou
 // 	view
 func (loc *ServerTemplateMultiCloudImagesLocator) Index(options ApiParams) ([]*ServerTemplateMultiCloudImage, error) {
 	var res []*ServerTemplateMultiCloudImage
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -7350,22 +6695,23 @@ func (loc *ServerTemplateMultiCloudImagesLocator) Index(options ApiParams) ([]*S
 // DELETE /api/server_template_multi_cloud_images/:id
 // Deletes a given ServerTemplateMultiCloudImage.
 func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-// POST /api/server_template_multi_cloud_images/:id/make_defaul
+// POST /api/server_template_multi_cloud_images/:id/make_default
 // Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.
 func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
-	var payload = map[string]interface{}{}
-	var href = loc.Href + "/make_defaul"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var params = map[string]interface{}{}
+	var href = loc.Href + "/make_default"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7376,26 +6722,19 @@ func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 // 	view
 func (loc *ServerTemplateMultiCloudImageLocator) Show(options ApiParams) (*ServerTemplateMultiCloudImage, error) {
 	var res *ServerTemplateMultiCloudImage
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Session ******/
@@ -7442,34 +6781,19 @@ func (api *Api15) SessionsLocator(href string) *SessionsLocator {
 // 	view: Extended view shows account permissions and products
 func (loc *SessionsLocator) Accounts(options ApiParams) ([]*Account, error) {
 	var res []*Account
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/accounts"
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["email"]; ok {
-		u.Query().Set("email", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["password"]; ok {
-		u.Query().Set("password", temp.(string))
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/sessions
@@ -7479,18 +6803,19 @@ func (loc *SessionsLocator) Accounts(options ApiParams) ([]*Account, error) {
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
 func (loc *SessionsLocator) Index() ([]*Session, error) {
 	var res []*Session
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/sessions/instance
@@ -7500,18 +6825,19 @@ func (loc *SessionsLocator) Index() ([]*Session, error) {
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions/instance
 func (loc *SessionsLocator) IndexInstanceSession() (Instance, error) {
 	var res Instance
+	var params = map[string]interface{}{}
 	var href = loc.Href + "/instance"
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 /******  SshKey ******/
@@ -7556,13 +6882,13 @@ func (loc *SshKeysLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	if sshKey == nil {
 		return res, fmt.Errorf("sshKey is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"ssh_key": sshKey,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -7579,32 +6905,19 @@ func (loc *SshKeysLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 // 	view
 func (loc *SshKeysLocator) Index(options ApiParams) ([]*SshKey, error) {
 	var res []*SshKey
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -7612,10 +6925,11 @@ func (loc *SshKeysLocator) Index(options ApiParams) ([]*SshKey, error) {
 // DELETE /api/clouds/:cloud_id/ssh_keys/:id
 // Deletes a given ssh key.
 func (loc *SshKeyLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7626,26 +6940,19 @@ func (loc *SshKeyLocator) Destroy() error {
 // 	view
 func (loc *SshKeyLocator) Show(options ApiParams) (*SshKey, error) {
 	var res *SshKey
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Subnet ******/
@@ -7695,13 +7002,13 @@ func (loc *SubnetsLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	if subnet == nil {
 		return res, fmt.Errorf("subnet is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"subnet": subnet,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -7718,28 +7025,19 @@ func (loc *SubnetsLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 // 	filter
 func (loc *SubnetsLocator) Index(options ApiParams) ([]*Subnet, error) {
 	var res []*Subnet
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -7748,10 +7046,11 @@ func (loc *SubnetsLocator) Index(options ApiParams) ([]*Subnet, error) {
 // DELETE /api/clouds/:cloud_id/subnets/:id
 // Deletes the given subnet(s).
 func (loc *SubnetLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7761,18 +7060,19 @@ func (loc *SubnetLocator) Destroy() error {
 // Shows attributes of a single subnet.
 func (loc *SubnetLocator) Show() (*Subnet, error) {
 	var res *Subnet
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
@@ -7782,13 +7082,13 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	if subnet == nil {
 		return fmt.Errorf("subnet is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"subnet": subnet,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7820,21 +7120,21 @@ func (loc *TagsLocator) ByResource(resourceHrefs []string) ([]*map[string]string
 	if len(resourceHrefs) == 0 {
 		return res, fmt.Errorf("resourceHrefs is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"resource_hrefs": resourceHrefs,
 	}
 	var href = loc.Href + "/by_resource"
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/tags/by_tag
@@ -7865,22 +7165,22 @@ func (loc *TagsLocator) ByTag(resourceType string, tags []string, options ApiPar
 	if len(tags) == 0 {
 		return res, fmt.Errorf("tags is required")
 	}
-	var payload = mergeOptionals(ApiParams{
+	var params = mergeOptionals(ApiParams{
 		"resource_type": resourceType,
 		"tags":          tags,
 	}, options)
 	var href = loc.Href + "/by_tag"
-	var resp, err2 = loc.api.PostRaw(href, payload)
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/tags/multi_add
@@ -7898,14 +7198,14 @@ func (loc *TagsLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 	if len(tags) == 0 {
 		return fmt.Errorf("tags is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
 	var href = loc.Href + "/multi_add"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7924,14 +7224,14 @@ func (loc *TagsLocator) MultiDelete(resourceHrefs []string, tags []string) error
 	if len(tags) == 0 {
 		return fmt.Errorf("tags is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
 	var href = loc.Href + "/multi_delete"
-	var _, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return err2
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7968,26 +7268,19 @@ func (api *Api15) TaskLocator(href string) *TaskLocator {
 // 	view
 func (loc *TaskLocator) Show(options ApiParams) (*Task, error) {
 	var res *Task
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  User ******/
@@ -8053,13 +7346,13 @@ func (loc *UsersLocator) Create(user *UserParam) (*UserLocator, error) {
 	if user == nil {
 		return res, fmt.Errorf("user is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"user": user,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -8076,28 +7369,19 @@ func (loc *UsersLocator) Create(user *UserParam) (*UserLocator, error) {
 // 	filter
 func (loc *UsersLocator) Index(options ApiParams) ([]*User, error) {
 	var res []*User
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -8106,18 +7390,19 @@ func (loc *UsersLocator) Index(options ApiParams) ([]*User, error) {
 // Show information about a single user.
 func (loc *UserLocator) Show() (*User, error) {
 	var res *User
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 // PUT /api/users/:id
@@ -8144,13 +7429,13 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 	if user == nil {
 		return fmt.Errorf("user is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"user": user,
 	}
 	var href = loc.Href
-	var err2 = loc.api.Put(href, payload)
-	if err2 != nil {
-		return err2
+	var err = loc.api.Put(href, params)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8174,18 +7459,19 @@ func (api *Api15) UserDataLocator(href string) *UserDataLocator {
 // No description provided for show.
 func (loc *UserDataLocator) Show() (*map[string]string, error) {
 	var res *map[string]string
+	var params = map[string]interface{}{}
 	var href = loc.Href
-	var resp, err2 = loc.api.GetRaw(href)
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  Volume ******/
@@ -8236,13 +7522,13 @@ func (loc *VolumesLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	if volume == nil {
 		return res, fmt.Errorf("volume is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"volume": volume,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -8259,32 +7545,19 @@ func (loc *VolumesLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 // 	view
 func (loc *VolumesLocator) Index(options ApiParams) ([]*Volume, error) {
 	var res []*Volume
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -8292,10 +7565,11 @@ func (loc *VolumesLocator) Index(options ApiParams) ([]*Volume, error) {
 // DELETE /api/clouds/:cloud_id/volumes/:id
 // Deletes a given volume.
 func (loc *VolumeLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8306,26 +7580,19 @@ func (loc *VolumeLocator) Destroy() error {
 // 	view
 func (loc *VolumeLocator) Show(options ApiParams) (*Volume, error) {
 	var res *Volume
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  VolumeAttachment ******/
@@ -8369,20 +7636,20 @@ func (api *Api15) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator 
 // POST /api/clouds/:cloud_id/instances/:instance_id/volume_attachments
 // POST /api/clouds/:cloud_id/volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
-// POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachmen
+// POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
 // Creates a new volume attachment.
 func (loc *VolumeAttachmentsLocator) Create(volumeAttachment *VolumeAttachmentParam) (*VolumeAttachmentLocator, error) {
 	var res *VolumeAttachmentLocator
 	if volumeAttachment == nil {
 		return res, fmt.Errorf("volumeAttachment is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"volume_attachment": volumeAttachment,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -8400,32 +7667,19 @@ func (loc *VolumeAttachmentsLocator) Create(volumeAttachment *VolumeAttachmentPa
 // 	view
 func (loc *VolumeAttachmentsLocator) Index(options ApiParams) ([]*VolumeAttachment, error) {
 	var res []*VolumeAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -8433,23 +7687,16 @@ func (loc *VolumeAttachmentsLocator) Index(options ApiParams) ([]*VolumeAttachme
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id
 // DELETE /api/clouds/:cloud_id/volume_attachments/:id
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
-// DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachmen
+// DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
 // Deletes a given volume attachment.
 // -- Optional parameters:
 // 	force: Specifies whether to force the detachment of a volume.
 func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
-	var href = loc.Href + "/:id"
-	var u, err = url.Parse(href)
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
 	if err != nil {
-		return fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
-	}
-	if temp, ok := options["force"]; ok {
-		u.Query().Set("force", temp.(string))
-	}
-	href = u.String()
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+		return err
 	}
 	return nil
 }
@@ -8457,32 +7704,25 @@ func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
 // GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id
 // GET /api/clouds/:cloud_id/volume_attachments/:id
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
-// GET /api/clouds/:cloud_id/volumes/:volume_id/volume_attachmen
+// GET /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
 // Displays information about a single volume attachment.
 // -- Optional parameters:
 // 	view
 func (loc *VolumeAttachmentLocator) Show(options ApiParams) (*VolumeAttachment, error) {
 	var res *VolumeAttachment
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  VolumeSnapshot ******/
@@ -8535,13 +7775,13 @@ func (loc *VolumeSnapshotsLocator) Create(volumeSnapshot *VolumeSnapshotParam) (
 	if volumeSnapshot == nil {
 		return res, fmt.Errorf("volumeSnapshot is required")
 	}
-	var payload = ApiParams{
+	var params = ApiParams{
 		"volume_snapshot": volumeSnapshot,
 	}
 	var href = loc.Href
-	var resp, err2 = loc.api.PostRaw(href, payload)
-	if err2 != nil {
-		return res, err2
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -8559,32 +7799,19 @@ func (loc *VolumeSnapshotsLocator) Create(volumeSnapshot *VolumeSnapshotParam) (
 // 	view
 func (loc *VolumeSnapshotsLocator) Index(options ApiParams) ([]*VolumeSnapshot, error) {
 	var res []*VolumeSnapshot
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -8593,10 +7820,11 @@ func (loc *VolumeSnapshotsLocator) Index(options ApiParams) ([]*VolumeSnapshot, 
 // DELETE /api/clouds/:cloud_id/volume_snapshots/:id
 // Deletes a given volume_snapshot.
 func (loc *VolumeSnapshotLocator) Destroy() error {
-	var href = loc.Href + "/:id"
-	var err2 = loc.api.Delete(href)
-	if err2 != nil {
-		return err2
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8608,26 +7836,19 @@ func (loc *VolumeSnapshotLocator) Destroy() error {
 // 	view
 func (loc *VolumeSnapshotLocator) Show(options ApiParams) (*VolumeSnapshot, error) {
 	var res *VolumeSnapshot
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /******  VolumeType ******/
@@ -8675,32 +7896,19 @@ func (api *Api15) VolumeTypeLocator(href string) *VolumeTypeLocator {
 // 	view
 func (loc *VolumeTypesLocator) Index(options ApiParams) ([]*VolumeType, error) {
 	var res []*VolumeType
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["filter"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("filter", v)
-		}
-	}
-	href = u.String()
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 //===== Resource actions
@@ -8711,26 +7919,19 @@ func (loc *VolumeTypesLocator) Index(options ApiParams) ([]*VolumeType, error) {
 // 	view
 func (loc *VolumeTypeLocator) Show(options ApiParams) (*VolumeType, error) {
 	var res *VolumeType
+	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
-	var u, err = url.Parse(href)
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return res, err
 	}
-	if temp, ok := options["view"]; ok {
-		u.Query().Set("view", temp.(string))
-	}
-	href = u.String()
-	var resp, err2 = loc.api.GetRaw(href)
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
 	if err2 != nil {
 		return res, err2
 	}
-	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
-	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	var err3 = json.Unmarshal(respBody, res)
+	return res, err3
 }
 
 /****** Parameter Data Types ******/
@@ -9263,4 +8464,58 @@ type VolumeSnapshotParam struct {
 	Description      *string `json:"description,omitempty"`
 	Name             string  `json:"name,omitempty"`
 	ParentVolumeHref *string `json:"parent_volume_href,omitempty"`
+}
+
+// Map action name to its URI suffix and HTTP method (in that order)
+type ActionMap map[string][2]string
+
+// Associate action URI suffix and HTTP method to action name
+var actionMap = ActionMap{
+	"accounts":                [2]string{"/accounts", "GET"},
+	"append":                  [2]string{"/append", "POST"},
+	"by_resource":             [2]string{"/by_resource", "POST"},
+	"by_tag":                  [2]string{"/by_tag", "POST"},
+	"cleanup":                 [2]string{"/cleanup", "POST"},
+	"clone":                   [2]string{"/clone", "POST"},
+	"commit":                  [2]string{"/commit", "POST"},
+	"cookbook_import":         [2]string{"/cookbook_import", "POST"},
+	"cookbook_import_preview": [2]string{"/cookbook_import_preview", "POST"},
+	"current_instances":       [2]string{"/current_instances", "GET"},
+	"data":                    [2]string{"/data", "GET"},
+	"detail":                  [2]string{"/detail", "GET"},
+	"detect_changes_in_head":  [2]string{"/detect_changes_in_head", "POST"},
+	"disable":                 [2]string{"/disable", "POST"},
+	"enable":                  [2]string{"/enable", "POST"},
+	"follow":                  [2]string{"/follow", "POST"},
+	"freeze":                  [2]string{"/freeze", "POST"},
+	"import":                  [2]string{"/import", "POST"},
+	"index_instance_session":  [2]string{"/instance", "GET"},
+	"launch":                  [2]string{"/launch", "POST"},
+	"lock":                    [2]string{"/lock", "POST"},
+	"make_default":            [2]string{"/make_default", "POST"},
+	"multi_add":               [2]string{"/multi_add", "POST"},
+	"multi_attach":            [2]string{"/multi_attach", "POST"},
+	"multi_delete":            [2]string{"/multi_delete", "POST"},
+	"multi_detach":            [2]string{"/multi_detach", "POST"},
+	"multi_run_executable":    [2]string{"/multi_run_executable", "POST"},
+	"multi_terminate":         [2]string{"/multi_terminate", "POST"},
+	"multi_update":            [2]string{"/multi_update", "PUT"},
+	"obsolete":                [2]string{"/obsolete", "POST"},
+	"publish":                 [2]string{"/publish", "POST"},
+	"quench":                  [2]string{"/quench", "POST"},
+	"reboot":                  [2]string{"/reboot", "POST"},
+	"refetch":                 [2]string{"/refetch", "POST"},
+	"resolve":                 [2]string{"/resolve", "POST"},
+	"restore":                 [2]string{"/restore", "POST"},
+	"run_executable":          [2]string{"/run_executable", "POST"},
+	"servers":                 [2]string{"/servers", "GET"},
+	"set_custom_lodgement":    [2]string{"/set_custom_lodgement", "POST"},
+	"show_source":             [2]string{"/source", "GET"},
+	"start":                   [2]string{"/start", "POST"},
+	"stop":                    [2]string{"/stop", "POST"},
+	"swap_repository":         [2]string{"/swap_repository", "POST"},
+	"terminate":               [2]string{"/terminate", "POST"},
+	"unlock":                  [2]string{"/unlock", "POST"},
+	"update_source":           [2]string{"/source", "PUT"},
+	"wrap_instance":           [2]string{"/wrap_instance", "POST"},
 }

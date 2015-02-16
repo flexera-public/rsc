@@ -80,6 +80,7 @@ func generateCode(descriptor *ApiDescriptor, codegen string) error {
 		t := descriptor.Types[name]
 		c.WriteType(t, f)
 	}
+	c.WriteActionMap(descriptor.ActionMap, f)
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {

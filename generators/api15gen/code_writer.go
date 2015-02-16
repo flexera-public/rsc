@@ -13,8 +13,9 @@ import (
 
 // CodeWriter struct exposes methods to generate the go API client code
 type CodeWriter struct {
-	headerTmpl   *template.Template
-	resourceTmpl *template.Template
+	headerTmpl    *template.Template
+	resourceTmpl  *template.Template
+	actionMapTmpl *template.Template
 }
 
 // Code writer factory
@@ -41,9 +42,14 @@ func NewCodeWriter() (*CodeWriter, error) {
 	if err != nil {
 		return nil, err
 	}
+	actionMapT, err := template.New("actionMap-code").Parse(actionMapTmpl)
+	if err != nil {
+		return nil, err
+	}
 	return &CodeWriter{
-		headerTmpl:   headerT,
-		resourceTmpl: resourceT,
+		headerTmpl:    headerT,
+		resourceTmpl:  resourceT,
+		actionMapTmpl: actionMapT,
 	}, nil
 }
 
@@ -77,6 +83,11 @@ func (c *CodeWriter) WriteType(o *ObjectDataType, w io.Writer) {
 // Write code for a resource
 func (c *CodeWriter) WriteResource(resource *Resource, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
+}
+
+// Write action map
+func (c *CodeWriter) WriteActionMap(a ActionMap, w io.Writer) error {
+	return c.actionMapTmpl.Execute(w, a)
 }
 
 /***** Format helpers *****/
@@ -207,7 +218,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"time"
-	"net/url"
 )
 
 // Helper function that merges optional parameters into payload
@@ -267,38 +277,34 @@ func (loc *{{$resource.Name}}Locator) {{.MethodName}}({{parameters .}}){{if .Ret
 `
 
 const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
-	{{end}}{{if .HasPayload}}{{range .Params}}{{if and .Mandatory (blankCondition .VarName .Type)}}{{blankCondition .VarName .Type}}
+	{{end}}{{range .Params}}{{if and .Mandatory (blankCondition .VarName .Type)}}{{blankCondition .VarName .Type}}
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.VarName}} is required")
 	}
-	{{end}}{{end}}{{/* end range .Params */}}var payload = {{paramsAsPayload .Params}}
-	{{end}}{{/* end if .HasPayload */}}var href = loc.Href{{with $suffix := .Suffix}}{{if $suffix}}+"{{$suffix}}"{{end}}{{end}}
-	{{if not .HasPayload}}{{if .Params}}var u, err = url.Parse(href)
+	{{end}}{{end}}{{/* end range .Params */}}{{if not (eq .HttpMethod "DELETE")}}var params = {{paramsAsPayload .Params}}{{end}}
+	var href = loc.Href{{with $suffix := .Suffix}}{{if $suffix}}+"{{$suffix}}"{{end}}{{end}}
+	var {{if .HasResponse}}{{if .Return}}resp, {{else}}_, {{end}}{{end}}err = loc.api.{{toVerb .HttpMethod}}(href{{if .HasPayload}}, params{{end}})
 	if err != nil {
-		return {{if .Return}}res, {{end}}fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return {{if $action.Return}}res, {{end}}err
 	}
-	{{range .Params}}{{if .Mandatory}}u.Query().Set("{{.Name}}", {{.VarName}})
-	{{else}}{{if isArray .Signature}}if temp, ok := options["{{.Name}}"]; ok {
-		for _, v := range temp.([]string) {
-			u.Query().Add("{{.Name}}", v)
-		}
-	}
-	{{else}}if temp, ok := options["{{.Name}}"]; ok {
-		u.Query().Set("{{.Name}}", temp.(string))
-	}
-	{{end}}href = u.String()
-	{{end}}{{end}}{{end}}{{end}}{{/* end not .HasPayload */}}var {{if .HasResponse}}{{if .Return}}resp, {{else}}_, {{end}}{{end}}err2 = loc.api.{{toVerb .HttpMethod}}(href{{if .HasPayload}}, payload{{end}})
-	if err2 != nil {
-		return {{if $action.Return}}res, {{end}}err2
-	}
-	{{if eq $action.MethodName "Create"}}var location = resp.Header.Get("Location")
+	{{if .ReturnLocation}}var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
 		return &{{stripStar .Return}}{loc.api, location}, nil
 	}{{else if .Return}}defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
 	}
-	var err4 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
-	return res, err4{{else}}return nil{{end}}`
+	var err3 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
+	return res, err3{{else}}return nil{{end}}`
+
+// Action map
+const actionMapTmpl = `// Map action name to its URI suffix and HTTP method (in that order)
+type ActionMap map[string][2]string
+
+// Associate action URI suffix and HTTP method to action name
+var actionMap = ActionMap{
+	{{range $name, $pair := .}}"{{$name}}": [2]string{"{{index $pair 0}}", "{{index $pair 1}}"},
+	{{end}} }
+`

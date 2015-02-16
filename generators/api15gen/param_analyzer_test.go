@@ -47,9 +47,10 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(param.Name).Should(Equal("foo"))
 			s := BasicDataType("string")
 			item := ActionParam{
-				Name:    "item",
-				VarName: "item",
-				Type:    &s,
+				Name:      "item",
+				QueryName: "foo[item]",
+				VarName:   "item",
+				Type:      &s,
 			}
 			Ω(param.Type).Should(BeEquivalentTo(&ArrayDataType{&item}))
 		})
@@ -73,15 +74,17 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(param.Name).Should(Equal("foo"))
 			s := BasicDataType("string")
 			bar := ActionParam{
-				Name:    "bar",
-				VarName: "bar",
-				Type:    &s,
+				Name:      "bar",
+				QueryName: "foo[bar]",
+				VarName:   "bar",
+				Type:      &s,
 			}
 			i := BasicDataType("int")
 			baz := ActionParam{
-				Name:    "baz",
-				VarName: "baz",
-				Type:    &i,
+				Name:      "baz",
+				QueryName: "foo[baz]",
+				VarName:   "baz",
+				Type:      &i,
 			}
 			Ω(param.Type).Should(BeEquivalentTo(
 				&ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}))
@@ -126,14 +129,16 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(param.Name).Should(Equal("foo"))
 			s := BasicDataType("string")
 			bar := ActionParam{
-				Name:    "bar",
-				Type:    &s,
-				VarName: "bar",
+				Name:      "bar",
+				QueryName: "foo[bar]",
+				Type:      &s,
+				VarName:   "bar",
 			}
 			baz := ActionParam{
-				Name:    "baz",
-				Type:    new(EnumerableDataType),
-				VarName: "baz",
+				Name:      "baz",
+				QueryName: "foo[baz]",
+				Type:      new(EnumerableDataType),
+				VarName:   "baz",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(
 				&ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}))
@@ -195,21 +200,24 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(param.Name).Should(Equal("foo"))
 			s := BasicDataType("string")
 			bar := ActionParam{
-				Name:    "bar",
-				Type:    &s,
-				VarName: "bar",
+				Name:      "bar",
+				QueryName: "foo[][bar]",
+				Type:      &s,
+				VarName:   "bar",
 			}
 			i := BasicDataType("int")
 			baz := ActionParam{
-				Name:    "baz",
-				Type:    &i,
-				VarName: "baz",
+				Name:      "baz",
+				QueryName: "foo[][baz]",
+				Type:      &i,
+				VarName:   "baz",
 			}
 			t := ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}
 			item := ActionParam{
-				Name:    "item",
-				Type:    &t,
-				VarName: "item",
+				Name:      "item",
+				QueryName: "foo[][item]",
+				Type:      &t,
+				VarName:   "item",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(&ArrayDataType{&item}))
 		})
@@ -234,31 +242,36 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(param.Name).Should(Equal("foo"))
 			s := BasicDataType("string")
 			bar := ActionParam{
-				Name:    "bar",
-				Type:    &s,
-				VarName: "bar",
+				Name:      "bar",
+				QueryName: "foo[][bar]",
+				Type:      &s,
+				VarName:   "bar",
 			}
 			goo := ActionParam{
-				Name:    "goo",
-				Type:    &s,
-				VarName: "goo",
+				Name:      "goo",
+				QueryName: "foo[][baz][][goo]",
+				Type:      &s,
+				VarName:   "goo",
 			}
-			t := ObjectDataType{"Baz", []*ActionParam{&goo}}
+			t := ObjectDataType{"FooBaz", []*ActionParam{&goo}}
 			bazItem := ActionParam{
-				Name:    "item",
-				Type:    &t,
-				VarName: "item",
+				Name:      "item",
+				QueryName: "foo[][baz][][item]",
+				Type:      &t,
+				VarName:   "item",
 			}
 			baz := ActionParam{
-				Name:    "baz",
-				Type:    &ArrayDataType{&bazItem},
-				VarName: "baz",
+				Name:      "baz",
+				QueryName: "foo[][baz]",
+				Type:      &ArrayDataType{&bazItem},
+				VarName:   "baz",
 			}
 			p := ObjectDataType{"Foo", []*ActionParam{&bar, &baz}}
 			item := ActionParam{
-				Name:    "item",
-				Type:    &p,
-				VarName: "item",
+				Name:      "item",
+				QueryName: "foo[][item]",
+				Type:      &p,
+				VarName:   "item",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(&ArrayDataType{&item}))
 		})
@@ -294,9 +307,10 @@ var _ = Describe("ParamAnalyzer", func() {
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
 			item := ActionParam{
-				Name:    "item",
-				Type:    &s,
-				VarName: "item",
+				Name:      "item",
+				QueryName: "foo[item]",
+				Type:      &s,
+				VarName:   "item",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(&ArrayDataType{&item}))
 
@@ -309,9 +323,10 @@ var _ = Describe("ParamAnalyzer", func() {
 
 			param = params[3]
 			baz := ActionParam{
-				Name:    "baz",
-				Type:    &i,
-				VarName: "baz",
+				Name:      "baz",
+				QueryName: "foo3[baz]",
+				Type:      &i,
+				VarName:   "baz",
 			}
 			p := ObjectDataType{"Foo3", []*ActionParam{&baz}}
 			Ω(param.Type).Should(BeEquivalentTo(&p))
@@ -319,36 +334,42 @@ var _ = Describe("ParamAnalyzer", func() {
 			param = params[4]
 			Ω(param.Name).Should(Equal("foo4"))
 			bar := ActionParam{
-				Name:    "bar",
-				Type:    &s,
-				VarName: "bar",
+				Name:      "bar",
+				QueryName: "foo4[][bar]",
+				Type:      &s,
+				VarName:   "bar",
 			}
 			goo := ActionParam{
-				Name:    "goo",
-				Type:    &s,
-				VarName: "goo",
+				Name:      "goo",
+				QueryName: "foo4[][baz][][goo]",
+				Type:      &s,
+				VarName:   "goo",
 			}
 			zoo := ActionParam{
-				Name:    "zoo",
-				Type:    new(EnumerableDataType),
-				VarName: "zoo",
+				Name:      "zoo",
+				QueryName: "foo4[][baz][][zoo]",
+				Type:      new(EnumerableDataType),
+				VarName:   "zoo",
 			}
-			t := ObjectDataType{"Baz", []*ActionParam{&goo, &zoo}}
+			t := ObjectDataType{"Foo4Baz", []*ActionParam{&goo, &zoo}}
 			bazItem := ActionParam{
-				Name:    "item",
-				Type:    &t,
-				VarName: "item",
+				Name:      "item",
+				QueryName: "foo4[][baz][][item]",
+				Type:      &t,
+				VarName:   "item",
 			}
 			baz = ActionParam{
-				Name:    "baz",
-				Type:    &ArrayDataType{&bazItem},
-				VarName: "baz",
+				Name:      "baz",
+				QueryName: "foo4[][baz]",
+				Type:      &ArrayDataType{&bazItem},
+				VarName:   "baz",
 			}
 			p = ObjectDataType{"Foo4", []*ActionParam{&bar, &baz}}
 			item = ActionParam{
-				Name:    "item",
-				Type:    &p,
-				VarName: "item",
+				Name:      "item",
+				QueryName: "foo4[][item]",
+				Type:      &p,
+				VarName:   "item",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(&ArrayDataType{&item}))
 		})

@@ -37,7 +37,12 @@ type ApiDescriptor struct {
 	Types map[string]*ObjectDataType
 	// Type names ordered alphabetically
 	TypeNames []string
+	// Map of action names to URI suffix and HTTP method
+	ActionMap ActionMap
 }
+
+// Map action name to its URI suffix and HTTP method (in that order)
+type ActionMap map[string][2]string
 
 // Factory method for API analyzer
 func NewApiAnalyzer(resources map[string]interface{}, attributeTypes map[string]string) *ApiAnalyzer {
@@ -54,6 +59,7 @@ func (a *ApiAnalyzer) Analyze() *ApiDescriptor {
 	var descriptor = &ApiDescriptor{
 		Resources: make(map[string]*Resource),
 		Types:     make(map[string]*ObjectDataType),
+		ActionMap: ActionMap{},
 	}
 	var rawResourceNames = make([]string, len(a.rawResources))
 	var idx = 0
@@ -197,20 +203,24 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		// Compute action URL suffix
 		var suffix string
 		if actionName != "create" && actionName != "show" && actionName != "index" &&
-			actionName != "update" && actionName != "delete" {
+			actionName != "update" && actionName != "destroy" {
 			suffix = paths[0][strings.LastIndex(paths[0], "/"):]
+			if _, ok := descriptor.ActionMap[actionName]; !ok {
+				descriptor.ActionMap[actionName] = [2]string{suffix, httpMethod}
+			}
 		}
 
 		// Record action
 		var action = Action{
-			Name:        actionName,
-			MethodName:  inflect.Camelize(actionName),
-			Description: removeBlankLines(description),
-			HttpMethod:  httpMethod,
-			Paths:       paths,
-			Suffix:      suffix,
-			Params:      paramAnalyzer.Params,
-			Return:      parseReturn(actionName, name, contentType),
+			Name:           actionName,
+			MethodName:     inflect.Camelize(actionName),
+			Description:    removeBlankLines(description),
+			HttpMethod:     httpMethod,
+			Paths:          paths,
+			Suffix:         suffix,
+			Params:         paramAnalyzer.Params,
+			Return:         parseReturn(actionName, name, contentType),
+			ReturnLocation: actionName == "create" && name != "Oauth2",
 		}
 		if isResourceAction {
 			resourceActions = append(resourceActions, &action)
@@ -372,7 +382,8 @@ func parseRoute(moniker string, route string) (method string, paths []string) {
 	paths = make([]string, len(bounds))
 	var j = 0
 	for _, r := range matches {
-		var path = strings.TrimRight(r[7:], "(.:format)? ")
+		var path = strings.TrimRight(r[7:], " ")
+		path = strings.TrimSuffix(path, "(.:format)?")
 		if isDeprecated(path) || isCustom(method, path) {
 			continue
 		}

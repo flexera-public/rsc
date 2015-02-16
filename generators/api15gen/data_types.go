@@ -7,7 +7,7 @@ type Resource struct {
 	Name              string       // Resource name, e.g. "ServerArray"
 	CollectionName    string       // Name of collection. e.g. "ServerArrays"
 	Description       string       // Resource description
-	ResourceActions   []*Action    // Resource actions, e.g. "show", "update", "delete"
+	ResourceActions   []*Action    // Resource actions, e.g. "show", "update", "destroy"
 	CollectionActions []*Action    // Collection actions, e.g. "index", "create"
 	Attributes        []*Attribute // Resource attributes
 	BaseHref          string       // Common prefix to all resource action URLs
@@ -15,19 +15,20 @@ type Resource struct {
 
 // Data structure used to describe collection and resource actions
 type Action struct {
-	Name        string         // Action name, e.g. "create", "multi_terminate"
-	MethodName  string         // Go method name, e.g. "Create", "MultiTerminate"
-	Description string         // Action description
-	HttpMethod  string         // Action HTTP method, e.g. "GET", "POST"
-	Paths       []string       // Action paths
-	Suffix      string         // Action url suffix
-	Params      []*ActionParam // Action parameters
-	Return      string         // Type of method results, e.g. "*ServerArray"
+	Name           string         // Action name, e.g. "create", "multi_terminate"
+	MethodName     string         // Go method name, e.g. "Create", "MultiTerminate"
+	Description    string         // Action description
+	HttpMethod     string         // Action HTTP method, e.g. "GET", "POST"
+	Paths          []string       // Action paths
+	Suffix         string         // Action url suffix
+	Params         []*ActionParam // Action parameters
+	Return         string         // Type of method results, e.g. "*ServerArray"
+	ReturnLocation bool           // Whether API returns a location header. True for all "Create" except OAuth2's ugh.
 }
 
 // Whether action requests takes a payload
 func (a *Action) HasPayload() bool {
-	return a.HttpMethod == "POST" || a.HttpMethod == "PUT"
+	return a.HttpMethod == "POST" || a.HttpMethod == "PUT" || a.HttpMethod == "GET"
 }
 
 // Whether action has a response body or header
@@ -45,6 +46,7 @@ type Attribute struct {
 // Data structure used to render method params
 type ActionParam struct {
 	Name        string        // Name of parameter
+	QueryName   string        // Query string style parameter name
 	Description string        // Description of parameter
 	VarName     string        // go variable name
 	Type        DataType      // Type of parameter
