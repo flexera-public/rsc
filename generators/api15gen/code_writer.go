@@ -274,9 +274,10 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	{{end}}{{/* end if .HasPayload */}}var href = loc.Href{{with $suffix := .Suffix}}{{if $suffix}}+"{{$suffix}}"{{end}}{{end}}
 	{{if not .HasPayload}}{{if .Params}}var u, err = url.Parse(href)
 	if err != nil {
-		return res, fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
+		return {{if .Return}}res, {{end}}fmt.Errorf("Invalid href '%s' - %s", href, err.Error())
 	}
-	{{range .Params}}{{if isArray .Signature}}if temp, ok := options["{{.Name}}"]; ok {
+	{{range .Params}}{{if .Mandatory}}u.Query().Set("{{.Name}}", {{.VarName}})
+	{{else}}{{if isArray .Signature}}if temp, ok := options["{{.Name}}"]; ok {
 		for _, v := range temp.([]string) {
 			u.Query().Add("{{.Name}}", v)
 		}
@@ -284,10 +285,10 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	{{else}}if temp, ok := options["{{.Name}}"]; ok {
 		u.Query().Set("{{.Name}}", temp.(string))
 	}
-	href = u.String()
-	{{end}}{{end}}{{end}}{{end}}{{/* end not .HasPayload */}}{{if .HasResponse}}resp, {{end}}err := loc.api.{{toVerb .HttpMethod}}(href{{if .HasPayload}}, payload{{end}})
-	if err != nil {
-		return {{if $action.Return}}res, {{end}}err
+	{{end}}href = u.String()
+	{{end}}{{end}}{{end}}{{end}}{{/* end not .HasPayload */}}var {{if .HasResponse}}{{if .Return}}resp, {{else}}_, {{end}}{{end}}err2 = loc.api.{{toVerb .HttpMethod}}(href{{if .HasPayload}}, payload{{end}})
+	if err2 != nil {
+		return {{if $action.Return}}res, {{end}}err2
 	}
 	{{if eq $action.Name "Create"}}var location = resp.Header.Get("Location")
 	if len(location) == 0 {
@@ -295,9 +296,9 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	} else {
 		return &{{stripStar .Return}}{loc.api, location}, nil
 	}{{else if .Return}}defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
 	}
-	err = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
-	return res, err{{else}}return nil{{end}}`
+	var err4 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
+	return res, err4{{else}}return nil{{end}}`

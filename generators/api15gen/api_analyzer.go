@@ -136,6 +136,10 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		var isResourceAction bool
 		httpMethod, paths := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
 			meth["route"].(string))
+		if len(paths) == 0 {
+			// Custom action
+			continue
+		}
 		if strings.Contains(paths[0], "/:id") {
 			isResourceAction = true
 		}
@@ -360,16 +364,33 @@ func parseRoute(moniker string, route string) (method string, paths []string) {
 	var bounds = routeRegexp.FindAllStringIndex(route, -1)
 	var matches = make([]string, len(bounds))
 	var prev = 0
-	paths = make([]string, len(bounds))
 	for i, bound := range bounds {
 		matches[i] = route[prev:bound[0]]
 		prev = bound[1]
 	}
 	method = strings.TrimRight(matches[0][0:7], " ")
-	for i, r := range matches {
-		paths[i] = strings.TrimRight(r[7:], "(.:format)? ")
+	paths = make([]string, len(bounds))
+	var j = 0
+	for _, r := range matches {
+		var path = strings.TrimRight(r[7:], "(.:format)? ")
+		if isDeprecated(path) || isCustom(method, path) {
+			continue
+		}
+		paths[j] = path
+		j += 1
 	}
+	paths = paths[:j]
 	return
+}
+
+// true if path is for a deprecated API
+func isDeprecated(path string) bool {
+	return strings.Contains(path, "/api/session") && !strings.Contains(path, "/api/sessions")
+}
+
+// Is action code not generated?
+func isCustom(method, path string) bool {
+	return method == "POST" && (path == "/api/sessions" || path == "/api/sessions/instance")
 }
 
 // Resources that don't have a media type
