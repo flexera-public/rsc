@@ -12,6 +12,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -28,19 +29,24 @@ type Api15 struct {
 
 // New returns a API 1.5 client that uses User oauth authentication.
 // logger and client are optional.
+// endpoint may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, refreshToken string, logger *log.Logger, client *http.Client) (*Api15, error) {
+func New(accountId int, refreshToken string, endpoint string, logger *log.Logger,
+	client *http.Client) (*Api15, error) {
 	if client == nil {
 		client = http.DefaultClient
 	}
-	auth := OAuthAuthenticator{
+	var auth = OAuthAuthenticator{
 		RefreshToken: refreshToken,
 		RefreshAt:    time.Now().Add(-1 * time.Hour),
 		Client:       client,
 	}
-	endpoint, err := auth.ResolveEndpoint(accountId)
-	if err != nil {
-		return nil, err
+	if endpoint == "" {
+		if resolved, err := auth.ResolveEndpoint(accountId); err != nil {
+			return nil, err
+		} else {
+			endpoint = resolved
+		}
 	}
 	return &Api15{
 		AccountId: accountId,
@@ -202,6 +208,9 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 	}
 	if err = a.Auth.Sign(req, a.Endpoint); err != nil {
 		return nil, err
+	}
+	if a.AccountId > 0 {
+		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
 	}
 	var id string
 	var startedAt time.Time
