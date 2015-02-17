@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path"
 	"strconv"
 
 	"github.com/rightscale/rsclient/rsapi15"
@@ -24,13 +25,13 @@ func LoadConfig(path string) (*ClientConfig, error) {
 	if err != nil {
 		return nil, err
 	}
-	var config *ClientConfig
-	err = json.Unmarshal(content, config)
+	var config ClientConfig
+	err = json.Unmarshal(content, &config)
 	if err != nil {
 		return nil, err
 	}
 	config.Token, err = decrypt(config.Token)
-	return config, err
+	return &config, err
 }
 
 // Save config encrypts the token and persists the config to file
@@ -56,40 +57,49 @@ func main() {
 	app := kingpin.New("rsclient", "A RightScale API client")
 	app.Version("0.1.0")
 
-	account := app.Flag("account", "RightScale account ID, overrides config").Int()
-	endpoint := app.Flag("endpoint", "RightScale API endpoint (e.g. 'us-3.rightscale.com'), overrides config").String()
-	token := app.Flag("token", "Oauth access token (overrides config)").String()
+	var cfgPathFlag = app.Flag("config", "path to rsclient config file").Default(path.Join(os.Getenv("HOME"), ".rsclient")).String()
+	var accountFlag = app.Flag("account", "RightScale account ID").Int()
+	var endpointFlag = app.Flag("endpoint", "RightScale API endpoint (e.g. 'us-3.rightscale.com')").String()
+	var tokenFlag = app.Flag("token", "OAuth access token").String()
 
-	pretty := app.Flag("pretty", "Pretty print response body").Short('p').Bool()
+	var prettyFlag = app.Flag("pretty", "Pretty print response body").Short('p').Bool()
 	//extract := app.Flag("extract", "Extract value(s) from response media type at given path, path consists of dot separated attribute names, e.g. \"security_groups.href\"").Short('e').String()
 
-	setup := app.Command("setup",
+	app.Command("setup",
 		"create config file, defaults to $HOME/.rsclient, use '--config' to override")
-	cfgPath := setup.Flag("config", "path to rsclient config file").Default(fmt.Sprintf("%v/.rsclient", os.Getenv("HOME"))).String()
 
 	rsapi15.RegisterCommands(app)
 
-	cmd := kingpin.MustParse(app.Parse(os.Args[1:]))
+	var cmd = kingpin.MustParse(app.Parse(os.Args[1:]))
 
 	if cmd == "setup" {
-		createConfig(*cfgPath)
+		createConfig(*cfgPathFlag)
 	} else {
-		config, err := LoadConfig(*cfgPath)
-		if account != nil {
-			config.Account = *account
+		var account int
+		var token, endpoint string
+		if config, err := LoadConfig(*cfgPathFlag); err == nil {
+			account = config.Account
+			token = config.Token
+			endpoint = config.Endpoint
 		}
-		if endpoint != nil {
-			config.Endpoint = *endpoint
+		if *accountFlag > 0 {
+			account = *accountFlag
 		}
-		if token != nil {
-			config.Token = *token
+		if *tokenFlag != "" {
+			token = *tokenFlag
 		}
-		client, err := rsapi15.New(config.Account, config.Token, nil, nil)
+		if *endpointFlag != "" {
+			endpoint = *endpointFlag
+		}
+		if token == "" {
+			PrintError("Missing OAuth token, use '-token TOKEN' or 'setup'")
+		}
+		client, err := rsapi15.New(account, token, endpoint, nil, nil)
 		if err != nil {
 			PrintError("Failed to create API session: %v", err.Error())
 		} else {
 			res := client.RunCommand(cmd)
-			pp := pretty != nil && *pretty
+			pp := prettyFlag != nil && *prettyFlag
 			var err error
 			var output []byte
 			if pp {
@@ -108,7 +118,7 @@ func main() {
 
 // Create configuration file
 func createConfig(path string) {
-	config, _ := LoadConfig(path)
+	var config, err = LoadConfig(path)
 	var tokenDef, accountDef, endpointDef string
 	if config != nil {
 		PromptWarning("Found existing configuration file %v, overwrite? (y/N): ", path)
@@ -124,6 +134,8 @@ func createConfig(path string) {
 			config.Endpoint = "my.rightscale.com"
 		}
 		endpointDef = fmt.Sprintf(" (%v)", config.Endpoint)
+	} else {
+		config = &ClientConfig{}
 	}
 
 	fmt.Printf("Account id%v: ", accountDef)
@@ -154,7 +166,7 @@ func createConfig(path string) {
 
 	config.Save(path)
 
-	_, err := rsapi15.New(config.Account, config.Token, nil, nil)
+	_, err = rsapi15.New(config.Account, config.Token, config.Endpoint, nil, nil)
 	if err != nil {
 		PrintError("Failed to contact RightScale: %v", err.Error())
 	} else {
