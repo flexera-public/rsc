@@ -12,6 +12,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -55,10 +56,15 @@ type ApiParams map[string]interface{}
 
 // Do is a generic client method and is meant for command line tools and other higher level clients.
 // It accepts a resource or resource collection href (e.g. "/api/servers"), the name of an action
-// (e.g. "create") and the request parameters (payload or query string).
-// The method makes the request and returns the raw HTTP response or an error. The "LoadResponse"
-// Api15 method can be used to load the response body if needed.
+// (e.g. "create") and the request parameters (payload or query strings).
+// The method makes the request and returns the raw HTTP response or an error.
+// The LoadResponse method can be used to load the response body if needed.
 func (a *Api15) Do(href, action string, params ApiParams) (*http.Response, error) {
+	// Allow "servers" instead of "/api/servers"
+	if !strings.HasPrefix(href, "/api/") {
+		href = "/api/" + href
+	}
+
 	// First figure out action verb and uri
 	var uri = href
 	var method string

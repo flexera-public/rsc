@@ -17,7 +17,7 @@ var (
 	parentPathRegexp = regexp.MustCompile(`^(.*)\[[^\]]+\]$`)
 
 	// Child path regular expression
-	childPathRegexp = regexp.MustCompile(`^.*\[([^\]]+)\]$`)
+	childPathRegexp = regexp.MustCompile(`^.*\[([^\]]+)\](\[\])?$`)
 
 	// Capture all alphanumerical parts to build go identifier from raw param name
 	partsRegexp = regexp.MustCompile("[^[:alnum:]]+")
@@ -32,6 +32,8 @@ type ParamAnalyzer struct {
 	rawParams map[string]interface{}
 	// Temporary data structure used by analysis
 	parsed map[string]*ActionParam
+	// Leaf parameter names sorted alphabetically
+	leafParamNames []string
 
 	/* Fields below are computed by 'analyze' */
 
@@ -39,6 +41,8 @@ type ParamAnalyzer struct {
 	ParamTypes map[string]*ObjectDataType
 	// Parameters sorted alphabetically by name
 	Params []*ActionParam
+	// Leaf parameters
+	LeafParams []*ActionParam
 }
 
 // Factory method, initialize 'path' and 'rawParams' fields
@@ -59,6 +63,22 @@ func (p *ParamAnalyzer) Analyze() {
 	}
 	sort.Strings(paths)
 	sort.Sort(ByReverseLength(paths))
+	var rawLeafParams = []string{}
+	for _, p := range paths {
+		var hasLeaf = false
+		for _, r := range rawLeafParams {
+			if strings.HasPrefix(r, p) {
+				hasLeaf = true
+				break
+			}
+		}
+		if hasLeaf {
+			continue
+		}
+		rawLeafParams = append(rawLeafParams, p)
+	}
+	sort.Strings(rawLeafParams)
+	p.leafParamNames = rawLeafParams
 
 	// Iterate through all params and build corresponding ActionParam structs
 	p.parsed = map[string]*ActionParam{}
@@ -145,7 +165,6 @@ func (p *ParamAnalyzer) Analyze() {
 			}
 		}
 	}
-
 	// Now do a second pass on parsed params to generate their declarations
 	p.ParamTypes = make(map[string]*ObjectDataType)
 	for _, param := range top {
@@ -277,7 +296,14 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 		validValues = v.([]interface{})
 	}
 	native := nativeNameFromPath(path)
-	return &ActionParam{
+	var isLeaf = false
+	for _, l := range p.leafParamNames {
+		if path == l {
+			isLeaf = true
+			break
+		}
+	}
+	var actionParam = &ActionParam{
 		Name:        native,
 		QueryName:   path,
 		Description: removeBlankLines(description),
@@ -288,6 +314,10 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 		Regexp:      regexp,
 		ValidValues: validValues,
 	}
+	if isLeaf {
+		p.LeafParams = append(p.LeafParams, actionParam)
+	}
+	return actionParam
 }
 
 // Check whether string only contains blank characters

@@ -91,26 +91,21 @@ func generateCode(descriptor *ApiDescriptor, codegen string) error {
 
 // Generate kingpin subcommands, drives the cmd writer.
 func generateCmds(descriptor *ApiDescriptor, codegen string) error {
-	// TBD
-	/*	f, err := os.Create(codegen)
-		if err != nil {
-			return err
-		}
-		c, err := NewCmdsWriter(descriptor)
-		if err != nil {
-			return err
-		}
-		check(c.WriteHeader(descriptor, f))
-		for _, name := range descriptor.ResourceNames {
-			resource := descriptor.Resources[name]
-			c.WriteResourceHeader(name, f)
-			check(c.WriteResource(resource, f))
-		}
-		f.Close()
-		o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
-		if err != nil {
-			return fmt.Errorf("Failed to format generated code:\n%s", o)
-		}*/
+	f, err := os.Create(codegen)
+	if err != nil {
+		return err
+	}
+	c, err := NewCmdsWriter()
+	if err != nil {
+		return err
+	}
+	check(c.WriteHeader(f))
+	check(c.WriteCommands(descriptor, f))
+	f.Close()
+	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("Failed to format generated commands:\n%s", o)
+	}
 	return nil
 }
 

@@ -219,6 +219,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			Paths:          paths,
 			Suffix:         suffix,
 			Params:         paramAnalyzer.Params,
+			LeafParams:     paramAnalyzer.LeafParams,
 			Return:         parseReturn(actionName, name, contentType),
 			ReturnLocation: actionName == "create" && name != "Oauth2",
 		}

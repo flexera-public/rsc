@@ -21,7 +21,8 @@ type Action struct {
 	HttpMethod     string         // Action HTTP method, e.g. "GET", "POST"
 	Paths          []string       // Action paths
 	Suffix         string         // Action url suffix
-	Params         []*ActionParam // Action parameters
+	Params         []*ActionParam // Action method parameters
+	LeafParams     []*ActionParam // Action parameter leaves (for command line)
 	Return         string         // Type of method results, e.g. "*ServerArray"
 	ReturnLocation bool           // Whether API returns a location header. True for all "Create" except OAuth2's ugh.
 }

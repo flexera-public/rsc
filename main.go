@@ -6,10 +6,9 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
-	"strings"
 
-	"github.com/raphael/kingpin"
 	"github.com/rightscale/rsclient/rsapi15"
+	"gopkg.in/alecthomas/kingpin.v1"
 )
 
 // Basic configuration settings required by all clients
@@ -62,13 +61,13 @@ func main() {
 	token := app.Flag("token", "Oauth access token (overrides config)").String()
 
 	pretty := app.Flag("pretty", "Pretty print response body").Short('p').Bool()
-	extract := app.Flag("extract", "Extract value(s) from response media type at given path, path consists of dot separated attribute names, e.g. \"security_groups.href\"").Short('e').String()
+	//extract := app.Flag("extract", "Extract value(s) from response media type at given path, path consists of dot separated attribute names, e.g. \"security_groups.href\"").Short('e').String()
 
 	setup := app.Command("setup",
 		"create config file, defaults to $HOME/.rsclient, use '--config' to override")
 	cfgPath := setup.Flag("config", "path to rsclient config file").Default(fmt.Sprintf("%v/.rsclient", os.Getenv("HOME"))).String()
 
-	//rsapi15.RegisterCommands(app)
+	rsapi15.RegisterCommands(app)
 
 	cmd := kingpin.MustParse(app.Parse(os.Args[1:]))
 
@@ -85,35 +84,24 @@ func main() {
 		if token != nil {
 			config.Token = *token
 		}
-		client, err := rsapi15.New(config.Token, config.Account, config.Endpoint, 0)
+		client, err := rsapi15.New(config.Account, config.Token, nil, nil)
 		if err != nil {
 			PrintError("Failed to create API session: %v", err.Error())
 		} else {
-			//res := client.RunCommand(cmd)
+			res := client.RunCommand(cmd)
 			pp := pretty != nil && *pretty
-			if extract != nil {
-				paths := strings.Split(extract, ".")
-				for res != nil && len(paths) > 0 {
-					res = res[paths[0]]
-					paths = paths[1:]
-				}
-				if res == nil {
-					PrintError("No value at path '%s', response was:", extract)
-					pp = true // Force pretty print
-				}
-			}
 			var err error
-			var output string
+			var output []byte
 			if pp {
-				output, err := json.MarshalIndent(res, "", "  ")
+				output, err = json.MarshalIndent(res, "", "  ")
 			} else {
-				output, err := json.Marshal(res)
+				output, err = json.Marshal(res)
 			}
 			if err != nil {
 				PrintError("Failed to JSON encode response\n%+v", res)
 				return
 			}
-			fmt.Println(output)
+			fmt.Println(string(output))
 		}
 	}
 }
@@ -166,7 +154,7 @@ func createConfig(path string) {
 
 	config.Save(path)
 
-	_, err := rsapi15.NewClient(config.Token, config.Account, config.Endpoint, 0)
+	_, err := rsapi15.New(config.Account, config.Token, nil, nil)
 	if err != nil {
 		PrintError("Failed to contact RightScale: %v", err.Error())
 	} else {
