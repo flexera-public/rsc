@@ -19,7 +19,7 @@ type OAuthAuthenticator struct {
 	RefreshToken string
 	AccessToken  string
 	RefreshAt    time.Time
-	Client       *http.Client
+	Client       HttpClient
 }
 
 // Account authenticator uses RS oauth

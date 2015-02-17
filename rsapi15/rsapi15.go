@@ -24,7 +24,12 @@ type Api15 struct {
 	Auth      Authenticator // Authenticator, signs requests for auth
 	Logger    *log.Logger   // Optional logger, if specified requests and responses get logged
 	Endpoint  string        // API endpoint, e.g. "us-3.rightscale.com"
-	Client    *http.Client  // Underlying http client
+	Client    HttpClient    // Underlying http client
+}
+
+// Use interface instead of raw http.Client to ease testing
+type HttpClient interface {
+	Do(req *http.Request) (*http.Response, error)
 }
 
 // New returns a API 1.5 client that uses User oauth authentication.
@@ -32,7 +37,7 @@ type Api15 struct {
 // endpoint may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
 func New(accountId int, refreshToken string, endpoint string, logger *log.Logger,
-	client *http.Client) (*Api15, error) {
+	client HttpClient) (*Api15, error) {
 	if client == nil {
 		client = http.DefaultClient
 	}
