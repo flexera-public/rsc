@@ -249,9 +249,6 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	if err = a.Auth.Sign(req, a.Host); err != nil {
-		return nil, err
-	}
 	req.Header.Set("X-API-Version", "1.5")
 	if a.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
@@ -267,9 +264,13 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 	}
 	if a.DumpRequestResponse {
 		var b, err = httputil.DumpRequest(req, true)
-		if err != nil {
-			fmt.Printf("REQUEST\n-------\n%v\n", b)
+		if err == nil {
+			fmt.Printf("REQUEST\n-------\n%s", b)
 		}
+	}
+	// Sign last so auth headers don't get printed or logged
+	if err = a.Auth.Sign(req, a.Host); err != nil {
+		return nil, err
 	}
 	resp, err := a.Client.Do(req)
 	if err != nil {
@@ -282,8 +283,8 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 	}
 	if a.DumpRequestResponse {
 		var b, err = httputil.DumpResponse(resp, true)
-		if err != nil {
-			fmt.Printf("RESPONSE\n--------\n%v\n", b)
+		if err == nil {
+			fmt.Printf("RESPONSE\n--------\n%s\n", b)
 		}
 	}
 	if a.FetchLocationResource {
