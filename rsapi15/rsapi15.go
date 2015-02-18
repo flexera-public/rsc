@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
 	"strconv"
 	"strings"
@@ -20,11 +21,13 @@ import (
 // RightScale API 1.5 client
 // Instances of this struct should be created through `New`.
 type Api15 struct {
-	AccountId int           // Account in which client is currently operating
-	Auth      Authenticator // Authenticator, signs requests for auth
-	Logger    *log.Logger   // Optional logger, if specified requests and responses get logged
-	Endpoint  string        // API endpoint, e.g. "us-3.rightscale.com"
-	Client    HttpClient    // Underlying http client
+	AccountId             int           // Account in which client is currently operating
+	Auth                  Authenticator // Authenticator, signs requests for auth
+	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
+	Endpoint              string        // API endpoint, e.g. "us-3.rightscale.com"
+	Client                HttpClient    // Underlying http client
+	DumpRequestResponse   bool          // Whether to dump HTTP requests and responses to STDOUT
+	FetchLocationResource bool          // Whether to fetch resource pointed by Location header
 }
 
 // Use interface instead of raw http.Client to ease testing
@@ -59,6 +62,41 @@ func New(accountId int, refreshToken string, endpoint string, logger *log.Logger
 		Logger:    logger,
 		Endpoint:  endpoint,
 		Client:    client,
+	}, nil
+}
+
+// NewRL10 returns a API 1.5 client that uses the information stored in /var/run/rll-secret to do
+// auth and configure the endpoint. The client behaves identically to the new returned by New in
+// all other regards.
+func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
+	var rllConfig, err = ioutil.ReadFile("/var/run/rll-secret")
+	if err != nil {
+		return nil, fmt.Errorf("Failed to load RLL config: %s", err.Error())
+	}
+	var port string
+	var secret string
+	for _, line := range strings.Split(string(rllConfig), "\n") {
+		var elems = strings.Split(line, "=")
+		if len(elems) != 2 {
+			return nil, fmt.Errorf("Invalid RLL configuration line '%s'", line)
+		}
+		switch elems[0] {
+		case "RS_RLL_PORT":
+			port = elems[1]
+			if _, err := strconv.Atoi(elems[1]); err != nil {
+				return nil, fmt.Errorf("Invalid port value '%s'", port)
+			}
+		case "RS_RLL_SECRET":
+			secret = elems[1]
+		}
+	}
+	var auth = RL10Authenticator{secret}
+	var endpoint = "localhost:" + port
+	return &Api15{
+		Auth:     &auth,
+		Logger:   logger,
+		Endpoint: endpoint,
+		Client:   client,
 	}, nil
 }
 
@@ -226,13 +264,32 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 		id = base64.StdEncoding.EncodeToString(b)
 		a.Logger.Printf("[%s] %s %s", id, req.Method, sUrl)
 	}
+	if a.DumpRequestResponse {
+		var b, err = httputil.DumpRequest(req, true)
+		if err != nil {
+			fmt.Printf("REQUEST\n-------\n%v\n", b)
+		}
+	}
 	resp, err := a.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
+
 	if a.Logger != nil {
 		d := time.Since(startedAt)
 		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
+	}
+	if a.DumpRequestResponse {
+		var b, err = httputil.DumpResponse(resp, true)
+		if err != nil {
+			fmt.Printf("RESPONSE\n--------\n%v\n", b)
+		}
+	}
+	if a.FetchLocationResource {
+		var loc = resp.Header.Get("Location")
+		if loc != "" {
+			resp, err = a.makeRequest("GET", loc, ApiParams{})
+		}
 	}
 	return resp, err
 }

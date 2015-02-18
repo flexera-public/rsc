@@ -52,7 +52,7 @@ func (a *OAuthAuthenticator) Sign(r *http.Request, endpoint string) error {
 		}
 		a.RefreshAt = time.Now().Add(d / 2)
 	}
-	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
+	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
 
 	return nil
 }
@@ -60,4 +60,16 @@ func (a *OAuthAuthenticator) Sign(r *http.Request, endpoint string) error {
 // Return endpoint that hosts given account (e.g. "us-3.rightscale.com")
 func (a *OAuthAuthenticator) ResolveEndpoint(accountId int) (string, error) {
 	return "my.rightscale.com", nil // TBD
+}
+
+// RightLink 10 authenticator
+type RL10Authenticator struct {
+	Secret string
+}
+
+// RL10 authenticator uses special header
+func (a *RL10Authenticator) Sign(r *http.Request, endpoint string) error {
+	r.Header.Set("X-RLL-Secret", a.Secret)
+
+	return nil
 }

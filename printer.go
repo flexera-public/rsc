@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/mgutz/ansi"
 )
 
-// Helpers
+/** Global Helpers **/
 
 var titleize = ansi.ColorFunc("blue+hb")
 var subTitleize = ansi.ColorFunc("blue")
@@ -36,6 +38,11 @@ func PrintSuccess(format string, a ...interface{}) {
 func PrintError(format string, a ...interface{}) {
 	m := fmt.Sprintf("[ERROR] "+format, a...)
 	fmt.Println(errorize(m))
+}
+
+func PrintFatal(format string, a ...interface{}) {
+	PrintError(format, a...)
+	os.Exit(1)
 }
 
 func FormatName(name string) string {

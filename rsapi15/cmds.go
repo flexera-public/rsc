@@ -1,7 +1,10 @@
 package rsapi15
 
 import (
-	"github.com/davecgh/go-spew/spew"
+	"fmt"
+	"net/http"
+	"strings"
+
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 
@@ -31,27 +34,37 @@ type ActionFlag struct {
 	ValidValues []string
 }
 
+// Flag values indexed by flag name indexed by command name
+type FlagValues map[string]map[string]interface{}
+
+// Map that holds flag values resulting from command line parsing
+var flagValues FlagValues
+
 // Register all commands with kinpin application
 func RegisterCommands(app *kingpin.Application) {
+	flagValues = make(FlagValues)
 	for _, command := range commands {
 		var resCmd = app.Command(command.Name, command.Description)
 		for _, action := range command.Actions {
 			var actionCmd = resCmd.Command(action.Name, action.Description)
+			var actionFlagValues = make(map[string]interface{})
+			var flagKey = fmt.Sprintf("%s %s", command.Name, action.Name)
+			flagValues[flagKey] = actionFlagValues
 			for _, flag := range action.Flags {
 				var cause *kingpin.FlagClause
-				cause = actionCmd.Flag(flag.Name, flag.Description).Dispatch(buildParam)
+				cause = actionCmd.Flag(flag.Name, flag.Description)
 				if flag.Mandatory {
 					cause = cause.Required()
 				}
 				switch flag.Type {
 				case "string":
-					cause.String()
+					actionFlagValues[flag.Name] = cause.String()
 				case "[]string":
-					cause.Strings()
+					actionFlagValues[flag.Name] = cause.Strings()
 				case "int":
-					cause.Int()
+					actionFlagValues[flag.Name] = cause.Int()
 				case "map":
-					cause.StringMap()
+					actionFlagValues[flag.Name] = cause.StringMap()
 				}
 
 			}
@@ -60,11 +73,11 @@ func RegisterCommands(app *kingpin.Application) {
 	}
 }
 
-func (a *Api15) RunCommand(cmd string) string {
-	return "42"
-}
-
-func buildParam(c *kingpin.ParseContext) error {
-	spew.Dump("CONTEXT:", c)
-	return nil
+// Actually run command
+func (a *Api15) RunCommand(cmd, href string) (*http.Response, error) {
+	var elems = strings.Split(cmd, " ")
+	if len(elems) != 2 {
+		return nil, fmt.Errorf("Invalid command '%s'", cmd)
+	}
+	return a.Do(href, elems[2], flagValues[cmd])
 }
