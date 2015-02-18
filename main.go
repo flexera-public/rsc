@@ -19,9 +19,9 @@ func main() {
 	// Register global commands and flags
 	var cfgPathFlag = app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).String()
 	var accountFlag = app.Flag("account", "RightScale account ID").Short('a').Int()
-	var hostFlag = app.Flag("host", "RightScale API host (e.g. 'us-3.rightscale.com')").Short('e').String()
-	var tokenFlag = app.Flag("key", "OAuth access token or API key").String()
-	var rl10Flag = app.Flag("rl10", "Proxy requests through RightLink 10 (exclusive with '-token')").Bool()
+	var hostFlag = app.Flag("host", "RightScale API host (e.g. 'us-3.rightscale.com')").Short('h').String()
+	var tokenFlag = app.Flag("key", "OAuth access token or API key").Short('k').String()
+	var rl10Flag = app.Flag("rl10", "Proxy requests through RightLink 10 (exclusive with '--key')").Bool()
 
 	var extractOneFlag = app.Flag("x1", "Extract single value using given JSON:select expression").String()
 	var extractMultipleFlag = app.Flag("xm", "Extract zero, one or multiple values using given JSON:select expression and return space separated list (useful for bash scripts)").String()
