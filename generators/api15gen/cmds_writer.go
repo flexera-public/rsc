@@ -95,9 +95,6 @@ func toHelp(long string) string {
 // Type of flag, one of "string", "[]string", "int" or "map"
 func flagType(param *ActionParam) string {
 	var path = param.QueryName
-	if strings.HasSuffix(path, "[*]") {
-		return "map"
-	}
 	if strings.HasSuffix(path, "[]") {
 		return "[]string"
 	}
@@ -110,10 +107,12 @@ func flagType(param *ActionParam) string {
 	}
 	if _, ok := param.Type.(*ArrayDataType); ok {
 		return "[]string"
+	} else if _, ok := param.Type.(*EnumerableDataType); ok {
+		return "map"
 	}
 	var b, ok = param.Type.(*BasicDataType)
 	if !ok {
-		panic("Wooaat? a non basic or array leaf???")
+		panic("Wooaat? a object leaf???")
 	}
 	return string(*b)
 }

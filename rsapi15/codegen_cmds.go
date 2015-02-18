@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     rsc - RightScale API 1.5 command line tool
 //
-// Generated Feb 17, 2015 at 11:48pm (PST)
+// Generated Feb 18, 2015 at 12:23pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -37,7 +37,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the AccountGroups owned by this Account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -80,7 +80,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all Alerts.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -243,7 +243,7 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"true", "false"},
 					},
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -427,7 +427,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -602,7 +602,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "backup[volume_attachment_hrefs]",
+						Name:        "backup[volume_attachment_hrefs][]",
 						Description: `List of volume attachment hrefs that are to be backed-up.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -652,7 +652,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -769,7 +769,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the enterprise ChildAccounts available for this Account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -803,7 +803,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the clouds available to this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -853,6 +853,13 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
+						Name:        "cloud_account[creds]",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
 						Name:        "cloud_account[token]",
 						Description: `The cloud token to identify a private cloud`,
 						Type:        "string",
@@ -891,7 +898,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the Cookbooks available to this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1028,7 +1035,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "cookbook_attachments[cookbook_hrefs]",
+						Name:        "cookbook_attachments[cookbook_hrefs][]",
 						Description: `The hrefs of the cookbooks to be attached`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1042,7 +1049,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Detach multiple cookbooks from a given resource.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "cookbook_attachments[cookbook_attachment_hrefs]",
+						Name:        "cookbook_attachments[cookbook_attachment_hrefs][]",
 						Description: `The hrefs of the cookbook attachments to be detached`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1111,7 +1118,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the Credentials available to this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1188,7 +1195,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all Datacenters for a particular cloud.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1260,7 +1267,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists deployments of the account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1397,7 +1404,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the identity providers associated with this enterprise account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1440,7 +1447,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all Images for the given Cloud.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1502,6 +1509,13 @@ var commands = map[string]*ResourceCmd{
 						Description: `The value to be updated with. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc.`,
 						Type:        "[]string",
 						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&ActionFlag{
@@ -1584,7 +1598,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "instance[security_group_hrefs]",
+						Name:        "instance[security_group_hrefs][]",
 						Description: `The hrefs of the security groups.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1626,7 +1640,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "instance[subnet_hrefs]",
+						Name:        "instance[subnet_hrefs][]",
 						Description: `The hrefs of the updated subnets.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1668,7 +1682,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists instances of a given cloud, server array.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1704,6 +1718,13 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
 						Name:        "inputs[][name]",
 						Description: `The name of inputs needed. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
 						Type:        "[]string",
@@ -1726,7 +1747,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1748,7 +1769,7 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"true", "false"},
 					},
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -1765,6 +1786,13 @@ var commands = map[string]*ResourceCmd{
 						Name:        "inputs[][value]",
 						Description: `The value of that input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
 						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
 						Mandatory:   false,
 						NonBlank:    true,
 					},
@@ -1813,6 +1841,13 @@ var commands = map[string]*ResourceCmd{
 						Name:        "inputs[][value]",
 						Description: `The value of these inputs. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
 						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
 						Mandatory:   false,
 						NonBlank:    true,
 					},
@@ -1979,7 +2014,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "instance[security_group_hrefs]",
+						Name:        "instance[security_group_hrefs][]",
 						Description: `The hrefs of the updated security groups.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2021,7 +2056,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "instance[subnet_hrefs]",
+						Name:        "instance[subnet_hrefs][]",
 						Description: `The hrefs of the updated subnets.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2151,7 +2186,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists instance types.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2230,7 +2265,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the IpAddresses available to this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2326,7 +2361,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the ip address bindings available to this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2358,7 +2393,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2487,7 +2522,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2624,7 +2659,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the MultiCloudImage settings.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2747,7 +2782,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists networks in this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2843,7 +2878,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the NetworkGateways available to this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2917,6 +2952,13 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
+						Name:        "network_option_group[options]",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
 						Name:        "network_option_group[name]",
 						Description: `Name of this NetworkOptionGroup`,
 						Type:        "string",
@@ -2938,7 +2980,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `List NetworkOptionGroups available in this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -2967,6 +3009,13 @@ var commands = map[string]*ResourceCmd{
 						Name:        "network_option_group[description]",
 						Description: `Update the description`,
 						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&ActionFlag{
+						Name:        "network_option_group[options]",
+						Description: ``,
+						Type:        "map",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -3012,7 +3061,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `List NetworkOptionGroupAttachments in this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3159,7 +3208,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `List all permissions for all users of the current acount.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3219,7 +3268,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all PlacementGroups in an account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3268,7 +3317,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all preferences.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3314,7 +3363,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the publications available to this account. Only non-HEAD revisions are possible.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3412,7 +3461,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all recurring volume attachments.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3461,7 +3510,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Creates a Repository.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "repository[asset_paths][cookbooks]",
+						Name:        "repository[asset_paths][cookbooks][]",
 						Description: `The cookbook paths for the repository`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3540,7 +3589,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all Repositories for this Account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3562,7 +3611,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Show a list of repositories that have imported cookbooks with the given names.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "imported_cookbook_name",
+						Name:        "imported_cookbook_name[]",
 						Description: `A list of cookbook names that were imported by the repository.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3591,7 +3640,7 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"true", "false"},
 					},
 					&ActionFlag{
-						Name:        "asset_hrefs",
+						Name:        "asset_hrefs[]",
 						Description: `Hrefs of the assets that should be imported.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -3621,7 +3670,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Retrieves a preview of the effects of a Cookbook import.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "asset_hrefs",
+						Name:        "asset_hrefs[]",
 						Description: `Hrefs of the assets that should be imported.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -3679,7 +3728,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Updates a specified Repository.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "repository[asset_paths][cookbooks]",
+						Name:        "repository[asset_paths][cookbooks][]",
 						Description: `The updated cookbook paths for the repository`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3800,7 +3849,7 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"true", "false"},
 					},
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -3931,7 +3980,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `List Routes available in this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -4041,7 +4090,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `List RouteTables available in this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -4260,7 +4309,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists Security Groups.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -4518,7 +4567,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "server[instance][security_group_hrefs]",
+						Name:        "server[instance][security_group_hrefs][]",
 						Description: `The hrefs of the security groups.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -4567,6 +4616,13 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
+						Name:        "server[instance][inputs]",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
 						Name:        "server[instance][inputs][][name]",
 						Description: `The Input name. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
 						Type:        "[]string",
@@ -4581,7 +4637,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "server[instance][subnet_hrefs]",
+						Name:        "server[instance][subnet_hrefs][]",
 						Description: `The hrefs of the updated subnets.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -4645,7 +4701,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists servers.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -4678,6 +4734,13 @@ var commands = map[string]*ResourceCmd{
 						Description: `The href of the Server Template.`,
 						Type:        "string",
 						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "server[instance][inputs]",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&ActionFlag{
@@ -4985,7 +5048,7 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"true", "false"},
 					},
 					&ActionFlag{
-						Name:        "server_array[instance][security_group_hrefs]",
+						Name:        "server_array[instance][security_group_hrefs][]",
 						Description: `The hrefs of the Security Groups.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5041,6 +5104,13 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
+						Name:        "server_array[instance][inputs]",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
 						Name:        "server_array[instance][datacenter_href]",
 						Description: `The href of the Datacenter / Zone. For multiple Datacenters, use 'datacenter_policy' instead.`,
 						Type:        "string",
@@ -5069,7 +5139,7 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "server_array[instance][subnet_hrefs]",
+						Name:        "server_array[instance][subnet_hrefs][]",
 						Description: `The hrefs of the updated Subnets.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5149,7 +5219,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists server arrays.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5436,7 +5506,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5521,7 +5591,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Publishes a given ServerTemplate and its subordinates.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "account_group_hrefs",
+						Name:        "account_group_hrefs[]",
 						Description: `List of hrefs of account groups to publish to.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -5565,7 +5635,7 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"true", "false"},
 					},
 					&ActionFlag{
-						Name:        "categories",
+						Name:        "categories[]",
 						Description: `List of Categories.`,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5669,7 +5739,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists the ServerTemplateMultiCloudImages available to this account.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5785,7 +5855,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists ssh keys.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5876,7 +5946,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists subnets of a given cloud.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -5936,7 +6006,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Get tags for a list of resource hrefs.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "resource_hrefs",
+						Name:        "resource_hrefs[]",
 						Description: `Hrefs of the resources for which tags are to be returned.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -5981,7 +6051,7 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"true", "false"},
 					},
 					&ActionFlag{
-						Name:        "tags",
+						Name:        "tags[]",
 						Description: `The tags which must be present on the resource.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -5995,14 +6065,14 @@ var commands = map[string]*ResourceCmd{
 				Description: `Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "resource_hrefs",
+						Name:        "resource_hrefs[]",
 						Description: `Hrefs of the resources for which the tags are to be added.`,
 						Type:        "[]string",
 						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "tags",
+						Name:        "tags[]",
 						Description: `Tags to be added.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -6016,14 +6086,14 @@ var commands = map[string]*ResourceCmd{
 				Description: `Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "resource_hrefs",
+						Name:        "resource_hrefs[]",
 						Description: `Hrefs of the resources for which tags are to be deleted.`,
 						Type:        "[]string",
 						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&ActionFlag{
-						Name:        "tags",
+						Name:        "tags[]",
 						Description: `Tags to be deleted.`,
 						Type:        "[]string",
 						Mandatory:   true,
@@ -6134,7 +6204,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `List the users available to the account the user is logged in to`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -6334,7 +6404,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists volumes.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -6411,7 +6481,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all volume attachments.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -6504,7 +6574,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists all volume_snapshots.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,
@@ -6553,7 +6623,7 @@ var commands = map[string]*ResourceCmd{
 				Description: `Lists Volume Types.`,
 				Flags: []*ActionFlag{
 					&ActionFlag{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Mandatory:   false,

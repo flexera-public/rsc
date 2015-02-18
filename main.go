@@ -24,7 +24,8 @@ func main() {
 	var rl10Flag = app.Flag("rl10", "Proxy requests through RightLink 10 (exclusive with '-token')").Bool()
 
 	var extractOneFlag = app.Flag("x1", "Extract single value using given JSON:select expression").String()
-	var extractMultipleFlag = app.Flag("xm", "Extract zero, one or multiple values using given JSON:select expression").String()
+	var extractMultipleFlag = app.Flag("xm", "Extract zero, one or multiple values using given JSON:select expression and return space separated list (useful for bash scripts)").String()
+	var extractMultipleFlagJson = app.Flag("xj", "Extract zero, one or multiple values using given JSON:select expression and return JSON").String()
 	var extractLinkFlag = app.Flag("xl", "Extract href of link found using given JSON:select expression").String()
 	var extractHeaderFlag = app.Flag("xh", "Extract header with given name").String()
 	var noRedirectFlag = app.Flag("noRedirect", "Do not follow redirect responses").Bool()
@@ -136,7 +137,9 @@ func main() {
 	if *extractOneFlag != "" {
 		err = displayer.ApplySingleExtract(*extractOneFlag)
 	} else if *extractMultipleFlag != "" {
-		err = displayer.ApplyExtract(*extractMultipleFlag)
+		err = displayer.ApplyExtract(*extractMultipleFlag, false)
+	} else if *extractMultipleFlagJson != "" {
+		err = displayer.ApplyExtract(*extractMultipleFlagJson, true)
 	} else if *extractLinkFlag != "" {
 		err = displayer.ApplyLinkExtract(*extractLinkFlag)
 	} else if *extractHeaderFlag != "" {

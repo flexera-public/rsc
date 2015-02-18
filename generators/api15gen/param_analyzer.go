@@ -297,15 +297,23 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 	}
 	native := nativeNameFromPath(path)
 	var isLeaf = false
-	for _, l := range p.leafParamNames {
-		if path == l {
-			isLeaf = true
-			break
+	if _, ok := dType.(*EnumerableDataType); ok {
+		isLeaf = true
+	} else {
+		for _, l := range p.leafParamNames {
+			if path == l {
+				isLeaf = true
+				break
+			}
 		}
+	}
+	var queryName = path
+	if _, ok := dType.(*ArrayDataType); ok {
+		queryName += "[]"
 	}
 	var actionParam = &ActionParam{
 		Name:        native,
-		QueryName:   path,
+		QueryName:   queryName,
 		Description: removeBlankLines(description),
 		VarName:     parseParamName(native),
 		Type:        dType,

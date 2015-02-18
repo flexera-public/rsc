@@ -123,7 +123,7 @@ func (a *Api15) ShowHelp(cmd string) error {
 	}
 	fmt.Printf("usage: rsc [<flags>] api15 %s [<%s.%s flags>] %s\n", action.Name,
 		resource.Name, action.Name, href)
-	fmt.Printf("<%s.%s flags>:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n"))
+	fmt.Printf("<%s.%s flags>:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n\n"))
 	return nil
 }
 
