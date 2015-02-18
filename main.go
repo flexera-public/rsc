@@ -20,7 +20,7 @@ func main() {
 	var cfgPathFlag = app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).String()
 	var accountFlag = app.Flag("account", "RightScale account ID").Short('a').Int()
 	var hostFlag = app.Flag("host", "RightScale API host (e.g. 'us-3.rightscale.com')").Short('e').String()
-	var tokenFlag = app.Flag("token", "OAuth access token").Short('t').String()
+	var tokenFlag = app.Flag("key", "OAuth access token or API key").String()
 	var rl10Flag = app.Flag("rl10", "Proxy requests through RightLink 10 (exclusive with '-token')").Bool()
 
 	var extractOneFlag = app.Flag("x1", "Extract single value using given JSON:select expression").String()
@@ -134,8 +134,10 @@ func main() {
 	if err != nil {
 		PrintFatal(err.Error())
 	}
+	var moreThanOneError = false
 	if *extractOneFlag != "" {
 		err = displayer.ApplySingleExtract(*extractOneFlag)
+		moreThanOneError = strings.Contains(err.Error(), "returned more than one value") // Ugh, there has to be a better way
 	} else if *extractMultipleFlag != "" {
 		err = displayer.ApplyExtract(*extractMultipleFlag, false)
 	} else if *extractMultipleFlagJson != "" {
@@ -152,6 +154,22 @@ func main() {
 		displayer.Pretty()
 	}
 
-	// We're done
+	// We're done, print output and figure out correct exit code
 	fmt.Printf(displayer.Output())
+	var exitStatus = 0
+	switch {
+	case moreThanOneError:
+		exitStatus = 6
+	case resp.StatusCode == 401:
+		exitStatus = 1
+	case resp.StatusCode == 403:
+		exitStatus = 3
+	case resp.StatusCode == 404:
+		exitStatus = 4
+	case resp.StatusCode > 399 && resp.StatusCode < 500:
+		exitStatus = 2
+	case resp.StatusCode > 499:
+		exitStatus = 5
+	}
+	os.Exit(exitStatus)
 }
