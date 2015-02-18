@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/rightscale/rsclient/rsapi15"
 	"gopkg.in/alecthomas/kingpin.v1"
@@ -64,7 +65,7 @@ func main() {
 	// Execute appropriate command
 	var resp *http.Response
 	var err error
-	switch cmd {
+	switch strings.Split(cmd, " ")[0] {
 
 	case "setup":
 		err = createConfig(*cfgPathFlag)
@@ -101,11 +102,11 @@ func main() {
 	}
 
 	// Handle command results
-	if resp == nil {
-		return // No results, just exit (may need to revise)
-	}
 	if err != nil {
 		PrintFatal(err.Error())
+	}
+	if resp == nil {
+		return // No results, just exit (may need to revise)
 	}
 
 	// Handle command output (apply any extraction)

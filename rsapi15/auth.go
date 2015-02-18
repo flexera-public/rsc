@@ -25,12 +25,13 @@ type OAuthAuthenticator struct {
 // Account authenticator uses RS oauth
 func (a *OAuthAuthenticator) Sign(r *http.Request, endpoint string) error {
 	if time.Now().After(a.RefreshAt) {
-		jsonStr := []byte(fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken))
-		authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", endpoint), bytes.NewBuffer(jsonStr))
+		jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken)
+		authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", endpoint), bytes.NewBufferString(jsonStr))
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
 		}
 		authReq.Header.Set("X-API-Version", "1.5")
+		authReq.Header.Set("Content-Type", "application/json")
 		resp, err := a.Client.Do(authReq)
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err.Error()) // TBD RETRY A FEW TIMES
@@ -45,8 +46,12 @@ func (a *OAuthAuthenticator) Sign(r *http.Request, endpoint string) error {
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to load response JSON): %s", err.Error())
 		}
-		a.AccessToken = session["access_token"].(string)
-		d, err := time.ParseDuration(session["expires_in"].(string) + "s")
+		accessToken, ok := session["access_token"].(string)
+		if !ok {
+			return fmt.Errorf("Unexpected auth response: %s", jsonBytes)
+		}
+		a.AccessToken = accessToken
+		d, err := time.ParseDuration(fmt.Sprintf("%vs", session["expires_in"]))
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to parse token duration): %s", err.Error())
 		}

@@ -252,6 +252,7 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 	if err = a.Auth.Sign(req, a.Endpoint); err != nil {
 		return nil, err
 	}
+	req.Header.Set("X-API-Version", "1.5")
 	if a.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
 	}
