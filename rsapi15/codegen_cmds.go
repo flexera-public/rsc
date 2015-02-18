@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     rsc - RightScale API 1.5 command line tool
 //
-// Generated Feb 17, 2015 at 12:02am (PST)
+// Generated Feb 17, 2015 at 11:48pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -10,12 +10,15 @@
 
 package rsapi15
 
+import "regexp"
+
 // API 1.5 resource commands
 // Each command contains sub-commands for all resource actions
-var commands = []*ResourceCmd{
-	&ResourceCmd{
+var commands = map[string]*ResourceCmd{
+	"Account": &ResourceCmd{
 		Name:        "Account",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`/api/accounts/[[:alnum:]]`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "show",
@@ -24,9 +27,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"AccountGroup": &ResourceCmd{
 		Name:        "AccountGroup",
 		Description: `An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/account_groups/[[:alnum:]]|/api/account_groups)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -66,9 +70,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Alert": &ResourceCmd{
 		Name:        "Alert",
 		Description: `An Alert represents an AlertSpec bound to a running Instance.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/alerts/[[:alnum:]]|/api/servers/[[:alnum:]]/alerts/[[:alnum:]]|/api/server_arrays/[[:alnum:]]/alerts/[[:alnum:]]|/api/deployments/[[:alnum:]]/alerts/[[:alnum:]]|/api/alerts/[[:alnum:]]|/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/alerts|/api/servers/[[:alnum:]]/alerts|/api/server_arrays/[[:alnum:]]/alerts|/api/deployments/[[:alnum:]]/alerts|/api/alerts)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -134,9 +139,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"AlertSpec": &ResourceCmd{
 		Name:        "AlertSpec",
 		Description: `An AlertSpec defines the conditions under which an Alert is triggered and escalated.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/servers/[[:alnum:]]/alert_specs/[[:alnum:]]|/api/server_arrays/[[:alnum:]]/alert_specs/[[:alnum:]]|/api/server_templates/[[:alnum:]]/alert_specs/[[:alnum:]]|/api/alert_specs/[[:alnum:]]|/api/servers/[[:alnum:]]/alert_specs|/api/server_arrays/[[:alnum:]]/alert_specs|/api/server_templates/[[:alnum:]]/alert_specs|/api/alert_specs)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -355,9 +361,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"AuditEntry": &ResourceCmd{
 		Name:        "AuditEntry",
 		Description: `An Audit Entry can be used to track various activities of a resource.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/audit_entries/[[:alnum:]]|/api/audit_entries)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -529,9 +536,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Backup": &ResourceCmd{
 		Name:        "Backup",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`(/api/backups/[[:alnum:]]|/api/backups)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "cleanup",
@@ -730,9 +738,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"ChildAccount": &ResourceCmd{
 		Name:        "ChildAccount",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`/api/child_accounts`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -784,9 +793,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Cloud": &ResourceCmd{
 		Name:        "Cloud",
 		Description: `Represents a Cloud (within the context of the account in the session).`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]|/api/clouds)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -826,9 +836,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"CloudAccount": &ResourceCmd{
 		Name:        "CloudAccount",
 		Description: `Represents a Cloud Account (An association between the account and a cloud).`,
+		HrefRegexp:  regexp.MustCompile(`(/api/cloud_accounts/[[:alnum:]]|/api/cloud_accounts)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -870,9 +881,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Cookbook": &ResourceCmd{
 		Name:        "Cookbook",
 		Description: `Represents a given instance of a single cookbook.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/cookbooks/[[:alnum:]]|/api/cookbooks)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -963,9 +975,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"CookbookAttachment": &ResourceCmd{
 		Name:        "CookbookAttachment",
 		Description: `Cookbook Attachment is used to associate a particular cookbook with a ServerTemplate. A Cookbook Attachment must be in place before a recipe can be bound to a runlist using RunnableBinding.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/cookbooks/[[:alnum:]]/cookbook_attachments/[[:alnum:]]|/api/server_templates/[[:alnum:]]/cookbook_attachments/[[:alnum:]]|/api/cookbook_attachments/[[:alnum:]]|/api/cookbooks/[[:alnum:]]/cookbook_attachments|/api/server_templates/[[:alnum:]]/cookbook_attachments|/api/cookbook_attachments)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -1060,9 +1073,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Credential": &ResourceCmd{
 		Name:        "Credential",
 		Description: `A Credential provides an abstraction for sensitive textual information, such as passphrases or cloud credentials, whose value should be encrypted when stored in the database and not generally shown in the UI or through the API...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/credentials/[[:alnum:]]|/api/credentials)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -1164,9 +1178,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Datacenter": &ResourceCmd{
 		Name:        "Datacenter",
 		Description: `Datacenters represent isolated facilities within a cloud`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/datacenters/[[:alnum:]]|/api/clouds/[[:alnum:]]/datacenters)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -1206,9 +1221,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Deployment": &ResourceCmd{
 		Name:        "Deployment",
 		Description: `Deployments represent logical groupings of related assets such as servers, server arrays, default configuration settings...etc.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/deployments/[[:alnum:]]|/api/deployments)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -1359,9 +1375,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"HealthCheck": &ResourceCmd{
 		Name:        "HealthCheck",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`/api/health-check/`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -1370,9 +1387,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"IdentityProvider": &ResourceCmd{
 		Name:        "IdentityProvider",
 		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account, and is trusted by the RightScale dashboard to authenticate your enterprise's end users...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/identity_providers/[[:alnum:]]|/api/identity_providers)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -1412,9 +1430,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Image": &ResourceCmd{
 		Name:        "Image",
 		Description: `Images represent base VM image existing in a cloud`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/images/[[:alnum:]]|/api/clouds/[[:alnum:]]/images)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -1454,9 +1473,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Input": &ResourceCmd{
 		Name:        "Input",
 		Description: `Inputs help extract dynamic information, usually specified at runtime, from repeatable configuration operations that can be codified.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/inputs|/api/deployments/[[:alnum:]]/inputs|/api/server_templates/[[:alnum:]]/inputs)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -1495,9 +1515,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Instance": &ResourceCmd{
 		Name:        "Instance",
 		Description: `Instances represent an entity that is runnable in the cloud.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]|/api/clouds/[[:alnum:]]/instances|/api/clouds/[[:alnum:]]/instances|/api/server_arrays/[[:alnum:]]/current_instances)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2038,9 +2059,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"InstanceCustomLodgement": &ResourceCmd{
 		Name:        "InstanceCustomLodgement",
 		Description: `An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#setcustomlodgement interface.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/instance_custom_lodgements/[[:alnum:]]|/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/instance_custom_lodgements)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2119,9 +2141,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"InstanceType": &ResourceCmd{
 		Name:        "InstanceType",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instance_types/[[:alnum:]]|/api/clouds/[[:alnum:]]/instance_types)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -2161,9 +2184,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"IpAddress": &ResourceCmd{
 		Name:        "IpAddress",
 		Description: `An IpAddress provides an abstraction for IPv4 addresses bindable to Instance resources running in a Cloud.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/ip_addresses/[[:alnum:]]|/api/clouds/[[:alnum:]]/ip_addresses)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2249,9 +2273,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"IpAddressBinding": &ResourceCmd{
 		Name:        "IpAddressBinding",
 		Description: `An IpAddressBinding represents an abstraction for binding an IpAddress to an instance.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/ip_addresses/[[:alnum:]]/ip_address_bindings/[[:alnum:]]|/api/clouds/[[:alnum:]]/ip_address_bindings/[[:alnum:]]|/api/clouds/[[:alnum:]]/ip_addresses/[[:alnum:]]/ip_address_bindings|/api/clouds/[[:alnum:]]/ip_address_bindings)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2323,9 +2348,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"MonitoringMetric": &ResourceCmd{
 		Name:        "MonitoringMetric",
 		Description: `A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/monitoring_metrics/[[:alnum:]]|/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/monitoring_metrics)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -2430,9 +2456,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"MultiCloudImage": &ResourceCmd{
 		Name:        "MultiCloudImage",
 		Description: `A MultiCloudImage is a RightScale component that functions as a pointer to machine images in specific clouds (e...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/server_templates/[[:alnum:]]/multi_cloud_images/[[:alnum:]]|/api/multi_cloud_images/[[:alnum:]]|/api/server_templates/[[:alnum:]]/multi_cloud_images|/api/multi_cloud_images)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2538,9 +2565,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"MultiCloudImageSetting": &ResourceCmd{
 		Name:        "MultiCloudImageSetting",
 		Description: `A MultiCloudImageSetting defines which settings should be used when a server is launched in a cloud...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/multi_cloud_images/[[:alnum:]]/settings/[[:alnum:]]|/api/multi_cloud_images/[[:alnum:]]/settings)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2667,9 +2695,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Network": &ResourceCmd{
 		Name:        "Network",
 		Description: `A Network is a logical grouping of network devices.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/networks/[[:alnum:]]|/api/networks)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2768,9 +2797,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"NetworkGateway": &ResourceCmd{
 		Name:        "NetworkGateway",
 		Description: `A NetworkGateway is an interface that allows traffic to be routed between networks.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/network_gateways/[[:alnum:]]|/api/network_gateways)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2863,9 +2893,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"NetworkOptionGroup": &ResourceCmd{
 		Name:        "NetworkOptionGroup",
 		Description: `A key/value pair hash containing options for configuring a Network.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/network_option_groups/[[:alnum:]]|/api/network_option_groups)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -2950,9 +2981,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"NetworkOptionGroupAttachment": &ResourceCmd{
 		Name:        "NetworkOptionGroupAttachment",
 		Description: `Resource for attaching NetworkOptionGroups to Networks.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/network_option_group_attachments/[[:alnum:]]|/api/network_option_group_attachments)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -3033,9 +3065,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Oauth2": &ResourceCmd{
 		Name:        "Oauth2",
 		Description: `Note that all API calls irrespective of the resource it is acting on, should pass a header "X-Api-Version" with the value "1...`,
+		HrefRegexp:  regexp.MustCompile(`/api/oauth2`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -3095,9 +3128,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Permission": &ResourceCmd{
 		Name:        "Permission",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`(/api/permissions/[[:alnum:]]|/api/permissions)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -3147,9 +3181,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"PlacementGroup": &ResourceCmd{
 		Name:        "PlacementGroup",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`(/api/placement_groups/[[:alnum:]]|/api/placement_groups)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -3223,9 +3258,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Preference": &ResourceCmd{
 		Name:        "Preference",
 		Description: `A Preference is a user and account-specific setting. Preferences are used in many part of the RightScale platform and can be used for custom purposes if desired.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/preferences/[[:alnum:]]|/api/preferences)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -3268,9 +3304,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Publication": &ResourceCmd{
 		Name:        "Publication",
 		Description: `A Publication is a revisioned component shared with a set of Account Groups.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/publications/[[:alnum:]]|/api/publications)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -3316,9 +3353,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"PublicationLineage": &ResourceCmd{
 		Name:        "PublicationLineage",
 		Description: `A Publication Lineage contains lineage information for a Publication in the MultiCloudMarketplace.`,
+		HrefRegexp:  regexp.MustCompile(`/api/publication_lineages/[[:alnum:]]`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "show",
@@ -3336,9 +3374,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"RecurringVolumeAttachment": &ResourceCmd{
 		Name:        "RecurringVolumeAttachment",
 		Description: `A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/recurring_volume_attachments/[[:alnum:]]|/api/clouds/[[:alnum:]]/volumes/[[:alnum:]]/recurring_volume_attachments/[[:alnum:]]|/api/clouds/[[:alnum:]]/volume_snapshots/[[:alnum:]]/recurring_volume_attachments/[[:alnum:]]|/api/clouds/[[:alnum:]]/recurring_volume_attachments|/api/clouds/[[:alnum:]]/volumes/[[:alnum:]]/recurring_volume_attachments|/api/clouds/[[:alnum:]]/volume_snapshots/[[:alnum:]]/recurring_volume_attachments)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -3412,9 +3451,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Repository": &ResourceCmd{
 		Name:        "Repository",
 		Description: `A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/repositories/[[:alnum:]]|/api/repositories)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -3706,9 +3746,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"RepositoryAsset": &ResourceCmd{
 		Name:        "RepositoryAsset",
 		Description: `A RepositoryAsset represents an item discovered in a Repository`,
+		HrefRegexp:  regexp.MustCompile(`(/api/repositories/[[:alnum:]]/repository_assets/[[:alnum:]]|/api/repositories/[[:alnum:]]/repository_assets)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -3741,9 +3782,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"RightScript": &ResourceCmd{
 		Name:        "RightScript",
 		Description: `A RightScript is an executable piece of code that can be run on a server during the boot, operational, or decommission phases...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/right_scripts/[[:alnum:]]|/api/right_scripts)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -3829,9 +3871,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Route": &ResourceCmd{
 		Name:        "Route",
 		Description: `A Route defines how networking traffic should be routed from one destination to another...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/routes/[[:alnum:]]|/api/route_tables/[[:alnum:]]/routes/[[:alnum:]]|/api/routes|/api/route_tables/[[:alnum:]]/routes)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -3953,9 +3996,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"RouteTable": &ResourceCmd{
 		Name:        "RouteTable",
 		Description: `Grouped listing of Routes`,
+		HrefRegexp:  regexp.MustCompile(`(/api/route_tables/[[:alnum:]]|/api/route_tables)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -4057,9 +4101,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"RunnableBinding": &ResourceCmd{
 		Name:        "RunnableBinding",
 		Description: `A RunnableBinding represents an item in a runlist of a ServerTemplate`,
+		HrefRegexp:  regexp.MustCompile(`(/api/server_templates/[[:alnum:]]/runnable_bindings/[[:alnum:]]|/api/server_templates/[[:alnum:]]/runnable_bindings)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -4177,9 +4222,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"SecurityGroup": &ResourceCmd{
 		Name:        "SecurityGroup",
 		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as trust relationships amongst different security groups...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/security_groups/[[:alnum:]]|/api/clouds/[[:alnum:]]/security_groups)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -4253,9 +4299,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"SecurityGroupRule": &ResourceCmd{
 		Name:        "SecurityGroupRule",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`(/api/security_group_rules/[[:alnum:]]|/api/clouds/[[:alnum:]]/security_groups/[[:alnum:]]/security_group_rules/[[:alnum:]]|/api/security_group_rules|/api/clouds/[[:alnum:]]/security_groups/[[:alnum:]]/security_group_rules)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -4395,9 +4442,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Server": &ResourceCmd{
 		Name:        "Server",
 		Description: `Servers represent the notion of a server/machine from the RightScale's perspective`,
+		HrefRegexp:  regexp.MustCompile(`(/api/servers/[[:alnum:]]|/api/deployments/[[:alnum:]]/servers/[[:alnum:]]|/api/servers|/api/deployments/[[:alnum:]]/servers)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -4747,9 +4795,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"ServerArray": &ResourceCmd{
 		Name:        "ServerArray",
 		Description: `A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/server_arrays/[[:alnum:]]|/api/deployments/[[:alnum:]]/server_arrays/[[:alnum:]]|/api/server_arrays|/api/deployments/[[:alnum:]]/server_arrays)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -5356,9 +5405,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"ServerTemplate": &ResourceCmd{
 		Name:        "ServerTemplate",
 		Description: `ServerTemplates allow you to pre-configure servers by starting from a base image and adding scripts that run during the boot, operational, and shutdown phases...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/server_templates/[[:alnum:]]|/api/server_templates)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -5588,9 +5638,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"ServerTemplateMultiCloudImage": &ResourceCmd{
 		Name:        "ServerTemplateMultiCloudImage",
 		Description: `This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively add/delete MultiCloudImages to ServerTemplates and make them the default one...`,
+		HrefRegexp:  regexp.MustCompile(`(/api/server_template_multi_cloud_images/[[:alnum:]]|/api/server_template_multi_cloud_images)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -5663,9 +5714,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Session": &ResourceCmd{
 		Name:        "Session",
 		Description: `The sessions resource is in charge of creating API sessions that are bound to a given account`,
+		HrefRegexp:  regexp.MustCompile(`/api/sessions`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "accounts",
@@ -5709,9 +5761,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"SshKey": &ResourceCmd{
 		Name:        "SshKey",
 		Description: `Ssh Keys represent a created SSH Key that exists in the cloud.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/ssh_keys/[[:alnum:]]|/api/clouds/[[:alnum:]]/ssh_keys)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -5771,9 +5824,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Subnet": &ResourceCmd{
 		Name:        "Subnet",
 		Description: `A Subnet is a logical grouping of network devices`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/subnets/[[:alnum:]]|/api/clouds/[[:alnum:]]/subnets/[[:alnum:]]|/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/subnets|/api/clouds/[[:alnum:]]/subnets)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -5872,9 +5926,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Tag": &ResourceCmd{
 		Name:        "Tag",
 		Description: `A tag or machine tag is a useful way of attaching useful metadata to an object/resource.`,
+		HrefRegexp:  regexp.MustCompile(`/api/tags`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "by_resource",
@@ -5978,9 +6033,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Task": &ResourceCmd{
 		Name:        "Task",
 		Description: `Tasks represent processes that happen (or have happened) asynchronously within the context of an Instance.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/live/tasks/[[:alnum:]]|/api/server_arrays/[[:alnum:]]/live/tasks/[[:alnum:]])`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "show",
@@ -5998,9 +6054,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"User": &ResourceCmd{
 		Name:        "User",
 		Description: `A User represents an individual RightScale user`,
+		HrefRegexp:  regexp.MustCompile(`(/api/users/[[:alnum:]]|/api/users)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -6177,9 +6234,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"UserData": &ResourceCmd{
 		Name:        "UserData",
 		Description: ``,
+		HrefRegexp:  regexp.MustCompile(`/api/user_data/`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "show",
@@ -6188,9 +6246,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"Volume": &ResourceCmd{
 		Name:        "Volume",
 		Description: `A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/volumes/[[:alnum:]]|/api/clouds/[[:alnum:]]/volumes)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -6314,9 +6373,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"VolumeAttachment": &ResourceCmd{
 		Name:        "VolumeAttachment",
 		Description: `A VolumeAttachment represents a relationship between a volume and an instance.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/volume_attachments/[[:alnum:]]|/api/clouds/[[:alnum:]]/volume_attachments/[[:alnum:]]|/api/clouds/[[:alnum:]]/volumes/[[:alnum:]]/volume_attachments|/api/clouds/[[:alnum:]]/volumes/[[:alnum:]]/volume_attachment|/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/volume_attachments|/api/clouds/[[:alnum:]]/volume_attachments)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -6399,9 +6459,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"VolumeSnapshot": &ResourceCmd{
 		Name:        "VolumeSnapshot",
 		Description: `A VolumeSnapshot represents a Cloud storage volume at a particular point in time`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/volumes/[[:alnum:]]/volume_snapshots/[[:alnum:]]|/api/clouds/[[:alnum:]]/volume_snapshots/[[:alnum:]]|/api/clouds/[[:alnum:]]/volumes/[[:alnum:]]/volume_snapshots|/api/clouds/[[:alnum:]]/volume_snapshots)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "create",
@@ -6482,9 +6543,10 @@ var commands = []*ResourceCmd{
 			},
 		},
 	},
-	&ResourceCmd{
+	"VolumeType": &ResourceCmd{
 		Name:        "VolumeType",
 		Description: `A VolumeType describes the type of volume, particularly the size.`,
+		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/volume_types/[[:alnum:]]|/api/clouds/[[:alnum:]]/volume_types)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
 				Name:        "index",
@@ -6523,5 +6585,404 @@ var commands = []*ResourceCmd{
 				},
 			},
 		},
+	},
+}
+
+// Action info struct
+type ActionInfo struct {
+	Name        string // Action name
+	Description string // Action description
+}
+
+// Map resource names to action info
+var resourceActions = map[string][]ActionInfo{
+	"Account": []ActionInfo{
+		ActionInfo{"show", `Show information about a single Account.`},
+	},
+	"AccountGroup": []ActionInfo{
+		ActionInfo{"index", `Lists the AccountGroups owned by this Account.`},
+		ActionInfo{"show", `Show information about a single AccountGroup.`},
+	},
+	"Alert": []ActionInfo{
+		ActionInfo{"index", `Lists all Alerts.`},
+		ActionInfo{"disable", `Disables the Alert indefinitely. Idempotent.`},
+		ActionInfo{"enable", `Enables the Alert indefinitely. Idempotent.`},
+		ActionInfo{"quench", `Suppresses the Alert from being triggered for a given time period. Idempotent.`},
+		ActionInfo{"show", `Shows the attributes of a specified Alert.`},
+	},
+	"AlertSpec": []ActionInfo{
+		ActionInfo{"create", `Creates a new AlertSpec with the given parameters.`},
+		ActionInfo{"index", `No description provided for index.`},
+		ActionInfo{"destroy", `Deletes a given AlertSpec.`},
+		ActionInfo{"show", `No description provided for show.`},
+		ActionInfo{"update", `Updates an AlertSpec with the given parameters.`},
+	},
+	"AuditEntry": []ActionInfo{
+		ActionInfo{"create", `Creates a new AuditEntry with the given parameters.`},
+		ActionInfo{"index", `Lists AuditEntries of the account`},
+		ActionInfo{"append", `Updates the summary and appends more details to a given AuditEntry`},
+		ActionInfo{"detail", `shows the details of a given AuditEntry.`},
+		ActionInfo{"show", `Lists the attributes of a given audit entry.`},
+		ActionInfo{"update", `Updates the summary of a given AuditEntry.`},
+	},
+	"Backup": []ActionInfo{
+		ActionInfo{"cleanup", `Deletes old backups that meet the given criteria`},
+		ActionInfo{"create", `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.`},
+		ActionInfo{"index", `Lists all of the backups with the given lineage tag`},
+		ActionInfo{"destroy", `Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.`},
+		ActionInfo{"restore", `Restores the given Backup.`},
+		ActionInfo{"show", `Lists the attributes of a given backup`},
+		ActionInfo{"update", `Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.`},
+	},
+	"ChildAccount": []ActionInfo{
+		ActionInfo{"create", `Create an enterprise ChildAccount for this Account`},
+		ActionInfo{"index", `Lists the enterprise ChildAccounts available for this Account.`},
+		ActionInfo{"update", `Update an enterprise ChildAccount for this Account.`},
+	},
+	"Cloud": []ActionInfo{
+		ActionInfo{"index", `Lists the clouds available to this account.`},
+		ActionInfo{"show", `Show information about a single cloud`},
+	},
+	"CloudAccount": []ActionInfo{
+		ActionInfo{"create", `Create a CloudAccount by passing in the respective credentials for each cloud.`},
+		ActionInfo{"index", `Lists the CloudAccounts (non-aws) available to this Account.`},
+		ActionInfo{"destroy", `Delete a CloudAccount.`},
+		ActionInfo{"show", ``},
+	},
+	"Cookbook": []ActionInfo{
+		ActionInfo{"index", `Lists the Cookbooks available to this account.`},
+		ActionInfo{"destroy", `Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.`},
+		ActionInfo{"follow", `Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.`},
+		ActionInfo{"freeze", `Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.`},
+		ActionInfo{"obsolete", `Marks a Cookbook as obsolete (or un-obsolete).`},
+		ActionInfo{"show", `Show information about a single Cookbook.`},
+	},
+	"CookbookAttachment": []ActionInfo{
+		ActionInfo{"create", `Attach a cookbook to a given resource.`},
+		ActionInfo{"index", `Lists Cookbook Attachments.`},
+		ActionInfo{"multi_attach", `Attach multiple cookbooks to a given resource.`},
+		ActionInfo{"multi_detach", `Detach multiple cookbooks from a given resource.`},
+		ActionInfo{"destroy", `Detach a cookbook from a given resource.`},
+		ActionInfo{"show", `Displays information about a single cookbook attachment to a ServerTemplate.`},
+	},
+	"Credential": []ActionInfo{
+		ActionInfo{"create", `Creates a new Credential with the given parameters.`},
+		ActionInfo{"index", `Lists the Credentials available to this account.`},
+		ActionInfo{"destroy", `Deletes a Credential.`},
+		ActionInfo{"show", `Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.`},
+		ActionInfo{"update", `Updates attributes of a Credential.`},
+	},
+	"Datacenter": []ActionInfo{
+		ActionInfo{"index", `Lists all Datacenters for a particular cloud.`},
+		ActionInfo{"show", `Displays information about a single Datacenter.`},
+	},
+	"Deployment": []ActionInfo{
+		ActionInfo{"create", `Creates a new deployment with the given parameters.`},
+		ActionInfo{"index", `Lists deployments of the account.`},
+		ActionInfo{"clone", `Clones a given deployment.`},
+		ActionInfo{"destroy", `Deletes a given deployment.`},
+		ActionInfo{"lock", `Locks a given deployment. Idempotent.`},
+		ActionInfo{"servers", `Lists the servers belonging to this deployment`},
+		ActionInfo{"show", `Lists the attributes of a given deployment.`},
+		ActionInfo{"unlock", `Unlocks a given deployment. Idempotent.`},
+		ActionInfo{"update", `Updates attributes of a given deployment.`},
+	},
+	"HealthCheck": []ActionInfo{
+		ActionInfo{"index", `Check health of RightApi controllers`},
+	},
+	"IdentityProvider": []ActionInfo{
+		ActionInfo{"index", `Lists the identity providers associated with this enterprise account.`},
+		ActionInfo{"show", `Show the specified identity provider, if associated with this enterprise account.`},
+	},
+	"Image": []ActionInfo{
+		ActionInfo{"index", `Lists all Images for the given Cloud.`},
+		ActionInfo{"show", `Shows information about a single Image.`},
+	},
+	"Input": []ActionInfo{
+		ActionInfo{"index", `Retrieves the full list of existing inputs of the specified resource.`},
+		ActionInfo{"multi_update", `Performs a bulk update of inputs on the specified resource.`},
+	},
+	"Instance": []ActionInfo{
+		ActionInfo{"create", `Creates and launches a raw instance using the provided parameters.`},
+		ActionInfo{"index", `Lists instances of a given cloud, server array.`},
+		ActionInfo{"multi_run_executable", `Runs a script or a recipe in the running instances.`},
+		ActionInfo{"multi_terminate", `Terminates running instances.`},
+		ActionInfo{"launch", `Launches an instance using the parameters that this instance has been configured with.`},
+		ActionInfo{"lock", ``},
+		ActionInfo{"reboot", `Reboot a running instance.`},
+		ActionInfo{"run_executable", `Runs a script or a recipe in the running instance.`},
+		ActionInfo{"set_custom_lodgement", `This method is deprecated.  Please use InstanceCustomLodgement.`},
+		ActionInfo{"show", `Shows attributes of a single instance.`},
+		ActionInfo{"start", `Starts an instance that has been stopped, resuming it to its previously saved volume state.`},
+		ActionInfo{"stop", `Stores the instance's current volume state to resume later using the 'start' action.`},
+		ActionInfo{"terminate", `Terminates a running instance.`},
+		ActionInfo{"unlock", ``},
+		ActionInfo{"update", `Updates attributes of a single instance.`},
+	},
+	"InstanceCustomLodgement": []ActionInfo{
+		ActionInfo{"create", `Create a lodgement with the quantity and timeframe specified.`},
+		ActionInfo{"index", `List InstanceCustomLodgements of a given cloud and instance.`},
+		ActionInfo{"destroy", `Destroy the specified lodgement.`},
+		ActionInfo{"show", `Show the specified lodgement.`},
+		ActionInfo{"update", `Update a lodgement with the quantity specified.`},
+	},
+	"InstanceType": []ActionInfo{
+		ActionInfo{"index", `Lists instance types.`},
+		ActionInfo{"show", `Displays information about a single Instance type.`},
+	},
+	"IpAddress": []ActionInfo{
+		ActionInfo{"create", `Creates a new IpAddress with the given parameters.`},
+		ActionInfo{"index", `Lists the IpAddresses available to this account.`},
+		ActionInfo{"destroy", `Deletes a given IpAddress.`},
+		ActionInfo{"show", `Show information about a single IpAddress.`},
+		ActionInfo{"update", `Updates attributes of a given IpAddress.`},
+	},
+	"IpAddressBinding": []ActionInfo{
+		ActionInfo{"create", `Creates an ip address binding which attaches a specified IpAddress resource to a specified instance, and also allows for configuration of port forwarding rules...`},
+		ActionInfo{"index", `Lists the ip address bindings available to this account.`},
+		ActionInfo{"destroy", `No description provided for destroy.`},
+		ActionInfo{"show", `Show information about a single ip address binding.`},
+	},
+	"MonitoringMetric": []ActionInfo{
+		ActionInfo{"index", `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`},
+		ActionInfo{"data", `Gives the raw monitoring data for a particular metric`},
+		ActionInfo{"show", `Shows attributes of a single monitoring metric.`},
+	},
+	"MultiCloudImage": []ActionInfo{
+		ActionInfo{"create", `Creates a new MultiCloudImage with the given parameters.`},
+		ActionInfo{"index", `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`},
+		ActionInfo{"clone", `Clones a given MultiCloudImage.`},
+		ActionInfo{"commit", `Commits a given MultiCloudImage. Only HEAD revisions can be committed.`},
+		ActionInfo{"destroy", `Deletes a given MultiCloudImage.`},
+		ActionInfo{"show", `Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.`},
+		ActionInfo{"update", `Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).`},
+	},
+	"MultiCloudImageSetting": []ActionInfo{
+		ActionInfo{"create", `Creates a new setting for an existing MultiCloudImage.`},
+		ActionInfo{"index", `Lists the MultiCloudImage settings.`},
+		ActionInfo{"destroy", `Deletes a MultiCloudImage setting.`},
+		ActionInfo{"show", `Show information about a single MultiCloudImage setting.`},
+		ActionInfo{"update", `Updates a settings for a MultiCLoudImage.`},
+	},
+	"Network": []ActionInfo{
+		ActionInfo{"create", `Creates a new network.`},
+		ActionInfo{"index", `Lists networks in this account.`},
+		ActionInfo{"destroy", `Deletes the given network(s).`},
+		ActionInfo{"show", `Shows attributes of a single network.`},
+		ActionInfo{"update", `Updates the given network.`},
+	},
+	"NetworkGateway": []ActionInfo{
+		ActionInfo{"create", `Create a new NetworkGateway.`},
+		ActionInfo{"index", `Lists the NetworkGateways available to this account.`},
+		ActionInfo{"destroy", `Delete an existing NetworkGateway.`},
+		ActionInfo{"show", `Show information about a single NetworkGateway.`},
+		ActionInfo{"update", `Update an existing NetworkGateway.`},
+	},
+	"NetworkOptionGroup": []ActionInfo{
+		ActionInfo{"create", `Create a new NetworkOptionGroup.`},
+		ActionInfo{"index", `List NetworkOptionGroups available in this account.`},
+		ActionInfo{"destroy", `Delete an existing NetworkOptionGroup.`},
+		ActionInfo{"show", `Show information about a single NetworkOptionGroup.`},
+		ActionInfo{"update", `Update an existing NetworkOptionGroup.`},
+	},
+	"NetworkOptionGroupAttachment": []ActionInfo{
+		ActionInfo{"create", `Create a new NetworkOptionGroupAttachment.`},
+		ActionInfo{"index", `List NetworkOptionGroupAttachments in this account.`},
+		ActionInfo{"destroy", `Delete an existing NetworkOptionGroupAttachment.`},
+		ActionInfo{"show", `Show information about a single NetworkOptionGroupAttachment.`},
+		ActionInfo{"update", `Update an existing NetworkOptionGroupAttachment.`},
+	},
+	"Oauth2": []ActionInfo{
+		ActionInfo{"create", `Perform an OAuth 2`},
+	},
+	"Permission": []ActionInfo{
+		ActionInfo{"create", `Create a permission, thereby granting some user a particular role with respect to the current account...`},
+		ActionInfo{"index", `List all permissions for all users of the current acount.`},
+		ActionInfo{"destroy", `Destroy a permission, thereby revoking a user's role with respect to the current account...`},
+		ActionInfo{"show", `Show information about a single permission.`},
+	},
+	"PlacementGroup": []ActionInfo{
+		ActionInfo{"create", `Creates a PlacementGroup.`},
+		ActionInfo{"index", `Lists all PlacementGroups in an account.`},
+		ActionInfo{"destroy", `Destroys a PlacementGroup.`},
+		ActionInfo{"show", `Shows information about a single PlacementGroup.`},
+	},
+	"Preference": []ActionInfo{
+		ActionInfo{"index", `Lists all preferences.`},
+		ActionInfo{"destroy", `Deletes the given preference.`},
+		ActionInfo{"show", `Shows a single preference.`},
+		ActionInfo{"update", `If 'id' is known, updates preference with given contents.`},
+	},
+	"Publication": []ActionInfo{
+		ActionInfo{"index", `Lists the publications available to this account. Only non-HEAD revisions are possible.`},
+		ActionInfo{"import", `Imports the given publication and its subordinates to this account.`},
+		ActionInfo{"show", `Show information about a single publication. Only non-HEAD revisions are possible.`},
+	},
+	"PublicationLineage": []ActionInfo{
+		ActionInfo{"show", `Show information about a single publication lineage. Only non-HEAD revisions are possible.`},
+	},
+	"RecurringVolumeAttachment": []ActionInfo{
+		ActionInfo{"create", `Creates a new recurring volume attachment.`},
+		ActionInfo{"index", `Lists all recurring volume attachments.`},
+		ActionInfo{"destroy", `Deletes a given recurring volume attachment.`},
+		ActionInfo{"show", `Displays information about a single recurring volume attachment.`},
+	},
+	"Repository": []ActionInfo{
+		ActionInfo{"create", `Creates a Repository.`},
+		ActionInfo{"index", `Lists all Repositories for this Account.`},
+		ActionInfo{"resolve", `Show a list of repositories that have imported cookbooks with the given names.`},
+		ActionInfo{"cookbook_import", `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.`},
+		ActionInfo{"cookbook_import_preview", `Retrieves a preview of the effects of a Cookbook import.`},
+		ActionInfo{"destroy", `Deletes the specified Repositories.`},
+		ActionInfo{"refetch", `Refetches all RepositoryAssets associated with the Repository.`},
+		ActionInfo{"show", `Shows a specified Repository.`},
+		ActionInfo{"update", `Updates a specified Repository.`},
+	},
+	"RepositoryAsset": []ActionInfo{
+		ActionInfo{"index", `List a repository's current assets.`},
+		ActionInfo{"show", `Show information about a single asset.`},
+	},
+	"RightScript": []ActionInfo{
+		ActionInfo{"index", `Lists RightScripts.`},
+		ActionInfo{"commit", `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.`},
+		ActionInfo{"show", `Displays information about a single RightScript.`},
+		ActionInfo{"show_source", `Returns the script source for a RightScript`},
+		ActionInfo{"update", `Updates RightScript name/description`},
+		ActionInfo{"update_source", `Updates the source of the given RightScript`},
+	},
+	"Route": []ActionInfo{
+		ActionInfo{"create", `Create a new Route.`},
+		ActionInfo{"index", `List Routes available in this account.`},
+		ActionInfo{"destroy", `Delete an existing Route.`},
+		ActionInfo{"show", `Show information about a single Route.`},
+		ActionInfo{"update", `Update an existing Route.`},
+	},
+	"RouteTable": []ActionInfo{
+		ActionInfo{"create", `Create a new RouteTable.`},
+		ActionInfo{"index", `List RouteTables available in this account.`},
+		ActionInfo{"destroy", `Delete an existing RouteTable.`},
+		ActionInfo{"show", `Show information about a single RouteTable.`},
+		ActionInfo{"update", `Update an existing RouteTable.`},
+	},
+	"RunnableBinding": []ActionInfo{
+		ActionInfo{"create", `Bind an executable to the given ServerTemplate.`},
+		ActionInfo{"index", `Lists the executables bound to the ServerTemplate.`},
+		ActionInfo{"multi_update", `Update attributes for multiple bound executables.`},
+		ActionInfo{"destroy", `Unbind an executable from the given resource.`},
+		ActionInfo{"show", `Show information about a single executable binding.`},
+	},
+	"SecurityGroup": []ActionInfo{
+		ActionInfo{"create", `Create a security group.`},
+		ActionInfo{"index", `Lists Security Groups.`},
+		ActionInfo{"destroy", `Delete security group(s)`},
+		ActionInfo{"show", `Displays information about a single Security Group.`},
+	},
+	"SecurityGroupRule": []ActionInfo{
+		ActionInfo{"create", `Create a security group rule for a security group.`},
+		ActionInfo{"index", `Lists SecurityGroupRules.`},
+		ActionInfo{"destroy", `Delete security group rule(s)`},
+		ActionInfo{"show", `Displays information about a single SecurityGroupRule.`},
+		ActionInfo{"update", ``},
+	},
+	"Server": []ActionInfo{
+		ActionInfo{"create", `Creates a new server, and configures its corresponding "next" instance with the received parameters.`},
+		ActionInfo{"index", `Lists servers.`},
+		ActionInfo{"wrap_instance", `Wrap an existing instance and set current instance for new server`},
+		ActionInfo{"clone", `Clones a given server.`},
+		ActionInfo{"destroy", `Deletes a given server.`},
+		ActionInfo{"launch", `Launches the "next" instance of this server`},
+		ActionInfo{"show", `Shows the information of a single server.`},
+		ActionInfo{"terminate", `Terminates the current instance of this server`},
+		ActionInfo{"update", `Updates attributes of a single server.`},
+	},
+	"ServerArray": []ActionInfo{
+		ActionInfo{"create", `Creates a new server array, and configures its corresponding "next" instance with the received parameters.`},
+		ActionInfo{"index", `Lists server arrays.`},
+		ActionInfo{"clone", `Clones a given server array.`},
+		ActionInfo{"current_instances", `List the running instances belonging to the server array. See Instances#index for details.`},
+		ActionInfo{"destroy", `Deletes a given server array.`},
+		ActionInfo{"launch", `Launches a new instance in the server array with the configuration defined in the 'next_instance'`},
+		ActionInfo{"multi_run_executable", `Run an executable on all instances of this array`},
+		ActionInfo{"multi_terminate", `Terminate all instances of this array`},
+		ActionInfo{"show", `Shows the information of a single server array.`},
+		ActionInfo{"update", `Updates attributes of a single server array.`},
+	},
+	"ServerTemplate": []ActionInfo{
+		ActionInfo{"create", `Creates a new ServerTemplate with the given parameters.`},
+		ActionInfo{"index", `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`},
+		ActionInfo{"clone", `Clones a given ServerTemplate.`},
+		ActionInfo{"commit", `Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.`},
+		ActionInfo{"destroy", `Deletes a given ServerTemplate.`},
+		ActionInfo{"detect_changes_in_head", `Identifies RightScripts attached to the resource that differ from their HEAD.`},
+		ActionInfo{"publish", `Publishes a given ServerTemplate and its subordinates.`},
+		ActionInfo{"resolve", `Enumerates all attached cookbooks, missing dependencies and bound executables.`},
+		ActionInfo{"show", `Show information about a single ServerTemplate. HEAD revisions have a revision of 0.`},
+		ActionInfo{"swap_repository", `In-place replacement of attached cookbooks from a given repository.`},
+		ActionInfo{"update", `Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).`},
+	},
+	"ServerTemplateMultiCloudImage": []ActionInfo{
+		ActionInfo{"create", `Creates a new ServerTemplateMultiCloudImage with the given parameters.`},
+		ActionInfo{"index", `Lists the ServerTemplateMultiCloudImages available to this account.`},
+		ActionInfo{"destroy", `Deletes a given ServerTemplateMultiCloudImage.`},
+		ActionInfo{"make_default", `Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.`},
+		ActionInfo{"show", `Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.`},
+	},
+	"Session": []ActionInfo{
+		ActionInfo{"accounts", `List all the accounts that a user has access to.`},
+		ActionInfo{"index", `Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what features are available within its privileges...`},
+		ActionInfo{"index_instance_session", `Shows the full attributes of the instance (that has the token used to log-in).`},
+	},
+	"SshKey": []ActionInfo{
+		ActionInfo{"create", `Creates a new ssh key.`},
+		ActionInfo{"index", `Lists ssh keys.`},
+		ActionInfo{"destroy", `Deletes a given ssh key.`},
+		ActionInfo{"show", `Displays information about a single ssh key.`},
+	},
+	"Subnet": []ActionInfo{
+		ActionInfo{"create", `Creates a new subnet.`},
+		ActionInfo{"index", `Lists subnets of a given cloud.`},
+		ActionInfo{"destroy", `Deletes the given subnet(s).`},
+		ActionInfo{"show", `Shows attributes of a single subnet.`},
+		ActionInfo{"update", `Updates name and description for the current subnet.`},
+	},
+	"Tag": []ActionInfo{
+		ActionInfo{"by_resource", `Get tags for a list of resource hrefs.`},
+		ActionInfo{"by_tag", `Search for resources having a list of tags in a specific resource_type.`},
+		ActionInfo{"multi_add", `Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.`},
+		ActionInfo{"multi_delete", `Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.`},
+	},
+	"Task": []ActionInfo{
+		ActionInfo{"show", `Displays information of a given task within the context of an instance.`},
+	},
+	"User": []ActionInfo{
+		ActionInfo{"create", `Create a user. If a user already exists with the same email, that user will be returned.`},
+		ActionInfo{"index", `List the users available to the account the user is logged in to`},
+		ActionInfo{"show", `Show information about a single user.`},
+		ActionInfo{"update", `Update a user's contact information, change her password, or update SSO her settings`},
+	},
+	"UserData": []ActionInfo{
+		ActionInfo{"show", `No description provided for show.`},
+	},
+	"Volume": []ActionInfo{
+		ActionInfo{"create", `Creates a new volume.`},
+		ActionInfo{"index", `Lists volumes.`},
+		ActionInfo{"destroy", `Deletes a given volume.`},
+		ActionInfo{"show", `Displays information about a single volume.`},
+	},
+	"VolumeAttachment": []ActionInfo{
+		ActionInfo{"create", `Creates a new volume attachment.`},
+		ActionInfo{"index", `Lists all volume attachments.`},
+		ActionInfo{"destroy", `Deletes a given volume attachment.`},
+		ActionInfo{"show", `Displays information about a single volume attachment.`},
+	},
+	"VolumeSnapshot": []ActionInfo{
+		ActionInfo{"create", `Creates a new volume_snapshot.`},
+		ActionInfo{"index", `Lists all volume_snapshots.`},
+		ActionInfo{"destroy", `Deletes a given volume_snapshot.`},
+		ActionInfo{"show", `Displays information about a single volume_snapshot.`},
+	},
+	"VolumeType": []ActionInfo{
+		ActionInfo{"index", `Lists Volume Types.`},
+		ActionInfo{"show", `Displays information about a single Volume Type.`},
 	},
 }

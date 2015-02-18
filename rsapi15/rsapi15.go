@@ -24,7 +24,7 @@ type Api15 struct {
 	AccountId             int           // Account in which client is currently operating
 	Auth                  Authenticator // Authenticator, signs requests for auth
 	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
-	Endpoint              string        // API endpoint, e.g. "us-3.rightscale.com"
+	Host                  string        // API host, e.g. "us-3.rightscale.com"
 	Client                HttpClient    // Underlying http client
 	DumpRequestResponse   bool          // Whether to dump HTTP requests and responses to STDOUT
 	FetchLocationResource bool          // Whether to fetch resource pointed by Location header
@@ -37,9 +37,9 @@ type HttpClient interface {
 
 // New returns a API 1.5 client that uses User oauth authentication.
 // logger and client are optional.
-// endpoint may be blank in which case client attempts to resolve it using auth.
+// host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, refreshToken string, endpoint string, logger *log.Logger,
+func New(accountId int, refreshToken string, host string, logger *log.Logger,
 	client HttpClient) (*Api15, error) {
 	if client == nil {
 		client = http.DefaultClient
@@ -49,24 +49,24 @@ func New(accountId int, refreshToken string, endpoint string, logger *log.Logger
 		RefreshAt:    time.Now().Add(-1 * time.Hour),
 		Client:       client,
 	}
-	if endpoint == "" {
-		if resolved, err := auth.ResolveEndpoint(accountId); err != nil {
+	if host == "" {
+		if resolved, err := auth.ResolveHost(accountId); err != nil {
 			return nil, err
 		} else {
-			endpoint = resolved
+			host = resolved
 		}
 	}
 	return &Api15{
 		AccountId: accountId,
 		Auth:      &auth,
 		Logger:    logger,
-		Endpoint:  endpoint,
+		Host:      host,
 		Client:    client,
 	}, nil
 }
 
 // NewRL10 returns a API 1.5 client that uses the information stored in /var/run/rll-secret to do
-// auth and configure the endpoint. The client behaves identically to the new returned by New in
+// auth and configure the host. The client behaves identically to the new returned by New in
 // all other regards.
 func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
 	var rllConfig, err = ioutil.ReadFile("/var/run/rll-secret")
@@ -91,12 +91,12 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
 		}
 	}
 	var auth = RL10Authenticator{secret}
-	var endpoint = "localhost:" + port
+	var host = "localhost:" + port
 	return &Api15{
-		Auth:     &auth,
-		Logger:   logger,
-		Endpoint: endpoint,
-		Client:   client,
+		Auth:   &auth,
+		Logger: logger,
+		Host:   host,
+		Client: client,
 	}, nil
 }
 
@@ -227,7 +227,7 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 	}
 	var u = url.URL{
 		Scheme: "https",
-		Host:   a.Endpoint,
+		Host:   a.Host,
 		Path:   uri,
 	}
 	if verb == "GET" && params != nil {
@@ -249,7 +249,7 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	if err = a.Auth.Sign(req, a.Endpoint); err != nil {
+	if err = a.Auth.Sign(req, a.Host); err != nil {
 		return nil, err
 	}
 	req.Header.Set("X-API-Version", "1.5")

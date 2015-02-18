@@ -10,8 +10,9 @@ import (
 
 // CmdsWriter struct exposes methods to generate the go API client command line tool
 type CmdsWriter struct {
-	headerTmpl   *template.Template
-	resourceTmpl *template.Template
+	headerTmpl       *template.Template
+	resourceTmpl     *template.Template
+	resActionMapTmpl *template.Template
 }
 
 // Commands writer factory
@@ -33,9 +34,14 @@ func NewCmdsWriter() (*CmdsWriter, error) {
 	if err != nil {
 		return nil, err
 	}
+	resActionMapT, err := template.New("resActionMap-code").Funcs(funcMap).Parse(resActionMapTmpl)
+	if err != nil {
+		return nil, err
+	}
 	return &CmdsWriter{
-		headerTmpl:   headerT,
-		resourceTmpl: resourceT,
+		headerTmpl:       headerT,
+		resourceTmpl:     resourceT,
+		resActionMapTmpl: resActionMapT,
 	}, nil
 }
 
@@ -51,6 +57,11 @@ func (c *CmdsWriter) WriteCommands(d *ApiDescriptor, w io.Writer) error {
 		resources[i] = d.Resources[n]
 	}
 	return c.resourceTmpl.Execute(w, resources)
+}
+
+// Write resource to actions map
+func (c *CmdsWriter) WriteResourceActionMap(d *ApiDescriptor, w io.Writer) error {
+	return c.resActionMapTmpl.Execute(w, d)
 }
 
 /** Format Helpers **/
@@ -120,14 +131,17 @@ const headerCmdsTmpl = `//******************************************************
 
 package rsapi15
 
+import "regexp"
+
 `
 
 const resourceCmdsTmpl = `{{define "action"}}` + actionCmdTmpl + `{{end}}// API 1.5 resource commands
 // Each command contains sub-commands for all resource actions
-var commands = []*ResourceCmd{ {{range .}}
-	&ResourceCmd{
+var commands = map[string]*ResourceCmd{ {{range .}}
+	"{{.Name}}": &ResourceCmd{
 		Name: "{{.Name}}",
 		Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
+		HrefRegexp: regexp.MustCompile(` + "`" + `{{.HrefRegexp}}` + "`" + `),
 		Actions: []*ActionCmd{ {{range .CollectionActions}}
 		{{template "action" .}}{{end}}{{range .ResourceActions}}
 		{{template "action" .}}{{end}}
@@ -146,9 +160,25 @@ const actionCmdTmpl = `&ActionCmd {
 						Type: "{{flagType .}}",
 						Mandatory: {{.Mandatory}},
 						NonBlank: {{.NonBlank}},{{if .Regexp}}
-						Regexp: "{{.Regexp}}",{{end}}{{if .ValidValues}}
+						Regexp: regexp.MustCompile("{{.Regexp}}"),{{end}}{{if .ValidValues}}
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
 				},
 			},
+`
+
+// Resource to actions map
+const resActionMapTmpl = `// Action info struct
+type ActionInfo struct {
+	Name string        // Action name
+	Description string // Action description
+}
+
+// Map resource names to action info
+var resourceActions = map[string][]ActionInfo{
+	{{range $name, $resource := .Resources}}"{{$name}}": []ActionInfo{
+		{{range .CollectionActions}}ActionInfo{"{{.Name}}", ` + "`" + `{{toHelp .Description}}` + "`" + `},
+		{{end}}{{range .ResourceActions}}ActionInfo{"{{.Name}}", ` + "`" + `{{toHelp .Description}}` + "`" + `},
+		{{end}} },
+	{{end}} }
 `

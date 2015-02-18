@@ -101,6 +101,7 @@ func generateCmds(descriptor *ApiDescriptor, codegen string) error {
 	}
 	check(c.WriteHeader(f))
 	check(c.WriteCommands(descriptor, f))
+	check(c.WriteResourceActionMap(descriptor, f))
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {

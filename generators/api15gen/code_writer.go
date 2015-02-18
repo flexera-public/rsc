@@ -8,7 +8,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/rightscale/rsclient/generators/text"
+	"github.com/rightscale/rsc/generators/text"
 )
 
 // CodeWriter struct exposes methods to generate the go API client code
@@ -33,6 +33,7 @@ func NewCodeWriter() (*CodeWriter, error) {
 		"blankCondition":  blankCondition,
 		"toVerb":          toVerb,
 		"stripStar":       stripStar,
+		"toHelp":          toHelp,
 	}
 	headerT, err := template.New("header-code").Funcs(funcMap).Parse(headerTmpl)
 	if err != nil {
@@ -299,7 +300,7 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	var err3 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
 	return res, err3{{else}}return nil{{end}}`
 
-// Action map
+// Actions to verb and suffix map
 const actionMapTmpl = `// Map action name to its URI suffix and HTTP method (in that order)
 type ActionMap map[string][2]string
 

@@ -76,6 +76,9 @@ func (a *ApiAnalyzer) Analyze() *ApiDescriptor {
 	return descriptor
 }
 
+// Regular expression that catches href variables (e.g. ':id' in '/servers/:id')
+var hrefVarRegexp = regexp.MustCompile(`/:[^/]+`)
+
 // AnalyzeResource analyzes the given resource and updates the Resources and ParamTypes analyzer
 // fields accordingly
 func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descriptor *ApiDescriptor) {
@@ -100,28 +103,32 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		attributes = []*Attribute{}
 	}
 
-	// Compute baseHref used to compute action URL suffix
-	var baseHref string
+	// Compute hrefRegexp that matches resource hrefs
+	var hrefRegexp string
 	var methods = res["methods"].(map[string]interface{})
-	var snake = inflect.Underscore(name)
-	if index, ok := methods["index"]; ok {
-		var meth = index.(map[string]interface{})
-		_, baseHrefs := parseRoute("", meth["route"].(string))
-		if len(baseHrefs) > 1 {
-			for _, h := range baseHrefs {
-				if strings.Contains(h, snake) {
-					baseHref = h
-					break
-				}
+	if name == "Oauth2" {
+		hrefRegexp = "/api/oauth2"
+	} else if name == "Tags" {
+		hrefRegexp = "/api/tags"
+	} else {
+		var regexps = []string{}
+		if show, ok := methods["show"]; ok {
+			var _, hrefs = parseRoute("", show.(map[string]interface{})["route"].(string))
+			for _, href := range hrefs {
+				regexps = append(regexps, hrefVarRegexp.ReplaceAllLiteralString(href, "/[[:alnum:]]"))
 			}
-		} else {
-			baseHref = baseHrefs[0]
 		}
-	}
-	if baseHref == "" {
-		// This works because all cloud resources have an index action and all other
-		// resources follow the /api/<resource_name> convention.
-		baseHref = "/api/" + snake
+		if index, ok := methods["index"]; ok {
+			var _, hrefs = parseRoute("", index.(map[string]interface{})["route"].(string))
+			for _, href := range hrefs {
+				regexps = append(regexps, hrefVarRegexp.ReplaceAllLiteralString(href, "/[[:alnum:]]"))
+			}
+		}
+		if len(regexps) > 1 {
+			hrefRegexp = "(" + strings.Join(regexps, "|") + ")"
+		} else {
+			hrefRegexp = regexps[0]
+		}
 	}
 
 	// Compute actions
@@ -239,6 +246,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		ResourceActions:   resourceActions,
 		CollectionActions: collectionActions,
 		Attributes:        attributes,
+		HrefRegexp:        hrefRegexp,
 	}
 }
 

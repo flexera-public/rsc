@@ -7,20 +7,19 @@ import (
 	"path"
 	"strings"
 
-	"github.com/rightscale/rsclient/rsapi15"
+	"github.com/rightscale/rsc/rsapi15"
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 
 // Command line client entry point.
 func main() {
-	app := kingpin.New("rsclient", "A RightScale API client")
+	app := kingpin.New("rsc", "A RightScale API client")
 	app.Version("0.1.0")
 
 	// Register global commands and flags
-	var hrefFlag = app.Flag("href", "API Resource or resource collection href on which to act, e.g. '/api/servers'").Required().String()
-	var cfgPathFlag = app.Flag("config", "path to rsclient config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsclient")).String()
+	var cfgPathFlag = app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).String()
 	var accountFlag = app.Flag("account", "RightScale account ID").Short('a').Int()
-	var endpointFlag = app.Flag("endpoint", "RightScale API endpoint (e.g. 'us-3.rightscale.com')").Short('e').String()
+	var hostFlag = app.Flag("host", "RightScale API host (e.g. 'us-3.rightscale.com')").Short('e').String()
 	var tokenFlag = app.Flag("token", "OAuth access token").Short('t').String()
 	var rl10Flag = app.Flag("rl10", "Proxy requests through RightLink 10 (exclusive with '-token')").Bool()
 
@@ -34,20 +33,33 @@ func main() {
 	var prettyFlag = app.Flag("pp", "Pretty print response body").Bool()
 
 	app.Command("setup",
-		"create config file, defaults to $HOME/.rsclient, use '--config' to override")
+		"create config file, defaults to $HOME/.rsc, use '--config' to override")
 
 	// Register API15 subcommands and flags
 	rsapi15.RegisterCommands(app)
 
-	var cmd = kingpin.MustParse(app.Parse(os.Args[1:]))
+	var cmd, err = app.Parse(os.Args[1:])
+	var showHelp = false
+	if err != nil {
+		var help = os.Args[len(os.Args)-1]
+		var lastArgIndex = len(os.Args)
+		if help == "--help" || help == "-h" || help == "-help" || help == "-?" {
+			showHelp = true
+			lastArgIndex -= 1
+			cmd, err = app.Parse(os.Args[1:lastArgIndex])
+		}
+	}
+	if err != nil {
+		PrintFatal(err.Error())
+	}
 
 	// Initialize global flag values
 	var account int
-	var token, endpoint string
+	var token, host string
 	if config, err := LoadConfig(*cfgPathFlag); err == nil {
 		account = config.Account
 		token = config.Token
-		endpoint = config.Endpoint
+		host = config.Host
 	}
 	if *accountFlag > 0 {
 		account = *accountFlag
@@ -55,16 +67,12 @@ func main() {
 	if *tokenFlag != "" {
 		token = *tokenFlag
 	}
-	if *endpointFlag != "" {
-		endpoint = *endpointFlag
-	}
-	if token == "" && !*rl10Flag {
-		PrintFatal("Missing OAuth token, use '-token TOKEN' or 'setup'")
+	if *hostFlag != "" {
+		host = *hostFlag
 	}
 
 	// Execute appropriate command
 	var resp *http.Response
-	var err error
 	switch strings.Split(cmd, " ")[0] {
 
 	case "setup":
@@ -88,14 +96,25 @@ func main() {
 		if *rl10Flag {
 			client, err = rsapi15.NewRL10(nil, httpClient)
 		} else {
-			client, err = rsapi15.New(account, token, endpoint, nil, httpClient)
+			client, err = rsapi15.New(account, token, host, nil, httpClient)
 		}
 		if err != nil {
 			PrintFatal("Failed to create API session: %v", err.Error())
 		}
-		client.DumpRequestResponse = *dumpRequestResponseFlag
-		client.FetchLocationResource = *fetchFlag
-		resp, err = client.RunCommand(cmd, *hrefFlag)
+		if showHelp {
+			var err = client.ShowHelp(cmd)
+			if err != nil {
+				PrintFatal(err.Error())
+			}
+			return
+		} else {
+			if token == "" && !*rl10Flag {
+				PrintFatal("Missing OAuth token, use '-token TOKEN' or 'setup'")
+			}
+			client.DumpRequestResponse = *dumpRequestResponseFlag
+			client.FetchLocationResource = *fetchFlag
+			resp, err = client.RunCommand(cmd)
+		}
 
 	default:
 		PrintFatal("Unknown command '%s'", cmd)

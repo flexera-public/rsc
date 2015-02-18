@@ -10,7 +10,7 @@ type Resource struct {
 	ResourceActions   []*Action    // Resource actions, e.g. "show", "update", "destroy"
 	CollectionActions []*Action    // Collection actions, e.g. "index", "create"
 	Attributes        []*Attribute // Resource attributes
-	BaseHref          string       // Common prefix to all resource action URLs
+	HrefRegexp        string       // Regular expression that matches resource hrefs
 }
 
 // Data structure used to describe collection and resource actions

@@ -6,14 +6,14 @@ import (
 	"io/ioutil"
 	"strconv"
 
-	"github.com/rightscale/rsclient/rsapi15"
+	"github.com/rightscale/rsc/rsapi15"
 )
 
 // Basic configuration settings required by all clients
 type ClientConfig struct {
-	Account  int    // RightScale account ID
-	Endpoint string // RightScale API endpoint, e.g. "us-3.rightscale.com"
-	Token    string // RightScale API refresh token
+	Account int    // RightScale account ID
+	Host    string // RightScale API host, e.g. "us-3.rightscale.com"
+	Token   string // RightScale API refresh token
 }
 
 // LoadConfig loads the client configuration from disk
@@ -52,7 +52,7 @@ func (cfg *ClientConfig) Save(path string) error {
 // Create configuration file and save it to file at given path
 func createConfig(path string) error {
 	var config, _ = LoadConfig(path)
-	var tokenDef, accountDef, endpointDef string
+	var tokenDef, accountDef, hostDef string
 	if config != nil {
 		PromptWarning("Found existing configuration file %v, overwrite? (y/N): ", path)
 		var yn string
@@ -63,10 +63,10 @@ func createConfig(path string) error {
 		}
 		accountDef = fmt.Sprintf(" (%v)", config.Account)
 		tokenDef = " (leave blank to leave unchanged)"
-		if config.Endpoint == "" {
-			config.Endpoint = "my.rightscale.com"
+		if config.Host == "" {
+			config.Host = "my.rightscale.com"
 		}
-		endpointDef = fmt.Sprintf(" (%v)", config.Endpoint)
+		hostDef = fmt.Sprintf(" (%v)", config.Host)
 	} else {
 		config = &ClientConfig{}
 	}
@@ -89,16 +89,16 @@ func createConfig(path string) error {
 		config.Token = newToken
 	}
 
-	fmt.Printf("API Endpoint%v: ", endpointDef)
-	var newEndpoint string
-	fmt.Scanf("%s", &newEndpoint)
-	if newEndpoint != "" {
-		config.Endpoint = newEndpoint
+	fmt.Printf("API Host%v: ", hostDef)
+	var newHost string
+	fmt.Scanf("%s", &newHost)
+	if newHost != "" {
+		config.Host = newHost
 	}
 
 	config.Save(path)
 
-	_, err := rsapi15.New(config.Account, config.Token, config.Endpoint, nil, nil)
+	_, err := rsapi15.New(config.Account, config.Token, config.Host, nil, nil)
 	if err != nil {
 		return fmt.Errorf("Config test failed: %s", err.Error())
 	}
