@@ -11,7 +11,7 @@ import (
 
 // Key used to encrypt/decrypt password
 // Note: this is by no mean meant to be a bullet proof encryption scheme but just rather a way to
-// avoid having password written in plain text on disk.
+// avoid having sensitive data written in plain text on disk.
 func seekret() []byte {
 	return []byte(`xLtwITJ$tIh@*B#lQL53W!Qq`)
 }

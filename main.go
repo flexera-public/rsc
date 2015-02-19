@@ -12,23 +12,28 @@ import (
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 
+const (
+	// Command used to make API 1.5 requests
+	api15Command = "api15"
+)
+
 // Command line global flags
 type CommandLine struct {
-	Commands            []string // Commands and sub-commands to be run (e.g. ["api15", "index"])
-	ConfigPath          string   // Path to rsc config file, defaults to $HOME/.rsc
-	Account             int      // RightScale account, optional
-	Host                string   // API hostname, optional
-	Token               string   // Auth token, required unless RL10 is true
-	RL10                bool     // Whether to send requests using the RL10 proxy
-	NoRedirect          bool     // Whether to disable auto-redirects
-	FetchResource       bool     // Whether to fetch resource returned in 'Location' header
-	ExtractOneSelect    string   // JSON select expression to extract single value from response, optional
-	ExtractSelector     string   // JSON select expression to extract zero or more values from response, optional
-	ExtractSelectorJson string   // JSON select expression to extract zero or more values from response, extracted values are displayed using JSON encoding, optional
-	ExtractHeader       string   // Name of header to extract from response, optional
-	Dump                bool     // Whether to dump raw HTTP request and response to stdout
-	Pretty              bool     // Whether to display response body or extract values using pretty printer
-	ShowHelp            bool     // Whether to show help for action flags
+	Command             string // Command to be run (e.g. "api15 index")
+	ConfigPath          string // Path to rsc config file, defaults to $HOME/.rsc
+	Account             int    // RightScale account, optional
+	Host                string // API hostname, optional
+	Token               string // Auth token, required unless RL10 is true
+	RL10                bool   // Whether to send requests using the RL10 proxy
+	NoRedirect          bool   // Whether to disable auto-redirects
+	FetchResource       bool   // Whether to fetch resource returned in 'Location' header
+	ExtractOneSelect    string // JSON select expression to extract single value from response, optional
+	ExtractSelector     string // JSON select expression to extract zero or more values from response, optional
+	ExtractSelectorJson string // JSON select expression to extract zero or more values from response, extracted values are displayed using JSON encoding, optional
+	ExtractHeader       string // Name of header to extract from response, optional
+	Dump                bool   // Whether to dump raw HTTP request and response to stdout
+	Pretty              bool   // Whether to display response body or extract values using pretty printer
+	ShowHelp            bool   // Whether to show help for action flags
 }
 
 // Command line client entry point.
@@ -37,7 +42,8 @@ func main() {
 	app.Version("0.1.0")
 
 	// Register API15 subcommands and flags
-	rsapi15.RegisterCommands(app)
+	var api15Cmd = app.Command(api15Command, "RightScale API 1.5 client")
+	rsapi15.RegisterCommands(api15Cmd)
 
 	var parsed, err = ParseCommandLine(app)
 	if err != nil {
@@ -46,7 +52,8 @@ func main() {
 
 	// Execute appropriate command
 	var resp *http.Response
-	switch parsed.Commands[0] {
+	var topCommand = strings.Split(parsed.Command, " ")[0]
+	switch topCommand {
 
 	case "setup":
 		err = CreateConfig(parsed.ConfigPath)
@@ -75,7 +82,7 @@ func main() {
 			PrintFatal("Failed to create API session: %v", err.Error())
 		}
 		if parsed.ShowHelp {
-			var err = client.ShowHelp(parsed.Commands)
+			var err = client.ShowHelp(parsed.Command)
 			if err != nil {
 				PrintFatal(err.Error())
 			}
@@ -86,11 +93,11 @@ func main() {
 			}
 			client.DumpRequestResponse = parsed.Dump
 			client.FetchLocationResource = parsed.FetchResource
-			resp, err = client.RunCommand(parsed.Commands)
+			resp, err = client.RunCommand(parsed.Command)
 		}
 
 	default:
-		PrintFatal("Unknown command '%s'", strings.Join(parsed.Commands, " "))
+		PrintFatal("Unknown command '%s'", parsed.Command)
 	}
 
 	// Handle command results
@@ -164,18 +171,22 @@ func ParseCommandLine(app *kingpin.Application) (*CommandLine, error) {
 	app.Command("setup",
 		"create config file, defaults to $HOME/.rsc, use '--config' to override")
 
-	var cmd, err = app.Parse(os.Args[1:])
+	var args = os.Args[1:]
+	var cmd, err = app.Parse(args)
 	if err != nil {
 		// This is a bit hacky: basically doing `rsc api15 index clouds --help` results
 		// in a command line that kingpin is unable to parse. So capture the `--help` and
 		// retry parsing without it.
-		var help = os.Args[len(os.Args)-1]
-		var lastArgIndex = len(os.Args)
+		var help = args[len(args)-1]
+		var lastArgIndex = len(args)
 		if help == "--help" || help == "-h" || help == "-help" || help == "-?" {
 			flags.ShowHelp = true
 			lastArgIndex -= 1
-			cmd, err = app.Parse(os.Args[1:lastArgIndex])
+			cmd, err = app.Parse(args[1:lastArgIndex])
 		}
+	}
+	if err != nil {
+		return nil, err
 	}
 	var account int
 	var token, host string
@@ -193,10 +204,7 @@ func ParseCommandLine(app *kingpin.Application) (*CommandLine, error) {
 	if flags.Host == "" {
 		flags.Host = host
 	}
-	if err != nil {
-		return nil, err
-	}
-	flags.Commands = strings.Split(cmd, " ")
+	flags.Command = cmd
 
 	return &flags, nil
 }

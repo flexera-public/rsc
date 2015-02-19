@@ -51,13 +51,9 @@ type ActionParams struct {
 // Map that holds flag values resulting from command line parsing
 var flagValues FlagValues
 
-// Command used to make API 1.5 requests
-const api15Command = "api15"
-
 // Register all commands with kinpin application
-func RegisterCommands(app *kingpin.Application) {
+func RegisterCommands(api15Cmd *kingpin.CmdClause) {
 	flagValues = make(FlagValues)
-	var api15Cmd = app.Command(api15Command, "RightScale API 1.5 client")
 	var actionNames = make([]string, len(actionMap))
 	var i = 0
 	for actionName, _ := range actionMap {
@@ -100,13 +96,12 @@ func RegisterCommands(app *kingpin.Application) {
 		var actionParams = ActionParams{}
 		actionCmd.Arg("href", "API Resource or resource collection href on which to act, e.g. '/api/servers'").Required().StringVar(&actionParams.Href)
 		actionParams.Params = Params(actionCmd.Flag("params", "Action parameters in the form QUERY=VALUE, e.g. '-P server[name]=server42'").Short('P').PlaceHolder("QUERY=VALUE"))
-		var key = fmt.Sprintf("%s %s", api15Command, action)
-		flagValues[key] = &actionParams
+		flagValues[action] = &actionParams
 	}
 }
 
 // Show help for given command and flags
-func (a *Api15) ShowHelp(cmd []string) error {
+func (a *Api15) ShowHelp(cmd string) error {
 	var resource, action, href, _, err = parseCommandAndFlags(cmd)
 	if err != nil {
 		return err
@@ -128,7 +123,7 @@ func (a *Api15) ShowHelp(cmd []string) error {
 }
 
 // Actually run command
-func (a *Api15) RunCommand(cmd []string) (*http.Response, error) {
+func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 	// 1. Initialize / find href as well as resource and action command definitions
 	var resource, action, href, params, err = parseCommandAndFlags(cmd)
 	if err != nil {
@@ -209,13 +204,14 @@ func (a *Api15) RunCommand(cmd []string) (*http.Response, error) {
 }
 
 // Parse command and flags and infer resource, action, href and params
-func parseCommandAndFlags(elems []string) (resource *ResourceCmd, action *ActionCmd, href string, params ParamsValue, err error) {
-	var cmd = strings.Join(elems, " ")
+func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd, href string, params ParamsValue, err error) {
+	var elems = strings.Split(cmd, " ")
 	if len(elems) != 2 {
 		err = fmt.Errorf("Invalid command '%s'", cmd)
 		return
 	}
-	var flags = flagValues[cmd]
+	var actionName = elems[1]
+	var flags = flagValues[actionName]
 	href = flags.Href
 	if !strings.HasPrefix(href, "/api") {
 		if strings.HasPrefix(href, "/") {
@@ -224,7 +220,6 @@ func parseCommandAndFlags(elems []string) (resource *ResourceCmd, action *Action
 			href = "/api/" + href
 		}
 	}
-	var actionName = elems[1]
 	for _, res := range commands {
 		if res.HrefRegexp.MatchString(href) {
 			resource = res
