@@ -268,18 +268,20 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 		Path:   uri,
 	}
 	if verb == "GET" && params != nil {
+		var values = u.Query()
 		for n, p := range params {
 			switch t := p.(type) {
 			case string:
-				u.Query().Set(n, t)
+				values.Set(n, t)
 			case []string:
 				for _, e := range t {
-					u.Query().Add(n, e)
+					values.Add(n, e)
 				}
 			default:
 				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string or an array of strings", p)
 			}
 		}
+		u.RawQuery = values.Encode()
 	}
 	var sUrl = u.String()
 	var req, err = http.NewRequest(verb, sUrl, body)
@@ -319,7 +321,7 @@ func (a *Api15) makeRequest(verb, uri string, params ApiParams) (*http.Response,
 		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
 	}
 	if a.DumpRequestResponse {
-		var b, err = httputil.DumpResponse(resp, true)
+		var b, err = httputil.DumpResponse(resp, false)
 		if err == nil {
 			fmt.Printf("RESPONSE\n--------\n%s\n", b)
 		}
