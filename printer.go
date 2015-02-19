@@ -9,35 +9,38 @@ import (
 
 /** Global Helpers **/
 
-var titleize = ansi.ColorFunc("blue+hb")
-var subTitleize = ansi.ColorFunc("blue")
-var errorize = ansi.ColorFunc("red")
-var successize = ansi.ColorFunc("green")
-var warningize = ansi.ColorFunc("yellow")
+var Titleize = ansi.ColorFunc("blue+hb")
+var SubTitleize = ansi.ColorFunc("blue")
+var Errorize = ansi.ColorFunc("red")
+var Successize = ansi.ColorFunc("green")
+var Warningize = ansi.ColorFunc("yellow")
 
-func PromptWarning(format string, a ...interface{}) {
+func PromptConfirmation(format string, a ...interface{}) string {
 	m := fmt.Sprintf(format, a...)
-	fmt.Printf(warningize(m))
+	fmt.Fprintf(out, Warningize(m))
+	var yn string
+	fmt.Fscanf(in, "%s", &yn)
+	return yn
 }
 
 func PrintSubtitle(format string, a ...interface{}) {
 	m := fmt.Sprintf(format, a...)
-	fmt.Println(subTitleize(m))
+	fmt.Fprintln(out, SubTitleize(m))
 }
 
 func PrintTitle(format string, a ...interface{}) {
 	m := fmt.Sprintf("== "+format+" ==", a...)
-	fmt.Println(titleize(m))
+	fmt.Fprintln(out, Titleize(m))
 }
 
 func PrintSuccess(format string, a ...interface{}) {
 	m := fmt.Sprintf("[INFO] "+format, a...)
-	fmt.Println(successize(m))
+	fmt.Fprintln(out, Successize(m))
 }
 
 func PrintError(format string, a ...interface{}) {
 	m := fmt.Sprintf("[ERROR] "+format, a...)
-	fmt.Println(errorize(m))
+	fmt.Fprintln(out, Errorize(m))
 }
 
 func PrintFatal(format string, a ...interface{}) {

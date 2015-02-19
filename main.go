@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path"
@@ -26,7 +27,6 @@ func main() {
 	var extractOneFlag = app.Flag("x1", "Extract single value using given JSON:select expression").String()
 	var extractMultipleFlag = app.Flag("xm", "Extract zero, one or multiple values using given JSON:select expression and return space separated list (useful for bash scripts)").String()
 	var extractMultipleFlagJson = app.Flag("xj", "Extract zero, one or multiple values using given JSON:select expression and return JSON").String()
-	var extractLinkFlag = app.Flag("xl", "Extract href of link found using given JSON:select expression").String()
 	var extractHeaderFlag = app.Flag("xh", "Extract header with given name").String()
 	var noRedirectFlag = app.Flag("noRedirect", "Do not follow redirect responses").Bool()
 	var fetchFlag = app.Flag("fetch", "Fetch resource with href present in 'Location' header").Bool()
@@ -77,7 +77,7 @@ func main() {
 	switch strings.Split(cmd, " ")[0] {
 
 	case "setup":
-		err = createConfig(*cfgPathFlag)
+		err = CreateConfig(*cfgPathFlag)
 		if err != nil {
 			PrintFatal(err.Error())
 		}
@@ -142,8 +142,6 @@ func main() {
 		err = displayer.ApplyExtract(*extractMultipleFlag, false)
 	} else if *extractMultipleFlagJson != "" {
 		err = displayer.ApplyExtract(*extractMultipleFlagJson, true)
-	} else if *extractLinkFlag != "" {
-		err = displayer.ApplyLinkExtract(*extractLinkFlag)
 	} else if *extractHeaderFlag != "" {
 		err = displayer.ApplyHeaderExtract(*extractHeaderFlag)
 	}
@@ -172,4 +170,23 @@ func main() {
 		exitStatus = 5
 	}
 	os.Exit(exitStatus)
+}
+
+// Make it possible to change where fmt.Scanf and fmt.Printf read and write so callers can be
+// tested.
+
+// Controls where fmt.(F)Printf should write, defaults to stdout.
+var out io.Writer = os.Stdout
+
+// Controls where fmt.(F)Scanf should read, defaults to stdin.
+var in io.Reader = os.Stdin
+
+// SetOutput changes where functions print, mainly useful for testing
+func SetOutput(o io.Writer) {
+	out = o
+}
+
+// SetInput changes where prompt functions scans, mainly useful for testing
+func SetInput(i io.Reader) {
+	in = i
 }

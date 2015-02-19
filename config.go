@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strconv"
-
-	"github.com/rightscale/rsc/rsapi15"
 )
 
 // Basic configuration settings required by all clients
@@ -27,13 +25,13 @@ func LoadConfig(path string) (*ClientConfig, error) {
 	if err != nil {
 		return nil, err
 	}
-	config.Token, err = decrypt(config.Token)
+	config.Token, err = Decrypt(config.Token)
 	return &config, err
 }
 
 // Save config encrypts the token and persists the config to file
 func (cfg *ClientConfig) Save(path string) error {
-	encrypted, err := encrypt(cfg.Token)
+	encrypted, err := Encrypt(cfg.Token)
 	if err != nil {
 		return fmt.Errorf("Failed to encrypt token: %s", err.Error())
 	}
@@ -50,13 +48,11 @@ func (cfg *ClientConfig) Save(path string) error {
 }
 
 // Create configuration file and save it to file at given path
-func createConfig(path string) error {
+func CreateConfig(path string) error {
 	var config, _ = LoadConfig(path)
 	var tokenDef, accountDef, hostDef string
 	if config != nil {
-		PromptWarning("Found existing configuration file %v, overwrite? (y/N): ", path)
-		var yn string
-		fmt.Scanf("%s", &yn)
+		var yn = PromptConfirmation("Found existing configuration file %v, overwrite? (y/N): ", path)
 		if yn != "y" {
 			PrintSuccess("Exiting")
 			return nil
@@ -71,9 +67,9 @@ func createConfig(path string) error {
 		config = &ClientConfig{}
 	}
 
-	fmt.Printf("Account id%v: ", accountDef)
+	fmt.Fprintf(out, "Account id%v: ", accountDef)
 	var newAccount string
-	fmt.Scanf("%s", &newAccount)
+	fmt.Fscanln(in, &newAccount)
 	if newAccount != "" {
 		a, err := strconv.Atoi(newAccount)
 		if err != nil {
@@ -82,25 +78,23 @@ func createConfig(path string) error {
 		config.Account = a
 	}
 
-	fmt.Printf("Refresh Token%v: ", tokenDef)
+	fmt.Fprintf(out, "Refresh Token%v: ", tokenDef)
 	var newToken string
-	fmt.Scanf("%s", &newToken)
+	fmt.Fscanln(in, &newToken)
 	if newToken != "" {
 		config.Token = newToken
 	}
 
-	fmt.Printf("API Host%v: ", hostDef)
+	fmt.Fprintf(out, "API Host%v: ", hostDef)
 	var newHost string
-	fmt.Scanf("%s", &newHost)
+	fmt.Fscanln(in, &newHost)
 	if newHost != "" {
 		config.Host = newHost
 	}
 
-	config.Save(path)
-
-	_, err := rsapi15.New(config.Account, config.Token, config.Host, nil, nil)
+	var err = config.Save(path)
 	if err != nil {
-		return fmt.Errorf("Config test failed: %s", err.Error())
+		return fmt.Errorf("Failed to save config: %s", err.Error())
 	}
 
 	return nil

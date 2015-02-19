@@ -25,7 +25,7 @@ func decodeBase64(b []byte) []byte {
 	return data
 }
 
-func encrypt(text string) (string, error) {
+func Encrypt(text string) (string, error) {
 	bytes := []byte(text)
 	key := seekret()
 	block, err := aes.NewCipher(key)
@@ -43,7 +43,10 @@ func encrypt(text string) (string, error) {
 	return string(encodeBase64(ciphertext)), nil
 }
 
-func decrypt(text string) (string, error) {
+func Decrypt(text string) (string, error) {
+	if text == "" {
+		return "", nil
+	}
 	key := seekret()
 	bytes := decodeBase64([]byte(text))
 	block, err := aes.NewCipher(key)
