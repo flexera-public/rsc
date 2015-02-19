@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gopkg.in/alecthomas/kingpin.v1"
+	"github.com/rightscale/rsc/cmds"
 )
 
 // Resource command
@@ -43,17 +43,16 @@ type FlagValues map[string]*ActionParams
 
 // Action params consist of href and map of query parameters
 type ActionParams struct {
-	Href     string       // Resource or collection href
-	Params   *ParamsValue // Action parameters
-	ShowHelp string       // Whether to list flags supported by resource action
+	Href     string            // Resource or collection href
+	Params   *cmds.ParamsValue // Action parameters
+	ShowHelp string            // Whether to list flags supported by resource action
 }
 
 // Map that holds flag values resulting from command line parsing
-var flagValues FlagValues
+var flagValues = make(FlagValues)
 
 // Register all commands with kinpin application
-func RegisterCommands(api15Cmd *kingpin.CmdClause) {
-	flagValues = make(FlagValues)
+func RegisterCommands(api15Cmd cmds.CommandProvider) {
 	var actionNames = make([]string, len(actionMap))
 	var i = 0
 	for actionName, _ := range actionMap {
@@ -95,8 +94,8 @@ func RegisterCommands(api15Cmd *kingpin.CmdClause) {
 		var actionCmd = api15Cmd.Command(action, description)
 		var actionParams = ActionParams{}
 		actionCmd.Arg("href", "API Resource or resource collection href on which to act, e.g. '/api/servers'").Required().StringVar(&actionParams.Href)
-		actionParams.Params = Params(actionCmd.Flag("params", "Action parameters in the form QUERY=VALUE, e.g. '-P server[name]=server42'").Short('P').PlaceHolder("QUERY=VALUE"))
-		flagValues[action] = &actionParams
+		actionParams.Params = cmds.Params(actionCmd.Flag("params", "Action parameters in the form QUERY=VALUE, e.g. '-P server[name]=server42'").Short('P').PlaceHolder("QUERY=VALUE"))
+		flagValues[actionCmd.FullCommand()] = &actionParams
 	}
 }
 
@@ -204,14 +203,10 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 }
 
 // Parse command and flags and infer resource, action, href and params
-func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd, href string, params ParamsValue, err error) {
+func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd, href string, params cmds.ParamsValue, err error) {
+	var flags = flagValues[cmd]
 	var elems = strings.Split(cmd, " ")
-	if len(elems) != 2 {
-		err = fmt.Errorf("Invalid command '%s'", cmd)
-		return
-	}
-	var actionName = elems[1]
-	var flags = flagValues[actionName]
+	var actionName = elems[len(elems)-1]
 	href = flags.Href
 	if !strings.HasPrefix(href, "/api") {
 		if strings.HasPrefix(href, "/") {
@@ -277,33 +272,4 @@ func validateFlagValue(value string, flag *ActionFlag) error {
 	}
 
 	return nil
-}
-
-// Params command line argument parser
-
-var stringMapRegex = regexp.MustCompile("[:=]")
-
-type ParamsValue map[string][]string
-
-func (p *ParamsValue) Set(value string) error {
-	parts := stringMapRegex.Split(value, 2)
-	if len(parts) != 2 {
-		return fmt.Errorf("expected KEY=VALUE got '%s'", value)
-	}
-	(*p)[parts[0]] = append((*p)[parts[0]], parts[1])
-	return nil
-}
-
-func (p *ParamsValue) String() string {
-	return fmt.Sprintf("%s", map[string][]string(*p))
-}
-
-func (p *ParamsValue) IsCumulative() bool {
-	return true
-}
-
-func Params(s kingpin.Settings) (target *ParamsValue) {
-	target = &ParamsValue{}
-	s.SetValue(target)
-	return
 }

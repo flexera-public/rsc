@@ -16,6 +16,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/rightscale/rsc/cmds"
 )
 
 // RightScale API 1.5 client
@@ -98,6 +100,41 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
 		Host:   host,
 		Client: client,
 	}, nil
+}
+
+// Build client from command line
+func FromCommandLine(cmdLine *cmds.CommandLine) (*Api15, error) {
+	var client *Api15
+	var httpClient *http.Client
+	if cmdLine.NoRedirect {
+		httpClient = &http.Client{
+			CheckRedirect: func(*http.Request, []*http.Request) error {
+				return fmt.Errorf("Client configured to prevent redirection")
+			},
+		}
+	} else {
+		httpClient = http.DefaultClient
+	}
+	var err error
+	if cmdLine.RL10 {
+		client, err = NewRL10(nil, httpClient)
+	} else {
+		client, err = New(cmdLine.Account, cmdLine.Token, cmdLine.Host, nil, httpClient)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("Failed to create API session: %v", err.Error())
+	}
+	if cmdLine.ShowHelp {
+		client.ShowHelp(cmdLine.Command)
+		return nil, nil
+	} else {
+		if cmdLine.Token == "" && !cmdLine.RL10 {
+			return nil, fmt.Errorf("Missing OAuth token, use '-token TOKEN' or 'setup'")
+		}
+		client.DumpRequestResponse = cmdLine.Dump
+		client.FetchLocationResource = cmdLine.FetchResource
+	}
+	return client, nil
 }
 
 // Generic API parameters type
