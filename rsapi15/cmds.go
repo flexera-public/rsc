@@ -205,6 +205,10 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 // Parse command and flags and infer resource, action, href and params
 func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd, href string, params cmds.ParamsValue, err error) {
 	var flags = flagValues[cmd]
+	if flags == nil {
+		err = fmt.Errorf("Invalid command line, try --help.")
+		return
+	}
 	var elems = strings.Split(cmd, " ")
 	var actionName = elems[len(elems)-1]
 	href = flags.Href

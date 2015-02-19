@@ -31,8 +31,10 @@ func main() {
 		err = CreateConfig(cmdLine.ConfigPath)
 
 	case "api15":
-		client, err := rsapi15.FromCommandLine(cmdLine)
-		if err == nil && client != nil {
+		var client, err2 = rsapi15.FromCommandLine(cmdLine)
+		if err2 != nil {
+			err = err2
+		} else if client != nil {
 			resp, err = client.RunCommand(cmdLine.Command)
 		}
 	}
