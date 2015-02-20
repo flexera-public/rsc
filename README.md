@@ -70,21 +70,19 @@ Built-in Help
 The `--help` flag is available on all commands. It displays contextual help, for example:
 ```
 rsc index --help
-usage: rsc [<flags>] index [<flags>] <href>
+usage: rsc [<flags>] index <href> [<params>]
 
 Lists all resources of given type in account.
 
-Flags:
-  -P, --params=QUERY=VALUE
-    Action parameters in the form QUERY=VALUE, e.g. '-P server[name]=server42'
-
 Args:
-  <href>  API Resource or resource collection href on which to act, e.g. '/api/servers'
+  <href>      API Resource or resource collection href on which to act, e.g. '/api/servers'
+  [<params>]  Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'
 ```
 Or:
 ```
 rsc api15 index clouds --help
 usage: rsc [<flags>] api15 index [<Cloud.index flags>] /api/clouds
+
 <Cloud.index flags>:
 --filter
     <[]string, optional>

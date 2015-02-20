@@ -94,7 +94,7 @@ func RegisterCommands(api15Cmd cmds.CommandProvider) {
 		var actionCmd = api15Cmd.Command(action, description)
 		var actionParams = ActionParams{}
 		actionCmd.Arg("href", "API Resource or resource collection href on which to act, e.g. '/api/servers'").Required().StringVar(&actionParams.Href)
-		actionCmd.Arg("params", "Action parameters in the form QUERY=VALUE, e.g. '-P server[name]=server42'").StringsVar(&actionParams.Params)
+		actionCmd.Arg("params", "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'").StringsVar(&actionParams.Params)
 		flagValues[actionCmd.FullCommand()] = &actionParams
 	}
 }
@@ -115,7 +115,7 @@ func (a *Api15) ShowHelp(cmd string) error {
 		}
 		flagHelp[i] = fmt.Sprintf("--%s\n    <%s> %s", f.Name, attrs, f.Description)
 	}
-	fmt.Printf("usage: rsc [<flags>] api15 %s [<%s.%s flags>] %s\n", action.Name,
+	fmt.Printf("usage: rsc [<flags>] api15 %s [<%s.%s flags>] %s\n\n", action.Name,
 		resource.Name, action.Name, href)
 	fmt.Printf("<%s.%s flags>:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n\n"))
 	return nil
