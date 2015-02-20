@@ -4,13 +4,11 @@ import "fmt"
 
 // Data structure used to describe API resources.
 type Resource struct {
-	Name              string       // Resource name, e.g. "ServerArray"
-	CollectionName    string       // Name of collection. e.g. "ServerArrays"
-	Description       string       // Resource description
-	ResourceActions   []*Action    // Resource actions, e.g. "show", "update", "destroy"
-	CollectionActions []*Action    // Collection actions, e.g. "index", "create"
-	Attributes        []*Attribute // Resource attributes
-	HrefRegexp        string       // Regular expression that matches resource hrefs
+	Name        string       // Resource name, e.g. "ServerArray"
+	Description string       // Resource description
+	Actions     []*Action    // Resource actions, e.g. "index", "show", "update" ...
+	Attributes  []*Attribute // Resource attributes
+	HrefRegexp  string       // Regular expression that matches resource hrefs
 }
 
 // Data structure used to describe collection and resource actions

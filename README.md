@@ -96,22 +96,19 @@ Go Package
 Each API is encapsulated in a different package: package `rsapi15` for API 1.5, package `rsapi16`
 for API 1.6, etc.
 
-The packages contain "resource locators", one or two per resource exposed by the underlying API.
-For each resource there may be a collection locator - e.g. `CloudsLocator` - if the API exposes
-collection level actions for this resource type, and a resource locator - e.g. `CloudLocator` - if
-the API exposes resource level actions for this resource type.
+The packages contain "resource locators", one per resource exposed by the underlying API.
 
-Locators can be retrieved using factory methods exposed by the Api15 object. The factory methods
+Locators are instantiated using factory methods exposed by the Api15 object. The factory methods
 accept the collection or resource href and return the corresponding locator. For example the
 following creates a cloud locator:
 ```go
 var cloudLocator = api.CloudLocator("/api/clouds/1")
 ```
 Locators expose one method for each action supported by the underlying collection or resource. For
-example the clouds collection locator `CloudsLocator` exposes an `Index()` method while the
-`CloudLocator` resource locator exposes a `Show()` method. These methods may return resources which
-are structs that expose the underlying resource attributes. For example the `CloudsLocator` 
-`Index()` method returns an array of `Cloud` resource. A cloud resource is defined as:
+example the clouds collection locator `CloudLocator` exposes an `Index()` and a `Show()` method.
+Locator methods may return resources which are structs that expose the underlying resource 
+attributes. For example the `CloudLocator` `Index()` method returns an array of `Cloud` resource.
+A cloud resource is defined as:
 ```go
 // Represents a Cloud (within the context of the account in the session).
 type Cloud struct {
@@ -130,17 +127,17 @@ and the `Index()` method is defined as:
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *CloudsLocator) Index(options ApiParams) ([]*Cloud, error)
+func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error)
 ```
 The following code would invoke the `Index()` method:
 ```go
-var clouds, err = api.CloudsLocator("/api/clouds").Index(ApiParams{})
+var clouds, err = api.CloudLocator("/api/clouds").Index(ApiParams{})
 ```
 `Create` actions all return a locator so that fetching the corresponding resource is convenient:
 ```go
-var volumesLocator = api.VolumesLocator("/api/clouds/1/volumes")
+var volumesLocator = api.VolumeLocator("/api/clouds/1/volumes")
 var params rsapi15.VolumeParam{} // Code that sets parameters omitted for brevity
-if loc, err := volumesLocator.Create(&params); err == nil {
+if loc, err := volumeLocator.Create(&params); err == nil {
 	volume, err := loc.Show(ApiParams{})
 	// ... check error, use volume etc.
 }

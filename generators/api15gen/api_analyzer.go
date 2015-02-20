@@ -133,8 +133,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 
 	// Compute actions
 	var actionNames = sortedKeys(methods)
-	var resourceActions = []*Action{}
-	var collectionActions = []*Action{}
+	var actions = []*Action{}
 	for _, actionName := range actionNames {
 		var m = methods[actionName]
 		var meth = m.(map[string]interface{})
@@ -146,15 +145,11 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
-		var isResourceAction bool
 		httpMethod, paths := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
 			meth["route"].(string))
 		if len(paths) == 0 {
 			// Custom action
 			continue
-		}
-		if strings.Contains(paths[0], "/:id") {
-			isResourceAction = true
 		}
 		var contentType string
 		if c, ok := meth["content_type"].(string); ok {
@@ -230,23 +225,17 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			Return:         parseReturn(actionName, name, contentType),
 			ReturnLocation: actionName == "create" && name != "Oauth2",
 		}
-		if isResourceAction {
-			resourceActions = append(resourceActions, &action)
-		} else {
-			collectionActions = append(collectionActions, &action)
-		}
+		actions = append(actions, &action)
 	}
 
 	// We're done!
 	name = inflect.Singularize(name)
 	descriptor.Resources[name] = &Resource{
-		Name:              name,
-		CollectionName:    inflect.Pluralize(name),
-		Description:       removeBlankLines(description),
-		ResourceActions:   resourceActions,
-		CollectionActions: collectionActions,
-		Attributes:        attributes,
-		HrefRegexp:        hrefRegexp,
+		Name:        name,
+		Description: removeBlankLines(description),
+		Actions:     actions,
+		Attributes:  attributes,
+		HrefRegexp:  hrefRegexp,
 	}
 }
 

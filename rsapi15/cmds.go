@@ -105,6 +105,10 @@ func (a *Api15) ShowHelp(cmd string) error {
 	if err != nil {
 		return err
 	}
+	if len(action.Flags) == 0 {
+		fmt.Printf("usage: rsc [<flags>] api15 %s %s\n", action.Name, href)
+		return nil
+	}
 	var flagHelp = make([]string, len(action.Flags))
 	for i, f := range action.Flags {
 		var attrs string
@@ -138,7 +142,7 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 	// 2. Coerce and validate given flag values
 	var coerced = map[string]interface{}{}
 	for _, p := range params {
-		var elems = strings.Split(p, "=")
+		var elems = strings.SplitN(p, "=", 2)
 		if len(elems) != 2 {
 			return nil, fmt.Errorf("Arguments must be of the form NAME=VALUE, value provided was '%s'", p)
 		}

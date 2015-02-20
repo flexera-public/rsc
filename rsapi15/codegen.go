@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 17, 2015 at 12:02am (PST)
+// Generated Feb 19, 2015 at 11:24pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -36,6 +36,7 @@ type Account struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
+//===== Locator
 // Account resource locator, exposes resource actions.
 type AccountLocator struct {
 	api  *Api15
@@ -47,7 +48,7 @@ func (api *Api15) AccountLocator(href string) *AccountLocator {
 	return &AccountLocator{api, href}
 }
 
-//===== Resource actions
+//===== Actions
 
 // GET /api/accounts/:id
 // Show information about a single Account.
@@ -80,17 +81,7 @@ type AccountGroup struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// AccountGroup collection locator, exposes collection actions.
-type AccountGroupsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// AccountGroup collection locator factory
-func (api *Api15) AccountGroupsLocator(href string) *AccountGroupsLocator {
-	return &AccountGroupsLocator{api, href}
-}
-
+//===== Locator
 // AccountGroup resource locator, exposes resource actions.
 type AccountGroupLocator struct {
 	api  *Api15
@@ -102,14 +93,14 @@ func (api *Api15) AccountGroupLocator(href string) *AccountGroupLocator {
 	return &AccountGroupLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/account_groups
 // Lists the AccountGroups owned by this Account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *AccountGroupsLocator) Index(options ApiParams) ([]*AccountGroup, error) {
+func (loc *AccountGroupLocator) Index(options ApiParams) ([]*AccountGroup, error) {
 	var res []*AccountGroup
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -125,8 +116,6 @@ func (loc *AccountGroupsLocator) Index(options ApiParams) ([]*AccountGroup, erro
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/account_groups/:id
 // Show information about a single AccountGroup.
@@ -162,17 +151,7 @@ type Alert struct {
 	UpdatedAt     time.Time           `json:"updated_at,omitempty"`
 }
 
-// Alert collection locator, exposes collection actions.
-type AlertsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Alert collection locator factory
-func (api *Api15) AlertsLocator(href string) *AlertsLocator {
-	return &AlertsLocator{api, href}
-}
-
+//===== Locator
 // Alert resource locator, exposes resource actions.
 type AlertLocator struct {
 	api  *Api15
@@ -184,35 +163,7 @@ func (api *Api15) AlertLocator(href string) *AlertLocator {
 	return &AlertLocator{api, href}
 }
 
-//===== Collection actions
-
-// GET /api/clouds/:cloud_id/instances/:instance_id/alerts
-// GET /api/servers/:server_id/alerts
-// GET /api/server_arrays/:server_array_id/alerts
-// GET /api/deployments/:deployment_id/alerts
-// GET /api/alerts
-// Lists all Alerts.
-// -- Optional parameters:
-// 	filter
-// 	view
-func (loc *AlertsLocator) Index(options ApiParams) ([]*Alert, error) {
-	var res []*Alert
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/alerts/:id/disable
 // POST /api/servers/:server_id/alerts/:id/disable
@@ -244,6 +195,32 @@ func (loc *AlertLocator) Enable() error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/clouds/:cloud_id/instances/:instance_id/alerts
+// GET /api/servers/:server_id/alerts
+// GET /api/server_arrays/:server_array_id/alerts
+// GET /api/deployments/:deployment_id/alerts
+// GET /api/alerts
+// Lists all Alerts.
+// -- Optional parameters:
+// 	filter
+// 	view
+func (loc *AlertLocator) Index(options ApiParams) ([]*Alert, error) {
+	var res []*Alert
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/alerts/:id/quench
@@ -321,17 +298,7 @@ type AlertSpec struct {
 	VoteType       string              `json:"vote_type,omitempty"`
 }
 
-// AlertSpec collection locator, exposes collection actions.
-type AlertSpecsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// AlertSpec collection locator factory
-func (api *Api15) AlertSpecsLocator(href string) *AlertSpecsLocator {
-	return &AlertSpecsLocator{api, href}
-}
-
+//===== Locator
 // AlertSpec resource locator, exposes resource actions.
 type AlertSpecLocator struct {
 	api  *Api15
@@ -343,14 +310,14 @@ func (api *Api15) AlertSpecLocator(href string) *AlertSpecLocator {
 	return &AlertSpecLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/servers/:server_id/alert_specs
 // POST /api/server_arrays/:server_array_id/alert_specs
 // POST /api/server_templates/:server_template_id/alert_specs
 // POST /api/alert_specs
 // Creates a new AlertSpec with the given parameters.
-func (loc *AlertSpecsLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocator, error) {
+func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocator, error) {
 	var res *AlertSpecLocator
 	if alertSpec == nil {
 		return res, fmt.Errorf("alertSpec is required")
@@ -371,6 +338,21 @@ func (loc *AlertSpecsLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocat
 	}
 }
 
+// DELETE /api/servers/:server_id/alert_specs/:id
+// DELETE /api/server_arrays/:server_array_id/alert_specs/:id
+// DELETE /api/server_templates/:server_template_id/alert_specs/:id
+// DELETE /api/alert_specs/:id
+// Deletes a given AlertSpec.
+func (loc *AlertSpecLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/servers/:server_id/alert_specs
 // GET /api/server_arrays/:server_array_id/alert_specs
 // GET /api/server_templates/:server_template_id/alert_specs
@@ -380,7 +362,7 @@ func (loc *AlertSpecsLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocat
 // 	filter
 // 	view
 // 	with_inherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
-func (loc *AlertSpecsLocator) Index(options ApiParams) ([]*AlertSpec, error) {
+func (loc *AlertSpecLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 	var res []*AlertSpec
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -395,23 +377,6 @@ func (loc *AlertSpecsLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/servers/:server_id/alert_specs/:id
-// DELETE /api/server_arrays/:server_array_id/alert_specs/:id
-// DELETE /api/server_templates/:server_template_id/alert_specs/:id
-// DELETE /api/alert_specs/:id
-// Deletes a given AlertSpec.
-func (loc *AlertSpecLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/servers/:server_id/alert_specs/:id
@@ -470,17 +435,7 @@ type AuditEntry struct {
 	UserEmail  string              `json:"user_email,omitempty"`
 }
 
-// AuditEntry collection locator, exposes collection actions.
-type AuditEntriesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// AuditEntry collection locator factory
-func (api *Api15) AuditEntriesLocator(href string) *AuditEntriesLocator {
-	return &AuditEntriesLocator{api, href}
-}
-
+//===== Locator
 // AuditEntry resource locator, exposes resource actions.
 type AuditEntryLocator struct {
 	api  *Api15
@@ -492,77 +447,7 @@ func (api *Api15) AuditEntryLocator(href string) *AuditEntryLocator {
 	return &AuditEntryLocator{api, href}
 }
 
-//===== Collection actions
-
-// POST /api/audit_entries
-// Creates a new AuditEntry with the given parameters.
-// -- Optional parameters:
-// 	notify: The event notification category. Defaults to 'None'.
-// 	user_email: The email of the user (who created/triggered the audit entry). Only usable with instance role.
-func (loc *AuditEntriesLocator) Create(auditEntry *AuditEntryParam, options ApiParams) (*AuditEntryLocator, error) {
-	var res *AuditEntryLocator
-	if auditEntry == nil {
-		return res, fmt.Errorf("auditEntry is required")
-	}
-	var params = mergeOptionals(ApiParams{
-		"audit_entry": auditEntry,
-	}, options)
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	var location = resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &AuditEntryLocator{loc.api, location}, nil
-	}
-}
-
-// GET /api/audit_entries
-// Lists AuditEntries of the account. Due to the potentially large number of audit entries, a start and end date must
-// be provided during an index call to limit the search. The format of the dates must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
-// 2011/07/11 00:00:00 +0000.
-// A maximum of 1000 records will be returned by each index call.
-// Using the available filters, one can select or group which audit entries to retrieve.
-// 	endDate: The end date for retrieving audit entries (the format must be the same as start date). The time period between start and end date must be less than 3 months (93 days).
-// 	limit: Limit the audit entries to this number. The limit should >= 1 and <= 1000
-// 	startDate: The start date for retrieving audit entries, the format must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g., 2011/06/25 00:00:00 +0000
-// -- Optional parameters:
-// 	filter
-// 	view
-func (loc *AuditEntriesLocator) Index(endDate string, limit string, startDate string, options ApiParams) ([]*AuditEntry, error) {
-	var res []*AuditEntry
-	if endDate == "" {
-		return res, fmt.Errorf("endDate is required")
-	}
-	if limit == "" {
-		return res, fmt.Errorf("limit is required")
-	}
-	if startDate == "" {
-		return res, fmt.Errorf("startDate is required")
-	}
-	var params = mergeOptionals(ApiParams{
-		"end_date":   endDate,
-		"limit":      limit,
-		"start_date": startDate,
-	}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // POST /api/audit_entries/:id/append
 // Updates the summary and appends more details to a given AuditEntry. Each audit entry detail is stored
@@ -585,6 +470,32 @@ func (loc *AuditEntryLocator) Append(options ApiParams) error {
 	return nil
 }
 
+// POST /api/audit_entries
+// Creates a new AuditEntry with the given parameters.
+// -- Optional parameters:
+// 	notify: The event notification category. Defaults to 'None'.
+// 	user_email: The email of the user (who created/triggered the audit entry). Only usable with instance role.
+func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options ApiParams) (*AuditEntryLocator, error) {
+	var res *AuditEntryLocator
+	if auditEntry == nil {
+		return res, fmt.Errorf("auditEntry is required")
+	}
+	var params = mergeOptionals(ApiParams{
+		"audit_entry": auditEntry,
+	}, options)
+	var href = loc.Href
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	var location = resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &AuditEntryLocator{loc.api, location}, nil
+	}
+}
+
 // GET /api/audit_entries/:id/detail
 // shows the details of a given AuditEntry.
 // Note that the media type of the response is simply text.
@@ -592,6 +503,48 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 	var res string
 	var params = map[string]interface{}{}
 	var href = loc.Href + "/detail"
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
+}
+
+// GET /api/audit_entries
+// Lists AuditEntries of the account. Due to the potentially large number of audit entries, a start and end date must
+// be provided during an index call to limit the search. The format of the dates must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
+// 2011/07/11 00:00:00 +0000.
+// A maximum of 1000 records will be returned by each index call.
+// Using the available filters, one can select or group which audit entries to retrieve.
+// 	endDate: The end date for retrieving audit entries (the format must be the same as start date). The time period between start and end date must be less than 3 months (93 days).
+// 	limit: Limit the audit entries to this number. The limit should >= 1 and <= 1000
+// 	startDate: The start date for retrieving audit entries, the format must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g., 2011/06/25 00:00:00 +0000
+// -- Optional parameters:
+// 	filter
+// 	view
+func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate string, options ApiParams) ([]*AuditEntry, error) {
+	var res []*AuditEntry
+	if endDate == "" {
+		return res, fmt.Errorf("endDate is required")
+	}
+	if limit == "" {
+		return res, fmt.Errorf("limit is required")
+	}
+	if startDate == "" {
+		return res, fmt.Errorf("startDate is required")
+	}
+	var params = mergeOptionals(ApiParams{
+		"end_date":   endDate,
+		"limit":      limit,
+		"start_date": startDate,
+	}, options)
+	var href = loc.Href
 	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
 		return res, err
@@ -661,17 +614,7 @@ type Backup struct {
 	VolumeSnapshots     []VolumeSnapshot    `json:"volume_snapshots,omitempty"`
 }
 
-// Backup collection locator, exposes collection actions.
-type BackupsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Backup collection locator factory
-func (api *Api15) BackupsLocator(href string) *BackupsLocator {
-	return &BackupsLocator{api, href}
-}
-
+//===== Locator
 // Backup resource locator, exposes resource actions.
 type BackupLocator struct {
 	api  *Api15
@@ -683,7 +626,7 @@ func (api *Api15) BackupLocator(href string) *BackupLocator {
 	return &BackupLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/backups/cleanup
 // Deletes old backups that meet the given criteria. For example, if a user calls cleanup with keep monthlies set to 12,
@@ -717,7 +660,7 @@ func (api *Api15) BackupLocator(href string) *BackupLocator {
 // 	monthlies: The number of monthly backups(the latest one in each month) that should be kept.
 // 	weeklies: The number of weekly backups(the latest one in each week) that should be kept.
 // 	yearlies: The number of yearly backups(the latest one in each year) that should be kept.
-func (loc *BackupsLocator) Cleanup(keepLast string, lineage string, options ApiParams) error {
+func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options ApiParams) error {
 	if keepLast == "" {
 		return fmt.Errorf("keepLast is required")
 	}
@@ -739,7 +682,7 @@ func (loc *BackupsLocator) Cleanup(keepLast string, lineage string, options ApiP
 // POST /api/backups
 // Takes in an array of volumeattachmenthrefs and takes a snapshot of each.
 // The volumeattachmenthrefs must belong to the same instance.
-func (loc *BackupsLocator) Create(backup *BackupParam) (*BackupLocator, error) {
+func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	var res *BackupLocator
 	if backup == nil {
 		return res, fmt.Errorf("backup is required")
@@ -760,6 +703,18 @@ func (loc *BackupsLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	}
 }
 
+// DELETE /api/backups/:id
+// Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
+func (loc *BackupLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/backups
 // Lists all of the backups with the given lineage tag. Filters can be used to search for a particular backup. If the
 // 'latest_before' filter is set, only one backup is returned (the latest backup before the given timestamp).
@@ -771,7 +726,7 @@ func (loc *BackupsLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 // 	lineage: Backups belonging to this lineage.
 // -- Optional parameters:
 // 	filter
-func (loc *BackupsLocator) Index(lineage string, options ApiParams) ([]*Backup, error) {
+func (loc *BackupLocator) Index(lineage string, options ApiParams) ([]*Backup, error) {
 	var res []*Backup
 	if lineage == "" {
 		return res, fmt.Errorf("lineage is required")
@@ -791,20 +746,6 @@ func (loc *BackupsLocator) Index(lineage string, options ApiParams) ([]*Backup, 
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/backups/:id
-// Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
-func (loc *BackupLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // POST /api/backups/:id/restore
@@ -869,17 +810,7 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 
 /******  ChildAccount ******/
 
-// ChildAccount collection locator, exposes collection actions.
-type ChildAccountsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// ChildAccount collection locator factory
-func (api *Api15) ChildAccountsLocator(href string) *ChildAccountsLocator {
-	return &ChildAccountsLocator{api, href}
-}
-
+//===== Locator
 // ChildAccount resource locator, exposes resource actions.
 type ChildAccountLocator struct {
 	api  *Api15
@@ -891,14 +822,14 @@ func (api *Api15) ChildAccountLocator(href string) *ChildAccountLocator {
 	return &ChildAccountLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/child_accounts
 // Create an enterprise ChildAccount for this Account. The User will by default get an 'admin' role
 // on the ChildAccount to enable him/her to add, delete Users and Permissions.
 // For more information on the valid values for 'cluster_href', refer to the following:
 // http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/ChildAccounts/Create
-func (loc *ChildAccountsLocator) Create(childAccount *ChildAccountParam) (*ChildAccountLocator, error) {
+func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildAccountLocator, error) {
 	var res *ChildAccountLocator
 	if childAccount == nil {
 		return res, fmt.Errorf("childAccount is required")
@@ -923,7 +854,7 @@ func (loc *ChildAccountsLocator) Create(childAccount *ChildAccountParam) (*Child
 // Lists the enterprise ChildAccounts available for this Account.
 // -- Optional parameters:
 // 	filter
-func (loc *ChildAccountsLocator) Index(options ApiParams) ([]*Account, error) {
+func (loc *ChildAccountLocator) Index(options ApiParams) ([]*Account, error) {
 	var res []*Account
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -939,8 +870,6 @@ func (loc *ChildAccountsLocator) Index(options ApiParams) ([]*Account, error) {
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // PUT /api/accounts/:id
 // PUT /api/child_accounts/:id
@@ -972,17 +901,7 @@ type Cloud struct {
 	Name         string              `json:"name,omitempty"`
 }
 
-// Cloud collection locator, exposes collection actions.
-type CloudsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Cloud collection locator factory
-func (api *Api15) CloudsLocator(href string) *CloudsLocator {
-	return &CloudsLocator{api, href}
-}
-
+//===== Locator
 // Cloud resource locator, exposes resource actions.
 type CloudLocator struct {
 	api  *Api15
@@ -994,14 +913,14 @@ func (api *Api15) CloudLocator(href string) *CloudLocator {
 	return &CloudLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/clouds
 // Lists the clouds available to this account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *CloudsLocator) Index(options ApiParams) ([]*Cloud, error) {
+func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error) {
 	var res []*Cloud
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -1017,8 +936,6 @@ func (loc *CloudsLocator) Index(options ApiParams) ([]*Cloud, error) {
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/clouds/:id
 // Show information about a single cloud.
@@ -1050,17 +967,7 @@ type CloudAccount struct {
 	UpdatedAt time.Time           `json:"updated_at,omitempty"`
 }
 
-// CloudAccount collection locator, exposes collection actions.
-type CloudAccountsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// CloudAccount collection locator factory
-func (api *Api15) CloudAccountsLocator(href string) *CloudAccountsLocator {
-	return &CloudAccountsLocator{api, href}
-}
-
+//===== Locator
 // CloudAccount resource locator, exposes resource actions.
 type CloudAccountLocator struct {
 	api  *Api15
@@ -1072,13 +979,13 @@ func (api *Api15) CloudAccountLocator(href string) *CloudAccountLocator {
 	return &CloudAccountLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/cloud_accounts
 // Create a CloudAccount by passing in the respective credentials for each cloud.
 // For more information on the specific parameters for each cloud, refer to the following:
 // http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
-func (loc *CloudAccountsLocator) Create(cloudAccount *CloudAccountParam) (*CloudAccountLocator, error) {
+func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudAccountLocator, error) {
 	var res *CloudAccountLocator
 	if cloudAccount == nil {
 		return res, fmt.Errorf("cloudAccount is required")
@@ -1099,9 +1006,21 @@ func (loc *CloudAccountsLocator) Create(cloudAccount *CloudAccountParam) (*Cloud
 	}
 }
 
+// DELETE /api/cloud_accounts/:id
+// Delete a CloudAccount.
+func (loc *CloudAccountLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/cloud_accounts
 // Lists the CloudAccounts (non-aws) available to this Account.
-func (loc *CloudAccountsLocator) Index() ([]*CloudAccount, error) {
+func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 	var res []*CloudAccount
 	var params = map[string]interface{}{}
 	var href = loc.Href
@@ -1116,20 +1035,6 @@ func (loc *CloudAccountsLocator) Index() ([]*CloudAccount, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/cloud_accounts/:id
-// Delete a CloudAccount.
-func (loc *CloudAccountLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/cloud_accounts/:id
@@ -1169,17 +1074,7 @@ type Cookbook struct {
 	Version           string              `json:"version,omitempty"`
 }
 
-// Cookbook collection locator, exposes collection actions.
-type CookbooksLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Cookbook collection locator factory
-func (api *Api15) CookbooksLocator(href string) *CookbooksLocator {
-	return &CookbooksLocator{api, href}
-}
-
+//===== Locator
 // Cookbook resource locator, exposes resource actions.
 type CookbookLocator struct {
 	api  *Api15
@@ -1191,32 +1086,7 @@ func (api *Api15) CookbookLocator(href string) *CookbookLocator {
 	return &CookbookLocator{api, href}
 }
 
-//===== Collection actions
-
-// GET /api/cookbooks
-// Lists the Cookbooks available to this account.
-// The extended_designer view is only available to accounts with the designer permission.
-// -- Optional parameters:
-// 	filter
-// 	view
-func (loc *CookbooksLocator) Index(options ApiParams) ([]*Cookbook, error) {
-	var res []*Cookbook
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // DELETE /api/cookbooks/:id
 // Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.
@@ -1264,6 +1134,29 @@ func (loc *CookbookLocator) Freeze(value string) error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/cookbooks
+// Lists the Cookbooks available to this account.
+// The extended_designer view is only available to accounts with the designer permission.
+// -- Optional parameters:
+// 	filter
+// 	view
+func (loc *CookbookLocator) Index(options ApiParams) ([]*Cookbook, error) {
+	var res []*Cookbook
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/cookbooks/:id/obsolete
@@ -1316,17 +1209,7 @@ type CookbookAttachment struct {
 	Links      []map[string]string `json:"links,omitempty"`
 }
 
-// CookbookAttachment collection locator, exposes collection actions.
-type CookbookAttachmentsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// CookbookAttachment collection locator factory
-func (api *Api15) CookbookAttachmentsLocator(href string) *CookbookAttachmentsLocator {
-	return &CookbookAttachmentsLocator{api, href}
-}
-
+//===== Locator
 // CookbookAttachment resource locator, exposes resource actions.
 type CookbookAttachmentLocator struct {
 	api  *Api15
@@ -1338,7 +1221,7 @@ func (api *Api15) CookbookAttachmentLocator(href string) *CookbookAttachmentLoca
 	return &CookbookAttachmentLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/cookbooks/:cookbook_id/cookbook_attachments
 // POST /api/server_templates/:server_template_id/cookbook_attachments
@@ -1346,7 +1229,7 @@ func (api *Api15) CookbookAttachmentLocator(href string) *CookbookAttachmentLoca
 // Attach a cookbook to a given resource.
 // -- Optional parameters:
 // 	cookbook_attachment
-func (loc *CookbookAttachmentsLocator) Create(options ApiParams) (*CookbookAttachmentLocator, error) {
+func (loc *CookbookAttachmentLocator) Create(options ApiParams) (*CookbookAttachmentLocator, error) {
 	var res *CookbookAttachmentLocator
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -1362,13 +1245,27 @@ func (loc *CookbookAttachmentsLocator) Create(options ApiParams) (*CookbookAttac
 	}
 }
 
+// DELETE /api/cookbooks/:cookbook_id/cookbook_attachments/:id
+// DELETE /api/server_templates/:server_template_id/cookbook_attachments/:id
+// DELETE /api/cookbook_attachments/:id
+// Detach a cookbook from a given resource.
+func (loc *CookbookAttachmentLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/cookbooks/:cookbook_id/cookbook_attachments
 // GET /api/server_templates/:server_template_id/cookbook_attachments
 // GET /api/cookbook_attachments
 // Lists Cookbook Attachments.
 // -- Optional parameters:
 // 	view
-func (loc *CookbookAttachmentsLocator) Index(options ApiParams) ([]*CookbookAttachment, error) {
+func (loc *CookbookAttachmentLocator) Index(options ApiParams) ([]*CookbookAttachment, error) {
 	var res []*CookbookAttachment
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -1388,7 +1285,7 @@ func (loc *CookbookAttachmentsLocator) Index(options ApiParams) ([]*CookbookAtta
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_attach
 // POST /api/cookbook_attachments/multi_attach
 // Attach multiple cookbooks to a given resource.
-func (loc *CookbookAttachmentsLocator) MultiAttach(cookbookAttachments *CookbookAttachments) error {
+func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookAttachments) error {
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
 	}
@@ -1406,7 +1303,7 @@ func (loc *CookbookAttachmentsLocator) MultiAttach(cookbookAttachments *Cookbook
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_detach
 // POST /api/cookbook_attachments/multi_detach
 // Detach multiple cookbooks from a given resource.
-func (loc *CookbookAttachmentsLocator) MultiDetach(cookbookAttachments *CookbookAttachments2) error {
+func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookAttachments2) error {
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
 	}
@@ -1415,22 +1312,6 @@ func (loc *CookbookAttachmentsLocator) MultiDetach(cookbookAttachments *Cookbook
 	}
 	var href = loc.Href + "/multi_detach"
 	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-//===== Resource actions
-
-// DELETE /api/cookbooks/:cookbook_id/cookbook_attachments/:id
-// DELETE /api/server_templates/:server_template_id/cookbook_attachments/:id
-// DELETE /api/cookbook_attachments/:id
-// Detach a cookbook from a given resource.
-func (loc *CookbookAttachmentLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
 	if err != nil {
 		return err
 	}
@@ -1477,17 +1358,7 @@ type Credential struct {
 	Value       string              `json:"value,omitempty"`
 }
 
-// Credential collection locator, exposes collection actions.
-type CredentialsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Credential collection locator factory
-func (api *Api15) CredentialsLocator(href string) *CredentialsLocator {
-	return &CredentialsLocator{api, href}
-}
-
+//===== Locator
 // Credential resource locator, exposes resource actions.
 type CredentialLocator struct {
 	api  *Api15
@@ -1499,11 +1370,11 @@ func (api *Api15) CredentialLocator(href string) *CredentialLocator {
 	return &CredentialLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/credentials
 // Creates a new Credential with the given parameters.
-func (loc *CredentialsLocator) Create(credential *CredentialParam) (*CredentialLocator, error) {
+func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLocator, error) {
 	var res *CredentialLocator
 	if credential == nil {
 		return res, fmt.Errorf("credential is required")
@@ -1524,12 +1395,24 @@ func (loc *CredentialsLocator) Create(credential *CredentialParam) (*CredentialL
 	}
 }
 
+// DELETE /api/credentials/:id
+// Deletes a Credential.
+func (loc *CredentialLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/credentials
 // Lists the Credentials available to this account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *CredentialsLocator) Index(options ApiParams) ([]*Credential, error) {
+func (loc *CredentialLocator) Index(options ApiParams) ([]*Credential, error) {
 	var res []*Credential
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -1544,20 +1427,6 @@ func (loc *CredentialsLocator) Index(options ApiParams) ([]*Credential, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/credentials/:id
-// Deletes a Credential.
-func (loc *CredentialLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/credentials/:id
@@ -1612,17 +1481,7 @@ type Datacenter struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 }
 
-// Datacenter collection locator, exposes collection actions.
-type DatacentersLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Datacenter collection locator factory
-func (api *Api15) DatacentersLocator(href string) *DatacentersLocator {
-	return &DatacentersLocator{api, href}
-}
-
+//===== Locator
 // Datacenter resource locator, exposes resource actions.
 type DatacenterLocator struct {
 	api  *Api15
@@ -1634,14 +1493,14 @@ func (api *Api15) DatacenterLocator(href string) *DatacenterLocator {
 	return &DatacenterLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/clouds/:cloud_id/datacenters
 // Lists all Datacenters for a particular cloud.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *DatacentersLocator) Index(options ApiParams) ([]*Datacenter, error) {
+func (loc *DatacenterLocator) Index(options ApiParams) ([]*Datacenter, error) {
 	var res []*Datacenter
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -1657,8 +1516,6 @@ func (loc *DatacentersLocator) Index(options ApiParams) ([]*Datacenter, error) {
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/clouds/:cloud_id/datacenters/:id
 // Displays information about a single Datacenter.
@@ -1694,17 +1551,7 @@ type Deployment struct {
 	ServerTagScope string              `json:"server_tag_scope,omitempty"`
 }
 
-// Deployment collection locator, exposes collection actions.
-type DeploymentsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Deployment collection locator factory
-func (api *Api15) DeploymentsLocator(href string) *DeploymentsLocator {
-	return &DeploymentsLocator{api, href}
-}
-
+//===== Locator
 // Deployment resource locator, exposes resource actions.
 type DeploymentLocator struct {
 	api  *Api15
@@ -1716,11 +1563,25 @@ func (api *Api15) DeploymentLocator(href string) *DeploymentLocator {
 	return &DeploymentLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
+
+// POST /api/deployments/:id/clone
+// Clones a given deployment.
+// -- Optional parameters:
+// 	deployment
+func (loc *DeploymentLocator) Clone(options ApiParams) error {
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href + "/clone"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // POST /api/deployments
 // Creates a new deployment with the given parameters.
-func (loc *DeploymentsLocator) Create(deployment *DeploymentParam) (*DeploymentLocator, error) {
+func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLocator, error) {
 	var res *DeploymentLocator
 	if deployment == nil {
 		return res, fmt.Errorf("deployment is required")
@@ -1741,6 +1602,18 @@ func (loc *DeploymentsLocator) Create(deployment *DeploymentParam) (*DeploymentL
 	}
 }
 
+// DELETE /api/deployments/:id
+// Deletes a given deployment.
+func (loc *DeploymentLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/deployments
 // Lists deployments of the account.
 // Using the available filters, one can select or group which deployments to retrieve.
@@ -1749,7 +1622,7 @@ func (loc *DeploymentsLocator) Create(deployment *DeploymentParam) (*DeploymentL
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *DeploymentsLocator) Index(options ApiParams) ([]*Deployment, error) {
+func (loc *DeploymentLocator) Index(options ApiParams) ([]*Deployment, error) {
 	var res []*Deployment
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -1764,34 +1637,6 @@ func (loc *DeploymentsLocator) Index(options ApiParams) ([]*Deployment, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// POST /api/deployments/:id/clone
-// Clones a given deployment.
-// -- Optional parameters:
-// 	deployment
-func (loc *DeploymentLocator) Clone(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DELETE /api/deployments/:id
-// Deletes a given deployment.
-func (loc *DeploymentLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // POST /api/deployments/:id/lock
@@ -1875,22 +1720,23 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 
 /******  HealthCheck ******/
 
-// HealthCheck collection locator, exposes collection actions.
-type HealthChecksLocator struct {
+//===== Locator
+// HealthCheck resource locator, exposes resource actions.
+type HealthCheckLocator struct {
 	api  *Api15
 	Href string
 }
 
-// HealthCheck collection locator factory
-func (api *Api15) HealthChecksLocator(href string) *HealthChecksLocator {
-	return &HealthChecksLocator{api, href}
+// HealthCheck resource locator factory
+func (api *Api15) HealthCheckLocator(href string) *HealthCheckLocator {
+	return &HealthCheckLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/health-check/
 // Check health of RightApi controllers
-func (loc *HealthChecksLocator) Index() ([]*map[string]string, error) {
+func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
 	var res []*map[string]string
 	var params = map[string]interface{}{}
 	var href = loc.Href
@@ -1921,17 +1767,7 @@ type IdentityProvider struct {
 	UpdatedAt     time.Time           `json:"updated_at,omitempty"`
 }
 
-// IdentityProvider collection locator, exposes collection actions.
-type IdentityProvidersLocator struct {
-	api  *Api15
-	Href string
-}
-
-// IdentityProvider collection locator factory
-func (api *Api15) IdentityProvidersLocator(href string) *IdentityProvidersLocator {
-	return &IdentityProvidersLocator{api, href}
-}
-
+//===== Locator
 // IdentityProvider resource locator, exposes resource actions.
 type IdentityProviderLocator struct {
 	api  *Api15
@@ -1943,14 +1779,14 @@ func (api *Api15) IdentityProviderLocator(href string) *IdentityProviderLocator 
 	return &IdentityProviderLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/identity_providers
 // Lists the identity providers associated with this enterprise account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *IdentityProvidersLocator) Index(options ApiParams) ([]*IdentityProvider, error) {
+func (loc *IdentityProviderLocator) Index(options ApiParams) ([]*IdentityProvider, error) {
 	var res []*IdentityProvider
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -1966,8 +1802,6 @@ func (loc *IdentityProvidersLocator) Index(options ApiParams) ([]*IdentityProvid
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/identity_providers/:id
 // Show the specified identity provider, if associated with this enterprise account.
@@ -2008,17 +1842,7 @@ type Image struct {
 	Visibility         string              `json:"visibility,omitempty"`
 }
 
-// Image collection locator, exposes collection actions.
-type ImagesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Image collection locator factory
-func (api *Api15) ImagesLocator(href string) *ImagesLocator {
-	return &ImagesLocator{api, href}
-}
-
+//===== Locator
 // Image resource locator, exposes resource actions.
 type ImageLocator struct {
 	api  *Api15
@@ -2030,14 +1854,14 @@ func (api *Api15) ImageLocator(href string) *ImageLocator {
 	return &ImageLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/clouds/:cloud_id/images
 // Lists all Images for the given Cloud.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *ImagesLocator) Index(options ApiParams) ([]*Image, error) {
+func (loc *ImageLocator) Index(options ApiParams) ([]*Image, error) {
 	var res []*Image
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -2053,8 +1877,6 @@ func (loc *ImagesLocator) Index(options ApiParams) ([]*Image, error) {
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/clouds/:cloud_id/images/:id
 // Shows information about a single Image.
@@ -2088,18 +1910,19 @@ type Input struct {
 	Value string `json:"value,omitempty"`
 }
 
-// Input collection locator, exposes collection actions.
-type InputsLocator struct {
+//===== Locator
+// Input resource locator, exposes resource actions.
+type InputLocator struct {
 	api  *Api15
 	Href string
 }
 
-// Input collection locator factory
-func (api *Api15) InputsLocator(href string) *InputsLocator {
-	return &InputsLocator{api, href}
+// Input resource locator factory
+func (api *Api15) InputLocator(href string) *InputLocator {
+	return &InputLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/inputs
 // GET /api/deployments/:deployment_id/inputs
@@ -2107,7 +1930,7 @@ func (api *Api15) InputsLocator(href string) *InputsLocator {
 // Retrieves the full list of existing inputs of the specified resource.
 // -- Optional parameters:
 // 	view
-func (loc *InputsLocator) Index(options ApiParams) ([]*Input, error) {
+func (loc *InputLocator) Index(options ApiParams) ([]*Input, error) {
 	var res []*Input
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -2190,7 +2013,7 @@ func (loc *InputsLocator) Index(options ApiParams) ([]*Input, error) {
 // (ex: -d inputs[MY_INPUT]="text:foobar").
 // If the old format is used, the input is parsed using 1.0 semantics.
 // If the new format is used, the input is parsed using the new 2.0 semantics.
-func (loc *InputsLocator) MultiUpdate(inputs map[string]string) error {
+func (loc *InputLocator) MultiUpdate(inputs map[string]string) error {
 	if len(inputs) == 0 {
 		return fmt.Errorf("inputs is required")
 	}
@@ -2242,17 +2065,7 @@ type Instance struct {
 	UserData                 string              `json:"user_data,omitempty"`
 }
 
-// Instance collection locator, exposes collection actions.
-type InstancesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Instance collection locator factory
-func (api *Api15) InstancesLocator(href string) *InstancesLocator {
-	return &InstancesLocator{api, href}
-}
-
+//===== Locator
 // Instance resource locator, exposes resource actions.
 type InstanceLocator struct {
 	api  *Api15
@@ -2264,11 +2077,11 @@ func (api *Api15) InstanceLocator(href string) *InstanceLocator {
 	return &InstanceLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/instances
 // Creates and launches a raw instance using the provided parameters.
-func (loc *InstancesLocator) Create(instance *InstanceParam) (*InstanceLocator, error) {
+func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, error) {
 	var res *InstanceLocator
 	if instance == nil {
 		return res, fmt.Errorf("instance is required")
@@ -2305,7 +2118,7 @@ func (loc *InstancesLocator) Create(instance *InstanceParam) (*InstanceLocator, 
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *InstancesLocator) Index(options ApiParams) ([]*Instance, error) {
+func (loc *InstanceLocator) Index(options ApiParams) ([]*Instance, error) {
 	var res []*Instance
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -2321,46 +2134,6 @@ func (loc *InstancesLocator) Index(options ApiParams) ([]*Instance, error) {
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-// POST /api/clouds/:cloud_id/instances/multi_run_executable
-// POST /api/server_arrays/:server_array_id/multi_run_executable
-// Runs a script or a recipe in the running instances.
-// This is an asynchronous function, which returns immediately after queuing the executable for execution.
-// Status of the execution can be tracked at the URL returned in the "Location" header.
-// -- Optional parameters:
-// 	filter
-// 	ignore_lock: Specifies the ability to ignore the lock(s) on the Instance(s).
-// 	inputs
-// 	recipe_name: The name of the recipe to be run.
-// 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
-func (loc *InstancesLocator) MultiRunExecutable(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/multi_run_executable"
-	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// POST /api/clouds/:cloud_id/instances/multi_terminate
-// POST /api/server_arrays/:server_array_id/multi_terminate
-// Terminates running instances.
-// Either a filter or the parameter 'terminate_all' must be provided.
-// -- Optional parameters:
-// 	filter
-// 	terminate_all: Specifies the ability to terminate all instances.
-func (loc *InstancesLocator) MultiTerminate(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/multi_terminate"
-	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-//===== Resource actions
 
 // POST /api/clouds/:cloud_id/instances/:id/launch
 // POST /api/servers/:server_id/launch
@@ -2385,6 +2158,44 @@ func (loc *InstanceLocator) Launch(options ApiParams) error {
 func (loc *InstanceLocator) Lock() error {
 	var params = map[string]interface{}{}
 	var href = loc.Href + "/lock"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// POST /api/clouds/:cloud_id/instances/multi_run_executable
+// POST /api/server_arrays/:server_array_id/multi_run_executable
+// Runs a script or a recipe in the running instances.
+// This is an asynchronous function, which returns immediately after queuing the executable for execution.
+// Status of the execution can be tracked at the URL returned in the "Location" header.
+// -- Optional parameters:
+// 	filter
+// 	ignore_lock: Specifies the ability to ignore the lock(s) on the Instance(s).
+// 	inputs
+// 	recipe_name: The name of the recipe to be run.
+// 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
+func (loc *InstanceLocator) MultiRunExecutable(options ApiParams) error {
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href + "/multi_run_executable"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// POST /api/clouds/:cloud_id/instances/multi_terminate
+// POST /api/server_arrays/:server_array_id/multi_terminate
+// Terminates running instances.
+// Either a filter or the parameter 'terminate_all' must be provided.
+// -- Optional parameters:
+// 	filter
+// 	terminate_all: Specifies the ability to terminate all instances.
+func (loc *InstanceLocator) MultiTerminate(options ApiParams) error {
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href + "/multi_terminate"
 	var _, err = loc.api.PostRaw(href, params)
 	if err != nil {
 		return err
@@ -2566,17 +2377,7 @@ type InstanceCustomLodgement struct {
 	StartAt                              time.Time                `json:"start_at,omitempty"`
 }
 
-// InstanceCustomLodgement collection locator, exposes collection actions.
-type InstanceCustomLodgementsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// InstanceCustomLodgement collection locator factory
-func (api *Api15) InstanceCustomLodgementsLocator(href string) *InstanceCustomLodgementsLocator {
-	return &InstanceCustomLodgementsLocator{api, href}
-}
-
+//===== Locator
 // InstanceCustomLodgement resource locator, exposes resource actions.
 type InstanceCustomLodgementLocator struct {
 	api  *Api15
@@ -2588,13 +2389,13 @@ func (api *Api15) InstanceCustomLodgementLocator(href string) *InstanceCustomLod
 	return &InstanceCustomLodgementLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements
 // Create a lodgement with the quantity and timeframe specified.
 // 	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 // 	timeframe: The time-frame (either a month "YYYY_MM" or a single day "YYYY_MM_DD") for which the quantity value is valid (currently for the PDT timezone only).
-func (loc *InstanceCustomLodgementsLocator) Create(quantity []*Quantity, timeframe string) (*InstanceCustomLodgementLocator, error) {
+func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timeframe string) (*InstanceCustomLodgementLocator, error) {
 	var res *InstanceCustomLodgementLocator
 	if len(quantity) == 0 {
 		return res, fmt.Errorf("quantity is required")
@@ -2619,11 +2420,23 @@ func (loc *InstanceCustomLodgementsLocator) Create(quantity []*Quantity, timefra
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
+// Destroy the specified lodgement.
+func (loc *InstanceCustomLodgementLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements
 // List InstanceCustomLodgements of a given cloud and instance.
 // -- Optional parameters:
 // 	view
-func (loc *InstanceCustomLodgementsLocator) Index(options ApiParams) ([]*InstanceCustomLodgement, error) {
+func (loc *InstanceCustomLodgementLocator) Index(options ApiParams) ([]*InstanceCustomLodgement, error) {
 	var res []*InstanceCustomLodgement
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -2638,20 +2451,6 @@ func (loc *InstanceCustomLodgementsLocator) Index(options ApiParams) ([]*Instanc
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
-// Destroy the specified lodgement.
-func (loc *InstanceCustomLodgementLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
@@ -2707,17 +2506,7 @@ type InstanceType struct {
 	ResourceUid     string              `json:"resource_uid,omitempty"`
 }
 
-// InstanceType collection locator, exposes collection actions.
-type InstanceTypesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// InstanceType collection locator factory
-func (api *Api15) InstanceTypesLocator(href string) *InstanceTypesLocator {
-	return &InstanceTypesLocator{api, href}
-}
-
+//===== Locator
 // InstanceType resource locator, exposes resource actions.
 type InstanceTypeLocator struct {
 	api  *Api15
@@ -2729,14 +2518,14 @@ func (api *Api15) InstanceTypeLocator(href string) *InstanceTypeLocator {
 	return &InstanceTypeLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/clouds/:cloud_id/instance_types
 // Lists instance types.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *InstanceTypesLocator) Index(options ApiParams) ([]*InstanceType, error) {
+func (loc *InstanceTypeLocator) Index(options ApiParams) ([]*InstanceType, error) {
 	var res []*InstanceType
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -2752,8 +2541,6 @@ func (loc *InstanceTypesLocator) Index(options ApiParams) ([]*InstanceType, erro
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/clouds/:cloud_id/instance_types/:id
 // Displays information about a single Instance type.
@@ -2788,17 +2575,7 @@ type IpAddress struct {
 	UpdatedAt time.Time           `json:"updated_at,omitempty"`
 }
 
-// IpAddress collection locator, exposes collection actions.
-type IpAddressesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// IpAddress collection locator factory
-func (api *Api15) IpAddressesLocator(href string) *IpAddressesLocator {
-	return &IpAddressesLocator{api, href}
-}
-
+//===== Locator
 // IpAddress resource locator, exposes resource actions.
 type IpAddressLocator struct {
 	api  *Api15
@@ -2810,11 +2587,11 @@ func (api *Api15) IpAddressLocator(href string) *IpAddressLocator {
 	return &IpAddressLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/ip_addresses
 // Creates a new IpAddress with the given parameters.
-func (loc *IpAddressesLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocator, error) {
+func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocator, error) {
 	var res *IpAddressLocator
 	if ipAddress == nil {
 		return res, fmt.Errorf("ipAddress is required")
@@ -2835,11 +2612,23 @@ func (loc *IpAddressesLocator) Create(ipAddress *IpAddressParam) (*IpAddressLoca
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/ip_addresses/:id
+// Deletes a given IpAddress.
+func (loc *IpAddressLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/ip_addresses
 // Lists the IpAddresses available to this account.
 // -- Optional parameters:
 // 	filter
-func (loc *IpAddressesLocator) Index(options ApiParams) ([]*IpAddress, error) {
+func (loc *IpAddressLocator) Index(options ApiParams) ([]*IpAddress, error) {
 	var res []*IpAddress
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -2854,20 +2643,6 @@ func (loc *IpAddressesLocator) Index(options ApiParams) ([]*IpAddress, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/ip_addresses/:id
-// Deletes a given IpAddress.
-func (loc *IpAddressLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses/:id
@@ -2920,17 +2695,7 @@ type IpAddressBinding struct {
 	Recurring   bool                `json:"recurring,omitempty"`
 }
 
-// IpAddressBinding collection locator, exposes collection actions.
-type IpAddressBindingsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// IpAddressBinding collection locator factory
-func (api *Api15) IpAddressBindingsLocator(href string) *IpAddressBindingsLocator {
-	return &IpAddressBindingsLocator{api, href}
-}
-
+//===== Locator
 // IpAddressBinding resource locator, exposes resource actions.
 type IpAddressBindingLocator struct {
 	api  *Api15
@@ -2942,7 +2707,7 @@ func (api *Api15) IpAddressBindingLocator(href string) *IpAddressBindingLocator 
 	return &IpAddressBindingLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings
 // POST /api/clouds/:cloud_id/ip_address_bindings
@@ -2952,7 +2717,7 @@ func (api *Api15) IpAddressBindingLocator(href string) *IpAddressBindingLocator 
 // IpAddressBinding will be created. If the instance is a next instance, then
 // a recurring IpAddressBinding is created, which will cause the IpAddress to
 // be bound each time the incarnator boots.
-func (loc *IpAddressBindingsLocator) Create(ipAddressBinding *IpAddressBindingParam) (*IpAddressBindingLocator, error) {
+func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingParam) (*IpAddressBindingLocator, error) {
 	var res *IpAddressBindingLocator
 	if ipAddressBinding == nil {
 		return res, fmt.Errorf("ipAddressBinding is required")
@@ -2973,12 +2738,25 @@ func (loc *IpAddressBindingsLocator) Create(ipAddressBinding *IpAddressBindingPa
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
+// DELETE /api/clouds/:cloud_id/ip_address_bindings/:id
+// No description provided for destroy.
+func (loc *IpAddressBindingLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings
 // GET /api/clouds/:cloud_id/ip_address_bindings
 // Lists the ip address bindings available to this account.
 // -- Optional parameters:
 // 	filter
-func (loc *IpAddressBindingsLocator) Index(options ApiParams) ([]*IpAddressBinding, error) {
+func (loc *IpAddressBindingLocator) Index(options ApiParams) ([]*IpAddressBinding, error) {
 	var res []*IpAddressBinding
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -2993,21 +2771,6 @@ func (loc *IpAddressBindingsLocator) Index(options ApiParams) ([]*IpAddressBindi
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
-// DELETE /api/clouds/:cloud_id/ip_address_bindings/:id
-// No description provided for destroy.
-func (loc *IpAddressBindingLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
@@ -3041,17 +2804,7 @@ type MonitoringMetric struct {
 	View      string              `json:"view,omitempty"`
 }
 
-// MonitoringMetric collection locator, exposes collection actions.
-type MonitoringMetricsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// MonitoringMetric collection locator factory
-func (api *Api15) MonitoringMetricsLocator(href string) *MonitoringMetricsLocator {
-	return &MonitoringMetricsLocator{api, href}
-}
-
+//===== Locator
 // MonitoringMetric resource locator, exposes resource actions.
 type MonitoringMetricLocator struct {
 	api  *Api15
@@ -3063,35 +2816,7 @@ func (api *Api15) MonitoringMetricLocator(href string) *MonitoringMetricLocator 
 	return &MonitoringMetricLocator{api, href}
 }
 
-//===== Collection actions
-
-// GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics
-// Lists the monitoring metrics available for the instance and their corresponding graph hrefs.
-// Making a request to the graph_href will return a png image corresponding to that monitoring metric.
-// -- Optional parameters:
-// 	filter
-// 	period: The time scale for which the graph is generated. Default is 'day'
-// 	size: The size of the graph to be generated. Default is 'small'.
-// 	title: The title of the graph.
-// 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
-func (loc *MonitoringMetricsLocator) Index(options ApiParams) ([]*MonitoringMetric, error) {
-	var res []*MonitoringMetric
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id/data
 // Gives the raw monitoring data for a particular metric. The response will include different variables
@@ -3113,6 +2838,32 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 		"start": start,
 	}
 	var href = loc.Href + "/data"
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
+}
+
+// GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics
+// Lists the monitoring metrics available for the instance and their corresponding graph hrefs.
+// Making a request to the graph_href will return a png image corresponding to that monitoring metric.
+// -- Optional parameters:
+// 	filter
+// 	period: The time scale for which the graph is generated. Default is 'day'
+// 	size: The size of the graph to be generated. Default is 'small'.
+// 	title: The title of the graph.
+// 	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
+func (loc *MonitoringMetricLocator) Index(options ApiParams) ([]*MonitoringMetric, error) {
+	var res []*MonitoringMetric
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
 	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
 		return res, err
@@ -3164,17 +2915,7 @@ type MultiCloudImage struct {
 	Revision    string              `json:"revision,omitempty"`
 }
 
-// MultiCloudImage collection locator, exposes collection actions.
-type MultiCloudImagesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// MultiCloudImage collection locator factory
-func (api *Api15) MultiCloudImagesLocator(href string) *MultiCloudImagesLocator {
-	return &MultiCloudImagesLocator{api, href}
-}
-
+//===== Locator
 // MultiCloudImage resource locator, exposes resource actions.
 type MultiCloudImageLocator struct {
 	api  *Api15
@@ -3186,55 +2927,7 @@ func (api *Api15) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 	return &MultiCloudImageLocator{api, href}
 }
 
-//===== Collection actions
-
-// POST /api/server_templates/:server_template_id/multi_cloud_images
-// POST /api/multi_cloud_images
-// Creates a new MultiCloudImage with the given parameters.
-func (loc *MultiCloudImagesLocator) Create(multiCloudImage *MultiCloudImageParam) (*MultiCloudImageLocator, error) {
-	var res *MultiCloudImageLocator
-	if multiCloudImage == nil {
-		return res, fmt.Errorf("multiCloudImage is required")
-	}
-	var params = ApiParams{
-		"multi_cloud_image": multiCloudImage,
-	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	var location = resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &MultiCloudImageLocator{loc.api, location}, nil
-	}
-}
-
-// GET /api/server_templates/:server_template_id/multi_cloud_images
-// GET /api/multi_cloud_images
-// Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.
-// -- Optional parameters:
-// 	filter
-func (loc *MultiCloudImagesLocator) Index(options ApiParams) ([]*MultiCloudImage, error) {
-	var res []*MultiCloudImage
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // POST /api/multi_cloud_images/:id/clone
 // Clones a given MultiCloudImage.
@@ -3271,6 +2964,30 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	return nil
 }
 
+// POST /api/server_templates/:server_template_id/multi_cloud_images
+// POST /api/multi_cloud_images
+// Creates a new MultiCloudImage with the given parameters.
+func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam) (*MultiCloudImageLocator, error) {
+	var res *MultiCloudImageLocator
+	if multiCloudImage == nil {
+		return res, fmt.Errorf("multiCloudImage is required")
+	}
+	var params = ApiParams{
+		"multi_cloud_image": multiCloudImage,
+	}
+	var href = loc.Href
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	var location = resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &MultiCloudImageLocator{loc.api, location}, nil
+	}
+}
+
 // DELETE /api/server_templates/:server_template_id/multi_cloud_images/:id
 // DELETE /api/multi_cloud_images/:id
 // Deletes a given MultiCloudImage.
@@ -3282,6 +2999,28 @@ func (loc *MultiCloudImageLocator) Destroy() error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/server_templates/:server_template_id/multi_cloud_images
+// GET /api/multi_cloud_images
+// Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.
+// -- Optional parameters:
+// 	filter
+func (loc *MultiCloudImageLocator) Index(options ApiParams) ([]*MultiCloudImage, error) {
+	var res []*MultiCloudImage
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/server_templates/:server_template_id/multi_cloud_images/:id
@@ -3332,17 +3071,7 @@ type MultiCloudImageSetting struct {
 	Links   []map[string]string `json:"links,omitempty"`
 }
 
-// MultiCloudImageSetting collection locator, exposes collection actions.
-type MultiCloudImageSettingsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// MultiCloudImageSetting collection locator factory
-func (api *Api15) MultiCloudImageSettingsLocator(href string) *MultiCloudImageSettingsLocator {
-	return &MultiCloudImageSettingsLocator{api, href}
-}
-
+//===== Locator
 // MultiCloudImageSetting resource locator, exposes resource actions.
 type MultiCloudImageSettingLocator struct {
 	api  *Api15
@@ -3354,11 +3083,11 @@ func (api *Api15) MultiCloudImageSettingLocator(href string) *MultiCloudImageSet
 	return &MultiCloudImageSettingLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/multi_cloud_images/:multi_cloud_image_id/settings
 // Creates a new setting for an existing MultiCloudImage.
-func (loc *MultiCloudImageSettingsLocator) Create(multiCloudImageSetting *MultiCloudImageSettingParam) (*MultiCloudImageSettingLocator, error) {
+func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCloudImageSettingParam) (*MultiCloudImageSettingLocator, error) {
 	var res *MultiCloudImageSettingLocator
 	if multiCloudImageSetting == nil {
 		return res, fmt.Errorf("multiCloudImageSetting is required")
@@ -3379,11 +3108,23 @@ func (loc *MultiCloudImageSettingsLocator) Create(multiCloudImageSetting *MultiC
 	}
 }
 
+// DELETE /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
+// Deletes a MultiCloudImage setting.
+func (loc *MultiCloudImageSettingLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/multi_cloud_images/:multi_cloud_image_id/settings
 // Lists the MultiCloudImage settings.
 // -- Optional parameters:
 // 	filter
-func (loc *MultiCloudImageSettingsLocator) Index(options ApiParams) ([]*MultiCloudImageSetting, error) {
+func (loc *MultiCloudImageSettingLocator) Index(options ApiParams) ([]*MultiCloudImageSetting, error) {
 	var res []*MultiCloudImageSetting
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -3398,20 +3139,6 @@ func (loc *MultiCloudImageSettingsLocator) Index(options ApiParams) ([]*MultiClo
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
-// Deletes a MultiCloudImage setting.
-func (loc *MultiCloudImageSettingLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
@@ -3464,17 +3191,7 @@ type Network struct {
 	ResourceUid     string              `json:"resource_uid,omitempty"`
 }
 
-// Network collection locator, exposes collection actions.
-type NetworksLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Network collection locator factory
-func (api *Api15) NetworksLocator(href string) *NetworksLocator {
-	return &NetworksLocator{api, href}
-}
-
+//===== Locator
 // Network resource locator, exposes resource actions.
 type NetworkLocator struct {
 	api  *Api15
@@ -3486,11 +3203,11 @@ func (api *Api15) NetworkLocator(href string) *NetworkLocator {
 	return &NetworkLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/networks
 // Creates a new network.
-func (loc *NetworksLocator) Create(network *NetworkParam) (*NetworkLocator, error) {
+func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error) {
 	var res *NetworkLocator
 	if network == nil {
 		return res, fmt.Errorf("network is required")
@@ -3511,11 +3228,23 @@ func (loc *NetworksLocator) Create(network *NetworkParam) (*NetworkLocator, erro
 	}
 }
 
+// DELETE /api/networks/:id
+// Deletes the given network(s).
+func (loc *NetworkLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/networks
 // Lists networks in this account.
 // -- Optional parameters:
 // 	filter
-func (loc *NetworksLocator) Index(options ApiParams) ([]*Network, error) {
+func (loc *NetworkLocator) Index(options ApiParams) ([]*Network, error) {
 	var res []*Network
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -3530,20 +3259,6 @@ func (loc *NetworksLocator) Index(options ApiParams) ([]*Network, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/networks/:id
-// Deletes the given network(s).
-func (loc *NetworkLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/networks/:id
@@ -3597,17 +3312,7 @@ type NetworkGateway struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// NetworkGateway collection locator, exposes collection actions.
-type NetworkGatewaysLocator struct {
-	api  *Api15
-	Href string
-}
-
-// NetworkGateway collection locator factory
-func (api *Api15) NetworkGatewaysLocator(href string) *NetworkGatewaysLocator {
-	return &NetworkGatewaysLocator{api, href}
-}
-
+//===== Locator
 // NetworkGateway resource locator, exposes resource actions.
 type NetworkGatewayLocator struct {
 	api  *Api15
@@ -3619,11 +3324,11 @@ func (api *Api15) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
 	return &NetworkGatewayLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/network_gateways
 // Create a new NetworkGateway.
-func (loc *NetworkGatewaysLocator) Create(networkGateway *NetworkGatewayParam) (*NetworkGatewayLocator, error) {
+func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*NetworkGatewayLocator, error) {
 	var res *NetworkGatewayLocator
 	if networkGateway == nil {
 		return res, fmt.Errorf("networkGateway is required")
@@ -3644,11 +3349,23 @@ func (loc *NetworkGatewaysLocator) Create(networkGateway *NetworkGatewayParam) (
 	}
 }
 
+// DELETE /api/network_gateways/:id
+// Delete an existing NetworkGateway.
+func (loc *NetworkGatewayLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/network_gateways
 // Lists the NetworkGateways available to this account.
 // -- Optional parameters:
 // 	filter
-func (loc *NetworkGatewaysLocator) Index(options ApiParams) ([]*NetworkGateway, error) {
+func (loc *NetworkGatewayLocator) Index(options ApiParams) ([]*NetworkGateway, error) {
 	var res []*NetworkGateway
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -3663,20 +3380,6 @@ func (loc *NetworkGatewaysLocator) Index(options ApiParams) ([]*NetworkGateway, 
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/network_gateways/:id
-// Delete an existing NetworkGateway.
-func (loc *NetworkGatewayLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/network_gateways/:id
@@ -3735,17 +3438,7 @@ type NetworkOptionGroup struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// NetworkOptionGroup collection locator, exposes collection actions.
-type NetworkOptionGroupsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// NetworkOptionGroup collection locator factory
-func (api *Api15) NetworkOptionGroupsLocator(href string) *NetworkOptionGroupsLocator {
-	return &NetworkOptionGroupsLocator{api, href}
-}
-
+//===== Locator
 // NetworkOptionGroup resource locator, exposes resource actions.
 type NetworkOptionGroupLocator struct {
 	api  *Api15
@@ -3757,11 +3450,11 @@ func (api *Api15) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLoca
 	return &NetworkOptionGroupLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/network_option_groups
 // Create a new NetworkOptionGroup.
-func (loc *NetworkOptionGroupsLocator) Create(networkOptionGroup *NetworkOptionGroupParam) (*NetworkOptionGroupLocator, error) {
+func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGroupParam) (*NetworkOptionGroupLocator, error) {
 	var res *NetworkOptionGroupLocator
 	if networkOptionGroup == nil {
 		return res, fmt.Errorf("networkOptionGroup is required")
@@ -3782,11 +3475,23 @@ func (loc *NetworkOptionGroupsLocator) Create(networkOptionGroup *NetworkOptionG
 	}
 }
 
+// DELETE /api/network_option_groups/:id
+// Delete an existing NetworkOptionGroup.
+func (loc *NetworkOptionGroupLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/network_option_groups
 // List NetworkOptionGroups available in this account.
 // -- Optional parameters:
 // 	filter
-func (loc *NetworkOptionGroupsLocator) Index(options ApiParams) ([]*NetworkOptionGroup, error) {
+func (loc *NetworkOptionGroupLocator) Index(options ApiParams) ([]*NetworkOptionGroup, error) {
 	var res []*NetworkOptionGroup
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -3801,20 +3506,6 @@ func (loc *NetworkOptionGroupsLocator) Index(options ApiParams) ([]*NetworkOptio
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/network_option_groups/:id
-// Delete an existing NetworkOptionGroup.
-func (loc *NetworkOptionGroupLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/network_option_groups/:id
@@ -3872,17 +3563,7 @@ type NetworkOptionGroupAttachment struct {
 	UpdatedAt          time.Time           `json:"updated_at,omitempty"`
 }
 
-// NetworkOptionGroupAttachment collection locator, exposes collection actions.
-type NetworkOptionGroupAttachmentsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// NetworkOptionGroupAttachment collection locator factory
-func (api *Api15) NetworkOptionGroupAttachmentsLocator(href string) *NetworkOptionGroupAttachmentsLocator {
-	return &NetworkOptionGroupAttachmentsLocator{api, href}
-}
-
+//===== Locator
 // NetworkOptionGroupAttachment resource locator, exposes resource actions.
 type NetworkOptionGroupAttachmentLocator struct {
 	api  *Api15
@@ -3894,11 +3575,11 @@ func (api *Api15) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptio
 	return &NetworkOptionGroupAttachmentLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/network_option_group_attachments
 // Create a new NetworkOptionGroupAttachment.
-func (loc *NetworkOptionGroupAttachmentsLocator) Create(networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam) (*NetworkOptionGroupAttachmentLocator, error) {
+func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam) (*NetworkOptionGroupAttachmentLocator, error) {
 	var res *NetworkOptionGroupAttachmentLocator
 	if networkOptionGroupAttachment == nil {
 		return res, fmt.Errorf("networkOptionGroupAttachment is required")
@@ -3919,12 +3600,24 @@ func (loc *NetworkOptionGroupAttachmentsLocator) Create(networkOptionGroupAttach
 	}
 }
 
+// DELETE /api/network_option_group_attachments/:id
+// Delete an existing NetworkOptionGroupAttachment.
+func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/network_option_group_attachments
 // List NetworkOptionGroupAttachments in this account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *NetworkOptionGroupAttachmentsLocator) Index(options ApiParams) ([]*NetworkOptionGroupAttachment, error) {
+func (loc *NetworkOptionGroupAttachmentLocator) Index(options ApiParams) ([]*NetworkOptionGroupAttachment, error) {
 	var res []*NetworkOptionGroupAttachment
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -3939,20 +3632,6 @@ func (loc *NetworkOptionGroupAttachmentsLocator) Index(options ApiParams) ([]*Ne
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/network_option_group_attachments/:id
-// Delete an existing NetworkOptionGroupAttachment.
-func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/network_option_group_attachments/:id
@@ -4018,18 +3697,20 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 // For more information on how to use OAuth 2.0 with RightScale, refer to the following:
 // http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
 // http://tools.ietf.org/html/draft-ietf-oauth-v2-23
-// Oauth2 collection locator, exposes collection actions.
-type Oauth2sLocator struct {
+
+//===== Locator
+// Oauth2 resource locator, exposes resource actions.
+type Oauth2Locator struct {
 	api  *Api15
 	Href string
 }
 
-// Oauth2 collection locator factory
-func (api *Api15) Oauth2sLocator(href string) *Oauth2sLocator {
-	return &Oauth2sLocator{api, href}
+// Oauth2 resource locator factory
+func (api *Api15) Oauth2Locator(href string) *Oauth2Locator {
+	return &Oauth2Locator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/oauth2/
 // Perform an OAuth 2.0 token_refresh operation to obtain an access token that
@@ -4059,7 +3740,7 @@ func (api *Api15) Oauth2sLocator(href string) *Oauth2sLocator {
 // 	r_s_version: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
 // 	refresh_token: The refresh token obtained from OAuth grant.
 // 	right_link_version: The RightLink gem version the client conforms to (only needed for instance agent clients).
-func (loc *Oauth2sLocator) Create(grantType string, options ApiParams) (map[string]interface{}, error) {
+func (loc *Oauth2Locator) Create(grantType string, options ApiParams) (map[string]interface{}, error) {
 	var res map[string]interface{}
 	if grantType == "" {
 		return res, fmt.Errorf("grantType is required")
@@ -4090,17 +3771,7 @@ type Permission struct {
 	RoleTitle string              `json:"role_title,omitempty"`
 }
 
-// Permission collection locator, exposes collection actions.
-type PermissionsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Permission collection locator factory
-func (api *Api15) PermissionsLocator(href string) *PermissionsLocator {
-	return &PermissionsLocator{api, href}
-}
-
+//===== Locator
 // Permission resource locator, exposes resource actions.
 type PermissionLocator struct {
 	api  *Api15
@@ -4112,7 +3783,7 @@ func (api *Api15) PermissionLocator(href string) *PermissionLocator {
 	return &PermissionLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/permissions
 // Create a permission, thereby granting some user a particular role
@@ -4125,7 +3796,7 @@ func (api *Api15) PermissionLocator(href string) *PermissionLocator {
 // they confer, please refer to the following page of the RightScale
 // support portal:
 //   http://support.rightscale.com/15-References/Lists/ListofUser_Roles
-func (loc *PermissionsLocator) Create(permission *PermissionParam) (*PermissionLocator, error) {
+func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLocator, error) {
 	var res *PermissionLocator
 	if permission == nil {
 		return res, fmt.Errorf("permission is required")
@@ -4146,29 +3817,6 @@ func (loc *PermissionsLocator) Create(permission *PermissionParam) (*PermissionL
 	}
 }
 
-// GET /api/permissions
-// List all permissions for all users of the current acount.
-// -- Optional parameters:
-// 	filter
-func (loc *PermissionsLocator) Index(options ApiParams) ([]*Permission, error) {
-	var res []*Permission
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
-
 // DELETE /api/permissions/:id
 // Destroy a permission, thereby revoking a user's role with respect
 // to the current account.
@@ -4185,6 +3833,27 @@ func (loc *PermissionLocator) Destroy() error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/permissions
+// List all permissions for all users of the current acount.
+// -- Optional parameters:
+// 	filter
+func (loc *PermissionLocator) Index(options ApiParams) ([]*Permission, error) {
+	var res []*Permission
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/permissions/:id
@@ -4219,17 +3888,7 @@ type PlacementGroup struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// PlacementGroup collection locator, exposes collection actions.
-type PlacementGroupsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// PlacementGroup collection locator factory
-func (api *Api15) PlacementGroupsLocator(href string) *PlacementGroupsLocator {
-	return &PlacementGroupsLocator{api, href}
-}
-
+//===== Locator
 // PlacementGroup resource locator, exposes resource actions.
 type PlacementGroupLocator struct {
 	api  *Api15
@@ -4241,11 +3900,11 @@ func (api *Api15) PlacementGroupLocator(href string) *PlacementGroupLocator {
 	return &PlacementGroupLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/placement_groups
 // Creates a PlacementGroup.
-func (loc *PlacementGroupsLocator) Create(placementGroup *PlacementGroupParam) (*PlacementGroupLocator, error) {
+func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*PlacementGroupLocator, error) {
 	var res *PlacementGroupLocator
 	if placementGroup == nil {
 		return res, fmt.Errorf("placementGroup is required")
@@ -4266,12 +3925,24 @@ func (loc *PlacementGroupsLocator) Create(placementGroup *PlacementGroupParam) (
 	}
 }
 
+// DELETE /api/placement_groups/:id
+// Destroys a PlacementGroup.
+func (loc *PlacementGroupLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/placement_groups
 // Lists all PlacementGroups in an account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *PlacementGroupsLocator) Index(options ApiParams) ([]*PlacementGroup, error) {
+func (loc *PlacementGroupLocator) Index(options ApiParams) ([]*PlacementGroup, error) {
 	var res []*PlacementGroup
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -4286,20 +3957,6 @@ func (loc *PlacementGroupsLocator) Index(options ApiParams) ([]*PlacementGroup, 
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/placement_groups/:id
-// Destroys a PlacementGroup.
-func (loc *PlacementGroupLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/placement_groups/:id
@@ -4334,17 +3991,7 @@ type Preference struct {
 	UpdatedAt time.Time           `json:"updated_at,omitempty"`
 }
 
-// Preference collection locator, exposes collection actions.
-type PreferencesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Preference collection locator factory
-func (api *Api15) PreferencesLocator(href string) *PreferencesLocator {
-	return &PreferencesLocator{api, href}
-}
-
+//===== Locator
 // Preference resource locator, exposes resource actions.
 type PreferenceLocator struct {
 	api  *Api15
@@ -4356,13 +4003,25 @@ func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
 	return &PreferenceLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
+
+// DELETE /api/preferences/:id
+// Deletes the given preference.
+func (loc *PreferenceLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // GET /api/preferences
 // Lists all preferences.
 // -- Optional parameters:
 // 	filter
-func (loc *PreferencesLocator) Index(options ApiParams) ([]*Preference, error) {
+func (loc *PreferenceLocator) Index(options ApiParams) ([]*Preference, error) {
 	var res []*Preference
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -4377,20 +4036,6 @@ func (loc *PreferencesLocator) Index(options ApiParams) ([]*Preference, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/preferences/:id
-// Deletes the given preference.
-func (loc *PreferenceLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/preferences/:id
@@ -4449,17 +4094,7 @@ type Publication struct {
 	UpdatedAt     time.Time           `json:"updated_at,omitempty"`
 }
 
-// Publication collection locator, exposes collection actions.
-type PublicationsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Publication collection locator factory
-func (api *Api15) PublicationsLocator(href string) *PublicationsLocator {
-	return &PublicationsLocator{api, href}
-}
-
+//===== Locator
 // Publication resource locator, exposes resource actions.
 type PublicationLocator struct {
 	api  *Api15
@@ -4471,14 +4106,27 @@ func (api *Api15) PublicationLocator(href string) *PublicationLocator {
 	return &PublicationLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
+
+// POST /api/publications/:id/import
+// Imports the given publication and its subordinates to this account.
+// Only non-HEAD revisions that are shared with the account can be imported.
+func (loc *PublicationLocator) Import() error {
+	var params = map[string]interface{}{}
+	var href = loc.Href + "/import"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // GET /api/publications
 // Lists the publications available to this account. Only non-HEAD revisions are possible.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *PublicationsLocator) Index(options ApiParams) ([]*Publication, error) {
+func (loc *PublicationLocator) Index(options ApiParams) ([]*Publication, error) {
 	var res []*Publication
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -4493,21 +4141,6 @@ func (loc *PublicationsLocator) Index(options ApiParams) ([]*Publication, error)
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// POST /api/publications/:id/import
-// Imports the given publication and its subordinates to this account.
-// Only non-HEAD revisions that are shared with the account can be imported.
-func (loc *PublicationLocator) Import() error {
-	var params = map[string]interface{}{}
-	var href = loc.Href + "/import"
-	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/publications/:id
@@ -4548,6 +4181,7 @@ type PublicationLineage struct {
 	UpdatedAt        time.Time           `json:"updated_at,omitempty"`
 }
 
+//===== Locator
 // PublicationLineage resource locator, exposes resource actions.
 type PublicationLineageLocator struct {
 	api  *Api15
@@ -4559,7 +4193,7 @@ func (api *Api15) PublicationLineageLocator(href string) *PublicationLineageLoca
 	return &PublicationLineageLocator{api, href}
 }
 
-//===== Resource actions
+//===== Actions
 
 // GET /api/publication_lineages/:id
 // Show information about a single publication lineage. Only non-HEAD revisions are possible.
@@ -4599,17 +4233,7 @@ type RecurringVolumeAttachment struct {
 	UpdatedAt    time.Time           `json:"updated_at,omitempty"`
 }
 
-// RecurringVolumeAttachment collection locator, exposes collection actions.
-type RecurringVolumeAttachmentsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// RecurringVolumeAttachment collection locator factory
-func (api *Api15) RecurringVolumeAttachmentsLocator(href string) *RecurringVolumeAttachmentsLocator {
-	return &RecurringVolumeAttachmentsLocator{api, href}
-}
-
+//===== Locator
 // RecurringVolumeAttachment resource locator, exposes resource actions.
 type RecurringVolumeAttachmentLocator struct {
 	api  *Api15
@@ -4621,13 +4245,13 @@ func (api *Api15) RecurringVolumeAttachmentLocator(href string) *RecurringVolume
 	return &RecurringVolumeAttachmentLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/recurring_volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments
 // POST /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments
 // Creates a new recurring volume attachment.
-func (loc *RecurringVolumeAttachmentsLocator) Create(recurringVolumeAttachment *RecurringVolumeAttachmentParam) (*RecurringVolumeAttachmentLocator, error) {
+func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *RecurringVolumeAttachmentParam) (*RecurringVolumeAttachmentLocator, error) {
 	var res *RecurringVolumeAttachmentLocator
 	if recurringVolumeAttachment == nil {
 		return res, fmt.Errorf("recurringVolumeAttachment is required")
@@ -4648,6 +4272,20 @@ func (loc *RecurringVolumeAttachmentsLocator) Create(recurringVolumeAttachment *
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/recurring_volume_attachments/:id
+// DELETE /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments/:id
+// DELETE /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments/:id
+// Deletes a given recurring volume attachment.
+func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/recurring_volume_attachments
 // GET /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments
 // GET /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments
@@ -4655,7 +4293,7 @@ func (loc *RecurringVolumeAttachmentsLocator) Create(recurringVolumeAttachment *
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *RecurringVolumeAttachmentsLocator) Index(options ApiParams) ([]*RecurringVolumeAttachment, error) {
+func (loc *RecurringVolumeAttachmentLocator) Index(options ApiParams) ([]*RecurringVolumeAttachment, error) {
 	var res []*RecurringVolumeAttachment
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -4670,22 +4308,6 @@ func (loc *RecurringVolumeAttachmentsLocator) Index(options ApiParams) ([]*Recur
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/recurring_volume_attachments/:id
-// DELETE /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments/:id
-// DELETE /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments/:id
-// Deletes a given recurring volume attachment.
-func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/recurring_volume_attachments/:id
@@ -4733,17 +4355,7 @@ type Repository struct {
 	UpdatedAt       time.Time           `json:"updated_at,omitempty"`
 }
 
-// Repository collection locator, exposes collection actions.
-type RepositoriesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Repository collection locator factory
-func (api *Api15) RepositoriesLocator(href string) *RepositoriesLocator {
-	return &RepositoriesLocator{api, href}
-}
-
+//===== Locator
 // Repository resource locator, exposes resource actions.
 type RepositoryLocator struct {
 	api  *Api15
@@ -4755,88 +4367,7 @@ func (api *Api15) RepositoryLocator(href string) *RepositoryLocator {
 	return &RepositoryLocator{api, href}
 }
 
-//===== Collection actions
-
-// POST /api/repositories
-// Creates a Repository.
-// The following types of inputs are supported for the credential fields:
-// Type
-// Format
-// Example(s)
-// Text string
-// text:&lt;value&gt;
-// text:-----BEGIN RSA PRIVATE KEY-----text:secret
-// Credential value
-// cred:&lt;value&gt;
-// cred:my ssh keycred:svn_1_password
-func (loc *RepositoriesLocator) Create(repository *RepositoryParam) (*RepositoryLocator, error) {
-	var res *RepositoryLocator
-	if repository == nil {
-		return res, fmt.Errorf("repository is required")
-	}
-	var params = ApiParams{
-		"repository": repository,
-	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	var location = resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &RepositoryLocator{loc.api, location}, nil
-	}
-}
-
-// GET /api/repositories
-// Lists all Repositories for this Account.
-// -- Optional parameters:
-// 	filter
-// 	view
-func (loc *RepositoriesLocator) Index(options ApiParams) ([]*Repository, error) {
-	var res []*Repository
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-// POST /api/repositories/resolve
-// Show a list of repositories that have imported cookbooks with the given names.
-// This operation returns a list of repositories that would later satisfy a call
-// to the swap_repository
-// action on a ServerTemplate.
-// -- Optional parameters:
-// 	imported_cookbook_name: A list of cookbook names that were imported by the repository.
-func (loc *RepositoriesLocator) Resolve(options ApiParams) ([]*Repository, error) {
-	var res []*Repository
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/resolve"
-	var resp, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // POST /api/repositories/:id/cookbook_import
 // Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.
@@ -4894,6 +4425,39 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 	return res, err3
 }
 
+// POST /api/repositories
+// Creates a Repository.
+// The following types of inputs are supported for the credential fields:
+// Type
+// Format
+// Example(s)
+// Text string
+// text:&lt;value&gt;
+// text:-----BEGIN RSA PRIVATE KEY-----text:secret
+// Credential value
+// cred:&lt;value&gt;
+// cred:my ssh keycred:svn_1_password
+func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLocator, error) {
+	var res *RepositoryLocator
+	if repository == nil {
+		return res, fmt.Errorf("repository is required")
+	}
+	var params = ApiParams{
+		"repository": repository,
+	}
+	var href = loc.Href
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	var location = resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RepositoryLocator{loc.api, location}, nil
+	}
+}
+
 // DELETE /api/repositories/:id
 // Deletes the specified Repositories.
 func (loc *RepositoryLocator) Destroy() error {
@@ -4904,6 +4468,28 @@ func (loc *RepositoryLocator) Destroy() error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/repositories
+// Lists all Repositories for this Account.
+// -- Optional parameters:
+// 	filter
+// 	view
+func (loc *RepositoryLocator) Index(options ApiParams) ([]*Repository, error) {
+	var res []*Repository
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/repositories/:id/refetch
@@ -4920,6 +4506,30 @@ func (loc *RepositoryLocator) Refetch(options ApiParams) error {
 		return err
 	}
 	return nil
+}
+
+// POST /api/repositories/resolve
+// Show a list of repositories that have imported cookbooks with the given names.
+// This operation returns a list of repositories that would later satisfy a call
+// to the swap_repository
+// action on a ServerTemplate.
+// -- Optional parameters:
+// 	imported_cookbook_name: A list of cookbook names that were imported by the repository.
+func (loc *RepositoryLocator) Resolve(options ApiParams) ([]*Repository, error) {
+	var res []*Repository
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href + "/resolve"
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/repositories/:id
@@ -4983,17 +4593,7 @@ type RepositoryAsset struct {
 	Version     string              `json:"version,omitempty"`
 }
 
-// RepositoryAsset collection locator, exposes collection actions.
-type RepositoryAssetsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// RepositoryAsset collection locator factory
-func (api *Api15) RepositoryAssetsLocator(href string) *RepositoryAssetsLocator {
-	return &RepositoryAssetsLocator{api, href}
-}
-
+//===== Locator
 // RepositoryAsset resource locator, exposes resource actions.
 type RepositoryAssetLocator struct {
 	api  *Api15
@@ -5005,7 +4605,7 @@ func (api *Api15) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 	return &RepositoryAssetLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/repositories/:repository_id/repository_assets
 // List a repository's current assets.
@@ -5013,7 +4613,7 @@ func (api *Api15) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 // given repository.
 // -- Optional parameters:
 // 	view
-func (loc *RepositoryAssetsLocator) Index(options ApiParams) ([]*RepositoryAsset, error) {
+func (loc *RepositoryAssetLocator) Index(options ApiParams) ([]*RepositoryAsset, error) {
 	var res []*RepositoryAsset
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -5029,8 +4629,6 @@ func (loc *RepositoryAssetsLocator) Index(options ApiParams) ([]*RepositoryAsset
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/repositories/:repository_id/repository_assets/:id
 // Show information about a single asset.
@@ -5075,17 +4673,7 @@ type RightScript struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// RightScript collection locator, exposes collection actions.
-type RightScriptsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// RightScript collection locator factory
-func (api *Api15) RightScriptsLocator(href string) *RightScriptsLocator {
-	return &RightScriptsLocator{api, href}
-}
-
+//===== Locator
 // RightScript resource locator, exposes resource actions.
 type RightScriptLocator struct {
 	api  *Api15
@@ -5097,32 +4685,7 @@ func (api *Api15) RightScriptLocator(href string) *RightScriptLocator {
 	return &RightScriptLocator{api, href}
 }
 
-//===== Collection actions
-
-// GET /api/right_scripts
-// Lists RightScripts.
-// -- Optional parameters:
-// 	filter
-// 	latest_only: Whether or not to return only the latest version for each lineage.
-// 	view
-func (loc *RightScriptsLocator) Index(options ApiParams) ([]*RightScript, error) {
-	var res []*RightScript
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // POST /api/right_scripts/:id/commit
 // Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
@@ -5139,6 +4702,29 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/right_scripts
+// Lists RightScripts.
+// -- Optional parameters:
+// 	filter
+// 	latest_only: Whether or not to return only the latest version for each lineage.
+// 	view
+func (loc *RightScriptLocator) Index(options ApiParams) ([]*RightScript, error) {
+	var res []*RightScript
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/right_scripts/:id
@@ -5217,17 +4803,7 @@ type Route struct {
 	UpdatedAt            time.Time           `json:"updated_at,omitempty"`
 }
 
-// Route collection locator, exposes collection actions.
-type RoutesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Route collection locator factory
-func (api *Api15) RoutesLocator(href string) *RoutesLocator {
-	return &RoutesLocator{api, href}
-}
-
+//===== Locator
 // Route resource locator, exposes resource actions.
 type RouteLocator struct {
 	api  *Api15
@@ -5239,12 +4815,12 @@ func (api *Api15) RouteLocator(href string) *RouteLocator {
 	return &RouteLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/routes
 // POST /api/route_tables/:route_table_id/routes
 // Create a new Route.
-func (loc *RoutesLocator) Create(route *RouteParam) (*RouteLocator, error) {
+func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	var res *RouteLocator
 	if route == nil {
 		return res, fmt.Errorf("route is required")
@@ -5265,12 +4841,25 @@ func (loc *RoutesLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	}
 }
 
+// DELETE /api/routes/:id
+// DELETE /api/route_tables/:route_table_id/routes/:id
+// Delete an existing Route.
+func (loc *RouteLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/routes
 // GET /api/route_tables/:route_table_id/routes
 // List Routes available in this account.
 // -- Optional parameters:
 // 	filter
-func (loc *RoutesLocator) Index(options ApiParams) ([]*Route, error) {
+func (loc *RouteLocator) Index(options ApiParams) ([]*Route, error) {
 	var res []*Route
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -5285,21 +4874,6 @@ func (loc *RoutesLocator) Index(options ApiParams) ([]*Route, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/routes/:id
-// DELETE /api/route_tables/:route_table_id/routes/:id
-// Delete an existing Route.
-func (loc *RouteLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/routes/:id
@@ -5354,17 +4928,7 @@ type RouteTable struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// RouteTable collection locator, exposes collection actions.
-type RouteTablesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// RouteTable collection locator factory
-func (api *Api15) RouteTablesLocator(href string) *RouteTablesLocator {
-	return &RouteTablesLocator{api, href}
-}
-
+//===== Locator
 // RouteTable resource locator, exposes resource actions.
 type RouteTableLocator struct {
 	api  *Api15
@@ -5376,11 +4940,11 @@ func (api *Api15) RouteTableLocator(href string) *RouteTableLocator {
 	return &RouteTableLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/route_tables
 // Create a new RouteTable.
-func (loc *RouteTablesLocator) Create(routeTable *RouteTableParam) (*RouteTableLocator, error) {
+func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLocator, error) {
 	var res *RouteTableLocator
 	if routeTable == nil {
 		return res, fmt.Errorf("routeTable is required")
@@ -5401,12 +4965,24 @@ func (loc *RouteTablesLocator) Create(routeTable *RouteTableParam) (*RouteTableL
 	}
 }
 
+// DELETE /api/route_tables/:id
+// Delete an existing RouteTable.
+func (loc *RouteTableLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/route_tables
 // List RouteTables available in this account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *RouteTablesLocator) Index(options ApiParams) ([]*RouteTable, error) {
+func (loc *RouteTableLocator) Index(options ApiParams) ([]*RouteTable, error) {
 	var res []*RouteTable
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -5421,20 +4997,6 @@ func (loc *RouteTablesLocator) Index(options ApiParams) ([]*RouteTable, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/route_tables/:id
-// Delete an existing RouteTable.
-func (loc *RouteTableLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/route_tables/:id
@@ -5490,17 +5052,7 @@ type RunnableBinding struct {
 	Sequence    string              `json:"sequence,omitempty"`
 }
 
-// RunnableBinding collection locator, exposes collection actions.
-type RunnableBindingsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// RunnableBinding collection locator factory
-func (api *Api15) RunnableBindingsLocator(href string) *RunnableBindingsLocator {
-	return &RunnableBindingsLocator{api, href}
-}
-
+//===== Locator
 // RunnableBinding resource locator, exposes resource actions.
 type RunnableBindingLocator struct {
 	api  *Api15
@@ -5512,13 +5064,13 @@ func (api *Api15) RunnableBindingLocator(href string) *RunnableBindingLocator {
 	return &RunnableBindingLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/server_templates/:server_template_id/runnable_bindings
 // Bind an executable to the given ServerTemplate.
 // An executable may be either a RightScript or Chef Recipe.
 // The resource must be editable.
-func (loc *RunnableBindingsLocator) Create(runnableBinding *RunnableBindingParam) (*RunnableBindingLocator, error) {
+func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam) (*RunnableBindingLocator, error) {
 	var res *RunnableBindingLocator
 	if runnableBinding == nil {
 		return res, fmt.Errorf("runnableBinding is required")
@@ -5539,12 +5091,25 @@ func (loc *RunnableBindingsLocator) Create(runnableBinding *RunnableBindingParam
 	}
 }
 
+// DELETE /api/server_templates/:server_template_id/runnable_bindings/:id
+// Unbind an executable from the given resource.
+// The resource must be editable.
+func (loc *RunnableBindingLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/server_templates/:server_template_id/runnable_bindings
 // Lists the executables bound to the ServerTemplate.
 // An excutable may be either a RightScript or Chef Recipe.
 // -- Optional parameters:
 // 	view
-func (loc *RunnableBindingsLocator) Index(options ApiParams) ([]*RunnableBinding, error) {
+func (loc *RunnableBindingLocator) Index(options ApiParams) ([]*RunnableBinding, error) {
 	var res []*RunnableBinding
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -5564,7 +5129,7 @@ func (loc *RunnableBindingsLocator) Index(options ApiParams) ([]*RunnableBinding
 // PUT /api/server_templates/:server_template_id/runnable_bindings/multi_update
 // Update attributes for multiple bound executables.
 // The resource must be editable.
-func (loc *RunnableBindingsLocator) MultiUpdate(runnableBindings []*RunnableBindings) error {
+func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindings) error {
 	if len(runnableBindings) == 0 {
 		return fmt.Errorf("runnableBindings is required")
 	}
@@ -5573,21 +5138,6 @@ func (loc *RunnableBindingsLocator) MultiUpdate(runnableBindings []*RunnableBind
 	}
 	var href = loc.Href + "/multi_update"
 	var err = loc.api.Put(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-//===== Resource actions
-
-// DELETE /api/server_templates/:server_template_id/runnable_bindings/:id
-// Unbind an executable from the given resource.
-// The resource must be editable.
-func (loc *RunnableBindingLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
 	if err != nil {
 		return err
 	}
@@ -5629,17 +5179,7 @@ type SecurityGroup struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 }
 
-// SecurityGroup collection locator, exposes collection actions.
-type SecurityGroupsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// SecurityGroup collection locator factory
-func (api *Api15) SecurityGroupsLocator(href string) *SecurityGroupsLocator {
-	return &SecurityGroupsLocator{api, href}
-}
-
+//===== Locator
 // SecurityGroup resource locator, exposes resource actions.
 type SecurityGroupLocator struct {
 	api  *Api15
@@ -5651,11 +5191,11 @@ func (api *Api15) SecurityGroupLocator(href string) *SecurityGroupLocator {
 	return &SecurityGroupLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/security_groups
 // Create a security group.
-func (loc *SecurityGroupsLocator) Create(securityGroup *SecurityGroupParam) (*SecurityGroupLocator, error) {
+func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*SecurityGroupLocator, error) {
 	var res *SecurityGroupLocator
 	if securityGroup == nil {
 		return res, fmt.Errorf("securityGroup is required")
@@ -5676,12 +5216,24 @@ func (loc *SecurityGroupsLocator) Create(securityGroup *SecurityGroupParam) (*Se
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/security_groups/:id
+// Delete security group(s)
+func (loc *SecurityGroupLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/security_groups
 // Lists Security Groups.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *SecurityGroupsLocator) Index(options ApiParams) ([]*SecurityGroup, error) {
+func (loc *SecurityGroupLocator) Index(options ApiParams) ([]*SecurityGroup, error) {
 	var res []*SecurityGroup
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -5696,20 +5248,6 @@ func (loc *SecurityGroupsLocator) Index(options ApiParams) ([]*SecurityGroup, er
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/security_groups/:id
-// Delete security group(s)
-func (loc *SecurityGroupLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/security_groups/:id
@@ -5753,17 +5291,7 @@ type SecurityGroupRule struct {
 	StartPort   string              `json:"start_port,omitempty"`
 }
 
-// SecurityGroupRule collection locator, exposes collection actions.
-type SecurityGroupRulesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// SecurityGroupRule collection locator factory
-func (api *Api15) SecurityGroupRulesLocator(href string) *SecurityGroupRulesLocator {
-	return &SecurityGroupRulesLocator{api, href}
-}
-
+//===== Locator
 // SecurityGroupRule resource locator, exposes resource actions.
 type SecurityGroupRuleLocator struct {
 	api  *Api15
@@ -5775,7 +5303,7 @@ func (api *Api15) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocato
 	return &SecurityGroupRuleLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/security_group_rules
 // POST /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules
@@ -5785,7 +5313,7 @@ func (api *Api15) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocato
 // group-based ICMP
 // CIDR-based TCP/UDP
 // CIDR-based ICMP
-func (loc *SecurityGroupRulesLocator) Create(securityGroupRule *SecurityGroupRuleParam) (*SecurityGroupRuleLocator, error) {
+func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRuleParam) (*SecurityGroupRuleLocator, error) {
 	var res *SecurityGroupRuleLocator
 	if securityGroupRule == nil {
 		return res, fmt.Errorf("securityGroupRule is required")
@@ -5806,12 +5334,25 @@ func (loc *SecurityGroupRulesLocator) Create(securityGroupRule *SecurityGroupRul
 	}
 }
 
+// DELETE /api/security_group_rules/:id
+// DELETE /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
+// Delete security group rule(s)
+func (loc *SecurityGroupRuleLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/security_group_rules
 // GET /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules
 // Lists SecurityGroupRules.
 // -- Optional parameters:
 // 	view
-func (loc *SecurityGroupRulesLocator) Index(options ApiParams) ([]*SecurityGroupRule, error) {
+func (loc *SecurityGroupRuleLocator) Index(options ApiParams) ([]*SecurityGroupRule, error) {
 	var res []*SecurityGroupRule
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -5826,21 +5367,6 @@ func (loc *SecurityGroupRulesLocator) Index(options ApiParams) ([]*SecurityGroup
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/security_group_rules/:id
-// DELETE /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
-// Delete security group rule(s)
-func (loc *SecurityGroupRuleLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/security_group_rules/:id
@@ -5907,17 +5433,7 @@ type Server struct {
 	UpdatedAt       time.Time           `json:"updated_at,omitempty"`
 }
 
-// Server collection locator, exposes collection actions.
-type ServersLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Server collection locator factory
-func (api *Api15) ServersLocator(href string) *ServersLocator {
-	return &ServersLocator{api, href}
-}
-
+//===== Locator
 // Server resource locator, exposes resource actions.
 type ServerLocator struct {
 	api  *Api15
@@ -5929,12 +5445,24 @@ func (api *Api15) ServerLocator(href string) *ServerLocator {
 	return &ServerLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
+
+// POST /api/servers/:id/clone
+// Clones a given server.
+func (loc *ServerLocator) Clone() error {
+	var params = map[string]interface{}{}
+	var href = loc.Href + "/clone"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // POST /api/servers
 // POST /api/deployments/:deployment_id/servers
 // Creates a new server, and configures its corresponding "next" instance with the received parameters.
-func (loc *ServersLocator) Create(server *ServerParam) (*ServerLocator, error) {
+func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	var res *ServerLocator
 	if server == nil {
 		return res, fmt.Errorf("server is required")
@@ -5955,6 +5483,19 @@ func (loc *ServersLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	}
 }
 
+// DELETE /api/servers/:id
+// DELETE /api/deployments/:deployment_id/servers/:id
+// Deletes a given server.
+func (loc *ServerLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/servers
 // GET /api/deployments/:deployment_id/servers
 // Lists servers.
@@ -5967,7 +5508,7 @@ func (loc *ServersLocator) Create(server *ServerParam) (*ServerLocator, error) {
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *ServersLocator) Index(options ApiParams) ([]*Server, error) {
+func (loc *ServerLocator) Index(options ApiParams) ([]*Server, error) {
 	var res []*Server
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -5982,51 +5523,6 @@ func (loc *ServersLocator) Index(options ApiParams) ([]*Server, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-// POST /api/servers/wrap_instance
-// POST /api/deployments/:deployment_id/servers/wrap_instance
-// Wrap an existing instance and set current instance for new server
-func (loc *ServersLocator) WrapInstance(server *ServerParam2) error {
-	if server == nil {
-		return fmt.Errorf("server is required")
-	}
-	var params = ApiParams{
-		"server": server,
-	}
-	var href = loc.Href + "/wrap_instance"
-	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-//===== Resource actions
-
-// POST /api/servers/:id/clone
-// Clones a given server.
-func (loc *ServerLocator) Clone() error {
-	var params = map[string]interface{}{}
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DELETE /api/servers/:id
-// DELETE /api/deployments/:deployment_id/servers/:id
-// Deletes a given server.
-func (loc *ServerLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // POST /api/servers/:id/launch
@@ -6095,6 +5591,24 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 	return nil
 }
 
+// POST /api/servers/wrap_instance
+// POST /api/deployments/:deployment_id/servers/wrap_instance
+// Wrap an existing instance and set current instance for new server
+func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
+	if server == nil {
+		return fmt.Errorf("server is required")
+	}
+	var params = ApiParams{
+		"server": server,
+	}
+	var href = loc.Href + "/wrap_instance"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 /******  ServerArray ******/
 
 // A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.
@@ -6118,17 +5632,7 @@ type ServerArray struct {
 	State            string                 `json:"state,omitempty"`
 }
 
-// ServerArray collection locator, exposes collection actions.
-type ServerArraysLocator struct {
-	api  *Api15
-	Href string
-}
-
-// ServerArray collection locator factory
-func (api *Api15) ServerArraysLocator(href string) *ServerArraysLocator {
-	return &ServerArraysLocator{api, href}
-}
-
+//===== Locator
 // ServerArray resource locator, exposes resource actions.
 type ServerArrayLocator struct {
 	api  *Api15
@@ -6140,12 +5644,24 @@ func (api *Api15) ServerArrayLocator(href string) *ServerArrayLocator {
 	return &ServerArrayLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
+
+// POST /api/server_arrays/:id/clone
+// Clones a given server array.
+func (loc *ServerArrayLocator) Clone() error {
+	var params = map[string]interface{}{}
+	var href = loc.Href + "/clone"
+	var _, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // POST /api/server_arrays
 // POST /api/deployments/:deployment_id/server_arrays
 // Creates a new server array, and configures its corresponding "next" instance with the received parameters.
-func (loc *ServerArraysLocator) Create(serverArray *ServerArrayParam) (*ServerArrayLocator, error) {
+func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArrayLocator, error) {
 	var res *ServerArrayLocator
 	if serverArray == nil {
 		return res, fmt.Errorf("serverArray is required")
@@ -6164,47 +5680,6 @@ func (loc *ServerArraysLocator) Create(serverArray *ServerArrayParam) (*ServerAr
 	} else {
 		return &ServerArrayLocator{loc.api, location}, nil
 	}
-}
-
-// GET /api/server_arrays
-// GET /api/deployments/:deployment_id/server_arrays
-// Lists server arrays.
-// By using the available filters, it is possible to retrieve server arrays that have common characteristics.
-// For example, one can list:
-// arrays that have names that contain "my_server_array"
-// all arrays of a given deployment
-// -- Optional parameters:
-// 	filter
-// 	view
-func (loc *ServerArraysLocator) Index(options ApiParams) ([]*ServerArray, error) {
-	var res []*ServerArray
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
-
-// POST /api/server_arrays/:id/clone
-// Clones a given server array.
-func (loc *ServerArrayLocator) Clone() error {
-	var params = map[string]interface{}{}
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/server_arrays/:id/current_instances
@@ -6232,6 +5707,33 @@ func (loc *ServerArrayLocator) Destroy() error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/server_arrays
+// GET /api/deployments/:deployment_id/server_arrays
+// Lists server arrays.
+// By using the available filters, it is possible to retrieve server arrays that have common characteristics.
+// For example, one can list:
+// arrays that have names that contain "my_server_array"
+// all arrays of a given deployment
+// -- Optional parameters:
+// 	filter
+// 	view
+func (loc *ServerArrayLocator) Index(options ApiParams) ([]*ServerArray, error) {
+	var res []*ServerArray
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // POST /api/server_arrays/:id/launch
@@ -6332,17 +5834,7 @@ type ServerTemplate struct {
 	Revision    string              `json:"revision,omitempty"`
 }
 
-// ServerTemplate collection locator, exposes collection actions.
-type ServerTemplatesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// ServerTemplate collection locator factory
-func (api *Api15) ServerTemplatesLocator(href string) *ServerTemplatesLocator {
-	return &ServerTemplatesLocator{api, href}
-}
-
+//===== Locator
 // ServerTemplate resource locator, exposes resource actions.
 type ServerTemplateLocator struct {
 	api  *Api15
@@ -6354,56 +5846,7 @@ func (api *Api15) ServerTemplateLocator(href string) *ServerTemplateLocator {
 	return &ServerTemplateLocator{api, href}
 }
 
-//===== Collection actions
-
-// POST /api/server_templates
-// Creates a new ServerTemplate with the given parameters.
-func (loc *ServerTemplatesLocator) Create(serverTemplate *ServerTemplateParam) (*ServerTemplateLocator, error) {
-	var res *ServerTemplateLocator
-	if serverTemplate == nil {
-		return res, fmt.Errorf("serverTemplate is required")
-	}
-	var params = ApiParams{
-		"server_template": serverTemplate,
-	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	var location = resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &ServerTemplateLocator{loc.api, location}, nil
-	}
-}
-
-// GET /api/server_templates
-// Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.
-// The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
-// details please see Inputs#index.)
-// -- Optional parameters:
-// 	filter
-// 	view
-func (loc *ServerTemplatesLocator) Index(options ApiParams) ([]*ServerTemplate, error) {
-	var res []*ServerTemplate
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
+//===== Actions
 
 // POST /api/server_templates/:id/clone
 // Clones a given ServerTemplate.
@@ -6450,6 +5893,29 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 	return nil
 }
 
+// POST /api/server_templates
+// Creates a new ServerTemplate with the given parameters.
+func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*ServerTemplateLocator, error) {
+	var res *ServerTemplateLocator
+	if serverTemplate == nil {
+		return res, fmt.Errorf("serverTemplate is required")
+	}
+	var params = ApiParams{
+		"server_template": serverTemplate,
+	}
+	var href = loc.Href
+	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	var location = resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ServerTemplateLocator{loc.api, location}, nil
+	}
+}
+
 // DELETE /api/server_templates/:id
 // Deletes a given ServerTemplate.
 func (loc *ServerTemplateLocator) Destroy() error {
@@ -6471,6 +5937,30 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 	var params = map[string]interface{}{}
 	var href = loc.Href + "/detect_changes_in_head"
 	var resp, err = loc.api.PostRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
+}
+
+// GET /api/server_templates
+// Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.
+// The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+// details please see Inputs#index.)
+// -- Optional parameters:
+// 	filter
+// 	view
+func (loc *ServerTemplateLocator) Index(options ApiParams) ([]*ServerTemplate, error) {
+	var res []*ServerTemplate
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
 	if err != nil {
 		return res, err
 	}
@@ -6621,17 +6111,7 @@ type ServerTemplateMultiCloudImage struct {
 	UpdatedAt time.Time           `json:"updated_at,omitempty"`
 }
 
-// ServerTemplateMultiCloudImage collection locator, exposes collection actions.
-type ServerTemplateMultiCloudImagesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// ServerTemplateMultiCloudImage collection locator factory
-func (api *Api15) ServerTemplateMultiCloudImagesLocator(href string) *ServerTemplateMultiCloudImagesLocator {
-	return &ServerTemplateMultiCloudImagesLocator{api, href}
-}
-
+//===== Locator
 // ServerTemplateMultiCloudImage resource locator, exposes resource actions.
 type ServerTemplateMultiCloudImageLocator struct {
 	api  *Api15
@@ -6643,11 +6123,11 @@ func (api *Api15) ServerTemplateMultiCloudImageLocator(href string) *ServerTempl
 	return &ServerTemplateMultiCloudImageLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/server_template_multi_cloud_images
 // Creates a new ServerTemplateMultiCloudImage with the given parameters.
-func (loc *ServerTemplateMultiCloudImagesLocator) Create(serverTemplateMultiCloudImage *ServerTemplateMultiCloudImageParam) (*ServerTemplateMultiCloudImageLocator, error) {
+func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloudImage *ServerTemplateMultiCloudImageParam) (*ServerTemplateMultiCloudImageLocator, error) {
 	var res *ServerTemplateMultiCloudImageLocator
 	if serverTemplateMultiCloudImage == nil {
 		return res, fmt.Errorf("serverTemplateMultiCloudImage is required")
@@ -6668,12 +6148,24 @@ func (loc *ServerTemplateMultiCloudImagesLocator) Create(serverTemplateMultiClou
 	}
 }
 
+// DELETE /api/server_template_multi_cloud_images/:id
+// Deletes a given ServerTemplateMultiCloudImage.
+func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/server_template_multi_cloud_images
 // Lists the ServerTemplateMultiCloudImages available to this account.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *ServerTemplateMultiCloudImagesLocator) Index(options ApiParams) ([]*ServerTemplateMultiCloudImage, error) {
+func (loc *ServerTemplateMultiCloudImageLocator) Index(options ApiParams) ([]*ServerTemplateMultiCloudImage, error) {
 	var res []*ServerTemplateMultiCloudImage
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -6688,20 +6180,6 @@ func (loc *ServerTemplateMultiCloudImagesLocator) Index(options ApiParams) ([]*S
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/server_template_multi_cloud_images/:id
-// Deletes a given ServerTemplateMultiCloudImage.
-func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // POST /api/server_template_multi_cloud_images/:id/make_default
@@ -6752,18 +6230,19 @@ type Session struct {
 	Message string              `json:"message,omitempty"`
 }
 
-// Session collection locator, exposes collection actions.
-type SessionsLocator struct {
+//===== Locator
+// Session resource locator, exposes resource actions.
+type SessionLocator struct {
 	api  *Api15
 	Href string
 }
 
-// Session collection locator factory
-func (api *Api15) SessionsLocator(href string) *SessionsLocator {
-	return &SessionsLocator{api, href}
+// Session resource locator factory
+func (api *Api15) SessionLocator(href string) *SessionLocator {
+	return &SessionLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/sessions/accounts
 // List all the accounts that a user has access to.
@@ -6779,7 +6258,7 @@ func (api *Api15) SessionsLocator(href string) *SessionsLocator {
 // 	email: The email to login with if not using existing session.
 // 	password: The corresponding password.
 // 	view: Extended view shows account permissions and products
-func (loc *SessionsLocator) Accounts(options ApiParams) ([]*Account, error) {
+func (loc *SessionLocator) Accounts(options ApiParams) ([]*Account, error) {
 	var res []*Account
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href + "/accounts"
@@ -6801,7 +6280,7 @@ func (loc *SessionsLocator) Accounts(options ApiParams) ([]*Account, error) {
 // features are available within its privileges.
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
-func (loc *SessionsLocator) Index() ([]*Session, error) {
+func (loc *SessionLocator) Index() ([]*Session, error) {
 	var res []*Session
 	var params = map[string]interface{}{}
 	var href = loc.Href
@@ -6823,7 +6302,7 @@ func (loc *SessionsLocator) Index() ([]*Session, error) {
 // This call can be used by an instance to get it's own details.
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions/instance
-func (loc *SessionsLocator) IndexInstanceSession() (Instance, error) {
+func (loc *SessionLocator) IndexInstanceSession() (Instance, error) {
 	var res Instance
 	var params = map[string]interface{}{}
 	var href = loc.Href + "/instance"
@@ -6851,17 +6330,7 @@ type SshKey struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 }
 
-// SshKey collection locator, exposes collection actions.
-type SshKeysLocator struct {
-	api  *Api15
-	Href string
-}
-
-// SshKey collection locator factory
-func (api *Api15) SshKeysLocator(href string) *SshKeysLocator {
-	return &SshKeysLocator{api, href}
-}
-
+//===== Locator
 // SshKey resource locator, exposes resource actions.
 type SshKeyLocator struct {
 	api  *Api15
@@ -6873,11 +6342,11 @@ func (api *Api15) SshKeyLocator(href string) *SshKeyLocator {
 	return &SshKeyLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/ssh_keys
 // Creates a new ssh key.
-func (loc *SshKeysLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
+func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	var res *SshKeyLocator
 	if sshKey == nil {
 		return res, fmt.Errorf("sshKey is required")
@@ -6898,12 +6367,24 @@ func (loc *SshKeysLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/ssh_keys/:id
+// Deletes a given ssh key.
+func (loc *SshKeyLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/ssh_keys
 // Lists ssh keys.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *SshKeysLocator) Index(options ApiParams) ([]*SshKey, error) {
+func (loc *SshKeyLocator) Index(options ApiParams) ([]*SshKey, error) {
 	var res []*SshKey
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -6918,20 +6399,6 @@ func (loc *SshKeysLocator) Index(options ApiParams) ([]*SshKey, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/ssh_keys/:id
-// Deletes a given ssh key.
-func (loc *SshKeyLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/ssh_keys/:id
@@ -6970,17 +6437,7 @@ type Subnet struct {
 	Visibility  string              `json:"visibility,omitempty"`
 }
 
-// Subnet collection locator, exposes collection actions.
-type SubnetsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Subnet collection locator factory
-func (api *Api15) SubnetsLocator(href string) *SubnetsLocator {
-	return &SubnetsLocator{api, href}
-}
-
+//===== Locator
 // Subnet resource locator, exposes resource actions.
 type SubnetLocator struct {
 	api  *Api15
@@ -6992,12 +6449,12 @@ func (api *Api15) SubnetLocator(href string) *SubnetLocator {
 	return &SubnetLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/subnets
 // POST /api/clouds/:cloud_id/subnets
 // Creates a new subnet.
-func (loc *SubnetsLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
+func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	var res *SubnetLocator
 	if subnet == nil {
 		return res, fmt.Errorf("subnet is required")
@@ -7018,12 +6475,25 @@ func (loc *SubnetsLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
+// DELETE /api/clouds/:cloud_id/subnets/:id
+// Deletes the given subnet(s).
+func (loc *SubnetLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets
 // GET /api/clouds/:cloud_id/subnets
 // Lists subnets of a given cloud.
 // -- Optional parameters:
 // 	filter
-func (loc *SubnetsLocator) Index(options ApiParams) ([]*Subnet, error) {
+func (loc *SubnetLocator) Index(options ApiParams) ([]*Subnet, error) {
 	var res []*Subnet
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -7038,21 +6508,6 @@ func (loc *SubnetsLocator) Index(options ApiParams) ([]*Subnet, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
-// DELETE /api/clouds/:cloud_id/subnets/:id
-// Deletes the given subnet(s).
-func (loc *SubnetLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
@@ -7098,24 +6553,26 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 // A tag or machine tag is a useful way of attaching useful metadata to an object/resource.
 // Tags are commonly used as an extra label or identifier.
 // For example, you might want to add a tag to an EBS Snapshot or AMI so that you can find it more quickly.
-// Tag collection locator, exposes collection actions.
-type TagsLocator struct {
+
+//===== Locator
+// Tag resource locator, exposes resource actions.
+type TagLocator struct {
 	api  *Api15
 	Href string
 }
 
-// Tag collection locator factory
-func (api *Api15) TagsLocator(href string) *TagsLocator {
-	return &TagsLocator{api, href}
+// Tag resource locator factory
+func (api *Api15) TagLocator(href string) *TagLocator {
+	return &TagLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/tags/by_resource
 // Get tags for a list of resource hrefs.
 // The hrefs can belong to various resource types and the tags for a non-existent href will be empty.
 // 	resourceHrefs: Hrefs of the resources for which tags are to be returned.
-func (loc *TagsLocator) ByResource(resourceHrefs []string) ([]*map[string]string, error) {
+func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string, error) {
 	var res []*map[string]string
 	if len(resourceHrefs) == 0 {
 		return res, fmt.Errorf("resourceHrefs is required")
@@ -7157,7 +6614,7 @@ func (loc *TagsLocator) ByResource(resourceHrefs []string) ([]*map[string]string
 // 	include_tags_with_prefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
 // 	match_all: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
 // 	with_deleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
-func (loc *TagsLocator) ByTag(resourceType string, tags []string, options ApiParams) ([]*map[string]string, error) {
+func (loc *TagLocator) ByTag(resourceType string, tags []string, options ApiParams) ([]*map[string]string, error) {
 	var res []*map[string]string
 	if resourceType == "" {
 		return res, fmt.Errorf("resourceType is required")
@@ -7191,7 +6648,7 @@ func (loc *TagsLocator) ByTag(resourceType string, tags []string, options ApiPar
 // Note: At this point, tags on 'next_instance' are not supported and one has to add tags to the 'server'.
 // 	resourceHrefs: Hrefs of the resources for which the tags are to be added.
 // 	tags: Tags to be added.
-func (loc *TagsLocator) MultiAdd(resourceHrefs []string, tags []string) error {
+func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 	if len(resourceHrefs) == 0 {
 		return fmt.Errorf("resourceHrefs is required")
 	}
@@ -7217,7 +6674,7 @@ func (loc *TagsLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 // Note that no error will be raised if the resource does not have the tag(s) you are trying to delete.
 // 	resourceHrefs: Hrefs of the resources for which tags are to be deleted.
 // 	tags: Tags to be deleted.
-func (loc *TagsLocator) MultiDelete(resourceHrefs []string, tags []string) error {
+func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error {
 	if len(resourceHrefs) == 0 {
 		return fmt.Errorf("resourceHrefs is required")
 	}
@@ -7248,6 +6705,7 @@ type Task struct {
 	Summary string              `json:"summary,omitempty"`
 }
 
+//===== Locator
 // Task resource locator, exposes resource actions.
 type TaskLocator struct {
 	api  *Api15
@@ -7259,7 +6717,7 @@ func (api *Api15) TaskLocator(href string) *TaskLocator {
 	return &TaskLocator{api, href}
 }
 
-//===== Resource actions
+//===== Actions
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/live/tasks/:id
 // GET /api/server_arrays/:server_array_id/live/tasks/:id
@@ -7301,17 +6759,7 @@ type User struct {
 	UpdatedAt    time.Time           `json:"updated_at,omitempty"`
 }
 
-// User collection locator, exposes collection actions.
-type UsersLocator struct {
-	api  *Api15
-	Href string
-}
-
-// User collection locator factory
-func (api *Api15) UsersLocator(href string) *UsersLocator {
-	return &UsersLocator{api, href}
-}
-
+//===== Locator
 // User resource locator, exposes resource actions.
 type UserLocator struct {
 	api  *Api15
@@ -7323,7 +6771,7 @@ func (api *Api15) UserLocator(href string) *UserLocator {
 	return &UserLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/users
 // Create a user. If a user already exists with the same email, that user will be returned.
@@ -7341,7 +6789,7 @@ func (api *Api15) UserLocator(href string) *UserLocator {
 // the identity provider will assert for this user. Identity providers should be specified by
 // their API href; you can obtain a list of the identity providers available to your account by
 // invoking the 'index' action of the identity_providers API resource.
-func (loc *UsersLocator) Create(user *UserParam) (*UserLocator, error) {
+func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 	var res *UserLocator
 	if user == nil {
 		return res, fmt.Errorf("user is required")
@@ -7367,7 +6815,7 @@ func (loc *UsersLocator) Create(user *UserParam) (*UserLocator, error) {
 // a child account, the user has to login to the child account first.
 // -- Optional parameters:
 // 	filter
-func (loc *UsersLocator) Index(options ApiParams) ([]*User, error) {
+func (loc *UserLocator) Index(options ApiParams) ([]*User, error) {
 	var res []*User
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -7383,8 +6831,6 @@ func (loc *UsersLocator) Index(options ApiParams) ([]*User, error) {
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/users/:id
 // Show information about a single user.
@@ -7442,18 +6888,19 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 
 /******  UserData ******/
 
-// UserData collection locator, exposes collection actions.
+//===== Locator
+// UserData resource locator, exposes resource actions.
 type UserDataLocator struct {
 	api  *Api15
 	Href string
 }
 
-// UserData collection locator factory
+// UserData resource locator factory
 func (api *Api15) UserDataLocator(href string) *UserDataLocator {
 	return &UserDataLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/user_data/
 // No description provided for show.
@@ -7491,17 +6938,7 @@ type Volume struct {
 	VolumeType  string              `json:"volume_type,omitempty"`
 }
 
-// Volume collection locator, exposes collection actions.
-type VolumesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// Volume collection locator factory
-func (api *Api15) VolumesLocator(href string) *VolumesLocator {
-	return &VolumesLocator{api, href}
-}
-
+//===== Locator
 // Volume resource locator, exposes resource actions.
 type VolumeLocator struct {
 	api  *Api15
@@ -7513,11 +6950,11 @@ func (api *Api15) VolumeLocator(href string) *VolumeLocator {
 	return &VolumeLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/volumes
 // Creates a new volume.
-func (loc *VolumesLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
+func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	var res *VolumeLocator
 	if volume == nil {
 		return res, fmt.Errorf("volume is required")
@@ -7538,12 +6975,24 @@ func (loc *VolumesLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/volumes/:id
+// Deletes a given volume.
+func (loc *VolumeLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/volumes
 // Lists volumes.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *VolumesLocator) Index(options ApiParams) ([]*Volume, error) {
+func (loc *VolumeLocator) Index(options ApiParams) ([]*Volume, error) {
 	var res []*Volume
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -7558,20 +7007,6 @@ func (loc *VolumesLocator) Index(options ApiParams) ([]*Volume, error) {
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/volumes/:id
-// Deletes a given volume.
-func (loc *VolumeLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/volumes/:id
@@ -7609,17 +7044,7 @@ type VolumeAttachment struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// VolumeAttachment collection locator, exposes collection actions.
-type VolumeAttachmentsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// VolumeAttachment collection locator factory
-func (api *Api15) VolumeAttachmentsLocator(href string) *VolumeAttachmentsLocator {
-	return &VolumeAttachmentsLocator{api, href}
-}
-
+//===== Locator
 // VolumeAttachment resource locator, exposes resource actions.
 type VolumeAttachmentLocator struct {
 	api  *Api15
@@ -7631,14 +7056,14 @@ func (api *Api15) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator 
 	return &VolumeAttachmentLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/volume_attachments
 // POST /api/clouds/:cloud_id/volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
 // Creates a new volume attachment.
-func (loc *VolumeAttachmentsLocator) Create(volumeAttachment *VolumeAttachmentParam) (*VolumeAttachmentLocator, error) {
+func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentParam) (*VolumeAttachmentLocator, error) {
 	var res *VolumeAttachmentLocator
 	if volumeAttachment == nil {
 		return res, fmt.Errorf("volumeAttachment is required")
@@ -7659,31 +7084,6 @@ func (loc *VolumeAttachmentsLocator) Create(volumeAttachment *VolumeAttachmentPa
 	}
 }
 
-// GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments
-// GET /api/clouds/:cloud_id/volume_attachments
-// Lists all volume attachments.
-// -- Optional parameters:
-// 	filter
-// 	view
-func (loc *VolumeAttachmentsLocator) Index(options ApiParams) ([]*VolumeAttachment, error) {
-	var res []*VolumeAttachment
-	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
-	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
-}
-
-//===== Resource actions
-
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id
 // DELETE /api/clouds/:cloud_id/volume_attachments/:id
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
@@ -7699,6 +7099,29 @@ func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
 		return err
 	}
 	return nil
+}
+
+// GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments
+// GET /api/clouds/:cloud_id/volume_attachments
+// Lists all volume attachments.
+// -- Optional parameters:
+// 	filter
+// 	view
+func (loc *VolumeAttachmentLocator) Index(options ApiParams) ([]*VolumeAttachment, error) {
+	var res []*VolumeAttachment
+	var params = mergeOptionals(ApiParams{}, options)
+	var href = loc.Href
+	var resp, err = loc.api.GetRaw(href, params)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		return res, err2
+	}
+	var err3 = json.Unmarshal(respBody, &res)
+	return res, err3
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id
@@ -7743,17 +7166,7 @@ type VolumeSnapshot struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// VolumeSnapshot collection locator, exposes collection actions.
-type VolumeSnapshotsLocator struct {
-	api  *Api15
-	Href string
-}
-
-// VolumeSnapshot collection locator factory
-func (api *Api15) VolumeSnapshotsLocator(href string) *VolumeSnapshotsLocator {
-	return &VolumeSnapshotsLocator{api, href}
-}
-
+//===== Locator
 // VolumeSnapshot resource locator, exposes resource actions.
 type VolumeSnapshotLocator struct {
 	api  *Api15
@@ -7765,12 +7178,12 @@ func (api *Api15) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 	return &VolumeSnapshotLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // POST /api/clouds/:cloud_id/volume_snapshots
 // Creates a new volume_snapshot.
-func (loc *VolumeSnapshotsLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*VolumeSnapshotLocator, error) {
+func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*VolumeSnapshotLocator, error) {
 	var res *VolumeSnapshotLocator
 	if volumeSnapshot == nil {
 		return res, fmt.Errorf("volumeSnapshot is required")
@@ -7791,13 +7204,26 @@ func (loc *VolumeSnapshotsLocator) Create(volumeSnapshot *VolumeSnapshotParam) (
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
+// DELETE /api/clouds/:cloud_id/volume_snapshots/:id
+// Deletes a given volume_snapshot.
+func (loc *VolumeSnapshotLocator) Destroy() error {
+
+	var href = loc.Href
+	var err = loc.api.Delete(href)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // GET /api/clouds/:cloud_id/volume_snapshots
 // Lists all volume_snapshots.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *VolumeSnapshotsLocator) Index(options ApiParams) ([]*VolumeSnapshot, error) {
+func (loc *VolumeSnapshotLocator) Index(options ApiParams) ([]*VolumeSnapshot, error) {
 	var res []*VolumeSnapshot
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -7812,21 +7238,6 @@ func (loc *VolumeSnapshotsLocator) Index(options ApiParams) ([]*VolumeSnapshot, 
 	}
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
-}
-
-//===== Resource actions
-
-// DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
-// DELETE /api/clouds/:cloud_id/volume_snapshots/:id
-// Deletes a given volume_snapshot.
-func (loc *VolumeSnapshotLocator) Destroy() error {
-
-	var href = loc.Href
-	var err = loc.api.Delete(href)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
@@ -7865,17 +7276,7 @@ type VolumeType struct {
 	UpdatedAt   time.Time           `json:"updated_at,omitempty"`
 }
 
-// VolumeType collection locator, exposes collection actions.
-type VolumeTypesLocator struct {
-	api  *Api15
-	Href string
-}
-
-// VolumeType collection locator factory
-func (api *Api15) VolumeTypesLocator(href string) *VolumeTypesLocator {
-	return &VolumeTypesLocator{api, href}
-}
-
+//===== Locator
 // VolumeType resource locator, exposes resource actions.
 type VolumeTypeLocator struct {
 	api  *Api15
@@ -7887,14 +7288,14 @@ func (api *Api15) VolumeTypeLocator(href string) *VolumeTypeLocator {
 	return &VolumeTypeLocator{api, href}
 }
 
-//===== Collection actions
+//===== Actions
 
 // GET /api/clouds/:cloud_id/volume_types
 // Lists Volume Types.
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *VolumeTypesLocator) Index(options ApiParams) ([]*VolumeType, error) {
+func (loc *VolumeTypeLocator) Index(options ApiParams) ([]*VolumeType, error) {
 	var res []*VolumeType
 	var params = mergeOptionals(ApiParams{}, options)
 	var href = loc.Href
@@ -7910,8 +7311,6 @@ func (loc *VolumeTypesLocator) Index(options ApiParams) ([]*VolumeType, error) {
 	var err3 = json.Unmarshal(respBody, &res)
 	return res, err3
 }
-
-//===== Resource actions
 
 // GET /api/clouds/:cloud_id/volume_types/:id
 // Displays information about a single Volume Type.

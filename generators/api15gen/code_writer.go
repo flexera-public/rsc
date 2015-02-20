@@ -236,18 +236,9 @@ const resourceTmpl = `{{$resource := .}}{{define "ActionBody"}}` + actionBodyTmp
 type {{.Name}} struct { {{range .Attributes}}
 {{.FieldName}} {{.FieldType}} ` + "`" + `json:"{{.Name}},omitempty"` + "`" + `{{end}}
 }
-{{end}}{{if .CollectionActions}}
-// {{.Name}} collection locator, exposes collection actions.
-type {{.CollectionName}}Locator struct {
-	api *Api15
-	Href string
-}
-
-// {{.Name}} collection locator factory
-func (api *Api15) {{.CollectionName}}Locator(href string) *{{.CollectionName}}Locator {
-	return &{{.CollectionName}}Locator{api, href}
-}
-{{end}}{{if .ResourceActions}}
+{{end}}
+{{if .Actions}}
+//===== Locator
 // {{.Name}} resource locator, exposes resource actions.
 type {{.Name}}Locator struct {
 	api *Api15
@@ -258,17 +249,8 @@ type {{.Name}}Locator struct {
 func (api *Api15) {{.Name}}Locator(href string) *{{.Name}}Locator {
 	return &{{.Name}}Locator{api, href}
 }
-{{end}}{{if .CollectionActions}}
-//===== Collection actions
-{{end}}{{range .CollectionActions}}{{$httpMethod := .HttpMethod}}{{range .Paths}}
-// {{$httpMethod}} {{.}}{{end}}
-{{comment .Description}}
-func (loc *{{$resource.CollectionName}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
-	{{template "ActionBody" . }}
-}
-{{end}}{{if .ResourceActions}}
-//===== Resource actions
-{{end}}{{range .ResourceActions}}{{$httpMethod := .HttpMethod}}{{range .Paths}}
+//===== Actions
+{{end}}{{range .Actions}}{{$httpMethod := .HttpMethod}}{{range .Paths}}
 // {{$httpMethod}} {{.}}{{end}}
 {{comment .Description}}
 func (loc *{{$resource.Name}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {

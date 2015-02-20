@@ -141,8 +141,7 @@ var commands = map[string]*ResourceCmd{ {{range .}}
 		Name: "{{.Name}}",
 		Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
 		HrefRegexp: regexp.MustCompile(` + "`" + `{{.HrefRegexp}}` + "`" + `),
-		Actions: []*ActionCmd{ {{range .CollectionActions}}
-		{{template "action" .}}{{end}}{{range .ResourceActions}}
+		Actions: []*ActionCmd{ {{range .Actions}}
 		{{template "action" .}}{{end}}
 		},
 	},{{end}}
@@ -176,8 +175,7 @@ type ActionInfo struct {
 // Map resource names to action info
 var resourceActions = map[string][]ActionInfo{
 	{{range $name, $resource := .Resources}}"{{$name}}": []ActionInfo{
-		{{range .CollectionActions}}ActionInfo{"{{.Name}}", ` + "`" + `{{toHelp .Description}}` + "`" + `},
-		{{end}}{{range .ResourceActions}}ActionInfo{"{{.Name}}", ` + "`" + `{{toHelp .Description}}` + "`" + `},
-		{{end}} },
+		{{range .Actions}}ActionInfo{"{{.Name}}", ` + "`" + `{{toHelp .Description}}` + "`" + `},
+		{{end}}},
 	{{end}} }
 `

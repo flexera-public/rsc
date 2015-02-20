@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     rsc - RightScale API 1.5 command line tool
 //
-// Generated Feb 18, 2015 at 12:23pm (PST)
+// Generated Feb 19, 2015 at 11:24pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -76,6 +76,18 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/alerts/[[:alnum:]]|/api/servers/[[:alnum:]]/alerts/[[:alnum:]]|/api/server_arrays/[[:alnum:]]/alerts/[[:alnum:]]|/api/deployments/[[:alnum:]]/alerts/[[:alnum:]]|/api/alerts/[[:alnum:]]|/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/alerts|/api/servers/[[:alnum:]]/alerts|/api/server_arrays/[[:alnum:]]/alerts|/api/deployments/[[:alnum:]]/alerts|/api/alerts)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
+				Name:        "disable",
+				Description: `Disables the Alert indefinitely. Idempotent.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
+				Name:        "enable",
+				Description: `Enables the Alert indefinitely. Idempotent.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all Alerts.`,
 				Flags: []*ActionFlag{
@@ -95,18 +107,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "disable",
-				Description: `Disables the Alert indefinitely. Idempotent.`,
-				Flags:       []*ActionFlag{},
-			},
-
-			&ActionCmd{
-				Name:        "enable",
-				Description: `Enables the Alert indefinitely. Idempotent.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -231,6 +231,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given AlertSpec.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `No description provided for index.`,
 				Flags: []*ActionFlag{
@@ -258,12 +264,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given AlertSpec.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -367,6 +367,41 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/audit_entries/[[:alnum:]]|/api/audit_entries)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
+				Name:        "append",
+				Description: `Updates the summary and appends more details to a given AuditEntry`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "summary",
+						Description: `The updated summary for the audit entry, maximum length is 255 characters.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "detail",
+						Description: `The details to be appended to the audit entry record.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&ActionFlag{
+						Name:        "notify",
+						Description: `The event notification category. Defaults to 'None'.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "offset",
+						Description: `The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.`,
+						Type:        "int",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&ActionCmd{
 				Name:        "create",
 				Description: `Creates a new AuditEntry with the given parameters.`,
 				Flags: []*ActionFlag{
@@ -406,6 +441,12 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
+			},
+
+			&ActionCmd{
+				Name:        "detail",
+				Description: `shows the details of a given AuditEntry.`,
+				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -449,47 +490,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "append",
-				Description: `Updates the summary and appends more details to a given AuditEntry`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "summary",
-						Description: `The updated summary for the audit entry, maximum length is 255 characters.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "detail",
-						Description: `The details to be appended to the audit entry record.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&ActionFlag{
-						Name:        "notify",
-						Description: `The event notification category. Defaults to 'None'.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "offset",
-						Description: `The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.`,
-						Type:        "int",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "detail",
-				Description: `shows the details of a given AuditEntry.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -641,6 +641,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all of the backups with the given lineage tag`,
 				Flags: []*ActionFlag{
@@ -659,12 +665,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -870,14 +870,14 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
-				Name:        "index",
-				Description: `Lists the CloudAccounts (non-aws) available to this Account.`,
+				Name:        "destroy",
+				Description: `Delete a CloudAccount.`,
 				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete a CloudAccount.`,
+				Name:        "index",
+				Description: `Lists the CloudAccounts (non-aws) available to this Account.`,
 				Flags:       []*ActionFlag{},
 			},
 
@@ -893,28 +893,6 @@ var commands = map[string]*ResourceCmd{
 		Description: `Represents a given instance of a single cookbook.`,
 		HrefRegexp:  regexp.MustCompile(`(/api/cookbooks/[[:alnum:]]|/api/cookbooks)`),
 		Actions: []*ActionCmd{
-			&ActionCmd{
-				Name:        "index",
-				Description: `Lists the Cookbooks available to this account.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "filter[]",
-						Description: ``,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "extended", "extended_designer"},
-					},
-				},
-			},
-
 			&ActionCmd{
 				Name:        "destroy",
 				Description: `Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.`,
@@ -947,6 +925,28 @@ var commands = map[string]*ResourceCmd{
 						Mandatory:   true,
 						NonBlank:    true,
 						ValidValues: []string{"true", "false"},
+					},
+				},
+			},
+
+			&ActionCmd{
+				Name:        "index",
+				Description: `Lists the Cookbooks available to this account.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "extended", "extended_designer"},
 					},
 				},
 			},
@@ -1009,6 +1009,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Detach a cookbook from a given resource.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists Cookbook Attachments.`,
 				Flags: []*ActionFlag{
@@ -1056,12 +1062,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Detach a cookbook from a given resource.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -1114,6 +1114,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a Credential.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the Credentials available to this account.`,
 				Flags: []*ActionFlag{
@@ -1133,12 +1139,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "sensitive"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a Credential.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -1234,57 +1234,6 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/deployments/[[:alnum:]]|/api/deployments)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
-				Name:        "create",
-				Description: `Creates a new deployment with the given parameters.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "deployment[server_tag_scope]",
-						Description: `The routing scope for tags for servers in the deployment.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-						ValidValues: []string{"deployment", "account"},
-					},
-					&ActionFlag{
-						Name:        "deployment[description]",
-						Description: `The description of the deployment to be created.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&ActionFlag{
-						Name:        "deployment[name]",
-						Description: `The name of the deployment to be created.`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "index",
-				Description: `Lists deployments of the account.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "filter[]",
-						Description: ``,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "inputs", "inputs_2_0"},
-					},
-				},
-			},
-
-			&ActionCmd{
 				Name:        "clone",
 				Description: `Clones a given deployment.`,
 				Flags: []*ActionFlag{
@@ -1314,9 +1263,60 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "create",
+				Description: `Creates a new deployment with the given parameters.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "deployment[server_tag_scope]",
+						Description: `The routing scope for tags for servers in the deployment.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"deployment", "account"},
+					},
+					&ActionFlag{
+						Name:        "deployment[description]",
+						Description: `The description of the deployment to be created.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&ActionFlag{
+						Name:        "deployment[name]",
+						Description: `The name of the deployment to be created.`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&ActionCmd{
 				Name:        "destroy",
 				Description: `Deletes a given deployment.`,
 				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
+				Name:        "index",
+				Description: `Lists deployments of the account.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "inputs", "inputs_2_0"},
+					},
+				},
 			},
 
 			&ActionCmd{
@@ -1700,6 +1700,48 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "launch",
+				Description: `Launches an instance using the parameters that this instance has been configured with.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "inputs[][value]",
+						Description: `The value of that input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "inputs[][name]",
+						Description: `The input name. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "api_behavior",
+						Description: `When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"async", "sync"},
+					},
+				},
+			},
+
+			&ActionCmd{
+				Name:        "lock",
+				Description: ``,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "multi_run_executable",
 				Description: `Runs a script or a recipe in the running instances.`,
 				Flags: []*ActionFlag{
@@ -1776,48 +1818,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "launch",
-				Description: `Launches an instance using the parameters that this instance has been configured with.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "inputs[][value]",
-						Description: `The value of that input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "inputs",
-						Description: ``,
-						Type:        "map",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "inputs[][name]",
-						Description: `The input name. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "api_behavior",
-						Description: `When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"async", "sync"},
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "lock",
-				Description: ``,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -2128,6 +2128,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Destroy the specified lodgement.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `List InstanceCustomLodgements of a given cloud and instance.`,
 				Flags: []*ActionFlag{
@@ -2140,12 +2146,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Destroy the specified lodgement.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -2261,6 +2261,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given IpAddress.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the IpAddresses available to this account.`,
 				Flags: []*ActionFlag{
@@ -2272,12 +2278,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given IpAddress.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -2357,6 +2357,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `No description provided for destroy.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the ip address bindings available to this account.`,
 				Flags: []*ActionFlag{
@@ -2371,12 +2377,6 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
-				Name:        "destroy",
-				Description: `No description provided for destroy.`,
-				Flags:       []*ActionFlag{},
-			},
-
-			&ActionCmd{
 				Name:        "show",
 				Description: `Show information about a single ip address binding.`,
 				Flags:       []*ActionFlag{},
@@ -2388,6 +2388,27 @@ var commands = map[string]*ResourceCmd{
 		Description: `A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.`,
 		HrefRegexp:  regexp.MustCompile(`(/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/monitoring_metrics/[[:alnum:]]|/api/clouds/[[:alnum:]]/instances/[[:alnum:]]/monitoring_metrics)`),
 		Actions: []*ActionCmd{
+			&ActionCmd{
+				Name:        "data",
+				Description: `Gives the raw monitoring data for a particular metric`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "start",
+						Description: `An integer number of seconds from current time. e.g. -300`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "end",
+						Description: `An integer number of seconds from current time. e.g. -150 or 0 `,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
 			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`,
@@ -2427,27 +2448,6 @@ var commands = map[string]*ResourceCmd{
 						Description: `The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences. `,
 						Type:        "string",
 						Mandatory:   false,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "data",
-				Description: `Gives the raw monitoring data for a particular metric`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "start",
-						Description: `An integer number of seconds from current time. e.g. -300`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "end",
-						Description: `An integer number of seconds from current time. e.g. -150 or 0 `,
-						Type:        "string",
-						Mandatory:   true,
 						NonBlank:    true,
 					},
 				},
@@ -2497,41 +2497,6 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/server_templates/[[:alnum:]]/multi_cloud_images/[[:alnum:]]|/api/multi_cloud_images/[[:alnum:]]|/api/server_templates/[[:alnum:]]/multi_cloud_images|/api/multi_cloud_images)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
-				Name:        "create",
-				Description: `Creates a new MultiCloudImage with the given parameters.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "multi_cloud_image[description]",
-						Description: `The description of the MultiCloudImage to be created.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&ActionFlag{
-						Name:        "multi_cloud_image[name]",
-						Description: `The name of the MultiCloudImage to be created.`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "index",
-				Description: `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "filter[]",
-						Description: ``,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
 				Name:        "clone",
 				Description: `Clones a given MultiCloudImage.`,
 				Flags: []*ActionFlag{
@@ -2567,9 +2532,44 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "create",
+				Description: `Creates a new MultiCloudImage with the given parameters.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "multi_cloud_image[description]",
+						Description: `The description of the MultiCloudImage to be created.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&ActionFlag{
+						Name:        "multi_cloud_image[name]",
+						Description: `The name of the MultiCloudImage to be created.`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&ActionCmd{
 				Name:        "destroy",
 				Description: `Deletes a given MultiCloudImage.`,
 				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
+				Name:        "index",
+				Description: `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
 			},
 
 			&ActionCmd{
@@ -2655,6 +2655,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a MultiCloudImage setting.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the MultiCloudImage settings.`,
 				Flags: []*ActionFlag{
@@ -2666,12 +2672,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a MultiCloudImage setting.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -2778,6 +2778,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes the given network(s).`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists networks in this account.`,
 				Flags: []*ActionFlag{
@@ -2789,12 +2795,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes the given network(s).`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -2874,6 +2874,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Delete an existing NetworkGateway.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the NetworkGateways available to this account.`,
 				Flags: []*ActionFlag{
@@ -2885,12 +2891,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete an existing NetworkGateway.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -2976,6 +2976,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Delete an existing NetworkOptionGroup.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `List NetworkOptionGroups available in this account.`,
 				Flags: []*ActionFlag{
@@ -2987,12 +2993,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete an existing NetworkOptionGroup.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -3057,6 +3057,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Delete an existing NetworkOptionGroupAttachment.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `List NetworkOptionGroupAttachments in this account.`,
 				Flags: []*ActionFlag{
@@ -3076,12 +3082,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete an existing NetworkOptionGroupAttachment.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -3204,6 +3204,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Destroy a permission, thereby revoking a user's role with respect to the current account...`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `List all permissions for all users of the current acount.`,
 				Flags: []*ActionFlag{
@@ -3215,12 +3221,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Destroy a permission, thereby revoking a user's role with respect to the current account...`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -3264,6 +3264,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Destroys a PlacementGroup.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all PlacementGroups in an account.`,
 				Flags: []*ActionFlag{
@@ -3283,12 +3289,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Destroys a PlacementGroup.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -3313,6 +3313,12 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/preferences/[[:alnum:]]|/api/preferences)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes the given preference.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all preferences.`,
 				Flags: []*ActionFlag{
@@ -3324,12 +3330,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes the given preference.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -3359,6 +3359,12 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/publications/[[:alnum:]]|/api/publications)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
+				Name:        "import",
+				Description: `Imports the given publication and its subordinates to this account.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the publications available to this account. Only non-HEAD revisions are possible.`,
 				Flags: []*ActionFlag{
@@ -3378,12 +3384,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "import",
-				Description: `Imports the given publication and its subordinates to this account.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -3457,6 +3457,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given recurring volume attachment.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all recurring volume attachments.`,
 				Flags: []*ActionFlag{
@@ -3476,12 +3482,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given recurring volume attachment.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -3505,6 +3505,73 @@ var commands = map[string]*ResourceCmd{
 		Description: `A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.`,
 		HrefRegexp:  regexp.MustCompile(`(/api/repositories/[[:alnum:]]|/api/repositories)`),
 		Actions: []*ActionCmd{
+			&ActionCmd{
+				Name:        "cookbook_import",
+				Description: `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "repository_commit_reference",
+						Description: `Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "with_dependencies",
+						Description: `A flag indicating whether dependencies should automatically be imported.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&ActionFlag{
+						Name:        "asset_hrefs[]",
+						Description: `Hrefs of the assets that should be imported.`,
+						Type:        "[]string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "namespace",
+						Description: `The namespace to import into.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"primary", "alternate"},
+					},
+					&ActionFlag{
+						Name:        "follow",
+						Description: `A flag indicating whether imported cookbooks should be followed.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+				},
+			},
+
+			&ActionCmd{
+				Name:        "cookbook_import_preview",
+				Description: `Retrieves a preview of the effects of a Cookbook import.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "asset_hrefs[]",
+						Description: `Hrefs of the assets that should be imported.`,
+						Type:        "[]string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "namespace",
+						Description: `The namespace to import into.`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+						ValidValues: []string{"primary", "alternate"},
+					},
+				},
+			},
+
 			&ActionCmd{
 				Name:        "create",
 				Description: `Creates a Repository.`,
@@ -3585,6 +3652,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes the specified Repositories.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all Repositories for this Account.`,
 				Flags: []*ActionFlag{
@@ -3607,93 +3680,6 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
-				Name:        "resolve",
-				Description: `Show a list of repositories that have imported cookbooks with the given names.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "imported_cookbook_name[]",
-						Description: `A list of cookbook names that were imported by the repository.`,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "cookbook_import",
-				Description: `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "repository_commit_reference",
-						Description: `Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "with_dependencies",
-						Description: `A flag indicating whether dependencies should automatically be imported.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"true", "false"},
-					},
-					&ActionFlag{
-						Name:        "asset_hrefs[]",
-						Description: `Hrefs of the assets that should be imported.`,
-						Type:        "[]string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "namespace",
-						Description: `The namespace to import into.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"primary", "alternate"},
-					},
-					&ActionFlag{
-						Name:        "follow",
-						Description: `A flag indicating whether imported cookbooks should be followed.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"true", "false"},
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "cookbook_import_preview",
-				Description: `Retrieves a preview of the effects of a Cookbook import.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "asset_hrefs[]",
-						Description: `Hrefs of the assets that should be imported.`,
-						Type:        "[]string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "namespace",
-						Description: `The namespace to import into.`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-						ValidValues: []string{"primary", "alternate"},
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes the specified Repositories.`,
-				Flags:       []*ActionFlag{},
-			},
-
-			&ActionCmd{
 				Name:        "refetch",
 				Description: `Refetches all RepositoryAssets associated with the Repository.`,
 				Flags: []*ActionFlag{
@@ -3704,6 +3690,20 @@ var commands = map[string]*ResourceCmd{
 						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"true", "false"},
+					},
+				},
+			},
+
+			&ActionCmd{
+				Name:        "resolve",
+				Description: `Show a list of repositories that have imported cookbooks with the given names.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "imported_cookbook_name[]",
+						Description: `A list of cookbook names that were imported by the repository.`,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 				},
 			},
@@ -3837,6 +3837,20 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/right_scripts/[[:alnum:]]|/api/right_scripts)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
+				Name:        "commit",
+				Description: `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "right_script[commit_message]",
+						Description: `The message to be included with the requested commit`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists RightScripts.`,
 				Flags: []*ActionFlag{
@@ -3862,20 +3876,6 @@ var commands = map[string]*ResourceCmd{
 						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"default"},
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "commit",
-				Description: `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "right_script[commit_message]",
-						Description: `The message to be included with the requested commit`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
 					},
 				},
 			},
@@ -3976,6 +3976,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Delete an existing Route.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `List Routes available in this account.`,
 				Flags: []*ActionFlag{
@@ -3987,12 +3993,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete an existing Route.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -4086,6 +4086,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Delete an existing RouteTable.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `List RouteTables available in this account.`,
 				Flags: []*ActionFlag{
@@ -4105,12 +4111,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete an existing RouteTable.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -4192,6 +4192,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Unbind an executable from the given resource.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the executables bound to the ServerTemplate.`,
 				Flags: []*ActionFlag{
@@ -4250,12 +4256,6 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
-				Name:        "destroy",
-				Description: `Unbind an executable from the given resource.`,
-				Flags:       []*ActionFlag{},
-			},
-
-			&ActionCmd{
 				Name:        "show",
 				Description: `Show information about a single executable binding.`,
 				Flags: []*ActionFlag{
@@ -4305,6 +4305,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Delete security group(s)`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists Security Groups.`,
 				Flags: []*ActionFlag{
@@ -4324,12 +4330,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "tiny"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete security group(s)`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -4441,6 +4441,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Delete security group rule(s)`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists SecurityGroupRules.`,
 				Flags: []*ActionFlag{
@@ -4453,12 +4459,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Delete security group rule(s)`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -4496,6 +4496,12 @@ var commands = map[string]*ResourceCmd{
 		Description: `Servers represent the notion of a server/machine from the RightScale's perspective`,
 		HrefRegexp:  regexp.MustCompile(`(/api/servers/[[:alnum:]]|/api/deployments/[[:alnum:]]/servers/[[:alnum:]]|/api/servers|/api/deployments/[[:alnum:]]/servers)`),
 		Actions: []*ActionCmd{
+			&ActionCmd{
+				Name:        "clone",
+				Description: `Clones a given server.`,
+				Flags:       []*ActionFlag{},
+			},
+
 			&ActionCmd{
 				Name:        "create",
 				Description: `Creates a new server, and configures its corresponding "next" instance with the received parameters.`,
@@ -4697,6 +4703,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given server.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists servers.`,
 				Flags: []*ActionFlag{
@@ -4716,74 +4728,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "instance_detail"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "wrap_instance",
-				Description: `Wrap an existing instance and set current instance for new server`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "server[instance][multi_cloud_image_href]",
-						Description: `The href of the Multi Cloud Image to use.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "server[instance][server_template_href]",
-						Description: `The href of the Server Template.`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "server[instance][inputs]",
-						Description: ``,
-						Type:        "map",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "server[deployment_href]",
-						Description: `The href of the deployment to which the Server will be added.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "server[instance][href]",
-						Description: `The href of the Instance around which the server should be created.`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "server[description]",
-						Description: `The Server description.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "server[name]",
-						Description: `The name of the Server.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "clone",
-				Description: `Clones a given server.`,
-				Flags:       []*ActionFlag{},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given server.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -4856,6 +4800,62 @@ var commands = map[string]*ResourceCmd{
 					},
 				},
 			},
+
+			&ActionCmd{
+				Name:        "wrap_instance",
+				Description: `Wrap an existing instance and set current instance for new server`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "server[instance][multi_cloud_image_href]",
+						Description: `The href of the Multi Cloud Image to use.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "server[instance][server_template_href]",
+						Description: `The href of the Server Template.`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "server[instance][inputs]",
+						Description: ``,
+						Type:        "map",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "server[deployment_href]",
+						Description: `The href of the deployment to which the Server will be added.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "server[instance][href]",
+						Description: `The href of the Instance around which the server should be created.`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "server[description]",
+						Description: `The Server description.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "server[name]",
+						Description: `The name of the Server.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+			},
 		},
 	},
 	"ServerArray": &ResourceCmd{
@@ -4863,6 +4863,12 @@ var commands = map[string]*ResourceCmd{
 		Description: `A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.`,
 		HrefRegexp:  regexp.MustCompile(`(/api/server_arrays/[[:alnum:]]|/api/deployments/[[:alnum:]]/server_arrays/[[:alnum:]]|/api/server_arrays|/api/deployments/[[:alnum:]]/server_arrays)`),
 		Actions: []*ActionCmd{
+			&ActionCmd{
+				Name:        "clone",
+				Description: `Clones a given server array.`,
+				Flags:       []*ActionFlag{},
+			},
+
 			&ActionCmd{
 				Name:        "create",
 				Description: `Creates a new server array, and configures its corresponding "next" instance with the received parameters.`,
@@ -5215,6 +5221,18 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "current_instances",
+				Description: `List the running instances belonging to the server array. See Instances#index for details.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given server array.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists server arrays.`,
 				Flags: []*ActionFlag{
@@ -5234,24 +5252,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "instance_detail"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "clone",
-				Description: `Clones a given server array.`,
-				Flags:       []*ActionFlag{},
-			},
-
-			&ActionCmd{
-				Name:        "current_instances",
-				Description: `List the running instances belonging to the server array. See Instances#index for details.`,
-				Flags:       []*ActionFlag{},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given server array.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -5481,49 +5481,6 @@ var commands = map[string]*ResourceCmd{
 		HrefRegexp:  regexp.MustCompile(`(/api/server_templates/[[:alnum:]]|/api/server_templates)`),
 		Actions: []*ActionCmd{
 			&ActionCmd{
-				Name:        "create",
-				Description: `Creates a new ServerTemplate with the given parameters.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "server_template[description]",
-						Description: `The description of the ServerTemplate to be created.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&ActionFlag{
-						Name:        "server_template[name]",
-						Description: `The name of the ServerTemplate to be created.`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "index",
-				Description: `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "filter[]",
-						Description: ``,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&ActionFlag{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "inputs", "inputs_2_0"},
-					},
-				},
-			},
-
-			&ActionCmd{
 				Name:        "clone",
 				Description: `Clones a given ServerTemplate.`,
 				Flags: []*ActionFlag{
@@ -5575,6 +5532,27 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "create",
+				Description: `Creates a new ServerTemplate with the given parameters.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "server_template[description]",
+						Description: `The description of the ServerTemplate to be created.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&ActionFlag{
+						Name:        "server_template[name]",
+						Description: `The name of the ServerTemplate to be created.`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&ActionCmd{
 				Name:        "destroy",
 				Description: `Deletes a given ServerTemplate.`,
 				Flags:       []*ActionFlag{},
@@ -5584,6 +5562,28 @@ var commands = map[string]*ResourceCmd{
 				Name:        "detect_changes_in_head",
 				Description: `Identifies RightScripts attached to the resource that differ from their HEAD.`,
 				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
+				Name:        "index",
+				Description: `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&ActionFlag{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "inputs", "inputs_2_0"},
+					},
+				},
 			},
 
 			&ActionCmd{
@@ -5735,6 +5735,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given ServerTemplateMultiCloudImage.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists the ServerTemplateMultiCloudImages available to this account.`,
 				Flags: []*ActionFlag{
@@ -5754,12 +5760,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given ServerTemplateMultiCloudImage.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -5851,6 +5851,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given ssh key.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists ssh keys.`,
 				Flags: []*ActionFlag{
@@ -5870,12 +5876,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "sensitive"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given ssh key.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -5942,6 +5942,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes the given subnet(s).`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists subnets of a given cloud.`,
 				Flags: []*ActionFlag{
@@ -5953,12 +5959,6 @@ var commands = map[string]*ResourceCmd{
 						NonBlank:    true,
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes the given subnet(s).`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -6400,6 +6400,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given volume.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists volumes.`,
 				Flags: []*ActionFlag{
@@ -6419,12 +6425,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given volume.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -6477,6 +6477,21 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given volume attachment.`,
+				Flags: []*ActionFlag{
+					&ActionFlag{
+						Name:        "force",
+						Description: `Specifies whether to force the detachment of a volume.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+				},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all volume attachments.`,
 				Flags: []*ActionFlag{
@@ -6494,21 +6509,6 @@ var commands = map[string]*ResourceCmd{
 						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"default"},
-					},
-				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given volume attachment.`,
-				Flags: []*ActionFlag{
-					&ActionFlag{
-						Name:        "force",
-						Description: `Specifies whether to force the detachment of a volume.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"true", "false"},
 					},
 				},
 			},
@@ -6570,6 +6570,12 @@ var commands = map[string]*ResourceCmd{
 			},
 
 			&ActionCmd{
+				Name:        "destroy",
+				Description: `Deletes a given volume_snapshot.`,
+				Flags:       []*ActionFlag{},
+			},
+
+			&ActionCmd{
 				Name:        "index",
 				Description: `Lists all volume_snapshots.`,
 				Flags: []*ActionFlag{
@@ -6589,12 +6595,6 @@ var commands = map[string]*ResourceCmd{
 						ValidValues: []string{"default"},
 					},
 				},
-			},
-
-			&ActionCmd{
-				Name:        "destroy",
-				Description: `Deletes a given volume_snapshot.`,
-				Flags:       []*ActionFlag{},
 			},
 
 			&ActionCmd{
@@ -6674,32 +6674,32 @@ var resourceActions = map[string][]ActionInfo{
 		ActionInfo{"show", `Show information about a single AccountGroup.`},
 	},
 	"Alert": []ActionInfo{
-		ActionInfo{"index", `Lists all Alerts.`},
 		ActionInfo{"disable", `Disables the Alert indefinitely. Idempotent.`},
 		ActionInfo{"enable", `Enables the Alert indefinitely. Idempotent.`},
+		ActionInfo{"index", `Lists all Alerts.`},
 		ActionInfo{"quench", `Suppresses the Alert from being triggered for a given time period. Idempotent.`},
 		ActionInfo{"show", `Shows the attributes of a specified Alert.`},
 	},
 	"AlertSpec": []ActionInfo{
 		ActionInfo{"create", `Creates a new AlertSpec with the given parameters.`},
-		ActionInfo{"index", `No description provided for index.`},
 		ActionInfo{"destroy", `Deletes a given AlertSpec.`},
+		ActionInfo{"index", `No description provided for index.`},
 		ActionInfo{"show", `No description provided for show.`},
 		ActionInfo{"update", `Updates an AlertSpec with the given parameters.`},
 	},
 	"AuditEntry": []ActionInfo{
-		ActionInfo{"create", `Creates a new AuditEntry with the given parameters.`},
-		ActionInfo{"index", `Lists AuditEntries of the account`},
 		ActionInfo{"append", `Updates the summary and appends more details to a given AuditEntry`},
+		ActionInfo{"create", `Creates a new AuditEntry with the given parameters.`},
 		ActionInfo{"detail", `shows the details of a given AuditEntry.`},
+		ActionInfo{"index", `Lists AuditEntries of the account`},
 		ActionInfo{"show", `Lists the attributes of a given audit entry.`},
 		ActionInfo{"update", `Updates the summary of a given AuditEntry.`},
 	},
 	"Backup": []ActionInfo{
 		ActionInfo{"cleanup", `Deletes old backups that meet the given criteria`},
 		ActionInfo{"create", `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.`},
-		ActionInfo{"index", `Lists all of the backups with the given lineage tag`},
 		ActionInfo{"destroy", `Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.`},
+		ActionInfo{"index", `Lists all of the backups with the given lineage tag`},
 		ActionInfo{"restore", `Restores the given Backup.`},
 		ActionInfo{"show", `Lists the attributes of a given backup`},
 		ActionInfo{"update", `Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.`},
@@ -6715,30 +6715,30 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"CloudAccount": []ActionInfo{
 		ActionInfo{"create", `Create a CloudAccount by passing in the respective credentials for each cloud.`},
-		ActionInfo{"index", `Lists the CloudAccounts (non-aws) available to this Account.`},
 		ActionInfo{"destroy", `Delete a CloudAccount.`},
+		ActionInfo{"index", `Lists the CloudAccounts (non-aws) available to this Account.`},
 		ActionInfo{"show", ``},
 	},
 	"Cookbook": []ActionInfo{
-		ActionInfo{"index", `Lists the Cookbooks available to this account.`},
 		ActionInfo{"destroy", `Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.`},
 		ActionInfo{"follow", `Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.`},
 		ActionInfo{"freeze", `Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.`},
+		ActionInfo{"index", `Lists the Cookbooks available to this account.`},
 		ActionInfo{"obsolete", `Marks a Cookbook as obsolete (or un-obsolete).`},
 		ActionInfo{"show", `Show information about a single Cookbook.`},
 	},
 	"CookbookAttachment": []ActionInfo{
 		ActionInfo{"create", `Attach a cookbook to a given resource.`},
+		ActionInfo{"destroy", `Detach a cookbook from a given resource.`},
 		ActionInfo{"index", `Lists Cookbook Attachments.`},
 		ActionInfo{"multi_attach", `Attach multiple cookbooks to a given resource.`},
 		ActionInfo{"multi_detach", `Detach multiple cookbooks from a given resource.`},
-		ActionInfo{"destroy", `Detach a cookbook from a given resource.`},
 		ActionInfo{"show", `Displays information about a single cookbook attachment to a ServerTemplate.`},
 	},
 	"Credential": []ActionInfo{
 		ActionInfo{"create", `Creates a new Credential with the given parameters.`},
-		ActionInfo{"index", `Lists the Credentials available to this account.`},
 		ActionInfo{"destroy", `Deletes a Credential.`},
+		ActionInfo{"index", `Lists the Credentials available to this account.`},
 		ActionInfo{"show", `Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.`},
 		ActionInfo{"update", `Updates attributes of a Credential.`},
 	},
@@ -6747,10 +6747,10 @@ var resourceActions = map[string][]ActionInfo{
 		ActionInfo{"show", `Displays information about a single Datacenter.`},
 	},
 	"Deployment": []ActionInfo{
-		ActionInfo{"create", `Creates a new deployment with the given parameters.`},
-		ActionInfo{"index", `Lists deployments of the account.`},
 		ActionInfo{"clone", `Clones a given deployment.`},
+		ActionInfo{"create", `Creates a new deployment with the given parameters.`},
 		ActionInfo{"destroy", `Deletes a given deployment.`},
+		ActionInfo{"index", `Lists deployments of the account.`},
 		ActionInfo{"lock", `Locks a given deployment. Idempotent.`},
 		ActionInfo{"servers", `Lists the servers belonging to this deployment`},
 		ActionInfo{"show", `Lists the attributes of a given deployment.`},
@@ -6775,10 +6775,10 @@ var resourceActions = map[string][]ActionInfo{
 	"Instance": []ActionInfo{
 		ActionInfo{"create", `Creates and launches a raw instance using the provided parameters.`},
 		ActionInfo{"index", `Lists instances of a given cloud, server array.`},
-		ActionInfo{"multi_run_executable", `Runs a script or a recipe in the running instances.`},
-		ActionInfo{"multi_terminate", `Terminates running instances.`},
 		ActionInfo{"launch", `Launches an instance using the parameters that this instance has been configured with.`},
 		ActionInfo{"lock", ``},
+		ActionInfo{"multi_run_executable", `Runs a script or a recipe in the running instances.`},
+		ActionInfo{"multi_terminate", `Terminates running instances.`},
 		ActionInfo{"reboot", `Reboot a running instance.`},
 		ActionInfo{"run_executable", `Runs a script or a recipe in the running instance.`},
 		ActionInfo{"set_custom_lodgement", `This method is deprecated.  Please use InstanceCustomLodgement.`},
@@ -6791,8 +6791,8 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"InstanceCustomLodgement": []ActionInfo{
 		ActionInfo{"create", `Create a lodgement with the quantity and timeframe specified.`},
-		ActionInfo{"index", `List InstanceCustomLodgements of a given cloud and instance.`},
 		ActionInfo{"destroy", `Destroy the specified lodgement.`},
+		ActionInfo{"index", `List InstanceCustomLodgements of a given cloud and instance.`},
 		ActionInfo{"show", `Show the specified lodgement.`},
 		ActionInfo{"update", `Update a lodgement with the quantity specified.`},
 	},
@@ -6802,63 +6802,63 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"IpAddress": []ActionInfo{
 		ActionInfo{"create", `Creates a new IpAddress with the given parameters.`},
-		ActionInfo{"index", `Lists the IpAddresses available to this account.`},
 		ActionInfo{"destroy", `Deletes a given IpAddress.`},
+		ActionInfo{"index", `Lists the IpAddresses available to this account.`},
 		ActionInfo{"show", `Show information about a single IpAddress.`},
 		ActionInfo{"update", `Updates attributes of a given IpAddress.`},
 	},
 	"IpAddressBinding": []ActionInfo{
 		ActionInfo{"create", `Creates an ip address binding which attaches a specified IpAddress resource to a specified instance, and also allows for configuration of port forwarding rules...`},
-		ActionInfo{"index", `Lists the ip address bindings available to this account.`},
 		ActionInfo{"destroy", `No description provided for destroy.`},
+		ActionInfo{"index", `Lists the ip address bindings available to this account.`},
 		ActionInfo{"show", `Show information about a single ip address binding.`},
 	},
 	"MonitoringMetric": []ActionInfo{
-		ActionInfo{"index", `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`},
 		ActionInfo{"data", `Gives the raw monitoring data for a particular metric`},
+		ActionInfo{"index", `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`},
 		ActionInfo{"show", `Shows attributes of a single monitoring metric.`},
 	},
 	"MultiCloudImage": []ActionInfo{
-		ActionInfo{"create", `Creates a new MultiCloudImage with the given parameters.`},
-		ActionInfo{"index", `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`},
 		ActionInfo{"clone", `Clones a given MultiCloudImage.`},
 		ActionInfo{"commit", `Commits a given MultiCloudImage. Only HEAD revisions can be committed.`},
+		ActionInfo{"create", `Creates a new MultiCloudImage with the given parameters.`},
 		ActionInfo{"destroy", `Deletes a given MultiCloudImage.`},
+		ActionInfo{"index", `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`},
 		ActionInfo{"show", `Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.`},
 		ActionInfo{"update", `Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).`},
 	},
 	"MultiCloudImageSetting": []ActionInfo{
 		ActionInfo{"create", `Creates a new setting for an existing MultiCloudImage.`},
-		ActionInfo{"index", `Lists the MultiCloudImage settings.`},
 		ActionInfo{"destroy", `Deletes a MultiCloudImage setting.`},
+		ActionInfo{"index", `Lists the MultiCloudImage settings.`},
 		ActionInfo{"show", `Show information about a single MultiCloudImage setting.`},
 		ActionInfo{"update", `Updates a settings for a MultiCLoudImage.`},
 	},
 	"Network": []ActionInfo{
 		ActionInfo{"create", `Creates a new network.`},
-		ActionInfo{"index", `Lists networks in this account.`},
 		ActionInfo{"destroy", `Deletes the given network(s).`},
+		ActionInfo{"index", `Lists networks in this account.`},
 		ActionInfo{"show", `Shows attributes of a single network.`},
 		ActionInfo{"update", `Updates the given network.`},
 	},
 	"NetworkGateway": []ActionInfo{
 		ActionInfo{"create", `Create a new NetworkGateway.`},
-		ActionInfo{"index", `Lists the NetworkGateways available to this account.`},
 		ActionInfo{"destroy", `Delete an existing NetworkGateway.`},
+		ActionInfo{"index", `Lists the NetworkGateways available to this account.`},
 		ActionInfo{"show", `Show information about a single NetworkGateway.`},
 		ActionInfo{"update", `Update an existing NetworkGateway.`},
 	},
 	"NetworkOptionGroup": []ActionInfo{
 		ActionInfo{"create", `Create a new NetworkOptionGroup.`},
-		ActionInfo{"index", `List NetworkOptionGroups available in this account.`},
 		ActionInfo{"destroy", `Delete an existing NetworkOptionGroup.`},
+		ActionInfo{"index", `List NetworkOptionGroups available in this account.`},
 		ActionInfo{"show", `Show information about a single NetworkOptionGroup.`},
 		ActionInfo{"update", `Update an existing NetworkOptionGroup.`},
 	},
 	"NetworkOptionGroupAttachment": []ActionInfo{
 		ActionInfo{"create", `Create a new NetworkOptionGroupAttachment.`},
-		ActionInfo{"index", `List NetworkOptionGroupAttachments in this account.`},
 		ActionInfo{"destroy", `Delete an existing NetworkOptionGroupAttachment.`},
+		ActionInfo{"index", `List NetworkOptionGroupAttachments in this account.`},
 		ActionInfo{"show", `Show information about a single NetworkOptionGroupAttachment.`},
 		ActionInfo{"update", `Update an existing NetworkOptionGroupAttachment.`},
 	},
@@ -6867,25 +6867,25 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"Permission": []ActionInfo{
 		ActionInfo{"create", `Create a permission, thereby granting some user a particular role with respect to the current account...`},
-		ActionInfo{"index", `List all permissions for all users of the current acount.`},
 		ActionInfo{"destroy", `Destroy a permission, thereby revoking a user's role with respect to the current account...`},
+		ActionInfo{"index", `List all permissions for all users of the current acount.`},
 		ActionInfo{"show", `Show information about a single permission.`},
 	},
 	"PlacementGroup": []ActionInfo{
 		ActionInfo{"create", `Creates a PlacementGroup.`},
-		ActionInfo{"index", `Lists all PlacementGroups in an account.`},
 		ActionInfo{"destroy", `Destroys a PlacementGroup.`},
+		ActionInfo{"index", `Lists all PlacementGroups in an account.`},
 		ActionInfo{"show", `Shows information about a single PlacementGroup.`},
 	},
 	"Preference": []ActionInfo{
-		ActionInfo{"index", `Lists all preferences.`},
 		ActionInfo{"destroy", `Deletes the given preference.`},
+		ActionInfo{"index", `Lists all preferences.`},
 		ActionInfo{"show", `Shows a single preference.`},
 		ActionInfo{"update", `If 'id' is known, updates preference with given contents.`},
 	},
 	"Publication": []ActionInfo{
-		ActionInfo{"index", `Lists the publications available to this account. Only non-HEAD revisions are possible.`},
 		ActionInfo{"import", `Imports the given publication and its subordinates to this account.`},
+		ActionInfo{"index", `Lists the publications available to this account. Only non-HEAD revisions are possible.`},
 		ActionInfo{"show", `Show information about a single publication. Only non-HEAD revisions are possible.`},
 	},
 	"PublicationLineage": []ActionInfo{
@@ -6893,18 +6893,18 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"RecurringVolumeAttachment": []ActionInfo{
 		ActionInfo{"create", `Creates a new recurring volume attachment.`},
-		ActionInfo{"index", `Lists all recurring volume attachments.`},
 		ActionInfo{"destroy", `Deletes a given recurring volume attachment.`},
+		ActionInfo{"index", `Lists all recurring volume attachments.`},
 		ActionInfo{"show", `Displays information about a single recurring volume attachment.`},
 	},
 	"Repository": []ActionInfo{
-		ActionInfo{"create", `Creates a Repository.`},
-		ActionInfo{"index", `Lists all Repositories for this Account.`},
-		ActionInfo{"resolve", `Show a list of repositories that have imported cookbooks with the given names.`},
 		ActionInfo{"cookbook_import", `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.`},
 		ActionInfo{"cookbook_import_preview", `Retrieves a preview of the effects of a Cookbook import.`},
+		ActionInfo{"create", `Creates a Repository.`},
 		ActionInfo{"destroy", `Deletes the specified Repositories.`},
+		ActionInfo{"index", `Lists all Repositories for this Account.`},
 		ActionInfo{"refetch", `Refetches all RepositoryAssets associated with the Repository.`},
+		ActionInfo{"resolve", `Show a list of repositories that have imported cookbooks with the given names.`},
 		ActionInfo{"show", `Shows a specified Repository.`},
 		ActionInfo{"update", `Updates a specified Repository.`},
 	},
@@ -6913,8 +6913,8 @@ var resourceActions = map[string][]ActionInfo{
 		ActionInfo{"show", `Show information about a single asset.`},
 	},
 	"RightScript": []ActionInfo{
-		ActionInfo{"index", `Lists RightScripts.`},
 		ActionInfo{"commit", `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.`},
+		ActionInfo{"index", `Lists RightScripts.`},
 		ActionInfo{"show", `Displays information about a single RightScript.`},
 		ActionInfo{"show_source", `Returns the script source for a RightScript`},
 		ActionInfo{"update", `Updates RightScript name/description`},
@@ -6922,55 +6922,55 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"Route": []ActionInfo{
 		ActionInfo{"create", `Create a new Route.`},
-		ActionInfo{"index", `List Routes available in this account.`},
 		ActionInfo{"destroy", `Delete an existing Route.`},
+		ActionInfo{"index", `List Routes available in this account.`},
 		ActionInfo{"show", `Show information about a single Route.`},
 		ActionInfo{"update", `Update an existing Route.`},
 	},
 	"RouteTable": []ActionInfo{
 		ActionInfo{"create", `Create a new RouteTable.`},
-		ActionInfo{"index", `List RouteTables available in this account.`},
 		ActionInfo{"destroy", `Delete an existing RouteTable.`},
+		ActionInfo{"index", `List RouteTables available in this account.`},
 		ActionInfo{"show", `Show information about a single RouteTable.`},
 		ActionInfo{"update", `Update an existing RouteTable.`},
 	},
 	"RunnableBinding": []ActionInfo{
 		ActionInfo{"create", `Bind an executable to the given ServerTemplate.`},
+		ActionInfo{"destroy", `Unbind an executable from the given resource.`},
 		ActionInfo{"index", `Lists the executables bound to the ServerTemplate.`},
 		ActionInfo{"multi_update", `Update attributes for multiple bound executables.`},
-		ActionInfo{"destroy", `Unbind an executable from the given resource.`},
 		ActionInfo{"show", `Show information about a single executable binding.`},
 	},
 	"SecurityGroup": []ActionInfo{
 		ActionInfo{"create", `Create a security group.`},
-		ActionInfo{"index", `Lists Security Groups.`},
 		ActionInfo{"destroy", `Delete security group(s)`},
+		ActionInfo{"index", `Lists Security Groups.`},
 		ActionInfo{"show", `Displays information about a single Security Group.`},
 	},
 	"SecurityGroupRule": []ActionInfo{
 		ActionInfo{"create", `Create a security group rule for a security group.`},
-		ActionInfo{"index", `Lists SecurityGroupRules.`},
 		ActionInfo{"destroy", `Delete security group rule(s)`},
+		ActionInfo{"index", `Lists SecurityGroupRules.`},
 		ActionInfo{"show", `Displays information about a single SecurityGroupRule.`},
 		ActionInfo{"update", ``},
 	},
 	"Server": []ActionInfo{
-		ActionInfo{"create", `Creates a new server, and configures its corresponding "next" instance with the received parameters.`},
-		ActionInfo{"index", `Lists servers.`},
-		ActionInfo{"wrap_instance", `Wrap an existing instance and set current instance for new server`},
 		ActionInfo{"clone", `Clones a given server.`},
+		ActionInfo{"create", `Creates a new server, and configures its corresponding "next" instance with the received parameters.`},
 		ActionInfo{"destroy", `Deletes a given server.`},
+		ActionInfo{"index", `Lists servers.`},
 		ActionInfo{"launch", `Launches the "next" instance of this server`},
 		ActionInfo{"show", `Shows the information of a single server.`},
 		ActionInfo{"terminate", `Terminates the current instance of this server`},
 		ActionInfo{"update", `Updates attributes of a single server.`},
+		ActionInfo{"wrap_instance", `Wrap an existing instance and set current instance for new server`},
 	},
 	"ServerArray": []ActionInfo{
-		ActionInfo{"create", `Creates a new server array, and configures its corresponding "next" instance with the received parameters.`},
-		ActionInfo{"index", `Lists server arrays.`},
 		ActionInfo{"clone", `Clones a given server array.`},
+		ActionInfo{"create", `Creates a new server array, and configures its corresponding "next" instance with the received parameters.`},
 		ActionInfo{"current_instances", `List the running instances belonging to the server array. See Instances#index for details.`},
 		ActionInfo{"destroy", `Deletes a given server array.`},
+		ActionInfo{"index", `Lists server arrays.`},
 		ActionInfo{"launch", `Launches a new instance in the server array with the configuration defined in the 'next_instance'`},
 		ActionInfo{"multi_run_executable", `Run an executable on all instances of this array`},
 		ActionInfo{"multi_terminate", `Terminate all instances of this array`},
@@ -6978,12 +6978,12 @@ var resourceActions = map[string][]ActionInfo{
 		ActionInfo{"update", `Updates attributes of a single server array.`},
 	},
 	"ServerTemplate": []ActionInfo{
-		ActionInfo{"create", `Creates a new ServerTemplate with the given parameters.`},
-		ActionInfo{"index", `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`},
 		ActionInfo{"clone", `Clones a given ServerTemplate.`},
 		ActionInfo{"commit", `Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.`},
+		ActionInfo{"create", `Creates a new ServerTemplate with the given parameters.`},
 		ActionInfo{"destroy", `Deletes a given ServerTemplate.`},
 		ActionInfo{"detect_changes_in_head", `Identifies RightScripts attached to the resource that differ from their HEAD.`},
+		ActionInfo{"index", `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`},
 		ActionInfo{"publish", `Publishes a given ServerTemplate and its subordinates.`},
 		ActionInfo{"resolve", `Enumerates all attached cookbooks, missing dependencies and bound executables.`},
 		ActionInfo{"show", `Show information about a single ServerTemplate. HEAD revisions have a revision of 0.`},
@@ -6992,8 +6992,8 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"ServerTemplateMultiCloudImage": []ActionInfo{
 		ActionInfo{"create", `Creates a new ServerTemplateMultiCloudImage with the given parameters.`},
-		ActionInfo{"index", `Lists the ServerTemplateMultiCloudImages available to this account.`},
 		ActionInfo{"destroy", `Deletes a given ServerTemplateMultiCloudImage.`},
+		ActionInfo{"index", `Lists the ServerTemplateMultiCloudImages available to this account.`},
 		ActionInfo{"make_default", `Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.`},
 		ActionInfo{"show", `Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.`},
 	},
@@ -7004,14 +7004,14 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"SshKey": []ActionInfo{
 		ActionInfo{"create", `Creates a new ssh key.`},
-		ActionInfo{"index", `Lists ssh keys.`},
 		ActionInfo{"destroy", `Deletes a given ssh key.`},
+		ActionInfo{"index", `Lists ssh keys.`},
 		ActionInfo{"show", `Displays information about a single ssh key.`},
 	},
 	"Subnet": []ActionInfo{
 		ActionInfo{"create", `Creates a new subnet.`},
-		ActionInfo{"index", `Lists subnets of a given cloud.`},
 		ActionInfo{"destroy", `Deletes the given subnet(s).`},
+		ActionInfo{"index", `Lists subnets of a given cloud.`},
 		ActionInfo{"show", `Shows attributes of a single subnet.`},
 		ActionInfo{"update", `Updates name and description for the current subnet.`},
 	},
@@ -7035,20 +7035,20 @@ var resourceActions = map[string][]ActionInfo{
 	},
 	"Volume": []ActionInfo{
 		ActionInfo{"create", `Creates a new volume.`},
-		ActionInfo{"index", `Lists volumes.`},
 		ActionInfo{"destroy", `Deletes a given volume.`},
+		ActionInfo{"index", `Lists volumes.`},
 		ActionInfo{"show", `Displays information about a single volume.`},
 	},
 	"VolumeAttachment": []ActionInfo{
 		ActionInfo{"create", `Creates a new volume attachment.`},
-		ActionInfo{"index", `Lists all volume attachments.`},
 		ActionInfo{"destroy", `Deletes a given volume attachment.`},
+		ActionInfo{"index", `Lists all volume attachments.`},
 		ActionInfo{"show", `Displays information about a single volume attachment.`},
 	},
 	"VolumeSnapshot": []ActionInfo{
 		ActionInfo{"create", `Creates a new volume_snapshot.`},
-		ActionInfo{"index", `Lists all volume_snapshots.`},
 		ActionInfo{"destroy", `Deletes a given volume_snapshot.`},
+		ActionInfo{"index", `Lists all volume_snapshots.`},
 		ActionInfo{"show", `Displays information about a single volume_snapshot.`},
 	},
 	"VolumeType": []ActionInfo{
