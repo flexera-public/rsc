@@ -11,8 +11,8 @@ equivalent to `rsc api15`).
 
 The general shape of a command line is:
 
-```bash
-rsc [GLOBAL] ACTION HREF [PARAM=VALUE]
+```
+$ rsc [GLOBAL] ACTION HREF [PARAM=VALUE]
 ```
 where `GLOBAL` is an optional list of global flags, `ACTION` is the API action to perform (i.e
 `index`, `show`, `update`, etc.), `HREF` is the resource or resource collection href (i.e.
@@ -42,16 +42,16 @@ The list of available global flags is:
 
 The names of the action and its parameters follow exactly the API documentation. For example, with
 API 1.5 the command line to create a volume would look like:
-```bash
-rsc create clouds/1/volumes \
+```
+$ rsc create clouds/1/volumes \
 volume[name]="My New Volume" \
 volume[size]="10" \
 volume[datacenter_href]="/api/clouds/1/datacenters/5K443K2CF8NS6" \
 volume[volume_type_href]="/api/clouds/1/volume_types/BDVEN383N1EN2"
 ```
 The `/api/` prefix for hrefs is optional so the following lists all clouds:
-```bash
-rsc index clouds
+```
+$ rsc index clouds
 ```
 
 Setup and Config
@@ -69,7 +69,7 @@ Built-in Help
 -------------
 The `--help` flag is available on all commands. It displays contextual help, for example:
 ```
-rsc index --help
+$ rsc index --help
 usage: rsc [<flags>] index <href> [<params>]
 
 Lists all resources of given type in account.
@@ -80,14 +80,15 @@ Args:
 ```
 Or:
 ```
-rsc api15 index clouds --help
-usage: rsc [<flags>] api15 index [<Cloud.index flags>] /api/clouds
+$ rsc api15 index clouds --help
+usage: rsc [<flags>] api15 index /api/clouds [<Cloud.index params>]
 
-<Cloud.index flags>:
---filter
-    <[]string, optional>
---view
-    <string, optional>
+<Cloud.index params>:
+filter[]=[]string
+    <optional>
+
+view=string
+    <optional, [default|extended]>
 ```
 
 Go Package

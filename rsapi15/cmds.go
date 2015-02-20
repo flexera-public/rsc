@@ -107,17 +107,23 @@ func (a *Api15) ShowHelp(cmd string) error {
 	}
 	var flagHelp = make([]string, len(action.Flags))
 	for i, f := range action.Flags {
-		var attrs = f.Type
+		var attrs string
 		if f.Mandatory {
-			attrs += ", required"
+			attrs = "required"
 		} else {
-			attrs += ", optional"
+			attrs = "optional"
 		}
-		flagHelp[i] = fmt.Sprintf("--%s\n    <%s> %s", f.Name, attrs, f.Description)
+		if len(f.ValidValues) > 0 {
+			attrs += ", [" + strings.Join(f.ValidValues, "|") + "]"
+		}
+		if f.Regexp != nil {
+			attrs += ", /" + f.Regexp.String() + "/"
+		}
+		flagHelp[i] = fmt.Sprintf("%s=%s\n    <%s> %s", f.Name, f.Type, attrs, f.Description)
 	}
-	fmt.Printf("usage: rsc [<flags>] api15 %s [<%s.%s flags>] %s\n\n", action.Name,
-		resource.Name, action.Name, href)
-	fmt.Printf("<%s.%s flags>:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n\n"))
+	fmt.Printf("usage: rsc [<flags>] api15 %s %s [<%s.%s params>]\n\n", action.Name,
+		href, resource.Name, action.Name)
+	fmt.Printf("<%s.%s params>:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n\n"))
 	return nil
 }
 
