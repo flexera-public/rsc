@@ -43,9 +43,9 @@ type FlagValues map[string]*ActionParams
 
 // Action params consist of href and map of query parameters
 type ActionParams struct {
-	Href     string            // Resource or collection href
-	Params   *cmds.ParamsValue // Action parameters
-	ShowHelp string            // Whether to list flags supported by resource action
+	Href     string   // Resource or collection href
+	Params   []string // Action parameters
+	ShowHelp string   // Whether to list flags supported by resource action
 }
 
 // Map that holds flag values resulting from command line parsing
@@ -88,13 +88,13 @@ func RegisterCommands(api15Cmd cmds.CommandProvider) {
 			if len(resources) == 1 {
 				description = actionDescription
 			} else {
-				description = "Action of resources " + strings.Join(resources[:len(resources)], ", ") + " and " + resources[len(resources)-1]
+				description = "Action of resources " + strings.Join(resources[:len(resources)-1], ", ") + " and " + resources[len(resources)-1]
 			}
 		}
 		var actionCmd = api15Cmd.Command(action, description)
 		var actionParams = ActionParams{}
 		actionCmd.Arg("href", "API Resource or resource collection href on which to act, e.g. '/api/servers'").Required().StringVar(&actionParams.Href)
-		actionParams.Params = cmds.Params(actionCmd.Flag("params", "Action parameters in the form QUERY=VALUE, e.g. '-P server[name]=server42'").Short('P').PlaceHolder("QUERY=VALUE"))
+		actionCmd.Arg("params", "Action parameters in the form QUERY=VALUE, e.g. '-P server[name]=server42'").StringsVar(&actionParams.Params)
 		flagValues[actionCmd.FullCommand()] = &actionParams
 	}
 }
@@ -131,7 +131,13 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 
 	// 2. Coerce and validate given flag values
 	var coerced = map[string]interface{}{}
-	for name, value := range params {
+	for _, p := range params {
+		var elems = strings.Split(p, "=")
+		if len(elems) != 2 {
+			return nil, fmt.Errorf("Arguments must be of the form NAME=VALUE, value provided was '%s'", p)
+		}
+		var name = elems[0]
+		var value = elems[1]
 		var flag *ActionFlag
 		for _, f := range action.Flags {
 			if f.Name == name {
@@ -147,47 +153,29 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 			return nil, fmt.Errorf("Unknown %s.%s flag '%s'. Supported flags are: %s",
 				resource.Name, action.Name, name, strings.Join(supported, ", "))
 		}
+		if err := validateFlagValue(value, flag); err != nil {
+			return nil, err
+		}
 		switch flag.Type {
 		case "string":
-			if len(value) > 1 {
+			if _, ok := coerced[name]; ok {
 				return nil, fmt.Errorf("Multiple values specified for '%s'", flag.Name)
-			}
-			if err := validateFlagValue(value[0], flag); err != nil {
-				return nil, err
-			}
-			coerced[flag.Name] = value[0]
-		case "[]string":
-			for _, val := range value {
-				if err := validateFlagValue(val, flag); err != nil {
-					return nil, err
-				}
 			}
 			coerced[flag.Name] = value
+		case "[]string":
+			if v, ok := coerced[flag.Name]; ok {
+				v = append(v.([]string), value)
+			} else {
+				coerced[flag.Name] = []string{value}
+			}
 		case "int":
-			if len(value) > 1 {
+			if _, ok := coerced[name]; ok {
 				return nil, fmt.Errorf("Multiple values specified for '%s'", flag.Name)
 			}
-			if err := validateFlagValue(action.Name, flag); err != nil {
-				return nil, err
-			}
-			val, err := strconv.Atoi(value[0])
+			val, err := strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
-					flag.Name, value[0])
-			}
-			coerced[flag.Name] = val
-		case "map":
-			var val = make(map[string]string)
-			for _, v := range value {
-				elems := strings.Split(v, ":")
-				if len(elems) != 2 {
-					return nil, fmt.Errorf("Values of '%s' must be of the form NAME:VALUE, value provided was '%s'",
-						flag.Name, v)
-				}
-				if err := validateFlagValue(elems[1], flag); err != nil {
-					return nil, err
-				}
-				val[elems[0]] = elems[1]
+					flag.Name, value)
 			}
 			coerced[flag.Name] = val
 		}
@@ -203,7 +191,7 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 }
 
 // Parse command and flags and infer resource, action, href and params
-func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd, href string, params cmds.ParamsValue, err error) {
+func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd, href string, params []string, err error) {
 	var flags = flagValues[cmd]
 	if flags == nil {
 		err = fmt.Errorf("Invalid command line, try --help.")
@@ -219,10 +207,11 @@ func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd,
 			href = "/api/" + href
 		}
 	}
+	var maxLength = 0
 	for _, res := range commands {
-		if res.HrefRegexp.MatchString(href) {
+		if res.HrefRegexp.MatchString(href) && len(res.HrefRegexp.String()) > maxLength {
+			maxLength = len(res.HrefRegexp.String())
 			resource = res
-			break
 		}
 	}
 	if resource == nil {
@@ -245,7 +234,7 @@ func parseCommandAndFlags(cmd string) (resource *ResourceCmd, action *ActionCmd,
 			resource.Name, actionName, strings.Join(supported, ", "))
 		return
 	}
-	params = *flags.Params
+	params = flags.Params
 	return
 }
 

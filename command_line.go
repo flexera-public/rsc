@@ -9,14 +9,6 @@ import (
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 
-// Command provider: both kingpin application and command clauses are command providers
-// This interface makes it possible to register sub-commands directly under the application or
-// embedded under another command. This in turn makes it possible to define a group of sub-commands
-// as being the default (i.e. registered under the application as well).
-type CommandProvider interface {
-	Command(name, help string) *kingpin.CmdClause
-}
-
 // Command and top level flags
 // API clients register additional sub-commands with their own flags
 type CommandLine struct {

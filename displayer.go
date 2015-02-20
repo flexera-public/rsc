@@ -27,7 +27,7 @@ func NewDisplayer(resp *http.Response) (*Displayer, error) {
 		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
 	}
 	var disp = Displayer{response: resp, body: string(js)}
-	if len(js) > 0 {
+	if len(js) > 2 {
 		err = json.Unmarshal(js, &disp.RawOutput)
 		if err != nil {
 			return nil, fmt.Errorf("Failed to unmarshal response JSON: %s, response body was:\n%s",
@@ -47,7 +47,11 @@ func (d *Displayer) ApplySingleExtract(extract string) error {
 		return fmt.Errorf("JSON selector '%s' returned more than one value, returned values are:\n%v\nOriginal JSON:\n%s",
 			extract, outputs, d.body)
 	}
-	d.RawOutput = outputs[0]
+	if len(outputs) == 0 {
+		d.RawOutput = ""
+	} else {
+		d.RawOutput = outputs[0]
+	}
 	return nil
 }
 
@@ -92,6 +96,9 @@ func (d *Displayer) Pretty() {
 // Return output
 func (d *Displayer) Output() string {
 	var output = d.RawOutput
+	if output == nil {
+		return ""
+	}
 	if outputStr, ok := d.RawOutput.(string); ok {
 		return outputStr
 	}

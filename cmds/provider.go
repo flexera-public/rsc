@@ -2,16 +2,11 @@
 // It contains types that are needed for command line parsing.
 package cmds
 
-import (
-	"fmt"
-	"regexp"
-
-	"gopkg.in/alecthomas/kingpin.v1"
-)
+import "gopkg.in/alecthomas/kingpin.v1"
 
 // Common interface between main rsc package and API client packages that makes it possible for
-// client packages to register sub-commands (read command line commands).
-// Note that both the kingpin *Application and *CmdClause types are command providers.
+// client packages to register command line arguments.
+// Note that both the kingpin *Application and *CmdClause types are arg providers.
 type CommandProvider interface {
 	Command(name, help string) *kingpin.CmdClause
 }
@@ -34,38 +29,4 @@ type CommandLine struct {
 	Dump                bool   // Whether to dump raw HTTP request and response to stdout
 	Pretty              bool   // Whether to display response body or extract values using pretty printer
 	ShowHelp            bool   // Whether to show help for action flags
-}
-
-// Add 'Params' parser to kingpin that behaves like kingpin.StringMap but accumulates values instead
-// of overwriting them.
-// Usage:
-//   p = Params(actionCmd.Flag("params", "Action parameters in the form QUERY=VALUE")).Short('-P')
-// Command line:
-//   rsc api15 index -P view=tiny clouds
-
-var stringMapRegex = regexp.MustCompile("[:=]")
-
-type ParamsValue map[string][]string
-
-func (p *ParamsValue) Set(value string) error {
-	parts := stringMapRegex.Split(value, 2)
-	if len(parts) != 2 {
-		return fmt.Errorf("expected KEY=VALUE got '%s'", value)
-	}
-	(*p)[parts[0]] = append((*p)[parts[0]], parts[1])
-	return nil
-}
-
-func (p *ParamsValue) String() string {
-	return fmt.Sprintf("%s", map[string][]string(*p))
-}
-
-func (p *ParamsValue) IsCumulative() bool {
-	return true
-}
-
-func Params(s kingpin.Settings) (target *ParamsValue) {
-	target = &ParamsValue{}
-	s.SetValue(target)
-	return
 }

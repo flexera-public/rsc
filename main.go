@@ -55,7 +55,9 @@ func main() {
 	var moreThanOneError = false
 	if cmdLine.ExtractOneSelect != "" {
 		err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)
-		moreThanOneError = strings.Contains(err.Error(), "returned more than one value") // Ugh, there has to be a better way
+		if err != nil {
+			moreThanOneError = strings.Contains(err.Error(), "returned more than one value") // Ugh, there has to be a better way
+		}
 	} else if cmdLine.ExtractSelector != "" {
 		err = displayer.ApplyExtract(cmdLine.ExtractSelector, false)
 	} else if cmdLine.ExtractSelectorJson != "" {
