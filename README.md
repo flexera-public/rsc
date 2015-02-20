@@ -7,19 +7,20 @@ Command Line Tool
 -----------------
 The command line tool uses subcommands to interact with each API, for example `rsc api15`
 for sending requests to API 1.5 etc. `api15` is currently the default client (so `rsc` is
-equivalent to `rsc api15`)
+equivalent to `rsc api15`).
 
 The general shape of a command line is:
 
 ```bash
 rsc [GLOBAL] ACTION HREF [PARAM=VALUE]
 ```
-where GLOBAL is an optional list of global flags, ACTION is the API action to perform (i.e "index",
-"show", "update", etc.), HREF is the resource or resource collection href (i.e. "/api/servers",
-"/api/servers/1" etc.) and PARAM and VALUE are the names and values of the action parameters.
+where `GLOBAL` is an optional list of global flags, `ACTION` is the API action to perform (i.e
+`index`, `show`, `update`, etc.), `HREF` is the resource or resource collection href (i.e.
+`/api/servers`, `/api/servers/1` etc.) and `PARAM` and `VALUE` are the names and values of the
+action parameters.
 
 The list of available global flags is:
-```bash
+```
   --help            Show help.
   --version         Show application version.
   -c, --config="/Users/raphael/.rsc"
@@ -44,7 +45,7 @@ API 1.5 the command line to create a volume would look like:
 ```bash
 rsc create clouds/1/volumes \
 volume[name]="My New Volume" \
-volume[size]=10 \
+volume[size]="10" \
 volume[datacenter_href]="/api/clouds/1/datacenters/5K443K2CF8NS6" \
 volume[volume_type_href]="/api/clouds/1/volume_types/BDVEN383N1EN2"
 ```
@@ -59,16 +60,16 @@ rsc has a top level `setup` command which can be used to create a rsc config fil
 contains the RightScale account ID, API host and (encrypted) API key or token so that these flags 
 don't have to be provided each time the tool is invoked.
 
-By default the config file is created in $HOME/.rsc, the location can be overridden using the
+By default the config file is created in `$HOME/.rsc`, the location can be overridden using the
 `--config` global flag. Multiple configs may be created to allow for different environments or
 users. The config file itself is a simple JSON file that can be edited manually (apart from the
 token value that needs to be encrypted by rsc).
 
 Built-in Help
 -------------
-The "--help" flag is available on all commands. It displays contextual help, for example:
-```bash
-./rsc index --help
+The `--help` flag is available on all commands. It displays contextual help, for example:
+```
+rsc index --help
 usage: rsc [<flags>] index [<flags>] <href>
 
 Lists all resources of given type in account.
@@ -81,8 +82,8 @@ Args:
   <href>  API Resource or resource collection href on which to act, e.g. '/api/servers'
 ```
 Or:
-```bash
-/rsc api15 index clouds --help
+```
+rsc api15 index clouds --help
 usage: rsc [<flags>] api15 index [<Cloud.index flags>] /api/clouds
 <Cloud.index flags>:
 --filter
@@ -93,7 +94,7 @@ usage: rsc [<flags>] api15 index [<Cloud.index flags>] /api/clouds
 
 Go Package
 ----------
-Each API is encapsulated in a different package: package 'rsapi15' for API 1.5, package 'rsapi16'
+Each API is encapsulated in a different package: package `rsapi15` for API 1.5, package `rsapi16`
 for API 1.6, etc.
 
 The packages contain "resource locators", one or two per resource exposed by the underlying API.
@@ -108,10 +109,10 @@ following creates a cloud locator:
 var cloudLocator = api.CloudLocator("/api/clouds/1")
 ```
 Locators expose one method for each action supported by the underlying collection or resource. For
-example the clouds collection locator `CloudsLocator` exposes an `Index` method while the
-`CloudLocator` resource locator exposes a `Show` method. These methods may return resources which
-are structs that expose the underlying resource attributes. For example the `CloudsLocator` `Index`
-method returns an array of `Cloud` resource. A cloud resource is defined as:
+example the clouds collection locator `CloudsLocator` exposes an `Index()` method while the
+`CloudLocator` resource locator exposes a `Show()` method. These methods may return resources which
+are structs that expose the underlying resource attributes. For example the `CloudsLocator` 
+`Index()` method returns an array of `Cloud` resource. A cloud resource is defined as:
 ```go
 // Represents a Cloud (within the context of the account in the session).
 type Cloud struct {
@@ -123,7 +124,7 @@ type Cloud struct {
 	Name         string              `json:"name,omitempty"`
 }
 ```
-and the `index` method is defined as:
+and the `Index()` method is defined as:
 ```go
 // GET /api/clouds
 // Lists the clouds available to this account.
@@ -132,14 +133,14 @@ and the `index` method is defined as:
 // 	view
 func (loc *CloudsLocator) Index(options ApiParams) ([]*Cloud, error)
 ```
-The following code would invoke the `Index` method:
+The following code would invoke the `Index()` method:
 ```go
-var clouds = api.CloudsLocator("/api/clouds").Index(nil)
+var clouds = api.CloudsLocator("/api/clouds").Index(ApiParams{})
 ```
 `Create` actions all return a locator so that fetching the corresponding resource can be done in
 one expression:
 ```go
-var params rsapi15.VolumeParam{} // Code that initializes parameters omitted for brevity
+var params rsapi15.VolumeParam{} // Code that sets parameters omitted for brevity
 var volumesLocator = api.VolumesLocator("/api/clouds/1/volumes")
 var volume = volumesLocator.Create(&params).Show(ApiParams{})
 ```
@@ -155,7 +156,7 @@ also contains the code generated by the generator from the JSON. It defines the 
 package content as well as the command line tool subcommands.
 
 Adding support for a new API consists of:
-  1. Create a subdirectory whose name matches the name of the go package ('api15', 'ss', etc.).
+  1. Create a subdirectory whose name matches the name of the go package (`rsapi15`, `ss`, etc.).
   2. Put the JSON metadata describing the API in that directory.
   3. Add a `go generate` directive that invokes the generator against the JSON to one of the package
      source file.
