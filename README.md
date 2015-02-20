@@ -81,9 +81,9 @@ Args:
 Or:
 ```
 $ rsc api15 index clouds --help
-usage: rsc [<flags>] api15 index /api/clouds [<Cloud.index params>]
+usage: rsc [<flags>] api15 index /api/clouds [<cloud index params>]
 
-<Cloud.index params>:
+Cloud index params:
 filter[]=[]string
     <optional>
 
@@ -134,14 +134,16 @@ func (loc *CloudsLocator) Index(options ApiParams) ([]*Cloud, error)
 ```
 The following code would invoke the `Index()` method:
 ```go
-var clouds = api.CloudsLocator("/api/clouds").Index(ApiParams{})
+var clouds, err = api.CloudsLocator("/api/clouds").Index(ApiParams{})
 ```
-`Create` actions all return a locator so that fetching the corresponding resource can be done in
-one expression:
+`Create` actions all return a locator so that fetching the corresponding resource is convenient:
 ```go
-var params rsapi15.VolumeParam{} // Code that sets parameters omitted for brevity
 var volumesLocator = api.VolumesLocator("/api/clouds/1/volumes")
-var volume = volumesLocator.Create(&params).Show(ApiParams{})
+var params rsapi15.VolumeParam{} // Code that sets parameters omitted for brevity
+if loc, err := volumesLocator.Create(&params); err == nil {
+	volume, err := loc.Show(ApiParams{})
+	// ... check error, use volume etc.
+}
 ```
 
 Adding support for new apis / Updating existing clients

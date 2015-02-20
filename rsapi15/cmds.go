@@ -121,9 +121,9 @@ func (a *Api15) ShowHelp(cmd string) error {
 		}
 		flagHelp[i] = fmt.Sprintf("%s=%s\n    <%s> %s", f.Name, f.Type, attrs, f.Description)
 	}
-	fmt.Printf("usage: rsc [<flags>] api15 %s %s [<%s.%s params>]\n\n", action.Name,
-		href, resource.Name, action.Name)
-	fmt.Printf("<%s.%s params>:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n\n"))
+	fmt.Printf("usage: rsc [<flags>] api15 %s %s [<%s %s params>]\n\n", action.Name,
+		href, strings.ToLower(resource.Name), action.Name)
+	fmt.Printf("%s %s params:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n\n"))
 	return nil
 }
 
