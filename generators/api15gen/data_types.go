@@ -19,16 +19,18 @@ type Attribute struct {
 
 // Resource actions
 type Action struct {
-	Name           string         // Action name, e.g. "create", "multi_terminate"
-	MethodName     string         // Go method name, e.g. "Create", "MultiTerminate"
-	Description    string         // Action description
-	ResourceName   string         // Name of resource that contains this action
-	HttpMethod     string         // Action HTTP method, e.g. "GET", "POST"
-	PathPatterns   []*PathPattern // Action path patterns
-	Params         []*ActionParam // Action method parameters
-	LeafParams     []*ActionParam // Action parameter leaves (for command line)
-	Return         string         // Type of method results, e.g. "*ServerArray"
-	ReturnLocation bool           // Whether API returns a location header. True for all "Create" except OAuth2's ugh.
+	Name              string         // Action name, e.g. "create", "multi_terminate"
+	MethodName        string         // Go method name, e.g. "Create", "MultiTerminate"
+	Description       string         // Action description
+	ResourceName      string         // Name of resource that contains this action
+	HttpMethod        string         // Action HTTP method, e.g. "GET", "POST"
+	PathPatterns      []*PathPattern // Action path patterns
+	Params            []*ActionParam // Action method parameters
+	LeafParams        []*ActionParam // Action parameter leaves (for command line)
+	Return            string         // Type of method results, e.g. "*ServerArray"
+	ReturnLocation    bool           // Whether API returns a location header. True for all "Create" except OAuth2's ugh.
+	QueryParamNames   []string       // Name of query string parameters if any
+	PayloadParamNames []string       // Name of payload parameter names if any (payload top level keys)
 }
 
 // MandatoryParams returns the list of all action mandatory parameters

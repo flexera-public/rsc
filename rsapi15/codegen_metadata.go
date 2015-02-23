@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     rsc - RightScale API 1.5 command line tool
 //
-// Generated Feb 23, 2015 at 11:05am (PST)
+// Generated Feb 23, 2015 at 2:13pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -16,8 +16,8 @@ import (
 	"github.com/rightscale/rsc/metadata"
 )
 
-// API 1.5 resource commands
-// API metadata, consists of a map of resource name to resource metadata.
+// API 1.5 Metadata
+// Consists of a map of resource name to resource metadata.
 var api_metadata = map[string]*metadata.Resource{
 	"Account": &metadata.Resource{
 		Name:        "Account",
@@ -26,7 +26,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single Account.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/accounts/%s",
@@ -34,6 +34,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/accounts/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -44,6 +47,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the AccountGroups owned by this Account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/account_groups",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/account_groups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -61,18 +72,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/account_groups",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/account_groups`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single AccountGroup.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/account_groups/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/account_groups/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -83,13 +97,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/account_groups/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/account_groups/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -100,7 +109,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "disable",
 				Description: `Disables the Alert indefinitely. Idempotent.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/alerts/%s/disable",
@@ -128,12 +137,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/alerts/([^/]+)/disable`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "enable",
 				Description: `Enables the Alert indefinitely. Idempotent.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/alerts/%s/enable",
@@ -161,28 +173,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/alerts/([^/]+)/enable`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all Alerts.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "filter[]",
-						Description: ``,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/alerts",
@@ -210,20 +209,31 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/alerts`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "quench",
 				Description: `Suppresses the Alert from being triggered for a given time period. Idempotent.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "duration",
-						Description: `The time period in seconds to suppress Alert from being triggered.`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-				},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/alerts/%s/quench",
@@ -251,21 +261,23 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/alerts/([^/]+)/quench`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "duration",
+						Description: `The time period in seconds to suppress Alert from being triggered.`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"duration"},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows the attributes of a specified Alert.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/alerts/%s",
@@ -293,6 +305,18 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/alerts/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -303,6 +327,29 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new AlertSpec with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/servers/%s/alert_specs",
+						Variables: []string{"server_id"},
+						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/alert_specs`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays/%s/alert_specs",
+						Variables: []string{"server_array_id"},
+						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/alert_specs`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/alert_specs",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/alert_specs`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/alert_specs",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/alert_specs`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "alert_spec[escalation_name]",
@@ -384,34 +431,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/servers/%s/alert_specs",
-						Variables: []string{"server_id"},
-						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/alert_specs`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays/%s/alert_specs",
-						Variables: []string{"server_array_id"},
-						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/alert_specs`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/alert_specs",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/alert_specs`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/alert_specs",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/alert_specs`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"alert_spec"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given AlertSpec.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/servers/%s/alert_specs/%s",
@@ -434,11 +461,37 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/alert_specs/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `No description provided for index.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/servers/%s/alert_specs",
+						Variables: []string{"server_id"},
+						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/alert_specs`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays/%s/alert_specs",
+						Variables: []string{"server_array_id"},
+						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/alert_specs`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/alert_specs",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/alert_specs`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/alert_specs",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/alert_specs`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "with_inherited",
@@ -464,43 +517,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/servers/%s/alert_specs",
-						Variables: []string{"server_id"},
-						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/alert_specs`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays/%s/alert_specs",
-						Variables: []string{"server_array_id"},
-						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/alert_specs`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/alert_specs",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/alert_specs`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/alert_specs",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/alert_specs`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `No description provided for show.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/servers/%s/alert_specs/%s",
@@ -523,11 +547,46 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/alert_specs/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates an AlertSpec with the given parameters.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/servers/%s/alert_specs/%s",
+						Variables: []string{"server_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/alert_specs/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays/%s/alert_specs/%s",
+						Variables: []string{"server_array_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/alert_specs/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/alert_specs/%s",
+						Variables: []string{"server_template_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/alert_specs/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/alert_specs/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/alert_specs/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "alert_spec[escalation_name]",
@@ -602,28 +661,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/servers/%s/alert_specs/%s",
-						Variables: []string{"server_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/alert_specs/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays/%s/alert_specs/%s",
-						Variables: []string{"server_array_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/alert_specs/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/alert_specs/%s",
-						Variables: []string{"server_template_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/alert_specs/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/alert_specs/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/alert_specs/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"alert_spec"},
 			},
 		},
 	},
@@ -634,6 +673,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "append",
 				Description: `Updates the summary and appends more details to a given AuditEntry`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/audit_entries/%s/append",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/audit_entries/([^/]+)/append`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "summary",
@@ -664,18 +711,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/audit_entries/%s/append",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/audit_entries/([^/]+)/append`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"detail", "notify", "offset", "summary"},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new AuditEntry with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/audit_entries",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/audit_entries`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "audit_entry[auditee_href]",
@@ -713,19 +763,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/audit_entries",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/audit_entries`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"audit_entry", "notify", "user_email"},
 			},
 
 			&metadata.Action{
 				Name:        "detail",
 				Description: `shows the details of a given AuditEntry.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/audit_entries/%s/detail",
@@ -733,11 +778,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/audit_entries/([^/]+)/detail`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists AuditEntries of the account`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/audit_entries",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/audit_entries`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "start_date",
@@ -776,18 +832,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/audit_entries",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/audit_entries`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Lists the attributes of a given audit entry.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/audit_entries/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/audit_entries/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -798,6 +857,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Updates the summary of a given AuditEntry.`,
+				HttpMethod:  "PUT",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/audit_entries/%s",
@@ -805,11 +872,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/audit_entries/([^/]+)`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "update",
-				Description: `Updates the summary of a given AuditEntry.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "audit_entry[summary]",
@@ -833,13 +895,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/audit_entries/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/audit_entries/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"audit_entry", "notify"},
 			},
 		},
 	},
@@ -850,6 +907,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "cleanup",
 				Description: `Deletes old backups that meet the given criteria`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/backups/cleanup",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/backups/cleanup`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_href",
@@ -901,18 +966,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/backups/cleanup",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/backups/cleanup`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"cloud_href", "dailies", "keep_last", "lineage", "monthlies", "weeklies", "yearlies"},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/backups",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/backups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "backup[volume_attachment_hrefs][]",
@@ -951,19 +1019,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/backups",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/backups`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"backup"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/backups/%s",
@@ -971,11 +1034,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/backups/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all of the backups with the given lineage tag`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/backups",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/backups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "lineage",
@@ -992,18 +1066,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/backups",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/backups`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "restore",
 				Description: `Restores the given Backup.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/backups/%s/restore",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/backups/([^/]+)/restore`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "backup[volume_type_href]",
@@ -1048,19 +1125,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/backups/%s/restore",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/backups/([^/]+)/restore`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"backup", "instance_href"},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Lists the attributes of a given backup`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/backups/%s",
@@ -1068,11 +1140,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/backups/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/backups/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/backups/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "backup[committed]",
@@ -1083,13 +1166,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"true", "false"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/backups/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/backups/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"backup"},
 			},
 		},
 	},
@@ -1100,6 +1178,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create an enterprise ChildAccount for this Account`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/child_accounts",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/child_accounts`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "child_account[cluster_href]",
@@ -1116,6 +1202,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"child_account"},
+			},
+
+			&metadata.Action{
+				Name:        "index",
+				Description: `Lists the enterprise ChildAccounts available for this Account.`,
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/child_accounts",
@@ -1123,11 +1217,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/child_accounts`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the enterprise ChildAccounts available for this Account.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -1137,27 +1226,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/child_accounts",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/child_accounts`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Update an enterprise ChildAccount for this Account.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "child_account[name]",
-						Description: `The updated name for the account.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-				},
+				HttpMethod:  "PUT",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/accounts/%s",
@@ -1170,6 +1246,17 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/child_accounts/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "child_account[name]",
+						Description: `The updated name for the account.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"child_account"},
 			},
 		},
 	},
@@ -1180,6 +1267,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the clouds available to this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/clouds`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -1197,18 +1292,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/clouds`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single cloud`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -1219,13 +1317,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -1236,6 +1329,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a CloudAccount by passing in the respective credentials for each cloud.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/cloud_accounts",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/cloud_accounts`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_account[cloud_href]",
@@ -1259,19 +1360,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/cloud_accounts",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/cloud_accounts`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"cloud_account"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete a CloudAccount.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/cloud_accounts/%s",
@@ -1279,12 +1375,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cloud_accounts/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the CloudAccounts (non-aws) available to this Account.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/cloud_accounts",
@@ -1292,12 +1391,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cloud_accounts`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: ``,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/cloud_accounts/%s",
@@ -1305,6 +1407,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cloud_accounts/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -1315,7 +1420,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/cookbooks/%s",
@@ -1323,11 +1428,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "follow",
 				Description: `Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbooks/%s/follow",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/follow`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "value",
@@ -1338,18 +1454,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"true", "false"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbooks/%s/follow",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/follow`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"value"},
 			},
 
 			&metadata.Action{
 				Name:        "freeze",
 				Description: `Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbooks/%s/freeze",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/freeze`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "value",
@@ -1360,18 +1479,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"true", "false"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbooks/%s/freeze",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/freeze`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"value"},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the Cookbooks available to this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbooks",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/cookbooks`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -1389,18 +1511,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "extended_designer"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbooks",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/cookbooks`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "obsolete",
 				Description: `Marks a Cookbook as obsolete (or un-obsolete).`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbooks/%s/obsolete",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/obsolete`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "value",
@@ -1411,18 +1536,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"true", "false"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbooks/%s/obsolete",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/obsolete`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"value"},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single Cookbook.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbooks/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -1433,13 +1561,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "extended_designer"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbooks/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -1450,6 +1573,24 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Attach a cookbook to a given resource.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbooks/%s/cookbook_attachments",
+						Variables: []string{"cookbook_id"},
+						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/cookbook_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/cookbook_attachments",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/cookbook_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbook_attachments",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/cookbook_attachments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cookbook_attachment[server_template_href]",
@@ -1466,29 +1607,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbooks/%s/cookbook_attachments",
-						Variables: []string{"cookbook_id"},
-						Regexp:    regexp.MustCompile(`/api/cookbooks/([^/]+)/cookbook_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/cookbook_attachments",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/cookbook_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbook_attachments",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/cookbook_attachments`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"cookbook_attachment"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Detach a cookbook from a given resource.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/cookbooks/%s/cookbook_attachments/%s",
@@ -1506,21 +1632,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cookbook_attachments/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists Cookbook Attachments.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/cookbooks/%s/cookbook_attachments",
@@ -1538,11 +1658,36 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cookbook_attachments`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "multi_attach",
 				Description: `Attach multiple cookbooks to a given resource.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/cookbook_attachments/multi_attach",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/cookbook_attachments/multi_attach`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/cookbook_attachments/multi_attach",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/cookbook_attachments/multi_attach`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cookbook_attachments[server_template_href]",
@@ -1559,32 +1704,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/cookbook_attachments/multi_attach",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/cookbook_attachments/multi_attach`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/cookbook_attachments/multi_attach",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/cookbook_attachments/multi_attach`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"cookbook_attachments"},
 			},
 
 			&metadata.Action{
 				Name:        "multi_detach",
 				Description: `Detach multiple cookbooks from a given resource.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cookbook_attachments[cookbook_attachment_hrefs][]",
-						Description: `The hrefs of the cookbook attachments to be detached`,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-				},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_templates/%s/cookbook_attachments/multi_detach",
@@ -1597,21 +1724,23 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cookbook_attachments/multi_detach`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cookbook_attachments[cookbook_attachment_hrefs][]",
+						Description: `The hrefs of the cookbook attachments to be detached`,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"cookbook_attachments"},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single cookbook attachment to a ServerTemplate.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/cookbooks/%s/cookbook_attachments/%s",
@@ -1629,6 +1758,18 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/cookbook_attachments/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -1639,6 +1780,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new Credential with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/credentials",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/credentials`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "credential[description]",
@@ -1662,19 +1811,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/credentials",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/credentials`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"credential"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a Credential.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/credentials/%s",
@@ -1682,11 +1826,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/credentials/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the Credentials available to this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/credentials",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/credentials`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -1704,18 +1859,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "sensitive"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/credentials",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/credentials`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/credentials/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/credentials/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -1726,6 +1884,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "sensitive"},
 					},
 				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Updates attributes of a Credential.`,
+				HttpMethod:  "PUT",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/credentials/%s",
@@ -1733,11 +1899,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/credentials/([^/]+)`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a Credential.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "credential[description]",
@@ -1761,13 +1922,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/credentials/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/credentials/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"credential"},
 			},
 		},
 	},
@@ -1778,6 +1934,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all Datacenters for a particular cloud.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/datacenters",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/datacenters`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -1795,18 +1959,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/datacenters",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/datacenters`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single Datacenter.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/datacenters/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/datacenters/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -1817,13 +1984,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/datacenters/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/datacenters/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -1834,6 +1996,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "clone",
 				Description: `Clones a given deployment.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/clone",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/clone`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "deployment[server_tag_scope]",
@@ -1858,18 +2028,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/clone",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/clone`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"deployment"},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new deployment with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/deployments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "deployment[server_tag_scope]",
@@ -1894,19 +2067,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/deployments`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"deployment"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given deployment.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/deployments/%s",
@@ -1914,11 +2082,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists deployments of the account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/deployments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -1936,19 +2115,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "inputs", "inputs_2_0"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/deployments`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "lock",
 				Description: `Locks a given deployment. Idempotent.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/deployments/%s/lock",
@@ -1956,12 +2130,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/lock`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "servers",
 				Description: `Lists the servers belonging to this deployment`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/deployments/%s/servers",
@@ -1969,11 +2146,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Lists the attributes of a given deployment.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -1984,19 +2172,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "inputs", "inputs_2_0"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "unlock",
 				Description: `Unlocks a given deployment. Idempotent.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/deployments/%s/unlock",
@@ -2004,11 +2187,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/unlock`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates attributes of a given deployment.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "deployment[server_tag_scope]",
@@ -2033,13 +2227,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"deployment"},
 			},
 		},
 	},
@@ -2050,7 +2239,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Check health of RightApi controllers`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/health-check/",
@@ -2058,6 +2247,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/health-check/`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -2068,6 +2260,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the identity providers associated with this enterprise account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/identity_providers",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/identity_providers`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -2085,18 +2285,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/identity_providers",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/identity_providers`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show the specified identity provider, if associated with this enterprise account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/identity_providers/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/identity_providers/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2107,13 +2310,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/identity_providers/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/identity_providers/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -2124,6 +2322,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all Images for the given Cloud.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/images",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/images`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -2141,18 +2347,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/images",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/images`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows information about a single Image.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/images/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/images/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2163,13 +2372,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/images/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/images/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -2180,16 +2384,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Retrieves the full list of existing inputs of the specified resource.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "inputs_2_0"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/inputs",
@@ -2207,11 +2402,41 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/inputs`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "inputs_2_0"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "multi_update",
 				Description: `Performs a bulk update of inputs on the specified resource.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/inputs/multi_update",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/inputs/multi_update`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/inputs/multi_update",
+						Variables: []string{"deployment_id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/inputs/multi_update`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/inputs/multi_update",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/inputs/multi_update`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "inputs[][value]",
@@ -2235,23 +2460,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/inputs/multi_update",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/inputs/multi_update`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/inputs/multi_update",
-						Variables: []string{"deployment_id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/inputs/multi_update`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/inputs/multi_update",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/inputs/multi_update`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"inputs"},
 			},
 		},
 	},
@@ -2262,6 +2472,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates and launches a raw instance using the provided parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][automatic_instance_store_mapping]",
@@ -2400,35 +2618,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"instance"},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists instances of a given cloud, server array.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "filter[]",
-						Description: ``,
-						Type:        "[]string",
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "extended", "full", "full_inputs_2_0", "tiny"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances",
@@ -2446,11 +2643,48 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/current_instances`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "extended", "full", "full_inputs_2_0", "tiny"},
+					},
+				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "launch",
 				Description: `Launches an instance using the parameters that this instance has been configured with.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/launch",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/launch`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/servers/%s/launch",
+						Variables: []string{"server_id"},
+						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/launch`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays/%s/launch",
+						Variables: []string{"server_array_id"},
+						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/launch`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "inputs[][value]",
@@ -2482,29 +2716,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"async", "sync"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/launch",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/launch`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/servers/%s/launch",
-						Variables: []string{"server_id"},
-						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/launch`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays/%s/launch",
-						Variables: []string{"server_array_id"},
-						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/launch`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"api_behavior", "inputs"},
 			},
 
 			&metadata.Action{
 				Name:        "lock",
 				Description: ``,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/lock",
@@ -2512,11 +2731,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/lock`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "multi_run_executable",
 				Description: `Runs a script or a recipe in the running instances.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/multi_run_executable",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/multi_run_executable`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays/%s/multi_run_executable",
+						Variables: []string{"server_array_id"},
+						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/multi_run_executable`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "right_script_href",
@@ -2569,23 +2804,26 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/multi_run_executable",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/multi_run_executable`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays/%s/multi_run_executable",
-						Variables: []string{"server_array_id"},
-						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/multi_run_executable`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{"ignore_lock", "inputs", "recipe_name", "right_script_href"},
 			},
 
 			&metadata.Action{
 				Name:        "multi_terminate",
 				Description: `Terminates running instances.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/multi_terminate",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/multi_terminate`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays/%s/multi_terminate",
+						Variables: []string{"server_array_id"},
+						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/multi_terminate`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "terminate_all",
@@ -2603,24 +2841,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/multi_terminate",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/multi_terminate`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays/%s/multi_terminate",
-						Variables: []string{"server_array_id"},
-						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/multi_terminate`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{"terminate_all"},
 			},
 
 			&metadata.Action{
 				Name:        "reboot",
 				Description: `Reboot a running instance.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/reboot",
@@ -2633,11 +2861,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/reboot`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "run_executable",
 				Description: `Runs a script or a recipe in the running instance.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/run_executable",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/run_executable`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "right_script_href",
@@ -2683,18 +2922,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/run_executable",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/run_executable`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"ignore_lock", "inputs", "recipe_name", "right_script_href"},
 			},
 
 			&metadata.Action{
 				Name:        "set_custom_lodgement",
 				Description: `This method is deprecated.  Please use InstanceCustomLodgement.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/set_custom_lodgement",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/set_custom_lodgement`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "quantity[][value]",
@@ -2718,18 +2960,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/set_custom_lodgement",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/set_custom_lodgement`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"quantity", "timeframe"},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows attributes of a single instance.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2740,19 +2985,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full", "full_inputs_2_0", "tiny"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "start",
 				Description: `Starts an instance that has been stopped, resuming it to its previously saved volume state.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/start",
@@ -2760,12 +3000,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/start`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "stop",
 				Description: `Stores the instance's current volume state to resume later using the 'start' action.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/stop",
@@ -2773,12 +3016,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/stop`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "terminate",
 				Description: `Terminates a running instance.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/terminate",
@@ -2791,12 +3037,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/terminate`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "unlock",
 				Description: ``,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/unlock",
@@ -2804,11 +3053,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/unlock`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates attributes of a single instance.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][automatic_instance_store_mapping]",
@@ -2954,13 +3214,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"instance"},
 			},
 		},
 	},
@@ -2971,6 +3226,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a lodgement with the quantity and timeframe specified.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "quantity[][value]",
@@ -2994,19 +3257,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"quantity", "timeframe"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Destroy the specified lodgement.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements/%s",
@@ -3014,11 +3272,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `List InstanceCustomLodgements of a given cloud and instance.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3029,19 +3298,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show the specified lodgement.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements/%s",
@@ -3049,11 +3313,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Update a lodgement with the quantity specified.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements/%s",
+						Variables: []string{"cloud_id", "instance_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "quantity[][value]",
@@ -3070,13 +3345,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/instance_custom_lodgements/%s",
-						Variables: []string{"cloud_id", "instance_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/instance_custom_lodgements/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"quantity"},
 			},
 		},
 	},
@@ -3087,6 +3357,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists instance types.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instance_types",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instance_types`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -3104,18 +3382,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instance_types",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instance_types`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single Instance type.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instance_types/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instance_types/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3126,13 +3407,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instance_types/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instance_types/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -3143,6 +3419,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new IpAddress with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ip_addresses",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ip_address[deployment_href]",
@@ -3174,19 +3458,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ip_addresses",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"ip_address"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given IpAddress.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/ip_addresses/%s",
@@ -3194,11 +3473,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the IpAddresses available to this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ip_addresses",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -3208,19 +3498,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ip_addresses",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single IpAddress.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/ip_addresses/%s",
@@ -3228,11 +3513,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates attributes of a given IpAddress.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ip_addresses/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ip_address[deployment_href]",
@@ -3249,13 +3545,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ip_addresses/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"ip_address"},
 			},
 		},
 	},
@@ -3266,6 +3557,19 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates an ip address binding which attaches a specified IpAddress resource to a specified instance, and also allows for configuration of port forwarding rules...`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ip_addresses/%s/ip_address_bindings",
+						Variables: []string{"cloud_id", "ip_address_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)/ip_address_bindings`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ip_address_bindings",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ip_address_binding[public_ip_address_href]",
@@ -3304,24 +3608,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"UDP", "TCP"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ip_addresses/%s/ip_address_bindings",
-						Variables: []string{"cloud_id", "ip_address_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)/ip_address_bindings`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ip_address_bindings",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"ip_address_binding"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `No description provided for destroy.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/ip_addresses/%s/ip_address_bindings/%s",
@@ -3334,11 +3628,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the ip address bindings available to this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ip_addresses/%s/ip_address_bindings",
+						Variables: []string{"cloud_id", "ip_address_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)/ip_address_bindings`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ip_address_bindings",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -3348,24 +3658,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ip_addresses/%s/ip_address_bindings",
-						Variables: []string{"cloud_id", "ip_address_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)/ip_address_bindings`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ip_address_bindings",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single ip address binding.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/ip_addresses/%s/ip_address_bindings/%s",
@@ -3378,6 +3678,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -3388,6 +3691,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "data",
 				Description: `Gives the raw monitoring data for a particular metric`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/monitoring_metrics/%s/data",
+						Variables: []string{"cloud_id", "instance_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/monitoring_metrics/([^/]+)/data`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "start",
@@ -3404,18 +3715,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/monitoring_metrics/%s/data",
-						Variables: []string{"cloud_id", "instance_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/monitoring_metrics/([^/]+)/data`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/monitoring_metrics",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/monitoring_metrics`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -3455,18 +3769,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/monitoring_metrics",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/monitoring_metrics`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows attributes of a single monitoring metric.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/monitoring_metrics/%s",
+						Variables: []string{"cloud_id", "instance_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/monitoring_metrics/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "period",
@@ -3499,13 +3816,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/monitoring_metrics/%s",
-						Variables: []string{"cloud_id", "instance_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/monitoring_metrics/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -3516,6 +3828,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "clone",
 				Description: `Clones a given MultiCloudImage.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images/%s/clone",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/clone`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "multi_cloud_image[description]",
@@ -3532,18 +3852,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images/%s/clone",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/clone`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"multi_cloud_image"},
 			},
 
 			&metadata.Action{
 				Name:        "commit",
 				Description: `Commits a given MultiCloudImage. Only HEAD revisions can be committed.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images/%s/commit",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/commit`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "commit_message",
@@ -3553,18 +3876,26 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images/%s/commit",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/commit`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"commit_message"},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new MultiCloudImage with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/multi_cloud_images",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/multi_cloud_images`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "multi_cloud_image[description]",
@@ -3581,24 +3912,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/multi_cloud_images",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/multi_cloud_images`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"multi_cloud_image"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given MultiCloudImage.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_templates/%s/multi_cloud_images/%s",
@@ -3611,11 +3932,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/multi_cloud_images",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/multi_cloud_images`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -3625,24 +3962,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/multi_cloud_images",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/multi_cloud_images`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_templates/%s/multi_cloud_images/%s",
@@ -3655,11 +3982,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/multi_cloud_images/%s",
+						Variables: []string{"server_template_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/multi_cloud_images/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "multi_cloud_image[description]",
@@ -3676,18 +4019,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/multi_cloud_images/%s",
-						Variables: []string{"server_template_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/multi_cloud_images/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"multi_cloud_image"},
 			},
 		},
 	},
@@ -3698,6 +4031,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new setting for an existing MultiCloudImage.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images/%s/settings",
+						Variables: []string{"multi_cloud_image_id"},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "multi_cloud_image_setting[instance_type_href]",
@@ -3742,19 +4083,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images/%s/settings",
-						Variables: []string{"multi_cloud_image_id"},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"multi_cloud_image_setting"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a MultiCloudImage setting.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/multi_cloud_images/%s/settings/%s",
@@ -3762,11 +4098,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the MultiCloudImage settings.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images/%s/settings",
+						Variables: []string{"multi_cloud_image_id"},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -3776,19 +4123,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images/%s/settings",
-						Variables: []string{"multi_cloud_image_id"},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single MultiCloudImage setting.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/multi_cloud_images/%s/settings/%s",
@@ -3796,11 +4138,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates a settings for a MultiCLoudImage.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/multi_cloud_images/%s/settings/%s",
+						Variables: []string{"multi_cloud_image_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "multi_cloud_image_setting[instance_type_href]",
@@ -3845,13 +4198,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/multi_cloud_images/%s/settings/%s",
-						Variables: []string{"multi_cloud_image_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/multi_cloud_images/([^/]+)/settings/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"multi_cloud_image_setting"},
 			},
 		},
 	},
@@ -3862,6 +4210,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new network.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/networks",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/networks`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network[instance_tenancy]",
@@ -3899,19 +4255,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/networks",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/networks`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes the given network(s).`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/networks/%s",
@@ -3919,11 +4270,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/networks/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists networks in this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/networks",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/networks`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -3933,19 +4295,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/networks",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/networks`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows attributes of a single network.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/networks/%s",
@@ -3953,11 +4310,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/networks/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates the given network.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/networks/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/networks/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network[route_table_href]",
@@ -3981,13 +4349,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/networks/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/networks/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network"},
 			},
 		},
 	},
@@ -3998,6 +4361,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a new NetworkGateway.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_gateways",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/network_gateways`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network_gateway[description]",
@@ -4029,19 +4400,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"vpn", "internet"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_gateways",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/network_gateways`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network_gateway"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete an existing NetworkGateway.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/network_gateways/%s",
@@ -4049,11 +4415,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/network_gateways/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the NetworkGateways available to this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_gateways",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/network_gateways`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4063,19 +4440,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_gateways",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/network_gateways`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single NetworkGateway.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/network_gateways/%s",
@@ -4083,11 +4455,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/network_gateways/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Update an existing NetworkGateway.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_gateways/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/network_gateways/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network_gateway[network_href]",
@@ -4111,13 +4494,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_gateways/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/network_gateways/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network_gateway"},
 			},
 		},
 	},
@@ -4128,6 +4506,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a new NetworkOptionGroup.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_option_groups",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/network_option_groups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network_option_group[description]",
@@ -4165,19 +4551,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_option_groups",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/network_option_groups`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network_option_group"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete an existing NetworkOptionGroup.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/network_option_groups/%s",
@@ -4185,11 +4566,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/network_option_groups/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `List NetworkOptionGroups available in this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_option_groups",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/network_option_groups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4199,19 +4591,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_option_groups",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/network_option_groups`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single NetworkOptionGroup.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/network_option_groups/%s",
@@ -4219,11 +4606,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/network_option_groups/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Update an existing NetworkOptionGroup.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_option_groups/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/network_option_groups/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network_option_group[description]",
@@ -4247,13 +4645,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_option_groups/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/network_option_groups/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network_option_group"},
 			},
 		},
 	},
@@ -4264,6 +4657,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a new NetworkOptionGroupAttachment.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_option_group_attachments",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network_option_group_attachment[network_option_group_href]",
@@ -4280,19 +4681,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_option_group_attachments",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network_option_group_attachment"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete an existing NetworkOptionGroupAttachment.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/network_option_group_attachments/%s",
@@ -4300,11 +4696,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `List NetworkOptionGroupAttachments in this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_option_group_attachments",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4322,18 +4729,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_option_group_attachments",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single NetworkOptionGroupAttachment.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/network_option_group_attachments/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -4344,6 +4754,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Update an existing NetworkOptionGroupAttachment.`,
+				HttpMethod:  "PUT",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/network_option_group_attachments/%s",
@@ -4351,11 +4769,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments/([^/]+)`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "update",
-				Description: `Update an existing NetworkOptionGroupAttachment.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "network_option_group_attachment[network_option_group_href]",
@@ -4365,13 +4778,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/network_option_group_attachments/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/network_option_group_attachments/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"network_option_group_attachment"},
 			},
 		},
 	},
@@ -4382,6 +4790,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Perform an OAuth 2`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/oauth2/",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/oauth2/`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "right_link_version",
@@ -4434,13 +4850,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/oauth2/",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/oauth2/`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"account_id", "client_id", "client_secret", "grant_type", "r_s_version", "refresh_token", "right_link_version"},
 			},
 		},
 	},
@@ -4451,6 +4862,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a permission, thereby granting some user a particular role with respect to the current account...`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/permissions",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/permissions`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "permission[role_title]",
@@ -4467,19 +4886,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/permissions",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/permissions`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"permission"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Destroy a permission, thereby revoking a user's role with respect to the current account...`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/permissions/%s",
@@ -4487,11 +4901,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/permissions/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `List all permissions for all users of the current acount.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/permissions",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/permissions`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4501,19 +4926,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/permissions",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/permissions`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single permission.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/permissions/%s",
@@ -4521,6 +4941,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/permissions/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -4531,6 +4954,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a PlacementGroup.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/placement_groups",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/placement_groups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "placement_group[description]",
@@ -4554,19 +4985,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/placement_groups",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/placement_groups`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"placement_group"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Destroys a PlacementGroup.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/placement_groups/%s",
@@ -4574,11 +5000,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/placement_groups/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all PlacementGroups in an account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/placement_groups",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/placement_groups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4596,18 +5033,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/placement_groups",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/placement_groups`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows information about a single PlacementGroup.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/placement_groups/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/placement_groups/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -4618,13 +5058,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/placement_groups/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/placement_groups/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -4635,7 +5070,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes the given preference.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/preferences/%s",
@@ -4643,11 +5078,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/preferences/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all preferences.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/preferences",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/preferences`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4657,19 +5103,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/preferences",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/preferences`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows a single preference.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/preferences/%s",
@@ -4677,11 +5118,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/preferences/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `If 'id' is known, updates preference with given contents.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/preferences/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/preferences/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "preference[contents]",
@@ -4691,13 +5143,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/preferences/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/preferences/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"preference"},
 			},
 		},
 	},
@@ -4708,7 +5155,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "import",
 				Description: `Imports the given publication and its subordinates to this account.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/publications/%s/import",
@@ -4716,11 +5163,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/publications/([^/]+)/import`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the publications available to this account. Only non-HEAD revisions are possible.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/publications",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/publications`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4738,18 +5196,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/publications",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/publications`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single publication. Only non-HEAD revisions are possible.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/publications/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/publications/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -4760,13 +5221,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/publications/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/publications/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -4777,6 +5233,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single publication lineage. Only non-HEAD revisions are possible.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/publication_lineages/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/publication_lineages/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -4787,13 +5251,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/publication_lineages/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/publication_lineages/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -4804,6 +5263,24 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new recurring volume attachment.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/recurring_volume_attachments",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/recurring_volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes/%s/recurring_volume_attachments",
+						Variables: []string{"cloud_id", "volume_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/recurring_volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_snapshots/%s/recurring_volume_attachments",
+						Variables: []string{"cloud_id", "volume_snapshot_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)/recurring_volume_attachments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "recurring_volume_attachment[runnable_href]",
@@ -4827,29 +5304,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/recurring_volume_attachments",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/recurring_volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes/%s/recurring_volume_attachments",
-						Variables: []string{"cloud_id", "volume_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/recurring_volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_snapshots/%s/recurring_volume_attachments",
-						Variables: []string{"cloud_id", "volume_snapshot_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)/recurring_volume_attachments`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"recurring_volume_attachment"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given recurring volume attachment.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/recurring_volume_attachments/%s",
@@ -4867,11 +5329,32 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)/recurring_volume_attachments/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all recurring volume attachments.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/recurring_volume_attachments",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/recurring_volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes/%s/recurring_volume_attachments",
+						Variables: []string{"cloud_id", "volume_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/recurring_volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_snapshots/%s/recurring_volume_attachments",
+						Variables: []string{"cloud_id", "volume_snapshot_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)/recurring_volume_attachments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -4889,38 +5372,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/recurring_volume_attachments",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/recurring_volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes/%s/recurring_volume_attachments",
-						Variables: []string{"cloud_id", "volume_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/recurring_volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_snapshots/%s/recurring_volume_attachments",
-						Variables: []string{"cloud_id", "volume_snapshot_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)/recurring_volume_attachments`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single recurring volume attachment.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/recurring_volume_attachments/%s",
@@ -4938,6 +5397,18 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)/recurring_volume_attachments/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -4948,6 +5419,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "cookbook_import",
 				Description: `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/repositories/%s/cookbook_import",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/cookbook_import`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "repository_commit_reference",
@@ -4988,18 +5467,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"true", "false"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/repositories/%s/cookbook_import",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/cookbook_import`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"asset_hrefs", "follow", "namespace", "repository_commit_reference", "with_dependencies"},
 			},
 
 			&metadata.Action{
 				Name:        "cookbook_import_preview",
 				Description: `Retrieves a preview of the effects of a Cookbook import.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/repositories/%s/cookbook_import_preview",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/cookbook_import_preview`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "asset_hrefs[]",
@@ -5017,18 +5499,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"primary", "alternate"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/repositories/%s/cookbook_import_preview",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/cookbook_import_preview`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"asset_hrefs", "namespace"},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a Repository.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/repositories",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/repositories`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "repository[asset_paths][cookbooks][]",
@@ -5103,19 +5588,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/repositories",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/repositories`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"repository"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes the specified Repositories.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/repositories/%s",
@@ -5123,11 +5603,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all Repositories for this Account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/repositories",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/repositories`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -5145,18 +5636,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/repositories",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/repositories`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "refetch",
 				Description: `Refetches all RepositoryAssets associated with the Repository.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/repositories/%s/refetch",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/refetch`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "auto_import",
@@ -5167,18 +5661,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"true", "false"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/repositories/%s/refetch",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/refetch`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"auto_import"},
 			},
 
 			&metadata.Action{
 				Name:        "resolve",
 				Description: `Show a list of repositories that have imported cookbooks with the given names.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/repositories/resolve",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/repositories/resolve`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "imported_cookbook_name[]",
@@ -5188,18 +5685,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/repositories/resolve",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/repositories/resolve`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"imported_cookbook_name"},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows a specified Repository.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/repositories/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -5210,6 +5710,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Updates a specified Repository.`,
+				HttpMethod:  "PUT",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/repositories/%s",
@@ -5217,11 +5725,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "update",
-				Description: `Updates a specified Repository.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "repository[asset_paths][cookbooks][]",
@@ -5288,13 +5791,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/repositories/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"repository"},
 			},
 		},
 	},
@@ -5305,16 +5803,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `List a repository's current assets.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/repositories/%s/repository_assets",
@@ -5322,11 +5811,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/repository_assets`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single asset.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -5337,6 +5821,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
+			},
+
+			&metadata.Action{
+				Name:        "show",
+				Description: `Show information about a single asset.`,
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/repositories/%s/repository_assets/%s",
@@ -5344,6 +5836,18 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/repositories/([^/]+)/repository_assets/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -5354,6 +5858,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "commit",
 				Description: `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/right_scripts/%s/commit",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/right_scripts/([^/]+)/commit`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "right_script[commit_message]",
@@ -5363,18 +5875,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/right_scripts/%s/commit",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/right_scripts/([^/]+)/commit`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"right_script"},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists RightScripts.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/right_scripts",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/right_scripts`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "latest_only",
@@ -5400,19 +5915,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/right_scripts",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/right_scripts`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single RightScript.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/right_scripts/%s",
@@ -5420,12 +5930,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/right_scripts/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show_source",
 				Description: `Returns the script source for a RightScript`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/right_scripts/%s/source",
@@ -5433,11 +5946,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/right_scripts/([^/]+)/source`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates RightScript name/description`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/right_scripts/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/right_scripts/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "right_script[description]",
@@ -5454,19 +5978,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/right_scripts/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/right_scripts/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"right_script"},
 			},
 
 			&metadata.Action{
 				Name:        "update_source",
 				Description: `Updates the source of the given RightScript`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "PUT",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/right_scripts/%s/source",
@@ -5474,6 +5993,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/right_scripts/([^/]+)/source`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -5484,6 +6006,19 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a new Route.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/routes",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/routes`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/route_tables/%s/routes",
+						Variables: []string{"route_table_id"},
+						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "route[destination_cidr_block]",
@@ -5529,24 +6064,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/routes",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/routes`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/route_tables/%s/routes",
-						Variables: []string{"route_table_id"},
-						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"route"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete an existing Route.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/routes/%s",
@@ -5559,11 +6084,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `List Routes available in this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/routes",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/routes`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/route_tables/%s/routes",
+						Variables: []string{"route_table_id"},
+						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -5573,24 +6114,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/routes",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/routes`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/route_tables/%s/routes",
-						Variables: []string{"route_table_id"},
-						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single Route.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/routes/%s",
@@ -5603,11 +6134,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Update an existing Route.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/routes/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/routes/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/route_tables/%s/routes/%s",
+						Variables: []string{"route_table_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "route[destination_cidr_block]",
@@ -5646,18 +6193,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/routes/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/routes/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/route_tables/%s/routes/%s",
-						Variables: []string{"route_table_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)/routes/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"route"},
 			},
 		},
 	},
@@ -5668,6 +6205,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a new RouteTable.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/route_tables",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/route_tables`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "route_table[network_href]",
@@ -5698,19 +6243,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/route_tables",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/route_tables`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"route_table"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete an existing RouteTable.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/route_tables/%s",
@@ -5718,11 +6258,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `List RouteTables available in this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/route_tables",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/route_tables`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -5740,18 +6291,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/route_tables",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/route_tables`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single RouteTable.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/route_tables/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -5762,6 +6316,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Update an existing RouteTable.`,
+				HttpMethod:  "PUT",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/route_tables/%s",
@@ -5769,11 +6331,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "update",
-				Description: `Update an existing RouteTable.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "route_table[description]",
@@ -5790,13 +6347,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/route_tables/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/route_tables/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"route_table"},
 			},
 		},
 	},
@@ -5807,6 +6359,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Bind an executable to the given ServerTemplate.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/runnable_bindings",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "runnable_binding[right_script_href]",
@@ -5838,19 +6398,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/runnable_bindings",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"runnable_binding"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Unbind an executable from the given resource.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_templates/%s/runnable_bindings/%s",
@@ -5858,11 +6413,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the executables bound to the ServerTemplate.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/runnable_bindings",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -5873,18 +6439,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/runnable_bindings",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "multi_update",
 				Description: `Update attributes for multiple bound executables.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/runnable_bindings/multi_update",
+						Variables: []string{"server_template_id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings/multi_update`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "runnable_bindings[][right_script_href]",
@@ -5923,18 +6492,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/runnable_bindings/multi_update",
-						Variables: []string{"server_template_id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings/multi_update`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"runnable_bindings"},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single executable binding.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/runnable_bindings/%s",
+						Variables: []string{"server_template_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -5945,13 +6517,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/runnable_bindings/%s",
-						Variables: []string{"server_template_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/runnable_bindings/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -5962,6 +6529,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a security group.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/security_groups",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "security_group[network_href]",
@@ -5985,19 +6560,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/security_groups",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"security_group"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete security group(s)`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/security_groups/%s",
@@ -6005,11 +6575,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists Security Groups.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/security_groups",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -6027,18 +6608,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "tiny"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/security_groups",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single Security Group.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/security_groups/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -6049,13 +6633,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "tiny"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/security_groups/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -6066,6 +6645,19 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a security group rule for a security group.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/security_group_rules",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/security_group_rules`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/security_groups/%s/security_group_rules",
+						Variables: []string{"cloud_id", "security_group_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)/security_group_rules`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "security_group_rule[protocol_details][start_port]",
@@ -6148,24 +6740,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/security_group_rules",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/security_group_rules`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/security_groups/%s/security_group_rules",
-						Variables: []string{"cloud_id", "security_group_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)/security_group_rules`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"security_group_rule"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Delete security group rule(s)`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/security_group_rules/%s",
@@ -6178,21 +6760,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)/security_group_rules/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists SecurityGroupRules.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/security_group_rules",
@@ -6205,11 +6781,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)/security_group_rules`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single SecurityGroupRule.`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -6220,6 +6791,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
+			},
+
+			&metadata.Action{
+				Name:        "show",
+				Description: `Displays information about a single SecurityGroupRule.`,
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/security_group_rules/%s",
@@ -6232,11 +6811,36 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)/security_group_rules/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: ``,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/security_group_rules/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/security_group_rules/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/security_groups/%s/security_group_rules/%s",
+						Variables: []string{"cloud_id", "security_group_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)/security_group_rules/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "security_group_rule[description]",
@@ -6246,18 +6850,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/security_group_rules/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/security_group_rules/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/security_groups/%s/security_group_rules/%s",
-						Variables: []string{"cloud_id", "security_group_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)/security_group_rules/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"security_group_rule"},
 			},
 		},
 	},
@@ -6268,7 +6862,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "clone",
 				Description: `Clones a given server.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/servers/%s/clone",
@@ -6276,11 +6870,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/clone`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new server, and configures its corresponding "next" instance with the received parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/servers",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/servers`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/servers",
+						Variables: []string{"deployment_id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][automatic_instance_store_mapping]",
@@ -6476,24 +7086,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/servers",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/servers`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/servers",
-						Variables: []string{"deployment_id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given server.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/servers/%s",
@@ -6506,11 +7106,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists servers.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/servers",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/servers`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/servers",
+						Variables: []string{"deployment_id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -6528,24 +7144,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "instance_detail"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/servers",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/servers`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/servers",
-						Variables: []string{"deployment_id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "launch",
 				Description: `Launches the "next" instance of this server`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/servers/%s/launch",
@@ -6553,21 +7159,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/launch`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows the information of a single server.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "instance_detail"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/servers/%s",
@@ -6580,12 +7180,24 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "instance_detail"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "terminate",
 				Description: `Terminates the current instance of this server`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/servers/%s/teminate",
@@ -6593,11 +7205,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)/teminate`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates attributes of a single server.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/servers/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/servers/%s",
+						Variables: []string{"deployment_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server[automatic_instance_store_mapping]",
@@ -6637,23 +7265,26 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/servers/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/servers/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/servers/%s",
-						Variables: []string{"deployment_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server"},
 			},
 
 			&metadata.Action{
 				Name:        "wrap_instance",
 				Description: `Wrap an existing instance and set current instance for new server`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/servers/wrap_instance",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/servers/wrap_instance`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/servers/wrap_instance",
+						Variables: []string{"deployment_id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers/wrap_instance`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server[instance][multi_cloud_image_href]",
@@ -6705,18 +7336,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/servers/wrap_instance",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/servers/wrap_instance`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/servers/wrap_instance",
-						Variables: []string{"deployment_id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/servers/wrap_instance`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server"},
 			},
 		},
 	},
@@ -6727,7 +7348,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "clone",
 				Description: `Clones a given server array.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_arrays/%s/clone",
@@ -6735,11 +7356,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/clone`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new server array, and configures its corresponding "next" instance with the received parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/server_arrays`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/server_arrays",
+						Variables: []string{"deployment_id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][queue_specific_params][queue_size][items_per_instance]",
@@ -7086,24 +7723,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/server_arrays`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/server_arrays",
-						Variables: []string{"deployment_id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server_array"},
 			},
 
 			&metadata.Action{
 				Name:        "current_instances",
 				Description: `List the running instances belonging to the server array. See Instances#index for details.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_arrays/%s/current_instances",
@@ -7111,12 +7738,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/current_instances`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given server array.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_arrays/%s",
@@ -7129,11 +7759,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists server arrays.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/server_arrays`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/server_arrays",
+						Variables: []string{"deployment_id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -7151,24 +7797,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "instance_detail"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/server_arrays`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/server_arrays",
-						Variables: []string{"deployment_id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "launch",
 				Description: `Launches a new instance in the server array with the configuration defined in the 'next_instance'`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_arrays/%s/launch",
@@ -7176,12 +7812,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/launch`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "multi_run_executable",
 				Description: `Run an executable on all instances of this array`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_arrays/%s/multi_run_executable",
@@ -7189,12 +7828,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/multi_run_executable`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "multi_terminate",
 				Description: `Terminate all instances of this array`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_arrays/%s/multi_terminate",
@@ -7202,21 +7844,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/multi_terminate`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows the information of a single server array.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "instance_detail"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_arrays/%s",
@@ -7229,11 +7865,36 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "instance_detail"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates attributes of a single server array.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_arrays/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/deployments/%s/server_arrays/%s",
+						Variables: []string{"deployment_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][queue_specific_params][queue_size][items_per_instance]",
@@ -7416,18 +8077,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_arrays/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/deployments/%s/server_arrays/%s",
-						Variables: []string{"deployment_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/deployments/([^/]+)/server_arrays/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server_array"},
 			},
 		},
 	},
@@ -7438,6 +8089,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "clone",
 				Description: `Clones a given ServerTemplate.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/clone",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/clone`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server_template[description]",
@@ -7454,18 +8113,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/clone",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/clone`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server_template"},
 			},
 
 			&metadata.Action{
 				Name:        "commit",
 				Description: `Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/commit",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/commit`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "commit_head_dependencies",
@@ -7491,18 +8153,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/commit",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/commit`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"commit_head_dependencies", "commit_message", "freeze_repositories"},
 			},
 
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new ServerTemplate with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/server_templates`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server_template[description]",
@@ -7519,19 +8184,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/server_templates`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server_template"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given ServerTemplate.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_templates/%s",
@@ -7539,12 +8199,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "detect_changes_in_head",
 				Description: `Identifies RightScripts attached to the resource that differ from their HEAD.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_templates/%s/detect_changes_in_head",
@@ -7552,11 +8215,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/detect_changes_in_head`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/server_templates`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -7574,18 +8248,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "inputs", "inputs_2_0"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/server_templates`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "publish",
 				Description: `Publishes a given ServerTemplate and its subordinates.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/publish",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/publish`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "account_group_hrefs[]",
@@ -7639,19 +8316,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/publish",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/publish`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"account_group_hrefs", "allow_comments", "categories", "descriptions", "email_comments"},
 			},
 
 			&metadata.Action{
 				Name:        "resolve",
 				Description: `Enumerates all attached cookbooks, missing dependencies and bound executables.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_templates/%s/resolve",
@@ -7659,11 +8331,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/resolve`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single ServerTemplate. HEAD revisions have a revision of 0.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7674,18 +8357,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "inputs", "inputs_2_0"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "swap_repository",
 				Description: `In-place replacement of attached cookbooks from a given repository.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s/swap_repository",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/swap_repository`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "source_repository_href",
@@ -7702,18 +8388,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s/swap_repository",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)/swap_repository`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"source_repository_href", "target_repository_href"},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_templates/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server_template[description]",
@@ -7730,13 +8419,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_templates/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_templates/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server_template"},
 			},
 		},
 	},
@@ -7747,6 +8431,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new ServerTemplateMultiCloudImage with the given parameters.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_template_multi_cloud_images",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "server_template_multi_cloud_image[multi_cloud_image_href]",
@@ -7763,19 +8455,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_template_multi_cloud_images",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"server_template_multi_cloud_image"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given ServerTemplateMultiCloudImage.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_template_multi_cloud_images/%s",
@@ -7783,11 +8470,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists the ServerTemplateMultiCloudImages available to this account.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_template_multi_cloud_images",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -7805,19 +8503,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_template_multi_cloud_images",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "make_default",
 				Description: `Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "POST",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/server_template_multi_cloud_images/%s/make_default",
@@ -7825,11 +8518,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images/([^/]+)/make_default`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/server_template_multi_cloud_images/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7840,13 +8544,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/server_template_multi_cloud_images/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/server_template_multi_cloud_images/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -7857,6 +8556,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "accounts",
 				Description: `List all the accounts that a user has access to.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/sessions/accounts",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/sessions/accounts`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "password",
@@ -7881,19 +8588,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/sessions/accounts",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/sessions/accounts`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what features are available within its privileges...`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/sessions",
@@ -7901,12 +8603,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/sessions`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index_instance_session",
 				Description: `Shows the full attributes of the instance (that has the token used to log-in).`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/sessions/instance",
@@ -7914,6 +8619,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/sessions/instance`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -7924,6 +8632,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new ssh key.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ssh_keys",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ssh_key[name]",
@@ -7933,19 +8649,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ssh_keys",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"ssh_key"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given ssh key.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/ssh_keys/%s",
@@ -7953,11 +8664,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists ssh keys.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ssh_keys",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -7975,18 +8697,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "sensitive"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ssh_keys",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single ssh key.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/ssh_keys/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7997,13 +8722,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "sensitive"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/ssh_keys/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -8014,6 +8734,19 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new subnet.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/subnets",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/subnets",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "subnet[datacenter_href]",
@@ -8051,24 +8784,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/subnets",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/subnets",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"subnet"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes the given subnet(s).`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/subnets/%s",
@@ -8081,11 +8804,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists subnets of a given cloud.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/subnets",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/subnets",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -8095,24 +8834,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/subnets",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/subnets",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Shows attributes of a single subnet.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/subnets/%s",
@@ -8125,11 +8854,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Updates name and description for the current subnet.`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/subnets/%s",
+						Variables: []string{"cloud_id", "instance_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/subnets/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "subnet[route_table_href]",
@@ -8153,18 +8898,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/subnets/%s",
-						Variables: []string{"cloud_id", "instance_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/subnets/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/subnets/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"subnet"},
 			},
 		},
 	},
@@ -8175,6 +8910,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "by_resource",
 				Description: `Get tags for a list of resource hrefs.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/tags/by_resource",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/tags/by_resource`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "resource_hrefs[]",
@@ -8184,18 +8927,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/tags/by_resource",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/tags/by_resource`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"resource_hrefs"},
 			},
 
 			&metadata.Action{
 				Name:        "by_tag",
 				Description: `Search for resources having a list of tags in a specific resource_type.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/tags/by_tag",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/tags/by_tag`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "include_tags_with_prefix",
@@ -8236,18 +8982,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/tags/by_tag",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/tags/by_tag`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"include_tags_with_prefix", "match_all", "resource_type", "tags", "with_deleted"},
 			},
 
 			&metadata.Action{
 				Name:        "multi_add",
 				Description: `Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/tags/multi_add",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/tags/multi_add`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "resource_hrefs[]",
@@ -8264,18 +9013,21 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/tags/multi_add",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/tags/multi_add`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"resource_hrefs", "tags"},
 			},
 
 			&metadata.Action{
 				Name:        "multi_delete",
 				Description: `Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/tags/multi_delete",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/tags/multi_delete`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "resource_hrefs[]",
@@ -8292,13 +9044,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/tags/multi_delete",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/tags/multi_delete`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"resource_hrefs", "tags"},
 			},
 		},
 	},
@@ -8309,16 +9056,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information of a given task within the context of an instance.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "extended"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/live/tasks/%s",
@@ -8331,6 +9069,18 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/server_arrays/([^/]+)/live/tasks/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "extended"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -8341,6 +9091,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Create a user. If a user already exists with the same email, that user will be returned.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/users",
+						Variables: []string{""},
+						Regexp:    regexp.MustCompile(`/api/users`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "user[identity_provider_href]",
@@ -8406,6 +9164,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"user"},
+			},
+
+			&metadata.Action{
+				Name:        "index",
+				Description: `List the users available to the account the user is logged in to`,
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/users",
@@ -8413,11 +9179,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/users`),
 					},
 				},
-			},
-
-			&metadata.Action{
-				Name:        "index",
-				Description: `List the users available to the account the user is logged in to`,
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -8427,19 +9188,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/users",
-						Variables: []string{""},
-						Regexp:    regexp.MustCompile(`/api/users`),
-					},
-				},
+				QueryParamNames:   []string{"filter"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Show information about a single user.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/users/%s",
@@ -8447,11 +9203,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/users/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "update",
 				Description: `Update a user's contact information, change her password, or update SSO her settings`,
+				HttpMethod:  "PUT",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/users/%s",
+						Variables: []string{"id"},
+						Regexp:    regexp.MustCompile(`/api/users/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "user[identity_provider_href]",
@@ -8531,13 +9298,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/users/%s",
-						Variables: []string{"id"},
-						Regexp:    regexp.MustCompile(`/api/users/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"user"},
 			},
 		},
 	},
@@ -8548,7 +9310,7 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "show",
 				Description: `No description provided for show.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/user_data/",
@@ -8556,6 +9318,9 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/user_data/`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -8566,6 +9331,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new volume.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "volume[parent_volume_snapshot_href]",
@@ -8639,19 +9412,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"volume"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given volume.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/volumes/%s",
@@ -8659,11 +9427,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists volumes.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -8681,18 +9460,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single volume.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -8703,13 +9485,8 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -8720,6 +9497,29 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new volume attachment.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/volume_attachments",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_attachments",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes/%s/volume_attachments",
+						Variables: []string{"cloud_id", "volume_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes/%s/volume_attachment",
+						Variables: []string{"cloud_id", "volume_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_attachment`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "volume_attachment[instance_href]",
@@ -8743,43 +9543,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/volume_attachments",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_attachments",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes/%s/volume_attachments",
-						Variables: []string{"cloud_id", "volume_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes/%s/volume_attachment",
-						Variables: []string{"cloud_id", "volume_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_attachment`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"volume_attachment"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given volume attachment.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "force",
-						Description: `Specifies whether to force the detachment of a volume.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"true", "false"},
-					},
-				},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/volume_attachments/%s",
@@ -8802,11 +9573,36 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_attachment`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "force",
+						Description: `Specifies whether to force the detachment of a volume.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all volume attachments.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/instances/%s/volume_attachments",
+						Variables: []string{"cloud_id", "instance_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/volume_attachments`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_attachments",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_attachments`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -8824,33 +9620,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/instances/%s/volume_attachments",
-						Variables: []string{"cloud_id", "instance_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/volume_attachments`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_attachments",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_attachments`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single volume attachment.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/instances/%s/volume_attachments/%s",
@@ -8873,6 +9650,18 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_attachment`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -8883,6 +9672,19 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "create",
 				Description: `Creates a new volume_snapshot.`,
+				HttpMethod:  "POST",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes/%s/volume_snapshots",
+						Variables: []string{"cloud_id", "volume_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_snapshots`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_snapshots",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "volume_snapshot[parent_volume_href]",
@@ -8913,24 +9715,14 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes/%s/volume_snapshots",
-						Variables: []string{"cloud_id", "volume_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_snapshots`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_snapshots",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots`),
-					},
-				},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{"volume_snapshot"},
 			},
 
 			&metadata.Action{
 				Name:        "destroy",
 				Description: `Deletes a given volume_snapshot.`,
-				Params:      []*metadata.ActionParam{},
+				HttpMethod:  "DELETE",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/volumes/%s/volume_snapshots/%s",
@@ -8943,11 +9735,27 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)`),
 					},
 				},
+				Params:            []*metadata.ActionParam{},
+				QueryParamNames:   []string{},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists all volume_snapshots.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volumes/%s/volume_snapshots",
+						Variables: []string{"cloud_id", "volume_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_snapshots`),
+					},
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_snapshots",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -8965,33 +9773,14 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volumes/%s/volume_snapshots",
-						Variables: []string{"cloud_id", "volume_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volumes/([^/]+)/volume_snapshots`),
-					},
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_snapshots",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single volume_snapshot.`,
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				HttpMethod:  "GET",
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						Pattern:   "/api/clouds/%s/volumes/%s/volume_snapshots/%s",
@@ -9004,6 +9793,18 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_snapshots/([^/]+)`),
 					},
 				},
+				Params: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -9014,6 +9815,14 @@ var api_metadata = map[string]*metadata.Resource{
 			&metadata.Action{
 				Name:        "index",
 				Description: `Lists Volume Types.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_types",
+						Variables: []string{"cloud_id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_types`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
@@ -9031,18 +9840,21 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_types",
-						Variables: []string{"cloud_id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_types`),
-					},
-				},
+				QueryParamNames:   []string{"filter, view"},
+				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
 				Name:        "show",
 				Description: `Displays information about a single Volume Type.`,
+				HttpMethod:  "GET",
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						Pattern:   "/api/clouds/%s/volume_types/%s",
+						Variables: []string{"cloud_id", "id"},
+						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_types/([^/]+)`),
+					},
+				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
@@ -9053,413 +9865,9 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						Pattern:   "/api/clouds/%s/volume_types/%s",
-						Variables: []string{"cloud_id", "id"},
-						Regexp:    regexp.MustCompile(`/api/clouds/([^/]+)/volume_types/([^/]+)`),
-					},
-				},
+				QueryParamNames:   []string{"view"},
+				PayloadParamNames: []string{},
 			},
 		},
-	},
-}
-
-// Action info struct
-type ActionInfo struct {
-	Name        string // Action name
-	Description string // Action description
-}
-
-// Map resource names to action info
-var resourceActions = map[string][]ActionInfo{
-	"Account": []ActionInfo{
-		ActionInfo{"show", `Show information about a single Account.`},
-	},
-	"AccountGroup": []ActionInfo{
-		ActionInfo{"index", `Lists the AccountGroups owned by this Account.`},
-		ActionInfo{"show", `Show information about a single AccountGroup.`},
-	},
-	"Alert": []ActionInfo{
-		ActionInfo{"disable", `Disables the Alert indefinitely. Idempotent.`},
-		ActionInfo{"enable", `Enables the Alert indefinitely. Idempotent.`},
-		ActionInfo{"index", `Lists all Alerts.`},
-		ActionInfo{"quench", `Suppresses the Alert from being triggered for a given time period. Idempotent.`},
-		ActionInfo{"show", `Shows the attributes of a specified Alert.`},
-	},
-	"AlertSpec": []ActionInfo{
-		ActionInfo{"create", `Creates a new AlertSpec with the given parameters.`},
-		ActionInfo{"destroy", `Deletes a given AlertSpec.`},
-		ActionInfo{"index", `No description provided for index.`},
-		ActionInfo{"show", `No description provided for show.`},
-		ActionInfo{"update", `Updates an AlertSpec with the given parameters.`},
-	},
-	"AuditEntry": []ActionInfo{
-		ActionInfo{"append", `Updates the summary and appends more details to a given AuditEntry`},
-		ActionInfo{"create", `Creates a new AuditEntry with the given parameters.`},
-		ActionInfo{"detail", `shows the details of a given AuditEntry.`},
-		ActionInfo{"index", `Lists AuditEntries of the account`},
-		ActionInfo{"show", `Lists the attributes of a given audit entry.`},
-		ActionInfo{"update", `Updates the summary of a given AuditEntry.`},
-	},
-	"Backup": []ActionInfo{
-		ActionInfo{"cleanup", `Deletes old backups that meet the given criteria`},
-		ActionInfo{"create", `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.`},
-		ActionInfo{"destroy", `Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.`},
-		ActionInfo{"index", `Lists all of the backups with the given lineage tag`},
-		ActionInfo{"restore", `Restores the given Backup.`},
-		ActionInfo{"show", `Lists the attributes of a given backup`},
-		ActionInfo{"update", `Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.`},
-	},
-	"ChildAccount": []ActionInfo{
-		ActionInfo{"create", `Create an enterprise ChildAccount for this Account`},
-		ActionInfo{"index", `Lists the enterprise ChildAccounts available for this Account.`},
-		ActionInfo{"update", `Update an enterprise ChildAccount for this Account.`},
-	},
-	"Cloud": []ActionInfo{
-		ActionInfo{"index", `Lists the clouds available to this account.`},
-		ActionInfo{"show", `Show information about a single cloud`},
-	},
-	"CloudAccount": []ActionInfo{
-		ActionInfo{"create", `Create a CloudAccount by passing in the respective credentials for each cloud.`},
-		ActionInfo{"destroy", `Delete a CloudAccount.`},
-		ActionInfo{"index", `Lists the CloudAccounts (non-aws) available to this Account.`},
-		ActionInfo{"show", ``},
-	},
-	"Cookbook": []ActionInfo{
-		ActionInfo{"destroy", `Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.`},
-		ActionInfo{"follow", `Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.`},
-		ActionInfo{"freeze", `Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.`},
-		ActionInfo{"index", `Lists the Cookbooks available to this account.`},
-		ActionInfo{"obsolete", `Marks a Cookbook as obsolete (or un-obsolete).`},
-		ActionInfo{"show", `Show information about a single Cookbook.`},
-	},
-	"CookbookAttachment": []ActionInfo{
-		ActionInfo{"create", `Attach a cookbook to a given resource.`},
-		ActionInfo{"destroy", `Detach a cookbook from a given resource.`},
-		ActionInfo{"index", `Lists Cookbook Attachments.`},
-		ActionInfo{"multi_attach", `Attach multiple cookbooks to a given resource.`},
-		ActionInfo{"multi_detach", `Detach multiple cookbooks from a given resource.`},
-		ActionInfo{"show", `Displays information about a single cookbook attachment to a ServerTemplate.`},
-	},
-	"Credential": []ActionInfo{
-		ActionInfo{"create", `Creates a new Credential with the given parameters.`},
-		ActionInfo{"destroy", `Deletes a Credential.`},
-		ActionInfo{"index", `Lists the Credentials available to this account.`},
-		ActionInfo{"show", `Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.`},
-		ActionInfo{"update", `Updates attributes of a Credential.`},
-	},
-	"Datacenter": []ActionInfo{
-		ActionInfo{"index", `Lists all Datacenters for a particular cloud.`},
-		ActionInfo{"show", `Displays information about a single Datacenter.`},
-	},
-	"Deployment": []ActionInfo{
-		ActionInfo{"clone", `Clones a given deployment.`},
-		ActionInfo{"create", `Creates a new deployment with the given parameters.`},
-		ActionInfo{"destroy", `Deletes a given deployment.`},
-		ActionInfo{"index", `Lists deployments of the account.`},
-		ActionInfo{"lock", `Locks a given deployment. Idempotent.`},
-		ActionInfo{"servers", `Lists the servers belonging to this deployment`},
-		ActionInfo{"show", `Lists the attributes of a given deployment.`},
-		ActionInfo{"unlock", `Unlocks a given deployment. Idempotent.`},
-		ActionInfo{"update", `Updates attributes of a given deployment.`},
-	},
-	"HealthCheck": []ActionInfo{
-		ActionInfo{"index", `Check health of RightApi controllers`},
-	},
-	"IdentityProvider": []ActionInfo{
-		ActionInfo{"index", `Lists the identity providers associated with this enterprise account.`},
-		ActionInfo{"show", `Show the specified identity provider, if associated with this enterprise account.`},
-	},
-	"Image": []ActionInfo{
-		ActionInfo{"index", `Lists all Images for the given Cloud.`},
-		ActionInfo{"show", `Shows information about a single Image.`},
-	},
-	"Input": []ActionInfo{
-		ActionInfo{"index", `Retrieves the full list of existing inputs of the specified resource.`},
-		ActionInfo{"multi_update", `Performs a bulk update of inputs on the specified resource.`},
-	},
-	"Instance": []ActionInfo{
-		ActionInfo{"create", `Creates and launches a raw instance using the provided parameters.`},
-		ActionInfo{"index", `Lists instances of a given cloud, server array.`},
-		ActionInfo{"launch", `Launches an instance using the parameters that this instance has been configured with.`},
-		ActionInfo{"lock", ``},
-		ActionInfo{"multi_run_executable", `Runs a script or a recipe in the running instances.`},
-		ActionInfo{"multi_terminate", `Terminates running instances.`},
-		ActionInfo{"reboot", `Reboot a running instance.`},
-		ActionInfo{"run_executable", `Runs a script or a recipe in the running instance.`},
-		ActionInfo{"set_custom_lodgement", `This method is deprecated.  Please use InstanceCustomLodgement.`},
-		ActionInfo{"show", `Shows attributes of a single instance.`},
-		ActionInfo{"start", `Starts an instance that has been stopped, resuming it to its previously saved volume state.`},
-		ActionInfo{"stop", `Stores the instance's current volume state to resume later using the 'start' action.`},
-		ActionInfo{"terminate", `Terminates a running instance.`},
-		ActionInfo{"unlock", ``},
-		ActionInfo{"update", `Updates attributes of a single instance.`},
-	},
-	"InstanceCustomLodgement": []ActionInfo{
-		ActionInfo{"create", `Create a lodgement with the quantity and timeframe specified.`},
-		ActionInfo{"destroy", `Destroy the specified lodgement.`},
-		ActionInfo{"index", `List InstanceCustomLodgements of a given cloud and instance.`},
-		ActionInfo{"show", `Show the specified lodgement.`},
-		ActionInfo{"update", `Update a lodgement with the quantity specified.`},
-	},
-	"InstanceType": []ActionInfo{
-		ActionInfo{"index", `Lists instance types.`},
-		ActionInfo{"show", `Displays information about a single Instance type.`},
-	},
-	"IpAddress": []ActionInfo{
-		ActionInfo{"create", `Creates a new IpAddress with the given parameters.`},
-		ActionInfo{"destroy", `Deletes a given IpAddress.`},
-		ActionInfo{"index", `Lists the IpAddresses available to this account.`},
-		ActionInfo{"show", `Show information about a single IpAddress.`},
-		ActionInfo{"update", `Updates attributes of a given IpAddress.`},
-	},
-	"IpAddressBinding": []ActionInfo{
-		ActionInfo{"create", `Creates an ip address binding which attaches a specified IpAddress resource to a specified instance, and also allows for configuration of port forwarding rules...`},
-		ActionInfo{"destroy", `No description provided for destroy.`},
-		ActionInfo{"index", `Lists the ip address bindings available to this account.`},
-		ActionInfo{"show", `Show information about a single ip address binding.`},
-	},
-	"MonitoringMetric": []ActionInfo{
-		ActionInfo{"data", `Gives the raw monitoring data for a particular metric`},
-		ActionInfo{"index", `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`},
-		ActionInfo{"show", `Shows attributes of a single monitoring metric.`},
-	},
-	"MultiCloudImage": []ActionInfo{
-		ActionInfo{"clone", `Clones a given MultiCloudImage.`},
-		ActionInfo{"commit", `Commits a given MultiCloudImage. Only HEAD revisions can be committed.`},
-		ActionInfo{"create", `Creates a new MultiCloudImage with the given parameters.`},
-		ActionInfo{"destroy", `Deletes a given MultiCloudImage.`},
-		ActionInfo{"index", `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`},
-		ActionInfo{"show", `Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.`},
-		ActionInfo{"update", `Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).`},
-	},
-	"MultiCloudImageSetting": []ActionInfo{
-		ActionInfo{"create", `Creates a new setting for an existing MultiCloudImage.`},
-		ActionInfo{"destroy", `Deletes a MultiCloudImage setting.`},
-		ActionInfo{"index", `Lists the MultiCloudImage settings.`},
-		ActionInfo{"show", `Show information about a single MultiCloudImage setting.`},
-		ActionInfo{"update", `Updates a settings for a MultiCLoudImage.`},
-	},
-	"Network": []ActionInfo{
-		ActionInfo{"create", `Creates a new network.`},
-		ActionInfo{"destroy", `Deletes the given network(s).`},
-		ActionInfo{"index", `Lists networks in this account.`},
-		ActionInfo{"show", `Shows attributes of a single network.`},
-		ActionInfo{"update", `Updates the given network.`},
-	},
-	"NetworkGateway": []ActionInfo{
-		ActionInfo{"create", `Create a new NetworkGateway.`},
-		ActionInfo{"destroy", `Delete an existing NetworkGateway.`},
-		ActionInfo{"index", `Lists the NetworkGateways available to this account.`},
-		ActionInfo{"show", `Show information about a single NetworkGateway.`},
-		ActionInfo{"update", `Update an existing NetworkGateway.`},
-	},
-	"NetworkOptionGroup": []ActionInfo{
-		ActionInfo{"create", `Create a new NetworkOptionGroup.`},
-		ActionInfo{"destroy", `Delete an existing NetworkOptionGroup.`},
-		ActionInfo{"index", `List NetworkOptionGroups available in this account.`},
-		ActionInfo{"show", `Show information about a single NetworkOptionGroup.`},
-		ActionInfo{"update", `Update an existing NetworkOptionGroup.`},
-	},
-	"NetworkOptionGroupAttachment": []ActionInfo{
-		ActionInfo{"create", `Create a new NetworkOptionGroupAttachment.`},
-		ActionInfo{"destroy", `Delete an existing NetworkOptionGroupAttachment.`},
-		ActionInfo{"index", `List NetworkOptionGroupAttachments in this account.`},
-		ActionInfo{"show", `Show information about a single NetworkOptionGroupAttachment.`},
-		ActionInfo{"update", `Update an existing NetworkOptionGroupAttachment.`},
-	},
-	"Oauth2": []ActionInfo{
-		ActionInfo{"create", `Perform an OAuth 2`},
-	},
-	"Permission": []ActionInfo{
-		ActionInfo{"create", `Create a permission, thereby granting some user a particular role with respect to the current account...`},
-		ActionInfo{"destroy", `Destroy a permission, thereby revoking a user's role with respect to the current account...`},
-		ActionInfo{"index", `List all permissions for all users of the current acount.`},
-		ActionInfo{"show", `Show information about a single permission.`},
-	},
-	"PlacementGroup": []ActionInfo{
-		ActionInfo{"create", `Creates a PlacementGroup.`},
-		ActionInfo{"destroy", `Destroys a PlacementGroup.`},
-		ActionInfo{"index", `Lists all PlacementGroups in an account.`},
-		ActionInfo{"show", `Shows information about a single PlacementGroup.`},
-	},
-	"Preference": []ActionInfo{
-		ActionInfo{"destroy", `Deletes the given preference.`},
-		ActionInfo{"index", `Lists all preferences.`},
-		ActionInfo{"show", `Shows a single preference.`},
-		ActionInfo{"update", `If 'id' is known, updates preference with given contents.`},
-	},
-	"Publication": []ActionInfo{
-		ActionInfo{"import", `Imports the given publication and its subordinates to this account.`},
-		ActionInfo{"index", `Lists the publications available to this account. Only non-HEAD revisions are possible.`},
-		ActionInfo{"show", `Show information about a single publication. Only non-HEAD revisions are possible.`},
-	},
-	"PublicationLineage": []ActionInfo{
-		ActionInfo{"show", `Show information about a single publication lineage. Only non-HEAD revisions are possible.`},
-	},
-	"RecurringVolumeAttachment": []ActionInfo{
-		ActionInfo{"create", `Creates a new recurring volume attachment.`},
-		ActionInfo{"destroy", `Deletes a given recurring volume attachment.`},
-		ActionInfo{"index", `Lists all recurring volume attachments.`},
-		ActionInfo{"show", `Displays information about a single recurring volume attachment.`},
-	},
-	"Repository": []ActionInfo{
-		ActionInfo{"cookbook_import", `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.`},
-		ActionInfo{"cookbook_import_preview", `Retrieves a preview of the effects of a Cookbook import.`},
-		ActionInfo{"create", `Creates a Repository.`},
-		ActionInfo{"destroy", `Deletes the specified Repositories.`},
-		ActionInfo{"index", `Lists all Repositories for this Account.`},
-		ActionInfo{"refetch", `Refetches all RepositoryAssets associated with the Repository.`},
-		ActionInfo{"resolve", `Show a list of repositories that have imported cookbooks with the given names.`},
-		ActionInfo{"show", `Shows a specified Repository.`},
-		ActionInfo{"update", `Updates a specified Repository.`},
-	},
-	"RepositoryAsset": []ActionInfo{
-		ActionInfo{"index", `List a repository's current assets.`},
-		ActionInfo{"show", `Show information about a single asset.`},
-	},
-	"RightScript": []ActionInfo{
-		ActionInfo{"commit", `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.`},
-		ActionInfo{"index", `Lists RightScripts.`},
-		ActionInfo{"show", `Displays information about a single RightScript.`},
-		ActionInfo{"show_source", `Returns the script source for a RightScript`},
-		ActionInfo{"update", `Updates RightScript name/description`},
-		ActionInfo{"update_source", `Updates the source of the given RightScript`},
-	},
-	"Route": []ActionInfo{
-		ActionInfo{"create", `Create a new Route.`},
-		ActionInfo{"destroy", `Delete an existing Route.`},
-		ActionInfo{"index", `List Routes available in this account.`},
-		ActionInfo{"show", `Show information about a single Route.`},
-		ActionInfo{"update", `Update an existing Route.`},
-	},
-	"RouteTable": []ActionInfo{
-		ActionInfo{"create", `Create a new RouteTable.`},
-		ActionInfo{"destroy", `Delete an existing RouteTable.`},
-		ActionInfo{"index", `List RouteTables available in this account.`},
-		ActionInfo{"show", `Show information about a single RouteTable.`},
-		ActionInfo{"update", `Update an existing RouteTable.`},
-	},
-	"RunnableBinding": []ActionInfo{
-		ActionInfo{"create", `Bind an executable to the given ServerTemplate.`},
-		ActionInfo{"destroy", `Unbind an executable from the given resource.`},
-		ActionInfo{"index", `Lists the executables bound to the ServerTemplate.`},
-		ActionInfo{"multi_update", `Update attributes for multiple bound executables.`},
-		ActionInfo{"show", `Show information about a single executable binding.`},
-	},
-	"SecurityGroup": []ActionInfo{
-		ActionInfo{"create", `Create a security group.`},
-		ActionInfo{"destroy", `Delete security group(s)`},
-		ActionInfo{"index", `Lists Security Groups.`},
-		ActionInfo{"show", `Displays information about a single Security Group.`},
-	},
-	"SecurityGroupRule": []ActionInfo{
-		ActionInfo{"create", `Create a security group rule for a security group.`},
-		ActionInfo{"destroy", `Delete security group rule(s)`},
-		ActionInfo{"index", `Lists SecurityGroupRules.`},
-		ActionInfo{"show", `Displays information about a single SecurityGroupRule.`},
-		ActionInfo{"update", ``},
-	},
-	"Server": []ActionInfo{
-		ActionInfo{"clone", `Clones a given server.`},
-		ActionInfo{"create", `Creates a new server, and configures its corresponding "next" instance with the received parameters.`},
-		ActionInfo{"destroy", `Deletes a given server.`},
-		ActionInfo{"index", `Lists servers.`},
-		ActionInfo{"launch", `Launches the "next" instance of this server`},
-		ActionInfo{"show", `Shows the information of a single server.`},
-		ActionInfo{"terminate", `Terminates the current instance of this server`},
-		ActionInfo{"update", `Updates attributes of a single server.`},
-		ActionInfo{"wrap_instance", `Wrap an existing instance and set current instance for new server`},
-	},
-	"ServerArray": []ActionInfo{
-		ActionInfo{"clone", `Clones a given server array.`},
-		ActionInfo{"create", `Creates a new server array, and configures its corresponding "next" instance with the received parameters.`},
-		ActionInfo{"current_instances", `List the running instances belonging to the server array. See Instances#index for details.`},
-		ActionInfo{"destroy", `Deletes a given server array.`},
-		ActionInfo{"index", `Lists server arrays.`},
-		ActionInfo{"launch", `Launches a new instance in the server array with the configuration defined in the 'next_instance'`},
-		ActionInfo{"multi_run_executable", `Run an executable on all instances of this array`},
-		ActionInfo{"multi_terminate", `Terminate all instances of this array`},
-		ActionInfo{"show", `Shows the information of a single server array.`},
-		ActionInfo{"update", `Updates attributes of a single server array.`},
-	},
-	"ServerTemplate": []ActionInfo{
-		ActionInfo{"clone", `Clones a given ServerTemplate.`},
-		ActionInfo{"commit", `Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.`},
-		ActionInfo{"create", `Creates a new ServerTemplate with the given parameters.`},
-		ActionInfo{"destroy", `Deletes a given ServerTemplate.`},
-		ActionInfo{"detect_changes_in_head", `Identifies RightScripts attached to the resource that differ from their HEAD.`},
-		ActionInfo{"index", `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`},
-		ActionInfo{"publish", `Publishes a given ServerTemplate and its subordinates.`},
-		ActionInfo{"resolve", `Enumerates all attached cookbooks, missing dependencies and bound executables.`},
-		ActionInfo{"show", `Show information about a single ServerTemplate. HEAD revisions have a revision of 0.`},
-		ActionInfo{"swap_repository", `In-place replacement of attached cookbooks from a given repository.`},
-		ActionInfo{"update", `Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).`},
-	},
-	"ServerTemplateMultiCloudImage": []ActionInfo{
-		ActionInfo{"create", `Creates a new ServerTemplateMultiCloudImage with the given parameters.`},
-		ActionInfo{"destroy", `Deletes a given ServerTemplateMultiCloudImage.`},
-		ActionInfo{"index", `Lists the ServerTemplateMultiCloudImages available to this account.`},
-		ActionInfo{"make_default", `Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.`},
-		ActionInfo{"show", `Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.`},
-	},
-	"Session": []ActionInfo{
-		ActionInfo{"accounts", `List all the accounts that a user has access to.`},
-		ActionInfo{"index", `Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what features are available within its privileges...`},
-		ActionInfo{"index_instance_session", `Shows the full attributes of the instance (that has the token used to log-in).`},
-	},
-	"SshKey": []ActionInfo{
-		ActionInfo{"create", `Creates a new ssh key.`},
-		ActionInfo{"destroy", `Deletes a given ssh key.`},
-		ActionInfo{"index", `Lists ssh keys.`},
-		ActionInfo{"show", `Displays information about a single ssh key.`},
-	},
-	"Subnet": []ActionInfo{
-		ActionInfo{"create", `Creates a new subnet.`},
-		ActionInfo{"destroy", `Deletes the given subnet(s).`},
-		ActionInfo{"index", `Lists subnets of a given cloud.`},
-		ActionInfo{"show", `Shows attributes of a single subnet.`},
-		ActionInfo{"update", `Updates name and description for the current subnet.`},
-	},
-	"Tag": []ActionInfo{
-		ActionInfo{"by_resource", `Get tags for a list of resource hrefs.`},
-		ActionInfo{"by_tag", `Search for resources having a list of tags in a specific resource_type.`},
-		ActionInfo{"multi_add", `Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.`},
-		ActionInfo{"multi_delete", `Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.`},
-	},
-	"Task": []ActionInfo{
-		ActionInfo{"show", `Displays information of a given task within the context of an instance.`},
-	},
-	"User": []ActionInfo{
-		ActionInfo{"create", `Create a user. If a user already exists with the same email, that user will be returned.`},
-		ActionInfo{"index", `List the users available to the account the user is logged in to`},
-		ActionInfo{"show", `Show information about a single user.`},
-		ActionInfo{"update", `Update a user's contact information, change her password, or update SSO her settings`},
-	},
-	"UserData": []ActionInfo{
-		ActionInfo{"show", `No description provided for show.`},
-	},
-	"Volume": []ActionInfo{
-		ActionInfo{"create", `Creates a new volume.`},
-		ActionInfo{"destroy", `Deletes a given volume.`},
-		ActionInfo{"index", `Lists volumes.`},
-		ActionInfo{"show", `Displays information about a single volume.`},
-	},
-	"VolumeAttachment": []ActionInfo{
-		ActionInfo{"create", `Creates a new volume attachment.`},
-		ActionInfo{"destroy", `Deletes a given volume attachment.`},
-		ActionInfo{"index", `Lists all volume attachments.`},
-		ActionInfo{"show", `Displays information about a single volume attachment.`},
-	},
-	"VolumeSnapshot": []ActionInfo{
-		ActionInfo{"create", `Creates a new volume_snapshot.`},
-		ActionInfo{"destroy", `Deletes a given volume_snapshot.`},
-		ActionInfo{"index", `Lists all volume_snapshots.`},
-		ActionInfo{"show", `Displays information about a single volume_snapshot.`},
-	},
-	"VolumeType": []ActionInfo{
-		ActionInfo{"index", `Lists Volume Types.`},
-		ActionInfo{"show", `Displays information about a single Volume Type.`},
 	},
 }

@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 23, 2015 at 11:05am (PST)
+// Generated Feb 23, 2015 at 2:13pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -8761,9 +8761,3 @@ type VolumeSnapshotParam struct {
 	Name             string  `json:"name,omitempty"`
 	ParentVolumeHref *string `json:"parent_volume_href,omitempty"`
 }
-
-// Map action name to its URI suffix and HTTP method (in that order)
-type ActionMap map[string][2]string
-
-// Associate action URI suffix and HTTP method to action name
-var actionMap = ActionMap{}

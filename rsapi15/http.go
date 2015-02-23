@@ -40,8 +40,13 @@ func (a *Api15) Do(actionUrl, action string, params ApiParams) (*http.Response, 
 	case "destroy":
 		method = "DELETE"
 	default:
-		if pair, ok := actionMap[action]; ok {
-			method = pair[1]
+		for _, r := range api_metadata {
+			for _, a := range r.Actions {
+				if a.Name == action {
+					method = a.HttpMethod
+					break
+				}
+			}
 		}
 	}
 

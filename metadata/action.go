@@ -9,10 +9,13 @@ import (
 
 // Resource action
 type Action struct {
-	Name         string
-	Description  string
-	Params       []*ActionParam
-	PathPatterns []*PathPattern
+	Name              string
+	Description       string
+	HttpMethod        string         // "GET", "POST", "PUT", "DELETE", ...
+	PathPatterns      []*PathPattern // Action path patterns and variables
+	Params            []*ActionParam // All parameter details
+	QueryParamNames   []string       // Query string parameter names, e.g. "filter" in /clouds?filter[]=name==foo
+	PayloadParamNames []string       // Payload parameter names (top level keys of payload structure)
 }
 
 // Resource action parametersn
@@ -30,7 +33,7 @@ type ActionParam struct {
 type PathPattern struct {
 	Pattern   string         // Actual pattern, e.g. "/clouds/%s/instances/%s"
 	Variables []string       // Pattern variable names in order of appearance in pattern, e.g. "cloud_id", "id"
-	Regexp    *regexp.Regexp // Regexp used to match href
+	Regexp    *regexp.Regexp // Regexp used to match href and capture variable values, e.g. "/clouds/([^/]+)/instances/([^/])+"
 }
 
 // Url returns a URL to the action given a set of values that can be used to substitute the action

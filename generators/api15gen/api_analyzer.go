@@ -124,6 +124,23 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			// Custom action
 			continue
 		}
+		var allParamNames = make([]string, len(params))
+		var i = 0
+		for n, _ := range params {
+			allParamNames[i] = n
+			i += 1
+		}
+		sort.Strings(allParamNames)
+		var queryParamNames = []string{}
+		var payloadParamNames = []string{}
+		var hasPayload = httpMethod == "POST" || httpMethod == "PUT"
+		for _, p := range allParamNames {
+			if isQueryParam(p) {
+				queryParamNames = append(queryParamNames, p)
+			} else if hasPayload && !strings.Contains(p, "[") {
+				payloadParamNames = append(payloadParamNames, p)
+			}
+		}
 		var contentType string
 		if c, ok := meth["content_type"].(string); ok {
 			contentType = c
@@ -177,16 +194,18 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 
 		// Record action
 		var action = Action{
-			Name:           actionName,
-			MethodName:     inflect.Camelize(actionName),
-			Description:    removeBlankLines(description),
-			ResourceName:   name,
-			HttpMethod:     httpMethod,
-			PathPatterns:   pathPatterns,
-			Params:         paramAnalyzer.Params,
-			LeafParams:     paramAnalyzer.LeafParams,
-			Return:         parseReturn(actionName, name, contentType),
-			ReturnLocation: actionName == "create" && name != "Oauth2",
+			Name:              actionName,
+			MethodName:        inflect.Camelize(actionName),
+			Description:       removeBlankLines(description),
+			ResourceName:      name,
+			HttpMethod:        httpMethod,
+			PathPatterns:      pathPatterns,
+			Params:            paramAnalyzer.Params,
+			LeafParams:        paramAnalyzer.LeafParams,
+			Return:            parseReturn(actionName, name, contentType),
+			ReturnLocation:    actionName == "create" && name != "Oauth2",
+			QueryParamNames:   queryParamNames,
+			PayloadParamNames: payloadParamNames,
 		}
 		actions = append(actions, &action)
 	}
@@ -382,6 +401,12 @@ func isDeprecated(path string) bool {
 // Is action code not generated?
 func isCustom(method, path string) bool {
 	return method == "POST" && (path == "/api/sessions" || path == "/api/sessions/instance")
+}
+
+// Heuristic to determine whether given param is a query string param
+// For now only consider view and filter...
+func isQueryParam(n string) bool {
+	return n == "view" || n == "filter"
 }
 
 // Resources that don't have a media type

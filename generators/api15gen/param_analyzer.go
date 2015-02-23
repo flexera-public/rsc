@@ -194,12 +194,6 @@ func (s ByReverseLength) Less(i, j int) bool {
 	return len(s[i]) > len(s[j])
 }
 
-// Heuristic to determine whether given param is a query string param
-// For now only consider view and filter...
-func isQueryParam(n string) bool {
-	return n == "view" || n == "filter"
-}
-
 // Recursively record all type declarations
 func (p *ParamAnalyzer) recordTypes(root DataType) {
 	if o, ok := root.(*ObjectDataType); ok {

@@ -26,11 +26,21 @@ var flagValues = make(FlagValues)
 
 // Register all commands with kinpin application
 func RegisterCommands(api15Cmd cmd.CommandProvider) {
-	var actionNames = make([]string, len(actionMap))
-	var i = 0
-	for actionName, _ := range actionMap {
-		actionNames[i] = actionName
-		i += 1
+	var actionNames []string
+	for _, r := range api_metadata {
+		for _, a := range r.Actions {
+			var name = a.Name
+			var exists = false
+			for _, e := range actionNames {
+				if e == name {
+					exists = true
+					break
+				}
+			}
+			if !exists {
+				actionNames = append(actionNames, name)
+			}
+		}
 	}
 	sort.Strings(actionNames)
 	actionNames = append([]string{"index", "show", "create", "update", "delete"}, actionNames...)
@@ -50,8 +60,8 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 		default:
 			var resources = []string{}
 			var actionDescription string
-			for name, actions := range resourceActions {
-				for _, a := range actions {
+			for name, resource := range api_metadata {
+				for _, a := range resource.Actions {
 					if a.Name == action {
 						actionDescription = a.Description
 						resources = append(resources, name)

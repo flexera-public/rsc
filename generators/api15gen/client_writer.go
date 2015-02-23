@@ -13,9 +13,8 @@ import (
 
 // ClientWriter struct exposes methods to generate the go API client code
 type ClientWriter struct {
-	headerTmpl    *template.Template
-	resourceTmpl  *template.Template
-	actionMapTmpl *template.Template
+	headerTmpl   *template.Template
+	resourceTmpl *template.Template
 }
 
 // Client writer factory
@@ -39,14 +38,9 @@ func NewClientWriter() (*ClientWriter, error) {
 	if err != nil {
 		return nil, err
 	}
-	actionMapT, err := template.New("actionMap-client").Parse(actionMapTmpl)
-	if err != nil {
-		return nil, err
-	}
 	return &ClientWriter{
-		headerTmpl:    headerT,
-		resourceTmpl:  resourceT,
-		actionMapTmpl: actionMapT,
+		headerTmpl:   headerT,
+		resourceTmpl: resourceT,
 	}, nil
 }
 
@@ -80,11 +74,6 @@ func (c *ClientWriter) WriteType(o *ObjectDataType, w io.Writer) {
 // Write code for a resource
 func (c *ClientWriter) WriteResource(resource *Resource, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
-}
-
-// Write action map
-func (c *ClientWriter) WriteActionMap(a ActionMap, w io.Writer) error {
-	return c.actionMapTmpl.Execute(w, a)
 }
 
 /***** Format helpers *****/
@@ -298,13 +287,3 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	}
 	var err4 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
 	return res, err4{{else}}return nil{{end}}`
-
-// Actions to verb and suffix map
-const actionMapTmpl = `// Map action name to its URI suffix and HTTP method (in that order)
-type ActionMap map[string][2]string
-
-// Associate action URI suffix and HTTP method to action name
-var actionMap = ActionMap{
-	{{range $name, $pair := .}}"{{$name}}": [2]string{"{{index $pair 0}}", "{{index $pair 1}}"},
-	{{end}} }
-`

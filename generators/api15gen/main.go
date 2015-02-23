@@ -80,7 +80,6 @@ func generateClient(descriptor *ApiDescriptor, codegen string) error {
 		t := descriptor.Types[name]
 		c.WriteType(t, f)
 	}
-	c.WriteActionMap(descriptor.ActionMap, f)
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {
@@ -101,7 +100,6 @@ func generateMetadata(descriptor *ApiDescriptor, codegen string) error {
 	}
 	check(c.WriteHeader(f))
 	check(c.WriteMetadata(descriptor, f))
-	check(c.WriteResourceActionMap(descriptor, f))
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {

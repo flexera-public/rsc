@@ -10,9 +10,8 @@ import (
 
 // MetadataWriter struct exposes methods to generate the go API client command line tool
 type MetadataWriter struct {
-	headerTmpl       *template.Template
-	resourceTmpl     *template.Template
-	resActionMapTmpl *template.Template
+	headerTmpl   *template.Template
+	resourceTmpl *template.Template
 }
 
 // Commands writer factory
@@ -34,14 +33,9 @@ func NewMetadataWriter() (*MetadataWriter, error) {
 	if err != nil {
 		return nil, err
 	}
-	resActionMapT, err := template.New("resActionMap-metadata").Funcs(funcMap).Parse(resActionMapTmpl)
-	if err != nil {
-		return nil, err
-	}
 	return &MetadataWriter{
-		headerTmpl:       headerT,
-		resourceTmpl:     resourceT,
-		resActionMapTmpl: resActionMapT,
+		headerTmpl:   headerT,
+		resourceTmpl: resourceT,
 	}, nil
 }
 
@@ -57,11 +51,6 @@ func (c *MetadataWriter) WriteMetadata(d *ApiDescriptor, w io.Writer) error {
 		resources[i] = d.Resources[n]
 	}
 	return c.resourceTmpl.Execute(w, resources)
-}
-
-// Write resource to actions map
-func (c *MetadataWriter) WriteResourceActionMap(d *ApiDescriptor, w io.Writer) error {
-	return c.resActionMapTmpl.Execute(w, d)
 }
 
 /** Format Helpers **/
@@ -138,8 +127,8 @@ import (
 
 `
 
-const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}// API 1.5 resource commands
-// API metadata, consists of a map of resource name to resource metadata.
+const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}// API 1.5 Metadata
+// Consists of a map of resource name to resource metadata.
 var api_metadata = map[string]*metadata.Resource{ {{range .}}
 	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
@@ -154,6 +143,14 @@ var api_metadata = map[string]*metadata.Resource{ {{range .}}
 const actionMetadataTmpl = `&metadata.Action {
 				Name: "{{.Name}}",
 				Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
+				HttpMethod: "{{.HttpMethod}}",
+				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
+					&metadata.PathPattern{
+						Pattern: "{{.Pattern}}",
+						Variables: []string{"{{join .Variables "\", \""}}"},
+						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),
+					},{{end}}
+				},
 				Params: []*metadata.ActionParam{ {{range .LeafParams}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
@@ -165,27 +162,7 @@ const actionMetadataTmpl = `&metadata.Action {
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
 				},
-				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
-					&metadata.PathPattern{
-						Pattern: "{{.Pattern}}",
-						Variables: []string{"{{join .Variables "\", \""}}"},
-						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),
-					},{{end}}
-				},
+				QueryParamNames: []string{ {{if .QueryParamNames}}"{{join .QueryParamNames ", "}}"{{end}}},
+				PayloadParamNames: []string{ {{if .PayloadParamNames}}"{{join .PayloadParamNames "\", \""}}"{{end}}},
 			},
-`
-
-// Resource to actions map
-const resActionMapTmpl = `// Action info struct
-type ActionInfo struct {
-	Name string        // Action name
-	Description string // Action description
-}
-
-// Map resource names to action info
-var resourceActions = map[string][]ActionInfo{
-	{{range $name, $resource := .Resources}}"{{$name}}": []ActionInfo{
-		{{range .Actions}}ActionInfo{"{{.Name}}", ` + "`" + `{{toHelp .Description}}` + "`" + `},
-		{{end}}},
-	{{end}} }
 `
