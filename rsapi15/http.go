@@ -61,7 +61,7 @@ func (a *Api15) Do(actionUrl, action string, params ApiParams) (*http.Response, 
 	case "DELETE":
 		return nil, a.Delete(actionUrl)
 	}
-	panic("Unknown API 1.5 HTTP method " + method)
+	return nil, fmt.Errorf("Unknown action '%s'", action)
 }
 
 // Low-level GET request that loads response JSON into generic object
