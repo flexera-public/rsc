@@ -138,7 +138,7 @@ func (p *ParamAnalyzer) Analyze() {
 				p.parsed[path] = child
 				if isArrayChild {
 					// Generate array item as it's not listed explicitly in JSON
-					var itemPath = nativeNameFromPath(matches[1]) + "[item]"
+					var itemPath = matches[1] + "[item]"
 					var typeName = p.typeName(matches[1])
 					parent = p.newParam(itemPath, map[string]interface{}{},
 						&ObjectDataType{typeName, []*ActionParam{child}})

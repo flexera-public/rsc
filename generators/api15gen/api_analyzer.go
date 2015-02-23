@@ -103,35 +103,8 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		attributes = []*Attribute{}
 	}
 
-	// Compute hrefRegexp that matches resource hrefs
-	var hrefRegexp string
-	var methods = res["methods"].(map[string]interface{})
-	if name == "Oauth2" {
-		hrefRegexp = "/api/oauth2"
-	} else if name == "Tags" {
-		hrefRegexp = "/api/tags"
-	} else {
-		var regexps = []string{}
-		if show, ok := methods["show"]; ok {
-			var _, hrefs = parseRoute("", show.(map[string]interface{})["route"].(string))
-			for _, href := range hrefs {
-				regexps = append(regexps, hrefVarRegexp.ReplaceAllLiteralString(href, "/[[:alnum:]]"))
-			}
-		}
-		if index, ok := methods["index"]; ok {
-			var _, hrefs = parseRoute("", index.(map[string]interface{})["route"].(string))
-			for _, href := range hrefs {
-				regexps = append(regexps, hrefVarRegexp.ReplaceAllLiteralString(href, "/[[:alnum:]]"))
-			}
-		}
-		if len(regexps) > 1 {
-			hrefRegexp = "(" + strings.Join(regexps, "|") + ")"
-		} else {
-			hrefRegexp = regexps[0]
-		}
-	}
-
 	// Compute actions
+	var methods = res["methods"].(map[string]interface{})
 	var actionNames = sortedKeys(methods)
 	var actions = []*Action{}
 	for _, actionName := range actionNames {
@@ -145,9 +118,9 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
-		httpMethod, paths := parseRoute(fmt.Sprintf("%s#%s", name, actionName),
+		httpMethod, pathPatterns := ParseRoute(fmt.Sprintf("%s#%s", name, actionName),
 			meth["route"].(string))
-		if len(paths) == 0 {
+		if len(pathPatterns) == 0 {
 			// Custom action
 			continue
 		}
@@ -202,24 +175,14 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				strings.Join(optional, "\n\t")
 		}
 
-		// Compute action URL suffix
-		var suffix string
-		if actionName != "create" && actionName != "show" && actionName != "index" &&
-			actionName != "update" && actionName != "destroy" {
-			suffix = paths[0][strings.LastIndex(paths[0], "/"):]
-			if _, ok := descriptor.ActionMap[actionName]; !ok {
-				descriptor.ActionMap[actionName] = [2]string{suffix, httpMethod}
-			}
-		}
-
 		// Record action
 		var action = Action{
 			Name:           actionName,
 			MethodName:     inflect.Camelize(actionName),
 			Description:    removeBlankLines(description),
+			ResourceName:   name,
 			HttpMethod:     httpMethod,
-			Paths:          paths,
-			Suffix:         suffix,
+			PathPatterns:   pathPatterns,
 			Params:         paramAnalyzer.Params,
 			LeafParams:     paramAnalyzer.LeafParams,
 			Return:         parseReturn(actionName, name, contentType),
@@ -235,7 +198,6 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		Description: removeBlankLines(description),
 		Actions:     actions,
 		Attributes:  attributes,
-		HrefRegexp:  hrefRegexp,
 	}
 }
 
@@ -350,45 +312,65 @@ func (d *ApiDescriptor) uniqueTypeName(prefix string) string {
 // Regular expression used to extract routes from JSON
 var routeRegexp = regexp.MustCompile(`\{[^\}]+\}`)
 
-func parseRoute(moniker string, route string) (method string, paths []string) {
+// Regular expression that captures variables in a path
+var routeVariablesRegexp = regexp.MustCompile(`/:([^/]+)`)
+
+func ParseRoute(moniker string, route string) (method string, pathPatterns []*PathPattern) {
 	// :(((( some routes are empty
+	var paths []string
 	switch moniker {
 	case "Deployments#servers":
-		return "GET", []string{"/api/deployments/:id/servers"}
+		method, paths = "GET", []string{"/api/deployments/:id/servers"}
 	case "ServerArrays#current_instances":
-		return "GET", []string{"/api/server_arrays/:id/current_instances"}
+		method, paths = "GET", []string{"/api/server_arrays/:id/current_instances"}
 	case "ServerArrays#launch":
-		return "POST", []string{"/api/server_arrays/:id/launch"}
+		method, paths = "POST", []string{"/api/server_arrays/:id/launch"}
 	case "ServerArrays#multi_run_executable":
-		return "POST", []string{"/api/server_arrays/:id/multi_run_executable"}
+		method, paths = "POST", []string{"/api/server_arrays/:id/multi_run_executable"}
 	case "ServerArrays#multi_terminate":
-		return "POST", []string{"/api/server_arrays/:id/multi_terminate"}
+		method, paths = "POST", []string{"/api/server_arrays/:id/multi_terminate"}
 	case "Servers#launch":
-		return "POST", []string{"/api/servers/:id/launch"}
+		method, paths = "POST", []string{"/api/servers/:id/launch"}
 	case "Servers#terminate":
-		return "POST", []string{"/api/servers/:id/teminate"}
-
-	}
-	var bounds = routeRegexp.FindAllStringIndex(route, -1)
-	var matches = make([]string, len(bounds))
-	var prev = 0
-	for i, bound := range bounds {
-		matches[i] = route[prev:bound[0]]
-		prev = bound[1]
-	}
-	method = strings.TrimRight(matches[0][0:7], " ")
-	paths = make([]string, len(bounds))
-	var j = 0
-	for _, r := range matches {
-		var path = strings.TrimRight(r[7:], " ")
-		path = strings.TrimSuffix(path, "(.:format)?")
-		if isDeprecated(path) || isCustom(method, path) {
-			continue
+		method, paths = "POST", []string{"/api/servers/:id/teminate"}
+	default:
+		var bounds = routeRegexp.FindAllStringIndex(route, -1)
+		var matches = make([]string, len(bounds))
+		var prev = 0
+		for i, bound := range bounds {
+			matches[i] = route[prev:bound[0]]
+			prev = bound[1]
 		}
-		paths[j] = path
-		j += 1
+		method = strings.TrimRight(matches[0][0:7], " ")
+		paths = make([]string, len(bounds))
+		var j = 0
+		for _, r := range matches {
+			var path = strings.TrimRight(r[7:], " ")
+			path = strings.TrimSuffix(path, "(.:format)?")
+			if isDeprecated(path) || isCustom(method, path) {
+				continue
+			}
+			paths[j] = path
+			j += 1
+		}
+		paths = paths[:j]
 	}
-	paths = paths[:j]
+	pathPatterns = make([]*PathPattern, len(paths))
+	for i, p := range paths {
+		var pattern = PathPattern{
+			Path:    p,
+			Pattern: routeVariablesRegexp.ReplaceAllLiteralString(p, "/%s"),
+			Regexp:  routeVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(p), `/([^/]+)`),
+		}
+		var matches = routeVariablesRegexp.FindAllStringSubmatch(p, -1)
+		if len(matches) > 0 {
+			pattern.Variables = make([]string, len(matches))
+			for i, m := range matches {
+				pattern.Variables[i] = m[1]
+			}
+		}
+		pathPatterns[i] = &pattern
+	}
 	return
 }
 

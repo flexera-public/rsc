@@ -102,17 +102,18 @@ func comment(elems ...string) string {
 
 // Serialize action parameters
 func parameters(a *Action) string {
-	params := []string{}
-	hasOptional := false
-	for _, param := range a.Params {
-		if param.Mandatory {
-			params = append(params, fmt.Sprintf("%s %s", param.VarName, param.Signature()))
-		} else {
-			hasOptional = true
-		}
+	var m = a.MandatoryParams()
+	var hasOptional = a.HasOptionalParams()
+	var countParams = len(m)
+	if hasOptional {
+		countParams += 1
+	}
+	var params = make([]string, countParams)
+	for i, param := range m {
+		params[i] = fmt.Sprintf("%s %s", param.VarName, param.Signature())
 	}
 	if hasOptional {
-		params = append(params, "options ApiParams")
+		params[countParams-1] = "options ApiParams"
 	}
 
 	return strings.Join(params, ", ")
@@ -219,6 +220,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"time"
+
+	"github.com/rightscale/rsc/cmds"
 )
 
 // Helper function that merges optional parameters into payload
@@ -227,6 +230,34 @@ func mergeOptionals(params, options ApiParams) ApiParams {
 		params[name] = value
 	}
 	return params
+}
+
+// Url resolver produces an action URL from its name and a given resource href.
+// The algorithm consists of first extracting the variables from the href and then substituing them
+// in the action path. If there are more than one action paths then the algorithm picks the one that
+// can substitute the most variables.
+type UrlResolver string
+
+func (r *UrlResolver) Url(rName, aName string) (string, error) {
+	var res, ok = commands[rName]
+	if !ok {
+		return "", fmt.Errorf("No resource with name '%s'", rName)
+	}
+	var action *cmds.ActionCmd
+	for _, a := range res.Actions {
+		if a.Name == aName {
+			action = a
+			break
+		}
+	}
+	if action == nil {
+		return "", fmt.Errorf("No action with name '%s' on %s", aName, rName)
+	}
+	var vars, err = res.ExtractVariables(string(*r))
+	if err != nil {
+		return "", err
+	}
+	return action.Url(vars)
 }
 
 `
@@ -241,17 +272,17 @@ type {{.Name}} struct { {{range .Attributes}}
 //===== Locator
 // {{.Name}} resource locator, exposes resource actions.
 type {{.Name}}Locator struct {
+	UrlResolver
 	api *Api15
-	Href string
 }
 
 // {{.Name}} resource locator factory
 func (api *Api15) {{.Name}}Locator(href string) *{{.Name}}Locator {
-	return &{{.Name}}Locator{api, href}
+	return &{{.Name}}Locator{UrlResolver(href), api}
 }
 //===== Actions
-{{end}}{{range .Actions}}{{$httpMethod := .HttpMethod}}{{range .Paths}}
-// {{$httpMethod}} {{.}}{{end}}
+{{end}}{{range .Actions}}{{$httpMethod := .HttpMethod}}{{range .PathPatterns}}
+// {{$httpMethod}} {{.Path}}{{end}}
 {{comment .Description}}
 func (loc *{{$resource.Name}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
 	{{template "ActionBody" . }}
@@ -264,23 +295,26 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.VarName}} is required")
 	}
 	{{end}}{{end}}{{/* end range .Params */}}{{if not (eq .HttpMethod "DELETE")}}var params = {{paramsAsPayload .Params}}{{end}}
-	var href = loc.Href{{with $suffix := .Suffix}}{{if $suffix}}+"{{$suffix}}"{{end}}{{end}}
-	var {{if .HasResponse}}{{if .Return}}resp, {{else}}_, {{end}}{{end}}err = loc.api.{{toVerb .HttpMethod}}(href{{if .HasPayload}}, params{{end}})
+	var uri, err = loc.Url("{{$action.ResourceName}}", "{{$action.Name}}")
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
+	}
+	var {{if .HasResponse}}{{if .Return}}resp, {{else}}_, {{end}}{{end}}err2 = loc.api.{{toVerb .HttpMethod}}(uri{{if not (eq .HttpMethod "DELETE")}}, params{{end}})
+	if err2 != nil {
+		return {{if $action.Return}}res, {{end}}err2
 	}
 	{{if .ReturnLocation}}var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &{{stripStar .Return}}{loc.api, location}, nil
+		return &{{stripStar .Return}}{UrlResolver(location), loc.api}, nil
 	}{{else if .Return}}defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
-	if err2 != nil {
-		return res, err2
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
 	}
-	var err3 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
-	return res, err3{{else}}return nil{{end}}`
+	var err4 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
+	return res, err4{{else}}return nil{{end}}`
 
 // Actions to verb and suffix map
 const actionMapTmpl = `// Map action name to its URI suffix and HTTP method (in that order)

@@ -11,7 +11,6 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -28,14 +27,8 @@ type HttpClient interface {
 // (e.g. "create") and the request parameters.
 // The method makes the request and returns the raw HTTP response or an error.
 // The LoadResponse method can be used to load the response body if needed.
-func (a *Api15) Do(href, action string, params ApiParams) (*http.Response, error) {
-	// Allow "servers" instead of "/api/servers"
-	if !strings.HasPrefix(href, "/api/") {
-		href = "/api/" + href
-	}
-
+func (a *Api15) Do(actionUrl, action string, params ApiParams) (*http.Response, error) {
 	// First figure out action verb and uri
-	var uri = href
 	var method string
 	switch action {
 	case "show", "index":
@@ -48,7 +41,6 @@ func (a *Api15) Do(href, action string, params ApiParams) (*http.Response, error
 		method = "DELETE"
 	default:
 		if pair, ok := actionMap[action]; ok {
-			uri = href + pair[0]
 			method = pair[1]
 		}
 	}
@@ -56,16 +48,15 @@ func (a *Api15) Do(href, action string, params ApiParams) (*http.Response, error
 	// Now call corresponding low-level request method
 	switch method {
 	case "GET":
-		return a.GetRaw(uri, params)
+		return a.GetRaw(actionUrl, params)
 	case "POST":
-		return a.PostRaw(uri, params)
+		return a.PostRaw(actionUrl, params)
 	case "PUT":
-		return nil, a.Put(uri, params)
+		return nil, a.Put(actionUrl, params)
 	case "DELETE":
-		return nil, a.Delete(uri)
-	default:
-		return nil, fmt.Errorf("Unknown href '%s' or action '%s'", href, action)
+		return nil, a.Delete(actionUrl)
 	}
+	panic("Unknown API 1.5 HTTP method " + method)
 }
 
 // Low-level GET request that loads response JSON into generic object

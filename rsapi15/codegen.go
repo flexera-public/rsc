@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 19, 2015 at 11:24pm (PST)
+// Generated Feb 22, 2015 at 12:32am (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -15,6 +15,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"time"
+
+	"github.com/rightscale/rsc/cmds"
 )
 
 // Helper function that merges optional parameters into payload
@@ -23,6 +25,34 @@ func mergeOptionals(params, options ApiParams) ApiParams {
 		params[name] = value
 	}
 	return params
+}
+
+// Url resolver produces an action URL from its name and a given resource href.
+// The algorithm consists of first extracting the variables from the href and then substituing them
+// in the action path. If there are more than one action paths then the algorithm picks the one that
+// can substitute the most variables.
+type UrlResolver string
+
+func (r *UrlResolver) Url(rName, aName string) (string, error) {
+	var res, ok = commands[rName]
+	if !ok {
+		return "", fmt.Errorf("No resource with name '%s'", rName)
+	}
+	var action *cmds.ActionCmd
+	for _, a := range res.Actions {
+		if a.Name == aName {
+			action = a
+			break
+		}
+	}
+	if action == nil {
+		return "", fmt.Errorf("No action with name '%s' on %s", aName, rName)
+	}
+	var vars, err = res.ExtractVariables(string(*r))
+	if err != nil {
+		return "", err
+	}
+	return action.Url(vars)
 }
 
 /******  Account ******/
@@ -39,13 +69,13 @@ type Account struct {
 //===== Locator
 // Account resource locator, exposes resource actions.
 type AccountLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Account resource locator factory
 func (api *Api15) AccountLocator(href string) *AccountLocator {
-	return &AccountLocator{api, href}
+	return &AccountLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -55,18 +85,21 @@ func (api *Api15) AccountLocator(href string) *AccountLocator {
 func (loc *AccountLocator) Show() (*Account, error) {
 	var res *Account
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Accounts", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  AccountGroup ******/
@@ -84,13 +117,13 @@ type AccountGroup struct {
 //===== Locator
 // AccountGroup resource locator, exposes resource actions.
 type AccountGroupLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // AccountGroup resource locator factory
 func (api *Api15) AccountGroupLocator(href string) *AccountGroupLocator {
-	return &AccountGroupLocator{api, href}
+	return &AccountGroupLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -103,18 +136,21 @@ func (api *Api15) AccountGroupLocator(href string) *AccountGroupLocator {
 func (loc *AccountGroupLocator) Index(options ApiParams) ([]*AccountGroup, error) {
 	var res []*AccountGroup
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("AccountGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/account_groups/:id
@@ -124,18 +160,21 @@ func (loc *AccountGroupLocator) Index(options ApiParams) ([]*AccountGroup, error
 func (loc *AccountGroupLocator) Show(options ApiParams) (*AccountGroup, error) {
 	var res *AccountGroup
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("AccountGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Alert ******/
@@ -154,13 +193,13 @@ type Alert struct {
 //===== Locator
 // Alert resource locator, exposes resource actions.
 type AlertLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Alert resource locator factory
 func (api *Api15) AlertLocator(href string) *AlertLocator {
-	return &AlertLocator{api, href}
+	return &AlertLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -173,10 +212,13 @@ func (api *Api15) AlertLocator(href string) *AlertLocator {
 // Disables the Alert indefinitely. Idempotent.
 func (loc *AlertLocator) Disable() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/disable"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Alerts", "disable")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -189,10 +231,13 @@ func (loc *AlertLocator) Disable() error {
 // Enables the Alert indefinitely. Idempotent.
 func (loc *AlertLocator) Enable() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/enable"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Alerts", "enable")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -209,18 +254,21 @@ func (loc *AlertLocator) Enable() error {
 func (loc *AlertLocator) Index(options ApiParams) ([]*Alert, error) {
 	var res []*Alert
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Alerts", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/alerts/:id/quench
@@ -238,18 +286,21 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	var params = ApiParams{
 		"duration": duration,
 	}
-	var href = loc.Href + "/quench"
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Alerts", "quench")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
@@ -263,18 +314,21 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 func (loc *AlertLocator) Show(options ApiParams) (*Alert, error) {
 	var res *Alert
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Alerts", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  AlertSpec ******/
@@ -301,13 +355,13 @@ type AlertSpec struct {
 //===== Locator
 // AlertSpec resource locator, exposes resource actions.
 type AlertSpecLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // AlertSpec resource locator factory
 func (api *Api15) AlertSpecLocator(href string) *AlertSpecLocator {
-	return &AlertSpecLocator{api, href}
+	return &AlertSpecLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -325,16 +379,19 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 	var params = ApiParams{
 		"alert_spec": alertSpec,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("AlertSpecs", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &AlertSpecLocator{loc.api, location}, nil
+		return &AlertSpecLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -345,10 +402,13 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 // Deletes a given AlertSpec.
 func (loc *AlertSpecLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("AlertSpecs", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -365,18 +425,21 @@ func (loc *AlertSpecLocator) Destroy() error {
 func (loc *AlertSpecLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 	var res []*AlertSpec
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("AlertSpecs", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/servers/:server_id/alert_specs/:id
@@ -389,18 +452,21 @@ func (loc *AlertSpecLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 func (loc *AlertSpecLocator) Show(options ApiParams) (*AlertSpec, error) {
 	var res *AlertSpec
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("AlertSpecs", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/servers/:server_id/alert_specs/:id
@@ -415,10 +481,13 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	var params = ApiParams{
 		"alert_spec": alertSpec,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("AlertSpecs", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -438,13 +507,13 @@ type AuditEntry struct {
 //===== Locator
 // AuditEntry resource locator, exposes resource actions.
 type AuditEntryLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // AuditEntry resource locator factory
 func (api *Api15) AuditEntryLocator(href string) *AuditEntryLocator {
-	return &AuditEntryLocator{api, href}
+	return &AuditEntryLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -462,10 +531,13 @@ func (api *Api15) AuditEntryLocator(href string) *AuditEntryLocator {
 // 	summary: The updated summary for the audit entry, maximum length is 255 characters.
 func (loc *AuditEntryLocator) Append(options ApiParams) error {
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/append"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("AuditEntries", "append")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -483,16 +555,19 @@ func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options ApiPar
 	var params = mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("AuditEntries", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &AuditEntryLocator{loc.api, location}, nil
+		return &AuditEntryLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -502,18 +577,21 @@ func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options ApiPar
 func (loc *AuditEntryLocator) Detail() (string, error) {
 	var res string
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/detail"
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("AuditEntries", "detail")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/audit_entries
@@ -544,18 +622,21 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 		"limit":      limit,
 		"start_date": startDate,
 	}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("AuditEntries", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/audit_entries/:id
@@ -565,18 +646,21 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 func (loc *AuditEntryLocator) Show(options ApiParams) (*AuditEntry, error) {
 	var res *AuditEntry
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("AuditEntries", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/audit_entries/:id
@@ -590,10 +674,13 @@ func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options ApiPa
 	var params = mergeOptionals(ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("AuditEntries", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -617,13 +704,13 @@ type Backup struct {
 //===== Locator
 // Backup resource locator, exposes resource actions.
 type BackupLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Backup resource locator factory
 func (api *Api15) BackupLocator(href string) *BackupLocator {
-	return &BackupLocator{api, href}
+	return &BackupLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -671,10 +758,13 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options ApiPa
 		"keep_last": keepLast,
 		"lineage":   lineage,
 	}, options)
-	var href = loc.Href + "/cleanup"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Backups", "cleanup")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -690,16 +780,19 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	var params = ApiParams{
 		"backup": backup,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Backups", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &BackupLocator{loc.api, location}, nil
+		return &BackupLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -707,10 +800,13 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 // Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
 func (loc *BackupLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Backups", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -734,18 +830,21 @@ func (loc *BackupLocator) Index(lineage string, options ApiParams) ([]*Backup, e
 	var params = mergeOptionals(ApiParams{
 		"lineage": lineage,
 	}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Backups", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/backups/:id/restore
@@ -764,10 +863,13 @@ func (loc *BackupLocator) Restore(instanceHref string, options ApiParams) error 
 	var params = mergeOptionals(ApiParams{
 		"instance_href": instanceHref,
 	}, options)
-	var href = loc.Href + "/restore"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Backups", "restore")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -777,18 +879,21 @@ func (loc *BackupLocator) Restore(instanceHref string, options ApiParams) error 
 func (loc *BackupLocator) Show() (*Backup, error) {
 	var res *Backup
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Backups", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/backups/:id
@@ -800,10 +905,13 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 	var params = ApiParams{
 		"backup": backup,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Backups", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -813,13 +921,13 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 //===== Locator
 // ChildAccount resource locator, exposes resource actions.
 type ChildAccountLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // ChildAccount resource locator factory
 func (api *Api15) ChildAccountLocator(href string) *ChildAccountLocator {
-	return &ChildAccountLocator{api, href}
+	return &ChildAccountLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -837,16 +945,19 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 	var params = ApiParams{
 		"child_account": childAccount,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ChildAccounts", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ChildAccountLocator{loc.api, location}, nil
+		return &ChildAccountLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -857,18 +968,21 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 func (loc *ChildAccountLocator) Index(options ApiParams) ([]*Account, error) {
 	var res []*Account
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ChildAccounts", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // PUT /api/accounts/:id
@@ -881,10 +995,13 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	var params = ApiParams{
 		"child_account": childAccount,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("ChildAccounts", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -904,13 +1021,13 @@ type Cloud struct {
 //===== Locator
 // Cloud resource locator, exposes resource actions.
 type CloudLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Cloud resource locator factory
 func (api *Api15) CloudLocator(href string) *CloudLocator {
-	return &CloudLocator{api, href}
+	return &CloudLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -923,18 +1040,21 @@ func (api *Api15) CloudLocator(href string) *CloudLocator {
 func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error) {
 	var res []*Cloud
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Clouds", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:id
@@ -944,18 +1064,21 @@ func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error) {
 func (loc *CloudLocator) Show(options ApiParams) (*Cloud, error) {
 	var res *Cloud
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Clouds", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  CloudAccount ******/
@@ -970,13 +1093,13 @@ type CloudAccount struct {
 //===== Locator
 // CloudAccount resource locator, exposes resource actions.
 type CloudAccountLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // CloudAccount resource locator factory
 func (api *Api15) CloudAccountLocator(href string) *CloudAccountLocator {
-	return &CloudAccountLocator{api, href}
+	return &CloudAccountLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -993,16 +1116,19 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 	var params = ApiParams{
 		"cloud_account": cloudAccount,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("CloudAccounts", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &CloudAccountLocator{loc.api, location}, nil
+		return &CloudAccountLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -1010,10 +1136,13 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 // Delete a CloudAccount.
 func (loc *CloudAccountLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("CloudAccounts", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1023,18 +1152,21 @@ func (loc *CloudAccountLocator) Destroy() error {
 func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 	var res []*CloudAccount
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("CloudAccounts", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/cloud_accounts/:id
@@ -1042,18 +1174,21 @@ func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	var res *CloudAccount
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("CloudAccounts", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Cookbook ******/
@@ -1077,13 +1212,13 @@ type Cookbook struct {
 //===== Locator
 // Cookbook resource locator, exposes resource actions.
 type CookbookLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Cookbook resource locator factory
 func (api *Api15) CookbookLocator(href string) *CookbookLocator {
-	return &CookbookLocator{api, href}
+	return &CookbookLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1092,10 +1227,13 @@ func (api *Api15) CookbookLocator(href string) *CookbookLocator {
 // Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.
 func (loc *CookbookLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Cookbooks", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1110,10 +1248,13 @@ func (loc *CookbookLocator) Follow(value string) error {
 	var params = ApiParams{
 		"value": value,
 	}
-	var href = loc.Href + "/follow"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Cookbooks", "follow")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1128,10 +1269,13 @@ func (loc *CookbookLocator) Freeze(value string) error {
 	var params = ApiParams{
 		"value": value,
 	}
-	var href = loc.Href + "/freeze"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Cookbooks", "freeze")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1145,18 +1289,21 @@ func (loc *CookbookLocator) Freeze(value string) error {
 func (loc *CookbookLocator) Index(options ApiParams) ([]*Cookbook, error) {
 	var res []*Cookbook
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Cookbooks", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/cookbooks/:id/obsolete
@@ -1169,10 +1316,13 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 	var params = ApiParams{
 		"value": value,
 	}
-	var href = loc.Href + "/obsolete"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Cookbooks", "obsolete")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1185,18 +1335,21 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 func (loc *CookbookLocator) Show(options ApiParams) (*Cookbook, error) {
 	var res *Cookbook
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Cookbooks", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  CookbookAttachment ******/
@@ -1212,13 +1365,13 @@ type CookbookAttachment struct {
 //===== Locator
 // CookbookAttachment resource locator, exposes resource actions.
 type CookbookAttachmentLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // CookbookAttachment resource locator factory
 func (api *Api15) CookbookAttachmentLocator(href string) *CookbookAttachmentLocator {
-	return &CookbookAttachmentLocator{api, href}
+	return &CookbookAttachmentLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1232,16 +1385,19 @@ func (api *Api15) CookbookAttachmentLocator(href string) *CookbookAttachmentLoca
 func (loc *CookbookAttachmentLocator) Create(options ApiParams) (*CookbookAttachmentLocator, error) {
 	var res *CookbookAttachmentLocator
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("CookbookAttachments", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &CookbookAttachmentLocator{loc.api, location}, nil
+		return &CookbookAttachmentLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -1251,10 +1407,13 @@ func (loc *CookbookAttachmentLocator) Create(options ApiParams) (*CookbookAttach
 // Detach a cookbook from a given resource.
 func (loc *CookbookAttachmentLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("CookbookAttachments", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1268,18 +1427,21 @@ func (loc *CookbookAttachmentLocator) Destroy() error {
 func (loc *CookbookAttachmentLocator) Index(options ApiParams) ([]*CookbookAttachment, error) {
 	var res []*CookbookAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("CookbookAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_attach
@@ -1292,10 +1454,13 @@ func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookA
 	var params = ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
-	var href = loc.Href + "/multi_attach"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("CookbookAttachments", "multi_attach")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1310,10 +1475,13 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 	var params = ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
-	var href = loc.Href + "/multi_detach"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("CookbookAttachments", "multi_detach")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1327,18 +1495,21 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 func (loc *CookbookAttachmentLocator) Show(options ApiParams) (*CookbookAttachment, error) {
 	var res *CookbookAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("CookbookAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Credential ******/
@@ -1361,13 +1532,13 @@ type Credential struct {
 //===== Locator
 // Credential resource locator, exposes resource actions.
 type CredentialLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Credential resource locator factory
 func (api *Api15) CredentialLocator(href string) *CredentialLocator {
-	return &CredentialLocator{api, href}
+	return &CredentialLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1382,16 +1553,19 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 	var params = ApiParams{
 		"credential": credential,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Credentials", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &CredentialLocator{loc.api, location}, nil
+		return &CredentialLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -1399,10 +1573,13 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 // Deletes a Credential.
 func (loc *CredentialLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Credentials", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1415,18 +1592,21 @@ func (loc *CredentialLocator) Destroy() error {
 func (loc *CredentialLocator) Index(options ApiParams) ([]*Credential, error) {
 	var res []*Credential
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Credentials", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/credentials/:id
@@ -1436,18 +1616,21 @@ func (loc *CredentialLocator) Index(options ApiParams) ([]*Credential, error) {
 func (loc *CredentialLocator) Show(options ApiParams) (*Credential, error) {
 	var res *Credential
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Credentials", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/credentials/:id
@@ -1459,10 +1642,13 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	var params = ApiParams{
 		"credential": credential,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Credentials", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1484,13 +1670,13 @@ type Datacenter struct {
 //===== Locator
 // Datacenter resource locator, exposes resource actions.
 type DatacenterLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Datacenter resource locator factory
 func (api *Api15) DatacenterLocator(href string) *DatacenterLocator {
-	return &DatacenterLocator{api, href}
+	return &DatacenterLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1503,18 +1689,21 @@ func (api *Api15) DatacenterLocator(href string) *DatacenterLocator {
 func (loc *DatacenterLocator) Index(options ApiParams) ([]*Datacenter, error) {
 	var res []*Datacenter
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Datacenters", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/datacenters/:id
@@ -1524,18 +1713,21 @@ func (loc *DatacenterLocator) Index(options ApiParams) ([]*Datacenter, error) {
 func (loc *DatacenterLocator) Show(options ApiParams) (*Datacenter, error) {
 	var res *Datacenter
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Datacenters", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Deployment ******/
@@ -1554,13 +1746,13 @@ type Deployment struct {
 //===== Locator
 // Deployment resource locator, exposes resource actions.
 type DeploymentLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Deployment resource locator factory
 func (api *Api15) DeploymentLocator(href string) *DeploymentLocator {
-	return &DeploymentLocator{api, href}
+	return &DeploymentLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1571,10 +1763,13 @@ func (api *Api15) DeploymentLocator(href string) *DeploymentLocator {
 // 	deployment
 func (loc *DeploymentLocator) Clone(options ApiParams) error {
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Deployments", "clone")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1589,16 +1784,19 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 	var params = ApiParams{
 		"deployment": deployment,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Deployments", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &DeploymentLocator{loc.api, location}, nil
+		return &DeploymentLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -1606,10 +1804,13 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 // Deletes a given deployment.
 func (loc *DeploymentLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Deployments", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1625,18 +1826,21 @@ func (loc *DeploymentLocator) Destroy() error {
 func (loc *DeploymentLocator) Index(options ApiParams) ([]*Deployment, error) {
 	var res []*Deployment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Deployments", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/deployments/:id/lock
@@ -1645,10 +1849,13 @@ func (loc *DeploymentLocator) Index(options ApiParams) ([]*Deployment, error) {
 // Other actions such as adding servers or renaming the deployment are still allowed.
 func (loc *DeploymentLocator) Lock() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/lock"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Deployments", "lock")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1658,10 +1865,13 @@ func (loc *DeploymentLocator) Lock() error {
 // automatically be filtered by this deployment. See servers#index for details on other options and parameters.
 func (loc *DeploymentLocator) Servers() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/servers"
-	var _, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Deployments", "servers")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.GetRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1675,28 +1885,34 @@ func (loc *DeploymentLocator) Servers() error {
 func (loc *DeploymentLocator) Show(options ApiParams) (*Deployment, error) {
 	var res *Deployment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Deployments", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // POST /api/deployments/:id/unlock
 // Unlocks a given deployment. Idempotent.
 func (loc *DeploymentLocator) Unlock() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/unlock"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Deployments", "unlock")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1710,10 +1926,13 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 	var params = ApiParams{
 		"deployment": deployment,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Deployments", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -1723,13 +1942,13 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 //===== Locator
 // HealthCheck resource locator, exposes resource actions.
 type HealthCheckLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // HealthCheck resource locator factory
 func (api *Api15) HealthCheckLocator(href string) *HealthCheckLocator {
-	return &HealthCheckLocator{api, href}
+	return &HealthCheckLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1739,18 +1958,21 @@ func (api *Api15) HealthCheckLocator(href string) *HealthCheckLocator {
 func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
 	var res []*map[string]string
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("HealthCheck", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 /******  IdentityProvider ******/
@@ -1770,13 +1992,13 @@ type IdentityProvider struct {
 //===== Locator
 // IdentityProvider resource locator, exposes resource actions.
 type IdentityProviderLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // IdentityProvider resource locator factory
 func (api *Api15) IdentityProviderLocator(href string) *IdentityProviderLocator {
-	return &IdentityProviderLocator{api, href}
+	return &IdentityProviderLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1789,18 +2011,21 @@ func (api *Api15) IdentityProviderLocator(href string) *IdentityProviderLocator 
 func (loc *IdentityProviderLocator) Index(options ApiParams) ([]*IdentityProvider, error) {
 	var res []*IdentityProvider
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("IdentityProviders", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/identity_providers/:id
@@ -1810,18 +2035,21 @@ func (loc *IdentityProviderLocator) Index(options ApiParams) ([]*IdentityProvide
 func (loc *IdentityProviderLocator) Show(options ApiParams) (*IdentityProvider, error) {
 	var res *IdentityProvider
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("IdentityProviders", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Image ******/
@@ -1845,13 +2073,13 @@ type Image struct {
 //===== Locator
 // Image resource locator, exposes resource actions.
 type ImageLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Image resource locator factory
 func (api *Api15) ImageLocator(href string) *ImageLocator {
-	return &ImageLocator{api, href}
+	return &ImageLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1864,18 +2092,21 @@ func (api *Api15) ImageLocator(href string) *ImageLocator {
 func (loc *ImageLocator) Index(options ApiParams) ([]*Image, error) {
 	var res []*Image
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Images", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/images/:id
@@ -1885,18 +2116,21 @@ func (loc *ImageLocator) Index(options ApiParams) ([]*Image, error) {
 func (loc *ImageLocator) Show(options ApiParams) (*Image, error) {
 	var res *Image
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Images", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Input ******/
@@ -1913,13 +2147,13 @@ type Input struct {
 //===== Locator
 // Input resource locator, exposes resource actions.
 type InputLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Input resource locator factory
 func (api *Api15) InputLocator(href string) *InputLocator {
-	return &InputLocator{api, href}
+	return &InputLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -1933,18 +2167,21 @@ func (api *Api15) InputLocator(href string) *InputLocator {
 func (loc *InputLocator) Index(options ApiParams) ([]*Input, error) {
 	var res []*Input
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Inputs", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/inputs/multi_update
@@ -2020,10 +2257,13 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]string) error {
 	var params = ApiParams{
 		"inputs": inputs,
 	}
-	var href = loc.Href + "/multi_update"
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Inputs", "multi_update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2068,13 +2308,13 @@ type Instance struct {
 //===== Locator
 // Instance resource locator, exposes resource actions.
 type InstanceLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Instance resource locator factory
 func (api *Api15) InstanceLocator(href string) *InstanceLocator {
-	return &InstanceLocator{api, href}
+	return &InstanceLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -2089,16 +2329,19 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 	var params = ApiParams{
 		"instance": instance,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &InstanceLocator{loc.api, location}, nil
+		return &InstanceLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -2121,18 +2364,21 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 func (loc *InstanceLocator) Index(options ApiParams) ([]*Instance, error) {
 	var res []*Instance
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Instances", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/launch
@@ -2145,10 +2391,13 @@ func (loc *InstanceLocator) Index(options ApiParams) ([]*Instance, error) {
 // 	inputs
 func (loc *InstanceLocator) Launch(options ApiParams) error {
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/launch"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "launch")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2157,10 +2406,13 @@ func (loc *InstanceLocator) Launch(options ApiParams) error {
 
 func (loc *InstanceLocator) Lock() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/lock"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "lock")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2178,10 +2430,13 @@ func (loc *InstanceLocator) Lock() error {
 // 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (loc *InstanceLocator) MultiRunExecutable(options ApiParams) error {
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/multi_run_executable"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "multi_run_executable")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2195,10 +2450,13 @@ func (loc *InstanceLocator) MultiRunExecutable(options ApiParams) error {
 // 	terminate_all: Specifies the ability to terminate all instances.
 func (loc *InstanceLocator) MultiTerminate(options ApiParams) error {
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/multi_terminate"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "multi_terminate")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2209,10 +2467,13 @@ func (loc *InstanceLocator) MultiTerminate(options ApiParams) error {
 // Note that this action can only succeed if the instance is running. One cannot reboot instances of type "next".
 func (loc *InstanceLocator) Reboot() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/reboot"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "reboot")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2229,10 +2490,13 @@ func (loc *InstanceLocator) Reboot() error {
 // 	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
 func (loc *InstanceLocator) RunExecutable(options ApiParams) error {
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/run_executable"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "run_executable")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2252,10 +2516,13 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
-	var href = loc.Href + "/set_custom_lodgement"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "set_custom_lodgement")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2269,18 +2536,21 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 func (loc *InstanceLocator) Show(options ApiParams) (*Instance, error) {
 	var res *Instance
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Instances", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/start
@@ -2291,10 +2561,13 @@ func (loc *InstanceLocator) Show(options ApiParams) (*Instance, error) {
 // performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (loc *InstanceLocator) Start() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/start"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "start")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2306,10 +2579,13 @@ func (loc *InstanceLocator) Start() error {
 // Instances resource, performing a show action on the Server resource for Server Instances, or performing a current_instances action on the ServerArray resource for ServerArray Instances.
 func (loc *InstanceLocator) Stop() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/stop"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "stop")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2320,10 +2596,13 @@ func (loc *InstanceLocator) Stop() error {
 // Note that this action can succeed only if the instance is running. One cannot terminate instances of type "next".
 func (loc *InstanceLocator) Terminate() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/terminate"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "terminate")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2332,10 +2611,13 @@ func (loc *InstanceLocator) Terminate() error {
 
 func (loc *InstanceLocator) Unlock() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/unlock"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Instances", "unlock")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2349,10 +2631,13 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	var params = ApiParams{
 		"instance": instance,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Instances", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2380,13 +2665,13 @@ type InstanceCustomLodgement struct {
 //===== Locator
 // InstanceCustomLodgement resource locator, exposes resource actions.
 type InstanceCustomLodgementLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // InstanceCustomLodgement resource locator factory
 func (api *Api15) InstanceCustomLodgementLocator(href string) *InstanceCustomLodgementLocator {
-	return &InstanceCustomLodgementLocator{api, href}
+	return &InstanceCustomLodgementLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -2407,16 +2692,19 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("InstanceCustomLodgements", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &InstanceCustomLodgementLocator{loc.api, location}, nil
+		return &InstanceCustomLodgementLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -2424,10 +2712,13 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 // Destroy the specified lodgement.
 func (loc *InstanceCustomLodgementLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("InstanceCustomLodgements", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2439,18 +2730,21 @@ func (loc *InstanceCustomLodgementLocator) Destroy() error {
 func (loc *InstanceCustomLodgementLocator) Index(options ApiParams) ([]*InstanceCustomLodgement, error) {
 	var res []*InstanceCustomLodgement
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("InstanceCustomLodgements", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
@@ -2458,18 +2752,21 @@ func (loc *InstanceCustomLodgementLocator) Index(options ApiParams) ([]*Instance
 func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, error) {
 	var res *InstanceCustomLodgement
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("InstanceCustomLodgements", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
@@ -2482,10 +2779,13 @@ func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 	var params = ApiParams{
 		"quantity": quantity,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("InstanceCustomLodgements", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2509,13 +2809,13 @@ type InstanceType struct {
 //===== Locator
 // InstanceType resource locator, exposes resource actions.
 type InstanceTypeLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // InstanceType resource locator factory
 func (api *Api15) InstanceTypeLocator(href string) *InstanceTypeLocator {
-	return &InstanceTypeLocator{api, href}
+	return &InstanceTypeLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -2528,18 +2828,21 @@ func (api *Api15) InstanceTypeLocator(href string) *InstanceTypeLocator {
 func (loc *InstanceTypeLocator) Index(options ApiParams) ([]*InstanceType, error) {
 	var res []*InstanceType
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("InstanceTypes", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/instance_types/:id
@@ -2549,18 +2852,21 @@ func (loc *InstanceTypeLocator) Index(options ApiParams) ([]*InstanceType, error
 func (loc *InstanceTypeLocator) Show(options ApiParams) (*InstanceType, error) {
 	var res *InstanceType
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("InstanceTypes", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  IpAddress ******/
@@ -2578,13 +2884,13 @@ type IpAddress struct {
 //===== Locator
 // IpAddress resource locator, exposes resource actions.
 type IpAddressLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // IpAddress resource locator factory
 func (api *Api15) IpAddressLocator(href string) *IpAddressLocator {
-	return &IpAddressLocator{api, href}
+	return &IpAddressLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -2599,16 +2905,19 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 	var params = ApiParams{
 		"ip_address": ipAddress,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("IpAddresses", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &IpAddressLocator{loc.api, location}, nil
+		return &IpAddressLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -2616,10 +2925,13 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 // Deletes a given IpAddress.
 func (loc *IpAddressLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("IpAddresses", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2631,18 +2943,21 @@ func (loc *IpAddressLocator) Destroy() error {
 func (loc *IpAddressLocator) Index(options ApiParams) ([]*IpAddress, error) {
 	var res []*IpAddress
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("IpAddresses", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses/:id
@@ -2650,18 +2965,21 @@ func (loc *IpAddressLocator) Index(options ApiParams) ([]*IpAddress, error) {
 func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 	var res *IpAddress
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("IpAddresses", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/clouds/:cloud_id/ip_addresses/:id
@@ -2673,10 +2991,13 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	var params = ApiParams{
 		"ip_address": ipAddress,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("IpAddresses", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2698,13 +3019,13 @@ type IpAddressBinding struct {
 //===== Locator
 // IpAddressBinding resource locator, exposes resource actions.
 type IpAddressBindingLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // IpAddressBinding resource locator factory
 func (api *Api15) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
-	return &IpAddressBindingLocator{api, href}
+	return &IpAddressBindingLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -2725,16 +3046,19 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 	var params = ApiParams{
 		"ip_address_binding": ipAddressBinding,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("IpAddressBindings", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &IpAddressBindingLocator{loc.api, location}, nil
+		return &IpAddressBindingLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -2743,10 +3067,13 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 // No description provided for destroy.
 func (loc *IpAddressBindingLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("IpAddressBindings", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2759,18 +3086,21 @@ func (loc *IpAddressBindingLocator) Destroy() error {
 func (loc *IpAddressBindingLocator) Index(options ApiParams) ([]*IpAddressBinding, error) {
 	var res []*IpAddressBinding
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("IpAddressBindings", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
@@ -2779,18 +3109,21 @@ func (loc *IpAddressBindingLocator) Index(options ApiParams) ([]*IpAddressBindin
 func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	var res *IpAddressBinding
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("IpAddressBindings", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  MonitoringMetric ******/
@@ -2807,13 +3140,13 @@ type MonitoringMetric struct {
 //===== Locator
 // MonitoringMetric resource locator, exposes resource actions.
 type MonitoringMetricLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // MonitoringMetric resource locator factory
 func (api *Api15) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
-	return &MonitoringMetricLocator{api, href}
+	return &MonitoringMetricLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -2837,18 +3170,21 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 		"end":   end,
 		"start": start,
 	}
-	var href = loc.Href + "/data"
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("MonitoringMetrics", "data")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics
@@ -2863,18 +3199,21 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 func (loc *MonitoringMetricLocator) Index(options ApiParams) ([]*MonitoringMetric, error) {
 	var res []*MonitoringMetric
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("MonitoringMetrics", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id
@@ -2888,18 +3227,21 @@ func (loc *MonitoringMetricLocator) Index(options ApiParams) ([]*MonitoringMetri
 func (loc *MonitoringMetricLocator) Show(options ApiParams) (*MonitoringMetric, error) {
 	var res *MonitoringMetric
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("MonitoringMetrics", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  MultiCloudImage ******/
@@ -2918,13 +3260,13 @@ type MultiCloudImage struct {
 //===== Locator
 // MultiCloudImage resource locator, exposes resource actions.
 type MultiCloudImageLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // MultiCloudImage resource locator factory
 func (api *Api15) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
-	return &MultiCloudImageLocator{api, href}
+	return &MultiCloudImageLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -2938,10 +3280,13 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 	var params = ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImages", "clone")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2956,10 +3301,13 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	var params = ApiParams{
 		"commit_message": commitMessage,
 	}
-	var href = loc.Href + "/commit"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImages", "commit")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -2975,16 +3323,19 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 	var params = ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImages", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &MultiCloudImageLocator{loc.api, location}, nil
+		return &MultiCloudImageLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -2993,10 +3344,13 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 // Deletes a given MultiCloudImage.
 func (loc *MultiCloudImageLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("MultiCloudImages", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3009,18 +3363,21 @@ func (loc *MultiCloudImageLocator) Destroy() error {
 func (loc *MultiCloudImageLocator) Index(options ApiParams) ([]*MultiCloudImage, error) {
 	var res []*MultiCloudImage
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImages", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/server_templates/:server_template_id/multi_cloud_images/:id
@@ -3029,18 +3386,21 @@ func (loc *MultiCloudImageLocator) Index(options ApiParams) ([]*MultiCloudImage,
 func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 	var res *MultiCloudImage
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImages", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/server_templates/:server_template_id/multi_cloud_images/:id
@@ -3054,10 +3414,13 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	var params = ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("MultiCloudImages", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3074,13 +3437,13 @@ type MultiCloudImageSetting struct {
 //===== Locator
 // MultiCloudImageSetting resource locator, exposes resource actions.
 type MultiCloudImageSettingLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // MultiCloudImageSetting resource locator factory
 func (api *Api15) MultiCloudImageSettingLocator(href string) *MultiCloudImageSettingLocator {
-	return &MultiCloudImageSettingLocator{api, href}
+	return &MultiCloudImageSettingLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3095,16 +3458,19 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 	var params = ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImageSettings", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &MultiCloudImageSettingLocator{loc.api, location}, nil
+		return &MultiCloudImageSettingLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -3112,10 +3478,13 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 // Deletes a MultiCloudImage setting.
 func (loc *MultiCloudImageSettingLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("MultiCloudImageSettings", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3127,18 +3496,21 @@ func (loc *MultiCloudImageSettingLocator) Destroy() error {
 func (loc *MultiCloudImageSettingLocator) Index(options ApiParams) ([]*MultiCloudImageSetting, error) {
 	var res []*MultiCloudImageSetting
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImageSettings", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
@@ -3146,18 +3518,21 @@ func (loc *MultiCloudImageSettingLocator) Index(options ApiParams) ([]*MultiClou
 func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error) {
 	var res *MultiCloudImageSetting
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("MultiCloudImageSettings", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
@@ -3169,10 +3544,13 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 	var params = ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("MultiCloudImageSettings", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3194,13 +3572,13 @@ type Network struct {
 //===== Locator
 // Network resource locator, exposes resource actions.
 type NetworkLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Network resource locator factory
 func (api *Api15) NetworkLocator(href string) *NetworkLocator {
-	return &NetworkLocator{api, href}
+	return &NetworkLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3215,16 +3593,19 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 	var params = ApiParams{
 		"network": network,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Networks", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &NetworkLocator{loc.api, location}, nil
+		return &NetworkLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -3232,10 +3613,13 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 // Deletes the given network(s).
 func (loc *NetworkLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Networks", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3247,18 +3631,21 @@ func (loc *NetworkLocator) Destroy() error {
 func (loc *NetworkLocator) Index(options ApiParams) ([]*Network, error) {
 	var res []*Network
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Networks", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/networks/:id
@@ -3266,18 +3653,21 @@ func (loc *NetworkLocator) Index(options ApiParams) ([]*Network, error) {
 func (loc *NetworkLocator) Show() (*Network, error) {
 	var res *Network
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Networks", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/networks/:id
@@ -3289,10 +3679,13 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	var params = ApiParams{
 		"network": network,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Networks", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3315,13 +3708,13 @@ type NetworkGateway struct {
 //===== Locator
 // NetworkGateway resource locator, exposes resource actions.
 type NetworkGatewayLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // NetworkGateway resource locator factory
 func (api *Api15) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
-	return &NetworkGatewayLocator{api, href}
+	return &NetworkGatewayLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3336,16 +3729,19 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 	var params = ApiParams{
 		"network_gateway": networkGateway,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("NetworkGateways", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &NetworkGatewayLocator{loc.api, location}, nil
+		return &NetworkGatewayLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -3353,10 +3749,13 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 // Delete an existing NetworkGateway.
 func (loc *NetworkGatewayLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("NetworkGateways", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3368,18 +3767,21 @@ func (loc *NetworkGatewayLocator) Destroy() error {
 func (loc *NetworkGatewayLocator) Index(options ApiParams) ([]*NetworkGateway, error) {
 	var res []*NetworkGateway
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("NetworkGateways", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/network_gateways/:id
@@ -3387,18 +3789,21 @@ func (loc *NetworkGatewayLocator) Index(options ApiParams) ([]*NetworkGateway, e
 func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 	var res *NetworkGateway
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("NetworkGateways", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/network_gateways/:id
@@ -3410,10 +3815,13 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 	var params = ApiParams{
 		"network_gateway": networkGateway,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("NetworkGateways", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3441,13 +3849,13 @@ type NetworkOptionGroup struct {
 //===== Locator
 // NetworkOptionGroup resource locator, exposes resource actions.
 type NetworkOptionGroupLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // NetworkOptionGroup resource locator factory
 func (api *Api15) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLocator {
-	return &NetworkOptionGroupLocator{api, href}
+	return &NetworkOptionGroupLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3462,16 +3870,19 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 	var params = ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("NetworkOptionGroups", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &NetworkOptionGroupLocator{loc.api, location}, nil
+		return &NetworkOptionGroupLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -3479,10 +3890,13 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 // Delete an existing NetworkOptionGroup.
 func (loc *NetworkOptionGroupLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("NetworkOptionGroups", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3494,18 +3908,21 @@ func (loc *NetworkOptionGroupLocator) Destroy() error {
 func (loc *NetworkOptionGroupLocator) Index(options ApiParams) ([]*NetworkOptionGroup, error) {
 	var res []*NetworkOptionGroup
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("NetworkOptionGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/network_option_groups/:id
@@ -3513,18 +3930,21 @@ func (loc *NetworkOptionGroupLocator) Index(options ApiParams) ([]*NetworkOption
 func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 	var res *NetworkOptionGroup
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("NetworkOptionGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/network_option_groups/:id
@@ -3536,10 +3956,13 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 	var params = ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("NetworkOptionGroups", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3566,13 +3989,13 @@ type NetworkOptionGroupAttachment struct {
 //===== Locator
 // NetworkOptionGroupAttachment resource locator, exposes resource actions.
 type NetworkOptionGroupAttachmentLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // NetworkOptionGroupAttachment resource locator factory
 func (api *Api15) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptionGroupAttachmentLocator {
-	return &NetworkOptionGroupAttachmentLocator{api, href}
+	return &NetworkOptionGroupAttachmentLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3587,16 +4010,19 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 	var params = ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("NetworkOptionGroupAttachments", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &NetworkOptionGroupAttachmentLocator{loc.api, location}, nil
+		return &NetworkOptionGroupAttachmentLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -3604,10 +4030,13 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 // Delete an existing NetworkOptionGroupAttachment.
 func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("NetworkOptionGroupAttachments", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3620,18 +4049,21 @@ func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 func (loc *NetworkOptionGroupAttachmentLocator) Index(options ApiParams) ([]*NetworkOptionGroupAttachment, error) {
 	var res []*NetworkOptionGroupAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("NetworkOptionGroupAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/network_option_group_attachments/:id
@@ -3641,18 +4073,21 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options ApiParams) ([]*Net
 func (loc *NetworkOptionGroupAttachmentLocator) Show(options ApiParams) (*NetworkOptionGroupAttachment, error) {
 	var res *NetworkOptionGroupAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("NetworkOptionGroupAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/network_option_group_attachments/:id
@@ -3664,10 +4099,13 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 	var params = ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("NetworkOptionGroupAttachments", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3701,13 +4139,13 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 //===== Locator
 // Oauth2 resource locator, exposes resource actions.
 type Oauth2Locator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Oauth2 resource locator factory
 func (api *Api15) Oauth2Locator(href string) *Oauth2Locator {
-	return &Oauth2Locator{api, href}
+	return &Oauth2Locator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3748,18 +4186,21 @@ func (loc *Oauth2Locator) Create(grantType string, options ApiParams) (map[strin
 	var params = mergeOptionals(ApiParams{
 		"grant_type": grantType,
 	}, options)
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Oauth2", "create")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 /******  Permission ******/
@@ -3774,13 +4215,13 @@ type Permission struct {
 //===== Locator
 // Permission resource locator, exposes resource actions.
 type PermissionLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Permission resource locator factory
 func (api *Api15) PermissionLocator(href string) *PermissionLocator {
-	return &PermissionLocator{api, href}
+	return &PermissionLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3804,16 +4245,19 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 	var params = ApiParams{
 		"permission": permission,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Permissions", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &PermissionLocator{loc.api, location}, nil
+		return &PermissionLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -3827,10 +4271,13 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 // destroying it while the user has other permissions will result in an error.
 func (loc *PermissionLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Permissions", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3842,18 +4289,21 @@ func (loc *PermissionLocator) Destroy() error {
 func (loc *PermissionLocator) Index(options ApiParams) ([]*Permission, error) {
 	var res []*Permission
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Permissions", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/permissions/:id
@@ -3861,18 +4311,21 @@ func (loc *PermissionLocator) Index(options ApiParams) ([]*Permission, error) {
 func (loc *PermissionLocator) Show() (*Permission, error) {
 	var res *Permission
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Permissions", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  PlacementGroup ******/
@@ -3891,13 +4344,13 @@ type PlacementGroup struct {
 //===== Locator
 // PlacementGroup resource locator, exposes resource actions.
 type PlacementGroupLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // PlacementGroup resource locator factory
 func (api *Api15) PlacementGroupLocator(href string) *PlacementGroupLocator {
-	return &PlacementGroupLocator{api, href}
+	return &PlacementGroupLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -3912,16 +4365,19 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 	var params = ApiParams{
 		"placement_group": placementGroup,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("PlacementGroups", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &PlacementGroupLocator{loc.api, location}, nil
+		return &PlacementGroupLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -3929,10 +4385,13 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 // Destroys a PlacementGroup.
 func (loc *PlacementGroupLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("PlacementGroups", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -3945,18 +4404,21 @@ func (loc *PlacementGroupLocator) Destroy() error {
 func (loc *PlacementGroupLocator) Index(options ApiParams) ([]*PlacementGroup, error) {
 	var res []*PlacementGroup
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("PlacementGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/placement_groups/:id
@@ -3966,18 +4428,21 @@ func (loc *PlacementGroupLocator) Index(options ApiParams) ([]*PlacementGroup, e
 func (loc *PlacementGroupLocator) Show(options ApiParams) (*PlacementGroup, error) {
 	var res *PlacementGroup
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("PlacementGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Preference ******/
@@ -3994,13 +4459,13 @@ type Preference struct {
 //===== Locator
 // Preference resource locator, exposes resource actions.
 type PreferenceLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Preference resource locator factory
 func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
-	return &PreferenceLocator{api, href}
+	return &PreferenceLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4009,10 +4474,13 @@ func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
 // Deletes the given preference.
 func (loc *PreferenceLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Preferences", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4024,18 +4492,21 @@ func (loc *PreferenceLocator) Destroy() error {
 func (loc *PreferenceLocator) Index(options ApiParams) ([]*Preference, error) {
 	var res []*Preference
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Preferences", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/preferences/:id
@@ -4043,18 +4514,21 @@ func (loc *PreferenceLocator) Index(options ApiParams) ([]*Preference, error) {
 func (loc *PreferenceLocator) Show() (*Preference, error) {
 	var res *Preference
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Preferences", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/preferences/:id
@@ -4068,10 +4542,13 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	var params = ApiParams{
 		"preference": preference,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Preferences", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4097,13 +4574,13 @@ type Publication struct {
 //===== Locator
 // Publication resource locator, exposes resource actions.
 type PublicationLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Publication resource locator factory
 func (api *Api15) PublicationLocator(href string) *PublicationLocator {
-	return &PublicationLocator{api, href}
+	return &PublicationLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4113,10 +4590,13 @@ func (api *Api15) PublicationLocator(href string) *PublicationLocator {
 // Only non-HEAD revisions that are shared with the account can be imported.
 func (loc *PublicationLocator) Import() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/import"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Publications", "import")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4129,18 +4609,21 @@ func (loc *PublicationLocator) Import() error {
 func (loc *PublicationLocator) Index(options ApiParams) ([]*Publication, error) {
 	var res []*Publication
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Publications", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/publications/:id
@@ -4150,18 +4633,21 @@ func (loc *PublicationLocator) Index(options ApiParams) ([]*Publication, error) 
 func (loc *PublicationLocator) Show(options ApiParams) (*Publication, error) {
 	var res *Publication
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Publications", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  PublicationLineage ******/
@@ -4184,13 +4670,13 @@ type PublicationLineage struct {
 //===== Locator
 // PublicationLineage resource locator, exposes resource actions.
 type PublicationLineageLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // PublicationLineage resource locator factory
 func (api *Api15) PublicationLineageLocator(href string) *PublicationLineageLocator {
-	return &PublicationLineageLocator{api, href}
+	return &PublicationLineageLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4202,18 +4688,21 @@ func (api *Api15) PublicationLineageLocator(href string) *PublicationLineageLoca
 func (loc *PublicationLineageLocator) Show(options ApiParams) (*PublicationLineage, error) {
 	var res *PublicationLineage
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("PublicationLineages", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  RecurringVolumeAttachment ******/
@@ -4236,13 +4725,13 @@ type RecurringVolumeAttachment struct {
 //===== Locator
 // RecurringVolumeAttachment resource locator, exposes resource actions.
 type RecurringVolumeAttachmentLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // RecurringVolumeAttachment resource locator factory
 func (api *Api15) RecurringVolumeAttachmentLocator(href string) *RecurringVolumeAttachmentLocator {
-	return &RecurringVolumeAttachmentLocator{api, href}
+	return &RecurringVolumeAttachmentLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4259,16 +4748,19 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 	var params = ApiParams{
 		"recurring_volume_attachment": recurringVolumeAttachment,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("RecurringVolumeAttachments", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &RecurringVolumeAttachmentLocator{loc.api, location}, nil
+		return &RecurringVolumeAttachmentLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -4278,10 +4770,13 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 // Deletes a given recurring volume attachment.
 func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("RecurringVolumeAttachments", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4296,18 +4791,21 @@ func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 func (loc *RecurringVolumeAttachmentLocator) Index(options ApiParams) ([]*RecurringVolumeAttachment, error) {
 	var res []*RecurringVolumeAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RecurringVolumeAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/recurring_volume_attachments/:id
@@ -4319,18 +4817,21 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options ApiParams) ([]*Recurr
 func (loc *RecurringVolumeAttachmentLocator) Show(options ApiParams) (*RecurringVolumeAttachment, error) {
 	var res *RecurringVolumeAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RecurringVolumeAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Repository ******/
@@ -4358,13 +4859,13 @@ type Repository struct {
 //===== Locator
 // Repository resource locator, exposes resource actions.
 type RepositoryLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Repository resource locator factory
 func (api *Api15) RepositoryLocator(href string) *RepositoryLocator {
-	return &RepositoryLocator{api, href}
+	return &RepositoryLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4384,10 +4885,13 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options ApiPar
 	var params = mergeOptionals(ApiParams{
 		"asset_hrefs": assetHrefs,
 	}, options)
-	var href = loc.Href + "/cookbook_import"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Repositories", "cookbook_import")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4411,18 +4915,21 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 		"asset_hrefs": assetHrefs,
 		"namespace":   namespace,
 	}
-	var href = loc.Href + "/cookbook_import_preview"
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Repositories", "cookbook_import_preview")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/repositories
@@ -4445,16 +4952,19 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 	var params = ApiParams{
 		"repository": repository,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Repositories", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &RepositoryLocator{loc.api, location}, nil
+		return &RepositoryLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -4462,10 +4972,13 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 // Deletes the specified Repositories.
 func (loc *RepositoryLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Repositories", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4478,18 +4991,21 @@ func (loc *RepositoryLocator) Destroy() error {
 func (loc *RepositoryLocator) Index(options ApiParams) ([]*Repository, error) {
 	var res []*Repository
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Repositories", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/repositories/:id/refetch
@@ -4500,10 +5016,13 @@ func (loc *RepositoryLocator) Index(options ApiParams) ([]*Repository, error) {
 // 	auto_import: Whether cookbooks should automatically be imported after repositories are fetched.
 func (loc *RepositoryLocator) Refetch(options ApiParams) error {
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/refetch"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Repositories", "refetch")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4518,18 +5037,21 @@ func (loc *RepositoryLocator) Refetch(options ApiParams) error {
 func (loc *RepositoryLocator) Resolve(options ApiParams) ([]*Repository, error) {
 	var res []*Repository
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/resolve"
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Repositories", "resolve")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/repositories/:id
@@ -4539,18 +5061,21 @@ func (loc *RepositoryLocator) Resolve(options ApiParams) ([]*Repository, error) 
 func (loc *RepositoryLocator) Show(options ApiParams) (*Repository, error) {
 	var res *Repository
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Repositories", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/repositories/:id
@@ -4572,10 +5097,13 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	var params = ApiParams{
 		"repository": repository,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Repositories", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4596,13 +5124,13 @@ type RepositoryAsset struct {
 //===== Locator
 // RepositoryAsset resource locator, exposes resource actions.
 type RepositoryAssetLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // RepositoryAsset resource locator factory
 func (api *Api15) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
-	return &RepositoryAssetLocator{api, href}
+	return &RepositoryAssetLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4616,18 +5144,21 @@ func (api *Api15) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 func (loc *RepositoryAssetLocator) Index(options ApiParams) ([]*RepositoryAsset, error) {
 	var res []*RepositoryAsset
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RepositoryAssets", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/repositories/:repository_id/repository_assets/:id
@@ -4639,18 +5170,21 @@ func (loc *RepositoryAssetLocator) Index(options ApiParams) ([]*RepositoryAsset,
 func (loc *RepositoryAssetLocator) Show(options ApiParams) (*RepositoryAsset, error) {
 	var res *RepositoryAsset
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RepositoryAssets", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  RightScript ******/
@@ -4676,13 +5210,13 @@ type RightScript struct {
 //===== Locator
 // RightScript resource locator, exposes resource actions.
 type RightScriptLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // RightScript resource locator factory
 func (api *Api15) RightScriptLocator(href string) *RightScriptLocator {
-	return &RightScriptLocator{api, href}
+	return &RightScriptLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4696,10 +5230,13 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	var params = ApiParams{
 		"right_script": rightScript,
 	}
-	var href = loc.Href + "/commit"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("RightScripts", "commit")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4713,18 +5250,21 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 func (loc *RightScriptLocator) Index(options ApiParams) ([]*RightScript, error) {
 	var res []*RightScript
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RightScripts", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/right_scripts/:id
@@ -4732,28 +5272,34 @@ func (loc *RightScriptLocator) Index(options ApiParams) ([]*RightScript, error) 
 func (loc *RightScriptLocator) Show() (*RightScript, error) {
 	var res *RightScript
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RightScripts", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // GET /api/right_scripts/:id/source
 // Returns the script source for a RightScript
 func (loc *RightScriptLocator) ShowSource() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/source"
-	var _, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RightScripts", "show_source")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.GetRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4767,10 +5313,13 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 	var params = ApiParams{
 		"right_script": rightScript,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("RightScripts", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4779,10 +5328,13 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 // Updates the source of the given RightScript
 func (loc *RightScriptLocator) UpdateSource() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/source"
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("RightScripts", "update_source")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4806,13 +5358,13 @@ type Route struct {
 //===== Locator
 // Route resource locator, exposes resource actions.
 type RouteLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Route resource locator factory
 func (api *Api15) RouteLocator(href string) *RouteLocator {
-	return &RouteLocator{api, href}
+	return &RouteLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4828,16 +5380,19 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	var params = ApiParams{
 		"route": route,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Routes", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &RouteLocator{loc.api, location}, nil
+		return &RouteLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -4846,10 +5401,13 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 // Delete an existing Route.
 func (loc *RouteLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Routes", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4862,18 +5420,21 @@ func (loc *RouteLocator) Destroy() error {
 func (loc *RouteLocator) Index(options ApiParams) ([]*Route, error) {
 	var res []*Route
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Routes", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/routes/:id
@@ -4882,18 +5443,21 @@ func (loc *RouteLocator) Index(options ApiParams) ([]*Route, error) {
 func (loc *RouteLocator) Show() (*Route, error) {
 	var res *Route
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Routes", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/routes/:id
@@ -4906,10 +5470,13 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 	var params = ApiParams{
 		"route": route,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Routes", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4931,13 +5498,13 @@ type RouteTable struct {
 //===== Locator
 // RouteTable resource locator, exposes resource actions.
 type RouteTableLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // RouteTable resource locator factory
 func (api *Api15) RouteTableLocator(href string) *RouteTableLocator {
-	return &RouteTableLocator{api, href}
+	return &RouteTableLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -4952,16 +5519,19 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 	var params = ApiParams{
 		"route_table": routeTable,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("RouteTables", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &RouteTableLocator{loc.api, location}, nil
+		return &RouteTableLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -4969,10 +5539,13 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 // Delete an existing RouteTable.
 func (loc *RouteTableLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("RouteTables", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -4985,18 +5558,21 @@ func (loc *RouteTableLocator) Destroy() error {
 func (loc *RouteTableLocator) Index(options ApiParams) ([]*RouteTable, error) {
 	var res []*RouteTable
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RouteTables", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/route_tables/:id
@@ -5006,18 +5582,21 @@ func (loc *RouteTableLocator) Index(options ApiParams) ([]*RouteTable, error) {
 func (loc *RouteTableLocator) Show(options ApiParams) (*RouteTable, error) {
 	var res *RouteTable
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RouteTables", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/route_tables/:id
@@ -5029,10 +5608,13 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	var params = ApiParams{
 		"route_table": routeTable,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("RouteTables", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5055,13 +5637,13 @@ type RunnableBinding struct {
 //===== Locator
 // RunnableBinding resource locator, exposes resource actions.
 type RunnableBindingLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // RunnableBinding resource locator factory
 func (api *Api15) RunnableBindingLocator(href string) *RunnableBindingLocator {
-	return &RunnableBindingLocator{api, href}
+	return &RunnableBindingLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -5078,16 +5660,19 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 	var params = ApiParams{
 		"runnable_binding": runnableBinding,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("RunnableBindings", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &RunnableBindingLocator{loc.api, location}, nil
+		return &RunnableBindingLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -5096,10 +5681,13 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 // The resource must be editable.
 func (loc *RunnableBindingLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("RunnableBindings", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5112,18 +5700,21 @@ func (loc *RunnableBindingLocator) Destroy() error {
 func (loc *RunnableBindingLocator) Index(options ApiParams) ([]*RunnableBinding, error) {
 	var res []*RunnableBinding
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RunnableBindings", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // PUT /api/server_templates/:server_template_id/runnable_bindings/multi_update
@@ -5136,10 +5727,13 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 	var params = ApiParams{
 		"runnable_bindings": runnableBindings,
 	}
-	var href = loc.Href + "/multi_update"
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("RunnableBindings", "multi_update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5152,18 +5746,21 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 func (loc *RunnableBindingLocator) Show(options ApiParams) (*RunnableBinding, error) {
 	var res *RunnableBinding
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("RunnableBindings", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  SecurityGroup ******/
@@ -5182,13 +5779,13 @@ type SecurityGroup struct {
 //===== Locator
 // SecurityGroup resource locator, exposes resource actions.
 type SecurityGroupLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // SecurityGroup resource locator factory
 func (api *Api15) SecurityGroupLocator(href string) *SecurityGroupLocator {
-	return &SecurityGroupLocator{api, href}
+	return &SecurityGroupLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -5203,16 +5800,19 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 	var params = ApiParams{
 		"security_group": securityGroup,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("SecurityGroups", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &SecurityGroupLocator{loc.api, location}, nil
+		return &SecurityGroupLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -5220,10 +5820,13 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 // Delete security group(s)
 func (loc *SecurityGroupLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("SecurityGroups", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5236,18 +5839,21 @@ func (loc *SecurityGroupLocator) Destroy() error {
 func (loc *SecurityGroupLocator) Index(options ApiParams) ([]*SecurityGroup, error) {
 	var res []*SecurityGroup
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("SecurityGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/security_groups/:id
@@ -5257,18 +5863,21 @@ func (loc *SecurityGroupLocator) Index(options ApiParams) ([]*SecurityGroup, err
 func (loc *SecurityGroupLocator) Show(options ApiParams) (*SecurityGroup, error) {
 	var res *SecurityGroup
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("SecurityGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  SecurityGroupRule ******/
@@ -5294,13 +5903,13 @@ type SecurityGroupRule struct {
 //===== Locator
 // SecurityGroupRule resource locator, exposes resource actions.
 type SecurityGroupRuleLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // SecurityGroupRule resource locator factory
 func (api *Api15) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator {
-	return &SecurityGroupRuleLocator{api, href}
+	return &SecurityGroupRuleLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -5321,16 +5930,19 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 	var params = ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("SecurityGroupRules", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &SecurityGroupRuleLocator{loc.api, location}, nil
+		return &SecurityGroupRuleLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -5339,10 +5951,13 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 // Delete security group rule(s)
 func (loc *SecurityGroupRuleLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("SecurityGroupRules", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5355,18 +5970,21 @@ func (loc *SecurityGroupRuleLocator) Destroy() error {
 func (loc *SecurityGroupRuleLocator) Index(options ApiParams) ([]*SecurityGroupRule, error) {
 	var res []*SecurityGroupRule
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("SecurityGroupRules", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/security_group_rules/:id
@@ -5377,18 +5995,21 @@ func (loc *SecurityGroupRuleLocator) Index(options ApiParams) ([]*SecurityGroupR
 func (loc *SecurityGroupRuleLocator) Show(options ApiParams) (*SecurityGroupRule, error) {
 	var res *SecurityGroupRule
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("SecurityGroupRules", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/security_group_rules/:id
@@ -5401,10 +6022,13 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 	var params = ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("SecurityGroupRules", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5436,13 +6060,13 @@ type Server struct {
 //===== Locator
 // Server resource locator, exposes resource actions.
 type ServerLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Server resource locator factory
 func (api *Api15) ServerLocator(href string) *ServerLocator {
-	return &ServerLocator{api, href}
+	return &ServerLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -5451,10 +6075,13 @@ func (api *Api15) ServerLocator(href string) *ServerLocator {
 // Clones a given server.
 func (loc *ServerLocator) Clone() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Servers", "clone")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5470,16 +6097,19 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	var params = ApiParams{
 		"server": server,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Servers", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ServerLocator{loc.api, location}, nil
+		return &ServerLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -5488,10 +6118,13 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 // Deletes a given server.
 func (loc *ServerLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Servers", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5511,18 +6144,21 @@ func (loc *ServerLocator) Destroy() error {
 func (loc *ServerLocator) Index(options ApiParams) ([]*Server, error) {
 	var res []*Server
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Servers", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/servers/:id/launch
@@ -5530,10 +6166,13 @@ func (loc *ServerLocator) Index(options ApiParams) ([]*Server, error) {
 // URL of this servers next_instance. See Instances#launch for details.
 func (loc *ServerLocator) Launch() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/launch"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Servers", "launch")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5546,18 +6185,21 @@ func (loc *ServerLocator) Launch() error {
 func (loc *ServerLocator) Show(options ApiParams) (*Server, error) {
 	var res *Server
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Servers", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // POST /api/servers/:id/teminate
@@ -5565,10 +6207,13 @@ func (loc *ServerLocator) Show(options ApiParams) (*Server, error) {
 // URL of this servers current_instance. See Instances#terminate for details.
 func (loc *ServerLocator) Terminate() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/teminate"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Servers", "terminate")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5583,10 +6228,13 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 	var params = ApiParams{
 		"server": server,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Servers", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5601,10 +6249,13 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
 	var params = ApiParams{
 		"server": server,
 	}
-	var href = loc.Href + "/wrap_instance"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Servers", "wrap_instance")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5635,13 +6286,13 @@ type ServerArray struct {
 //===== Locator
 // ServerArray resource locator, exposes resource actions.
 type ServerArrayLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // ServerArray resource locator factory
 func (api *Api15) ServerArrayLocator(href string) *ServerArrayLocator {
-	return &ServerArrayLocator{api, href}
+	return &ServerArrayLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -5650,10 +6301,13 @@ func (api *Api15) ServerArrayLocator(href string) *ServerArrayLocator {
 // Clones a given server array.
 func (loc *ServerArrayLocator) Clone() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "clone")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5669,16 +6323,19 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 	var params = ApiParams{
 		"server_array": serverArray,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ServerArrayLocator{loc.api, location}, nil
+		return &ServerArrayLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -5688,10 +6345,13 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 // latter will include 'next_instance' as well.
 func (loc *ServerArrayLocator) CurrentInstances() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/current_instances"
-	var _, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "current_instances")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.GetRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5701,10 +6361,13 @@ func (loc *ServerArrayLocator) CurrentInstances() error {
 // Deletes a given server array.
 func (loc *ServerArrayLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("ServerArrays", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5722,18 +6385,21 @@ func (loc *ServerArrayLocator) Destroy() error {
 func (loc *ServerArrayLocator) Index(options ApiParams) ([]*ServerArray, error) {
 	var res []*ServerArray
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/server_arrays/:id/launch
@@ -5741,10 +6407,13 @@ func (loc *ServerArrayLocator) Index(options ApiParams) ([]*ServerArray, error) 
 // URL of this server_array's next_instance. See Instances#launch for details.
 func (loc *ServerArrayLocator) Launch() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/launch"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "launch")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5755,10 +6424,13 @@ func (loc *ServerArrayLocator) Launch() error {
 // a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)
 func (loc *ServerArrayLocator) MultiRunExecutable() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/multi_run_executable"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "multi_run_executable")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5769,10 +6441,13 @@ func (loc *ServerArrayLocator) MultiRunExecutable() error {
 // invoke the action "terminate" directly on the instance (see Instances#terminate)
 func (loc *ServerArrayLocator) MultiTerminate() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/multi_terminate"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "multi_terminate")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5785,18 +6460,21 @@ func (loc *ServerArrayLocator) MultiTerminate() error {
 func (loc *ServerArrayLocator) Show(options ApiParams) (*ServerArray, error) {
 	var res *ServerArray
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ServerArrays", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/server_arrays/:id
@@ -5809,10 +6487,13 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	var params = ApiParams{
 		"server_array": serverArray,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("ServerArrays", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5837,13 +6518,13 @@ type ServerTemplate struct {
 //===== Locator
 // ServerTemplate resource locator, exposes resource actions.
 type ServerTemplateLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // ServerTemplate resource locator factory
 func (api *Api15) ServerTemplateLocator(href string) *ServerTemplateLocator {
-	return &ServerTemplateLocator{api, href}
+	return &ServerTemplateLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -5857,10 +6538,13 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 	var params = ApiParams{
 		"server_template": serverTemplate,
 	}
-	var href = loc.Href + "/clone"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "clone")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5885,10 +6569,13 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 		"commit_message":           commitMessage,
 		"freeze_repositories":      freezeRepositories,
 	}
-	var href = loc.Href + "/commit"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "commit")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5903,16 +6590,19 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 	var params = ApiParams{
 		"server_template": serverTemplate,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ServerTemplateLocator{loc.api, location}, nil
+		return &ServerTemplateLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -5920,10 +6610,13 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 // Deletes a given ServerTemplate.
 func (loc *ServerTemplateLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("ServerTemplates", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -5935,18 +6628,21 @@ func (loc *ServerTemplateLocator) Destroy() error {
 func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, error) {
 	var res []*map[string]string
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/detect_changes_in_head"
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "detect_changes_in_head")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/server_templates
@@ -5959,18 +6655,21 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 func (loc *ServerTemplateLocator) Index(options ApiParams) ([]*ServerTemplate, error) {
 	var res []*ServerTemplate
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/server_templates/:id/publish
@@ -5992,10 +6691,13 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 		"account_group_hrefs": accountGroupHrefs,
 		"descriptions":        descriptions,
 	}, options)
-	var href = loc.Href + "/publish"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "publish")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6008,18 +6710,21 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 	var res []*map[string]string
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/resolve"
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "resolve")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/server_templates/:id
@@ -6031,18 +6736,21 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 func (loc *ServerTemplateLocator) Show(options ApiParams) (*ServerTemplate, error) {
 	var res *ServerTemplate
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // POST /api/server_templates/:id/swap_repository
@@ -6072,10 +6780,13 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 		"source_repository_href": sourceRepositoryHref,
 		"target_repository_href": targetRepositoryHref,
 	}
-	var href = loc.Href + "/swap_repository"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplates", "swap_repository")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6091,10 +6802,13 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 	var params = ApiParams{
 		"server_template": serverTemplate,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("ServerTemplates", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6114,13 +6828,13 @@ type ServerTemplateMultiCloudImage struct {
 //===== Locator
 // ServerTemplateMultiCloudImage resource locator, exposes resource actions.
 type ServerTemplateMultiCloudImageLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // ServerTemplateMultiCloudImage resource locator factory
 func (api *Api15) ServerTemplateMultiCloudImageLocator(href string) *ServerTemplateMultiCloudImageLocator {
-	return &ServerTemplateMultiCloudImageLocator{api, href}
+	return &ServerTemplateMultiCloudImageLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6135,16 +6849,19 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 	var params = ApiParams{
 		"server_template_multi_cloud_image": serverTemplateMultiCloudImage,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ServerTemplateMultiCloudImageLocator{loc.api, location}, nil
+		return &ServerTemplateMultiCloudImageLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -6152,10 +6869,13 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 // Deletes a given ServerTemplateMultiCloudImage.
 func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6168,28 +6888,34 @@ func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 func (loc *ServerTemplateMultiCloudImageLocator) Index(options ApiParams) ([]*ServerTemplateMultiCloudImage, error) {
 	var res []*ServerTemplateMultiCloudImage
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/server_template_multi_cloud_images/:id/make_default
 // Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.
 func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/make_default"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "make_default")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6201,18 +6927,21 @@ func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 func (loc *ServerTemplateMultiCloudImageLocator) Show(options ApiParams) (*ServerTemplateMultiCloudImage, error) {
 	var res *ServerTemplateMultiCloudImage
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Session ******/
@@ -6233,13 +6962,13 @@ type Session struct {
 //===== Locator
 // Session resource locator, exposes resource actions.
 type SessionLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Session resource locator factory
 func (api *Api15) SessionLocator(href string) *SessionLocator {
-	return &SessionLocator{api, href}
+	return &SessionLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6261,18 +6990,21 @@ func (api *Api15) SessionLocator(href string) *SessionLocator {
 func (loc *SessionLocator) Accounts(options ApiParams) ([]*Account, error) {
 	var res []*Account
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href + "/accounts"
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Sessions", "accounts")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/sessions
@@ -6283,18 +7015,21 @@ func (loc *SessionLocator) Accounts(options ApiParams) ([]*Account, error) {
 func (loc *SessionLocator) Index() ([]*Session, error) {
 	var res []*Session
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Sessions", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/sessions/instance
@@ -6305,18 +7040,21 @@ func (loc *SessionLocator) Index() ([]*Session, error) {
 func (loc *SessionLocator) IndexInstanceSession() (Instance, error) {
 	var res Instance
 	var params = map[string]interface{}{}
-	var href = loc.Href + "/instance"
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Sessions", "index_instance_session")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 /******  SshKey ******/
@@ -6333,13 +7071,13 @@ type SshKey struct {
 //===== Locator
 // SshKey resource locator, exposes resource actions.
 type SshKeyLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // SshKey resource locator factory
 func (api *Api15) SshKeyLocator(href string) *SshKeyLocator {
-	return &SshKeyLocator{api, href}
+	return &SshKeyLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6354,16 +7092,19 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	var params = ApiParams{
 		"ssh_key": sshKey,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("SshKeys", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &SshKeyLocator{loc.api, location}, nil
+		return &SshKeyLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -6371,10 +7112,13 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 // Deletes a given ssh key.
 func (loc *SshKeyLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("SshKeys", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6387,18 +7131,21 @@ func (loc *SshKeyLocator) Destroy() error {
 func (loc *SshKeyLocator) Index(options ApiParams) ([]*SshKey, error) {
 	var res []*SshKey
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("SshKeys", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/ssh_keys/:id
@@ -6408,18 +7155,21 @@ func (loc *SshKeyLocator) Index(options ApiParams) ([]*SshKey, error) {
 func (loc *SshKeyLocator) Show(options ApiParams) (*SshKey, error) {
 	var res *SshKey
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("SshKeys", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Subnet ******/
@@ -6440,13 +7190,13 @@ type Subnet struct {
 //===== Locator
 // Subnet resource locator, exposes resource actions.
 type SubnetLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Subnet resource locator factory
 func (api *Api15) SubnetLocator(href string) *SubnetLocator {
-	return &SubnetLocator{api, href}
+	return &SubnetLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6462,16 +7212,19 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	var params = ApiParams{
 		"subnet": subnet,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Subnets", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &SubnetLocator{loc.api, location}, nil
+		return &SubnetLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -6480,10 +7233,13 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 // Deletes the given subnet(s).
 func (loc *SubnetLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Subnets", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6496,18 +7252,21 @@ func (loc *SubnetLocator) Destroy() error {
 func (loc *SubnetLocator) Index(options ApiParams) ([]*Subnet, error) {
 	var res []*Subnet
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Subnets", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
@@ -6516,18 +7275,21 @@ func (loc *SubnetLocator) Index(options ApiParams) ([]*Subnet, error) {
 func (loc *SubnetLocator) Show() (*Subnet, error) {
 	var res *Subnet
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Subnets", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
@@ -6540,10 +7302,13 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	var params = ApiParams{
 		"subnet": subnet,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Subnets", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6557,13 +7322,13 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 //===== Locator
 // Tag resource locator, exposes resource actions.
 type TagLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Tag resource locator factory
 func (api *Api15) TagLocator(href string) *TagLocator {
-	return &TagLocator{api, href}
+	return &TagLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6580,18 +7345,21 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 	var params = ApiParams{
 		"resource_hrefs": resourceHrefs,
 	}
-	var href = loc.Href + "/by_resource"
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Tags", "by_resource")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/tags/by_tag
@@ -6626,18 +7394,21 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options ApiPara
 		"resource_type": resourceType,
 		"tags":          tags,
 	}, options)
-	var href = loc.Href + "/by_tag"
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Tags", "by_tag")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.PostRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // POST /api/tags/multi_add
@@ -6659,10 +7430,13 @@ func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
-	var href = loc.Href + "/multi_add"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Tags", "multi_add")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6685,10 +7459,13 @@ func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error 
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
-	var href = loc.Href + "/multi_delete"
-	var _, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Tags", "multi_delete")
 	if err != nil {
 		return err
+	}
+	var _, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6708,13 +7485,13 @@ type Task struct {
 //===== Locator
 // Task resource locator, exposes resource actions.
 type TaskLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Task resource locator factory
 func (api *Api15) TaskLocator(href string) *TaskLocator {
-	return &TaskLocator{api, href}
+	return &TaskLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6727,18 +7504,21 @@ func (api *Api15) TaskLocator(href string) *TaskLocator {
 func (loc *TaskLocator) Show(options ApiParams) (*Task, error) {
 	var res *Task
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Tasks", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  User ******/
@@ -6762,13 +7542,13 @@ type User struct {
 //===== Locator
 // User resource locator, exposes resource actions.
 type UserLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // User resource locator factory
 func (api *Api15) UserLocator(href string) *UserLocator {
-	return &UserLocator{api, href}
+	return &UserLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6797,16 +7577,19 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 	var params = ApiParams{
 		"user": user,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Users", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &UserLocator{loc.api, location}, nil
+		return &UserLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -6818,18 +7601,21 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 func (loc *UserLocator) Index(options ApiParams) ([]*User, error) {
 	var res []*User
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Users", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/users/:id
@@ -6837,18 +7623,21 @@ func (loc *UserLocator) Index(options ApiParams) ([]*User, error) {
 func (loc *UserLocator) Show() (*User, error) {
 	var res *User
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Users", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 // PUT /api/users/:id
@@ -6878,10 +7667,13 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 	var params = ApiParams{
 		"user": user,
 	}
-	var href = loc.Href
-	var err = loc.api.Put(href, params)
+	var uri, err = loc.Url("Users", "update")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Put(uri, params)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6891,13 +7683,13 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 //===== Locator
 // UserData resource locator, exposes resource actions.
 type UserDataLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // UserData resource locator factory
 func (api *Api15) UserDataLocator(href string) *UserDataLocator {
-	return &UserDataLocator{api, href}
+	return &UserDataLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6907,18 +7699,21 @@ func (api *Api15) UserDataLocator(href string) *UserDataLocator {
 func (loc *UserDataLocator) Show() (*map[string]string, error) {
 	var res *map[string]string
 	var params = map[string]interface{}{}
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("UserDatas", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  Volume ******/
@@ -6941,13 +7736,13 @@ type Volume struct {
 //===== Locator
 // Volume resource locator, exposes resource actions.
 type VolumeLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // Volume resource locator factory
 func (api *Api15) VolumeLocator(href string) *VolumeLocator {
-	return &VolumeLocator{api, href}
+	return &VolumeLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -6962,16 +7757,19 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	var params = ApiParams{
 		"volume": volume,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("Volumes", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &VolumeLocator{loc.api, location}, nil
+		return &VolumeLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -6979,10 +7777,13 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 // Deletes a given volume.
 func (loc *VolumeLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("Volumes", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -6995,18 +7796,21 @@ func (loc *VolumeLocator) Destroy() error {
 func (loc *VolumeLocator) Index(options ApiParams) ([]*Volume, error) {
 	var res []*Volume
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Volumes", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/volumes/:id
@@ -7016,18 +7820,21 @@ func (loc *VolumeLocator) Index(options ApiParams) ([]*Volume, error) {
 func (loc *VolumeLocator) Show(options ApiParams) (*Volume, error) {
 	var res *Volume
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("Volumes", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  VolumeAttachment ******/
@@ -7047,13 +7854,13 @@ type VolumeAttachment struct {
 //===== Locator
 // VolumeAttachment resource locator, exposes resource actions.
 type VolumeAttachmentLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // VolumeAttachment resource locator factory
 func (api *Api15) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator {
-	return &VolumeAttachmentLocator{api, href}
+	return &VolumeAttachmentLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -7071,16 +7878,19 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 	var params = ApiParams{
 		"volume_attachment": volumeAttachment,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("VolumeAttachments", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &VolumeAttachmentLocator{loc.api, location}, nil
+		return &VolumeAttachmentLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -7093,10 +7903,13 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 // 	force: Specifies whether to force the detachment of a volume.
 func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("VolumeAttachments", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -7110,18 +7923,21 @@ func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
 func (loc *VolumeAttachmentLocator) Index(options ApiParams) ([]*VolumeAttachment, error) {
 	var res []*VolumeAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("VolumeAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id
@@ -7134,18 +7950,21 @@ func (loc *VolumeAttachmentLocator) Index(options ApiParams) ([]*VolumeAttachmen
 func (loc *VolumeAttachmentLocator) Show(options ApiParams) (*VolumeAttachment, error) {
 	var res *VolumeAttachment
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("VolumeAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  VolumeSnapshot ******/
@@ -7169,13 +7988,13 @@ type VolumeSnapshot struct {
 //===== Locator
 // VolumeSnapshot resource locator, exposes resource actions.
 type VolumeSnapshotLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // VolumeSnapshot resource locator factory
 func (api *Api15) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
-	return &VolumeSnapshotLocator{api, href}
+	return &VolumeSnapshotLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -7191,16 +8010,19 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 	var params = ApiParams{
 		"volume_snapshot": volumeSnapshot,
 	}
-	var href = loc.Href
-	var resp, err = loc.api.PostRaw(href, params)
+	var uri, err = loc.Url("VolumeSnapshots", "create")
 	if err != nil {
 		return res, err
+	}
+	var resp, err2 = loc.api.PostRaw(uri, params)
+	if err2 != nil {
+		return res, err2
 	}
 	var location = resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &VolumeSnapshotLocator{loc.api, location}, nil
+		return &VolumeSnapshotLocator{UrlResolver(location), loc.api}, nil
 	}
 }
 
@@ -7209,10 +8031,13 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 // Deletes a given volume_snapshot.
 func (loc *VolumeSnapshotLocator) Destroy() error {
 
-	var href = loc.Href
-	var err = loc.api.Delete(href)
+	var uri, err = loc.Url("VolumeSnapshots", "destroy")
 	if err != nil {
 		return err
+	}
+	var err2 = loc.api.Delete(uri)
+	if err2 != nil {
+		return err2
 	}
 	return nil
 }
@@ -7226,18 +8051,21 @@ func (loc *VolumeSnapshotLocator) Destroy() error {
 func (loc *VolumeSnapshotLocator) Index(options ApiParams) ([]*VolumeSnapshot, error) {
 	var res []*VolumeSnapshot
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("VolumeSnapshots", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
@@ -7248,18 +8076,21 @@ func (loc *VolumeSnapshotLocator) Index(options ApiParams) ([]*VolumeSnapshot, e
 func (loc *VolumeSnapshotLocator) Show(options ApiParams) (*VolumeSnapshot, error) {
 	var res *VolumeSnapshot
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("VolumeSnapshots", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /******  VolumeType ******/
@@ -7279,13 +8110,13 @@ type VolumeType struct {
 //===== Locator
 // VolumeType resource locator, exposes resource actions.
 type VolumeTypeLocator struct {
-	api  *Api15
-	Href string
+	UrlResolver
+	api *Api15
 }
 
 // VolumeType resource locator factory
 func (api *Api15) VolumeTypeLocator(href string) *VolumeTypeLocator {
-	return &VolumeTypeLocator{api, href}
+	return &VolumeTypeLocator{UrlResolver(href), api}
 }
 
 //===== Actions
@@ -7298,18 +8129,21 @@ func (api *Api15) VolumeTypeLocator(href string) *VolumeTypeLocator {
 func (loc *VolumeTypeLocator) Index(options ApiParams) ([]*VolumeType, error) {
 	var res []*VolumeType
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("VolumeTypes", "index")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, &res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, &res)
+	return res, err4
 }
 
 // GET /api/clouds/:cloud_id/volume_types/:id
@@ -7319,18 +8153,21 @@ func (loc *VolumeTypeLocator) Index(options ApiParams) ([]*VolumeType, error) {
 func (loc *VolumeTypeLocator) Show(options ApiParams) (*VolumeType, error) {
 	var res *VolumeType
 	var params = mergeOptionals(ApiParams{}, options)
-	var href = loc.Href
-	var resp, err = loc.api.GetRaw(href, params)
+	var uri, err = loc.Url("VolumeTypes", "show")
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	var respBody, err2 = ioutil.ReadAll(resp.Body)
+	var resp, err2 = loc.api.GetRaw(uri, params)
 	if err2 != nil {
 		return res, err2
 	}
-	var err3 = json.Unmarshal(respBody, res)
-	return res, err3
+	defer resp.Body.Close()
+	var respBody, err3 = ioutil.ReadAll(resp.Body)
+	if err3 != nil {
+		return res, err3
+	}
+	var err4 = json.Unmarshal(respBody, res)
+	return res, err4
 }
 
 /****** Parameter Data Types ******/
@@ -7869,52 +8706,4 @@ type VolumeSnapshotParam struct {
 type ActionMap map[string][2]string
 
 // Associate action URI suffix and HTTP method to action name
-var actionMap = ActionMap{
-	"accounts":                [2]string{"/accounts", "GET"},
-	"append":                  [2]string{"/append", "POST"},
-	"by_resource":             [2]string{"/by_resource", "POST"},
-	"by_tag":                  [2]string{"/by_tag", "POST"},
-	"cleanup":                 [2]string{"/cleanup", "POST"},
-	"clone":                   [2]string{"/clone", "POST"},
-	"commit":                  [2]string{"/commit", "POST"},
-	"cookbook_import":         [2]string{"/cookbook_import", "POST"},
-	"cookbook_import_preview": [2]string{"/cookbook_import_preview", "POST"},
-	"current_instances":       [2]string{"/current_instances", "GET"},
-	"data":                    [2]string{"/data", "GET"},
-	"detail":                  [2]string{"/detail", "GET"},
-	"detect_changes_in_head":  [2]string{"/detect_changes_in_head", "POST"},
-	"disable":                 [2]string{"/disable", "POST"},
-	"enable":                  [2]string{"/enable", "POST"},
-	"follow":                  [2]string{"/follow", "POST"},
-	"freeze":                  [2]string{"/freeze", "POST"},
-	"import":                  [2]string{"/import", "POST"},
-	"index_instance_session":  [2]string{"/instance", "GET"},
-	"launch":                  [2]string{"/launch", "POST"},
-	"lock":                    [2]string{"/lock", "POST"},
-	"make_default":            [2]string{"/make_default", "POST"},
-	"multi_add":               [2]string{"/multi_add", "POST"},
-	"multi_attach":            [2]string{"/multi_attach", "POST"},
-	"multi_delete":            [2]string{"/multi_delete", "POST"},
-	"multi_detach":            [2]string{"/multi_detach", "POST"},
-	"multi_run_executable":    [2]string{"/multi_run_executable", "POST"},
-	"multi_terminate":         [2]string{"/multi_terminate", "POST"},
-	"multi_update":            [2]string{"/multi_update", "PUT"},
-	"obsolete":                [2]string{"/obsolete", "POST"},
-	"publish":                 [2]string{"/publish", "POST"},
-	"quench":                  [2]string{"/quench", "POST"},
-	"reboot":                  [2]string{"/reboot", "POST"},
-	"refetch":                 [2]string{"/refetch", "POST"},
-	"resolve":                 [2]string{"/resolve", "POST"},
-	"restore":                 [2]string{"/restore", "POST"},
-	"run_executable":          [2]string{"/run_executable", "POST"},
-	"servers":                 [2]string{"/servers", "GET"},
-	"set_custom_lodgement":    [2]string{"/set_custom_lodgement", "POST"},
-	"show_source":             [2]string{"/source", "GET"},
-	"start":                   [2]string{"/start", "POST"},
-	"stop":                    [2]string{"/stop", "POST"},
-	"swap_repository":         [2]string{"/swap_repository", "POST"},
-	"terminate":               [2]string{"/terminate", "POST"},
-	"unlock":                  [2]string{"/unlock", "POST"},
-	"update_source":           [2]string{"/source", "PUT"},
-	"wrap_instance":           [2]string{"/wrap_instance", "POST"},
-}
+var actionMap = ActionMap{}

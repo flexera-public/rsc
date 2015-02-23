@@ -1,4 +1,4 @@
-package main_test
+package cmds_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestApi15gen(t *testing.T) {
+func TestCmds(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Api15gen Suite")
+	RunSpecs(t, "Cmds Suite")
 }

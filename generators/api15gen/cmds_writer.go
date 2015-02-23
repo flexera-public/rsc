@@ -130,29 +130,32 @@ const headerCmdsTmpl = `//******************************************************
 
 package rsapi15
 
-import "regexp"
+import (
+	"regexp"
+
+	"github.com/rightscale/rsc/cmds"
+)
 
 `
 
 const resourceCmdsTmpl = `{{define "action"}}` + actionCmdTmpl + `{{end}}// API 1.5 resource commands
 // Each command contains sub-commands for all resource actions
-var commands = map[string]*ResourceCmd{ {{range .}}
-	"{{.Name}}": &ResourceCmd{
+var commands = map[string]*cmds.ResourceCmd{ {{range .}}
+	"{{.Name}}": &cmds.ResourceCmd{
 		Name: "{{.Name}}",
 		Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
-		HrefRegexp: regexp.MustCompile(` + "`" + `{{.HrefRegexp}}` + "`" + `),
-		Actions: []*ActionCmd{ {{range .Actions}}
+		Actions: []*cmds.ActionCmd{ {{range .Actions}}
 		{{template "action" .}}{{end}}
 		},
 	},{{end}}
 }
 `
 
-const actionCmdTmpl = `&ActionCmd {
+const actionCmdTmpl = `&cmds.ActionCmd {
 				Name: "{{.Name}}",
 				Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
-				Flags: []*ActionFlag{ {{range .LeafParams}}
-					&ActionFlag{
+				Flags: []*cmds.ActionFlag{ {{range .LeafParams}}
+					&cmds.ActionFlag{
 						Name: "{{.QueryName}}",
 						Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
 						Type: "{{flagType .}}",
@@ -160,6 +163,13 @@ const actionCmdTmpl = `&ActionCmd {
 						NonBlank: {{.NonBlank}},{{if .Regexp}}
 						Regexp: regexp.MustCompile("{{.Regexp}}"),{{end}}{{if .ValidValues}}
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
+					},{{end}}
+				},
+				PathPatterns: []*cmds.PathPattern{ {{range .PathPatterns}}
+					&cmds.PathPattern{
+						Pattern: "{{.Pattern}}",
+						Variables: []string{"{{join .Variables "\", \""}}"},
+						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),
 					},{{end}}
 				},
 			},
