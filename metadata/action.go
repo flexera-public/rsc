@@ -1,4 +1,4 @@
-package cmds
+package metadata
 
 import (
 	"fmt"
@@ -7,24 +7,23 @@ import (
 	"strings"
 )
 
-// Resource action subcommand
-type ActionCmd struct {
+// Resource action
+type Action struct {
 	Name         string
 	Description  string
-	Flags        []*ActionFlag
+	Params       []*ActionParam
 	PathPatterns []*PathPattern
 }
 
-// Resource action subcommand flag
-type ActionFlag struct {
-	Name        string
-	Description string
-	Type        string
-	IsPattern   bool
-	Mandatory   bool
-	NonBlank    bool
-	Regexp      *regexp.Regexp
-	ValidValues []string
+// Resource action parametersn
+type ActionParam struct {
+	Name        string         // Param name
+	Description string         // Param description
+	Type        string         // Param type, one of "string", "[]string", "int", "[]int" or "map[string]string"
+	Mandatory   bool           // Whether parameter is mandatory
+	NonBlank    bool           // Whether parameter value can be blank
+	Regexp      *regexp.Regexp // Regular expression used to validate parameter values
+	ValidValues []string       // List of valid values for parameter
 }
 
 // A path pattern represents a possible path for a given action.
@@ -40,7 +39,7 @@ type PathPattern struct {
 // "/clouds/:cloud_id/instances/:id" and both the :cloud_id and :id variable values are given as
 // parameter, the method returns a URL built from substituting the values of the later (longer) path.
 // The method returns an error in case no path pattern can have all its variables subsituted.
-func (a *ActionCmd) Url(vars []*PathVariable) (string, error) {
+func (a *Action) Url(vars []*PathVariable) (string, error) {
 	var candidates = make([]PathMatch, len(a.PathPatterns))
 	var allMissing = []string{}
 	for i, p := range a.PathPatterns {
@@ -59,13 +58,6 @@ func (a *ActionCmd) Url(vars []*PathVariable) (string, error) {
 	} else {
 		return candidates[0].Value, nil
 	}
-}
-
-// Action params consist of href and map of query parameters
-type ActionParams struct {
-	Href     string   // Resource or collection href
-	Params   []string // Action parameters
-	ShowHelp string   // Whether to list flags supported by resource action
 }
 
 // A match built from a path pattern and given variable values

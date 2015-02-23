@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rightscale/rsc/cmds"
+	"github.com/rightscale/rsc/cmd"
 )
 
 // RightScale API 1.5 client
@@ -91,7 +91,7 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
 }
 
 // Build client from command line
-func FromCommandLine(cmdLine *cmds.CommandLine) (*Api15, error) {
+func FromCommandLine(cmdLine *cmd.CommandLine) (*Api15, error) {
 	var client *Api15
 	var httpClient *http.Client
 	if cmdLine.NoRedirect {

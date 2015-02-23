@@ -8,15 +8,15 @@ import (
 	"time"
 )
 
-// CmdsWriter struct exposes methods to generate the go API client command line tool
-type CmdsWriter struct {
+// MetadataWriter struct exposes methods to generate the go API client command line tool
+type MetadataWriter struct {
 	headerTmpl       *template.Template
 	resourceTmpl     *template.Template
 	resActionMapTmpl *template.Template
 }
 
 // Commands writer factory
-func NewCmdsWriter() (*CmdsWriter, error) {
+func NewMetadataWriter() (*MetadataWriter, error) {
 	funcMap := template.FuncMap{
 		"comment":       comment,
 		"now":           time.Now,
@@ -26,19 +26,19 @@ func NewCmdsWriter() (*CmdsWriter, error) {
 		"toHelp":        toHelp,
 		"flagType":      flagType,
 	}
-	headerT, err := template.New("header-cmds").Funcs(funcMap).Parse(headerCmdsTmpl)
+	headerT, err := template.New("header-metadata").Funcs(funcMap).Parse(headerMetadataTmpl)
 	if err != nil {
 		return nil, err
 	}
-	resourceT, err := template.New("resource-cmds").Funcs(funcMap).Parse(resourceCmdsTmpl)
+	resourceT, err := template.New("resource-metadata").Funcs(funcMap).Parse(resourceMetadataTmpl)
 	if err != nil {
 		return nil, err
 	}
-	resActionMapT, err := template.New("resActionMap-code").Funcs(funcMap).Parse(resActionMapTmpl)
+	resActionMapT, err := template.New("resActionMap-metadata").Funcs(funcMap).Parse(resActionMapTmpl)
 	if err != nil {
 		return nil, err
 	}
-	return &CmdsWriter{
+	return &MetadataWriter{
 		headerTmpl:       headerT,
 		resourceTmpl:     resourceT,
 		resActionMapTmpl: resActionMapT,
@@ -46,12 +46,12 @@ func NewCmdsWriter() (*CmdsWriter, error) {
 }
 
 // Write header text
-func (c *CmdsWriter) WriteHeader(w io.Writer) error {
+func (c *MetadataWriter) WriteHeader(w io.Writer) error {
 	return c.headerTmpl.Execute(w, nil)
 }
 
 // Write commands
-func (c *CmdsWriter) WriteCommands(d *ApiDescriptor, w io.Writer) error {
+func (c *MetadataWriter) WriteMetadata(d *ApiDescriptor, w io.Writer) error {
 	var resources = make([]*Resource, len(d.ResourceNames))
 	for i, n := range d.ResourceNames {
 		resources[i] = d.Resources[n]
@@ -60,7 +60,7 @@ func (c *CmdsWriter) WriteCommands(d *ApiDescriptor, w io.Writer) error {
 }
 
 // Write resource to actions map
-func (c *CmdsWriter) WriteResourceActionMap(d *ApiDescriptor, w io.Writer) error {
+func (c *MetadataWriter) WriteResourceActionMap(d *ApiDescriptor, w io.Writer) error {
 	return c.resActionMapTmpl.Execute(w, d)
 }
 
@@ -118,7 +118,7 @@ func flagType(param *ActionParam) string {
 }
 
 //
-const headerCmdsTmpl = `//************************************************************************//
+const headerMetadataTmpl = `//************************************************************************//
 //                     rsc - RightScale API 1.5 command line tool
 //
 {{comment "Generated " (now.Format "Jan 2, 2006 at 3:04pm (PST)")}}
@@ -133,29 +133,29 @@ package rsapi15
 import (
 	"regexp"
 
-	"github.com/rightscale/rsc/cmds"
+	"github.com/rightscale/rsc/metadata"
 )
 
 `
 
-const resourceCmdsTmpl = `{{define "action"}}` + actionCmdTmpl + `{{end}}// API 1.5 resource commands
-// Each command contains sub-commands for all resource actions
-var commands = map[string]*cmds.ResourceCmd{ {{range .}}
-	"{{.Name}}": &cmds.ResourceCmd{
+const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}// API 1.5 resource commands
+// API metadata, consists of a map of resource name to resource metadata.
+var api_metadata = map[string]*metadata.Resource{ {{range .}}
+	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
 		Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
-		Actions: []*cmds.ActionCmd{ {{range .Actions}}
+		Actions: []*metadata.Action{ {{range .Actions}}
 		{{template "action" .}}{{end}}
 		},
 	},{{end}}
 }
 `
 
-const actionCmdTmpl = `&cmds.ActionCmd {
+const actionMetadataTmpl = `&metadata.Action {
 				Name: "{{.Name}}",
 				Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
-				Flags: []*cmds.ActionFlag{ {{range .LeafParams}}
-					&cmds.ActionFlag{
+				Params: []*metadata.ActionParam{ {{range .LeafParams}}
+					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
 						Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
 						Type: "{{flagType .}}",
@@ -165,8 +165,8 @@ const actionCmdTmpl = `&cmds.ActionCmd {
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
 				},
-				PathPatterns: []*cmds.PathPattern{ {{range .PathPatterns}}
-					&cmds.PathPattern{
+				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
+					&metadata.PathPattern{
 						Pattern: "{{.Pattern}}",
 						Variables: []string{"{{join .Variables "\", \""}}"},
 						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),

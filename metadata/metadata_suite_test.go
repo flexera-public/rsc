@@ -1,4 +1,4 @@
-package cmds_test
+package metadata_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestCmds(t *testing.T) {
+func TestMetadata(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Cmds Suite")
+	RunSpecs(t, "Metadata Suite")
 }

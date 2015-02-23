@@ -1,18 +1,9 @@
-// This package contains types that are shared between the main rsc package and all API clients.
-// It contains types that are needed for command line parsing.
-package cmds
-
-import "gopkg.in/alecthomas/kingpin.v1"
-
-// Common interface between main rsc package and API client packages that makes it possible for
-// client packages to register command line arguments.
-// Note that both the kingpin *Application and *CmdClause types are arg providers.
-type CommandProvider interface {
-	Command(name, help string) *kingpin.CmdClause
-}
+package cmd
 
 // Command and top level flags
 // API clients register additional sub-commands with their own flags
+// This data structure is created by rsc and given to each API client command line tool for
+// processing.
 type CommandLine struct {
 	Command             string // Command to be run (e.g. "api15 index")
 	ConfigPath          string // Path to rsc config file, defaults to $HOME/.rsc

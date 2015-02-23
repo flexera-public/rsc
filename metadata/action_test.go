@@ -1,29 +1,29 @@
-package cmds_test
+package metadata_test
 
 import (
 	"regexp"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc/cmds"
+	"github.com/rightscale/rsc/metadata"
 )
 
-var _ = Describe("ActionCmd", func() {
+var _ = Describe("Action", func() {
 
 	Context("PathPattern Substitute", func() {
 		var (
 			// In
-			pattern   *cmds.PathPattern
-			variables []*cmds.PathVariable
+			pattern   *metadata.PathPattern
+			variables []*metadata.PathVariable
 
 			// Out
 			path  string
 			names []string
 
 			// Test data
-			a = cmds.PathVariable{"a", "1"}
-			b = cmds.PathVariable{"b", "2"}
-			c = cmds.PathVariable{"c", "3"}
+			a = metadata.PathVariable{"a", "1"}
+			b = metadata.PathVariable{"b", "2"}
+			c = metadata.PathVariable{"c", "3"}
 		)
 
 		JustBeforeEach(func() {
@@ -37,8 +37,8 @@ var _ = Describe("ActionCmd", func() {
 			)
 
 			BeforeEach(func() {
-				variables = []*cmds.PathVariable{&a, &b, &c}
-				pattern = &cmds.PathPattern{p, []string{}, r}
+				variables = []*metadata.PathVariable{&a, &b, &c}
+				pattern = &metadata.PathPattern{p, []string{}, r}
 			})
 
 			It("returns the pattern as is", func() {
@@ -55,8 +55,8 @@ var _ = Describe("ActionCmd", func() {
 			)
 
 			BeforeEach(func() {
-				variables = []*cmds.PathVariable{&a, &b, &c}
-				pattern = &cmds.PathPattern{p, []string{"a"}, r}
+				variables = []*metadata.PathVariable{&a, &b, &c}
+				pattern = &metadata.PathPattern{p, []string{"a"}, r}
 			})
 
 			It("returns the substituted pattern with the matched variables", func() {
@@ -73,8 +73,8 @@ var _ = Describe("ActionCmd", func() {
 			)
 
 			BeforeEach(func() {
-				variables = []*cmds.PathVariable{&a, &b, &c}
-				pattern = &cmds.PathPattern{p, []string{"a", "d"}, r}
+				variables = []*metadata.PathVariable{&a, &b, &c}
+				pattern = &metadata.PathPattern{p, []string{"a", "d"}, r}
 			})
 
 			It("returns an empty string and the unmatched variables", func() {
@@ -87,8 +87,8 @@ var _ = Describe("ActionCmd", func() {
 	Context("Action Url", func() {
 		var (
 			// In
-			action    *cmds.ActionCmd
-			variables []*cmds.PathVariable
+			action    *metadata.Action
+			variables []*metadata.PathVariable
 
 			// Out
 			url string
@@ -96,10 +96,10 @@ var _ = Describe("ActionCmd", func() {
 
 			// Test data
 			prefix = "/a/path/pattern/with/one/"
-			p1     = &cmds.PathPattern{prefix + "%s", []string{"a"}, nil}
-			p2     = &cmds.PathPattern{"%s%s", []string{"a", "b"}, nil}
-			a      = cmds.PathVariable{"a", "1"}
-			b      = cmds.PathVariable{"b", "2"}
+			p1     = &metadata.PathPattern{prefix + "%s", []string{"a"}, nil}
+			p2     = &metadata.PathPattern{"%s%s", []string{"a", "b"}, nil}
+			a      = metadata.PathVariable{"a", "1"}
+			b      = metadata.PathVariable{"b", "2"}
 		)
 
 		JustBeforeEach(func() {
@@ -108,10 +108,10 @@ var _ = Describe("ActionCmd", func() {
 
 		Context("with a single matching pattern", func() {
 			BeforeEach(func() {
-				action = &cmds.ActionCmd{
-					PathPatterns: []*cmds.PathPattern{p1},
+				action = &metadata.Action{
+					PathPatterns: []*metadata.PathPattern{p1},
 				}
-				variables = []*cmds.PathVariable{&a}
+				variables = []*metadata.PathVariable{&a}
 			})
 
 			It("returns the URL", func() {
@@ -122,10 +122,10 @@ var _ = Describe("ActionCmd", func() {
 
 		Context("with a multiple matching pattern", func() {
 			BeforeEach(func() {
-				action = &cmds.ActionCmd{
-					PathPatterns: []*cmds.PathPattern{p1, p2},
+				action = &metadata.Action{
+					PathPatterns: []*metadata.PathPattern{p1, p2},
 				}
-				variables = []*cmds.PathVariable{&a, &b}
+				variables = []*metadata.PathVariable{&a, &b}
 			})
 
 			It("returns the URL that matches the most variables", func() {
@@ -136,10 +136,10 @@ var _ = Describe("ActionCmd", func() {
 
 		Context("with the reverse matching pattern", func() {
 			BeforeEach(func() {
-				action = &cmds.ActionCmd{
-					PathPatterns: []*cmds.PathPattern{p2, p1},
+				action = &metadata.Action{
+					PathPatterns: []*metadata.PathPattern{p2, p1},
 				}
-				variables = []*cmds.PathVariable{&a, &b}
+				variables = []*metadata.PathVariable{&a, &b}
 			})
 
 			It("returns the URL that matches the most variables", func() {
@@ -150,10 +150,10 @@ var _ = Describe("ActionCmd", func() {
 
 		Context("with no matching pattern", func() {
 			BeforeEach(func() {
-				action = &cmds.ActionCmd{
-					PathPatterns: []*cmds.PathPattern{p2},
+				action = &metadata.Action{
+					PathPatterns: []*metadata.PathPattern{p2},
 				}
-				variables = []*cmds.PathVariable{&a}
+				variables = []*metadata.PathVariable{&a}
 			})
 
 			It("returns an error", func() {

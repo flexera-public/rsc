@@ -11,43 +11,39 @@ import (
 	"github.com/rightscale/rsc/generators/text"
 )
 
-// CodeWriter struct exposes methods to generate the go API client code
-type CodeWriter struct {
+// ClientWriter struct exposes methods to generate the go API client code
+type ClientWriter struct {
 	headerTmpl    *template.Template
 	resourceTmpl  *template.Template
 	actionMapTmpl *template.Template
 }
 
-// Code writer factory
-func NewCodeWriter() (*CodeWriter, error) {
+// Client writer factory
+func NewClientWriter() (*ClientWriter, error) {
 	funcMap := template.FuncMap{
 		"comment":         comment,
 		"now":             time.Now,
-		"join":            strings.Join,
 		"commandLine":     commandLine,
 		"parameters":      parameters,
-		"joinParams":      joinParams,
 		"paramsAsPayload": paramsAsPayload,
 		"isPointer":       isPointer,
-		"isArray":         isArray,
 		"blankCondition":  blankCondition,
 		"toVerb":          toVerb,
 		"stripStar":       stripStar,
-		"toHelp":          toHelp,
 	}
-	headerT, err := template.New("header-code").Funcs(funcMap).Parse(headerTmpl)
+	headerT, err := template.New("header-client").Funcs(funcMap).Parse(headerTmpl)
 	if err != nil {
 		return nil, err
 	}
-	resourceT, err := template.New("resource-code").Funcs(funcMap).Parse(resourceTmpl)
+	resourceT, err := template.New("resource-client").Funcs(funcMap).Parse(resourceTmpl)
 	if err != nil {
 		return nil, err
 	}
-	actionMapT, err := template.New("actionMap-code").Parse(actionMapTmpl)
+	actionMapT, err := template.New("actionMap-client").Parse(actionMapTmpl)
 	if err != nil {
 		return nil, err
 	}
-	return &CodeWriter{
+	return &ClientWriter{
 		headerTmpl:    headerT,
 		resourceTmpl:  resourceT,
 		actionMapTmpl: actionMapT,
@@ -55,22 +51,22 @@ func NewCodeWriter() (*CodeWriter, error) {
 }
 
 // Write header text
-func (c *CodeWriter) WriteHeader(w io.Writer) error {
+func (c *ClientWriter) WriteHeader(w io.Writer) error {
 	return c.headerTmpl.Execute(w, nil)
 }
 
 // Write resource header
-func (c *CodeWriter) WriteResourceHeader(name string, w io.Writer) {
+func (c *ClientWriter) WriteResourceHeader(name string, w io.Writer) {
 	fmt.Fprintf(w, "/******  %s ******/\n\n", name)
 }
 
 // Write separator between resources and data types
-func (c *CodeWriter) WriteTypeSectionHeader(w io.Writer) {
+func (c *ClientWriter) WriteTypeSectionHeader(w io.Writer) {
 	fmt.Fprintln(w, "\n/****** Parameter Data Types ******/\n\n")
 }
 
 // Write type declaration for resource action arguments
-func (c *CodeWriter) WriteType(o *ObjectDataType, w io.Writer) {
+func (c *ClientWriter) WriteType(o *ObjectDataType, w io.Writer) {
 	var fields = make([]string, len(o.Fields))
 	for i, f := range o.Fields {
 		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.VarName),
@@ -82,12 +78,12 @@ func (c *CodeWriter) WriteType(o *ObjectDataType, w io.Writer) {
 }
 
 // Write code for a resource
-func (c *CodeWriter) WriteResource(resource *Resource, w io.Writer) error {
+func (c *ClientWriter) WriteResource(resource *Resource, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
 }
 
 // Write action map
-func (c *CodeWriter) WriteActionMap(a ActionMap, w io.Writer) error {
+func (c *ClientWriter) WriteActionMap(a ActionMap, w io.Writer) error {
 	return c.actionMapTmpl.Execute(w, a)
 }
 
@@ -119,15 +115,6 @@ func parameters(a *Action) string {
 	return strings.Join(params, ", ")
 }
 
-// Serialize action parameter names
-func joinParams(p []*ActionParam) string {
-	var params = make([]string, len(p))
-	for i, param := range p {
-		params[i] = fmt.Sprintf("%s %s", param.Name, param.Signature())
-	}
-	return strings.Join(params, ", ")
-}
-
 // Create map out of parameter names
 func paramsAsPayload(p []*ActionParam) string {
 	if len(p) == 0 {
@@ -152,11 +139,6 @@ func paramsAsPayload(p []*ActionParam) string {
 // Return true if signature contains pointer, false otherwise
 func isPointer(sig string) bool {
 	return strings.HasPrefix(sig, "*")
-}
-
-// Return true if signature contains an array, false otherwise
-func isArray(sig string) bool {
-	return strings.HasPrefix(sig, "[]")
 }
 
 // Command line used to run tool
@@ -221,7 +203,7 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/cmds"
+	"github.com/rightscale/rsc/metadata"
 )
 
 // Helper function that merges optional parameters into payload
@@ -239,11 +221,11 @@ func mergeOptionals(params, options ApiParams) ApiParams {
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (string, error) {
-	var res, ok = commands[rName]
+	var res, ok = api_metadata[rName]
 	if !ok {
 		return "", fmt.Errorf("No resource with name '%s'", rName)
 	}
-	var action *cmds.ActionCmd
+	var action *metadata.Action
 	for _, a := range res.Actions {
 		if a.Name == aName {
 			action = a
@@ -270,6 +252,7 @@ type {{.Name}} struct { {{range .Attributes}}
 {{end}}
 {{if .Actions}}
 //===== Locator
+
 // {{.Name}} resource locator, exposes resource actions.
 type {{.Name}}Locator struct {
 	UrlResolver

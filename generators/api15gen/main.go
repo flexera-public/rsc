@@ -52,20 +52,20 @@ func main() {
 	analyzer := NewApiAnalyzer(apiData, attributes)
 	descriptor := analyzer.Analyze()
 
-	// 3. Write codegen.go
-	check(generateCode(descriptor, path.Join(destDir, "codegen.go")))
+	// 3. Write codegen_client.go
+	check(generateClient(descriptor, path.Join(destDir, "codegen_client.go")))
 
-	// 4. Write codegen_cmds.go
-	check(generateCmds(descriptor, path.Join(destDir, "codegen_cmds.go")))
+	// 4. Write codegen_metadata.go
+	check(generateMetadata(descriptor, path.Join(destDir, "codegen_metadata.go")))
 }
 
 // Generate API client code, drives the code writer.
-func generateCode(descriptor *ApiDescriptor, codegen string) error {
+func generateClient(descriptor *ApiDescriptor, codegen string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
 	}
-	c, err := NewCodeWriter()
+	c, err := NewClientWriter()
 	if err != nil {
 		return err
 	}
@@ -84,28 +84,28 @@ func generateCode(descriptor *ApiDescriptor, codegen string) error {
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("Failed to format generated code:\n%s", o)
+		return fmt.Errorf("Failed to format generated client code:\n%s", o)
 	}
 	return nil
 }
 
-// Generate kingpin subcommands, drives the cmd writer.
-func generateCmds(descriptor *ApiDescriptor, codegen string) error {
+// Generate API metadata, drives the metadata writer.
+func generateMetadata(descriptor *ApiDescriptor, codegen string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
 	}
-	c, err := NewCmdsWriter()
+	c, err := NewMetadataWriter()
 	if err != nil {
 		return err
 	}
 	check(c.WriteHeader(f))
-	check(c.WriteCommands(descriptor, f))
+	check(c.WriteMetadata(descriptor, f))
 	check(c.WriteResourceActionMap(descriptor, f))
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("Failed to format generated commands:\n%s", o)
+		return fmt.Errorf("Failed to format generated metadata code:\n%s", o)
 	}
 	return nil
 }

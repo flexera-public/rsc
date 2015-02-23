@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 22, 2015 at 12:32am (PST)
+// Generated Feb 23, 2015 at 11:05am (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -16,7 +16,7 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/cmds"
+	"github.com/rightscale/rsc/metadata"
 )
 
 // Helper function that merges optional parameters into payload
@@ -34,11 +34,11 @@ func mergeOptionals(params, options ApiParams) ApiParams {
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (string, error) {
-	var res, ok = commands[rName]
+	var res, ok = api_metadata[rName]
 	if !ok {
 		return "", fmt.Errorf("No resource with name '%s'", rName)
 	}
-	var action *cmds.ActionCmd
+	var action *metadata.Action
 	for _, a := range res.Actions {
 		if a.Name == aName {
 			action = a
@@ -67,6 +67,7 @@ type Account struct {
 }
 
 //===== Locator
+
 // Account resource locator, exposes resource actions.
 type AccountLocator struct {
 	UrlResolver
@@ -115,6 +116,7 @@ type AccountGroup struct {
 }
 
 //===== Locator
+
 // AccountGroup resource locator, exposes resource actions.
 type AccountGroupLocator struct {
 	UrlResolver
@@ -191,6 +193,7 @@ type Alert struct {
 }
 
 //===== Locator
+
 // Alert resource locator, exposes resource actions.
 type AlertLocator struct {
 	UrlResolver
@@ -353,6 +356,7 @@ type AlertSpec struct {
 }
 
 //===== Locator
+
 // AlertSpec resource locator, exposes resource actions.
 type AlertSpecLocator struct {
 	UrlResolver
@@ -505,6 +509,7 @@ type AuditEntry struct {
 }
 
 //===== Locator
+
 // AuditEntry resource locator, exposes resource actions.
 type AuditEntryLocator struct {
 	UrlResolver
@@ -702,6 +707,7 @@ type Backup struct {
 }
 
 //===== Locator
+
 // Backup resource locator, exposes resource actions.
 type BackupLocator struct {
 	UrlResolver
@@ -919,6 +925,7 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 /******  ChildAccount ******/
 
 //===== Locator
+
 // ChildAccount resource locator, exposes resource actions.
 type ChildAccountLocator struct {
 	UrlResolver
@@ -1019,6 +1026,7 @@ type Cloud struct {
 }
 
 //===== Locator
+
 // Cloud resource locator, exposes resource actions.
 type CloudLocator struct {
 	UrlResolver
@@ -1091,6 +1099,7 @@ type CloudAccount struct {
 }
 
 //===== Locator
+
 // CloudAccount resource locator, exposes resource actions.
 type CloudAccountLocator struct {
 	UrlResolver
@@ -1210,6 +1219,7 @@ type Cookbook struct {
 }
 
 //===== Locator
+
 // Cookbook resource locator, exposes resource actions.
 type CookbookLocator struct {
 	UrlResolver
@@ -1363,6 +1373,7 @@ type CookbookAttachment struct {
 }
 
 //===== Locator
+
 // CookbookAttachment resource locator, exposes resource actions.
 type CookbookAttachmentLocator struct {
 	UrlResolver
@@ -1530,6 +1541,7 @@ type Credential struct {
 }
 
 //===== Locator
+
 // Credential resource locator, exposes resource actions.
 type CredentialLocator struct {
 	UrlResolver
@@ -1668,6 +1680,7 @@ type Datacenter struct {
 }
 
 //===== Locator
+
 // Datacenter resource locator, exposes resource actions.
 type DatacenterLocator struct {
 	UrlResolver
@@ -1744,6 +1757,7 @@ type Deployment struct {
 }
 
 //===== Locator
+
 // Deployment resource locator, exposes resource actions.
 type DeploymentLocator struct {
 	UrlResolver
@@ -1940,6 +1954,7 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 /******  HealthCheck ******/
 
 //===== Locator
+
 // HealthCheck resource locator, exposes resource actions.
 type HealthCheckLocator struct {
 	UrlResolver
@@ -1990,6 +2005,7 @@ type IdentityProvider struct {
 }
 
 //===== Locator
+
 // IdentityProvider resource locator, exposes resource actions.
 type IdentityProviderLocator struct {
 	UrlResolver
@@ -2071,6 +2087,7 @@ type Image struct {
 }
 
 //===== Locator
+
 // Image resource locator, exposes resource actions.
 type ImageLocator struct {
 	UrlResolver
@@ -2145,6 +2162,7 @@ type Input struct {
 }
 
 //===== Locator
+
 // Input resource locator, exposes resource actions.
 type InputLocator struct {
 	UrlResolver
@@ -2306,6 +2324,7 @@ type Instance struct {
 }
 
 //===== Locator
+
 // Instance resource locator, exposes resource actions.
 type InstanceLocator struct {
 	UrlResolver
@@ -2663,6 +2682,7 @@ type InstanceCustomLodgement struct {
 }
 
 //===== Locator
+
 // InstanceCustomLodgement resource locator, exposes resource actions.
 type InstanceCustomLodgementLocator struct {
 	UrlResolver
@@ -2807,6 +2827,7 @@ type InstanceType struct {
 }
 
 //===== Locator
+
 // InstanceType resource locator, exposes resource actions.
 type InstanceTypeLocator struct {
 	UrlResolver
@@ -2882,6 +2903,7 @@ type IpAddress struct {
 }
 
 //===== Locator
+
 // IpAddress resource locator, exposes resource actions.
 type IpAddressLocator struct {
 	UrlResolver
@@ -3017,6 +3039,7 @@ type IpAddressBinding struct {
 }
 
 //===== Locator
+
 // IpAddressBinding resource locator, exposes resource actions.
 type IpAddressBindingLocator struct {
 	UrlResolver
@@ -3138,6 +3161,7 @@ type MonitoringMetric struct {
 }
 
 //===== Locator
+
 // MonitoringMetric resource locator, exposes resource actions.
 type MonitoringMetricLocator struct {
 	UrlResolver
@@ -3258,6 +3282,7 @@ type MultiCloudImage struct {
 }
 
 //===== Locator
+
 // MultiCloudImage resource locator, exposes resource actions.
 type MultiCloudImageLocator struct {
 	UrlResolver
@@ -3435,6 +3460,7 @@ type MultiCloudImageSetting struct {
 }
 
 //===== Locator
+
 // MultiCloudImageSetting resource locator, exposes resource actions.
 type MultiCloudImageSettingLocator struct {
 	UrlResolver
@@ -3570,6 +3596,7 @@ type Network struct {
 }
 
 //===== Locator
+
 // Network resource locator, exposes resource actions.
 type NetworkLocator struct {
 	UrlResolver
@@ -3706,6 +3733,7 @@ type NetworkGateway struct {
 }
 
 //===== Locator
+
 // NetworkGateway resource locator, exposes resource actions.
 type NetworkGatewayLocator struct {
 	UrlResolver
@@ -3847,6 +3875,7 @@ type NetworkOptionGroup struct {
 }
 
 //===== Locator
+
 // NetworkOptionGroup resource locator, exposes resource actions.
 type NetworkOptionGroupLocator struct {
 	UrlResolver
@@ -3987,6 +4016,7 @@ type NetworkOptionGroupAttachment struct {
 }
 
 //===== Locator
+
 // NetworkOptionGroupAttachment resource locator, exposes resource actions.
 type NetworkOptionGroupAttachmentLocator struct {
 	UrlResolver
@@ -4137,6 +4167,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 // http://tools.ietf.org/html/draft-ietf-oauth-v2-23
 
 //===== Locator
+
 // Oauth2 resource locator, exposes resource actions.
 type Oauth2Locator struct {
 	UrlResolver
@@ -4213,6 +4244,7 @@ type Permission struct {
 }
 
 //===== Locator
+
 // Permission resource locator, exposes resource actions.
 type PermissionLocator struct {
 	UrlResolver
@@ -4342,6 +4374,7 @@ type PlacementGroup struct {
 }
 
 //===== Locator
+
 // PlacementGroup resource locator, exposes resource actions.
 type PlacementGroupLocator struct {
 	UrlResolver
@@ -4457,6 +4490,7 @@ type Preference struct {
 }
 
 //===== Locator
+
 // Preference resource locator, exposes resource actions.
 type PreferenceLocator struct {
 	UrlResolver
@@ -4572,6 +4606,7 @@ type Publication struct {
 }
 
 //===== Locator
+
 // Publication resource locator, exposes resource actions.
 type PublicationLocator struct {
 	UrlResolver
@@ -4668,6 +4703,7 @@ type PublicationLineage struct {
 }
 
 //===== Locator
+
 // PublicationLineage resource locator, exposes resource actions.
 type PublicationLineageLocator struct {
 	UrlResolver
@@ -4723,6 +4759,7 @@ type RecurringVolumeAttachment struct {
 }
 
 //===== Locator
+
 // RecurringVolumeAttachment resource locator, exposes resource actions.
 type RecurringVolumeAttachmentLocator struct {
 	UrlResolver
@@ -4857,6 +4894,7 @@ type Repository struct {
 }
 
 //===== Locator
+
 // Repository resource locator, exposes resource actions.
 type RepositoryLocator struct {
 	UrlResolver
@@ -5122,6 +5160,7 @@ type RepositoryAsset struct {
 }
 
 //===== Locator
+
 // RepositoryAsset resource locator, exposes resource actions.
 type RepositoryAssetLocator struct {
 	UrlResolver
@@ -5208,6 +5247,7 @@ type RightScript struct {
 }
 
 //===== Locator
+
 // RightScript resource locator, exposes resource actions.
 type RightScriptLocator struct {
 	UrlResolver
@@ -5356,6 +5396,7 @@ type Route struct {
 }
 
 //===== Locator
+
 // Route resource locator, exposes resource actions.
 type RouteLocator struct {
 	UrlResolver
@@ -5496,6 +5537,7 @@ type RouteTable struct {
 }
 
 //===== Locator
+
 // RouteTable resource locator, exposes resource actions.
 type RouteTableLocator struct {
 	UrlResolver
@@ -5635,6 +5677,7 @@ type RunnableBinding struct {
 }
 
 //===== Locator
+
 // RunnableBinding resource locator, exposes resource actions.
 type RunnableBindingLocator struct {
 	UrlResolver
@@ -5777,6 +5820,7 @@ type SecurityGroup struct {
 }
 
 //===== Locator
+
 // SecurityGroup resource locator, exposes resource actions.
 type SecurityGroupLocator struct {
 	UrlResolver
@@ -5901,6 +5945,7 @@ type SecurityGroupRule struct {
 }
 
 //===== Locator
+
 // SecurityGroupRule resource locator, exposes resource actions.
 type SecurityGroupRuleLocator struct {
 	UrlResolver
@@ -6058,6 +6103,7 @@ type Server struct {
 }
 
 //===== Locator
+
 // Server resource locator, exposes resource actions.
 type ServerLocator struct {
 	UrlResolver
@@ -6284,6 +6330,7 @@ type ServerArray struct {
 }
 
 //===== Locator
+
 // ServerArray resource locator, exposes resource actions.
 type ServerArrayLocator struct {
 	UrlResolver
@@ -6516,6 +6563,7 @@ type ServerTemplate struct {
 }
 
 //===== Locator
+
 // ServerTemplate resource locator, exposes resource actions.
 type ServerTemplateLocator struct {
 	UrlResolver
@@ -6826,6 +6874,7 @@ type ServerTemplateMultiCloudImage struct {
 }
 
 //===== Locator
+
 // ServerTemplateMultiCloudImage resource locator, exposes resource actions.
 type ServerTemplateMultiCloudImageLocator struct {
 	UrlResolver
@@ -6960,6 +7009,7 @@ type Session struct {
 }
 
 //===== Locator
+
 // Session resource locator, exposes resource actions.
 type SessionLocator struct {
 	UrlResolver
@@ -7069,6 +7119,7 @@ type SshKey struct {
 }
 
 //===== Locator
+
 // SshKey resource locator, exposes resource actions.
 type SshKeyLocator struct {
 	UrlResolver
@@ -7188,6 +7239,7 @@ type Subnet struct {
 }
 
 //===== Locator
+
 // Subnet resource locator, exposes resource actions.
 type SubnetLocator struct {
 	UrlResolver
@@ -7320,6 +7372,7 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 // For example, you might want to add a tag to an EBS Snapshot or AMI so that you can find it more quickly.
 
 //===== Locator
+
 // Tag resource locator, exposes resource actions.
 type TagLocator struct {
 	UrlResolver
@@ -7483,6 +7536,7 @@ type Task struct {
 }
 
 //===== Locator
+
 // Task resource locator, exposes resource actions.
 type TaskLocator struct {
 	UrlResolver
@@ -7540,6 +7594,7 @@ type User struct {
 }
 
 //===== Locator
+
 // User resource locator, exposes resource actions.
 type UserLocator struct {
 	UrlResolver
@@ -7681,6 +7736,7 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 /******  UserData ******/
 
 //===== Locator
+
 // UserData resource locator, exposes resource actions.
 type UserDataLocator struct {
 	UrlResolver
@@ -7734,6 +7790,7 @@ type Volume struct {
 }
 
 //===== Locator
+
 // Volume resource locator, exposes resource actions.
 type VolumeLocator struct {
 	UrlResolver
@@ -7852,6 +7909,7 @@ type VolumeAttachment struct {
 }
 
 //===== Locator
+
 // VolumeAttachment resource locator, exposes resource actions.
 type VolumeAttachmentLocator struct {
 	UrlResolver
@@ -7986,6 +8044,7 @@ type VolumeSnapshot struct {
 }
 
 //===== Locator
+
 // VolumeSnapshot resource locator, exposes resource actions.
 type VolumeSnapshotLocator struct {
 	UrlResolver
@@ -8108,6 +8167,7 @@ type VolumeType struct {
 }
 
 //===== Locator
+
 // VolumeType resource locator, exposes resource actions.
 type VolumeTypeLocator struct {
 	UrlResolver

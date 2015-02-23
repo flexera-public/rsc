@@ -7,17 +7,25 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rightscale/rsc/cmds"
+	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/metadata"
 )
 
-// Flag values indexed by flag name indexed by command name
-type FlagValues map[string]*cmds.ActionParams
+// Action params consist of href and map of query parameters
+type ActionFlags struct {
+	Href     string   // Resource or collection href
+	Params   []string // Action parameters
+	ShowHelp string   // Whether to list flags supported by resource action
+}
+
+// Flag values indexed by action name indexed by command name
+type FlagValues map[string]*ActionFlags
 
 // Map that holds flag values resulting from command line parsing
 var flagValues = make(FlagValues)
 
 // Register all commands with kinpin application
-func RegisterCommands(api15Cmd cmds.CommandProvider) {
+func RegisterCommands(api15Cmd cmd.CommandProvider) {
 	var actionNames = make([]string, len(actionMap))
 	var i = 0
 	for actionName, _ := range actionMap {
@@ -57,10 +65,10 @@ func RegisterCommands(api15Cmd cmds.CommandProvider) {
 			}
 		}
 		var actionCmd = api15Cmd.Command(action, description)
-		var actionParams = cmds.ActionParams{}
-		actionCmd.Arg("href", "API Resource or resource collection href on which to act, e.g. '/api/servers'").Required().StringVar(&actionParams.Href)
-		actionCmd.Arg("params", "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'").StringsVar(&actionParams.Params)
-		flagValues[actionCmd.FullCommand()] = &actionParams
+		var actionFlags = ActionFlags{}
+		actionCmd.Arg("href", "API Resource or resource collection href on which to act, e.g. '/api/servers'").Required().StringVar(&actionFlags.Href)
+		actionCmd.Arg("params", "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'").StringsVar(&actionFlags.Params)
+		flagValues[actionCmd.FullCommand()] = &actionFlags
 	}
 }
 
@@ -70,12 +78,12 @@ func (a *Api15) ShowHelp(cmd string) error {
 	if err != nil {
 		return err
 	}
-	if len(action.Flags) == 0 {
+	if len(action.Params) == 0 {
 		fmt.Printf("usage: rsc [<flags>] api15 %s %s\n", action.Name, href)
 		return nil
 	}
-	var flagHelp = make([]string, len(action.Flags))
-	for i, f := range action.Flags {
+	var flagHelp = make([]string, len(action.Params))
+	for i, f := range action.Params {
 		var attrs string
 		if f.Mandatory {
 			attrs = "required"
@@ -113,17 +121,17 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 		}
 		var name = elems[0]
 		var value = elems[1]
-		var flag *cmds.ActionFlag
-		for _, f := range action.Flags {
-			if f.Name == name {
-				flag = f
+		var flag *metadata.ActionParam
+		for _, ap := range action.Params {
+			if ap.Name == name {
+				flag = ap
 				break
 			}
 		}
 		if flag == nil {
-			var supported = make([]string, len(action.Flags))
-			for i, f := range action.Flags {
-				supported[i] = f.Name
+			var supported = make([]string, len(action.Params))
+			for i, p := range action.Params {
+				supported[i] = p.Name
 			}
 			return nil, fmt.Errorf("Unknown %s.%s flag '%s'. Supported flags are: %s",
 				resource.Name, action.Name, name, strings.Join(supported, ", "))
@@ -155,10 +163,10 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 			coerced[flag.Name] = val
 		}
 	}
-	for _, f := range action.Flags {
-		_, ok := coerced[f.Name]
-		if f.Mandatory && !ok {
-			return nil, fmt.Errorf("Missing required flag '%s'", f.Name)
+	for _, p := range action.Params {
+		_, ok := coerced[p.Name]
+		if p.Mandatory && !ok {
+			return nil, fmt.Errorf("Missing required flag '%s'", p.Name)
 		}
 	}
 
@@ -166,7 +174,7 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 }
 
 // Parse command and flags and infer resource, action, href and params
-func parseCommandAndFlags(cmd string) (resource *cmds.ResourceCmd, action *cmds.ActionCmd, actionUrl, href string, params []string, err error) {
+func parseCommandAndFlags(cmd string) (resource *metadata.Resource, action *metadata.Action, actionUrl, href string, params []string, err error) {
 	var flags = flagValues[cmd]
 	if flags == nil {
 		err = fmt.Errorf("Invalid command line, try --help.")
@@ -182,8 +190,8 @@ func parseCommandAndFlags(cmd string) (resource *cmds.ResourceCmd, action *cmds.
 			href = "/api/" + href
 		}
 	}
-	var vars []*cmds.PathVariable
-	for _, res := range commands {
+	var vars []*metadata.PathVariable
+	for _, res := range api_metadata {
 		var err error
 		if vars, err = res.ExtractVariables(href); err != nil {
 			resource = res
@@ -219,20 +227,20 @@ func parseCommandAndFlags(cmd string) (resource *cmds.ResourceCmd, action *cmds.
 }
 
 // Validate flag value using validation criteria provided in metadata
-func validateFlagValue(value string, flag *cmds.ActionFlag) error {
-	if flag.Regexp != nil {
-		if !flag.Regexp.MatchString(value) {
+func validateFlagValue(value string, param *metadata.ActionParam) error {
+	if param.Regexp != nil {
+		if !param.Regexp.MatchString(value) {
 			return fmt.Errorf("Invalid value '%s' for '%s', value must validate /%s/",
-				value, flag.Name, flag.Regexp.String())
+				value, param.Name, param.Regexp.String())
 		}
 	}
-	if flag.NonBlank && value == "" {
+	if param.NonBlank && value == "" {
 		return fmt.Errorf("Invalid value for '%s', value must not be blank",
-			flag.Name)
+			param.Name)
 	}
-	if len(flag.ValidValues) > 0 {
+	if len(param.ValidValues) > 0 {
 		var found = false
-		for _, v := range flag.ValidValues {
+		for _, v := range param.ValidValues {
 			if v == value {
 				found = true
 				break
@@ -240,7 +248,7 @@ func validateFlagValue(value string, flag *cmds.ActionFlag) error {
 		}
 		if !found {
 			return fmt.Errorf("Invalid value for '%s', value must be one of %s, value provided was '%s'",
-				flag.Name, strings.Join(flag.ValidValues, ", "), value)
+				param.Name, strings.Join(param.ValidValues, ", "), value)
 		}
 	}
 
