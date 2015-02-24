@@ -1,0 +1,176 @@
+{
+  "description": "        ServerTemplates allow you to pre-configure servers by starting from a\n        base image and adding scripts that run during the boot, operational,\n        and shutdown phases. A ServerTemplate is a description of how a new\n        instance will be configured when it is provisioned by your cloud\n        provider.\n\n        All revisions of a ServerTemplate belong to a ServerTemplate lineage\n        that is exposed by the \"lineage\" attribute. (NOTE: This attribute is\n        merely a string to locate all revisions of a ServerTemplate and NOT a\n        working URL)\n",
+  "media_type": "V1_6::MediaTypes::ServerTemplate",
+  "actions": [
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/server_templates",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::ServerTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::ServerTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "embedded"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "view": "embedded"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/server_templates/:id",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::ServerTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::ServerTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "The identifier of the resource",
+              "required": true,
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "embedded"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": 166,
+          "view": "embedded"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

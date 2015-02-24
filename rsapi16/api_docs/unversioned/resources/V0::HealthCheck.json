@@ -1,0 +1,35 @@
+{
+  "description": null,
+  "media_type": "Praxis::SimpleMediaType",
+  "actions": [
+    {
+      "description": null,
+      "name": "health_check",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/health-check",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "health_check_success": {
+          "description": null,
+          "status": 200,
+          "headers": {
+          }
+        },
+        "health_check_failed": {
+          "description": null,
+          "status": 500,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

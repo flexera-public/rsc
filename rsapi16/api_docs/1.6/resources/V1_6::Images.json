@@ -1,0 +1,216 @@
+{
+  "description": "        Images define the initial Operating System and root disk contents\n        for new instances.\n",
+  "media_type": "V1_6::MediaTypes::Image",
+  "actions": [
+    {
+      "description": "Lists all Images for the given Cloud.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/clouds/:cloud_id/images",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::Image"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::Image"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "cloud_id": {
+              "description": "The identifier of Cloud this resource resides in",
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "filter": {
+              "description": "              Filter images by attribute. A filter takes the form <attribute><operator><value>.\n              <operator> can be either \"=\" or \"!=\". <value> can be comma-separated list of values to\n              express multiple possible values. For example, \"image_type=machine,ramdisk\" finds all\n              images that have \"machine\" and \"ramdisk\" types. Multiple filters must be concatenated with an\n              ampersand (&). For example, \"image_type=machine&visibility=private\" finds all images with\n              type \"machine\" and visibility \"private\". All special characters in the filter must be\n              URL encoded.\n",
+              "example_definition": "image_type!=kernel&visibility=private",
+              "type": {
+                "name": "QueryFilter"
+              }
+            }
+          }
+        },
+        "example": {
+          "cloud_id": 788,
+          "view": "default",
+          "filter": "image_type!=kernel&visibility=private"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1_6::MediaTypes::Image",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "global_session_forbidden": {
+          "description": "      The global session provided in the user's cookie is forbidden.\n",
+          "status": 403,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/images/:id",
+          "version": "1.6"
+        },
+        {
+          "verb": "GET",
+          "path": "/api/clouds/:cloud_id/images/:id",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::Image"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::Image"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "The identifier of the resource",
+              "required": true,
+              "type": {
+                "name": "RsId"
+              }
+            },
+            "cloud_id": {
+              "description": "The identifier of Cloud this resource resides in",
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "JC92VWCT17Y5",
+          "cloud_id": 788,
+          "view": "default"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

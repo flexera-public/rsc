@@ -1,0 +1,96 @@
+{
+  "name": "V1_6::MediaTypes::Subnet::Collection",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "href": {
+      "description": "HREF for the Subnet collection",
+      "example_definition": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "count": {
+      "description": "Number of Subnets in the collection",
+      "type": {
+        "name": "Integer"
+      }
+    }
+  },
+  "views": {
+    "link": {
+      "attributes": {
+        "href": {
+        },
+        "count": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+        "count": 3
+      }
+    },
+    "member_links": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        }
+      },
+      "type": "collection",
+      "example": [
+        {
+          "id": "ADNDQVF3WBXHC",
+          "href": "/api/clouds/1/subnets/ADNDQVF3WBXHC",
+          "name": "Subnet A, public",
+          "kind": "cm#subnet",
+          "legacy_id": 580
+        },
+        {
+          "id": "M9TASGKWKPOAX",
+          "href": "/api/clouds/1/subnets/M9TASGKWKPOAX",
+          "name": "Subnet A, public",
+          "kind": "cm#subnet",
+          "legacy_id": 319
+        },
+        {
+          "id": "C82WBPIVAMVD",
+          "href": "/api/clouds/1/subnets/C82WBPIVAMVD",
+          "name": "Subnet A, public",
+          "kind": "cm#subnet",
+          "legacy_id": 512
+        }
+      ]
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "member_attribute": {
+    "options": {
+      "reference": "V1_6::MediaTypes::Subnet"
+    },
+    "type": {
+      "name": "V1_6::MediaTypes::Subnet",
+      "key": {
+        "type": {
+          "name": "Symbol"
+        }
+      },
+      "attributes": null
+    }
+  },
+  "example": {
+    "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+    "count": 3
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "description": "        An IpAddressBinding represents an abstraction for binding an IpAddress\n        to an instance. The IpAddress is bound immediately for a current\n        instance, or on launch for a next instance.\n",
+  "media_type": "V1_6::MediaTypes::IpAddressBinding",
+  "actions": [
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/ip_address_bindings",
+          "version": "1.6"
+        },
+        {
+          "verb": "GET",
+          "path": "/api/clouds/:cloud_id/ip_address_bindings",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::IpAddressBinding"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::IpAddressBinding"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "cloud_id": {
+              "description": "The identifier of Cloud this resource resides in",
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "cloud_id": 51,
+          "view": "default"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/ip_address_bindings/:id",
+          "version": "1.6"
+        },
+        {
+          "verb": "GET",
+          "path": "/api/clouds/:cloud_id/ip_address_bindings/:id",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::IpAddressBinding"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::IpAddressBinding"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "The identifier of the resource",
+              "required": true,
+              "type": {
+                "name": "RsId"
+              }
+            },
+            "cloud_id": {
+              "description": "The identifier of Cloud this resource resides in",
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "R7MEDM7H23J",
+          "cloud_id": 51,
+          "view": "default"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

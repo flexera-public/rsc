@@ -1,0 +1,212 @@
+{
+  "name": "V1_6::MediaTypes::InstanceType",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "InstanceType ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "legacy_id": {
+      "description": "InstanceType ID used in the legacy platform",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "InstanceType HREF",
+      "example_definition": "#<Proc:0x007f8ff68a7ce8@/Users/raphael/src/right_api_16/design/v1_6/media_types/instance_type.rb:15>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "name": {
+      "description": "Name of the InstanceType",
+      "example_definition": "c1.medium",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the InstanceType",
+      "example_definition": "High-CPU Medium",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#instance_type\"",
+      "values": [
+        "cm#instance_type"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "memory": {
+      "description": "Amount of memory the InstanceType has",
+      "example_definition": "1.7 GB",
+      "type": {
+        "name": "String"
+      }
+    },
+    "cpu_speed": {
+      "description": "CPU speed of the InstanceType",
+      "example_definition": "5 EC2 Compute Units",
+      "type": {
+        "name": "String"
+      }
+    },
+    "cpu_count": {
+      "description": "Number of CPUs the InstanceType has",
+      "example_definition": "2",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V1_6::MediaTypes::InstanceType"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::InstanceType::Links",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "cloud": {
+            "description": "Link to the Cloud supporting the InstanceType",
+            "options": {
+              "reference": "V1_6::MediaTypes::Cloud"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Cloud",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          }
+        },
+        "views": {
+          "master": {
+            "attributes": {
+              "cloud": {
+                "view": "master"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "cloud": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "memory": {
+        },
+        "cpu_speed": {
+        },
+        "cpu_count": {
+        },
+        "links": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "9DWPTL9VIDMU",
+        "legacy_id": 696,
+        "href": "/api/clouds/1/instance_types/9DWPTL9VIDMU",
+        "name": "c1.medium",
+        "description": "High-CPU Medium",
+        "kind": "cm#instance_type",
+        "memory": "1.7 GB",
+        "cpu_speed": "5 EC2 Compute Units",
+        "cpu_count": 2,
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "9DWPTL9VIDMU",
+        "href": "/api/clouds/1/instance_types/9DWPTL9VIDMU",
+        "name": "c1.medium",
+        "kind": "cm#instance_type",
+        "legacy_id": 696
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.instance_type",
+  "description": "Represents an InstanceType resource",
+  "example": {
+    "id": "9DWPTL9VIDMU",
+    "legacy_id": 696,
+    "href": "/api/clouds/1/instance_types/9DWPTL9VIDMU",
+    "name": "c1.medium",
+    "description": "High-CPU Medium",
+    "kind": "cm#instance_type",
+    "memory": "1.7 GB",
+    "cpu_speed": "5 EC2 Compute Units",
+    "cpu_count": 2,
+    "links": {
+      "cloud": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      }
+    }
+  }
+}

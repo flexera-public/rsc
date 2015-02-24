@@ -1,0 +1,174 @@
+{
+  "description": "        Just like their physical counterparts, NetworkInterfaces join other\n        resources to a network.\n",
+  "media_type": "V1_6::MediaTypes::NetworkInterface",
+  "actions": [
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/network_interfaces",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::NetworkInterface"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::NetworkInterface"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "view": "default"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/network_interfaces/:id",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::NetworkInterface"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::NetworkInterface"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "The identifier of the resource",
+              "required": true,
+              "type": {
+                "name": "RsId"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "MYE0SIN8YXKF",
+          "view": "default"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

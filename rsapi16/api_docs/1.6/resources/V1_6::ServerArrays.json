@@ -1,0 +1,178 @@
+{
+  "description": "        A server array represents a logical group of instances and allows to\n        resize(grow/shrink) that group based on certain elasticity parameters.\n\n        A server array just like a server always has a next_instance\n        association, which will define the configuration to apply when a new\n        instance is launched. But unlike a server which has a current_instance\n        relationship, the server array has a current_instances relationship\n        that gives the information about all the running instances in the\n        array.  Changes to the next_instance association prepares the\n        configuration for the next instance that is to be launched in the array\n        and will therefore not affect any of the currently running instances.\n",
+  "media_type": "V1_6::MediaTypes::ServerArray",
+  "actions": [
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/server_arrays",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::ServerArray"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::ServerArray"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "full"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "view": "extended"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/server_arrays/:id",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::ServerArray"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::ServerArray"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "The identifier of the resource",
+              "required": true,
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "full"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": 643,
+          "view": "extended"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "name": "V1_6::MediaTypes::Datacenter",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Datacenter ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "legacy_id": {
+      "description": "Datacenter ID used in the legacy platform",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "Datacenter HREF",
+      "example_definition": "#<Proc:0x007f8ff5900e98@/Users/raphael/src/right_api_16/design/v1_6/media_types/datacenter.rb:15>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "name": {
+      "description": "Name of the Datacenter",
+      "example_definition": "us-east-1b",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the Datacenter",
+      "example_definition": "us-east-1b zone in us-east-1 region",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#datacenter\"",
+      "values": [
+        "cm#datacenter"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V1_6::MediaTypes::Datacenter"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Datacenter::Links",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "cloud": {
+            "description": "Link to the Cloud where the Datacenter exists",
+            "options": {
+              "reference": "V1_6::MediaTypes::Cloud"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Cloud",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          }
+        },
+        "views": {
+          "master": {
+            "attributes": {
+              "cloud": {
+                "view": "master"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "cloud": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "links": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "JLC6PYPYQMKCL",
+        "legacy_id": 245,
+        "href": "/api/clouds/1/datacenters/JLC6PYPYQMKCL",
+        "name": "us-east-1b",
+        "description": "us-east-1b zone in us-east-1 region",
+        "kind": "cm#datacenter",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "legacy_id": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "JLC6PYPYQMKCL",
+        "href": "/api/clouds/1/datacenters/JLC6PYPYQMKCL",
+        "name": "us-east-1b",
+        "legacy_id": 245,
+        "kind": "cm#datacenter"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.datacenter",
+  "description": "Represents a Datacenter resource",
+  "example": {
+    "id": "JLC6PYPYQMKCL",
+    "legacy_id": 245,
+    "href": "/api/clouds/1/datacenters/JLC6PYPYQMKCL",
+    "name": "us-east-1b",
+    "description": "us-east-1b zone in us-east-1 region",
+    "kind": "cm#datacenter",
+    "links": {
+      "cloud": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      }
+    }
+  }
+}

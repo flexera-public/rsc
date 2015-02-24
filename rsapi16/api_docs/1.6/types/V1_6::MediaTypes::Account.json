@@ -1,0 +1,88 @@
+{
+  "name": "V1_6::MediaTypes::Account",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Account ID",
+      "example_definition": "123",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "Account HREF",
+      "example_definition": "#<Proc:0x007f8ff5931520@/Users/raphael/src/right_api_16/design/v1_6/media_types/account.rb:13>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "name": {
+      "description": "Account name",
+      "example_definition": "TestAccount",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#account\"",
+      "values": [
+        "cm#account"
+      ],
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 123,
+        "href": "/api/accounts/123",
+        "name": "TestAccount",
+        "kind": "cm#account"
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 123,
+        "href": "/api/accounts/123",
+        "name": "TestAccount",
+        "kind": "cm#account"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.account",
+  "description": "Represents an Account resource",
+  "example": {
+    "id": 123,
+    "href": "/api/accounts/123",
+    "name": "TestAccount",
+    "kind": "cm#account"
+  }
+}

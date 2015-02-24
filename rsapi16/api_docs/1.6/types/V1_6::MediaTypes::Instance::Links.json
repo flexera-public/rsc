@@ -1,0 +1,279 @@
+{
+  "name": "V1_6::MediaTypes::Instance::Links",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "image": {
+      "description": "Link to the Image used by the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::Image"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Image",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "multi_cloud_image": {
+      "description": "Link to the MultiCloudImage used by the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::MultiCloudImage"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::MultiCloudImage",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "deployment": {
+      "description": "Link to the Deployment where the Instance exists",
+      "options": {
+        "reference": "V1_6::MediaTypes::Deployment"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Deployment",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "ssh_key": {
+      "description": "Link to the SshKey used by the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::SshKey"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::SshKey",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "security_groups": {
+      "description": "Link to the collection of SecurityGroups associated with the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::SecurityGroup::Collection"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::SecurityGroup::Collection",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null,
+        "member_attribute": {
+          "options": {
+            "reference": "V1_6::MediaTypes::SecurityGroup"
+          },
+          "type": {
+            "name": "V1_6::MediaTypes::SecurityGroup",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "subnets": {
+      "description": "Link to the collection of Subnets associated with the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::Subnet::Collection"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Subnet::Collection",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null,
+        "member_attribute": {
+          "options": {
+            "reference": "V1_6::MediaTypes::Subnet"
+          },
+          "type": {
+            "name": "V1_6::MediaTypes::Subnet",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "computed_multi_cloud_image": {
+      "description": "Link to the computed MultiCloudImage for the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::MultiCloudImage"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::MultiCloudImage",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "computed_image": {
+      "description": "Link to the computed Image for the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::Image"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Image",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "account": {
+      "description": "Link to the Account where the Instance exist",
+      "options": {
+        "reference": "V1_6::MediaTypes::Account"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Account",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "datacenter": {
+      "description": "Link to the Datacenter where the Instance exist",
+      "options": {
+        "reference": "V1_6::MediaTypes::Datacenter"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Datacenter",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "instance_type": {
+      "description": "Link to the InstanceType of the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::InstanceType"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::InstanceType",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "cloud": {
+      "description": "Link to the Cloud where the Instance exist",
+      "options": {
+        "reference": "V1_6::MediaTypes::Cloud"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Cloud",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "incarnator": {
+      "description": "Incarnator of the Instance if there is one",
+      "options": {
+        "reference": "V1_6::MediaTypes::Incarnator"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Incarnator",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "image": {
+          "view": "link"
+        },
+        "multi_cloud_image": {
+          "view": "link"
+        },
+        "deployment": {
+          "view": "link"
+        },
+        "ssh_key": {
+          "view": "link"
+        },
+        "security_groups": {
+          "view": "link"
+        },
+        "subnets": {
+          "view": "link"
+        },
+        "computed_multi_cloud_image": {
+          "view": "link"
+        },
+        "computed_image": {
+          "view": "link"
+        },
+        "account": {
+          "view": "link"
+        },
+        "datacenter": {
+          "view": "link"
+        },
+        "instance_type": {
+          "view": "link"
+        },
+        "cloud": {
+          "view": "link"
+        },
+        "incarnator": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "unversioned": {
+    "HealthCheck": {
+      "controller": "V0::HealthCheck",
+      "media_type": "Praxis::SimpleMediaType"
+    }
+  },
+  "1.6": {
+    "Accounts": {
+      "controller": "V1_6::Accounts",
+      "media_type": "V1_6::MediaTypes::Account"
+    },
+    "Clouds": {
+      "controller": "V1_6::Clouds",
+      "media_type": "V1_6::MediaTypes::Cloud"
+    },
+    "Datacenters": {
+      "controller": "V1_6::Datacenters",
+      "media_type": "V1_6::MediaTypes::Datacenter"
+    },
+    "Deployments": {
+      "controller": "V1_6::Deployments",
+      "media_type": "V1_6::MediaTypes::Deployment"
+    },
+    "Images": {
+      "controller": "V1_6::Images",
+      "media_type": "V1_6::MediaTypes::Image"
+    },
+    "InstanceTypes": {
+      "controller": "V1_6::InstanceTypes",
+      "media_type": "V1_6::MediaTypes::InstanceType"
+    },
+    "Instances": {
+      "controller": "V1_6::Instances",
+      "media_type": "V1_6::MediaTypes::Instance"
+    },
+    "IpAddressBindings": {
+      "controller": "V1_6::IpAddressBindings",
+      "media_type": "V1_6::MediaTypes::IpAddressBinding"
+    },
+    "IpAddresses": {
+      "controller": "V1_6::IpAddresses",
+      "media_type": "V1_6::MediaTypes::IpAddress"
+    },
+    "MultiCloudImages": {
+      "controller": "V1_6::MultiCloudImages",
+      "media_type": "V1_6::MediaTypes::MultiCloudImage"
+    },
+    "NetworkInterfaceAttachments": {
+      "controller": "V1_6::NetworkInterfaceAttachments",
+      "media_type": "V1_6::MediaTypes::NetworkInterfaceAttachment"
+    },
+    "NetworkInterfaces": {
+      "controller": "V1_6::NetworkInterfaces",
+      "media_type": "V1_6::MediaTypes::NetworkInterface"
+    },
+    "Networks": {
+      "controller": "V1_6::Networks",
+      "media_type": "V1_6::MediaTypes::Network"
+    },
+    "SecurityGroups": {
+      "controller": "V1_6::SecurityGroups",
+      "media_type": "V1_6::MediaTypes::SecurityGroup"
+    },
+    "ServerArrays": {
+      "controller": "V1_6::ServerArrays",
+      "media_type": "V1_6::MediaTypes::ServerArray"
+    },
+    "ServerTemplates": {
+      "controller": "V1_6::ServerTemplates",
+      "media_type": "V1_6::MediaTypes::ServerTemplate"
+    },
+    "Servers": {
+      "controller": "V1_6::Servers",
+      "media_type": "V1_6::MediaTypes::Server"
+    },
+    "SshKeys": {
+      "controller": "V1_6::SshKeys",
+      "media_type": "V1_6::MediaTypes::SshKey"
+    },
+    "Subnets": {
+      "controller": "V1_6::Subnets",
+      "media_type": "V1_6::MediaTypes::Subnet"
+    },
+    "Href (*)": {
+      "kind": "Attributor::Href"
+    },
+    "RsId (*)": {
+      "kind": "Attributor::RsId"
+    },
+    "Tag (*)": {
+      "kind": "Attributor::Tag"
+    },
+    "IP (*)": {
+      "kind": "Attributor::IP"
+    },
+    "Incarnator (*)": {
+      "media_type": "V1_6::MediaTypes::Incarnator"
+    },
+    "QueryFilter (*)": {
+      "kind": "Attributor::QueryFilter"
+    }
+  }
+}

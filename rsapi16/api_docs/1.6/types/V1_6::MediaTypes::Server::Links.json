@@ -1,0 +1,89 @@
+{
+  "name": "V1_6::MediaTypes::Server::Links",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "account": {
+      "description": "The Account to which the Server belongs",
+      "options": {
+        "reference": "V1_6::MediaTypes::Account"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Account",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "cloud": {
+      "description": "The Cloud where new instances of the Server will be created",
+      "options": {
+        "reference": "V1_6::MediaTypes::Cloud"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Cloud",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "next_instance": {
+      "description": "Link to the next Instance of the Server",
+      "options": {
+        "reference": "V1_6::MediaTypes::Instance"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Instance",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "current_instance": {
+      "description": "Link to the current Instance of the Server",
+      "options": {
+        "reference": "V1_6::MediaTypes::Instance"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Instance",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "account": {
+          "view": "link"
+        },
+        "cloud": {
+          "view": "link"
+        },
+        "next_instance": {
+          "view": "link"
+        },
+        "current_instance": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

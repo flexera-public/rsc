@@ -1,0 +1,111 @@
+{
+  "name": "V1_6::MediaTypes::SshKey",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "SshKey ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "legacy_id": {
+      "description": "SshKey ID used in the legacy platform",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "SshKey HREF",
+      "example_definition": "#<Proc:0x007f8ff41c81b8@/Users/raphael/src/right_api_16/design/v1_6/media_types/ssh_key.rb:15>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#ssh_key\"",
+      "values": [
+        "cm#ssh_key"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "resource_uid": {
+      "description": "SshKey ID used by the cloud provider",
+      "example_definition": "prod-ssh-key",
+      "type": {
+        "name": "String"
+      }
+    },
+    "fingerprint": {
+      "description": "Fingerprint of the SshKey",
+      "example_definition": "0b:9e:8a:f4:7a:03:a4:28:4b:ee:83:c0:d6:23:53:8b:9a:7b:f1:59",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "resource_uid": {
+        },
+        "fingerprint": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "2CMEADBQ3ZW5",
+        "legacy_id": 223,
+        "href": "/api/clouds/1/ssh_keys/2CMEADBQ3ZW5",
+        "kind": "cm#ssh_key",
+        "resource_uid": "prod-ssh-key",
+        "fingerprint": "0b:9e:8a:f4:7a:03:a4:28:4b:ee:83:c0:d6:23:53:8b:9a:7b:f1:59"
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "resource_uid": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "2CMEADBQ3ZW5",
+        "href": "/api/clouds/1/ssh_keys/2CMEADBQ3ZW5",
+        "resource_uid": "prod-ssh-key",
+        "kind": "cm#ssh_key",
+        "legacy_id": 223
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.ssh_key",
+  "description": "Represents an SshKey resource",
+  "example": {
+    "id": "2CMEADBQ3ZW5",
+    "legacy_id": 223,
+    "href": "/api/clouds/1/ssh_keys/2CMEADBQ3ZW5",
+    "kind": "cm#ssh_key",
+    "resource_uid": "prod-ssh-key",
+    "fingerprint": "0b:9e:8a:f4:7a:03:a4:28:4b:ee:83:c0:d6:23:53:8b:9a:7b:f1:59"
+  }
+}

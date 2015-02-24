@@ -1,0 +1,152 @@
+{
+  "name": "V1_6::MediaTypes::NetworkInterface",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "NetworkInterface ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "href": {
+      "description": "NetworkInterface HREF",
+      "example_definition": "#<Proc:0x007f8ff43a33e8@/Users/raphael/src/right_api_16/design/v1_6/media_types/network_interface.rb:13>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "description": {
+      "description": "Description of the NetworkInterface",
+      "example_definition": "ELB mapped NI",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#network_interface\"",
+      "values": [
+        "cm#network_interface"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V1_6::MediaTypes::NetworkInterface"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::NetworkInterface::Links",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "cloud": {
+            "description": "Link to the Cloud where the NetworkInterface exists",
+            "options": {
+              "reference": "V1_6::MediaTypes::Cloud"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Cloud",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          }
+        },
+        "views": {
+          "master": {
+            "attributes": {
+              "cloud": {
+                "view": "master"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "cloud": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "links": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "XQPNDQ0W88JN",
+        "href": "/api/network_interfaces/XQPNDQ0W88JN",
+        "description": "ELB mapped NI",
+        "kind": "cm#network_interface",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "XQPNDQ0W88JN",
+        "href": "/api/network_interfaces/XQPNDQ0W88JN",
+        "kind": "cm#network_interface"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.network_interface",
+  "description": "Represents a NetworkInterface resource",
+  "example": {
+    "id": "XQPNDQ0W88JN",
+    "href": "/api/network_interfaces/XQPNDQ0W88JN",
+    "description": "ELB mapped NI",
+    "kind": "cm#network_interface",
+    "links": {
+      "cloud": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      }
+    }
+  }
+}

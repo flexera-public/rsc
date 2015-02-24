@@ -1,0 +1,71 @@
+{
+  "name": "V1_6::MediaTypes::IpAddressBinding::Links",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "cloud": {
+      "description": "Link to the Cloud where the IpAddressBinding exists",
+      "options": {
+        "reference": "V1_6::MediaTypes::Cloud"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Cloud",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "instance": {
+      "description": "Link to the Instance to which the IpAddressBinding is associated",
+      "options": {
+        "reference": "V1_6::MediaTypes::Instance"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Instance",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "ip_address": {
+      "description": "Link to the IpAddress associated with the IpAddressBinding",
+      "options": {
+        "reference": "V1_6::MediaTypes::IpAddress"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::IpAddress",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "cloud": {
+          "view": "link"
+        },
+        "instance": {
+          "view": "link"
+        },
+        "ip_address": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "name": "V1_6::MediaTypes::Incarnator",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Incarnator ID",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "name": {
+      "description": "Name of the Incarnator",
+      "example_definition": "LAMP bundle, pre-alpha, v0.0.13",
+      "type": {
+        "name": "String"
+      }
+    },
+    "href": {
+      "description": "Incarnator HREF",
+      "example_definition": "#<Proc:0x007f8ff687d2b8@/Users/raphael/src/right_api_16/design/v1_6/media_types/incarnator.rb:14>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#server\" or \"cm#server_array\"",
+      "values": [
+        "cm#server",
+        "cm#server_array"
+      ],
+      "example_definition": "cm#server",
+      "type": {
+        "name": "String"
+      }
+    },
+    "state": {
+      "description": "State of the Incarnator (i.e. booting, operational)",
+      "example_definition": "nil",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "name": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "state": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 517,
+        "name": "LAMP bundle, pre-alpha, v0.0.13",
+        "href": "/api/servers/517",
+        "kind": "cm#server",
+        "state": "nil"
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "name": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "state": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 517,
+        "name": "LAMP bundle, pre-alpha, v0.0.13",
+        "href": "/api/servers/517",
+        "kind": "cm#server",
+        "state": "nil"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.incarnator",
+  "description": "Represents an Incarnator resource",
+  "example": {
+    "id": 517,
+    "name": "LAMP bundle, pre-alpha, v0.0.13",
+    "href": "/api/servers/517",
+    "kind": "cm#server",
+    "state": "nil"
+  }
+}

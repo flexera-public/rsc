@@ -1,0 +1,255 @@
+{
+  "description": "        Instances represent an entity that is runnable in the cloud.\n\n        An instance of type \"next\" is a container of information that expresses\n        how to configure a future instance when we decide to launch or start\n        it. A \"next\" instance generally only exists in the RightScale realm,\n        and usually doesn't have any corresponding representation existing in\n        the cloud. However, if an instance is not of type \"next\", it will\n        generally represent an existing running (or provisioned) virtual\n        machine existing in the cloud.\n",
+  "media_type": "V1_6::MediaTypes::Instance",
+  "actions": [
+    {
+      "description": "          List all Instances in an account.\n",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instances",
+          "version": "1.6"
+        },
+        {
+          "verb": "GET",
+          "path": "/api/clouds/:cloud_id/instances",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::Instance"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::Instance"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "limit": {
+              "description": "The maximum number of resources to return for this index",
+              "example_definition": "135",
+              "options": {
+                "min": 1
+              },
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "cloud_id": {
+              "description": "Filter by the given cloud ID",
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "ids": {
+              "description": "Comma separated list of Instance RsIds",
+              "example_definition": "5VH9KN438BTSI,2SFCMMG3PO9JF,5K443K2CF8NS6",
+              "type": {
+                "name": "CSV",
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "RsId"
+                  }
+                }
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "extended",
+                "full",
+                "tiny",
+                "link"
+              ],
+              "default": "default",
+              "example_definition": "default",
+              "type": {
+                "name": "String"
+              }
+            },
+            "filter": {
+              "description": "              Filter instances by attribute. A filter takes the form <attribute><operator><value>.\n              <operator> can be either \"=\" or \"!=\". <value> can be comma-separated list of values to\n              express multiple possible values. For example, \"state=booting,operational\" finds all\n              instances that are in \"booting\" or \"operational\" state. Percentage (%) wildcard character\n              can be used to perform partial string match if supported by the filter. For example,\n              \"name=%test%\" finds all instances with name containing the word \"test\",\n              \"name=test%\" finds all instances with name beginning with \"test\", and \"name=%test\" finds\n              all instances with name ending with \"test\". Multiple filters must be concatenated with an\n              ampersand (&). For example, \"name=test&state=operational\" finds all instances with\n              name \"test\" and are in \"operational\" state. All special characters in the filter must be\n              URL encoded.\n",
+              "example_definition": "state=operational&name!=test,%example,string%,%production%",
+              "type": {
+                "name": "QueryFilter"
+              }
+            }
+          }
+        },
+        "example": {
+          "limit": 135,
+          "cloud_id": 2,
+          "ids": "5VH9KN438BTSI,2SFCMMG3PO9JF,5K443K2CF8NS6",
+          "view": "default",
+          "filter": "state=operational&name!=test,%example,string%,%production%"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1_6::MediaTypes::Instance",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "global_session_forbidden": {
+          "description": "      The global session provided in the user's cookie is forbidden.\n",
+          "status": 403,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "      Currently not implemented.\n",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instances/:id",
+          "version": "1.6"
+        },
+        {
+          "verb": "GET",
+          "path": "/api/clouds/:cloud_id/instances/:id",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::Instance"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::Instance"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "The identifier of the resource",
+              "required": true,
+              "type": {
+                "name": "RsId"
+              }
+            },
+            "cloud_id": {
+              "description": "The identifier of Cloud this resource resides in",
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "full",
+                "tiny"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "325G5Q3F9NVG",
+          "cloud_id": 2,
+          "view": "tiny"
+        }
+      },
+      "responses": {
+        "action_not_implemented": {
+          "description": "      The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "name": "V1_6::MediaTypes::IpAddress",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "IpAddress ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "legacy_id": {
+      "description": "IpAddress ID used in the legacy platform",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "IpAddress HREF",
+      "example_definition": "#<Proc:0x007f8ff44595d0@/Users/raphael/src/right_api_16/design/v1_6/media_types/ip_address.rb:15>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "address": {
+      "description": "IpAddress represented in dotted-quad notation",
+      "type": {
+        "name": "IP"
+      }
+    },
+    "name": {
+      "description": "Name of the IpAddress",
+      "example_definition": "Prod LAMP server",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string cm#ip_address",
+      "values": [
+        "cm#ip_address"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V1_6::MediaTypes::IpAddress"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::IpAddress::Links",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "cloud": {
+            "description": "Link to the Cloud where the IpAddress exists",
+            "options": {
+              "reference": "V1_6::MediaTypes::Cloud"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Cloud",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          }
+        },
+        "views": {
+          "master": {
+            "attributes": {
+              "cloud": {
+                "view": "master"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "cloud": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "address": {
+        },
+        "name": {
+        },
+        "kind": {
+        },
+        "links": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "9C055ZC24ZF7",
+        "legacy_id": 779,
+        "href": "/api/clouds/1/ip_addresses/9C055ZC24ZF7",
+        "address": "57.145.238.16",
+        "name": "Prod LAMP server",
+        "kind": "cm#ip_address",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "9C055ZC24ZF7",
+        "href": "/api/clouds/1/ip_addresses/9C055ZC24ZF7",
+        "name": "Prod LAMP server",
+        "kind": "cm#ip_address",
+        "legacy_id": 779
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.ip_address",
+  "description": "Represents an IpAddress resource",
+  "example": {
+    "id": "9C055ZC24ZF7",
+    "legacy_id": 779,
+    "href": "/api/clouds/1/ip_addresses/9C055ZC24ZF7",
+    "address": "57.145.238.16",
+    "name": "Prod LAMP server",
+    "kind": "cm#ip_address",
+    "links": {
+      "cloud": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      }
+    }
+  }
+}

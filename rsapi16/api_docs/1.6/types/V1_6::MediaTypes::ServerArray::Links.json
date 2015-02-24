@@ -1,0 +1,96 @@
+{
+  "name": "V1_6::MediaTypes::ServerArray::Links",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "account": {
+      "description": "Link to the Account where the ServerArray exists",
+      "options": {
+        "reference": "V1_6::MediaTypes::Account"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Account",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "cloud": {
+      "description": "Link to the Cloud where the ServerArray exists",
+      "options": {
+        "reference": "V1_6::MediaTypes::Cloud"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Cloud",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "next_instance": {
+      "description": "Link to the next Instance of the ServerArray",
+      "options": {
+        "reference": "V1_6::MediaTypes::Instance"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Instance",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "current_instances": {
+      "description": "Link to the current Instance of the ServerArray",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1_6::MediaTypes::Instance"
+          },
+          "type": {
+            "name": "V1_6::MediaTypes::Instance",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "account": {
+          "view": "link"
+        },
+        "cloud": {
+          "view": "link"
+        },
+        "next_instance": {
+          "view": "link"
+        },
+        "current_instances": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

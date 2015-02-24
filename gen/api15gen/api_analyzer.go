@@ -11,11 +11,6 @@ import (
 	"bitbucket.org/pkg/inflect"
 )
 
-var (
-	// Regexp used to replace e.g. ':cloud_id' from action URLs
-	pathParamsRegex = regexp.MustCompile(`:[^/]+`)
-)
-
 // The analyzer struct holds the analysis results
 type ApiAnalyzer struct {
 	// Raw resources as defined in API json metadata
@@ -58,9 +53,6 @@ func (a *ApiAnalyzer) Analyze() *gen.ApiDescriptor {
 	descriptor.FinalizeTypeNames(a.rawTypes)
 	return descriptor
 }
-
-// Regular expression that catches href variables (e.g. ':id' in '/servers/:id')
-var hrefVarRegexp = regexp.MustCompile(`/:[^/]+`)
 
 // AnalyzeResource analyzes the given resource and updates the Resources and ParamTypes analyzer
 // fields accordingly
@@ -114,6 +106,21 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			i += 1
 		}
 		sort.Strings(allParamNames)
+		var pathParamNames = []string{}
+		for _, pattern := range pathPatterns {
+			for _, v := range pattern.Variables {
+				var existing = false
+				for _, e := range pathParamNames {
+					existing = e == v
+					if existing {
+						break
+					}
+				}
+				if !existing {
+					pathParamNames = append(pathParamNames, v)
+				}
+			}
+		}
 		var queryParamNames = []string{}
 		var payloadParamNames = []string{}
 		var hasPayload = pathPatterns[0].HttpMethod == "POST" || pathPatterns[0].HttpMethod == "PUT"
@@ -186,6 +193,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			LeafParams:        paramAnalyzer.LeafParams,
 			Return:            parseReturn(actionName, name, contentType),
 			ReturnLocation:    actionName == "create" && name != "Oauth2",
+			PathParamNames:    pathParamNames,
 			QueryParamNames:   queryParamNames,
 			PayloadParamNames: payloadParamNames,
 		}

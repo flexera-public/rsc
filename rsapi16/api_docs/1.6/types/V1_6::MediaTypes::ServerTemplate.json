@@ -1,0 +1,130 @@
+{
+  "name": "V1_6::MediaTypes::ServerTemplate",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "ServerTemplate ID",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "name": {
+      "description": "Name of the ServerTemplate",
+      "example_definition": "LAMP v0.0.13",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the ServerTemplate",
+      "example_definition": "LAMP v0.0.13 server with ephemeral datastore.",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#server_template\"",
+      "values": [
+        "cm#server_template"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "version": {
+      "description": "The committed version of the ServerTemplate or zero",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "ServerTemplate HREF",
+      "example_definition": "#<Proc:0x007f8ff425ff18@/Users/raphael/src/right_api_16/design/v1_6/media_types/server_template.rb:29>",
+      "type": {
+        "name": "Href"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "version": {
+        },
+        "href": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 906,
+        "name": "LAMP v0.0.13",
+        "description": "LAMP v0.0.13 server with ephemeral datastore.",
+        "kind": "cm#server_template",
+        "version": 864,
+        "href": "/api/server_templates/906"
+      }
+    },
+    "embedded": {
+      "attributes": {
+        "id": {
+        },
+        "name": {
+        },
+        "kind": {
+        },
+        "version": {
+        },
+        "href": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 906,
+        "name": "LAMP v0.0.13",
+        "kind": "cm#server_template",
+        "version": 864,
+        "href": "/api/server_templates/906"
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 906,
+        "href": "/api/server_templates/906",
+        "name": "LAMP v0.0.13",
+        "kind": "cm#server_template"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.server_template",
+  "description": "Represents a ServerTemplate resource",
+  "example": {
+    "id": 906,
+    "name": "LAMP v0.0.13",
+    "description": "LAMP v0.0.13 server with ephemeral datastore.",
+    "kind": "cm#server_template",
+    "version": 864,
+    "href": "/api/server_templates/906"
+  }
+}

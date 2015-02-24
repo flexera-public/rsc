@@ -43,8 +43,8 @@ func NewClientWriter() (*ClientWriter, error) {
 }
 
 // Write header text
-func (c *ClientWriter) WriteHeader(w io.Writer) error {
-	return c.headerTmpl.Execute(w, nil)
+func (c *ClientWriter) WriteHeader(pkg string, w io.Writer) error {
+	return c.headerTmpl.Execute(w, pkg)
 }
 
 // Write resource header
@@ -80,7 +80,7 @@ func (c *ClientWriter) WriteResource(resource *gen.Resource, w io.Writer) error 
 
 const headerTmpl = `
 //************************************************************************//
-//                     RightScale API 1.5 go client
+//                     RightScale API client
 //
 {{comment "Generated " (now.Format "Jan 2, 2006 at 3:04pm (PST)")}}
 // Command:
@@ -89,7 +89,7 @@ const headerTmpl = `
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rsapi15
+package {{.}}
 
 import (
 	"encoding/json"

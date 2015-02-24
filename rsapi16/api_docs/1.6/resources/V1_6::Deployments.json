@@ -1,0 +1,232 @@
+{
+  "description": "        Deployments provide a way to group resources that logically belong\n        together.\n",
+  "media_type": "V1_6::MediaTypes::Deployment",
+  "actions": [
+    {
+      "description": "          List all Deployments in an Account.\n",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/deployments",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::Deployment"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::Deployment"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "ids": {
+              "description": "Comma separated list of Deployment IDs",
+              "example_definition": "205297003,26587123,216295003",
+              "type": {
+                "name": "CSV",
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "full",
+                "link"
+              ],
+              "default": "default",
+              "example_definition": "default",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "ids": "205297003,26587123,216295003",
+          "view": "default"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1_6::MediaTypes::Deployment",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "global_session_forbidden": {
+          "description": "      The global session provided in the user's cookie is forbidden.\n",
+          "status": 403,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a single Deployment",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/deployments/:id",
+          "version": "1.6"
+        }
+      ],
+      "headers": {
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V1_6::MediaTypes::Deployment"
+        },
+        "type": {
+          "name": "Hash",
+          "key": {
+            "type": {
+              "name": "String"
+            }
+          },
+          "keys": {
+            "X-Api-Version": {
+              "values": [
+                "1.6"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "X-Account": {
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        }
+      },
+      "params": {
+        "options": {
+          "reference": "V1_6::MediaTypes::Deployment"
+        },
+        "type": {
+          "name": "Struct",
+          "key": {
+            "type": {
+              "name": "Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the Deployment to show",
+              "required": true,
+              "type": {
+                "name": "Integer"
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "extended",
+                "full",
+                "link"
+              ],
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": 107,
+          "view": "extended"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1_6::MediaTypes::Deployment",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "resource_not_found": {
+          "description": "      The resource requested could not be found.\n",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "global_session_forbidden": {
+          "description": "      The global session provided in the user's cookie is forbidden.\n",
+          "status": 403,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "metadata": {
+  }
+}

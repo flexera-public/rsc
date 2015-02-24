@@ -1,0 +1,3549 @@
+{
+  "name": "V1_6::MediaTypes::Instance",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "href": {
+      "description": "Instance HREF",
+      "example_definition": "#<Proc:0x007f8ff43738c8@/Users/raphael/src/right_api_16/design/v1_6/media_types/instance.rb:14>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "public_dns_names": {
+      "description": "Public DNS names associated with the Instance",
+      "example_definition": "[\"lamp.mydomain.com\", \"ip-12-34-56-78.us-east-1.compute.external\"]",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String"
+          }
+        }
+      }
+    },
+    "private_dns_names": {
+      "description": "Private DNS names associated with the Instance",
+      "example_definition": "[\"ip-10-0-0-1.us-east-1.compute.internal\"]",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String"
+          }
+        }
+      }
+    },
+    "public_ip_addresses": {
+      "description": "Public IP addresses associated with the Instance",
+      "example_definition": "[\"12.34.56.78\"]",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "IP"
+          }
+        }
+      }
+    },
+    "private_ip_addresses": {
+      "description": "Private IP addresses associated with the Instance",
+      "example_definition": "[\"10.10.0.1\"]",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "IP"
+          }
+        }
+      }
+    },
+    "name": {
+      "description": "Name of the Instance",
+      "example_definition": "LAMP, alpha v0.0.13",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the Instance",
+      "example_definition": "Prod server running LAMP in us-east-1",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#instance\"",
+      "values": [
+        "cm#instance"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "legacy_id": {
+      "description": "            Instance ID used in the legacy platform. (Note: if the \"is_next\" attribute is true,\n            then this ID cannot be used to view the instance directly via the RightScale Dashboard.\n            Next instances may be viewed from their incarnator's page.)\n",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "resource_uid": {
+      "description": "Instance ID used by the cloud provider",
+      "example_definition": "i-1a2b3c4d",
+      "type": {
+        "name": "String"
+      }
+    },
+    "is_next": {
+      "description": "Whether or not this is a \"next\" Instance",
+      "type": {
+        "name": "Boolean"
+      }
+    },
+    "id": {
+      "description": "Instance ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "locked": {
+      "description": "Whether or not the Instance is locked",
+      "type": {
+        "name": "Boolean"
+      }
+    },
+    "actions": {
+      "description": "            List of possible actions that can be performed on the Instance\n",
+      "example_definition": "[\"stop\", \"start\", \"lock\", \"unlock\", \"reboot\", \"terminate\"]",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String"
+          }
+        }
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Struct",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "created_at": {
+            "description": "When the Instance was first created",
+            "example_definition": "2014-11-10 16:15:22",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "updated_at": {
+            "description": "When the Instance was last updated",
+            "example_definition": "2014-11-10 16:15:23",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "stranded_at": {
+            "description": "When the Instance stranded if it stranded",
+            "example_definition": "2014-11-10 16:15:59",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "pending_at": {
+            "description": "              When the cloud provider accepted the request to create the\n              Instance\n",
+            "example_definition": "2014-11-10 16:15:40",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "booted_at": {
+            "description": "When the Instance booted up if it did",
+            "example_definition": "2014-11-10 16:15:45",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "operational_at": {
+            "description": "              When the Instance became operational if it has become operational\n",
+            "example_definition": "2014-11-10 16:16:30",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "terminated_at": {
+            "description": "When the Instance terminated if it did",
+            "example_definition": "2014-11-10 16:19:12",
+            "type": {
+              "name": "DateTime"
+            }
+          }
+        }
+      }
+    },
+    "os_platform": {
+      "description": "Image operating system platform of the Instance if known",
+      "example_definition": "linux",
+      "type": {
+        "name": "String"
+      }
+    },
+    "monitoring_id": {
+      "description": "Monitoring host ID",
+      "example_definition": "03-F8JKSNHIMIE7V",
+      "type": {
+        "name": "String"
+      }
+    },
+    "monitoring_server": {
+      "description": "Name of the monitoring server",
+      "example_definition": "server1-170",
+      "type": {
+        "name": "String"
+      }
+    },
+    "monitoring_token": {
+      "description": "Token for requesting monitoring graphs",
+      "example_definition": "AD76F9E0563",
+      "type": {
+        "name": "String"
+      }
+    },
+    "state": {
+      "description": "Current state of the Instance",
+      "values": [
+        "booting",
+        "decommissioning",
+        "error",
+        "inactive",
+        "operational",
+        "provisioned",
+        "queued",
+        "stopped",
+        "stopping",
+        "stranded in booting"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "tags": {
+      "description": "List of tags associated with the Instance",
+      "example_definition": "[\"rs_login:state=restricted\", \"rs_monitoring:state=active\"]",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "Tag"
+          }
+        }
+      }
+    },
+    "ssh_host": {
+      "description": "Host name that can be used to SSH into the Instance",
+      "example_definition": "ip-12-34-56-78.us-east-1.compute.external",
+      "type": {
+        "name": "String"
+      }
+    },
+    "server_template": {
+      "description": "The ServerTemplate associated with the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::ServerTemplate"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::ServerTemplate",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "security_groups": {
+      "description": "List of SecurityGroups associated with the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::SecurityGroup::Collection"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::SecurityGroup::Collection",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null,
+        "member_attribute": {
+          "options": {
+            "reference": "V1_6::MediaTypes::SecurityGroup"
+          },
+          "type": {
+            "name": "V1_6::MediaTypes::SecurityGroup",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "subnets": {
+      "description": "List of Subnets associated with the Instance",
+      "options": {
+        "reference": "V1_6::MediaTypes::Subnet::Collection"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Subnet::Collection",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null,
+        "member_attribute": {
+          "options": {
+            "reference": "V1_6::MediaTypes::Subnet"
+          },
+          "type": {
+            "name": "V1_6::MediaTypes::Subnet",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "networks": {
+      "description": "List of Networks associated with the Instance",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1_6::MediaTypes::Network"
+          },
+          "type": {
+            "name": "V1_6::MediaTypes::Network",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "ip_addresses": {
+      "description": "List of IpAddresses associated with the Instance",
+      "type": {
+        "name": "Collection",
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1_6::MediaTypes::IpAddress"
+          },
+          "type": {
+            "name": "V1_6::MediaTypes::IpAddress",
+            "key": {
+              "type": {
+                "name": "Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V1_6::MediaTypes::Instance"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Instance::Links",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "image": {
+            "description": "Link to the Image used by the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::Image"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Image",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "multi_cloud_image": {
+            "description": "Link to the MultiCloudImage used by the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::MultiCloudImage"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::MultiCloudImage",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "deployment": {
+            "description": "Link to the Deployment where the Instance exists",
+            "options": {
+              "reference": "V1_6::MediaTypes::Deployment"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Deployment",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "ssh_key": {
+            "description": "Link to the SshKey used by the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::SshKey"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::SshKey",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "security_groups": {
+            "description": "Link to the collection of SecurityGroups associated with the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::SecurityGroup::Collection"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::SecurityGroup::Collection",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null,
+              "member_attribute": {
+                "options": {
+                  "reference": "V1_6::MediaTypes::SecurityGroup"
+                },
+                "type": {
+                  "name": "V1_6::MediaTypes::SecurityGroup",
+                  "key": {
+                    "type": {
+                      "name": "Symbol"
+                    }
+                  },
+                  "attributes": null
+                }
+              }
+            }
+          },
+          "subnets": {
+            "description": "Link to the collection of Subnets associated with the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::Subnet::Collection"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Subnet::Collection",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null,
+              "member_attribute": {
+                "options": {
+                  "reference": "V1_6::MediaTypes::Subnet"
+                },
+                "type": {
+                  "name": "V1_6::MediaTypes::Subnet",
+                  "key": {
+                    "type": {
+                      "name": "Symbol"
+                    }
+                  },
+                  "attributes": null
+                }
+              }
+            }
+          },
+          "computed_multi_cloud_image": {
+            "description": "Link to the computed MultiCloudImage for the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::MultiCloudImage"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::MultiCloudImage",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "computed_image": {
+            "description": "Link to the computed Image for the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::Image"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Image",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "account": {
+            "description": "Link to the Account where the Instance exist",
+            "options": {
+              "reference": "V1_6::MediaTypes::Account"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Account",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "datacenter": {
+            "description": "Link to the Datacenter where the Instance exist",
+            "options": {
+              "reference": "V1_6::MediaTypes::Datacenter"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Datacenter",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "instance_type": {
+            "description": "Link to the InstanceType of the Instance",
+            "options": {
+              "reference": "V1_6::MediaTypes::InstanceType"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::InstanceType",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "cloud": {
+            "description": "Link to the Cloud where the Instance exist",
+            "options": {
+              "reference": "V1_6::MediaTypes::Cloud"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Cloud",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          },
+          "incarnator": {
+            "description": "Incarnator of the Instance if there is one",
+            "options": {
+              "reference": "V1_6::MediaTypes::Incarnator"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Incarnator",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          }
+        },
+        "views": {
+          "master": {
+            "attributes": {
+              "image": {
+                "view": "master"
+              },
+              "multi_cloud_image": {
+                "view": "master"
+              },
+              "deployment": {
+                "view": "master"
+              },
+              "ssh_key": {
+                "view": "master"
+              },
+              "security_groups": {
+                "view": "master"
+              },
+              "subnets": {
+                "view": "master"
+              },
+              "computed_multi_cloud_image": {
+                "view": "master"
+              },
+              "computed_image": {
+                "view": "master"
+              },
+              "account": {
+                "view": "master"
+              },
+              "datacenter": {
+                "view": "master"
+              },
+              "instance_type": {
+                "view": "master"
+              },
+              "cloud": {
+                "view": "master"
+              },
+              "incarnator": {
+                "view": "master"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "image": {
+                "view": "link"
+              },
+              "multi_cloud_image": {
+                "view": "link"
+              },
+              "deployment": {
+                "view": "link"
+              },
+              "ssh_key": {
+                "view": "link"
+              },
+              "security_groups": {
+                "view": "link"
+              },
+              "subnets": {
+                "view": "link"
+              },
+              "computed_multi_cloud_image": {
+                "view": "link"
+              },
+              "computed_image": {
+                "view": "link"
+              },
+              "account": {
+                "view": "link"
+              },
+              "datacenter": {
+                "view": "link"
+              },
+              "instance_type": {
+                "view": "link"
+              },
+              "cloud": {
+                "view": "link"
+              },
+              "incarnator": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "actions": {
+        },
+        "description": {
+        },
+        "href": {
+        },
+        "id": {
+        },
+        "ip_addresses": {
+        },
+        "is_next": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        },
+        "links": {
+        },
+        "locked": {
+        },
+        "monitoring_id": {
+        },
+        "monitoring_server": {
+        },
+        "monitoring_token": {
+        },
+        "name": {
+        },
+        "networks": {
+          "view": "link"
+        },
+        "os_platform": {
+        },
+        "private_dns_names": {
+        },
+        "private_ip_addresses": {
+        },
+        "public_dns_names": {
+        },
+        "public_ip_addresses": {
+        },
+        "resource_uid": {
+        },
+        "security_groups": {
+          "view": "member_links"
+        },
+        "server_template": {
+          "view": "embedded"
+        },
+        "ssh_host": {
+        },
+        "state": {
+        },
+        "subnets": {
+          "view": "member_links"
+        },
+        "timestamps": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "actions": [
+          "stop",
+          "start",
+          "lock",
+          "unlock",
+          "reboot",
+          "terminate"
+        ],
+        "description": "Prod server running LAMP in us-east-1",
+        "href": "/api/clouds/1/instances/V6OPONVM4E2J",
+        "id": "V6OPONVM4E2J",
+        "ip_addresses": [
+          {
+            "id": "9SN5J2DYW1U",
+            "legacy_id": 105,
+            "href": "/api/clouds/1/ip_addresses/9SN5J2DYW1U",
+            "address": "159.35.166.124",
+            "name": "Prod LAMP server",
+            "kind": "cm#ip_address",
+            "links": {
+              "cloud": {
+                "id": 1,
+                "href": "/api/clouds/1",
+                "name": "EC2 us-east-1",
+                "kind": "cm#cloud"
+              }
+            }
+          },
+          {
+            "id": "NJ76MHWH5YPA",
+            "legacy_id": 675,
+            "href": "/api/clouds/1/ip_addresses/NJ76MHWH5YPA",
+            "address": "66.113.120.82",
+            "name": "Prod LAMP server",
+            "kind": "cm#ip_address",
+            "links": {
+              "cloud": {
+                "id": 1,
+                "href": "/api/clouds/1",
+                "name": "EC2 us-east-1",
+                "kind": "cm#cloud"
+              }
+            }
+          }
+        ],
+        "is_next": false,
+        "kind": "cm#instance",
+        "legacy_id": 264,
+        "links": {
+          "image": {
+            "id": "HG7QM47W95E",
+            "href": "/api/clouds/1/images/HG7QM47W95E",
+            "name": "example-amzn-ami.1",
+            "inherited_source": "server_template",
+            "legacy_id": 704,
+            "kind": "cm#image"
+          },
+          "multi_cloud_image": {
+            "id": 792,
+            "href": "/api/multi_cloud_images/792",
+            "name": "LAMP v0.0.13",
+            "inherited_source": "server_template",
+            "kind": "cm#multi_cloud_image"
+          },
+          "deployment": {
+            "id": 49,
+            "href": "/api/deployments/49",
+            "name": "LAMP Deployment",
+            "kind": "cm#deployment"
+          },
+          "ssh_key": {
+            "id": "MATKNTCJZ5ZS",
+            "href": "/api/clouds/1/ssh_keys/MATKNTCJZ5ZS",
+            "resource_uid": "prod-ssh-key",
+            "kind": "cm#ssh_key",
+            "legacy_id": 688
+          },
+          "security_groups": {
+            "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+            "count": 3
+          },
+          "subnets": {
+            "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+            "count": 1
+          },
+          "computed_multi_cloud_image": {
+            "id": 893,
+            "href": "/api/multi_cloud_images/893",
+            "name": "LAMP v0.0.13",
+            "inherited_source": "direct",
+            "kind": "cm#multi_cloud_image"
+          },
+          "computed_image": {
+            "id": "VT4S8J33G7K8",
+            "href": "/api/clouds/1/images/VT4S8J33G7K8",
+            "name": "example-amzn-ami.1",
+            "inherited_source": "direct",
+            "legacy_id": 561,
+            "kind": "cm#image"
+          },
+          "account": {
+            "id": 123,
+            "href": "/api/accounts/123",
+            "name": "TestAccount",
+            "kind": "cm#account"
+          },
+          "datacenter": {
+            "id": "JCOVBJEL0YE5P",
+            "href": "/api/clouds/1/datacenters/JCOVBJEL0YE5P",
+            "name": "us-east-1b",
+            "legacy_id": 81,
+            "kind": "cm#datacenter"
+          },
+          "instance_type": {
+            "id": "K2MHZDSLY70",
+            "href": "/api/clouds/1/instance_types/K2MHZDSLY70",
+            "name": "c1.medium",
+            "kind": "cm#instance_type",
+            "legacy_id": 853
+          },
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          },
+          "incarnator": {
+            "id": 632,
+            "name": "LAMP bundle, pre-alpha, v0.0.13",
+            "href": "/api/servers/632",
+            "kind": "cm#server",
+            "state": "nil"
+          }
+        },
+        "locked": true,
+        "monitoring_id": "03-F8JKSNHIMIE7V",
+        "monitoring_server": "server1-170",
+        "monitoring_token": "AD76F9E0563",
+        "name": "LAMP, alpha v0.0.13",
+        "networks": [
+          {
+            "href": "/api/networks/UW0SBD522UESD",
+            "name": "New York, 10.0.0.0/24",
+            "id": "UW0SBD522UESD",
+            "kind": "cm#network",
+            "legacy_id": 697
+          },
+          {
+            "href": "/api/networks/3UTY0Z44Y6J01",
+            "name": "New York, 10.0.0.0/24",
+            "id": "3UTY0Z44Y6J01",
+            "kind": "cm#network",
+            "legacy_id": 952
+          }
+        ],
+        "os_platform": "linux",
+        "private_dns_names": [
+          "ip-10-0-0-1.us-east-1.compute.internal"
+        ],
+        "private_ip_addresses": [
+          "10.10.0.1"
+        ],
+        "public_dns_names": [
+          "lamp.mydomain.com",
+          "ip-12-34-56-78.us-east-1.compute.external"
+        ],
+        "public_ip_addresses": [
+          "12.34.56.78"
+        ],
+        "resource_uid": "i-1a2b3c4d",
+        "security_groups": [
+          {
+            "legacy_id": 702,
+            "href": "/api/security_groups/XNNFGFGRIT0LV",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          },
+          {
+            "legacy_id": 302,
+            "href": "/api/security_groups/JEI2DPV8C346Z",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          },
+          {
+            "legacy_id": 183,
+            "href": "/api/security_groups/S9HYOEWHBP7N1",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          }
+        ],
+        "server_template": {
+          "id": 168,
+          "name": "LAMP v0.0.13",
+          "kind": "cm#server_template",
+          "version": 336,
+          "href": "/api/server_templates/168"
+        },
+        "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+        "state": "decommissioning",
+        "subnets": [
+          {
+            "id": "NHRNQVRGX17",
+            "href": "/api/clouds/1/subnets/NHRNQVRGX17",
+            "name": "Subnet A, public",
+            "kind": "cm#subnet",
+            "legacy_id": 833
+          }
+        ],
+        "timestamps": {
+          "created_at": "2014-11-10T16:15:22+00:00",
+          "updated_at": "2014-11-10T16:15:23+00:00",
+          "stranded_at": "2014-11-10T16:15:59+00:00",
+          "pending_at": "2014-11-10T16:15:40+00:00",
+          "booted_at": "2014-11-10T16:15:45+00:00",
+          "operational_at": "2014-11-10T16:16:30+00:00",
+          "terminated_at": "2014-11-10T16:19:12+00:00"
+        }
+      }
+    },
+    "extended": {
+      "attributes": {
+        "actions": {
+        },
+        "description": {
+        },
+        "href": {
+        },
+        "id": {
+        },
+        "ip_addresses": {
+        },
+        "is_next": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        },
+        "links": {
+        },
+        "locked": {
+        },
+        "monitoring_id": {
+        },
+        "monitoring_server": {
+        },
+        "monitoring_token": {
+        },
+        "name": {
+        },
+        "networks": {
+          "view": "link"
+        },
+        "os_platform": {
+        },
+        "private_dns_names": {
+        },
+        "private_ip_addresses": {
+        },
+        "public_dns_names": {
+        },
+        "public_ip_addresses": {
+        },
+        "resource_uid": {
+        },
+        "security_groups": {
+          "view": "member_links"
+        },
+        "server_template": {
+          "view": "embedded"
+        },
+        "ssh_host": {
+        },
+        "state": {
+        },
+        "subnets": {
+          "view": "member_links"
+        },
+        "timestamps": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "actions": [
+          "stop",
+          "start",
+          "lock",
+          "unlock",
+          "reboot",
+          "terminate"
+        ],
+        "description": "Prod server running LAMP in us-east-1",
+        "href": "/api/clouds/1/instances/V6OPONVM4E2J",
+        "id": "V6OPONVM4E2J",
+        "ip_addresses": [
+          {
+            "id": "9SN5J2DYW1U",
+            "legacy_id": 105,
+            "href": "/api/clouds/1/ip_addresses/9SN5J2DYW1U",
+            "address": "159.35.166.124",
+            "name": "Prod LAMP server",
+            "kind": "cm#ip_address",
+            "links": {
+              "cloud": {
+                "id": 1,
+                "href": "/api/clouds/1",
+                "name": "EC2 us-east-1",
+                "kind": "cm#cloud"
+              }
+            }
+          },
+          {
+            "id": "NJ76MHWH5YPA",
+            "legacy_id": 675,
+            "href": "/api/clouds/1/ip_addresses/NJ76MHWH5YPA",
+            "address": "66.113.120.82",
+            "name": "Prod LAMP server",
+            "kind": "cm#ip_address",
+            "links": {
+              "cloud": {
+                "id": 1,
+                "href": "/api/clouds/1",
+                "name": "EC2 us-east-1",
+                "kind": "cm#cloud"
+              }
+            }
+          }
+        ],
+        "is_next": false,
+        "kind": "cm#instance",
+        "legacy_id": 264,
+        "links": {
+          "image": {
+            "id": "HG7QM47W95E",
+            "href": "/api/clouds/1/images/HG7QM47W95E",
+            "name": "example-amzn-ami.1",
+            "inherited_source": "server_template",
+            "legacy_id": 704,
+            "kind": "cm#image"
+          },
+          "multi_cloud_image": {
+            "id": 792,
+            "href": "/api/multi_cloud_images/792",
+            "name": "LAMP v0.0.13",
+            "inherited_source": "server_template",
+            "kind": "cm#multi_cloud_image"
+          },
+          "deployment": {
+            "id": 49,
+            "href": "/api/deployments/49",
+            "name": "LAMP Deployment",
+            "kind": "cm#deployment"
+          },
+          "ssh_key": {
+            "id": "MATKNTCJZ5ZS",
+            "href": "/api/clouds/1/ssh_keys/MATKNTCJZ5ZS",
+            "resource_uid": "prod-ssh-key",
+            "kind": "cm#ssh_key",
+            "legacy_id": 688
+          },
+          "security_groups": {
+            "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+            "count": 3
+          },
+          "subnets": {
+            "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+            "count": 1
+          },
+          "computed_multi_cloud_image": {
+            "id": 893,
+            "href": "/api/multi_cloud_images/893",
+            "name": "LAMP v0.0.13",
+            "inherited_source": "direct",
+            "kind": "cm#multi_cloud_image"
+          },
+          "computed_image": {
+            "id": "VT4S8J33G7K8",
+            "href": "/api/clouds/1/images/VT4S8J33G7K8",
+            "name": "example-amzn-ami.1",
+            "inherited_source": "direct",
+            "legacy_id": 561,
+            "kind": "cm#image"
+          },
+          "account": {
+            "id": 123,
+            "href": "/api/accounts/123",
+            "name": "TestAccount",
+            "kind": "cm#account"
+          },
+          "datacenter": {
+            "id": "JCOVBJEL0YE5P",
+            "href": "/api/clouds/1/datacenters/JCOVBJEL0YE5P",
+            "name": "us-east-1b",
+            "legacy_id": 81,
+            "kind": "cm#datacenter"
+          },
+          "instance_type": {
+            "id": "K2MHZDSLY70",
+            "href": "/api/clouds/1/instance_types/K2MHZDSLY70",
+            "name": "c1.medium",
+            "kind": "cm#instance_type",
+            "legacy_id": 853
+          },
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          },
+          "incarnator": {
+            "id": 632,
+            "name": "LAMP bundle, pre-alpha, v0.0.13",
+            "href": "/api/servers/632",
+            "kind": "cm#server",
+            "state": "nil"
+          }
+        },
+        "locked": true,
+        "monitoring_id": "03-F8JKSNHIMIE7V",
+        "monitoring_server": "server1-170",
+        "monitoring_token": "AD76F9E0563",
+        "name": "LAMP, alpha v0.0.13",
+        "networks": [
+          {
+            "href": "/api/networks/UW0SBD522UESD",
+            "name": "New York, 10.0.0.0/24",
+            "id": "UW0SBD522UESD",
+            "kind": "cm#network",
+            "legacy_id": 697
+          },
+          {
+            "href": "/api/networks/3UTY0Z44Y6J01",
+            "name": "New York, 10.0.0.0/24",
+            "id": "3UTY0Z44Y6J01",
+            "kind": "cm#network",
+            "legacy_id": 952
+          }
+        ],
+        "os_platform": "linux",
+        "private_dns_names": [
+          "ip-10-0-0-1.us-east-1.compute.internal"
+        ],
+        "private_ip_addresses": [
+          "10.10.0.1"
+        ],
+        "public_dns_names": [
+          "lamp.mydomain.com",
+          "ip-12-34-56-78.us-east-1.compute.external"
+        ],
+        "public_ip_addresses": [
+          "12.34.56.78"
+        ],
+        "resource_uid": "i-1a2b3c4d",
+        "security_groups": [
+          {
+            "legacy_id": 702,
+            "href": "/api/security_groups/XNNFGFGRIT0LV",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          },
+          {
+            "legacy_id": 302,
+            "href": "/api/security_groups/JEI2DPV8C346Z",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          },
+          {
+            "legacy_id": 183,
+            "href": "/api/security_groups/S9HYOEWHBP7N1",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          }
+        ],
+        "server_template": {
+          "id": 168,
+          "name": "LAMP v0.0.13",
+          "kind": "cm#server_template",
+          "version": 336,
+          "href": "/api/server_templates/168"
+        },
+        "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+        "state": "decommissioning",
+        "subnets": [
+          {
+            "id": "NHRNQVRGX17",
+            "href": "/api/clouds/1/subnets/NHRNQVRGX17",
+            "name": "Subnet A, public",
+            "kind": "cm#subnet",
+            "legacy_id": 833
+          }
+        ],
+        "timestamps": {
+          "created_at": "2014-11-10T16:15:22+00:00",
+          "updated_at": "2014-11-10T16:15:23+00:00",
+          "stranded_at": "2014-11-10T16:15:59+00:00",
+          "pending_at": "2014-11-10T16:15:40+00:00",
+          "booted_at": "2014-11-10T16:15:45+00:00",
+          "operational_at": "2014-11-10T16:16:30+00:00",
+          "terminated_at": "2014-11-10T16:19:12+00:00"
+        }
+      }
+    },
+    "full": {
+      "attributes": {
+        "actions": {
+        },
+        "description": {
+        },
+        "href": {
+        },
+        "id": {
+        },
+        "ip_addresses": {
+        },
+        "is_next": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        },
+        "links": {
+        },
+        "locked": {
+        },
+        "monitoring_id": {
+        },
+        "monitoring_server": {
+        },
+        "monitoring_token": {
+        },
+        "name": {
+        },
+        "networks": {
+          "view": "link"
+        },
+        "os_platform": {
+        },
+        "private_dns_names": {
+        },
+        "private_ip_addresses": {
+        },
+        "public_dns_names": {
+        },
+        "public_ip_addresses": {
+        },
+        "resource_uid": {
+        },
+        "security_groups": {
+          "view": "member_links"
+        },
+        "server_template": {
+          "view": "embedded"
+        },
+        "ssh_host": {
+        },
+        "state": {
+        },
+        "subnets": {
+          "view": "member_links"
+        },
+        "tags": {
+        },
+        "timestamps": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "actions": [
+          "stop",
+          "start",
+          "lock",
+          "unlock",
+          "reboot",
+          "terminate"
+        ],
+        "description": "Prod server running LAMP in us-east-1",
+        "href": "/api/clouds/1/instances/V6OPONVM4E2J",
+        "id": "V6OPONVM4E2J",
+        "ip_addresses": [
+          {
+            "id": "9SN5J2DYW1U",
+            "legacy_id": 105,
+            "href": "/api/clouds/1/ip_addresses/9SN5J2DYW1U",
+            "address": "159.35.166.124",
+            "name": "Prod LAMP server",
+            "kind": "cm#ip_address",
+            "links": {
+              "cloud": {
+                "id": 1,
+                "href": "/api/clouds/1",
+                "name": "EC2 us-east-1",
+                "kind": "cm#cloud"
+              }
+            }
+          },
+          {
+            "id": "NJ76MHWH5YPA",
+            "legacy_id": 675,
+            "href": "/api/clouds/1/ip_addresses/NJ76MHWH5YPA",
+            "address": "66.113.120.82",
+            "name": "Prod LAMP server",
+            "kind": "cm#ip_address",
+            "links": {
+              "cloud": {
+                "id": 1,
+                "href": "/api/clouds/1",
+                "name": "EC2 us-east-1",
+                "kind": "cm#cloud"
+              }
+            }
+          }
+        ],
+        "is_next": false,
+        "kind": "cm#instance",
+        "legacy_id": 264,
+        "links": {
+          "image": {
+            "id": "HG7QM47W95E",
+            "href": "/api/clouds/1/images/HG7QM47W95E",
+            "name": "example-amzn-ami.1",
+            "inherited_source": "server_template",
+            "legacy_id": 704,
+            "kind": "cm#image"
+          },
+          "multi_cloud_image": {
+            "id": 792,
+            "href": "/api/multi_cloud_images/792",
+            "name": "LAMP v0.0.13",
+            "inherited_source": "server_template",
+            "kind": "cm#multi_cloud_image"
+          },
+          "deployment": {
+            "id": 49,
+            "href": "/api/deployments/49",
+            "name": "LAMP Deployment",
+            "kind": "cm#deployment"
+          },
+          "ssh_key": {
+            "id": "MATKNTCJZ5ZS",
+            "href": "/api/clouds/1/ssh_keys/MATKNTCJZ5ZS",
+            "resource_uid": "prod-ssh-key",
+            "kind": "cm#ssh_key",
+            "legacy_id": 688
+          },
+          "security_groups": {
+            "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+            "count": 3
+          },
+          "subnets": {
+            "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+            "count": 1
+          },
+          "computed_multi_cloud_image": {
+            "id": 893,
+            "href": "/api/multi_cloud_images/893",
+            "name": "LAMP v0.0.13",
+            "inherited_source": "direct",
+            "kind": "cm#multi_cloud_image"
+          },
+          "computed_image": {
+            "id": "VT4S8J33G7K8",
+            "href": "/api/clouds/1/images/VT4S8J33G7K8",
+            "name": "example-amzn-ami.1",
+            "inherited_source": "direct",
+            "legacy_id": 561,
+            "kind": "cm#image"
+          },
+          "account": {
+            "id": 123,
+            "href": "/api/accounts/123",
+            "name": "TestAccount",
+            "kind": "cm#account"
+          },
+          "datacenter": {
+            "id": "JCOVBJEL0YE5P",
+            "href": "/api/clouds/1/datacenters/JCOVBJEL0YE5P",
+            "name": "us-east-1b",
+            "legacy_id": 81,
+            "kind": "cm#datacenter"
+          },
+          "instance_type": {
+            "id": "K2MHZDSLY70",
+            "href": "/api/clouds/1/instance_types/K2MHZDSLY70",
+            "name": "c1.medium",
+            "kind": "cm#instance_type",
+            "legacy_id": 853
+          },
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          },
+          "incarnator": {
+            "id": 632,
+            "name": "LAMP bundle, pre-alpha, v0.0.13",
+            "href": "/api/servers/632",
+            "kind": "cm#server",
+            "state": "nil"
+          }
+        },
+        "locked": true,
+        "monitoring_id": "03-F8JKSNHIMIE7V",
+        "monitoring_server": "server1-170",
+        "monitoring_token": "AD76F9E0563",
+        "name": "LAMP, alpha v0.0.13",
+        "networks": [
+          {
+            "href": "/api/networks/UW0SBD522UESD",
+            "name": "New York, 10.0.0.0/24",
+            "id": "UW0SBD522UESD",
+            "kind": "cm#network",
+            "legacy_id": 697
+          },
+          {
+            "href": "/api/networks/3UTY0Z44Y6J01",
+            "name": "New York, 10.0.0.0/24",
+            "id": "3UTY0Z44Y6J01",
+            "kind": "cm#network",
+            "legacy_id": 952
+          }
+        ],
+        "os_platform": "linux",
+        "private_dns_names": [
+          "ip-10-0-0-1.us-east-1.compute.internal"
+        ],
+        "private_ip_addresses": [
+          "10.10.0.1"
+        ],
+        "public_dns_names": [
+          "lamp.mydomain.com",
+          "ip-12-34-56-78.us-east-1.compute.external"
+        ],
+        "public_ip_addresses": [
+          "12.34.56.78"
+        ],
+        "resource_uid": "i-1a2b3c4d",
+        "security_groups": [
+          {
+            "legacy_id": 702,
+            "href": "/api/security_groups/XNNFGFGRIT0LV",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          },
+          {
+            "legacy_id": 302,
+            "href": "/api/security_groups/JEI2DPV8C346Z",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          },
+          {
+            "legacy_id": 183,
+            "href": "/api/security_groups/S9HYOEWHBP7N1",
+            "name": "LAMP, US East",
+            "kind": "cm#security_group"
+          }
+        ],
+        "server_template": {
+          "id": 168,
+          "name": "LAMP v0.0.13",
+          "kind": "cm#server_template",
+          "version": 336,
+          "href": "/api/server_templates/168"
+        },
+        "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+        "state": "decommissioning",
+        "subnets": [
+          {
+            "id": "NHRNQVRGX17",
+            "href": "/api/clouds/1/subnets/NHRNQVRGX17",
+            "name": "Subnet A, public",
+            "kind": "cm#subnet",
+            "legacy_id": 833
+          }
+        ],
+        "tags": [
+          "rs_login:state=restricted",
+          "rs_monitoring:state=active"
+        ],
+        "timestamps": {
+          "created_at": "2014-11-10T16:15:22+00:00",
+          "updated_at": "2014-11-10T16:15:23+00:00",
+          "stranded_at": "2014-11-10T16:15:59+00:00",
+          "pending_at": "2014-11-10T16:15:40+00:00",
+          "booted_at": "2014-11-10T16:15:45+00:00",
+          "operational_at": "2014-11-10T16:16:30+00:00",
+          "terminated_at": "2014-11-10T16:19:12+00:00"
+        }
+      }
+    },
+    "tiny": {
+      "attributes": {
+        "resource_uid": {
+        },
+        "name": {
+        },
+        "kind": {
+        },
+        "href": {
+        },
+        "timestamps": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "resource_uid": "i-1a2b3c4d",
+        "name": "LAMP, alpha v0.0.13",
+        "kind": "cm#instance",
+        "href": "/api/clouds/1/instances/V6OPONVM4E2J",
+        "timestamps": {
+          "created_at": "2014-11-10T16:15:22+00:00",
+          "updated_at": "2014-11-10T16:15:23+00:00",
+          "stranded_at": "2014-11-10T16:15:59+00:00",
+          "pending_at": "2014-11-10T16:15:40+00:00",
+          "booted_at": "2014-11-10T16:15:45+00:00",
+          "operational_at": "2014-11-10T16:16:30+00:00",
+          "terminated_at": "2014-11-10T16:19:12+00:00"
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        },
+        "legacy_id": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "V6OPONVM4E2J",
+        "href": "/api/clouds/1/instances/V6OPONVM4E2J",
+        "name": "LAMP, alpha v0.0.13",
+        "kind": "cm#instance",
+        "legacy_id": 264
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.instance",
+  "description": "Represents an Instance resource",
+  "example": {
+    "href": "/api/clouds/1/instances/V6OPONVM4E2J",
+    "public_dns_names": [
+      "lamp.mydomain.com",
+      "ip-12-34-56-78.us-east-1.compute.external"
+    ],
+    "private_dns_names": [
+      "ip-10-0-0-1.us-east-1.compute.internal"
+    ],
+    "public_ip_addresses": [
+      "12.34.56.78"
+    ],
+    "private_ip_addresses": [
+      "10.10.0.1"
+    ],
+    "name": "LAMP, alpha v0.0.13",
+    "description": "Prod server running LAMP in us-east-1",
+    "kind": "cm#instance",
+    "legacy_id": 264,
+    "resource_uid": "i-1a2b3c4d",
+    "is_next": false,
+    "id": "V6OPONVM4E2J",
+    "locked": true,
+    "actions": [
+      "stop",
+      "start",
+      "lock",
+      "unlock",
+      "reboot",
+      "terminate"
+    ],
+    "timestamps": {
+      "created_at": "2014-11-10T16:15:22+00:00",
+      "updated_at": "2014-11-10T16:15:23+00:00",
+      "stranded_at": "2014-11-10T16:15:59+00:00",
+      "pending_at": "2014-11-10T16:15:40+00:00",
+      "booted_at": "2014-11-10T16:15:45+00:00",
+      "operational_at": "2014-11-10T16:16:30+00:00",
+      "terminated_at": "2014-11-10T16:19:12+00:00"
+    },
+    "os_platform": "linux",
+    "monitoring_id": "03-F8JKSNHIMIE7V",
+    "monitoring_server": "server1-170",
+    "monitoring_token": "AD76F9E0563",
+    "state": "decommissioning",
+    "tags": [
+      "rs_login:state=restricted",
+      "rs_monitoring:state=active"
+    ],
+    "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+    "server_template": {
+      "id": 168,
+      "name": "LAMP v0.0.13",
+      "description": "LAMP v0.0.13 server with ephemeral datastore.",
+      "kind": "cm#server_template",
+      "version": 336,
+      "href": "/api/server_templates/168"
+    },
+    "security_groups": {
+      "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+      "count": 3
+    },
+    "subnets": {
+      "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+      "count": 1
+    },
+    "networks": [
+      {
+        "id": "UW0SBD522UESD",
+        "legacy_id": 697,
+        "href": "/api/networks/UW0SBD522UESD",
+        "name": "New York, 10.0.0.0/24",
+        "description": "Network in US East region with access to the Internet",
+        "kind": "cm#network",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      },
+      {
+        "id": "3UTY0Z44Y6J01",
+        "legacy_id": 952,
+        "href": "/api/networks/3UTY0Z44Y6J01",
+        "name": "New York, 10.0.0.0/24",
+        "description": "Network in US East region with access to the Internet",
+        "kind": "cm#network",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      }
+    ],
+    "ip_addresses": [
+      {
+        "id": "9SN5J2DYW1U",
+        "legacy_id": 105,
+        "href": "/api/clouds/1/ip_addresses/9SN5J2DYW1U",
+        "address": "159.35.166.124",
+        "name": "Prod LAMP server",
+        "kind": "cm#ip_address",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      },
+      {
+        "id": "NJ76MHWH5YPA",
+        "legacy_id": 675,
+        "href": "/api/clouds/1/ip_addresses/NJ76MHWH5YPA",
+        "address": "66.113.120.82",
+        "name": "Prod LAMP server",
+        "kind": "cm#ip_address",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      }
+    ],
+    "links": {
+      "image": {
+        "id": "HG7QM47W95E",
+        "legacy_id": 704,
+        "href": "/api/clouds/1/images/HG7QM47W95E",
+        "name": "example-amzn-ami.1",
+        "resource_uid": "ami-f2f479c2",
+        "description": "Amazon Linux AMI i386 EBS",
+        "kind": "cm#image",
+        "image_type": "machine",
+        "os_platform": "linux",
+        "cpu_architecture": "x86_64",
+        "virtualization_type": "pvm",
+        "visibility": "public",
+        "root_device_storage": "local",
+        "inherited_source": "server_template",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      },
+      "multi_cloud_image": {
+        "id": 792,
+        "href": "/api/multi_cloud_images/792",
+        "name": "LAMP v0.0.13",
+        "description": "LAMP v0.0.13, Ubuntu 'Vivid Vervet', multi-cloud",
+        "kind": "cm#multi_cloud_image",
+        "version": 133,
+        "inherited_source": "server_template"
+      },
+      "deployment": {
+        "id": 49,
+        "name": "LAMP Deployment",
+        "description": "Test deployment running LAMP on UBUNTU 'Vivid Vervet'",
+        "locked": false,
+        "kind": "cm#deployment",
+        "href": "/api/deployments/49",
+        "tags": [
+          "info:cloud=4",
+          "app:branch=master"
+        ],
+        "servers": [
+          {
+            "id": 386,
+            "name": "LAMP",
+            "description": "LAMP bundle, Ubuntu 'Vivid Vervet'",
+            "kind": "cm#server",
+            "href": "/api/servers/386",
+            "actions": [
+              "start",
+              "stop",
+              "terminate"
+            ],
+            "tags": [
+              "rs_login:state=restricted",
+              "rs_monitoring:state=active"
+            ],
+            "instance": {
+              "href": "/api/clouds/1/instances/3XK6LM3B1AD",
+              "public_dns_names": [
+                "lamp.mydomain.com",
+                "ip-12-34-56-78.us-east-1.compute.external"
+              ],
+              "private_dns_names": [
+                "ip-10-0-0-1.us-east-1.compute.internal"
+              ],
+              "public_ip_addresses": [
+                "12.34.56.78"
+              ],
+              "private_ip_addresses": [
+                "10.10.0.1"
+              ],
+              "name": "LAMP, alpha v0.0.13",
+              "description": "Prod server running LAMP in us-east-1",
+              "kind": "cm#instance",
+              "legacy_id": 69,
+              "resource_uid": "i-1a2b3c4d",
+              "is_next": false,
+              "id": "3XK6LM3B1AD",
+              "locked": true,
+              "actions": [
+                "stop",
+                "start",
+                "lock",
+                "unlock",
+                "reboot",
+                "terminate"
+              ],
+              "os_platform": "linux",
+              "monitoring_id": "03-F8JKSNHIMIE7V",
+              "monitoring_server": "server1-170",
+              "monitoring_token": "AD76F9E0563",
+              "state": "stranded in booting",
+              "tags": [
+                "rs_login:state=restricted",
+                "rs_monitoring:state=active"
+              ],
+              "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+              "networks": [
+                {
+                  "id": "EBZCHO1PRVF",
+                  "legacy_id": 393,
+                  "href": "/api/networks/EBZCHO1PRVF",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                }
+              ],
+              "ip_addresses": [
+                {
+                  "id": "54ZHCPXSN9F",
+                  "legacy_id": 287,
+                  "href": "/api/clouds/1/ip_addresses/54ZHCPXSN9F",
+                  "address": "70.71.82.160",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                }
+              ],
+              "links": {
+              }
+            },
+            "next_instance": {
+              "href": "/api/clouds/1/instances/GIZMFZ7NN6GFR",
+              "public_dns_names": [
+                "lamp.mydomain.com",
+                "ip-12-34-56-78.us-east-1.compute.external"
+              ],
+              "private_dns_names": [
+                "ip-10-0-0-1.us-east-1.compute.internal"
+              ],
+              "public_ip_addresses": [
+                "12.34.56.78"
+              ],
+              "private_ip_addresses": [
+                "10.10.0.1"
+              ],
+              "name": "LAMP, alpha v0.0.13",
+              "description": "Prod server running LAMP in us-east-1",
+              "kind": "cm#instance",
+              "legacy_id": 115,
+              "resource_uid": "i-1a2b3c4d",
+              "is_next": true,
+              "id": "GIZMFZ7NN6GFR",
+              "locked": true,
+              "actions": [
+                "stop",
+                "start",
+                "lock",
+                "unlock",
+                "reboot",
+                "terminate"
+              ],
+              "os_platform": "linux",
+              "monitoring_id": "03-F8JKSNHIMIE7V",
+              "monitoring_server": "server1-170",
+              "monitoring_token": "AD76F9E0563",
+              "state": "queued",
+              "tags": [
+                "rs_login:state=restricted",
+                "rs_monitoring:state=active"
+              ],
+              "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+              "networks": [
+                {
+                  "id": "QZQQZ20FV8WLQ",
+                  "legacy_id": 703,
+                  "href": "/api/networks/QZQQZ20FV8WLQ",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "0613Y8I8731",
+                  "legacy_id": 31,
+                  "href": "/api/networks/0613Y8I8731",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "OGZMVVHH1GAW",
+                  "legacy_id": 767,
+                  "href": "/api/networks/OGZMVVHH1GAW",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                }
+              ],
+              "ip_addresses": [
+                {
+                  "id": "SDK0CSFYQRR",
+                  "legacy_id": 452,
+                  "href": "/api/clouds/1/ip_addresses/SDK0CSFYQRR",
+                  "address": "98.209.60.162",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "S4N1XFP972X3",
+                  "legacy_id": 791,
+                  "href": "/api/clouds/1/ip_addresses/S4N1XFP972X3",
+                  "address": "204.20.80.84",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "4LE7S30891W90",
+                  "legacy_id": 245,
+                  "href": "/api/clouds/1/ip_addresses/4LE7S30891W90",
+                  "address": "242.84.178.175",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                }
+              ],
+              "links": {
+              }
+            },
+            "current_instance": {
+              "href": "/api/clouds/1/instances/X3DAHF54OSUGX",
+              "public_dns_names": [
+                "lamp.mydomain.com",
+                "ip-12-34-56-78.us-east-1.compute.external"
+              ],
+              "private_dns_names": [
+                "ip-10-0-0-1.us-east-1.compute.internal"
+              ],
+              "public_ip_addresses": [
+                "12.34.56.78"
+              ],
+              "private_ip_addresses": [
+                "10.10.0.1"
+              ],
+              "name": "LAMP, alpha v0.0.13",
+              "description": "Prod server running LAMP in us-east-1",
+              "kind": "cm#instance",
+              "legacy_id": 968,
+              "resource_uid": "i-1a2b3c4d",
+              "is_next": false,
+              "id": "X3DAHF54OSUGX",
+              "locked": true,
+              "actions": [
+                "stop",
+                "start",
+                "lock",
+                "unlock",
+                "reboot",
+                "terminate"
+              ],
+              "os_platform": "linux",
+              "monitoring_id": "03-F8JKSNHIMIE7V",
+              "monitoring_server": "server1-170",
+              "monitoring_token": "AD76F9E0563",
+              "state": "queued",
+              "tags": [
+                "rs_login:state=restricted",
+                "rs_monitoring:state=active"
+              ],
+              "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+              "networks": [
+                {
+                  "id": "L6RQHOF1NGU78",
+                  "legacy_id": 436,
+                  "href": "/api/networks/L6RQHOF1NGU78",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "H51UVIEUI9T",
+                  "legacy_id": 334,
+                  "href": "/api/networks/H51UVIEUI9T",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "D8UBTG0629M1",
+                  "legacy_id": 669,
+                  "href": "/api/networks/D8UBTG0629M1",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                }
+              ],
+              "ip_addresses": [
+                {
+                  "id": "ODFHJ833ZF1ZR",
+                  "legacy_id": 877,
+                  "href": "/api/clouds/1/ip_addresses/ODFHJ833ZF1ZR",
+                  "address": "100.172.202.113",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "5FORI5HHTFE",
+                  "legacy_id": 404,
+                  "href": "/api/clouds/1/ip_addresses/5FORI5HHTFE",
+                  "address": "90.87.213.109",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "40K7D740EI2",
+                  "legacy_id": 743,
+                  "href": "/api/clouds/1/ip_addresses/40K7D740EI2",
+                  "address": "232.74.11.254",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                }
+              ],
+              "links": {
+              }
+            },
+            "links": {
+              "next_instance": {
+                "href": "/api/clouds/1/instances/GIZMFZ7NN6GFR",
+                "public_dns_names": [
+                  "lamp.mydomain.com",
+                  "ip-12-34-56-78.us-east-1.compute.external"
+                ],
+                "private_dns_names": [
+                  "ip-10-0-0-1.us-east-1.compute.internal"
+                ],
+                "public_ip_addresses": [
+                  "12.34.56.78"
+                ],
+                "private_ip_addresses": [
+                  "10.10.0.1"
+                ],
+                "name": "LAMP, alpha v0.0.13",
+                "description": "Prod server running LAMP in us-east-1",
+                "kind": "cm#instance",
+                "legacy_id": 115,
+                "resource_uid": "i-1a2b3c4d",
+                "is_next": true,
+                "id": "GIZMFZ7NN6GFR",
+                "locked": true,
+                "actions": [
+                  "stop",
+                  "start",
+                  "lock",
+                  "unlock",
+                  "reboot",
+                  "terminate"
+                ],
+                "os_platform": "linux",
+                "monitoring_id": "03-F8JKSNHIMIE7V",
+                "monitoring_server": "server1-170",
+                "monitoring_token": "AD76F9E0563",
+                "state": "queued",
+                "tags": [
+                  "rs_login:state=restricted",
+                  "rs_monitoring:state=active"
+                ],
+                "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                "networks": [
+                  {
+                    "id": "QZQQZ20FV8WLQ",
+                    "legacy_id": 703,
+                    "href": "/api/networks/QZQQZ20FV8WLQ",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "0613Y8I8731",
+                    "legacy_id": 31,
+                    "href": "/api/networks/0613Y8I8731",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "OGZMVVHH1GAW",
+                    "legacy_id": 767,
+                    "href": "/api/networks/OGZMVVHH1GAW",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  }
+                ],
+                "ip_addresses": [
+                  {
+                    "id": "SDK0CSFYQRR",
+                    "legacy_id": 452,
+                    "href": "/api/clouds/1/ip_addresses/SDK0CSFYQRR",
+                    "address": "98.209.60.162",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "S4N1XFP972X3",
+                    "legacy_id": 791,
+                    "href": "/api/clouds/1/ip_addresses/S4N1XFP972X3",
+                    "address": "204.20.80.84",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "4LE7S30891W90",
+                    "legacy_id": 245,
+                    "href": "/api/clouds/1/ip_addresses/4LE7S30891W90",
+                    "address": "242.84.178.175",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  }
+                ],
+                "links": {
+                }
+              },
+              "current_instance": {
+                "href": "/api/clouds/1/instances/X3DAHF54OSUGX",
+                "public_dns_names": [
+                  "lamp.mydomain.com",
+                  "ip-12-34-56-78.us-east-1.compute.external"
+                ],
+                "private_dns_names": [
+                  "ip-10-0-0-1.us-east-1.compute.internal"
+                ],
+                "public_ip_addresses": [
+                  "12.34.56.78"
+                ],
+                "private_ip_addresses": [
+                  "10.10.0.1"
+                ],
+                "name": "LAMP, alpha v0.0.13",
+                "description": "Prod server running LAMP in us-east-1",
+                "kind": "cm#instance",
+                "legacy_id": 968,
+                "resource_uid": "i-1a2b3c4d",
+                "is_next": false,
+                "id": "X3DAHF54OSUGX",
+                "locked": true,
+                "actions": [
+                  "stop",
+                  "start",
+                  "lock",
+                  "unlock",
+                  "reboot",
+                  "terminate"
+                ],
+                "os_platform": "linux",
+                "monitoring_id": "03-F8JKSNHIMIE7V",
+                "monitoring_server": "server1-170",
+                "monitoring_token": "AD76F9E0563",
+                "state": "queued",
+                "tags": [
+                  "rs_login:state=restricted",
+                  "rs_monitoring:state=active"
+                ],
+                "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                "networks": [
+                  {
+                    "id": "L6RQHOF1NGU78",
+                    "legacy_id": 436,
+                    "href": "/api/networks/L6RQHOF1NGU78",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "H51UVIEUI9T",
+                    "legacy_id": 334,
+                    "href": "/api/networks/H51UVIEUI9T",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "D8UBTG0629M1",
+                    "legacy_id": 669,
+                    "href": "/api/networks/D8UBTG0629M1",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  }
+                ],
+                "ip_addresses": [
+                  {
+                    "id": "ODFHJ833ZF1ZR",
+                    "legacy_id": 877,
+                    "href": "/api/clouds/1/ip_addresses/ODFHJ833ZF1ZR",
+                    "address": "100.172.202.113",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "5FORI5HHTFE",
+                    "legacy_id": 404,
+                    "href": "/api/clouds/1/ip_addresses/5FORI5HHTFE",
+                    "address": "90.87.213.109",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "40K7D740EI2",
+                    "legacy_id": 743,
+                    "href": "/api/clouds/1/ip_addresses/40K7D740EI2",
+                    "address": "232.74.11.254",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  }
+                ],
+                "links": {
+                }
+              }
+            }
+          }
+        ],
+        "server_arrays": [
+          {
+            "id": 173,
+            "name": "Worker daemons",
+            "description": "Worker daemons for US East region",
+            "kind": "cm#server_array",
+            "actions": [
+              "launch",
+              "lock",
+              "unlock"
+            ],
+            "tags": [
+              "omnirepresentative",
+              "ophthalmite",
+              "salpingectomy"
+            ],
+            "state": "disabled",
+            "href": "/api/server_arrays/173",
+            "next_instance": {
+              "href": "/api/clouds/1/instances/6EBY8LNGKYOM",
+              "public_dns_names": [
+                "lamp.mydomain.com",
+                "ip-12-34-56-78.us-east-1.compute.external"
+              ],
+              "private_dns_names": [
+                "ip-10-0-0-1.us-east-1.compute.internal"
+              ],
+              "public_ip_addresses": [
+                "12.34.56.78"
+              ],
+              "private_ip_addresses": [
+                "10.10.0.1"
+              ],
+              "name": "LAMP, alpha v0.0.13",
+              "description": "Prod server running LAMP in us-east-1",
+              "kind": "cm#instance",
+              "legacy_id": 630,
+              "resource_uid": "i-1a2b3c4d",
+              "is_next": true,
+              "id": "6EBY8LNGKYOM",
+              "locked": false,
+              "actions": [
+                "stop",
+                "start",
+                "lock",
+                "unlock",
+                "reboot",
+                "terminate"
+              ],
+              "os_platform": "linux",
+              "monitoring_id": "03-F8JKSNHIMIE7V",
+              "monitoring_server": "server1-170",
+              "monitoring_token": "AD76F9E0563",
+              "state": "stopped",
+              "tags": [
+                "rs_login:state=restricted",
+                "rs_monitoring:state=active"
+              ],
+              "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+              "networks": [
+                {
+                  "id": "ZKHCS7WON8YP",
+                  "legacy_id": 623,
+                  "href": "/api/networks/ZKHCS7WON8YP",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "HH1RFCSHTGSI",
+                  "legacy_id": 245,
+                  "href": "/api/networks/HH1RFCSHTGSI",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                }
+              ],
+              "ip_addresses": [
+                {
+                  "id": "8LWEDB6K94C",
+                  "legacy_id": 103,
+                  "href": "/api/clouds/1/ip_addresses/8LWEDB6K94C",
+                  "address": "144.228.109.35",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                }
+              ],
+              "links": {
+              }
+            },
+            "instance_summary": {
+              "total_count": 15,
+              "healthy_count": 13,
+              "unhealthy_count": 2,
+              "not_terminated_count": 15
+            },
+            "links": {
+              "next_instance": {
+                "href": "/api/clouds/1/instances/6EBY8LNGKYOM",
+                "public_dns_names": [
+                  "lamp.mydomain.com",
+                  "ip-12-34-56-78.us-east-1.compute.external"
+                ],
+                "private_dns_names": [
+                  "ip-10-0-0-1.us-east-1.compute.internal"
+                ],
+                "public_ip_addresses": [
+                  "12.34.56.78"
+                ],
+                "private_ip_addresses": [
+                  "10.10.0.1"
+                ],
+                "name": "LAMP, alpha v0.0.13",
+                "description": "Prod server running LAMP in us-east-1",
+                "kind": "cm#instance",
+                "legacy_id": 630,
+                "resource_uid": "i-1a2b3c4d",
+                "is_next": true,
+                "id": "6EBY8LNGKYOM",
+                "locked": false,
+                "actions": [
+                  "stop",
+                  "start",
+                  "lock",
+                  "unlock",
+                  "reboot",
+                  "terminate"
+                ],
+                "os_platform": "linux",
+                "monitoring_id": "03-F8JKSNHIMIE7V",
+                "monitoring_server": "server1-170",
+                "monitoring_token": "AD76F9E0563",
+                "state": "stopped",
+                "tags": [
+                  "rs_login:state=restricted",
+                  "rs_monitoring:state=active"
+                ],
+                "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                "networks": [
+                  {
+                    "id": "ZKHCS7WON8YP",
+                    "legacy_id": 623,
+                    "href": "/api/networks/ZKHCS7WON8YP",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "HH1RFCSHTGSI",
+                    "legacy_id": 245,
+                    "href": "/api/networks/HH1RFCSHTGSI",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  }
+                ],
+                "ip_addresses": [
+                  {
+                    "id": "8LWEDB6K94C",
+                    "legacy_id": 103,
+                    "href": "/api/clouds/1/ip_addresses/8LWEDB6K94C",
+                    "address": "144.228.109.35",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  }
+                ],
+                "links": {
+                }
+              },
+              "current_instances": [
+                {
+                  "href": "/api/clouds/1/instances/FX8OG33D1FK8",
+                  "public_dns_names": [
+                    "lamp.mydomain.com",
+                    "ip-12-34-56-78.us-east-1.compute.external"
+                  ],
+                  "private_dns_names": [
+                    "ip-10-0-0-1.us-east-1.compute.internal"
+                  ],
+                  "public_ip_addresses": [
+                    "12.34.56.78"
+                  ],
+                  "private_ip_addresses": [
+                    "10.10.0.1"
+                  ],
+                  "name": "LAMP, alpha v0.0.13",
+                  "description": "Prod server running LAMP in us-east-1",
+                  "kind": "cm#instance",
+                  "legacy_id": 522,
+                  "resource_uid": "i-1a2b3c4d",
+                  "is_next": false,
+                  "id": "FX8OG33D1FK8",
+                  "locked": false,
+                  "actions": [
+                    "stop",
+                    "start",
+                    "lock",
+                    "unlock",
+                    "reboot",
+                    "terminate"
+                  ],
+                  "os_platform": "linux",
+                  "monitoring_id": "03-F8JKSNHIMIE7V",
+                  "monitoring_server": "server1-170",
+                  "monitoring_token": "AD76F9E0563",
+                  "state": "queued",
+                  "tags": [
+                    "rs_login:state=restricted",
+                    "rs_monitoring:state=active"
+                  ],
+                  "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                  "networks": [
+                    {
+                      "id": "1XGVNOK5I6C7X",
+                      "legacy_id": 481,
+                      "href": "/api/networks/1XGVNOK5I6C7X",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "VARLNU73N720",
+                      "legacy_id": 67,
+                      "href": "/api/networks/VARLNU73N720",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "KQ3IMKKBKI9IJ",
+                      "legacy_id": 946,
+                      "href": "/api/networks/KQ3IMKKBKI9IJ",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "ip_addresses": [
+                    {
+                      "id": "YQXMDBRWU39",
+                      "legacy_id": 277,
+                      "href": "/api/clouds/1/ip_addresses/YQXMDBRWU39",
+                      "address": "45.57.85.6",
+                      "name": "Prod LAMP server",
+                      "kind": "cm#ip_address",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "8ANJHH1PQMCEP",
+                      "legacy_id": 393,
+                      "href": "/api/clouds/1/ip_addresses/8ANJHH1PQMCEP",
+                      "address": "213.218.81.139",
+                      "name": "Prod LAMP server",
+                      "kind": "cm#ip_address",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "links": {
+                  }
+                },
+                {
+                  "href": "/api/clouds/1/instances/1WP3QIPD32S6P",
+                  "public_dns_names": [
+                    "lamp.mydomain.com",
+                    "ip-12-34-56-78.us-east-1.compute.external"
+                  ],
+                  "private_dns_names": [
+                    "ip-10-0-0-1.us-east-1.compute.internal"
+                  ],
+                  "public_ip_addresses": [
+                    "12.34.56.78"
+                  ],
+                  "private_ip_addresses": [
+                    "10.10.0.1"
+                  ],
+                  "name": "LAMP, alpha v0.0.13",
+                  "description": "Prod server running LAMP in us-east-1",
+                  "kind": "cm#instance",
+                  "legacy_id": 385,
+                  "resource_uid": "i-1a2b3c4d",
+                  "is_next": false,
+                  "id": "1WP3QIPD32S6P",
+                  "locked": true,
+                  "actions": [
+                    "stop",
+                    "start",
+                    "lock",
+                    "unlock",
+                    "reboot",
+                    "terminate"
+                  ],
+                  "os_platform": "linux",
+                  "monitoring_id": "03-F8JKSNHIMIE7V",
+                  "monitoring_server": "server1-170",
+                  "monitoring_token": "AD76F9E0563",
+                  "state": "stopped",
+                  "tags": [
+                    "rs_login:state=restricted",
+                    "rs_monitoring:state=active"
+                  ],
+                  "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                  "networks": [
+                    {
+                      "id": "E91XQG953CJ9",
+                      "legacy_id": 293,
+                      "href": "/api/networks/E91XQG953CJ9",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "LIW7IOGVK7U7C",
+                      "legacy_id": 247,
+                      "href": "/api/networks/LIW7IOGVK7U7C",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "8AEOUW9VEIDHW",
+                      "legacy_id": 649,
+                      "href": "/api/networks/8AEOUW9VEIDHW",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "ip_addresses": [
+                    {
+                      "id": "YPXZ4KLZ1MZU",
+                      "legacy_id": 444,
+                      "href": "/api/clouds/1/ip_addresses/YPXZ4KLZ1MZU",
+                      "address": "190.25.28.87",
+                      "name": "Prod LAMP server",
+                      "kind": "cm#ip_address",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "EROI3TOH4HZM",
+                      "legacy_id": 480,
+                      "href": "/api/clouds/1/ip_addresses/EROI3TOH4HZM",
+                      "address": "247.173.208.135",
+                      "name": "Prod LAMP server",
+                      "kind": "cm#ip_address",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "links": {
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 882,
+            "name": "Worker daemons",
+            "description": "Worker daemons for US East region",
+            "kind": "cm#server_array",
+            "actions": [
+              "launch",
+              "lock",
+              "unlock"
+            ],
+            "tags": [
+              "Tagula",
+              "Boiko"
+            ],
+            "state": "enabled",
+            "href": "/api/server_arrays/882",
+            "next_instance": {
+              "href": "/api/clouds/1/instances/02WCCIY1AMV",
+              "public_dns_names": [
+                "lamp.mydomain.com",
+                "ip-12-34-56-78.us-east-1.compute.external"
+              ],
+              "private_dns_names": [
+                "ip-10-0-0-1.us-east-1.compute.internal"
+              ],
+              "public_ip_addresses": [
+                "12.34.56.78"
+              ],
+              "private_ip_addresses": [
+                "10.10.0.1"
+              ],
+              "name": "LAMP, alpha v0.0.13",
+              "description": "Prod server running LAMP in us-east-1",
+              "kind": "cm#instance",
+              "legacy_id": 911,
+              "resource_uid": "i-1a2b3c4d",
+              "is_next": false,
+              "id": "02WCCIY1AMV",
+              "locked": true,
+              "actions": [
+                "stop",
+                "start",
+                "lock",
+                "unlock",
+                "reboot",
+                "terminate"
+              ],
+              "os_platform": "linux",
+              "monitoring_id": "03-F8JKSNHIMIE7V",
+              "monitoring_server": "server1-170",
+              "monitoring_token": "AD76F9E0563",
+              "state": "stranded in booting",
+              "tags": [
+                "rs_login:state=restricted",
+                "rs_monitoring:state=active"
+              ],
+              "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+              "networks": [
+                {
+                  "id": "ZKTMBK4XUIA0",
+                  "legacy_id": 588,
+                  "href": "/api/networks/ZKTMBK4XUIA0",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "B6YC3F8MYC02",
+                  "legacy_id": 510,
+                  "href": "/api/networks/B6YC3F8MYC02",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "IBI1E1E0301FN",
+                  "legacy_id": 547,
+                  "href": "/api/networks/IBI1E1E0301FN",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                }
+              ],
+              "ip_addresses": [
+                {
+                  "id": "RPPJ79AEBI2",
+                  "legacy_id": 964,
+                  "href": "/api/clouds/1/ip_addresses/RPPJ79AEBI2",
+                  "address": "51.120.247.163",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "VC3WRG3JIO2JX",
+                  "legacy_id": 393,
+                  "href": "/api/clouds/1/ip_addresses/VC3WRG3JIO2JX",
+                  "address": "131.154.168.204",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "JLDCPMN900ZC",
+                  "legacy_id": 415,
+                  "href": "/api/clouds/1/ip_addresses/JLDCPMN900ZC",
+                  "address": "214.197.71.128",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                }
+              ],
+              "links": {
+              }
+            },
+            "instance_summary": {
+              "total_count": 15,
+              "healthy_count": 13,
+              "unhealthy_count": 2,
+              "not_terminated_count": 15
+            },
+            "links": {
+              "next_instance": {
+                "href": "/api/clouds/1/instances/02WCCIY1AMV",
+                "public_dns_names": [
+                  "lamp.mydomain.com",
+                  "ip-12-34-56-78.us-east-1.compute.external"
+                ],
+                "private_dns_names": [
+                  "ip-10-0-0-1.us-east-1.compute.internal"
+                ],
+                "public_ip_addresses": [
+                  "12.34.56.78"
+                ],
+                "private_ip_addresses": [
+                  "10.10.0.1"
+                ],
+                "name": "LAMP, alpha v0.0.13",
+                "description": "Prod server running LAMP in us-east-1",
+                "kind": "cm#instance",
+                "legacy_id": 911,
+                "resource_uid": "i-1a2b3c4d",
+                "is_next": false,
+                "id": "02WCCIY1AMV",
+                "locked": true,
+                "actions": [
+                  "stop",
+                  "start",
+                  "lock",
+                  "unlock",
+                  "reboot",
+                  "terminate"
+                ],
+                "os_platform": "linux",
+                "monitoring_id": "03-F8JKSNHIMIE7V",
+                "monitoring_server": "server1-170",
+                "monitoring_token": "AD76F9E0563",
+                "state": "stranded in booting",
+                "tags": [
+                  "rs_login:state=restricted",
+                  "rs_monitoring:state=active"
+                ],
+                "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                "networks": [
+                  {
+                    "id": "ZKTMBK4XUIA0",
+                    "legacy_id": 588,
+                    "href": "/api/networks/ZKTMBK4XUIA0",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "B6YC3F8MYC02",
+                    "legacy_id": 510,
+                    "href": "/api/networks/B6YC3F8MYC02",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "IBI1E1E0301FN",
+                    "legacy_id": 547,
+                    "href": "/api/networks/IBI1E1E0301FN",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  }
+                ],
+                "ip_addresses": [
+                  {
+                    "id": "RPPJ79AEBI2",
+                    "legacy_id": 964,
+                    "href": "/api/clouds/1/ip_addresses/RPPJ79AEBI2",
+                    "address": "51.120.247.163",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "VC3WRG3JIO2JX",
+                    "legacy_id": 393,
+                    "href": "/api/clouds/1/ip_addresses/VC3WRG3JIO2JX",
+                    "address": "131.154.168.204",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "JLDCPMN900ZC",
+                    "legacy_id": 415,
+                    "href": "/api/clouds/1/ip_addresses/JLDCPMN900ZC",
+                    "address": "214.197.71.128",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  }
+                ],
+                "links": {
+                }
+              },
+              "current_instances": [
+                {
+                  "href": "/api/clouds/1/instances/E7NQ0KB6YMSA4",
+                  "public_dns_names": [
+                    "lamp.mydomain.com",
+                    "ip-12-34-56-78.us-east-1.compute.external"
+                  ],
+                  "private_dns_names": [
+                    "ip-10-0-0-1.us-east-1.compute.internal"
+                  ],
+                  "public_ip_addresses": [
+                    "12.34.56.78"
+                  ],
+                  "private_ip_addresses": [
+                    "10.10.0.1"
+                  ],
+                  "name": "LAMP, alpha v0.0.13",
+                  "description": "Prod server running LAMP in us-east-1",
+                  "kind": "cm#instance",
+                  "legacy_id": 665,
+                  "resource_uid": "i-1a2b3c4d",
+                  "is_next": false,
+                  "id": "E7NQ0KB6YMSA4",
+                  "locked": true,
+                  "actions": [
+                    "stop",
+                    "start",
+                    "lock",
+                    "unlock",
+                    "reboot",
+                    "terminate"
+                  ],
+                  "os_platform": "linux",
+                  "monitoring_id": "03-F8JKSNHIMIE7V",
+                  "monitoring_server": "server1-170",
+                  "monitoring_token": "AD76F9E0563",
+                  "state": "error",
+                  "tags": [
+                    "rs_login:state=restricted",
+                    "rs_monitoring:state=active"
+                  ],
+                  "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                  "networks": [
+                    {
+                      "id": "IHN5FVK8RRYYJ",
+                      "legacy_id": 834,
+                      "href": "/api/networks/IHN5FVK8RRYYJ",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "ip_addresses": [
+                    {
+                      "id": "16GHDUP4TUT6R",
+                      "legacy_id": 797,
+                      "href": "/api/clouds/1/ip_addresses/16GHDUP4TUT6R",
+                      "address": "51.225.231.153",
+                      "name": "Prod LAMP server",
+                      "kind": "cm#ip_address",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "0BDURS4KFGFV",
+                      "legacy_id": 706,
+                      "href": "/api/clouds/1/ip_addresses/0BDURS4KFGFV",
+                      "address": "66.52.177.111",
+                      "name": "Prod LAMP server",
+                      "kind": "cm#ip_address",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "links": {
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": 835,
+            "name": "Worker daemons",
+            "description": "Worker daemons for US East region",
+            "kind": "cm#server_array",
+            "actions": [
+              "launch",
+              "lock",
+              "unlock"
+            ],
+            "tags": [
+              "crotch"
+            ],
+            "state": "enabled",
+            "href": "/api/server_arrays/835",
+            "next_instance": {
+              "href": "/api/clouds/1/instances/6D5ICZ452RGS",
+              "public_dns_names": [
+                "lamp.mydomain.com",
+                "ip-12-34-56-78.us-east-1.compute.external"
+              ],
+              "private_dns_names": [
+                "ip-10-0-0-1.us-east-1.compute.internal"
+              ],
+              "public_ip_addresses": [
+                "12.34.56.78"
+              ],
+              "private_ip_addresses": [
+                "10.10.0.1"
+              ],
+              "name": "LAMP, alpha v0.0.13",
+              "description": "Prod server running LAMP in us-east-1",
+              "kind": "cm#instance",
+              "legacy_id": 673,
+              "resource_uid": "i-1a2b3c4d",
+              "is_next": true,
+              "id": "6D5ICZ452RGS",
+              "locked": false,
+              "actions": [
+                "stop",
+                "start",
+                "lock",
+                "unlock",
+                "reboot",
+                "terminate"
+              ],
+              "os_platform": "linux",
+              "monitoring_id": "03-F8JKSNHIMIE7V",
+              "monitoring_server": "server1-170",
+              "monitoring_token": "AD76F9E0563",
+              "state": "booting",
+              "tags": [
+                "rs_login:state=restricted",
+                "rs_monitoring:state=active"
+              ],
+              "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+              "networks": [
+                {
+                  "id": "73UAXGKLT4S",
+                  "legacy_id": 475,
+                  "href": "/api/networks/73UAXGKLT4S",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "R5XWMXX3UGJ",
+                  "legacy_id": 273,
+                  "href": "/api/networks/R5XWMXX3UGJ",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "YR8KW9M2GOST",
+                  "legacy_id": 139,
+                  "href": "/api/networks/YR8KW9M2GOST",
+                  "name": "New York, 10.0.0.0/24",
+                  "description": "Network in US East region with access to the Internet",
+                  "kind": "cm#network",
+                  "links": {
+                  }
+                }
+              ],
+              "ip_addresses": [
+                {
+                  "id": "KU4P6XPCSKVFF",
+                  "legacy_id": 452,
+                  "href": "/api/clouds/1/ip_addresses/KU4P6XPCSKVFF",
+                  "address": "2.39.179.75",
+                  "name": "Prod LAMP server",
+                  "kind": "cm#ip_address",
+                  "links": {
+                  }
+                }
+              ],
+              "links": {
+              }
+            },
+            "instance_summary": {
+              "total_count": 15,
+              "healthy_count": 13,
+              "unhealthy_count": 2,
+              "not_terminated_count": 15
+            },
+            "links": {
+              "next_instance": {
+                "href": "/api/clouds/1/instances/6D5ICZ452RGS",
+                "public_dns_names": [
+                  "lamp.mydomain.com",
+                  "ip-12-34-56-78.us-east-1.compute.external"
+                ],
+                "private_dns_names": [
+                  "ip-10-0-0-1.us-east-1.compute.internal"
+                ],
+                "public_ip_addresses": [
+                  "12.34.56.78"
+                ],
+                "private_ip_addresses": [
+                  "10.10.0.1"
+                ],
+                "name": "LAMP, alpha v0.0.13",
+                "description": "Prod server running LAMP in us-east-1",
+                "kind": "cm#instance",
+                "legacy_id": 673,
+                "resource_uid": "i-1a2b3c4d",
+                "is_next": true,
+                "id": "6D5ICZ452RGS",
+                "locked": false,
+                "actions": [
+                  "stop",
+                  "start",
+                  "lock",
+                  "unlock",
+                  "reboot",
+                  "terminate"
+                ],
+                "os_platform": "linux",
+                "monitoring_id": "03-F8JKSNHIMIE7V",
+                "monitoring_server": "server1-170",
+                "monitoring_token": "AD76F9E0563",
+                "state": "booting",
+                "tags": [
+                  "rs_login:state=restricted",
+                  "rs_monitoring:state=active"
+                ],
+                "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                "networks": [
+                  {
+                    "id": "73UAXGKLT4S",
+                    "legacy_id": 475,
+                    "href": "/api/networks/73UAXGKLT4S",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "R5XWMXX3UGJ",
+                    "legacy_id": 273,
+                    "href": "/api/networks/R5XWMXX3UGJ",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": "YR8KW9M2GOST",
+                    "legacy_id": 139,
+                    "href": "/api/networks/YR8KW9M2GOST",
+                    "name": "New York, 10.0.0.0/24",
+                    "description": "Network in US East region with access to the Internet",
+                    "kind": "cm#network",
+                    "links": {
+                    }
+                  }
+                ],
+                "ip_addresses": [
+                  {
+                    "id": "KU4P6XPCSKVFF",
+                    "legacy_id": 452,
+                    "href": "/api/clouds/1/ip_addresses/KU4P6XPCSKVFF",
+                    "address": "2.39.179.75",
+                    "name": "Prod LAMP server",
+                    "kind": "cm#ip_address",
+                    "links": {
+                    }
+                  }
+                ],
+                "links": {
+                }
+              },
+              "current_instances": [
+                {
+                  "href": "/api/clouds/1/instances/SILCBEHDYGDQZ",
+                  "public_dns_names": [
+                    "lamp.mydomain.com",
+                    "ip-12-34-56-78.us-east-1.compute.external"
+                  ],
+                  "private_dns_names": [
+                    "ip-10-0-0-1.us-east-1.compute.internal"
+                  ],
+                  "public_ip_addresses": [
+                    "12.34.56.78"
+                  ],
+                  "private_ip_addresses": [
+                    "10.10.0.1"
+                  ],
+                  "name": "LAMP, alpha v0.0.13",
+                  "description": "Prod server running LAMP in us-east-1",
+                  "kind": "cm#instance",
+                  "legacy_id": 326,
+                  "resource_uid": "i-1a2b3c4d",
+                  "is_next": true,
+                  "id": "SILCBEHDYGDQZ",
+                  "locked": true,
+                  "actions": [
+                    "stop",
+                    "start",
+                    "lock",
+                    "unlock",
+                    "reboot",
+                    "terminate"
+                  ],
+                  "os_platform": "linux",
+                  "monitoring_id": "03-F8JKSNHIMIE7V",
+                  "monitoring_server": "server1-170",
+                  "monitoring_token": "AD76F9E0563",
+                  "state": "booting",
+                  "tags": [
+                    "rs_login:state=restricted",
+                    "rs_monitoring:state=active"
+                  ],
+                  "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+                  "networks": [
+                    {
+                      "id": "8O91HZ0GTDO",
+                      "legacy_id": 336,
+                      "href": "/api/networks/8O91HZ0GTDO",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "V98RZ77SK4Y",
+                      "legacy_id": 494,
+                      "href": "/api/networks/V98RZ77SK4Y",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    },
+                    {
+                      "id": "ZNLNE819UM1TQ",
+                      "legacy_id": 905,
+                      "href": "/api/networks/ZNLNE819UM1TQ",
+                      "name": "New York, 10.0.0.0/24",
+                      "description": "Network in US East region with access to the Internet",
+                      "kind": "cm#network",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "ip_addresses": [
+                    {
+                      "id": "HJVN57R2W8WU",
+                      "legacy_id": 987,
+                      "href": "/api/clouds/1/ip_addresses/HJVN57R2W8WU",
+                      "address": "49.161.166.15",
+                      "name": "Prod LAMP server",
+                      "kind": "cm#ip_address",
+                      "links": {
+                      }
+                    }
+                  ],
+                  "links": {
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "instances": [
+          {
+            "href": "/api/clouds/1/instances/K6B5ID4M7DU",
+            "public_dns_names": [
+              "lamp.mydomain.com",
+              "ip-12-34-56-78.us-east-1.compute.external"
+            ],
+            "private_dns_names": [
+              "ip-10-0-0-1.us-east-1.compute.internal"
+            ],
+            "public_ip_addresses": [
+              "12.34.56.78"
+            ],
+            "private_ip_addresses": [
+              "10.10.0.1"
+            ],
+            "name": "LAMP, alpha v0.0.13",
+            "description": "Prod server running LAMP in us-east-1",
+            "kind": "cm#instance",
+            "legacy_id": 591,
+            "resource_uid": "i-1a2b3c4d",
+            "is_next": false,
+            "id": "K6B5ID4M7DU",
+            "locked": true,
+            "actions": [
+              "stop",
+              "start",
+              "lock",
+              "unlock",
+              "reboot",
+              "terminate"
+            ],
+            "timestamps": {
+              "created_at": "2014-11-10T16:15:22+00:00",
+              "updated_at": "2014-11-10T16:15:23+00:00",
+              "stranded_at": "2014-11-10T16:15:59+00:00",
+              "pending_at": "2014-11-10T16:15:40+00:00",
+              "booted_at": "2014-11-10T16:15:45+00:00",
+              "operational_at": "2014-11-10T16:16:30+00:00",
+              "terminated_at": "2014-11-10T16:19:12+00:00"
+            },
+            "os_platform": "linux",
+            "monitoring_id": "03-F8JKSNHIMIE7V",
+            "monitoring_server": "server1-170",
+            "monitoring_token": "AD76F9E0563",
+            "state": "provisioned",
+            "tags": [
+              "rs_login:state=restricted",
+              "rs_monitoring:state=active"
+            ],
+            "ssh_host": "ip-12-34-56-78.us-east-1.compute.external",
+            "server_template": {
+              "id": 791,
+              "name": "LAMP v0.0.13",
+              "description": "LAMP v0.0.13 server with ephemeral datastore.",
+              "kind": "cm#server_template",
+              "version": 638,
+              "href": "/api/server_templates/791"
+            },
+            "security_groups": {
+              "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+              "count": 2
+            },
+            "subnets": {
+              "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+              "count": 2
+            },
+            "networks": [
+              {
+                "id": "QAL3SFSPKOOQO",
+                "legacy_id": 964,
+                "href": "/api/networks/QAL3SFSPKOOQO",
+                "name": "New York, 10.0.0.0/24",
+                "description": "Network in US East region with access to the Internet",
+                "kind": "cm#network",
+                "links": {
+                }
+              }
+            ],
+            "ip_addresses": [
+              {
+                "id": "62WVY6IVUGNLD",
+                "legacy_id": 810,
+                "href": "/api/clouds/1/ip_addresses/62WVY6IVUGNLD",
+                "address": "21.172.190.205",
+                "name": "Prod LAMP server",
+                "kind": "cm#ip_address",
+                "links": {
+                }
+              }
+            ],
+            "links": {
+              "security_groups": {
+                "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+                "count": 2
+              },
+              "subnets": {
+                "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+                "count": 2
+              }
+            }
+          }
+        ],
+        "links": {
+          "account": {
+            "id": 123,
+            "href": "/api/accounts/123",
+            "name": "TestAccount",
+            "kind": "cm#account"
+          }
+        }
+      },
+      "ssh_key": {
+        "id": "MATKNTCJZ5ZS",
+        "legacy_id": 688,
+        "href": "/api/clouds/1/ssh_keys/MATKNTCJZ5ZS",
+        "kind": "cm#ssh_key",
+        "resource_uid": "prod-ssh-key",
+        "fingerprint": "0b:9e:8a:f4:7a:03:a4:28:4b:ee:83:c0:d6:23:53:8b:9a:7b:f1:59"
+      },
+      "security_groups": {
+        "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+        "count": 3
+      },
+      "subnets": {
+        "href": "/api/clouds/1/instances/ADKAA095IF11J/subnets",
+        "count": 1
+      },
+      "computed_multi_cloud_image": {
+        "id": 893,
+        "href": "/api/multi_cloud_images/893",
+        "name": "LAMP v0.0.13",
+        "description": "LAMP v0.0.13, Ubuntu 'Vivid Vervet', multi-cloud",
+        "kind": "cm#multi_cloud_image",
+        "version": 533,
+        "inherited_source": "direct"
+      },
+      "computed_image": {
+        "id": "VT4S8J33G7K8",
+        "legacy_id": 561,
+        "href": "/api/clouds/1/images/VT4S8J33G7K8",
+        "name": "example-amzn-ami.1",
+        "resource_uid": "ami-f2f479c2",
+        "description": "Amazon Linux AMI i386 EBS",
+        "kind": "cm#image",
+        "image_type": "machine",
+        "os_platform": "linux",
+        "cpu_architecture": "x86_64",
+        "virtualization_type": "pvm",
+        "visibility": "public",
+        "root_device_storage": "local",
+        "inherited_source": "direct",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      },
+      "account": {
+        "id": 123,
+        "href": "/api/accounts/123",
+        "name": "TestAccount",
+        "kind": "cm#account"
+      },
+      "datacenter": {
+        "id": "JCOVBJEL0YE5P",
+        "legacy_id": 81,
+        "href": "/api/clouds/1/datacenters/JCOVBJEL0YE5P",
+        "name": "us-east-1b",
+        "description": "us-east-1b zone in us-east-1 region",
+        "kind": "cm#datacenter",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      },
+      "instance_type": {
+        "id": "K2MHZDSLY70",
+        "legacy_id": 853,
+        "href": "/api/clouds/1/instance_types/K2MHZDSLY70",
+        "name": "c1.medium",
+        "description": "High-CPU Medium",
+        "kind": "cm#instance_type",
+        "memory": "1.7 GB",
+        "cpu_speed": "5 EC2 Compute Units",
+        "cpu_count": 2,
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "description": "Amazon's US Cloud on the East Coast",
+            "kind": "cm#cloud",
+            "cloud_type": "amazon"
+          }
+        }
+      },
+      "cloud": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      },
+      "incarnator": {
+        "id": 632,
+        "name": "LAMP bundle, pre-alpha, v0.0.13",
+        "href": "/api/servers/632",
+        "kind": "cm#server",
+        "state": "nil"
+      }
+    }
+  }
+}

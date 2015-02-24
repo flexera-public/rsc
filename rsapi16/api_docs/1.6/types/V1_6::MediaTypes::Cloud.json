@@ -1,0 +1,128 @@
+{
+  "name": "V1_6::MediaTypes::Cloud",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Cloud ID",
+      "example_definition": "1",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "Cloud HREF",
+      "example_definition": "#<Proc:0x007f8ff5922e30@/Users/raphael/src/right_api_16/design/v1_6/media_types/cloud.rb:13>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "name": {
+      "description": "Name of the Cloud",
+      "example_definition": "EC2 us-east-1",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the Cloud",
+      "example_definition": "Amazon's US Cloud on the East Coast",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#cloud\"",
+      "values": [
+        "cm#cloud"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "cloud_type": {
+      "description": "Type of the Cloud",
+      "values": [
+        "amazon",
+        "rackspace",
+        "eucalyptus",
+        "cloud_stack",
+        "aws",
+        "open_stack",
+        "soft_layer",
+        "google",
+        "azure",
+        "hp",
+        "rackspace_next_gen",
+        "open_stack_grizzly",
+        "open_stack_v2",
+        "vscale",
+        "blue_skies",
+        "amazongoogle"
+      ],
+      "example_definition": "amazon",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "cloud_type": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "kind": "cm#cloud"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.cloud",
+  "description": "Represents a Cloud resource",
+  "example": {
+    "id": 1,
+    "href": "/api/clouds/1",
+    "name": "EC2 us-east-1",
+    "description": "Amazon's US Cloud on the East Coast",
+    "kind": "cm#cloud",
+    "cloud_type": "amazon"
+  }
+}

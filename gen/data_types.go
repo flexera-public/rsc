@@ -150,6 +150,7 @@ type Action struct {
 	LeafParams        []*ActionParam // Action parameter leaves (for command line)
 	Return            string         // Type of method results, e.g. "*ServerArray"
 	ReturnLocation    bool           // Whether API returns a location header
+	PathParamNames    []string       // Name of path parameters if any (e.g. :id in /clouds/:id)
 	QueryParamNames   []string       // Name of query string parameters if any
 	PayloadParamNames []string       // Name of payload parameter names if any (payload top level keys)
 }

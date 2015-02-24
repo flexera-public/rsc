@@ -1,0 +1,176 @@
+{
+  "name": "V1_6::MediaTypes::SecurityGroup",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "SecurityGroup ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "legacy_id": {
+      "description": "SecurityGroup ID used in the legacy platform",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "SecurityGroup HREF",
+      "example_definition": "#<Proc:0x007f8ff684fd18@/Users/raphael/src/right_api_16/design/v1_6/media_types/security_group.rb:15>",
+      "type": {
+        "name": "String"
+      }
+    },
+    "name": {
+      "description": "Name of the SecurityGroup",
+      "example_definition": "LAMP, US East",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the SecurityGroup",
+      "example_definition": "A set of rules for my LAMP deployment",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#security_group\"",
+      "values": [
+        "cm#security_group"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V1_6::MediaTypes::SecurityGroup"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::SecurityGroup::Links",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "cloud": {
+            "description": "Link to the Cloud where the SecurityGroup exists",
+            "options": {
+              "reference": "V1_6::MediaTypes::Cloud"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Cloud",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          }
+        },
+        "views": {
+          "master": {
+            "attributes": {
+              "cloud": {
+                "view": "master"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "cloud": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "links": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "ITHH1L55KLVOX",
+        "legacy_id": 783,
+        "href": "/api/security_groups/ITHH1L55KLVOX",
+        "name": "LAMP, US East",
+        "description": "A set of rules for my LAMP deployment",
+        "kind": "cm#security_group",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "legacy_id": 783,
+        "href": "/api/security_groups/ITHH1L55KLVOX",
+        "name": "LAMP, US East",
+        "kind": "cm#security_group"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.security_group",
+  "description": "Represents a SecurityGroup resource",
+  "example": {
+    "id": "ITHH1L55KLVOX",
+    "legacy_id": 783,
+    "href": "/api/security_groups/ITHH1L55KLVOX",
+    "name": "LAMP, US East",
+    "description": "A set of rules for my LAMP deployment",
+    "kind": "cm#security_group",
+    "links": {
+      "cloud": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      }
+    }
+  }
+}

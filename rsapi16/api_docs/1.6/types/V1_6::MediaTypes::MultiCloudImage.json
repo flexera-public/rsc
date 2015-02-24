@@ -1,0 +1,125 @@
+{
+  "name": "V1_6::MediaTypes::MultiCloudImage",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "MultiCloudImage ID",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "MultiCloudImage HREF",
+      "example_definition": "#<Proc:0x007f8ff4400e08@/Users/raphael/src/right_api_16/design/v1_6/media_types/multi_cloud_image.rb:13>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "name": {
+      "description": "Name of the MultiCloudImage",
+      "example_definition": "LAMP v0.0.13",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the MultiCloudImage",
+      "example_definition": "LAMP v0.0.13, Ubuntu 'Vivid Vervet', multi-cloud",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string \"cm#multi_cloud_image\"",
+      "values": [
+        "cm#multi_cloud_image"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "version": {
+      "description": "Version of the MultiCloudImage commit, or zero",
+      "options": {
+        "min": 0
+      },
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "inherited_source": {
+      "description": "            Indicates if a resource using the MCI gets the MCI directly, or from\n            an inherited source, such as a ServerTemplate. Only returns a value\n            when rendered from a reference source, such as an instance, that has\n            defined the inherited_source.\n",
+      "values": [
+        "direct",
+        "server_template"
+      ],
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "version": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 587,
+        "href": "/api/multi_cloud_images/587",
+        "name": "LAMP v0.0.13",
+        "description": "LAMP v0.0.13, Ubuntu 'Vivid Vervet', multi-cloud",
+        "kind": "cm#multi_cloud_image",
+        "version": 943
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "inherited_source": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 587,
+        "href": "/api/multi_cloud_images/587",
+        "name": "LAMP v0.0.13",
+        "inherited_source": "direct",
+        "kind": "cm#multi_cloud_image"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.multi_cloud_image",
+  "description": "Represents a MultiCloudImage resource",
+  "example": {
+    "id": 587,
+    "href": "/api/multi_cloud_images/587",
+    "name": "LAMP v0.0.13",
+    "description": "LAMP v0.0.13, Ubuntu 'Vivid Vervet', multi-cloud",
+    "kind": "cm#multi_cloud_image",
+    "version": 943,
+    "inherited_source": "direct"
+  }
+}

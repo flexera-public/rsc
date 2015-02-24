@@ -1,0 +1,77 @@
+{
+  "name": "V1_6::MediaTypes::SecurityGroup::Collection",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "href": {
+      "example_definition": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "count": {
+      "type": {
+        "name": "Integer"
+      }
+    }
+  },
+  "views": {
+    "link": {
+      "attributes": {
+        "href": {
+        },
+        "count": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+        "count": 1
+      }
+    },
+    "member_links": {
+      "attributes": {
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "collection",
+      "example": [
+        {
+          "legacy_id": 154,
+          "href": "/api/security_groups/UTQLW0Y2WMWYK",
+          "name": "LAMP, US East",
+          "kind": "cm#security_group"
+        }
+      ]
+    }
+  },
+  "identifier": null,
+  "description": "Represents a collection of SecurityGroup resources",
+  "member_attribute": {
+    "options": {
+      "reference": "V1_6::MediaTypes::SecurityGroup"
+    },
+    "type": {
+      "name": "V1_6::MediaTypes::SecurityGroup",
+      "key": {
+        "type": {
+          "name": "Symbol"
+        }
+      },
+      "attributes": null
+    }
+  },
+  "example": {
+    "href": "/api/clouds/1/instances/ADKAA095IF11J/security_groups",
+    "count": 1
+  }
+}

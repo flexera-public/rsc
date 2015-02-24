@@ -1,0 +1,35 @@
+{
+  "name": "V1_6::MediaTypes::Deployment::Links",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "account": {
+      "description": "Link to the Account where the Deployment exists",
+      "options": {
+        "reference": "V1_6::MediaTypes::Account"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Account",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "account": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

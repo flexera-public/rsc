@@ -51,41 +51,47 @@ func main() {
 	// 2. Analyze
 	var descriptors = make(map[string]*gen.ApiDescriptor) // descriptors indexed by version
 	for version, resources := range index {
-		var apiResources = make(map[string]map[string]interface{}) // Resource properies indexed by name indexed by resource name
-		var apiTypes = make(map[string]map[string]interface{})     // Resource properies indexed by name indexed by resource name
-		for name, resource := range resources {
+		var apiResources = make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
+		for name, _ := range resources {
 			// Skip built-in resources (?)
 			if strings.HasSuffix(name, " (*)") {
 				continue
 			}
-
-			// Parse resource
 			var fileName = fmt.Sprintf("%s::%s.json", toModuleName(version), name)
 			var resourcePath = path.Join(metadataDir, version, "resources", fileName)
 			var resourceData map[string]interface{}
-			check(unmarshal(resourcePath, &resourceData))
-			apiResources[name] = resourceData
-
-			// Parse media type
-			var media_type, ok = resource["media_type"]
-			if !ok {
-				check(fmt.Errorf("No media type defined for resource %s", name))
+			if err := unmarshal(resourcePath, &resourceData); err != nil {
+				check(fmt.Errorf("Failed to unmarshal content of file %s: %s", resourcePath, err.Error()))
 			}
-			fileName = fmt.Sprintf("%s.json", resource["media_type"])
-			var typePath = path.Join(metadataDir, version, "types", fileName)
+			apiResources[name] = resourceData
+		}
+
+		var apiTypes = make(map[string]map[string]interface{}) // Type properties indexed by name indexed by type name
+		var typesDir = path.Join(destDir, version, "types")
+		files, err := ioutil.ReadDir(typesDir)
+		if err != nil {
+			check(fmt.Errorf("Failed to load types: %s", err.Error()))
+		}
+		for _, file := range files {
 			var typeData map[string]interface{}
-			check(unmarshal(typePath, &typeData))
-			apiTypes[resource["media_type"]] = typeData
+			if err := unmarshal(path.Join(typesDir, file.Name()), &typeData); err != nil {
+				check(fmt.Errorf("Failed to unmarshal content of file %s: %s", path.Join(typesDir, file.Name()), err.Error()))
+			}
+			var typeName, ok = typeData["name"]
+			if !ok {
+				check(fmt.Errorf("Missing \"name\" key for type defined in %s", path.Join(typesDir, file.Name())))
+			}
+			apiTypes[typeName.(string)] = typeData
 		}
 		var analyzer = NewApiAnalyzer(apiResources, apiTypes)
 		descriptors[version] = analyzer.Analyze()
 	}
 
-	// 3. Write code.go
+	// 3. Write code
 	for version, descriptor := range descriptors {
 		os.MkdirAll(path.Join(destDir, version), 0755)
-		check(generateClient(descriptor, path.Join(destDir, version, "codegen_client.go")))
-		check(generateMetadata(descriptor, path.Join(destDir, version, "codegen_metadata.go")))
+		check(generateClient(descriptor, path.Join(destDir, version, "codegen_client.go"), toPackageName(version)))
+		check(generateMetadata(descriptor, path.Join(destDir, version, "codegen_metadata.go"), toPackageName(version)))
 	}
 }
 
@@ -110,8 +116,25 @@ func toModuleName(version string) string {
 	return fmt.Sprintf("V%s", strings.Replace(version, ".", "_", -1))
 }
 
+// Convert version number in index.json to go package name
+// "1.6" => "v1_6"
+func toPackageName(version string) string {
+	if version == "unversioned" {
+		return "v0"
+	}
+	var parts = strings.Split(version, ".")
+	var i = 1
+	var p = parts[len(parts)-i]
+	for p == "0" && i <= len(parts) {
+		i += 1
+		p = parts[len(parts)-i]
+	}
+	version = strings.Join(parts, "_")
+	return fmt.Sprintf("v%s", version)
+}
+
 // Generate API client code, drives the code writer.
-func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
+func generateClient(descriptor *gen.ApiDescriptor, codegen, pkg string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
@@ -120,7 +143,7 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader(f))
+	check(c.WriteHeader(pkg, f))
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)
@@ -140,7 +163,7 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 }
 
 // Generate API metadata, drives the metadata writer.
-func generateMetadata(descriptor *gen.ApiDescriptor, codegen string) error {
+func generateMetadata(descriptor *gen.ApiDescriptor, codegen, pkg string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
@@ -149,7 +172,7 @@ func generateMetadata(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader("rsapi15", f))
+	check(c.WriteHeader(pkg, f))
 	check(c.WriteMetadata(descriptor, f))
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()

@@ -1,7 +1,7 @@
 //************************************************************************//
-//                     RightScale API 1.5 go client
+//                     RightScale API client
 //
-// Generated Feb 24, 2015 at 9:57am (PST)
+// Generated Feb 24, 2015 at 3:17pm (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //

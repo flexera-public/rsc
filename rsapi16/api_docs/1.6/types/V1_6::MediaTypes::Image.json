@@ -1,0 +1,287 @@
+{
+  "name": "V1_6::MediaTypes::Image",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Image ID",
+      "type": {
+        "name": "RsId"
+      }
+    },
+    "legacy_id": {
+      "description": "Image ID used in the legacy platform",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "href": {
+      "description": "Image HREF",
+      "example_definition": "#<Proc:0x007f8ff5889f00@/Users/raphael/src/right_api_16/design/v1_6/media_types/image.rb:14>",
+      "type": {
+        "name": "Href"
+      }
+    },
+    "name": {
+      "description": "Name of the Image",
+      "example_definition": "example-amzn-ami.1",
+      "type": {
+        "name": "String"
+      }
+    },
+    "resource_uid": {
+      "description": "Resource ID of the Image",
+      "example_definition": "ami-f2f479c2",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description of the Image",
+      "example_definition": "Amazon Linux AMI i386 EBS",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The string cm#image",
+      "values": [
+        "cm#image"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "image_type": {
+      "description": "Image type",
+      "values": [
+        "machine",
+        "ramdisk",
+        "kernel"
+      ],
+      "example_definition": "machine",
+      "type": {
+        "name": "String"
+      }
+    },
+    "os_platform": {
+      "description": "Image operating system platform if known",
+      "values": [
+        "linux",
+        "windows"
+      ],
+      "example_definition": "linux",
+      "type": {
+        "name": "String"
+      }
+    },
+    "cpu_architecture": {
+      "description": "CPU Architecture of the Image",
+      "example_definition": "x86_64",
+      "type": {
+        "name": "String"
+      }
+    },
+    "virtualization_type": {
+      "description": "Virtualization type of the Image",
+      "example_definition": "pvm",
+      "type": {
+        "name": "String"
+      }
+    },
+    "visibility": {
+      "description": "The visibility of the Image in the cloud",
+      "values": [
+        "public",
+        "private"
+      ],
+      "example_definition": "public",
+      "type": {
+        "name": "String"
+      }
+    },
+    "root_device_storage": {
+      "description": "The type of storage devices that the image supports",
+      "values": [
+        "local",
+        "volume"
+      ],
+      "example_definition": "local",
+      "type": {
+        "name": "String"
+      }
+    },
+    "inherited_source": {
+      "description": "            Indicates if a resource using the image gets the image directly,\n            or from an inherited source, such as a ServerTemplate. Only returns\n            a value when rendered from a reference source, such as an instance,\n            that has defined the inherited_source.\n",
+      "values": [
+        "direct",
+        "server_template"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V1_6::MediaTypes::Image"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Image::Links",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": {
+          "cloud": {
+            "description": "Link to the Cloud where the Image exists",
+            "options": {
+              "reference": "V1_6::MediaTypes::Cloud"
+            },
+            "type": {
+              "name": "V1_6::MediaTypes::Cloud",
+              "key": {
+                "type": {
+                  "name": "Symbol"
+                }
+              },
+              "attributes": null
+            }
+          }
+        },
+        "views": {
+          "master": {
+            "attributes": {
+              "cloud": {
+                "view": "master"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "cloud": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "legacy_id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "resource_uid": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "image_type": {
+        },
+        "os_platform": {
+        },
+        "cpu_architecture": {
+        },
+        "virtualization_type": {
+        },
+        "visibility": {
+        },
+        "root_device_storage": {
+        },
+        "links": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "QEX6DXGCY9FFJ",
+        "legacy_id": 937,
+        "href": "/api/clouds/1/images/QEX6DXGCY9FFJ",
+        "name": "example-amzn-ami.1",
+        "resource_uid": "ami-f2f479c2",
+        "description": "Amazon Linux AMI i386 EBS",
+        "kind": "cm#image",
+        "image_type": "machine",
+        "os_platform": "linux",
+        "cpu_architecture": "x86_64",
+        "virtualization_type": "pvm",
+        "visibility": "public",
+        "root_device_storage": "local",
+        "links": {
+          "cloud": {
+            "id": 1,
+            "href": "/api/clouds/1",
+            "name": "EC2 us-east-1",
+            "kind": "cm#cloud"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "inherited_source": {
+        },
+        "legacy_id": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "QEX6DXGCY9FFJ",
+        "href": "/api/clouds/1/images/QEX6DXGCY9FFJ",
+        "name": "example-amzn-ami.1",
+        "inherited_source": "server_template",
+        "legacy_id": 937,
+        "kind": "cm#image"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.image",
+  "description": "Represents an Image resource",
+  "example": {
+    "id": "QEX6DXGCY9FFJ",
+    "legacy_id": 937,
+    "href": "/api/clouds/1/images/QEX6DXGCY9FFJ",
+    "name": "example-amzn-ami.1",
+    "resource_uid": "ami-f2f479c2",
+    "description": "Amazon Linux AMI i386 EBS",
+    "kind": "cm#image",
+    "image_type": "machine",
+    "os_platform": "linux",
+    "cpu_architecture": "x86_64",
+    "virtualization_type": "pvm",
+    "visibility": "public",
+    "root_device_storage": "local",
+    "inherited_source": "server_template",
+    "links": {
+      "cloud": {
+        "id": 1,
+        "href": "/api/clouds/1",
+        "name": "EC2 us-east-1",
+        "description": "Amazon's US Cloud on the East Coast",
+        "kind": "cm#cloud",
+        "cloud_type": "amazon"
+      }
+    }
+  }
+}

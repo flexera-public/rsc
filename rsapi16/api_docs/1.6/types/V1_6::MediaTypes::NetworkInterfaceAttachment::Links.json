@@ -1,0 +1,35 @@
+{
+  "name": "V1_6::MediaTypes::NetworkInterfaceAttachment::Links",
+  "key": {
+    "type": {
+      "name": "Symbol"
+    }
+  },
+  "attributes": {
+    "cloud": {
+      "description": "Link to the Cloud where the NetworkInterfaceAttachment exists",
+      "options": {
+        "reference": "V1_6::MediaTypes::Cloud"
+      },
+      "type": {
+        "name": "V1_6::MediaTypes::Cloud",
+        "key": {
+          "type": {
+            "name": "Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "cloud": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}
