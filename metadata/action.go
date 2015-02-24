@@ -11,7 +11,6 @@ import (
 type Action struct {
 	Name              string
 	Description       string
-	HttpMethod        string         // "GET", "POST", "PUT", "DELETE", ...
 	PathPatterns      []*PathPattern // Action path patterns and variables
 	Params            []*ActionParam // All parameter details
 	QueryParamNames   []string       // Query string parameter names, e.g. "filter" in /clouds?filter[]=name==foo
@@ -31,9 +30,10 @@ type ActionParam struct {
 
 // A path pattern represents a possible path for a given action.
 type PathPattern struct {
-	Pattern   string         // Actual pattern, e.g. "/clouds/%s/instances/%s"
-	Variables []string       // Pattern variable names in order of appearance in pattern, e.g. "cloud_id", "id"
-	Regexp    *regexp.Regexp // Regexp used to match href and capture variable values, e.g. "/clouds/([^/]+)/instances/([^/])+"
+	HttpMethod string         // "GET", "POST", "PUT", "DELETE", ...
+	Pattern    string         // Actual pattern, e.g. "/clouds/%s/instances/%s"
+	Variables  []string       // Pattern variable names in order of appearance in pattern, e.g. "cloud_id", "id"
+	Regexp     *regexp.Regexp // Regexp used to match href and capture variable values, e.g. "/clouds/([^/]+)/instances/([^/])+"
 }
 
 // Url returns a URL to the action given a set of values that can be used to substitute the action
@@ -42,31 +42,33 @@ type PathPattern struct {
 // "/clouds/:cloud_id/instances/:id" and both the :cloud_id and :id variable values are given as
 // parameter, the method returns a URL built from substituting the values of the later (longer) path.
 // The method returns an error in case no path pattern can have all its variables subsituted.
-func (a *Action) Url(vars []*PathVariable) (string, error) {
-	var candidates = make([]PathMatch, len(a.PathPatterns))
+func (a *Action) Url(vars []*PathVariable) (*ActionPath, error) {
+	var candidates = make([]*ActionPath, len(a.PathPatterns))
 	var allMissing = []string{}
-	for i, p := range a.PathPatterns {
+	var j = 0
+	for _, p := range a.PathPatterns {
 		var path, names = p.Substitute(vars)
 		if path == "" {
 			allMissing = append(allMissing, names...)
 		} else {
-			candidates[i].Value = path
-			candidates[i].Weight = len(names)
+			candidates[j] = &ActionPath{path, p.HttpMethod, len(names)}
+			j += 1
 		}
 	}
-	sort.Sort(ByWeight(candidates))
-	if candidates[0].Weight == 0 {
-		return "", fmt.Errorf("Missing variables to instantiate action URL, one or more of the following variables are needed: %s",
+	if j == 0 {
+		return nil, fmt.Errorf("Missing variables to instantiate action URL, one or more of the following variables are needed: %s",
 			strings.Join(allMissing, ", "))
-	} else {
-		return candidates[0].Value, nil
 	}
+	candidates = candidates[:j]
+	sort.Sort(ByWeight(candidates))
+	return candidates[0], nil
 }
 
 // A match built from a path pattern and given variable values
-type PathMatch struct {
-	Value  string // Actual path, e.g. "/clouds/1/instances/42"
-	Weight int    // Match relevance, i.e. number of variables consumed to produce match value
+type ActionPath struct {
+	Path       string // Actual path, e.g. "/clouds/1/instances/42"
+	HttpMethod string // HTTP method
+	weight     int    // Match relevance, i.e. number of variables consumed to produce match value
 }
 
 // Substitute attemps to substitute the path pattern variables with the given values.
@@ -110,8 +112,8 @@ func (b ByLen) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 func (b ByLen) Less(i, j int) bool { return len(b[i].Pattern) > len(b[j].Pattern) }
 
 // Make it possible to sort path match by weight, from heaviest to lightest
-type ByWeight []PathMatch
+type ByWeight []*ActionPath
 
 func (b ByWeight) Len() int           { return len(b) }
 func (b ByWeight) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
-func (b ByWeight) Less(i, j int) bool { return b[i].Weight > b[j].Weight }
+func (b ByWeight) Less(i, j int) bool { return b[i].weight > b[j].weight }

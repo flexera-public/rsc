@@ -1,14 +1,13 @@
-package main
+package writers
 
 import (
 	"fmt"
 	"io"
-	"os"
 	"strings"
 	"text/template"
 	"time"
 
-	"github.com/rightscale/rsc/generators/text"
+	"github.com/rightscale/rsc/gen"
 )
 
 // ClientWriter struct exposes methods to generate the go API client code
@@ -27,7 +26,6 @@ func NewClientWriter() (*ClientWriter, error) {
 		"paramsAsPayload": paramsAsPayload,
 		"isPointer":       isPointer,
 		"blankCondition":  blankCondition,
-		"toVerb":          toVerb,
 		"stripStar":       stripStar,
 	}
 	headerT, err := template.New("header-client").Funcs(funcMap).Parse(headerTmpl)
@@ -60,7 +58,7 @@ func (c *ClientWriter) WriteTypeSectionHeader(w io.Writer) {
 }
 
 // Write type declaration for resource action arguments
-func (c *ClientWriter) WriteType(o *ObjectDataType, w io.Writer) {
+func (c *ClientWriter) WriteType(o *gen.ObjectDataType, w io.Writer) {
 	var fields = make([]string, len(o.Fields))
 	for i, f := range o.Fields {
 		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.VarName),
@@ -72,104 +70,11 @@ func (c *ClientWriter) WriteType(o *ObjectDataType, w io.Writer) {
 }
 
 // Write code for a resource
-func (c *ClientWriter) WriteResource(resource *Resource, w io.Writer) error {
+func (c *ClientWriter) WriteResource(resource *gen.Resource, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
 }
 
 /***** Format helpers *****/
-
-// Produce line comments by concatenating given strings and producing 80 characters long lines
-// starting with "//"
-func comment(elems ...string) string {
-	t := strings.Join(elems, "")
-	return text.Indent(t, "// ")
-}
-
-// Serialize action parameters
-func parameters(a *Action) string {
-	var m = a.MandatoryParams()
-	var hasOptional = a.HasOptionalParams()
-	var countParams = len(m)
-	if hasOptional {
-		countParams += 1
-	}
-	var params = make([]string, countParams)
-	for i, param := range m {
-		params[i] = fmt.Sprintf("%s %s", param.VarName, param.Signature())
-	}
-	if hasOptional {
-		params[countParams-1] = "options ApiParams"
-	}
-
-	return strings.Join(params, ", ")
-}
-
-// Create map out of parameter names
-func paramsAsPayload(p []*ActionParam) string {
-	if len(p) == 0 {
-		return "map[string]interface{}{}"
-	}
-	fields := []string{}
-	hasOptional := false
-	for _, param := range p {
-		if param.Mandatory {
-			fields = append(fields, fmt.Sprintf("\"%s\": %s,", param.Name, param.VarName))
-		} else {
-			hasOptional = true
-		}
-	}
-	mandatory := fmt.Sprintf("ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
-	if !hasOptional {
-		return mandatory
-	}
-	return fmt.Sprintf("mergeOptionals(%s, options)", mandatory)
-}
-
-// Return true if signature contains pointer, false otherwise
-func isPointer(sig string) bool {
-	return strings.HasPrefix(sig, "*")
-}
-
-// Command line used to run tool
-func commandLine() string {
-	return fmt.Sprintf("$ api15gen %s", strings.Join(os.Args[1:], " "))
-}
-
-// Code that checks whether variable with given name and type contains a blank value (empty string,
-// empty array or empy map).
-// Return empty string if type of variable cannot produce blank values
-func blankCondition(name string, t DataType) (blank string) {
-	switch actual := t.(type) {
-	case *BasicDataType:
-		if *actual == "string" {
-			blank = fmt.Sprintf("if %s == \"\" {", name)
-		}
-	case *ArrayDataType:
-		blank = fmt.Sprintf("if len(%s) == 0 {", name)
-	case *ObjectDataType:
-		blank = fmt.Sprintf("if %s == nil {", name)
-	case *EnumerableDataType:
-		blank = fmt.Sprintf("if len(%s) == 0 {", name)
-	}
-	return
-}
-
-// GET => Get
-func toVerb(text string) (res string) {
-	res = strings.ToUpper(string(text[0])) + strings.ToLower(text[1:])
-	if text == "GET" || text == "POST" {
-		res += "Raw"
-	}
-	return
-}
-
-// *ServerArrayLocator => ServerArrayLocator
-func stripStar(text string) string {
-	if text[0] == '*' {
-		return text[1:]
-	}
-	return text
-}
 
 // Inline templates
 
@@ -203,16 +108,16 @@ func mergeOptionals(params, options ApiParams) ApiParams {
 	return params
 }
 
-// Url resolver produces an action URL from its name and a given resource href.
+// Url resolver produces an action URL and HTTP method from its name and a given resource href.
 // The algorithm consists of first extracting the variables from the href and then substituing them
 // in the action path. If there are more than one action paths then the algorithm picks the one that
 // can substitute the most variables.
 type UrlResolver string
 
-func (r *UrlResolver) Url(rName, aName string) (string, error) {
+func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 	var res, ok = api_metadata[rName]
 	if !ok {
-		return "", fmt.Errorf("No resource with name '%s'", rName)
+		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}
 	var action *metadata.Action
 	for _, a := range res.Actions {
@@ -222,11 +127,11 @@ func (r *UrlResolver) Url(rName, aName string) (string, error) {
 		}
 	}
 	if action == nil {
-		return "", fmt.Errorf("No action with name '%s' on %s", aName, rName)
+		return nil, fmt.Errorf("No action with name '%s' on %s", aName, rName)
 	}
 	var vars, err = res.ExtractVariables(string(*r))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	return action.Url(vars)
 }
@@ -253,8 +158,8 @@ func (api *Api15) {{.Name}}Locator(href string) *{{.Name}}Locator {
 	return &{{.Name}}Locator{UrlResolver(href), api}
 }
 //===== Actions
-{{end}}{{range .Actions}}{{$httpMethod := .HttpMethod}}{{range .PathPatterns}}
-// {{$httpMethod}} {{.Path}}{{end}}
+{{end}}{{range .Actions}}{{range .PathPatterns}}
+// {{.HttpMethod}} {{.Path}}{{end}}
 {{comment .Description}}
 func (loc *{{$resource.Name}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
 	{{template "ActionBody" . }}
@@ -266,12 +171,12 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	{{end}}{{range .Params}}{{if and .Mandatory (blankCondition .VarName .Type)}}{{blankCondition .VarName .Type}}
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.VarName}} is required")
 	}
-	{{end}}{{end}}{{/* end range .Params */}}{{if not (eq .HttpMethod "DELETE")}}var params = {{paramsAsPayload .Params}}{{end}}
+	{{end}}{{end}}{{/* end range .Params */}}var params = {{paramsAsPayload .Params}}
 	var uri, err = loc.Url("{{$action.ResourceName}}", "{{$action.Name}}")
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}
-	var {{if .HasResponse}}{{if .Return}}resp, {{else}}_, {{end}}{{end}}err2 = loc.api.{{toVerb .HttpMethod}}(uri{{if not (eq .HttpMethod "DELETE")}}, params{{end}})
+	var {{if .Return}}resp, {{else}}_, {{end}}err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return {{if $action.Return}}res, {{end}}err2
 	}

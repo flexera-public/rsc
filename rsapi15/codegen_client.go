@@ -1,7 +1,7 @@
 //************************************************************************//
 //                     RightScale API 1.5 go client
 //
-// Generated Feb 23, 2015 at 2:13pm (PST)
+// Generated Feb 24, 2015 at 9:57am (PST)
 // Command:
 // $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -27,16 +27,16 @@ func mergeOptionals(params, options ApiParams) ApiParams {
 	return params
 }
 
-// Url resolver produces an action URL from its name and a given resource href.
+// Url resolver produces an action URL and HTTP method from its name and a given resource href.
 // The algorithm consists of first extracting the variables from the href and then substituing them
 // in the action path. If there are more than one action paths then the algorithm picks the one that
 // can substitute the most variables.
 type UrlResolver string
 
-func (r *UrlResolver) Url(rName, aName string) (string, error) {
+func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 	var res, ok = api_metadata[rName]
 	if !ok {
-		return "", fmt.Errorf("No resource with name '%s'", rName)
+		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}
 	var action *metadata.Action
 	for _, a := range res.Actions {
@@ -46,11 +46,11 @@ func (r *UrlResolver) Url(rName, aName string) (string, error) {
 		}
 	}
 	if action == nil {
-		return "", fmt.Errorf("No action with name '%s' on %s", aName, rName)
+		return nil, fmt.Errorf("No action with name '%s' on %s", aName, rName)
 	}
 	var vars, err = res.ExtractVariables(string(*r))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	return action.Url(vars)
 }
@@ -90,7 +90,7 @@ func (loc *AccountLocator) Show() (*Account, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -142,7 +142,7 @@ func (loc *AccountGroupLocator) Index(options ApiParams) ([]*AccountGroup, error
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -166,7 +166,7 @@ func (loc *AccountGroupLocator) Show(options ApiParams) (*AccountGroup, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -219,7 +219,7 @@ func (loc *AlertLocator) Disable() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -238,7 +238,7 @@ func (loc *AlertLocator) Enable() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -261,7 +261,7 @@ func (loc *AlertLocator) Index(options ApiParams) ([]*Alert, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -293,7 +293,7 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -321,7 +321,7 @@ func (loc *AlertLocator) Show(options ApiParams) (*Alert, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -387,7 +387,7 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -405,12 +405,12 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 // DELETE /api/alert_specs/:id
 // Deletes a given AlertSpec.
 func (loc *AlertSpecLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("AlertSpecs", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -433,7 +433,7 @@ func (loc *AlertSpecLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -460,7 +460,7 @@ func (loc *AlertSpecLocator) Show(options ApiParams) (*AlertSpec, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -489,7 +489,7 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -540,7 +540,7 @@ func (loc *AuditEntryLocator) Append(options ApiParams) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -564,7 +564,7 @@ func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options ApiPar
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -586,7 +586,7 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -631,7 +631,7 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -655,7 +655,7 @@ func (loc *AuditEntryLocator) Show(options ApiParams) (*AuditEntry, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -683,7 +683,7 @@ func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options ApiPa
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -768,7 +768,7 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options ApiPa
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -790,7 +790,7 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -805,12 +805,12 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 // DELETE /api/backups/:id
 // Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
 func (loc *BackupLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Backups", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -840,7 +840,7 @@ func (loc *BackupLocator) Index(lineage string, options ApiParams) ([]*Backup, e
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -873,7 +873,7 @@ func (loc *BackupLocator) Restore(instanceHref string, options ApiParams) error 
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -889,7 +889,7 @@ func (loc *BackupLocator) Show() (*Backup, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -915,7 +915,7 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -956,7 +956,7 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -979,7 +979,7 @@ func (loc *ChildAccountLocator) Index(options ApiParams) ([]*Account, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1006,7 +1006,7 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1052,7 +1052,7 @@ func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1076,7 +1076,7 @@ func (loc *CloudLocator) Show(options ApiParams) (*Cloud, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1129,7 +1129,7 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1144,12 +1144,12 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 // DELETE /api/cloud_accounts/:id
 // Delete a CloudAccount.
 func (loc *CloudAccountLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("CloudAccounts", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1165,7 +1165,7 @@ func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1187,7 +1187,7 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1236,12 +1236,12 @@ func (api *Api15) CookbookLocator(href string) *CookbookLocator {
 // DELETE /api/cookbooks/:id
 // Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.
 func (loc *CookbookLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Cookbooks", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1262,7 +1262,7 @@ func (loc *CookbookLocator) Follow(value string) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1283,7 +1283,7 @@ func (loc *CookbookLocator) Freeze(value string) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1303,7 +1303,7 @@ func (loc *CookbookLocator) Index(options ApiParams) ([]*Cookbook, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1330,7 +1330,7 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1349,7 +1349,7 @@ func (loc *CookbookLocator) Show(options ApiParams) (*Cookbook, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1400,7 +1400,7 @@ func (loc *CookbookAttachmentLocator) Create(options ApiParams) (*CookbookAttach
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1417,12 +1417,12 @@ func (loc *CookbookAttachmentLocator) Create(options ApiParams) (*CookbookAttach
 // DELETE /api/cookbook_attachments/:id
 // Detach a cookbook from a given resource.
 func (loc *CookbookAttachmentLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("CookbookAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1442,7 +1442,7 @@ func (loc *CookbookAttachmentLocator) Index(options ApiParams) ([]*CookbookAttac
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1469,7 +1469,7 @@ func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookA
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1490,7 +1490,7 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1510,7 +1510,7 @@ func (loc *CookbookAttachmentLocator) Show(options ApiParams) (*CookbookAttachme
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1569,7 +1569,7 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1584,12 +1584,12 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 // DELETE /api/credentials/:id
 // Deletes a Credential.
 func (loc *CredentialLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Credentials", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1608,7 +1608,7 @@ func (loc *CredentialLocator) Index(options ApiParams) ([]*Credential, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1632,7 +1632,7 @@ func (loc *CredentialLocator) Show(options ApiParams) (*Credential, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1658,7 +1658,7 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1706,7 +1706,7 @@ func (loc *DatacenterLocator) Index(options ApiParams) ([]*Datacenter, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1730,7 +1730,7 @@ func (loc *DatacenterLocator) Show(options ApiParams) (*Datacenter, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1781,7 +1781,7 @@ func (loc *DeploymentLocator) Clone(options ApiParams) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1802,7 +1802,7 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1817,12 +1817,12 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 // DELETE /api/deployments/:id
 // Deletes a given deployment.
 func (loc *DeploymentLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Deployments", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1844,7 +1844,7 @@ func (loc *DeploymentLocator) Index(options ApiParams) ([]*Deployment, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1867,7 +1867,7 @@ func (loc *DeploymentLocator) Lock() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1883,7 +1883,7 @@ func (loc *DeploymentLocator) Servers() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.GetRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1903,7 +1903,7 @@ func (loc *DeploymentLocator) Show(options ApiParams) (*Deployment, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -1924,7 +1924,7 @@ func (loc *DeploymentLocator) Unlock() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1944,7 +1944,7 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -1977,7 +1977,7 @@ func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2031,7 +2031,7 @@ func (loc *IdentityProviderLocator) Index(options ApiParams) ([]*IdentityProvide
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2055,7 +2055,7 @@ func (loc *IdentityProviderLocator) Show(options ApiParams) (*IdentityProvider, 
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2113,7 +2113,7 @@ func (loc *ImageLocator) Index(options ApiParams) ([]*Image, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2137,7 +2137,7 @@ func (loc *ImageLocator) Show(options ApiParams) (*Image, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2189,7 +2189,7 @@ func (loc *InputLocator) Index(options ApiParams) ([]*Input, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2279,7 +2279,7 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]string) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2352,7 +2352,7 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2387,7 +2387,7 @@ func (loc *InstanceLocator) Index(options ApiParams) ([]*Instance, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2414,7 +2414,7 @@ func (loc *InstanceLocator) Launch(options ApiParams) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2429,7 +2429,7 @@ func (loc *InstanceLocator) Lock() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2453,7 +2453,7 @@ func (loc *InstanceLocator) MultiRunExecutable(options ApiParams) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2473,7 +2473,7 @@ func (loc *InstanceLocator) MultiTerminate(options ApiParams) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2490,7 +2490,7 @@ func (loc *InstanceLocator) Reboot() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2513,7 +2513,7 @@ func (loc *InstanceLocator) RunExecutable(options ApiParams) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2539,7 +2539,7 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2559,7 +2559,7 @@ func (loc *InstanceLocator) Show(options ApiParams) (*Instance, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2584,7 +2584,7 @@ func (loc *InstanceLocator) Start() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2602,7 +2602,7 @@ func (loc *InstanceLocator) Stop() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2619,7 +2619,7 @@ func (loc *InstanceLocator) Terminate() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2634,7 +2634,7 @@ func (loc *InstanceLocator) Unlock() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2654,7 +2654,7 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2716,7 +2716,7 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2731,12 +2731,12 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
 // Destroy the specified lodgement.
 func (loc *InstanceCustomLodgementLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("InstanceCustomLodgements", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2754,7 +2754,7 @@ func (loc *InstanceCustomLodgementLocator) Index(options ApiParams) ([]*Instance
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2776,7 +2776,7 @@ func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, err
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2803,7 +2803,7 @@ func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2853,7 +2853,7 @@ func (loc *InstanceTypeLocator) Index(options ApiParams) ([]*InstanceType, error
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2877,7 +2877,7 @@ func (loc *InstanceTypeLocator) Show(options ApiParams) (*InstanceType, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2931,7 +2931,7 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2946,12 +2946,12 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 // DELETE /api/clouds/:cloud_id/ip_addresses/:id
 // Deletes a given IpAddress.
 func (loc *IpAddressLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("IpAddresses", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -2969,7 +2969,7 @@ func (loc *IpAddressLocator) Index(options ApiParams) ([]*IpAddress, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -2991,7 +2991,7 @@ func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3017,7 +3017,7 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3073,7 +3073,7 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3089,12 +3089,12 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 // DELETE /api/clouds/:cloud_id/ip_address_bindings/:id
 // No description provided for destroy.
 func (loc *IpAddressBindingLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("IpAddressBindings", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3113,7 +3113,7 @@ func (loc *IpAddressBindingLocator) Index(options ApiParams) ([]*IpAddressBindin
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3136,7 +3136,7 @@ func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3198,7 +3198,7 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3227,7 +3227,7 @@ func (loc *MonitoringMetricLocator) Index(options ApiParams) ([]*MonitoringMetri
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3255,7 +3255,7 @@ func (loc *MonitoringMetricLocator) Show(options ApiParams) (*MonitoringMetric, 
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3309,7 +3309,7 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3330,7 +3330,7 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3352,7 +3352,7 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3368,12 +3368,12 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 // DELETE /api/multi_cloud_images/:id
 // Deletes a given MultiCloudImage.
 func (loc *MultiCloudImageLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("MultiCloudImages", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3392,7 +3392,7 @@ func (loc *MultiCloudImageLocator) Index(options ApiParams) ([]*MultiCloudImage,
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3415,7 +3415,7 @@ func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3443,7 +3443,7 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3488,7 +3488,7 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3503,12 +3503,12 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 // DELETE /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
 // Deletes a MultiCloudImage setting.
 func (loc *MultiCloudImageSettingLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("MultiCloudImageSettings", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3526,7 +3526,7 @@ func (loc *MultiCloudImageSettingLocator) Index(options ApiParams) ([]*MultiClou
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3548,7 +3548,7 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3574,7 +3574,7 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3624,7 +3624,7 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3639,12 +3639,12 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 // DELETE /api/networks/:id
 // Deletes the given network(s).
 func (loc *NetworkLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Networks", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3662,7 +3662,7 @@ func (loc *NetworkLocator) Index(options ApiParams) ([]*Network, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3684,7 +3684,7 @@ func (loc *NetworkLocator) Show() (*Network, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3710,7 +3710,7 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3761,7 +3761,7 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3776,12 +3776,12 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 // DELETE /api/network_gateways/:id
 // Delete an existing NetworkGateway.
 func (loc *NetworkGatewayLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("NetworkGateways", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3799,7 +3799,7 @@ func (loc *NetworkGatewayLocator) Index(options ApiParams) ([]*NetworkGateway, e
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3821,7 +3821,7 @@ func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3847,7 +3847,7 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3903,7 +3903,7 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3918,12 +3918,12 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 // DELETE /api/network_option_groups/:id
 // Delete an existing NetworkOptionGroup.
 func (loc *NetworkOptionGroupLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("NetworkOptionGroups", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -3941,7 +3941,7 @@ func (loc *NetworkOptionGroupLocator) Index(options ApiParams) ([]*NetworkOption
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3963,7 +3963,7 @@ func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -3989,7 +3989,7 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4044,7 +4044,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4059,12 +4059,12 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 // DELETE /api/network_option_group_attachments/:id
 // Delete an existing NetworkOptionGroupAttachment.
 func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("NetworkOptionGroupAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4083,7 +4083,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options ApiParams) ([]*Net
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4107,7 +4107,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Show(options ApiParams) (*Networ
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4133,7 +4133,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4221,7 +4221,7 @@ func (loc *Oauth2Locator) Create(grantType string, options ApiParams) (map[strin
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4281,7 +4281,7 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4302,12 +4302,12 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 // When deprovisioning user, always destroy the observer permission LAST;
 // destroying it while the user has other permissions will result in an error.
 func (loc *PermissionLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Permissions", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4325,7 +4325,7 @@ func (loc *PermissionLocator) Index(options ApiParams) ([]*Permission, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4347,7 +4347,7 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4402,7 +4402,7 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4417,12 +4417,12 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 // DELETE /api/placement_groups/:id
 // Destroys a PlacementGroup.
 func (loc *PlacementGroupLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("PlacementGroups", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4441,7 +4441,7 @@ func (loc *PlacementGroupLocator) Index(options ApiParams) ([]*PlacementGroup, e
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4465,7 +4465,7 @@ func (loc *PlacementGroupLocator) Show(options ApiParams) (*PlacementGroup, erro
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4507,12 +4507,12 @@ func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
 // DELETE /api/preferences/:id
 // Deletes the given preference.
 func (loc *PreferenceLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Preferences", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4530,7 +4530,7 @@ func (loc *PreferenceLocator) Index(options ApiParams) ([]*Preference, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4552,7 +4552,7 @@ func (loc *PreferenceLocator) Show() (*Preference, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4580,7 +4580,7 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4629,7 +4629,7 @@ func (loc *PublicationLocator) Import() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4648,7 +4648,7 @@ func (loc *PublicationLocator) Index(options ApiParams) ([]*Publication, error) 
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4672,7 +4672,7 @@ func (loc *PublicationLocator) Show(options ApiParams) (*Publication, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4728,7 +4728,7 @@ func (loc *PublicationLineageLocator) Show(options ApiParams) (*PublicationLinea
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4789,7 +4789,7 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4806,12 +4806,12 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 // DELETE /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments/:id
 // Deletes a given recurring volume attachment.
 func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("RecurringVolumeAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4832,7 +4832,7 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options ApiParams) ([]*Recurr
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4858,7 +4858,7 @@ func (loc *RecurringVolumeAttachmentLocator) Show(options ApiParams) (*Recurring
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4927,7 +4927,7 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options ApiPar
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -4957,7 +4957,7 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -4994,7 +4994,7 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5009,12 +5009,12 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 // DELETE /api/repositories/:id
 // Deletes the specified Repositories.
 func (loc *RepositoryLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Repositories", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5033,7 +5033,7 @@ func (loc *RepositoryLocator) Index(options ApiParams) ([]*Repository, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5058,7 +5058,7 @@ func (loc *RepositoryLocator) Refetch(options ApiParams) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5079,7 +5079,7 @@ func (loc *RepositoryLocator) Resolve(options ApiParams) ([]*Repository, error) 
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5103,7 +5103,7 @@ func (loc *RepositoryLocator) Show(options ApiParams) (*Repository, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5139,7 +5139,7 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5187,7 +5187,7 @@ func (loc *RepositoryAssetLocator) Index(options ApiParams) ([]*RepositoryAsset,
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5213,7 +5213,7 @@ func (loc *RepositoryAssetLocator) Show(options ApiParams) (*RepositoryAsset, er
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5274,7 +5274,7 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5294,7 +5294,7 @@ func (loc *RightScriptLocator) Index(options ApiParams) ([]*RightScript, error) 
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5316,7 +5316,7 @@ func (loc *RightScriptLocator) Show() (*RightScript, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5337,7 +5337,7 @@ func (loc *RightScriptLocator) ShowSource() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.GetRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5357,7 +5357,7 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5372,7 +5372,7 @@ func (loc *RightScriptLocator) UpdateSource() error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5425,7 +5425,7 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5441,12 +5441,12 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 // DELETE /api/route_tables/:route_table_id/routes/:id
 // Delete an existing Route.
 func (loc *RouteLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Routes", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5465,7 +5465,7 @@ func (loc *RouteLocator) Index(options ApiParams) ([]*Route, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5488,7 +5488,7 @@ func (loc *RouteLocator) Show() (*Route, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5515,7 +5515,7 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5565,7 +5565,7 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5580,12 +5580,12 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 // DELETE /api/route_tables/:id
 // Delete an existing RouteTable.
 func (loc *RouteTableLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("RouteTables", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5604,7 +5604,7 @@ func (loc *RouteTableLocator) Index(options ApiParams) ([]*RouteTable, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5628,7 +5628,7 @@ func (loc *RouteTableLocator) Show(options ApiParams) (*RouteTable, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5654,7 +5654,7 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5707,7 +5707,7 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5723,12 +5723,12 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 // Unbind an executable from the given resource.
 // The resource must be editable.
 func (loc *RunnableBindingLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("RunnableBindings", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5747,7 +5747,7 @@ func (loc *RunnableBindingLocator) Index(options ApiParams) ([]*RunnableBinding,
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5774,7 +5774,7 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5793,7 +5793,7 @@ func (loc *RunnableBindingLocator) Show(options ApiParams) (*RunnableBinding, er
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5848,7 +5848,7 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5863,12 +5863,12 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 // DELETE /api/clouds/:cloud_id/security_groups/:id
 // Delete security group(s)
 func (loc *SecurityGroupLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("SecurityGroups", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -5887,7 +5887,7 @@ func (loc *SecurityGroupLocator) Index(options ApiParams) ([]*SecurityGroup, err
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5911,7 +5911,7 @@ func (loc *SecurityGroupLocator) Show(options ApiParams) (*SecurityGroup, error)
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5979,7 +5979,7 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -5995,12 +5995,12 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 // DELETE /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
 // Delete security group rule(s)
 func (loc *SecurityGroupRuleLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("SecurityGroupRules", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6019,7 +6019,7 @@ func (loc *SecurityGroupRuleLocator) Index(options ApiParams) ([]*SecurityGroupR
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6044,7 +6044,7 @@ func (loc *SecurityGroupRuleLocator) Show(options ApiParams) (*SecurityGroupRule
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6071,7 +6071,7 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6125,7 +6125,7 @@ func (loc *ServerLocator) Clone() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6147,7 +6147,7 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6163,12 +6163,12 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 // DELETE /api/deployments/:deployment_id/servers/:id
 // Deletes a given server.
 func (loc *ServerLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Servers", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6194,7 +6194,7 @@ func (loc *ServerLocator) Index(options ApiParams) ([]*Server, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6216,7 +6216,7 @@ func (loc *ServerLocator) Launch() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6235,7 +6235,7 @@ func (loc *ServerLocator) Show(options ApiParams) (*Server, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6257,7 +6257,7 @@ func (loc *ServerLocator) Terminate() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6278,7 +6278,7 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6299,7 +6299,7 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6352,7 +6352,7 @@ func (loc *ServerArrayLocator) Clone() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6374,7 +6374,7 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6396,7 +6396,7 @@ func (loc *ServerArrayLocator) CurrentInstances() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.GetRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6407,12 +6407,12 @@ func (loc *ServerArrayLocator) CurrentInstances() error {
 // DELETE /api/deployments/:deployment_id/server_arrays/:id
 // Deletes a given server array.
 func (loc *ServerArrayLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("ServerArrays", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6436,7 +6436,7 @@ func (loc *ServerArrayLocator) Index(options ApiParams) ([]*ServerArray, error) 
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6458,7 +6458,7 @@ func (loc *ServerArrayLocator) Launch() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6475,7 +6475,7 @@ func (loc *ServerArrayLocator) MultiRunExecutable() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6492,7 +6492,7 @@ func (loc *ServerArrayLocator) MultiTerminate() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6511,7 +6511,7 @@ func (loc *ServerArrayLocator) Show(options ApiParams) (*ServerArray, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6538,7 +6538,7 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6590,7 +6590,7 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6621,7 +6621,7 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6642,7 +6642,7 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6657,12 +6657,12 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 // DELETE /api/server_templates/:id
 // Deletes a given ServerTemplate.
 func (loc *ServerTemplateLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("ServerTemplates", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6680,7 +6680,7 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6707,7 +6707,7 @@ func (loc *ServerTemplateLocator) Index(options ApiParams) ([]*ServerTemplate, e
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6743,7 +6743,7 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6762,7 +6762,7 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6788,7 +6788,7 @@ func (loc *ServerTemplateLocator) Show(options ApiParams) (*ServerTemplate, erro
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6832,7 +6832,7 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6854,7 +6854,7 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6902,7 +6902,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6917,12 +6917,12 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 // DELETE /api/server_template_multi_cloud_images/:id
 // Deletes a given ServerTemplateMultiCloudImage.
 func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6941,7 +6941,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Index(options ApiParams) ([]*Se
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -6962,7 +6962,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -6980,7 +6980,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Show(options ApiParams) (*Serve
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7044,7 +7044,7 @@ func (loc *SessionLocator) Accounts(options ApiParams) ([]*Account, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7069,7 +7069,7 @@ func (loc *SessionLocator) Index() ([]*Session, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7094,7 +7094,7 @@ func (loc *SessionLocator) IndexInstanceSession() (Instance, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7147,7 +7147,7 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7162,12 +7162,12 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 // DELETE /api/clouds/:cloud_id/ssh_keys/:id
 // Deletes a given ssh key.
 func (loc *SshKeyLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("SshKeys", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7186,7 +7186,7 @@ func (loc *SshKeyLocator) Index(options ApiParams) ([]*SshKey, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7210,7 +7210,7 @@ func (loc *SshKeyLocator) Show(options ApiParams) (*SshKey, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7268,7 +7268,7 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7284,12 +7284,12 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 // DELETE /api/clouds/:cloud_id/subnets/:id
 // Deletes the given subnet(s).
 func (loc *SubnetLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Subnets", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7308,7 +7308,7 @@ func (loc *SubnetLocator) Index(options ApiParams) ([]*Subnet, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7331,7 +7331,7 @@ func (loc *SubnetLocator) Show() (*Subnet, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7358,7 +7358,7 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7402,7 +7402,7 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7451,7 +7451,7 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options ApiPara
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7487,7 +7487,7 @@ func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7516,7 +7516,7 @@ func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error 
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.PostRaw(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7562,7 +7562,7 @@ func (loc *TaskLocator) Show(options ApiParams) (*Task, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7636,7 +7636,7 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7660,7 +7660,7 @@ func (loc *UserLocator) Index(options ApiParams) ([]*User, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7682,7 +7682,7 @@ func (loc *UserLocator) Show() (*User, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7726,7 +7726,7 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Put(uri, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7759,7 +7759,7 @@ func (loc *UserDataLocator) Show() (*map[string]string, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7818,7 +7818,7 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7833,12 +7833,12 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 // DELETE /api/clouds/:cloud_id/volumes/:id
 // Deletes a given volume.
 func (loc *VolumeLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("Volumes", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7857,7 +7857,7 @@ func (loc *VolumeLocator) Index(options ApiParams) ([]*Volume, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7881,7 +7881,7 @@ func (loc *VolumeLocator) Show(options ApiParams) (*Volume, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7940,7 +7940,7 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -7960,12 +7960,12 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 // -- Optional parameters:
 // 	force: Specifies whether to force the detachment of a volume.
 func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
-
+	var params = mergeOptionals(ApiParams{}, options)
 	var uri, err = loc.Url("VolumeAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -7985,7 +7985,7 @@ func (loc *VolumeAttachmentLocator) Index(options ApiParams) ([]*VolumeAttachmen
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -8012,7 +8012,7 @@ func (loc *VolumeAttachmentLocator) Show(options ApiParams) (*VolumeAttachment, 
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -8073,7 +8073,7 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.PostRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -8089,12 +8089,12 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 // DELETE /api/clouds/:cloud_id/volume_snapshots/:id
 // Deletes a given volume_snapshot.
 func (loc *VolumeSnapshotLocator) Destroy() error {
-
+	var params = map[string]interface{}{}
 	var uri, err = loc.Url("VolumeSnapshots", "destroy")
 	if err != nil {
 		return err
 	}
-	var err2 = loc.api.Delete(uri)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return err2
 	}
@@ -8114,7 +8114,7 @@ func (loc *VolumeSnapshotLocator) Index(options ApiParams) ([]*VolumeSnapshot, e
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -8139,7 +8139,7 @@ func (loc *VolumeSnapshotLocator) Show(options ApiParams) (*VolumeSnapshot, erro
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -8193,7 +8193,7 @@ func (loc *VolumeTypeLocator) Index(options ApiParams) ([]*VolumeType, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}
@@ -8217,7 +8217,7 @@ func (loc *VolumeTypeLocator) Show(options ApiParams) (*VolumeType, error) {
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.GetRaw(uri, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
 	if err2 != nil {
 		return res, err2
 	}

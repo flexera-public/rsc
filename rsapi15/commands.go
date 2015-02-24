@@ -3,7 +3,6 @@ package rsapi15
 import (
 	"fmt"
 	"net/http"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -42,8 +41,6 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 			}
 		}
 	}
-	sort.Strings(actionNames)
-	actionNames = append([]string{"index", "show", "create", "update", "delete"}, actionNames...)
 	for _, action := range actionNames {
 		var description string
 		switch action {
@@ -117,7 +114,7 @@ func (a *Api15) ShowHelp(cmd string) error {
 // Actually run command
 func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 	// 1. Initialize / find href as well as resource and action command definitions
-	var resource, action, actionUrl, _, params, err = parseCommandAndFlags(cmd)
+	var resource, action, path, _, params, err = parseCommandAndFlags(cmd)
 	if err != nil {
 		return nil, err
 	}
@@ -180,11 +177,13 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 		}
 	}
 
-	return a.Do(actionUrl, action.Name, coerced)
+	return a.Dispatch(path.HttpMethod, path.Path, coerced)
 }
 
 // Parse command and flags and infer resource, action, href and params
-func parseCommandAndFlags(cmd string) (resource *metadata.Resource, action *metadata.Action, actionUrl, href string, params []string, err error) {
+func parseCommandAndFlags(cmd string) (resource *metadata.Resource, action *metadata.Action,
+	path *metadata.ActionPath, href string, params []string, err error) {
+
 	var flags = flagValues[cmd]
 	if flags == nil {
 		err = fmt.Errorf("Invalid command line, try --help.")
@@ -203,7 +202,7 @@ func parseCommandAndFlags(cmd string) (resource *metadata.Resource, action *meta
 	var vars []*metadata.PathVariable
 	for _, res := range api_metadata {
 		var err error
-		if vars, err = res.ExtractVariables(href); err != nil {
+		if vars, err = res.ExtractVariables(href); err == nil {
 			resource = res
 			break
 		}
@@ -212,11 +211,6 @@ func parseCommandAndFlags(cmd string) (resource *metadata.Resource, action *meta
 		err = fmt.Errorf("Invalid href '%s' (does not match any known href)", href)
 		return
 	}
-
-	if actionUrl, err = action.Url(vars); err != nil {
-		return
-	}
-
 	for _, a := range resource.Actions {
 		if a.Name == actionName {
 			action = a
@@ -232,6 +226,11 @@ func parseCommandAndFlags(cmd string) (resource *metadata.Resource, action *meta
 			resource.Name, actionName, strings.Join(supported, ", "))
 		return
 	}
+
+	if path, err = action.Url(vars); err != nil {
+		return
+	}
+
 	params = flags.Params
 	return
 }

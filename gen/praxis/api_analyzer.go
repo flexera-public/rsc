@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
+
+	"github.com/rightscale/rsc/gen"
 
 	"bitbucket.org/pkg/inflect"
 )
@@ -17,49 +20,35 @@ var (
 // The analyzer struct holds the analysis results
 type ApiAnalyzer struct {
 	// Raw resources as defined in API json metadata
-	rawResources map[string]interface{}
-	// Attribute type mappings defined in attributes.json
-	attributeTypes map[string]string
-	// Temporary analysis construct
-	// Holds all types indexed by name, multiple actions could generate types with the same
-	// name. Keep them all here then make names unique as needed once we gathered all of them.
-	rawTypes map[string][]*ObjectDataType
+	rawResources map[string]map[string]interface{}
+	// Raw types as defined in API json metadata
+	rawTypes map[string]map[string]interface{}
+	// Module name, e.g. "V1_6"
+	moduleName string
 }
-
-// The api descriptor struct contains the results of the analyzer Analyze() method.
-// This includes all the API resources, actions and types.
-type ApiDescriptor struct {
-	// Resources indexed by name
-	Resources map[string]*Resource
-	// Resource names ordered alphabetically
-	ResourceNames []string
-	// Types used by resource actions indexed by name
-	Types map[string]*ObjectDataType
-	// Type names ordered alphabetically
-	TypeNames []string
-	// Map of action names to URI suffix and HTTP method
-	ActionMap ActionMap
-}
-
-// Map action name to its URI suffix and HTTP method (in that order)
-type ActionMap map[string][2]string
 
 // Factory method for API analyzer
-func NewApiAnalyzer(resources map[string]interface{}, attributeTypes map[string]string) *ApiAnalyzer {
+func NewApiAnalyzer(resources, types map[string]map[string]interface{}) *ApiAnalyzer {
+	var moduleName string
+	if len(resources) > 0 {
+		for n, _ := range resources {
+			moduleName = strings.Split(n, "::")[0]
+			break
+		}
+	}
 	return &ApiAnalyzer{
-		rawResources:   resources,
-		attributeTypes: attributeTypes,
-		rawTypes:       make(map[string][]*ObjectDataType),
+		rawResources: resources,
+		rawTypes:     types,
+		moduleName:   moduleName,
 	}
 }
 
 // Analyze iterate through all resources and initializes the Resources and ParamTypes fields of
 // the ApiAnalyzer struct accordingly.
-func (a *ApiAnalyzer) Analyze() *ApiDescriptor {
-	var descriptor = &ApiDescriptor{
-		Resources: make(map[string]*Resource),
-		Types:     make(map[string]*ObjectDataType),
-		ActionMap: ActionMap{},
+func (a *ApiAnalyzer) Analyze() *gen.ApiDescriptor {
+	var descriptor = &gen.ApiDescriptor{
+		Resources: make(map[string]*gen.Resource),
+		Types:     make(map[string]*gen.ObjectDataType),
 	}
 	var rawResourceNames = make([]string, len(a.rawResources))
 	var idx = 0
@@ -72,7 +61,6 @@ func (a *ApiAnalyzer) Analyze() *ApiDescriptor {
 		var resource = a.rawResources[name]
 		a.AnalyzeResource(name, resource, descriptor)
 	}
-	descriptor.FinalizeTypeNames(a.rawTypes)
 	return descriptor
 }
 
@@ -81,49 +69,56 @@ var hrefVarRegexp = regexp.MustCompile(`/:[^/]+`)
 
 // AnalyzeResource analyzes the given resource and updates the Resources and ParamTypes analyzer
 // fields accordingly
-func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descriptor *ApiDescriptor) {
-	var res = resource.(map[string]interface{})
-
+func (a *ApiAnalyzer) AnalyzeResource(name string, resource map[string]interface{}, descriptor *gen.ApiDescriptor) error {
 	// Compute description
 	var description string
-	if d, ok := res["description"].(string); ok {
+	if d, ok := resource["description"].(string); ok {
 		description = d
 	}
 
 	// Compute attributes
-	var attributes []*Attribute
-	var atts map[string]interface{}
-	if m, ok := res["media_type"].(map[string]interface{}); ok {
-		atts = m["attributes"].(map[string]interface{})
-		attributes = make([]*Attribute, len(atts))
-		for idx, n := range sortedKeys(atts) {
-			attributes[idx] = &Attribute{n, inflect.Camelize(n), a.attributeTypes[n]}
+	m, ok := resource["media_type"].(string)
+	if !ok {
+		return fmt.Errorf("Resource %s has no media type (missing key \"media_type\")", name)
+	}
+	t, ok := a.rawTypes[m]
+	if !ok {
+		return fmt.Errorf("Missing definition for Resource %s media type %s", name, m)
+	}
+	attrs, ok := t["attributes"].(map[string]interface{})
+	if !ok {
+		return fmt.Errorf("Missing attributes for media type %s", m)
+	}
+	var attributes = make([]*gen.Attribute, len(attrs))
+	for idx, n := range sortedKeys(attrs) {
+		var attr = attrs[n].(map[string]interface{})
+		at, ok := attr["type"].(map[string]interface{})
+		if !ok {
+			return fmt.Errorf("Missing attribute type for attribute %s of media type %s", n, m)
 		}
-	} else {
-		attributes = []*Attribute{}
+		var tn, err = a.toType(n, at)
+		if err != nil {
+			return fmt.Errorf("Failed to compute type for attribute %s of media type %s: %s", n, m, err.Error())
+		}
+		attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), tn}
 	}
 
 	// Compute actions
-	var methods = res["methods"].(map[string]interface{})
+	var methods = resource["actions"].(map[string]interface{})
 	var actionNames = sortedKeys(methods)
-	var actions = []*Action{}
+	var actions = []*gen.Action{}
 	for _, actionName := range actionNames {
 		var m = methods[actionName]
 		var meth = m.(map[string]interface{})
 		var params map[string]interface{}
-		if p, ok := meth["parameters"]; ok {
+		if p, ok := meth["params"]; ok {
 			params = p.(map[string]interface{})
 		}
 		var description = "No description provided for " + actionName + "."
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
-		httpMethod, pathPatterns := ParseRoute(fmt.Sprintf("%s#%s", name, actionName),
-			meth["route"].(string))
-		if len(pathPatterns) == 0 {
-			// Custom action
-			continue
-		}
+		httpMethod, pathPatterns := ParseRoute(meth["url"].(map[string]string))
 		var allParamNames = make([]string, len(params))
 		var i = 0
 		for n, _ := range params {
@@ -161,7 +156,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			if _, ok := a.rawTypes[name]; ok {
 				a.rawTypes[name] = append(a.rawTypes[name], pType)
 			} else {
-				a.rawTypes[name] = []*ObjectDataType{pType}
+				a.rawTypes[name] = []*gen.ObjectDataType{pType}
 			}
 		}
 
@@ -193,12 +188,11 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 
 		// Record action
-		var action = Action{
+		var action = gen.Action{
 			Name:              actionName,
 			MethodName:        inflect.Camelize(actionName),
 			Description:       removeBlankLines(description),
 			ResourceName:      name,
-			HttpMethod:        httpMethod,
 			PathPatterns:      pathPatterns,
 			Params:            paramAnalyzer.Params,
 			LeafParams:        paramAnalyzer.LeafParams,
@@ -212,118 +206,12 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 
 	// We're done!
 	name = inflect.Singularize(name)
-	descriptor.Resources[name] = &Resource{
+	descriptor.Resources[name] = &gen.Resource{
 		Name:        name,
 		Description: removeBlankLines(description),
 		Actions:     actions,
 		Attributes:  attributes,
 	}
-}
-
-// Go through all the types generated by the analyzer and generate unique names
-func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType) {
-
-	// 1. Make sure data type names don't clash with resource names
-	var rawTypeNames = make([]string, len(rawTypes))
-	var idx = 0
-	for n, _ := range rawTypes {
-		rawTypeNames[idx] = n
-		idx += 1
-	}
-	sort.Strings(rawTypeNames)
-	for _, tn := range rawTypeNames {
-		var types = rawTypes[tn]
-		for rn, _ := range d.Resources {
-			if tn == rn {
-				var oldTn = tn
-				if strings.HasSuffix(tn, "Param") {
-					tn = fmt.Sprintf("%s2", tn)
-				} else {
-					tn = fmt.Sprintf("%sParam", tn)
-				}
-				for _, ty := range types {
-					ty.Name = tn
-				}
-				rawTypes[tn] = types
-				delete(rawTypes, oldTn)
-			}
-		}
-	}
-
-	// 2. Make data type names unique
-	idx = 0
-	for n, _ := range rawTypes {
-		rawTypeNames[idx] = n
-		idx += 1
-	}
-	sort.Strings(rawTypeNames)
-	for _, tn := range rawTypeNames {
-		var types = rawTypes[tn]
-		var first = types[0]
-		d.Types[tn] = first
-		if len(types) > 1 {
-			for i, ty := range types[1:] {
-				var found = false
-				for j := 0; j < i+1; j++ {
-					if ty.IsEquivalent(types[j]) {
-						found = true
-						break
-					}
-				}
-				if !found {
-					var newName = d.uniqueTypeName(tn)
-					ty.Name = newName
-					d.Types[newName] = ty
-				}
-			}
-		}
-	}
-
-	// 3. Finally initialize .ResourceNames and .TypeNames
-	idx = 0
-	var resourceNames = make([]string, len(d.Resources))
-	for n, _ := range d.Resources {
-		resourceNames[idx] = n
-		idx += 1
-	}
-	sort.Strings(resourceNames)
-	d.ResourceNames = resourceNames
-
-	var typeNames = make([]string, len(d.Types))
-	idx = 0
-	for tn, _ := range d.Types {
-		typeNames[idx] = tn
-		idx += 1
-	}
-	sort.Strings(typeNames)
-	d.TypeNames = typeNames
-}
-
-// Build unique type name by appending "next available index" to given prefix
-func (d *ApiDescriptor) uniqueTypeName(prefix string) string {
-	var u = fmt.Sprintf("%s%d", prefix, 2)
-	var taken = false
-	for _, tn := range d.TypeNames {
-		if tn == u {
-			taken = true
-			break
-		}
-	}
-	var idx = 3
-	for taken {
-		u = fmt.Sprintf("%s%d", prefix, idx)
-		taken = false
-		for _, tn := range d.TypeNames {
-			if tn == u {
-				taken = true
-				break
-			}
-		}
-		if taken {
-			idx += 1
-		}
-	}
-	return u
 }
 
 /** Helper methods for parsing raw JSON **/
@@ -334,7 +222,7 @@ var routeRegexp = regexp.MustCompile(`\{[^\}]+\}`)
 // Regular expression that captures variables in a path
 var routeVariablesRegexp = regexp.MustCompile(`/:([^/]+)`)
 
-func ParseRoute(moniker string, route string) (method string, pathPatterns []*PathPattern) {
+func ParseRoute(moniker string, route string) (method string, pathPatterns []*gen.PathPattern) {
 	// :(((( some routes are empty
 	var paths []string
 	switch moniker {
@@ -374,9 +262,9 @@ func ParseRoute(moniker string, route string) (method string, pathPatterns []*Pa
 		}
 		paths = paths[:j]
 	}
-	pathPatterns = make([]*PathPattern, len(paths))
+	pathPatterns = make([]*gen.PathPattern, len(paths))
 	for i, p := range paths {
-		var pattern = PathPattern{
+		var pattern = gen.PathPattern{
 			Path:    p,
 			Pattern: routeVariablesRegexp.ReplaceAllLiteralString(p, "/%s"),
 			Regexp:  routeVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(p), `/([^/]+)`),
@@ -393,33 +281,124 @@ func ParseRoute(moniker string, route string) (method string, pathPatterns []*Pa
 	return
 }
 
-// true if path is for a deprecated API
-func isDeprecated(path string) bool {
-	return strings.Contains(path, "/api/session") && !strings.Contains(path, "/api/sessions")
+// sameType returns true if both argument describe the same praxis type, false otherwise.
+func sameType(praxisType, other map[string]interface{}) bool {
+	var type1, ok = praxisType["type"].(map[string]interface{})
+	if !ok {
+		return false
+	}
+	name1, ok := type1["name"].(string)
+	if !ok {
+		return false
+	}
+	type2, ok := other["type"].(map[string]interface{})
+	if !ok {
+		return false
+	}
+	name2, ok := type2["name"]
+	if !ok {
+		return false
+	}
+	if name1 != name2 {
+		return false
+	}
+	if name1 == "Struct" {
+		attr1, ok := praxisType["attributes"].(map[string]interface{})
+		if !ok {
+			return false
+		}
+		attr2, ok := other["attributes"].(map[string]interface{})
+		if !ok {
+			return false
+		}
+		if len(attr1) != len(attr2) {
+			return false
+		}
+		for an, av := range attr1 {
+			avv, ok := av.(map[string]interface{})
+			if !ok {
+				return false
+			}
+			ov, ok := attr2[an]
+			if !ok {
+				return false
+			}
+			ovv, ok := ov.(map[string]interface{})
+			if !ok {
+				return false
+			}
+			if !sameType(avv, ovv) {
+				return false
+			}
+		}
+	}
+	if name1 == "Collection" {
+		mem1, ok := praxisType["member_attribute"].(map[string]interface{})
+		if !ok {
+			return false
+		}
+		mem2, ok := other["member_attribute"].(map[string]interface{})
+		if !ok {
+			return false
+		}
+		if !sameType(mem1, mem2) {
+			return false
+		}
+	}
+	return true
 }
 
-// Is action code not generated?
-func isCustom(method, path string) bool {
-	return method == "POST" && (path == "/api/sessions" || path == "/api/sessions/instance")
+// Adds type to raw types, make sure name is unique
+func (a *ApiAnalyzer) addType(name string, praxisType map[string]interface{}) (string, error) {
+	var existing, ok = a.rawTypes[name]
+	if ok {
+		var base = name
+		var idx = 2
+		for ok {
+			if sameType(praxisType, existing) {
+				break
+			}
+			name = base + strconv.Itoa(idx)
+			existing, ok = a.rawTypes[name]
+		}
+	}
+	a.rawTypes[name] = praxisType
+	return name, nil
 }
 
-// Heuristic to determine whether given param is a query string param
-// For now only consider view and filter...
-func isQueryParam(n string) bool {
-	return n == "view" || n == "filter"
-}
-
-// Resources that don't have a media type
-var noMediaTypeResources = map[string]bool{
-	"HealthCheck":          true,
-	"Oauth2":               true,
-	"Tag":                  true,
-	"UserDatas":            true,
-	"MonitoringMetricData": true,
-	"ImportPreview":        true,
-	"Changes":              true,
-	"CookbookResolution":   true,
-	"ResourceTag":          true,
+// Convert praxis type to go type
+func (a *ApiAnalyzer) toType(name string, praxisType map[string]interface{}) (string, error) {
+	tn, ok := praxisType["name"].(string)
+	if !ok {
+		return "", fmt.Errorf("Missing attribute type name")
+	}
+	switch tn {
+	case "String", "Symbol":
+		return "string", nil
+	case "Integer":
+		return "int", nil
+	case "Boolean":
+		return "bool", nil
+	case "Struct":
+		return a.addType(name, praxisType)
+	case "Collection":
+		member, ok := praxisType["member_attribute"].(map[string]interface{})
+		if !ok {
+			return "", fmt.Errorf("Missing collection \"member_attribute\" key.")
+		}
+		at, ok := member["type"].(map[string]interface{})
+		if !ok {
+			return "", fmt.Errorf("Missing collection \"member_attribute\" type.")
+		}
+		var res, err = a.toType("[]"+name, at)
+		if err != nil {
+			return "", fmt.Errorf("Failed to compute type of \"member_attribute\": ", err.Error())
+		}
+		return "[]" + res, nil
+	default:
+		var elems = strings.Split(tn, "::")
+		return strings.Join(elems[2:len(elems)-1], ""), nil
+	}
 }
 
 func parseReturn(kind, resName, contentType string) string {
@@ -455,20 +434,6 @@ func parseReturn(kind, resName, contentType string) string {
 		}
 	}
 
-}
-
-// Name of go type for resource with given name
-// It should always be the same (camelized) but there are some resources that don't have a media
-// type so for these we use a map.
-func resourceType(resName string) string {
-	if resName == "ChildAccounts" {
-		return "Account"
-	}
-	if _, ok := noMediaTypeResources[resName]; ok {
-		return "map[string]string"
-	} else {
-		return inflect.Singularize(resName)
-	}
 }
 
 // Return keys of given maps sorted

@@ -8,6 +8,9 @@ import (
 	"os"
 	"os/exec"
 	"path"
+
+	"github.com/rightscale/rsc/gen"
+	"github.com/rightscale/rsc/gen/writers"
 )
 
 func main() {
@@ -60,12 +63,12 @@ func main() {
 }
 
 // Generate API client code, drives the code writer.
-func generateClient(descriptor *ApiDescriptor, codegen string) error {
+func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
 	}
-	c, err := NewClientWriter()
+	c, err := writers.NewClientWriter()
 	if err != nil {
 		return err
 	}
@@ -89,16 +92,16 @@ func generateClient(descriptor *ApiDescriptor, codegen string) error {
 }
 
 // Generate API metadata, drives the metadata writer.
-func generateMetadata(descriptor *ApiDescriptor, codegen string) error {
+func generateMetadata(descriptor *gen.ApiDescriptor, codegen string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
 	}
-	c, err := NewMetadataWriter()
+	c, err := writers.NewMetadataWriter()
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader(f))
+	check(c.WriteHeader("rsapi15", f))
 	check(c.WriteMetadata(descriptor, f))
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()

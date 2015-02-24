@@ -43,14 +43,17 @@ func (a *Api15) Do(actionUrl, action string, params ApiParams) (*http.Response, 
 		for _, r := range api_metadata {
 			for _, a := range r.Actions {
 				if a.Name == action {
-					method = a.HttpMethod
+					method = a.PathPatterns[0].HttpMethod
 					break
 				}
 			}
 		}
 	}
+	return a.Dispatch(method, actionUrl, params)
+}
 
-	// Now call corresponding low-level request method
+// Dispatch request to appropriate low-level method
+func (a *Api15) Dispatch(method, actionUrl string, params ApiParams) (*http.Response, error) {
 	switch method {
 	case "GET":
 		return a.GetRaw(actionUrl, params)
@@ -61,7 +64,7 @@ func (a *Api15) Do(actionUrl, action string, params ApiParams) (*http.Response, 
 	case "DELETE":
 		return nil, a.Delete(actionUrl)
 	}
-	return nil, fmt.Errorf("Unknown action '%s'", action)
+	return nil, fmt.Errorf("Unsupported HTTP method %s", method)
 }
 
 // Low-level GET request that loads response JSON into generic object

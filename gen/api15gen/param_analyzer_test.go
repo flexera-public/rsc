@@ -4,7 +4,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/rightscale/rsc/generators/api15gen"
+	"github.com/rightscale/rsc/gen"
+	"github.com/rightscale/rsc/gen/api15gen"
 )
 
 var _ = Describe("ParamAnalyzer", func() {
@@ -30,7 +31,7 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			s := main.BasicDataType("string")
+			s := gen.BasicDataType("string")
 			Ω(param.Type).Should(BeEquivalentTo(&s))
 		})
 	})
@@ -47,14 +48,14 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			s := main.BasicDataType("string")
-			item := main.ActionParam{
+			s := gen.BasicDataType("string")
+			item := gen.ActionParam{
 				Name:      "item",
 				QueryName: "foo[item]",
 				VarName:   "item",
 				Type:      &s,
 			}
-			Ω(param.Type).Should(BeEquivalentTo(&main.ArrayDataType{&item}))
+			Ω(param.Type).Should(BeEquivalentTo(&gen.ArrayDataType{&item}))
 		})
 	})
 
@@ -74,22 +75,22 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			s := main.BasicDataType("string")
-			bar := main.ActionParam{
+			s := gen.BasicDataType("string")
+			bar := gen.ActionParam{
 				Name:      "bar",
 				QueryName: "foo[bar]",
 				VarName:   "bar",
 				Type:      &s,
 			}
-			i := main.BasicDataType("int")
-			baz := main.ActionParam{
+			i := gen.BasicDataType("int")
+			baz := gen.ActionParam{
 				Name:      "baz",
 				QueryName: "foo[baz]",
 				VarName:   "baz",
 				Type:      &i,
 			}
 			Ω(param.Type).Should(BeEquivalentTo(
-				&main.ObjectDataType{"Foo", []*main.ActionParam{&bar, &baz}}))
+				&gen.ObjectDataType{"Foo", []*gen.ActionParam{&bar, &baz}}))
 		})
 	})
 
@@ -108,7 +109,7 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			Ω(param.Type).Should(BeEquivalentTo(new(main.EnumerableDataType)))
+			Ω(param.Type).Should(BeEquivalentTo(new(gen.EnumerableDataType)))
 		})
 	})
 
@@ -129,21 +130,21 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			s := main.BasicDataType("string")
-			bar := main.ActionParam{
+			s := gen.BasicDataType("string")
+			bar := gen.ActionParam{
 				Name:      "bar",
 				QueryName: "foo[bar]",
 				Type:      &s,
 				VarName:   "bar",
 			}
-			baz := main.ActionParam{
+			baz := gen.ActionParam{
 				Name:      "baz",
 				QueryName: "foo[baz]",
-				Type:      new(main.EnumerableDataType),
+				Type:      new(gen.EnumerableDataType),
 				VarName:   "baz",
 			}
 			Ω(param.Type).Should(BeEquivalentTo(
-				&main.ObjectDataType{"Foo", []*main.ActionParam{&bar, &baz}}))
+				&gen.ObjectDataType{"Foo", []*gen.ActionParam{&bar, &baz}}))
 		})
 	})
 
@@ -162,7 +163,7 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			Ω(param.Type).Should(BeEquivalentTo(new(main.EnumerableDataType)))
+			Ω(param.Type).Should(BeEquivalentTo(new(gen.EnumerableDataType)))
 		})
 	})
 
@@ -180,7 +181,7 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			Ω(param.Type).Should(BeEquivalentTo(new(main.EnumerableDataType)))
+			Ω(param.Type).Should(BeEquivalentTo(new(gen.EnumerableDataType)))
 		})
 	})
 
@@ -200,28 +201,28 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			s := main.BasicDataType("string")
-			bar := main.ActionParam{
+			s := gen.BasicDataType("string")
+			bar := gen.ActionParam{
 				Name:      "bar",
 				QueryName: "foo[][bar]",
 				Type:      &s,
 				VarName:   "bar",
 			}
-			i := main.BasicDataType("int")
-			baz := main.ActionParam{
+			i := gen.BasicDataType("int")
+			baz := gen.ActionParam{
 				Name:      "baz",
 				QueryName: "foo[][baz]",
 				Type:      &i,
 				VarName:   "baz",
 			}
-			t := main.ObjectDataType{"Foo", []*main.ActionParam{&bar, &baz}}
-			item := main.ActionParam{
+			t := gen.ObjectDataType{"Foo", []*gen.ActionParam{&bar, &baz}}
+			item := gen.ActionParam{
 				Name:      "item",
 				QueryName: "foo[][item]",
 				Type:      &t,
 				VarName:   "item",
 			}
-			Ω(param.Type).Should(BeEquivalentTo(&main.ArrayDataType{&item}))
+			Ω(param.Type).Should(BeEquivalentTo(&gen.ArrayDataType{&item}))
 		})
 	})
 
@@ -242,40 +243,40 @@ var _ = Describe("ParamAnalyzer", func() {
 			Ω(params).Should(HaveLen(1))
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			s := main.BasicDataType("string")
-			bar := main.ActionParam{
+			s := gen.BasicDataType("string")
+			bar := gen.ActionParam{
 				Name:      "bar",
 				QueryName: "foo[][bar]",
 				Type:      &s,
 				VarName:   "bar",
 			}
-			goo := main.ActionParam{
+			goo := gen.ActionParam{
 				Name:      "goo",
 				QueryName: "foo[][baz][][goo]",
 				Type:      &s,
 				VarName:   "goo",
 			}
-			t := main.ObjectDataType{"Baz", []*main.ActionParam{&goo}}
-			bazItem := main.ActionParam{
+			t := gen.ObjectDataType{"Baz", []*gen.ActionParam{&goo}}
+			bazItem := gen.ActionParam{
 				Name:      "item",
 				QueryName: "foo[][baz][][item]",
 				Type:      &t,
 				VarName:   "item",
 			}
-			baz := main.ActionParam{
+			baz := gen.ActionParam{
 				Name:      "baz",
 				QueryName: "foo[][baz][]",
-				Type:      &main.ArrayDataType{&bazItem},
+				Type:      &gen.ArrayDataType{&bazItem},
 				VarName:   "baz",
 			}
-			p := main.ObjectDataType{"Foo", []*main.ActionParam{&bar, &baz}}
-			item := main.ActionParam{
+			p := gen.ObjectDataType{"Foo", []*gen.ActionParam{&bar, &baz}}
+			item := gen.ActionParam{
 				Name:      "item",
 				QueryName: "foo[][item]",
 				Type:      &p,
 				VarName:   "item",
 			}
-			Ω(param.Type).Should(BeEquivalentTo(&main.ArrayDataType{&item}))
+			Ω(param.Type).Should(BeEquivalentTo(&gen.ArrayDataType{&item}))
 		})
 	})
 
@@ -303,77 +304,77 @@ var _ = Describe("ParamAnalyzer", func() {
 			params := analyzer.Params
 			Ω(params).Should(HaveLen(5))
 
-			s := main.BasicDataType("string")
-			i := main.BasicDataType("int")
+			s := gen.BasicDataType("string")
+			i := gen.BasicDataType("int")
 
 			param := params[0]
 			Ω(param.Name).Should(Equal("foo"))
-			item := main.ActionParam{
+			item := gen.ActionParam{
 				Name:      "item",
 				QueryName: "foo[item]",
 				Type:      &s,
 				VarName:   "item",
 			}
-			Ω(param.Type).Should(BeEquivalentTo(&main.ArrayDataType{&item}))
+			Ω(param.Type).Should(BeEquivalentTo(&gen.ArrayDataType{&item}))
 
 			param = params[1]
 			Ω(param.Name).Should(Equal("foo1"))
-			Ω(param.Type).Should(BeEquivalentTo(new(main.EnumerableDataType)))
+			Ω(param.Type).Should(BeEquivalentTo(new(gen.EnumerableDataType)))
 
 			param = params[2]
 			Ω(param.Type).Should(BeEquivalentTo(&s))
 
 			param = params[3]
-			baz := main.ActionParam{
+			baz := gen.ActionParam{
 				Name:      "baz",
 				QueryName: "foo3[baz]",
 				Type:      &i,
 				VarName:   "baz",
 			}
-			p := main.ObjectDataType{"Foo3", []*main.ActionParam{&baz}}
+			p := gen.ObjectDataType{"Foo3", []*gen.ActionParam{&baz}}
 			Ω(param.Type).Should(BeEquivalentTo(&p))
 
 			param = params[4]
 			Ω(param.Name).Should(Equal("foo4"))
-			bar := main.ActionParam{
+			bar := gen.ActionParam{
 				Name:      "bar",
 				QueryName: "foo4[][bar]",
 				Type:      &s,
 				VarName:   "bar",
 			}
-			goo := main.ActionParam{
+			goo := gen.ActionParam{
 				Name:      "goo",
 				QueryName: "foo4[][baz][][goo]",
 				Type:      &s,
 				VarName:   "goo",
 			}
-			zoo := main.ActionParam{
+			zoo := gen.ActionParam{
 				Name:      "zoo",
 				QueryName: "foo4[][baz][][zoo]",
-				Type:      new(main.EnumerableDataType),
+				Type:      new(gen.EnumerableDataType),
 				VarName:   "zoo",
 			}
-			t := main.ObjectDataType{"Baz", []*main.ActionParam{&goo, &zoo}}
-			bazItem := main.ActionParam{
+			t := gen.ObjectDataType{"Baz", []*gen.ActionParam{&goo, &zoo}}
+			bazItem := gen.ActionParam{
 				Name:      "item",
 				QueryName: "foo4[][baz][][item]",
 				Type:      &t,
 				VarName:   "item",
 			}
-			baz = main.ActionParam{
+			baz = gen.ActionParam{
 				Name:      "baz",
 				QueryName: "foo4[][baz][]",
-				Type:      &main.ArrayDataType{&bazItem},
+				Type:      &gen.ArrayDataType{&bazItem},
 				VarName:   "baz",
 			}
-			p = main.ObjectDataType{"Foo4", []*main.ActionParam{&bar, &baz}}
-			item = main.ActionParam{
+			p = gen.ObjectDataType{"Foo4", []*gen.ActionParam{&bar, &baz}}
+			item = gen.ActionParam{
 				Name:      "item",
 				QueryName: "foo4[][item]",
 				Type:      &p,
 				VarName:   "item",
 			}
-			Ω(param.Type).Should(BeEquivalentTo(&main.ArrayDataType{&item}))
+			Ω(param.Type).Should(BeEquivalentTo(&gen.ArrayDataType{&item}))
 		})
 
 	})

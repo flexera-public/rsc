@@ -1,11 +1,12 @@
-package main
+package writers
 
 import (
-	"fmt"
 	"io"
 	"strings"
 	"text/template"
 	"time"
+
+	"github.com/rightscale/rsc/gen"
 )
 
 // MetadataWriter struct exposes methods to generate the go API client command line tool
@@ -40,75 +41,21 @@ func NewMetadataWriter() (*MetadataWriter, error) {
 }
 
 // Write header text
-func (c *MetadataWriter) WriteHeader(w io.Writer) error {
-	return c.headerTmpl.Execute(w, nil)
+func (c *MetadataWriter) WriteHeader(pkg string, w io.Writer) error {
+	return c.headerTmpl.Execute(w, pkg)
 }
 
-// Write commands
-func (c *MetadataWriter) WriteMetadata(d *ApiDescriptor, w io.Writer) error {
-	var resources = make([]*Resource, len(d.ResourceNames))
+// Write metadata
+func (c *MetadataWriter) WriteMetadata(d *gen.ApiDescriptor, w io.Writer) error {
+	var resources = make([]*gen.Resource, len(d.ResourceNames))
 	for i, n := range d.ResourceNames {
 		resources[i] = d.Resources[n]
 	}
 	return c.resourceTmpl.Execute(w, resources)
 }
 
-/** Format Helpers **/
-
-// Convert []interface{} into []string
-func toStringArray(a []interface{}) []string {
-	var res = make([]string, len(a))
-	for i, v := range a {
-		res[i] = fmt.Sprintf("%v", v)
-	}
-	return res
-}
-
-// Convert description into flag help message
-func toHelp(long string) string {
-	lines := strings.Split(long, "\n")
-	if len(lines) < 2 {
-		return long
-	}
-	if lines[0][len(lines[0])-1] == '.' {
-		return lines[0]
-	}
-	sentences := strings.Split(long, ".")
-	if strings.Count(sentences[0], "\n") > 0 {
-		sentence := strings.Split(sentences[0], "\n")
-		return strings.Join(sentence, " ") + "..."
-	}
-	return sentences[0]
-}
-
-// Type of flag, one of "string", "[]string", "int" or "map"
-func flagType(param *ActionParam) string {
-	var path = param.QueryName
-	if strings.HasSuffix(path, "[]") {
-		return "[]string"
-	}
-	if strings.Contains(path, "[]") {
-		var _, ok = param.Type.(*BasicDataType)
-		if !ok {
-			panic("Wooaat? an array with a non basic leaf???")
-		}
-		return "[]string"
-	}
-	if _, ok := param.Type.(*ArrayDataType); ok {
-		return "[]string"
-	} else if _, ok := param.Type.(*EnumerableDataType); ok {
-		return "map"
-	}
-	var b, ok = param.Type.(*BasicDataType)
-	if !ok {
-		panic("Wooaat? a object leaf???")
-	}
-	return string(*b)
-}
-
-//
 const headerMetadataTmpl = `//************************************************************************//
-//                     rsc - RightScale API 1.5 command line tool
+//                     rsc - RightScale API command line tool
 //
 {{comment "Generated " (now.Format "Jan 2, 2006 at 3:04pm (PST)")}}
 // Command:
@@ -117,7 +64,7 @@ const headerMetadataTmpl = `//**************************************************
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rsapi15
+package {{.}}
 
 import (
 	"regexp"
@@ -127,8 +74,7 @@ import (
 
 `
 
-const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}// API 1.5 Metadata
-// Consists of a map of resource name to resource metadata.
+const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}// Consists of a map of resource name to resource metadata.
 var api_metadata = map[string]*metadata.Resource{ {{range .}}
 	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
@@ -143,11 +89,11 @@ var api_metadata = map[string]*metadata.Resource{ {{range .}}
 const actionMetadataTmpl = `&metadata.Action {
 				Name: "{{.Name}}",
 				Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
-				HttpMethod: "{{.HttpMethod}}",
 				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
 					&metadata.PathPattern{
-						Pattern: "{{.Pattern}}",
-						Variables: []string{"{{join .Variables "\", \""}}"},
+						HttpMethod: "{{.HttpMethod}}",
+						Pattern: "{{.Path}}",
+						Variables: []string{ {{if .Variables}}"{{join .Variables "\", \""}}"{{end}}},
 						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),
 					},{{end}}
 				},
