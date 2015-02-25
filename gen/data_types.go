@@ -204,20 +204,28 @@ type ActionParam struct {
 
 // Generate signature used e.g. when specifying param in function signatures
 func (p *ActionParam) Signature() (sig string) {
+	if b, ok := p.Type.(*BasicDataType); ok {
+		if p.Mandatory {
+			sig = string(*b)
+		} else {
+			sig = "*" + string(*b)
+		}
+	} else {
+		// Mandatoryness does not affect other types
+		sig = p.SignatureIgnoreMandatory()
+	}
+	return
+}
+
+// Generate signature used e.g. when specifying resource attributes
+// Does not use pointers except for non-basic types.
+// (i.e. does not take into account mandatoryness)
+func (p *ActionParam) SignatureIgnoreMandatory() (sig string) {
 	switch t := p.Type.(type) {
 	case *BasicDataType:
-		if p.Mandatory {
-			sig = string(*t)
-		} else {
-			sig = "*" + string(*t)
-		}
+		sig = string(*t)
 	case *ArrayDataType:
-		cs := t.ElemType.Signature()
-		if _, ok := t.ElemType.Type.(*BasicDataType); ok {
-			if cs[0] == '*' {
-				cs = cs[1:]
-			}
-		}
+		cs := t.ElemType.SignatureIgnoreMandatory()
 		sig = fmt.Sprintf("[]%s", cs)
 	case *ObjectDataType:
 		sig = fmt.Sprintf("*%s", t.Name)

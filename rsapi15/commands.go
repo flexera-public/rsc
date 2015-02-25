@@ -80,7 +80,7 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 }
 
 // Show help for given command and flags
-func (a *Api15) ShowHelp(cmd string) error {
+func (a *Api) ShowHelp(cmd string) error {
 	var resource, action, _, href, _, err = parseCommandAndFlags(cmd)
 	if err != nil {
 		return err
@@ -112,7 +112,7 @@ func (a *Api15) ShowHelp(cmd string) error {
 }
 
 // Actually run command
-func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
+func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 	// 1. Initialize / find href as well as resource and action command definitions
 	var resource, action, path, _, params, err = parseCommandAndFlags(cmd)
 	if err != nil {

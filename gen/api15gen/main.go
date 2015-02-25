@@ -56,10 +56,15 @@ func main() {
 	descriptor := analyzer.Analyze()
 
 	// 3. Write codegen_client.go
-	check(generateClient(descriptor, path.Join(destDir, "codegen_client.go")))
+	var clientPath = path.Join(destDir, "codegen_client.go")
+	check(generateClient(descriptor, clientPath))
 
 	// 4. Write codegen_metadata.go
-	check(generateMetadata(descriptor, path.Join(destDir, "codegen_metadata.go")))
+	var metadataPath = path.Join(destDir, "codegen_metadata.go")
+	check(generateMetadata(descriptor, metadataPath))
+
+	// 5. Say something...
+	fmt.Printf("%s\n%s\n", clientPath, metadataPath)
 }
 
 // Generate API client code, drives the code writer.

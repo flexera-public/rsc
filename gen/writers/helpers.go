@@ -12,7 +12,15 @@ import (
 // Produce line comments by concatenating given strings and producing 80 characters long lines
 // starting with "//"
 func comment(elems ...string) string {
-	t := strings.Join(elems, "")
+	var lines = []string{}
+	for _, e := range elems {
+		lines = append(lines, strings.Split(e, "\n")...)
+	}
+	var trimmed = make([]string, len(lines))
+	for i, l := range lines {
+		trimmed[i] = strings.TrimLeft(l, " \t")
+	}
+	t := strings.Join(trimmed, "\n")
 	return text.Indent(t, "// ")
 }
 
@@ -63,7 +71,7 @@ func isPointer(sig string) bool {
 
 // Command line used to run tool
 func commandLine() string {
-	return fmt.Sprintf("$ api15gen %s", strings.Join(os.Args[1:], " "))
+	return fmt.Sprintf("$ %s %s", os.Args[0], strings.Join(os.Args[1:], " "))
 }
 
 // Code that checks whether variable with given name and type contains a blank value (empty string,

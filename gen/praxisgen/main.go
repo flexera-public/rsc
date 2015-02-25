@@ -18,11 +18,13 @@ func main() {
 	// 1. Parse command line arguments
 	curDir, err := os.Getwd()
 	check(err)
-	metadataDirVal := flag.String("metadata", curDir,
+	var metadataDirVal = flag.String("metadata", curDir,
 		"Path to directory containig metadata files (index.json, etc.)")
-	destDirVal := flag.String("output", curDir,
+	var destDirVal = flag.String("output", curDir,
 		"Path to output file")
-	pkgName := flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
+	var pkgName = flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
+	var targetVersion = flag.String("target", "",
+		"Target version, only generate code for this version.\nIf this option is specified then the generated code lives directly under package <pkg>, otherwise it lives under <pkg>.<version>.")
 	flag.Parse()
 
 	metadataDir := *metadataDirVal
@@ -51,6 +53,12 @@ func main() {
 	// 2. Analyze
 	var descriptors = make(map[string]*gen.ApiDescriptor) // descriptors indexed by version
 	for version, resources := range index {
+		if len(*targetVersion) > 0 {
+			if version != *targetVersion {
+				fmt.Fprintf(os.Stderr, "Skipping version \"%s\"\n", version)
+				continue
+			}
+		}
 		var apiResources = make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
 		for name, _ := range resources {
 			// Skip built-in resources (?)
@@ -67,7 +75,7 @@ func main() {
 		}
 
 		var apiTypes = make(map[string]map[string]interface{}) // Type properties indexed by name indexed by type name
-		var typesDir = path.Join(destDir, version, "types")
+		var typesDir = path.Join(metadataDir, version, "types")
 		files, err := ioutil.ReadDir(typesDir)
 		if err != nil {
 			check(fmt.Errorf("Failed to load types: %s", err.Error()))
@@ -83,15 +91,32 @@ func main() {
 			}
 			apiTypes[typeName.(string)] = typeData
 		}
-		var analyzer = NewApiAnalyzer(apiResources, apiTypes)
-		descriptors[version] = analyzer.Analyze()
+		var analyzer = NewApiAnalyzer(version, apiResources, apiTypes)
+		d, err := analyzer.Analyze()
+		check(err)
+		descriptors[version] = d
 	}
 
 	// 3. Write code
+	var genClients = []string{}
+	var genMetadata = []string{}
 	for version, descriptor := range descriptors {
-		os.MkdirAll(path.Join(destDir, version), 0755)
-		check(generateClient(descriptor, path.Join(destDir, version, "codegen_client.go"), toPackageName(version)))
-		check(generateMetadata(descriptor, path.Join(destDir, version, "codegen_metadata.go"), toPackageName(version)))
+		var pkg string
+		if len(*targetVersion) == 0 {
+			pkg = toPackageName(version)
+		}
+		os.MkdirAll(path.Join(destDir, pkg), 0755)
+		var clientPath = path.Join(destDir, pkg, "codegen_client.go")
+		var metadataPath = path.Join(destDir, pkg, "codegen_metadata.go")
+		check(generateClient(descriptor, clientPath, *pkgName))
+		check(generateMetadata(descriptor, metadataPath, *pkgName))
+		genClients = append(genClients, clientPath)
+		genMetadata = append(genMetadata, metadataPath)
+	}
+
+	// 4. Say something...
+	for i := 0; i < len(genClients); i++ {
+		fmt.Printf("%s\n%s\n", genClients[i], genMetadata[i])
 	}
 }
 
@@ -197,7 +222,7 @@ func loadFile(file string) ([]byte, error) {
 // Panic if error is not nil
 func check(err error) {
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "api15gen: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "praxisgen: %s\n", err.Error())
 		os.Exit(1)
 	}
 }

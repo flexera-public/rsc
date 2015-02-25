@@ -15,7 +15,7 @@ import (
 
 // RightScale API 1.5 client
 // Instances of this struct should be created through `New`.
-type Api15 struct {
+type Api struct {
 	AccountId             int           // Account in which client is currently operating
 	Auth                  Authenticator // Authenticator, signs requests for auth
 	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
@@ -30,7 +30,7 @@ type Api15 struct {
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
 func New(accountId int, refreshToken string, host string, logger *log.Logger,
-	client HttpClient) (*Api15, error) {
+	client HttpClient) (*Api, error) {
 	if client == nil {
 		client = http.DefaultClient
 	}
@@ -46,7 +46,7 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 			host = resolved
 		}
 	}
-	return &Api15{
+	return &Api{
 		AccountId: accountId,
 		Auth:      &auth,
 		Logger:    logger,
@@ -58,7 +58,7 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 // NewRL10 returns a API 1.5 client that uses the information stored in /var/run/rll-secret to do
 // auth and configure the host. The client behaves identically to the new returned by New in
 // all other regards.
-func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
+func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 	var rllConfig, err = ioutil.ReadFile("/var/run/rll-secret")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err.Error())
@@ -82,7 +82,7 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
 	}
 	var auth = RL10Authenticator{secret}
 	var host = "localhost:" + port
-	return &Api15{
+	return &Api{
 		Auth:   &auth,
 		Logger: logger,
 		Host:   host,
@@ -91,8 +91,8 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api15, error) {
 }
 
 // Build client from command line
-func FromCommandLine(cmdLine *cmd.CommandLine) (*Api15, error) {
-	var client *Api15
+func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
+	var client *Api
 	var httpClient *http.Client
 	if cmdLine.NoRedirect {
 		httpClient = &http.Client{

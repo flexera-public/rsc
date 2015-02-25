@@ -150,11 +150,11 @@ type {{.Name}} struct { {{range .Attributes}}
 // {{.Name}} resource locator, exposes resource actions.
 type {{.Name}}Locator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // {{.Name}} resource locator factory
-func (api *Api15) {{.Name}}Locator(href string) *{{.Name}}Locator {
+func (api *Api) {{.Name}}Locator(href string) *{{.Name}}Locator {
 	return &{{.Name}}Locator{UrlResolver(href), api}
 }
 //===== Actions

@@ -98,7 +98,7 @@ for API 1.6, etc.
 
 The packages contain "resource locators", one per resource exposed by the underlying API.
 
-Locators are instantiated using factory methods exposed by the Api15 object. The factory methods
+Locators are instantiated using factory methods exposed by the Api object. The factory methods
 accept the collection or resource href and return the corresponding locator. For example the
 following creates a cloud locator:
 ```go
