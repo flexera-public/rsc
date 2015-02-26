@@ -1,4 +1,4 @@
-//go:generate api15gen -metadata="." -output="."
+//go:generate api15gen
 package rsapi15
 
 import (

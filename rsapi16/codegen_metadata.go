@@ -2,9 +2,9 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 25, 2015 at 5:13pm (PST)
+// Feb 25, 2015 at 5:31pm (PST)
 // Command:
-// $ praxisgen -metadata=../../rsapi16/api_docs -output=../../rsapi16 -pkg=rsapi16 -target=1.6 -client=Api16
+// $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -60,17 +60,17 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[id]",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[view]",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
 						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[id]",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Mandatory:   true,
 						NonBlank:    false,
 					},
 				},
@@ -199,6 +199,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[id]",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
@@ -210,13 +217,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Description: `The view to use to render this resource`,
 						Type:        "string",
 						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "params[id]",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Mandatory:   true,
 						NonBlank:    false,
 					},
 				},
@@ -439,13 +439,6 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
@@ -456,6 +449,13 @@ var api_metadata = map[string]*metadata.Resource{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -488,20 +488,6 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[filter]",
-						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "params[limit]",
-						Description: `The maximum number of resources to return for this index`,
-						Type:        "int",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[cloud_id]",
 						Description: `Filter by the given cloud ID`,
 						Type:        "int",
@@ -522,8 +508,22 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "params[filter]",
+						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[limit]",
+						Description: `The maximum number of resources to return for this index`,
+						Type:        "int",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"filter, limit, ids, view"},
+				QueryParamNames:   []string{"ids, view, filter, limit"},
 				PayloadParamNames: []string{},
 			},
 
@@ -546,13 +546,6 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[id]",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
@@ -564,6 +557,13 @@ var api_metadata = map[string]*metadata.Resource{
 						Description: `The view to use to render this resource`,
 						Type:        "string",
 						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[id]",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Mandatory:   true,
 						NonBlank:    false,
 					},
 				},
@@ -718,13 +718,6 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
@@ -735,6 +728,13 @@ var api_metadata = map[string]*metadata.Resource{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -845,17 +845,17 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
 						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},
@@ -1013,6 +1013,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[instance_id]",
 						Description: `The Instance with which to scope the index`,
 						Type:        "string",
@@ -1023,13 +1030,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -1057,6 +1057,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
@@ -1067,13 +1074,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -1244,17 +1244,17 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[id]",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[view]",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
 						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[id]",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Mandatory:   true,
 						NonBlank:    false,
 					},
 				},
@@ -1323,6 +1323,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
@@ -1333,13 +1340,6 @@ var api_metadata = map[string]*metadata.Resource{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -1378,6 +1378,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[instance_id]",
+						Description: `The Instance with which to scope the index`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
@@ -1387,13 +1394,6 @@ var api_metadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "params[view]",
 						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "params[instance_id]",
-						Description: `The Instance with which to scope the index`,
 						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,

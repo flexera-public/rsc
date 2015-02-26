@@ -1,4 +1,4 @@
-//go:generate praxisgen -metadata="./api_docs" -output="." -pkg="rsapi16" -target="1.6" -client="Api16"
+//go:generate praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 package rsapi16
 
 import (
