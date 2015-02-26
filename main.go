@@ -36,7 +36,12 @@ func main() {
 		if err2 != nil {
 			err = err2
 		} else if client != nil {
-			resp, err = client.RunCommand(cmdLine.Command)
+			if cmdLine.ShowHelp {
+				client.ShowCommandHelp(cmdLine.Command)
+				return
+			} else {
+				resp, err = client.RunCommand(cmdLine.Command)
+			}
 		}
 
 	case "api16":
@@ -44,6 +49,12 @@ func main() {
 		if err2 != nil {
 			err = err2
 		} else if client != nil {
+			if cmdLine.ShowHelp {
+				client.ShowCommandHelp(cmdLine.Command)
+				return
+			} else {
+				resp, err = client.RunCommand(cmdLine.Command)
+			}
 			resp, err = client.RunCommand(cmdLine.Command)
 		}
 	}

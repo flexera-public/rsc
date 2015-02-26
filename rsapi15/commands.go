@@ -78,3 +78,8 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 	}
 	return a.Dispatch(parsed.HttpMethod, parsed.Uri, parsed.Params)
 }
+
+// Show command help
+func (a *Api15) ShowCommandHelp(cmd string) error {
+	return a.ShowHelp(cmd, commandValues)
+}

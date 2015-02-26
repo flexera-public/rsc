@@ -1,17 +1,12 @@
 package rsapi15
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"strconv"
-	"time"
 
 	"github.com/rightscale/rsc/rsapi"
 )
@@ -155,8 +150,7 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Res
 		}
 		u.RawQuery = values.Encode()
 	}
-	var sUrl = u.String()
-	var req, err = http.NewRequest(verb, sUrl, nil)
+	var req, err = http.NewRequest(verb, u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -164,40 +158,7 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Res
 	if a.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
 	}
-	var id string
-	var startedAt time.Time
-	if a.Logger != nil {
-		startedAt = time.Now()
-		b := make([]byte, 6)
-		io.ReadFull(rand.Reader, b)
-		id = base64.StdEncoding.EncodeToString(b)
-		a.Logger.Printf("[%s] %s %s", id, req.Method, sUrl)
-	}
-	if a.DumpRequestResponse {
-		var b, err = httputil.DumpRequest(req, true)
-		if err == nil {
-			fmt.Printf("REQUEST\n-------\n%s\n", b)
-		}
-	}
-	// Sign last so auth headers don't get printed or logged
-	if err = a.Auth.Sign(req, a.Host); err != nil {
-		return nil, err
-	}
-	resp, err := a.Client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	if a.Logger != nil {
-		d := time.Since(startedAt)
-		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
-	}
-	if a.DumpRequestResponse {
-		var b, err = httputil.DumpResponse(resp, false)
-		if err == nil {
-			fmt.Printf("RESPONSE\n--------\n%s", b)
-		}
-	}
+	resp, err := a.PerformRequest(req)
 	if a.FetchLocationResource {
 		var loc = resp.Header.Get("Location")
 		if loc != "" {

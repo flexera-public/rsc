@@ -40,6 +40,9 @@ func (a *ApiAnalyzer) AnalyzeAttribute(name, query string, attr map[string]inter
 			}
 		}
 	}
+	if values, ok := attr["values"]; ok {
+		param.ValidValues = values.([]interface{})
+	}
 	var t = attr["type"].(map[string]interface{})
 	var dataType, err = a.AnalyzeType(t, query)
 	if err != nil {

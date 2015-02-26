@@ -31,6 +31,12 @@ type ActionCommands map[string]*ActionCommand
 
 // Actually run command
 func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, error) {
+	// 0. Show help if requested
+	if values[cmd].ShowHelp != "" {
+		a.ShowHelp(cmd, values)
+		return nil, nil
+	}
+
 	// 1. Initialize / find href as well as resource and action command definitions
 	var resource, action, path, _, params, err = a.parseCommandAndFlags(cmd, values)
 	if err != nil {
