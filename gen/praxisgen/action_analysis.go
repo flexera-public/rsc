@@ -35,23 +35,22 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		var payloadParamNames = []string{}
 
 		// Query and path params analysis
-		if p, ok := meth["params"].(map[string]interface{}); ok {
-			// The "params" hash is the same as a object type description, leverage
-			// that to generate an action param so we can pluck out the type fields.
-			var obj, err = a.AnalyzeAttribute("params", "params", p)
-			if err != nil {
-				return nil, err
-			}
-			o, ok := obj.Type.(*gen.ObjectDataType)
+		if p, ok := meth["params"]; ok {
+			var param = p.(map[string]interface{})
+			t, ok := param["type"]
 			if !ok {
-				return nil, fmt.Errorf("Invalid params type %s", prettify(obj))
+				return nil, fmt.Errorf("Misins type declaration in %s", prettify(p))
 			}
-			for _, f := range o.Fields {
-				var fn = f.Name
+			var attrs = t.(map[string]interface{})["attributes"].(map[string]interface{})
+			for pn, pt := range attrs {
+				att, err := a.AnalyzeAttribute(pn, pn, pt.(map[string]interface{}))
+				if err != nil {
+					return nil, fmt.Errorf("Failed to compute type of param %s: %s", pn, err.Error())
+				}
 				var isPathParam = false
 				for _, pat := range pathPatterns {
 					for _, v := range pat.Variables {
-						if v == fn {
+						if v == pn {
 							isPathParam = true
 							break
 						}
@@ -61,11 +60,11 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 					}
 				}
 				if isPathParam {
-					pathParamNames = append(pathParamNames, fn)
+					pathParamNames = append(pathParamNames, pn)
 				} else {
-					queryParamNames = append(queryParamNames, fn)
+					queryParamNames = append(queryParamNames, pn)
 				}
-				params = append(params, f)
+				params = append(params, att)
 			}
 		}
 
@@ -76,22 +75,16 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		}
 
 		// Payload params analysis
-		if p, ok := meth["payload"].(map[string]interface{}); ok {
-			var obj, err = a.AnalyzeAttribute("payload", "payload", p)
-			if err != nil {
-				return nil, err
-			}
-			o, ok := obj.Type.(*gen.ObjectDataType)
-			if !ok {
-				payloadParamNames = []string{"payload"}
-				params = append(params, obj)
-				leafParams = append(leafParams, extractLeafParams(obj)...)
-			} else {
-				for _, f := range o.Fields {
-					payloadParamNames = append(payloadParamNames, f.Name)
-					params = append(params, f)
-					leafParams = append(leafParams, extractLeafParams(f)...)
+		if p, ok := meth["payload"]; ok {
+			var attrs = p.(map[string]interface{})["attributes"].(map[string]interface{})
+			for pn, pt := range attrs {
+				att, err := a.AnalyzeAttribute(pn, pn, pt.(map[string]interface{}))
+				if err != nil {
+					return nil, fmt.Errorf("Failed to compute type of param %s: %s", pn, err.Error())
 				}
+				payloadParamNames = append(payloadParamNames, pn)
+				params = append(params, att)
+				leafParams = append(leafParams, extractLeafParams(att)...)
 			}
 		}
 

@@ -49,6 +49,12 @@ func (a *ApiAnalyzer) AnalyzeAttribute(name, query string, attr map[string]inter
 		return nil, err
 	}
 	param.Type = dataType
+	switch dataType.(type) {
+	case *gen.ArrayDataType:
+		param.QueryName += "[]"
+	case *gen.EnumerableDataType:
+		param.QueryName += "[*]"
+	}
 
 	return &param, nil
 }
