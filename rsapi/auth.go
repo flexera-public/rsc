@@ -1,4 +1,4 @@
-package rsapi15
+package rsapi
 
 import (
 	"bytes"

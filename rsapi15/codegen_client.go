@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 25, 2015 at 12:42pm (PST)
+// Feb 25, 2015 at 5:09pm (PST)
 // Command:
 // $ ./api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
@@ -18,10 +18,11 @@ import (
 	"time"
 
 	"github.com/rightscale/rsc/metadata"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // Helper function that merges optional parameters into payload
-func mergeOptionals(params, options ApiParams) ApiParams {
+func mergeOptionals(params, options rsapi.ApiParams) rsapi.ApiParams {
 	for name, value := range options {
 		params[name] = value
 	}
@@ -72,11 +73,11 @@ type Account struct {
 // Account resource locator, exposes resource actions.
 type AccountLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Account resource locator factory
-func (api *Api) AccountLocator(href string) *AccountLocator {
+func (api *Api15) AccountLocator(href string) *AccountLocator {
 	return &AccountLocator{UrlResolver(href), api}
 }
 
@@ -121,11 +122,11 @@ type AccountGroup struct {
 // AccountGroup resource locator, exposes resource actions.
 type AccountGroupLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // AccountGroup resource locator factory
-func (api *Api) AccountGroupLocator(href string) *AccountGroupLocator {
+func (api *Api15) AccountGroupLocator(href string) *AccountGroupLocator {
 	return &AccountGroupLocator{UrlResolver(href), api}
 }
 
@@ -136,9 +137,9 @@ func (api *Api) AccountGroupLocator(href string) *AccountGroupLocator {
 // -- Optional parameters:
 // filter
 // view
-func (loc *AccountGroupLocator) Index(options ApiParams) ([]*AccountGroup, error) {
+func (loc *AccountGroupLocator) Index(options rsapi.ApiParams) ([]*AccountGroup, error) {
 	var res []*AccountGroup
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("AccountGroups", "index")
 	if err != nil {
 		return res, err
@@ -160,9 +161,9 @@ func (loc *AccountGroupLocator) Index(options ApiParams) ([]*AccountGroup, error
 // Show information about a single AccountGroup.
 // -- Optional parameters:
 // view
-func (loc *AccountGroupLocator) Show(options ApiParams) (*AccountGroup, error) {
+func (loc *AccountGroupLocator) Show(options rsapi.ApiParams) (*AccountGroup, error) {
 	var res *AccountGroup
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("AccountGroups", "show")
 	if err != nil {
 		return res, err
@@ -198,11 +199,11 @@ type Alert struct {
 // Alert resource locator, exposes resource actions.
 type AlertLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Alert resource locator factory
-func (api *Api) AlertLocator(href string) *AlertLocator {
+func (api *Api15) AlertLocator(href string) *AlertLocator {
 	return &AlertLocator{UrlResolver(href), api}
 }
 
@@ -255,9 +256,9 @@ func (loc *AlertLocator) Enable() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *AlertLocator) Index(options ApiParams) ([]*Alert, error) {
+func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
 	var res []*Alert
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Alerts", "index")
 	if err != nil {
 		return res, err
@@ -287,7 +288,7 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	if duration == "" {
 		return res, fmt.Errorf("duration is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"duration": duration,
 	}
 	var uri, err = loc.Url("Alerts", "quench")
@@ -315,9 +316,9 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 // Shows the attributes of a specified Alert.
 // -- Optional parameters:
 // view
-func (loc *AlertLocator) Show(options ApiParams) (*Alert, error) {
+func (loc *AlertLocator) Show(options rsapi.ApiParams) (*Alert, error) {
 	var res *Alert
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Alerts", "show")
 	if err != nil {
 		return res, err
@@ -361,11 +362,11 @@ type AlertSpec struct {
 // AlertSpec resource locator, exposes resource actions.
 type AlertSpecLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // AlertSpec resource locator factory
-func (api *Api) AlertSpecLocator(href string) *AlertSpecLocator {
+func (api *Api15) AlertSpecLocator(href string) *AlertSpecLocator {
 	return &AlertSpecLocator{UrlResolver(href), api}
 }
 
@@ -381,7 +382,7 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 	if alertSpec == nil {
 		return res, fmt.Errorf("alertSpec is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"alert_spec": alertSpec,
 	}
 	var uri, err = loc.Url("AlertSpecs", "create")
@@ -427,9 +428,9 @@ func (loc *AlertSpecLocator) Destroy() error {
 // filter
 // view
 // with_inherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
-func (loc *AlertSpecLocator) Index(options ApiParams) ([]*AlertSpec, error) {
+func (loc *AlertSpecLocator) Index(options rsapi.ApiParams) ([]*AlertSpec, error) {
 	var res []*AlertSpec
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("AlertSpecs", "index")
 	if err != nil {
 		return res, err
@@ -454,9 +455,9 @@ func (loc *AlertSpecLocator) Index(options ApiParams) ([]*AlertSpec, error) {
 // No description provided for show.
 // -- Optional parameters:
 // view
-func (loc *AlertSpecLocator) Show(options ApiParams) (*AlertSpec, error) {
+func (loc *AlertSpecLocator) Show(options rsapi.ApiParams) (*AlertSpec, error) {
 	var res *AlertSpec
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("AlertSpecs", "show")
 	if err != nil {
 		return res, err
@@ -483,7 +484,7 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	if alertSpec == nil {
 		return fmt.Errorf("alertSpec is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"alert_spec": alertSpec,
 	}
 	var uri, err = loc.Url("AlertSpecs", "update")
@@ -514,11 +515,11 @@ type AuditEntry struct {
 // AuditEntry resource locator, exposes resource actions.
 type AuditEntryLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // AuditEntry resource locator factory
-func (api *Api) AuditEntryLocator(href string) *AuditEntryLocator {
+func (api *Api15) AuditEntryLocator(href string) *AuditEntryLocator {
 	return &AuditEntryLocator{UrlResolver(href), api}
 }
 
@@ -535,8 +536,8 @@ func (api *Api) AuditEntryLocator(href string) *AuditEntryLocator {
 // notify: The event notification category. Defaults to 'None'.
 // offset: The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.
 // summary: The updated summary for the audit entry, maximum length is 255 characters.
-func (loc *AuditEntryLocator) Append(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *AuditEntryLocator) Append(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("AuditEntries", "append")
 	if err != nil {
 		return err
@@ -553,12 +554,12 @@ func (loc *AuditEntryLocator) Append(options ApiParams) error {
 // -- Optional parameters:
 // notify: The event notification category. Defaults to 'None'.
 // user_email: The email of the user (who created/triggered the audit entry). Only usable with instance role.
-func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options ApiParams) (*AuditEntryLocator, error) {
+func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options rsapi.ApiParams) (*AuditEntryLocator, error) {
 	var res *AuditEntryLocator
 	if auditEntry == nil {
 		return res, fmt.Errorf("auditEntry is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
 	var uri, err = loc.Url("AuditEntries", "create")
@@ -612,7 +613,7 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 // -- Optional parameters:
 // filter
 // view
-func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate string, options ApiParams) ([]*AuditEntry, error) {
+func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate string, options rsapi.ApiParams) ([]*AuditEntry, error) {
 	var res []*AuditEntry
 	if endDate == "" {
 		return res, fmt.Errorf("endDate is required")
@@ -623,7 +624,7 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 	if startDate == "" {
 		return res, fmt.Errorf("startDate is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"end_date":   endDate,
 		"limit":      limit,
 		"start_date": startDate,
@@ -649,9 +650,9 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 // Lists the attributes of a given audit entry.
 // -- Optional parameters:
 // view
-func (loc *AuditEntryLocator) Show(options ApiParams) (*AuditEntry, error) {
+func (loc *AuditEntryLocator) Show(options rsapi.ApiParams) (*AuditEntry, error) {
 	var res *AuditEntry
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("AuditEntries", "show")
 	if err != nil {
 		return res, err
@@ -673,11 +674,11 @@ func (loc *AuditEntryLocator) Show(options ApiParams) (*AuditEntry, error) {
 // Updates the summary of a given AuditEntry.
 // -- Optional parameters:
 // notify: The event notification category. Defaults to 'None'.
-func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options ApiParams) error {
+func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options rsapi.ApiParams) error {
 	if auditEntry == nil {
 		return fmt.Errorf("auditEntry is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"audit_entry": auditEntry,
 	}, options)
 	var uri, err = loc.Url("AuditEntries", "update")
@@ -712,11 +713,11 @@ type Backup struct {
 // Backup resource locator, exposes resource actions.
 type BackupLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Backup resource locator factory
-func (api *Api) BackupLocator(href string) *BackupLocator {
+func (api *Api15) BackupLocator(href string) *BackupLocator {
 	return &BackupLocator{UrlResolver(href), api}
 }
 
@@ -754,14 +755,14 @@ func (api *Api) BackupLocator(href string) *BackupLocator {
 // monthlies: The number of monthly backups(the latest one in each month) that should be kept.
 // weeklies: The number of weekly backups(the latest one in each week) that should be kept.
 // yearlies: The number of yearly backups(the latest one in each year) that should be kept.
-func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options ApiParams) error {
+func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi.ApiParams) error {
 	if keepLast == "" {
 		return fmt.Errorf("keepLast is required")
 	}
 	if lineage == "" {
 		return fmt.Errorf("lineage is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"keep_last": keepLast,
 		"lineage":   lineage,
 	}, options)
@@ -784,7 +785,7 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	if backup == nil {
 		return res, fmt.Errorf("backup is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"backup": backup,
 	}
 	var uri, err = loc.Url("Backups", "create")
@@ -829,12 +830,12 @@ func (loc *BackupLocator) Destroy() error {
 // lineage: Backups belonging to this lineage.
 // -- Optional parameters:
 // filter
-func (loc *BackupLocator) Index(lineage string, options ApiParams) ([]*Backup, error) {
+func (loc *BackupLocator) Index(lineage string, options rsapi.ApiParams) ([]*Backup, error) {
 	var res []*Backup
 	if lineage == "" {
 		return res, fmt.Errorf("lineage is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"lineage": lineage,
 	}, options)
 	var uri, err = loc.Url("Backups", "index")
@@ -863,11 +864,11 @@ func (loc *BackupLocator) Index(lineage string, options ApiParams) ([]*Backup, e
 // instanceHref: The instance href that the backup will be restored to.
 // -- Optional parameters:
 // backup
-func (loc *BackupLocator) Restore(instanceHref string, options ApiParams) error {
+func (loc *BackupLocator) Restore(instanceHref string, options rsapi.ApiParams) error {
 	if instanceHref == "" {
 		return fmt.Errorf("instanceHref is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"instance_href": instanceHref,
 	}, options)
 	var uri, err = loc.Url("Backups", "restore")
@@ -909,7 +910,7 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 	if backup == nil {
 		return fmt.Errorf("backup is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"backup": backup,
 	}
 	var uri, err = loc.Url("Backups", "update")
@@ -930,11 +931,11 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 // ChildAccount resource locator, exposes resource actions.
 type ChildAccountLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // ChildAccount resource locator factory
-func (api *Api) ChildAccountLocator(href string) *ChildAccountLocator {
+func (api *Api15) ChildAccountLocator(href string) *ChildAccountLocator {
 	return &ChildAccountLocator{UrlResolver(href), api}
 }
 
@@ -950,7 +951,7 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 	if childAccount == nil {
 		return res, fmt.Errorf("childAccount is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"child_account": childAccount,
 	}
 	var uri, err = loc.Url("ChildAccounts", "create")
@@ -973,9 +974,9 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 // Lists the enterprise ChildAccounts available for this Account.
 // -- Optional parameters:
 // filter
-func (loc *ChildAccountLocator) Index(options ApiParams) ([]*Account, error) {
+func (loc *ChildAccountLocator) Index(options rsapi.ApiParams) ([]*Account, error) {
 	var res []*Account
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("ChildAccounts", "index")
 	if err != nil {
 		return res, err
@@ -1000,7 +1001,7 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	if childAccount == nil {
 		return fmt.Errorf("childAccount is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"child_account": childAccount,
 	}
 	var uri, err = loc.Url("ChildAccounts", "update")
@@ -1031,11 +1032,11 @@ type Cloud struct {
 // Cloud resource locator, exposes resource actions.
 type CloudLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Cloud resource locator factory
-func (api *Api) CloudLocator(href string) *CloudLocator {
+func (api *Api15) CloudLocator(href string) *CloudLocator {
 	return &CloudLocator{UrlResolver(href), api}
 }
 
@@ -1046,9 +1047,9 @@ func (api *Api) CloudLocator(href string) *CloudLocator {
 // -- Optional parameters:
 // filter
 // view
-func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error) {
+func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error) {
 	var res []*Cloud
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Clouds", "index")
 	if err != nil {
 		return res, err
@@ -1070,9 +1071,9 @@ func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error) {
 // Show information about a single cloud.
 // -- Optional parameters:
 // view
-func (loc *CloudLocator) Show(options ApiParams) (*Cloud, error) {
+func (loc *CloudLocator) Show(options rsapi.ApiParams) (*Cloud, error) {
 	var res *Cloud
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Clouds", "show")
 	if err != nil {
 		return res, err
@@ -1104,11 +1105,11 @@ type CloudAccount struct {
 // CloudAccount resource locator, exposes resource actions.
 type CloudAccountLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // CloudAccount resource locator factory
-func (api *Api) CloudAccountLocator(href string) *CloudAccountLocator {
+func (api *Api15) CloudAccountLocator(href string) *CloudAccountLocator {
 	return &CloudAccountLocator{UrlResolver(href), api}
 }
 
@@ -1123,7 +1124,7 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 	if cloudAccount == nil {
 		return res, fmt.Errorf("cloudAccount is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"cloud_account": cloudAccount,
 	}
 	var uri, err = loc.Url("CloudAccounts", "create")
@@ -1224,11 +1225,11 @@ type Cookbook struct {
 // Cookbook resource locator, exposes resource actions.
 type CookbookLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Cookbook resource locator factory
-func (api *Api) CookbookLocator(href string) *CookbookLocator {
+func (api *Api15) CookbookLocator(href string) *CookbookLocator {
 	return &CookbookLocator{UrlResolver(href), api}
 }
 
@@ -1256,7 +1257,7 @@ func (loc *CookbookLocator) Follow(value string) error {
 	if value == "" {
 		return fmt.Errorf("value is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"value": value,
 	}
 	var uri, err = loc.Url("Cookbooks", "follow")
@@ -1277,7 +1278,7 @@ func (loc *CookbookLocator) Freeze(value string) error {
 	if value == "" {
 		return fmt.Errorf("value is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"value": value,
 	}
 	var uri, err = loc.Url("Cookbooks", "freeze")
@@ -1297,9 +1298,9 @@ func (loc *CookbookLocator) Freeze(value string) error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *CookbookLocator) Index(options ApiParams) ([]*Cookbook, error) {
+func (loc *CookbookLocator) Index(options rsapi.ApiParams) ([]*Cookbook, error) {
 	var res []*Cookbook
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Cookbooks", "index")
 	if err != nil {
 		return res, err
@@ -1324,7 +1325,7 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 	if value == "" {
 		return fmt.Errorf("value is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"value": value,
 	}
 	var uri, err = loc.Url("Cookbooks", "obsolete")
@@ -1343,9 +1344,9 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 // The extended_designer view is only available to accounts with the designer permission.
 // -- Optional parameters:
 // view
-func (loc *CookbookLocator) Show(options ApiParams) (*Cookbook, error) {
+func (loc *CookbookLocator) Show(options rsapi.ApiParams) (*Cookbook, error) {
 	var res *Cookbook
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Cookbooks", "show")
 	if err != nil {
 		return res, err
@@ -1378,11 +1379,11 @@ type CookbookAttachment struct {
 // CookbookAttachment resource locator, exposes resource actions.
 type CookbookAttachmentLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // CookbookAttachment resource locator factory
-func (api *Api) CookbookAttachmentLocator(href string) *CookbookAttachmentLocator {
+func (api *Api15) CookbookAttachmentLocator(href string) *CookbookAttachmentLocator {
 	return &CookbookAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -1394,9 +1395,9 @@ func (api *Api) CookbookAttachmentLocator(href string) *CookbookAttachmentLocato
 // Attach a cookbook to a given resource.
 // -- Optional parameters:
 // cookbook_attachment
-func (loc *CookbookAttachmentLocator) Create(options ApiParams) (*CookbookAttachmentLocator, error) {
+func (loc *CookbookAttachmentLocator) Create(options rsapi.ApiParams) (*CookbookAttachmentLocator, error) {
 	var res *CookbookAttachmentLocator
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("CookbookAttachments", "create")
 	if err != nil {
 		return res, err
@@ -1436,9 +1437,9 @@ func (loc *CookbookAttachmentLocator) Destroy() error {
 // Lists Cookbook Attachments.
 // -- Optional parameters:
 // view
-func (loc *CookbookAttachmentLocator) Index(options ApiParams) ([]*CookbookAttachment, error) {
+func (loc *CookbookAttachmentLocator) Index(options rsapi.ApiParams) ([]*CookbookAttachment, error) {
 	var res []*CookbookAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("CookbookAttachments", "index")
 	if err != nil {
 		return res, err
@@ -1463,7 +1464,7 @@ func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookA
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
 	var uri, err = loc.Url("CookbookAttachments", "multi_attach")
@@ -1484,7 +1485,7 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
 	var uri, err = loc.Url("CookbookAttachments", "multi_detach")
@@ -1504,9 +1505,9 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 // Displays information about a single cookbook attachment to a ServerTemplate.
 // -- Optional parameters:
 // view
-func (loc *CookbookAttachmentLocator) Show(options ApiParams) (*CookbookAttachment, error) {
+func (loc *CookbookAttachmentLocator) Show(options rsapi.ApiParams) (*CookbookAttachment, error) {
 	var res *CookbookAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("CookbookAttachments", "show")
 	if err != nil {
 		return res, err
@@ -1546,11 +1547,11 @@ type Credential struct {
 // Credential resource locator, exposes resource actions.
 type CredentialLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Credential resource locator factory
-func (api *Api) CredentialLocator(href string) *CredentialLocator {
+func (api *Api15) CredentialLocator(href string) *CredentialLocator {
 	return &CredentialLocator{UrlResolver(href), api}
 }
 
@@ -1563,7 +1564,7 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 	if credential == nil {
 		return res, fmt.Errorf("credential is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"credential": credential,
 	}
 	var uri, err = loc.Url("Credentials", "create")
@@ -1602,9 +1603,9 @@ func (loc *CredentialLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *CredentialLocator) Index(options ApiParams) ([]*Credential, error) {
+func (loc *CredentialLocator) Index(options rsapi.ApiParams) ([]*Credential, error) {
 	var res []*Credential
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Credentials", "index")
 	if err != nil {
 		return res, err
@@ -1626,9 +1627,9 @@ func (loc *CredentialLocator) Index(options ApiParams) ([]*Credential, error) {
 // Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.
 // -- Optional parameters:
 // view
-func (loc *CredentialLocator) Show(options ApiParams) (*Credential, error) {
+func (loc *CredentialLocator) Show(options rsapi.ApiParams) (*Credential, error) {
 	var res *Credential
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Credentials", "show")
 	if err != nil {
 		return res, err
@@ -1652,7 +1653,7 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	if credential == nil {
 		return fmt.Errorf("credential is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"credential": credential,
 	}
 	var uri, err = loc.Url("Credentials", "update")
@@ -1685,11 +1686,11 @@ type Datacenter struct {
 // Datacenter resource locator, exposes resource actions.
 type DatacenterLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Datacenter resource locator factory
-func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
+func (api *Api15) DatacenterLocator(href string) *DatacenterLocator {
 	return &DatacenterLocator{UrlResolver(href), api}
 }
 
@@ -1700,9 +1701,9 @@ func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
 // -- Optional parameters:
 // filter
 // view
-func (loc *DatacenterLocator) Index(options ApiParams) ([]*Datacenter, error) {
+func (loc *DatacenterLocator) Index(options rsapi.ApiParams) ([]*Datacenter, error) {
 	var res []*Datacenter
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Datacenters", "index")
 	if err != nil {
 		return res, err
@@ -1724,9 +1725,9 @@ func (loc *DatacenterLocator) Index(options ApiParams) ([]*Datacenter, error) {
 // Displays information about a single Datacenter.
 // -- Optional parameters:
 // view
-func (loc *DatacenterLocator) Show(options ApiParams) (*Datacenter, error) {
+func (loc *DatacenterLocator) Show(options rsapi.ApiParams) (*Datacenter, error) {
 	var res *Datacenter
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Datacenters", "show")
 	if err != nil {
 		return res, err
@@ -1762,11 +1763,11 @@ type Deployment struct {
 // Deployment resource locator, exposes resource actions.
 type DeploymentLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Deployment resource locator factory
-func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
+func (api *Api15) DeploymentLocator(href string) *DeploymentLocator {
 	return &DeploymentLocator{UrlResolver(href), api}
 }
 
@@ -1776,8 +1777,8 @@ func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
 // Clones a given deployment.
 // -- Optional parameters:
 // deployment
-func (loc *DeploymentLocator) Clone(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *DeploymentLocator) Clone(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Deployments", "clone")
 	if err != nil {
 		return err
@@ -1796,7 +1797,7 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 	if deployment == nil {
 		return res, fmt.Errorf("deployment is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"deployment": deployment,
 	}
 	var uri, err = loc.Url("Deployments", "create")
@@ -1838,9 +1839,9 @@ func (loc *DeploymentLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *DeploymentLocator) Index(options ApiParams) ([]*Deployment, error) {
+func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, error) {
 	var res []*Deployment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Deployments", "index")
 	if err != nil {
 		return res, err
@@ -1897,9 +1898,9 @@ func (loc *DeploymentLocator) Servers() error {
 // details please see Inputs#index.)
 // -- Optional parameters:
 // view
-func (loc *DeploymentLocator) Show(options ApiParams) (*Deployment, error) {
+func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error) {
 	var res *Deployment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Deployments", "show")
 	if err != nil {
 		return res, err
@@ -1938,7 +1939,7 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 	if deployment == nil {
 		return fmt.Errorf("deployment is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"deployment": deployment,
 	}
 	var uri, err = loc.Url("Deployments", "update")
@@ -1959,11 +1960,11 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 // HealthCheck resource locator, exposes resource actions.
 type HealthCheckLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // HealthCheck resource locator factory
-func (api *Api) HealthCheckLocator(href string) *HealthCheckLocator {
+func (api *Api15) HealthCheckLocator(href string) *HealthCheckLocator {
 	return &HealthCheckLocator{UrlResolver(href), api}
 }
 
@@ -2010,11 +2011,11 @@ type IdentityProvider struct {
 // IdentityProvider resource locator, exposes resource actions.
 type IdentityProviderLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // IdentityProvider resource locator factory
-func (api *Api) IdentityProviderLocator(href string) *IdentityProviderLocator {
+func (api *Api15) IdentityProviderLocator(href string) *IdentityProviderLocator {
 	return &IdentityProviderLocator{UrlResolver(href), api}
 }
 
@@ -2025,9 +2026,9 @@ func (api *Api) IdentityProviderLocator(href string) *IdentityProviderLocator {
 // -- Optional parameters:
 // filter
 // view
-func (loc *IdentityProviderLocator) Index(options ApiParams) ([]*IdentityProvider, error) {
+func (loc *IdentityProviderLocator) Index(options rsapi.ApiParams) ([]*IdentityProvider, error) {
 	var res []*IdentityProvider
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("IdentityProviders", "index")
 	if err != nil {
 		return res, err
@@ -2049,9 +2050,9 @@ func (loc *IdentityProviderLocator) Index(options ApiParams) ([]*IdentityProvide
 // Show the specified identity provider, if associated with this enterprise account.
 // -- Optional parameters:
 // view
-func (loc *IdentityProviderLocator) Show(options ApiParams) (*IdentityProvider, error) {
+func (loc *IdentityProviderLocator) Show(options rsapi.ApiParams) (*IdentityProvider, error) {
 	var res *IdentityProvider
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("IdentityProviders", "show")
 	if err != nil {
 		return res, err
@@ -2092,11 +2093,11 @@ type Image struct {
 // Image resource locator, exposes resource actions.
 type ImageLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Image resource locator factory
-func (api *Api) ImageLocator(href string) *ImageLocator {
+func (api *Api15) ImageLocator(href string) *ImageLocator {
 	return &ImageLocator{UrlResolver(href), api}
 }
 
@@ -2107,9 +2108,9 @@ func (api *Api) ImageLocator(href string) *ImageLocator {
 // -- Optional parameters:
 // filter
 // view
-func (loc *ImageLocator) Index(options ApiParams) ([]*Image, error) {
+func (loc *ImageLocator) Index(options rsapi.ApiParams) ([]*Image, error) {
 	var res []*Image
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Images", "index")
 	if err != nil {
 		return res, err
@@ -2131,9 +2132,9 @@ func (loc *ImageLocator) Index(options ApiParams) ([]*Image, error) {
 // Shows information about a single Image.
 // -- Optional parameters:
 // view
-func (loc *ImageLocator) Show(options ApiParams) (*Image, error) {
+func (loc *ImageLocator) Show(options rsapi.ApiParams) (*Image, error) {
 	var res *Image
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Images", "show")
 	if err != nil {
 		return res, err
@@ -2167,11 +2168,11 @@ type Input struct {
 // Input resource locator, exposes resource actions.
 type InputLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Input resource locator factory
-func (api *Api) InputLocator(href string) *InputLocator {
+func (api *Api15) InputLocator(href string) *InputLocator {
 	return &InputLocator{UrlResolver(href), api}
 }
 
@@ -2183,9 +2184,9 @@ func (api *Api) InputLocator(href string) *InputLocator {
 // Retrieves the full list of existing inputs of the specified resource.
 // -- Optional parameters:
 // view
-func (loc *InputLocator) Index(options ApiParams) ([]*Input, error) {
+func (loc *InputLocator) Index(options rsapi.ApiParams) ([]*Input, error) {
 	var res []*Input
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Inputs", "index")
 	if err != nil {
 		return res, err
@@ -2273,7 +2274,7 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]string) error {
 	if len(inputs) == 0 {
 		return fmt.Errorf("inputs is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"inputs": inputs,
 	}
 	var uri, err = loc.Url("Inputs", "multi_update")
@@ -2329,11 +2330,11 @@ type Instance struct {
 // Instance resource locator, exposes resource actions.
 type InstanceLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Instance resource locator factory
-func (api *Api) InstanceLocator(href string) *InstanceLocator {
+func (api *Api15) InstanceLocator(href string) *InstanceLocator {
 	return &InstanceLocator{UrlResolver(href), api}
 }
 
@@ -2346,7 +2347,7 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 	if instance == nil {
 		return res, fmt.Errorf("instance is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"instance": instance,
 	}
 	var uri, err = loc.Url("Instances", "create")
@@ -2381,9 +2382,9 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 // -- Optional parameters:
 // filter
 // view
-func (loc *InstanceLocator) Index(options ApiParams) ([]*Instance, error) {
+func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) {
 	var res []*Instance
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Instances", "index")
 	if err != nil {
 		return res, err
@@ -2409,8 +2410,8 @@ func (loc *InstanceLocator) Index(options ApiParams) ([]*Instance, error) {
 // -- Optional parameters:
 // api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
 // inputs
-func (loc *InstanceLocator) Launch(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Instances", "launch")
 	if err != nil {
 		return err
@@ -2448,8 +2449,8 @@ func (loc *InstanceLocator) Lock() error {
 // inputs
 // recipe_name: The name of the recipe to be run.
 // right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
-func (loc *InstanceLocator) MultiRunExecutable(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *InstanceLocator) MultiRunExecutable(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Instances", "multi_run_executable")
 	if err != nil {
 		return err
@@ -2468,8 +2469,8 @@ func (loc *InstanceLocator) MultiRunExecutable(options ApiParams) error {
 // -- Optional parameters:
 // filter
 // terminate_all: Specifies the ability to terminate all instances.
-func (loc *InstanceLocator) MultiTerminate(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Instances", "multi_terminate")
 	if err != nil {
 		return err
@@ -2508,8 +2509,8 @@ func (loc *InstanceLocator) Reboot() error {
 // inputs
 // recipe_name: The name of the recipe to run.
 // right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
-func (loc *InstanceLocator) RunExecutable(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *InstanceLocator) RunExecutable(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Instances", "run_executable")
 	if err != nil {
 		return err
@@ -2532,7 +2533,7 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 	if timeframe == "" {
 		return fmt.Errorf("timeframe is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
@@ -2553,9 +2554,9 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 // details please see Inputs#index.)
 // -- Optional parameters:
 // view
-func (loc *InstanceLocator) Show(options ApiParams) (*Instance, error) {
+func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 	var res *Instance
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Instances", "show")
 	if err != nil {
 		return res, err
@@ -2648,7 +2649,7 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	if instance == nil {
 		return fmt.Errorf("instance is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"instance": instance,
 	}
 	var uri, err = loc.Url("Instances", "update")
@@ -2687,11 +2688,11 @@ type InstanceCustomLodgement struct {
 // InstanceCustomLodgement resource locator, exposes resource actions.
 type InstanceCustomLodgementLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // InstanceCustomLodgement resource locator factory
-func (api *Api) InstanceCustomLodgementLocator(href string) *InstanceCustomLodgementLocator {
+func (api *Api15) InstanceCustomLodgementLocator(href string) *InstanceCustomLodgementLocator {
 	return &InstanceCustomLodgementLocator{UrlResolver(href), api}
 }
 
@@ -2709,7 +2710,7 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 	if timeframe == "" {
 		return res, fmt.Errorf("timeframe is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
@@ -2748,9 +2749,9 @@ func (loc *InstanceCustomLodgementLocator) Destroy() error {
 // List InstanceCustomLodgements of a given cloud and instance.
 // -- Optional parameters:
 // view
-func (loc *InstanceCustomLodgementLocator) Index(options ApiParams) ([]*InstanceCustomLodgement, error) {
+func (loc *InstanceCustomLodgementLocator) Index(options rsapi.ApiParams) ([]*InstanceCustomLodgement, error) {
 	var res []*InstanceCustomLodgement
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("InstanceCustomLodgements", "index")
 	if err != nil {
 		return res, err
@@ -2797,7 +2798,7 @@ func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 	if len(quantity) == 0 {
 		return fmt.Errorf("quantity is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"quantity": quantity,
 	}
 	var uri, err = loc.Url("InstanceCustomLodgements", "update")
@@ -2832,11 +2833,11 @@ type InstanceType struct {
 // InstanceType resource locator, exposes resource actions.
 type InstanceTypeLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // InstanceType resource locator factory
-func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
+func (api *Api15) InstanceTypeLocator(href string) *InstanceTypeLocator {
 	return &InstanceTypeLocator{UrlResolver(href), api}
 }
 
@@ -2847,9 +2848,9 @@ func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
 // -- Optional parameters:
 // filter
 // view
-func (loc *InstanceTypeLocator) Index(options ApiParams) ([]*InstanceType, error) {
+func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) ([]*InstanceType, error) {
 	var res []*InstanceType
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("InstanceTypes", "index")
 	if err != nil {
 		return res, err
@@ -2871,9 +2872,9 @@ func (loc *InstanceTypeLocator) Index(options ApiParams) ([]*InstanceType, error
 // Displays information about a single Instance type.
 // -- Optional parameters:
 // view
-func (loc *InstanceTypeLocator) Show(options ApiParams) (*InstanceType, error) {
+func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) (*InstanceType, error) {
 	var res *InstanceType
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("InstanceTypes", "show")
 	if err != nil {
 		return res, err
@@ -2908,11 +2909,11 @@ type IpAddress struct {
 // IpAddress resource locator, exposes resource actions.
 type IpAddressLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // IpAddress resource locator factory
-func (api *Api) IpAddressLocator(href string) *IpAddressLocator {
+func (api *Api15) IpAddressLocator(href string) *IpAddressLocator {
 	return &IpAddressLocator{UrlResolver(href), api}
 }
 
@@ -2925,7 +2926,7 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 	if ipAddress == nil {
 		return res, fmt.Errorf("ipAddress is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"ip_address": ipAddress,
 	}
 	var uri, err = loc.Url("IpAddresses", "create")
@@ -2963,9 +2964,9 @@ func (loc *IpAddressLocator) Destroy() error {
 // Lists the IpAddresses available to this account.
 // -- Optional parameters:
 // filter
-func (loc *IpAddressLocator) Index(options ApiParams) ([]*IpAddress, error) {
+func (loc *IpAddressLocator) Index(options rsapi.ApiParams) ([]*IpAddress, error) {
 	var res []*IpAddress
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("IpAddresses", "index")
 	if err != nil {
 		return res, err
@@ -3011,7 +3012,7 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	if ipAddress == nil {
 		return fmt.Errorf("ipAddress is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"ip_address": ipAddress,
 	}
 	var uri, err = loc.Url("IpAddresses", "update")
@@ -3044,11 +3045,11 @@ type IpAddressBinding struct {
 // IpAddressBinding resource locator, exposes resource actions.
 type IpAddressBindingLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // IpAddressBinding resource locator factory
-func (api *Api) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
+func (api *Api15) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
 	return &IpAddressBindingLocator{UrlResolver(href), api}
 }
 
@@ -3067,7 +3068,7 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 	if ipAddressBinding == nil {
 		return res, fmt.Errorf("ipAddressBinding is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"ip_address_binding": ipAddressBinding,
 	}
 	var uri, err = loc.Url("IpAddressBindings", "create")
@@ -3107,9 +3108,9 @@ func (loc *IpAddressBindingLocator) Destroy() error {
 // Lists the ip address bindings available to this account.
 // -- Optional parameters:
 // filter
-func (loc *IpAddressBindingLocator) Index(options ApiParams) ([]*IpAddressBinding, error) {
+func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) ([]*IpAddressBinding, error) {
 	var res []*IpAddressBinding
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("IpAddressBindings", "index")
 	if err != nil {
 		return res, err
@@ -3166,11 +3167,11 @@ type MonitoringMetric struct {
 // MonitoringMetric resource locator, exposes resource actions.
 type MonitoringMetricLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // MonitoringMetric resource locator factory
-func (api *Api) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
+func (api *Api15) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
 	return &MonitoringMetricLocator{UrlResolver(href), api}
 }
 
@@ -3191,7 +3192,7 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 	if start == "" {
 		return res, fmt.Errorf("start is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"end":   end,
 		"start": start,
 	}
@@ -3221,9 +3222,9 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 // size: The size of the graph to be generated. Default is 'small'.
 // title: The title of the graph.
 // tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
-func (loc *MonitoringMetricLocator) Index(options ApiParams) ([]*MonitoringMetric, error) {
+func (loc *MonitoringMetricLocator) Index(options rsapi.ApiParams) ([]*MonitoringMetric, error) {
 	var res []*MonitoringMetric
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("MonitoringMetrics", "index")
 	if err != nil {
 		return res, err
@@ -3249,9 +3250,9 @@ func (loc *MonitoringMetricLocator) Index(options ApiParams) ([]*MonitoringMetri
 // size: The size of the graph to be generated. Default is 'small'.
 // title: The title of the graph.
 // tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.
-func (loc *MonitoringMetricLocator) Show(options ApiParams) (*MonitoringMetric, error) {
+func (loc *MonitoringMetricLocator) Show(options rsapi.ApiParams) (*MonitoringMetric, error) {
 	var res *MonitoringMetric
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("MonitoringMetrics", "show")
 	if err != nil {
 		return res, err
@@ -3287,11 +3288,11 @@ type MultiCloudImage struct {
 // MultiCloudImage resource locator, exposes resource actions.
 type MultiCloudImageLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // MultiCloudImage resource locator factory
-func (api *Api) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
+func (api *Api15) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 	return &MultiCloudImageLocator{UrlResolver(href), api}
 }
 
@@ -3303,7 +3304,7 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 	if multiCloudImage == nil {
 		return fmt.Errorf("multiCloudImage is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	var uri, err = loc.Url("MultiCloudImages", "clone")
@@ -3324,7 +3325,7 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	if commitMessage == "" {
 		return fmt.Errorf("commitMessage is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"commit_message": commitMessage,
 	}
 	var uri, err = loc.Url("MultiCloudImages", "commit")
@@ -3346,7 +3347,7 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 	if multiCloudImage == nil {
 		return res, fmt.Errorf("multiCloudImage is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	var uri, err = loc.Url("MultiCloudImages", "create")
@@ -3386,9 +3387,9 @@ func (loc *MultiCloudImageLocator) Destroy() error {
 // Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.
 // -- Optional parameters:
 // filter
-func (loc *MultiCloudImageLocator) Index(options ApiParams) ([]*MultiCloudImage, error) {
+func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*MultiCloudImage, error) {
 	var res []*MultiCloudImage
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("MultiCloudImages", "index")
 	if err != nil {
 		return res, err
@@ -3437,7 +3438,7 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	if multiCloudImage == nil {
 		return fmt.Errorf("multiCloudImage is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
 	var uri, err = loc.Url("MultiCloudImages", "update")
@@ -3465,11 +3466,11 @@ type MultiCloudImageSetting struct {
 // MultiCloudImageSetting resource locator, exposes resource actions.
 type MultiCloudImageSettingLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // MultiCloudImageSetting resource locator factory
-func (api *Api) MultiCloudImageSettingLocator(href string) *MultiCloudImageSettingLocator {
+func (api *Api15) MultiCloudImageSettingLocator(href string) *MultiCloudImageSettingLocator {
 	return &MultiCloudImageSettingLocator{UrlResolver(href), api}
 }
 
@@ -3482,7 +3483,7 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 	if multiCloudImageSetting == nil {
 		return res, fmt.Errorf("multiCloudImageSetting is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
 	var uri, err = loc.Url("MultiCloudImageSettings", "create")
@@ -3520,9 +3521,9 @@ func (loc *MultiCloudImageSettingLocator) Destroy() error {
 // Lists the MultiCloudImage settings.
 // -- Optional parameters:
 // filter
-func (loc *MultiCloudImageSettingLocator) Index(options ApiParams) ([]*MultiCloudImageSetting, error) {
+func (loc *MultiCloudImageSettingLocator) Index(options rsapi.ApiParams) ([]*MultiCloudImageSetting, error) {
 	var res []*MultiCloudImageSetting
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("MultiCloudImageSettings", "index")
 	if err != nil {
 		return res, err
@@ -3568,7 +3569,7 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 	if multiCloudImageSetting == nil {
 		return fmt.Errorf("multiCloudImageSetting is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
 	var uri, err = loc.Url("MultiCloudImageSettings", "update")
@@ -3601,11 +3602,11 @@ type Network struct {
 // Network resource locator, exposes resource actions.
 type NetworkLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Network resource locator factory
-func (api *Api) NetworkLocator(href string) *NetworkLocator {
+func (api *Api15) NetworkLocator(href string) *NetworkLocator {
 	return &NetworkLocator{UrlResolver(href), api}
 }
 
@@ -3618,7 +3619,7 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 	if network == nil {
 		return res, fmt.Errorf("network is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network": network,
 	}
 	var uri, err = loc.Url("Networks", "create")
@@ -3656,9 +3657,9 @@ func (loc *NetworkLocator) Destroy() error {
 // Lists networks in this account.
 // -- Optional parameters:
 // filter
-func (loc *NetworkLocator) Index(options ApiParams) ([]*Network, error) {
+func (loc *NetworkLocator) Index(options rsapi.ApiParams) ([]*Network, error) {
 	var res []*Network
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Networks", "index")
 	if err != nil {
 		return res, err
@@ -3704,7 +3705,7 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	if network == nil {
 		return fmt.Errorf("network is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network": network,
 	}
 	var uri, err = loc.Url("Networks", "update")
@@ -3738,11 +3739,11 @@ type NetworkGateway struct {
 // NetworkGateway resource locator, exposes resource actions.
 type NetworkGatewayLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // NetworkGateway resource locator factory
-func (api *Api) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
+func (api *Api15) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
 	return &NetworkGatewayLocator{UrlResolver(href), api}
 }
 
@@ -3755,7 +3756,7 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 	if networkGateway == nil {
 		return res, fmt.Errorf("networkGateway is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network_gateway": networkGateway,
 	}
 	var uri, err = loc.Url("NetworkGateways", "create")
@@ -3793,9 +3794,9 @@ func (loc *NetworkGatewayLocator) Destroy() error {
 // Lists the NetworkGateways available to this account.
 // -- Optional parameters:
 // filter
-func (loc *NetworkGatewayLocator) Index(options ApiParams) ([]*NetworkGateway, error) {
+func (loc *NetworkGatewayLocator) Index(options rsapi.ApiParams) ([]*NetworkGateway, error) {
 	var res []*NetworkGateway
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("NetworkGateways", "index")
 	if err != nil {
 		return res, err
@@ -3841,7 +3842,7 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 	if networkGateway == nil {
 		return fmt.Errorf("networkGateway is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network_gateway": networkGateway,
 	}
 	var uri, err = loc.Url("NetworkGateways", "update")
@@ -3880,11 +3881,11 @@ type NetworkOptionGroup struct {
 // NetworkOptionGroup resource locator, exposes resource actions.
 type NetworkOptionGroupLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // NetworkOptionGroup resource locator factory
-func (api *Api) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLocator {
+func (api *Api15) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLocator {
 	return &NetworkOptionGroupLocator{UrlResolver(href), api}
 }
 
@@ -3897,7 +3898,7 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 	if networkOptionGroup == nil {
 		return res, fmt.Errorf("networkOptionGroup is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
 	var uri, err = loc.Url("NetworkOptionGroups", "create")
@@ -3935,9 +3936,9 @@ func (loc *NetworkOptionGroupLocator) Destroy() error {
 // List NetworkOptionGroups available in this account.
 // -- Optional parameters:
 // filter
-func (loc *NetworkOptionGroupLocator) Index(options ApiParams) ([]*NetworkOptionGroup, error) {
+func (loc *NetworkOptionGroupLocator) Index(options rsapi.ApiParams) ([]*NetworkOptionGroup, error) {
 	var res []*NetworkOptionGroup
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("NetworkOptionGroups", "index")
 	if err != nil {
 		return res, err
@@ -3983,7 +3984,7 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 	if networkOptionGroup == nil {
 		return fmt.Errorf("networkOptionGroup is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
 	var uri, err = loc.Url("NetworkOptionGroups", "update")
@@ -4021,11 +4022,11 @@ type NetworkOptionGroupAttachment struct {
 // NetworkOptionGroupAttachment resource locator, exposes resource actions.
 type NetworkOptionGroupAttachmentLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // NetworkOptionGroupAttachment resource locator factory
-func (api *Api) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptionGroupAttachmentLocator {
+func (api *Api15) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptionGroupAttachmentLocator {
 	return &NetworkOptionGroupAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -4038,7 +4039,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 	if networkOptionGroupAttachment == nil {
 		return res, fmt.Errorf("networkOptionGroupAttachment is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
 	var uri, err = loc.Url("NetworkOptionGroupAttachments", "create")
@@ -4077,9 +4078,9 @@ func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *NetworkOptionGroupAttachmentLocator) Index(options ApiParams) ([]*NetworkOptionGroupAttachment, error) {
+func (loc *NetworkOptionGroupAttachmentLocator) Index(options rsapi.ApiParams) ([]*NetworkOptionGroupAttachment, error) {
 	var res []*NetworkOptionGroupAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("NetworkOptionGroupAttachments", "index")
 	if err != nil {
 		return res, err
@@ -4101,9 +4102,9 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options ApiParams) ([]*Net
 // Show information about a single NetworkOptionGroupAttachment.
 // -- Optional parameters:
 // view
-func (loc *NetworkOptionGroupAttachmentLocator) Show(options ApiParams) (*NetworkOptionGroupAttachment, error) {
+func (loc *NetworkOptionGroupAttachmentLocator) Show(options rsapi.ApiParams) (*NetworkOptionGroupAttachment, error) {
 	var res *NetworkOptionGroupAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("NetworkOptionGroupAttachments", "show")
 	if err != nil {
 		return res, err
@@ -4127,7 +4128,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 	if networkOptionGroupAttachment == nil {
 		return fmt.Errorf("networkOptionGroupAttachment is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
 	var uri, err = loc.Url("NetworkOptionGroupAttachments", "update")
@@ -4172,11 +4173,11 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 // Oauth2 resource locator, exposes resource actions.
 type Oauth2Locator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Oauth2 resource locator factory
-func (api *Api) Oauth2Locator(href string) *Oauth2Locator {
+func (api *Api15) Oauth2Locator(href string) *Oauth2Locator {
 	return &Oauth2Locator{UrlResolver(href), api}
 }
 
@@ -4210,12 +4211,12 @@ func (api *Api) Oauth2Locator(href string) *Oauth2Locator {
 // r_s_version: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
 // refresh_token: The refresh token obtained from OAuth grant.
 // right_link_version: The RightLink gem version the client conforms to (only needed for instance agent clients).
-func (loc *Oauth2Locator) Create(grantType string, options ApiParams) (map[string]interface{}, error) {
+func (loc *Oauth2Locator) Create(grantType string, options rsapi.ApiParams) (map[string]interface{}, error) {
 	var res map[string]interface{}
 	if grantType == "" {
 		return res, fmt.Errorf("grantType is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"grant_type": grantType,
 	}, options)
 	var uri, err = loc.Url("Oauth2", "create")
@@ -4249,11 +4250,11 @@ type Permission struct {
 // Permission resource locator, exposes resource actions.
 type PermissionLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Permission resource locator factory
-func (api *Api) PermissionLocator(href string) *PermissionLocator {
+func (api *Api15) PermissionLocator(href string) *PermissionLocator {
 	return &PermissionLocator{UrlResolver(href), api}
 }
 
@@ -4275,7 +4276,7 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 	if permission == nil {
 		return res, fmt.Errorf("permission is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"permission": permission,
 	}
 	var uri, err = loc.Url("Permissions", "create")
@@ -4319,9 +4320,9 @@ func (loc *PermissionLocator) Destroy() error {
 // List all permissions for all users of the current acount.
 // -- Optional parameters:
 // filter
-func (loc *PermissionLocator) Index(options ApiParams) ([]*Permission, error) {
+func (loc *PermissionLocator) Index(options rsapi.ApiParams) ([]*Permission, error) {
 	var res []*Permission
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Permissions", "index")
 	if err != nil {
 		return res, err
@@ -4379,11 +4380,11 @@ type PlacementGroup struct {
 // PlacementGroup resource locator, exposes resource actions.
 type PlacementGroupLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // PlacementGroup resource locator factory
-func (api *Api) PlacementGroupLocator(href string) *PlacementGroupLocator {
+func (api *Api15) PlacementGroupLocator(href string) *PlacementGroupLocator {
 	return &PlacementGroupLocator{UrlResolver(href), api}
 }
 
@@ -4396,7 +4397,7 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 	if placementGroup == nil {
 		return res, fmt.Errorf("placementGroup is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"placement_group": placementGroup,
 	}
 	var uri, err = loc.Url("PlacementGroups", "create")
@@ -4435,9 +4436,9 @@ func (loc *PlacementGroupLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *PlacementGroupLocator) Index(options ApiParams) ([]*PlacementGroup, error) {
+func (loc *PlacementGroupLocator) Index(options rsapi.ApiParams) ([]*PlacementGroup, error) {
 	var res []*PlacementGroup
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("PlacementGroups", "index")
 	if err != nil {
 		return res, err
@@ -4459,9 +4460,9 @@ func (loc *PlacementGroupLocator) Index(options ApiParams) ([]*PlacementGroup, e
 // Shows information about a single PlacementGroup.
 // -- Optional parameters:
 // view
-func (loc *PlacementGroupLocator) Show(options ApiParams) (*PlacementGroup, error) {
+func (loc *PlacementGroupLocator) Show(options rsapi.ApiParams) (*PlacementGroup, error) {
 	var res *PlacementGroup
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("PlacementGroups", "show")
 	if err != nil {
 		return res, err
@@ -4495,11 +4496,11 @@ type Preference struct {
 // Preference resource locator, exposes resource actions.
 type PreferenceLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Preference resource locator factory
-func (api *Api) PreferenceLocator(href string) *PreferenceLocator {
+func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
 	return &PreferenceLocator{UrlResolver(href), api}
 }
 
@@ -4524,9 +4525,9 @@ func (loc *PreferenceLocator) Destroy() error {
 // Lists all preferences.
 // -- Optional parameters:
 // filter
-func (loc *PreferenceLocator) Index(options ApiParams) ([]*Preference, error) {
+func (loc *PreferenceLocator) Index(options rsapi.ApiParams) ([]*Preference, error) {
 	var res []*Preference
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Preferences", "index")
 	if err != nil {
 		return res, err
@@ -4574,7 +4575,7 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	if preference == nil {
 		return fmt.Errorf("preference is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"preference": preference,
 	}
 	var uri, err = loc.Url("Preferences", "update")
@@ -4611,11 +4612,11 @@ type Publication struct {
 // Publication resource locator, exposes resource actions.
 type PublicationLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Publication resource locator factory
-func (api *Api) PublicationLocator(href string) *PublicationLocator {
+func (api *Api15) PublicationLocator(href string) *PublicationLocator {
 	return &PublicationLocator{UrlResolver(href), api}
 }
 
@@ -4642,9 +4643,9 @@ func (loc *PublicationLocator) Import() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *PublicationLocator) Index(options ApiParams) ([]*Publication, error) {
+func (loc *PublicationLocator) Index(options rsapi.ApiParams) ([]*Publication, error) {
 	var res []*Publication
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Publications", "index")
 	if err != nil {
 		return res, err
@@ -4666,9 +4667,9 @@ func (loc *PublicationLocator) Index(options ApiParams) ([]*Publication, error) 
 // Show information about a single publication. Only non-HEAD revisions are possible.
 // -- Optional parameters:
 // view
-func (loc *PublicationLocator) Show(options ApiParams) (*Publication, error) {
+func (loc *PublicationLocator) Show(options rsapi.ApiParams) (*Publication, error) {
 	var res *Publication
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Publications", "show")
 	if err != nil {
 		return res, err
@@ -4708,11 +4709,11 @@ type PublicationLineage struct {
 // PublicationLineage resource locator, exposes resource actions.
 type PublicationLineageLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // PublicationLineage resource locator factory
-func (api *Api) PublicationLineageLocator(href string) *PublicationLineageLocator {
+func (api *Api15) PublicationLineageLocator(href string) *PublicationLineageLocator {
 	return &PublicationLineageLocator{UrlResolver(href), api}
 }
 
@@ -4722,9 +4723,9 @@ func (api *Api) PublicationLineageLocator(href string) *PublicationLineageLocato
 // Show information about a single publication lineage. Only non-HEAD revisions are possible.
 // -- Optional parameters:
 // view
-func (loc *PublicationLineageLocator) Show(options ApiParams) (*PublicationLineage, error) {
+func (loc *PublicationLineageLocator) Show(options rsapi.ApiParams) (*PublicationLineage, error) {
 	var res *PublicationLineage
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("PublicationLineages", "show")
 	if err != nil {
 		return res, err
@@ -4764,11 +4765,11 @@ type RecurringVolumeAttachment struct {
 // RecurringVolumeAttachment resource locator, exposes resource actions.
 type RecurringVolumeAttachmentLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // RecurringVolumeAttachment resource locator factory
-func (api *Api) RecurringVolumeAttachmentLocator(href string) *RecurringVolumeAttachmentLocator {
+func (api *Api15) RecurringVolumeAttachmentLocator(href string) *RecurringVolumeAttachmentLocator {
 	return &RecurringVolumeAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -4783,7 +4784,7 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 	if recurringVolumeAttachment == nil {
 		return res, fmt.Errorf("recurringVolumeAttachment is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"recurring_volume_attachment": recurringVolumeAttachment,
 	}
 	var uri, err = loc.Url("RecurringVolumeAttachments", "create")
@@ -4826,9 +4827,9 @@ func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *RecurringVolumeAttachmentLocator) Index(options ApiParams) ([]*RecurringVolumeAttachment, error) {
+func (loc *RecurringVolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*RecurringVolumeAttachment, error) {
 	var res []*RecurringVolumeAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RecurringVolumeAttachments", "index")
 	if err != nil {
 		return res, err
@@ -4852,9 +4853,9 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options ApiParams) ([]*Recurr
 // Displays information about a single recurring volume attachment.
 // -- Optional parameters:
 // view
-func (loc *RecurringVolumeAttachmentLocator) Show(options ApiParams) (*RecurringVolumeAttachment, error) {
+func (loc *RecurringVolumeAttachmentLocator) Show(options rsapi.ApiParams) (*RecurringVolumeAttachment, error) {
 	var res *RecurringVolumeAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RecurringVolumeAttachments", "show")
 	if err != nil {
 		return res, err
@@ -4899,11 +4900,11 @@ type Repository struct {
 // Repository resource locator, exposes resource actions.
 type RepositoryLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Repository resource locator factory
-func (api *Api) RepositoryLocator(href string) *RepositoryLocator {
+func (api *Api15) RepositoryLocator(href string) *RepositoryLocator {
 	return &RepositoryLocator{UrlResolver(href), api}
 }
 
@@ -4917,11 +4918,11 @@ func (api *Api) RepositoryLocator(href string) *RepositoryLocator {
 // namespace: The namespace to import into.
 // repository_commit_reference: Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.
 // with_dependencies: A flag indicating whether dependencies should automatically be imported.
-func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options ApiParams) error {
+func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options rsapi.ApiParams) error {
 	if len(assetHrefs) == 0 {
 		return fmt.Errorf("assetHrefs is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"asset_hrefs": assetHrefs,
 	}, options)
 	var uri, err = loc.Url("Repositories", "cookbook_import")
@@ -4950,7 +4951,7 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 	if namespace == "" {
 		return res, fmt.Errorf("namespace is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"asset_hrefs": assetHrefs,
 		"namespace":   namespace,
 	}
@@ -4988,7 +4989,7 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 	if repository == nil {
 		return res, fmt.Errorf("repository is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"repository": repository,
 	}
 	var uri, err = loc.Url("Repositories", "create")
@@ -5027,9 +5028,9 @@ func (loc *RepositoryLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *RepositoryLocator) Index(options ApiParams) ([]*Repository, error) {
+func (loc *RepositoryLocator) Index(options rsapi.ApiParams) ([]*Repository, error) {
 	var res []*Repository
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Repositories", "index")
 	if err != nil {
 		return res, err
@@ -5053,8 +5054,8 @@ func (loc *RepositoryLocator) Index(options ApiParams) ([]*Repository, error) {
 // You must perform an import to use the assets in your design objects (or use the auto import parameter).
 // -- Optional parameters:
 // auto_import: Whether cookbooks should automatically be imported after repositories are fetched.
-func (loc *RepositoryLocator) Refetch(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *RepositoryLocator) Refetch(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Repositories", "refetch")
 	if err != nil {
 		return err
@@ -5073,9 +5074,9 @@ func (loc *RepositoryLocator) Refetch(options ApiParams) error {
 // action on a ServerTemplate.
 // -- Optional parameters:
 // imported_cookbook_name: A list of cookbook names that were imported by the repository.
-func (loc *RepositoryLocator) Resolve(options ApiParams) ([]*Repository, error) {
+func (loc *RepositoryLocator) Resolve(options rsapi.ApiParams) ([]*Repository, error) {
 	var res []*Repository
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Repositories", "resolve")
 	if err != nil {
 		return res, err
@@ -5097,9 +5098,9 @@ func (loc *RepositoryLocator) Resolve(options ApiParams) ([]*Repository, error) 
 // Shows a specified Repository.
 // -- Optional parameters:
 // view
-func (loc *RepositoryLocator) Show(options ApiParams) (*Repository, error) {
+func (loc *RepositoryLocator) Show(options rsapi.ApiParams) (*Repository, error) {
 	var res *Repository
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Repositories", "show")
 	if err != nil {
 		return res, err
@@ -5133,7 +5134,7 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	if repository == nil {
 		return fmt.Errorf("repository is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"repository": repository,
 	}
 	var uri, err = loc.Url("Repositories", "update")
@@ -5165,11 +5166,11 @@ type RepositoryAsset struct {
 // RepositoryAsset resource locator, exposes resource actions.
 type RepositoryAssetLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // RepositoryAsset resource locator factory
-func (api *Api) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
+func (api *Api15) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 	return &RepositoryAssetLocator{UrlResolver(href), api}
 }
 
@@ -5181,9 +5182,9 @@ func (api *Api) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 // given repository.
 // -- Optional parameters:
 // view
-func (loc *RepositoryAssetLocator) Index(options ApiParams) ([]*RepositoryAsset, error) {
+func (loc *RepositoryAssetLocator) Index(options rsapi.ApiParams) ([]*RepositoryAsset, error) {
 	var res []*RepositoryAsset
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RepositoryAssets", "index")
 	if err != nil {
 		return res, err
@@ -5207,9 +5208,9 @@ func (loc *RepositoryAssetLocator) Index(options ApiParams) ([]*RepositoryAsset,
 // repository.
 // -- Optional parameters:
 // view
-func (loc *RepositoryAssetLocator) Show(options ApiParams) (*RepositoryAsset, error) {
+func (loc *RepositoryAssetLocator) Show(options rsapi.ApiParams) (*RepositoryAsset, error) {
 	var res *RepositoryAsset
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RepositoryAssets", "show")
 	if err != nil {
 		return res, err
@@ -5252,11 +5253,11 @@ type RightScript struct {
 // RightScript resource locator, exposes resource actions.
 type RightScriptLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // RightScript resource locator factory
-func (api *Api) RightScriptLocator(href string) *RightScriptLocator {
+func (api *Api15) RightScriptLocator(href string) *RightScriptLocator {
 	return &RightScriptLocator{UrlResolver(href), api}
 }
 
@@ -5268,7 +5269,7 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"right_script": rightScript,
 	}
 	var uri, err = loc.Url("RightScripts", "commit")
@@ -5288,9 +5289,9 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 // filter
 // latest_only: Whether or not to return only the latest version for each lineage.
 // view
-func (loc *RightScriptLocator) Index(options ApiParams) ([]*RightScript, error) {
+func (loc *RightScriptLocator) Index(options rsapi.ApiParams) ([]*RightScript, error) {
 	var res []*RightScript
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RightScripts", "index")
 	if err != nil {
 		return res, err
@@ -5351,7 +5352,7 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"right_script": rightScript,
 	}
 	var uri, err = loc.Url("RightScripts", "update")
@@ -5401,11 +5402,11 @@ type Route struct {
 // Route resource locator, exposes resource actions.
 type RouteLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Route resource locator factory
-func (api *Api) RouteLocator(href string) *RouteLocator {
+func (api *Api15) RouteLocator(href string) *RouteLocator {
 	return &RouteLocator{UrlResolver(href), api}
 }
 
@@ -5419,7 +5420,7 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	if route == nil {
 		return res, fmt.Errorf("route is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"route": route,
 	}
 	var uri, err = loc.Url("Routes", "create")
@@ -5459,9 +5460,9 @@ func (loc *RouteLocator) Destroy() error {
 // List Routes available in this account.
 // -- Optional parameters:
 // filter
-func (loc *RouteLocator) Index(options ApiParams) ([]*Route, error) {
+func (loc *RouteLocator) Index(options rsapi.ApiParams) ([]*Route, error) {
 	var res []*Route
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Routes", "index")
 	if err != nil {
 		return res, err
@@ -5509,7 +5510,7 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 	if route == nil {
 		return fmt.Errorf("route is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"route": route,
 	}
 	var uri, err = loc.Url("Routes", "update")
@@ -5542,11 +5543,11 @@ type RouteTable struct {
 // RouteTable resource locator, exposes resource actions.
 type RouteTableLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // RouteTable resource locator factory
-func (api *Api) RouteTableLocator(href string) *RouteTableLocator {
+func (api *Api15) RouteTableLocator(href string) *RouteTableLocator {
 	return &RouteTableLocator{UrlResolver(href), api}
 }
 
@@ -5559,7 +5560,7 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 	if routeTable == nil {
 		return res, fmt.Errorf("routeTable is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"route_table": routeTable,
 	}
 	var uri, err = loc.Url("RouteTables", "create")
@@ -5598,9 +5599,9 @@ func (loc *RouteTableLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *RouteTableLocator) Index(options ApiParams) ([]*RouteTable, error) {
+func (loc *RouteTableLocator) Index(options rsapi.ApiParams) ([]*RouteTable, error) {
 	var res []*RouteTable
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RouteTables", "index")
 	if err != nil {
 		return res, err
@@ -5622,9 +5623,9 @@ func (loc *RouteTableLocator) Index(options ApiParams) ([]*RouteTable, error) {
 // Show information about a single RouteTable.
 // -- Optional parameters:
 // view
-func (loc *RouteTableLocator) Show(options ApiParams) (*RouteTable, error) {
+func (loc *RouteTableLocator) Show(options rsapi.ApiParams) (*RouteTable, error) {
 	var res *RouteTable
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RouteTables", "show")
 	if err != nil {
 		return res, err
@@ -5648,7 +5649,7 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	if routeTable == nil {
 		return fmt.Errorf("routeTable is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"route_table": routeTable,
 	}
 	var uri, err = loc.Url("RouteTables", "update")
@@ -5682,11 +5683,11 @@ type RunnableBinding struct {
 // RunnableBinding resource locator, exposes resource actions.
 type RunnableBindingLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // RunnableBinding resource locator factory
-func (api *Api) RunnableBindingLocator(href string) *RunnableBindingLocator {
+func (api *Api15) RunnableBindingLocator(href string) *RunnableBindingLocator {
 	return &RunnableBindingLocator{UrlResolver(href), api}
 }
 
@@ -5701,7 +5702,7 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 	if runnableBinding == nil {
 		return res, fmt.Errorf("runnableBinding is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"runnable_binding": runnableBinding,
 	}
 	var uri, err = loc.Url("RunnableBindings", "create")
@@ -5741,9 +5742,9 @@ func (loc *RunnableBindingLocator) Destroy() error {
 // An excutable may be either a RightScript or Chef Recipe.
 // -- Optional parameters:
 // view
-func (loc *RunnableBindingLocator) Index(options ApiParams) ([]*RunnableBinding, error) {
+func (loc *RunnableBindingLocator) Index(options rsapi.ApiParams) ([]*RunnableBinding, error) {
 	var res []*RunnableBinding
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RunnableBindings", "index")
 	if err != nil {
 		return res, err
@@ -5768,7 +5769,7 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 	if len(runnableBindings) == 0 {
 		return fmt.Errorf("runnableBindings is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"runnable_bindings": runnableBindings,
 	}
 	var uri, err = loc.Url("RunnableBindings", "multi_update")
@@ -5787,9 +5788,9 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 // An excutable may be either a RightScript or Chef Recipe.
 // -- Optional parameters:
 // view
-func (loc *RunnableBindingLocator) Show(options ApiParams) (*RunnableBinding, error) {
+func (loc *RunnableBindingLocator) Show(options rsapi.ApiParams) (*RunnableBinding, error) {
 	var res *RunnableBinding
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("RunnableBindings", "show")
 	if err != nil {
 		return res, err
@@ -5825,11 +5826,11 @@ type SecurityGroup struct {
 // SecurityGroup resource locator, exposes resource actions.
 type SecurityGroupLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // SecurityGroup resource locator factory
-func (api *Api) SecurityGroupLocator(href string) *SecurityGroupLocator {
+func (api *Api15) SecurityGroupLocator(href string) *SecurityGroupLocator {
 	return &SecurityGroupLocator{UrlResolver(href), api}
 }
 
@@ -5842,7 +5843,7 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 	if securityGroup == nil {
 		return res, fmt.Errorf("securityGroup is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"security_group": securityGroup,
 	}
 	var uri, err = loc.Url("SecurityGroups", "create")
@@ -5881,9 +5882,9 @@ func (loc *SecurityGroupLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *SecurityGroupLocator) Index(options ApiParams) ([]*SecurityGroup, error) {
+func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) ([]*SecurityGroup, error) {
 	var res []*SecurityGroup
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("SecurityGroups", "index")
 	if err != nil {
 		return res, err
@@ -5905,9 +5906,9 @@ func (loc *SecurityGroupLocator) Index(options ApiParams) ([]*SecurityGroup, err
 // Displays information about a single Security Group.
 // -- Optional parameters:
 // view
-func (loc *SecurityGroupLocator) Show(options ApiParams) (*SecurityGroup, error) {
+func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) (*SecurityGroup, error) {
 	var res *SecurityGroup
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("SecurityGroups", "show")
 	if err != nil {
 		return res, err
@@ -5950,11 +5951,11 @@ type SecurityGroupRule struct {
 // SecurityGroupRule resource locator, exposes resource actions.
 type SecurityGroupRuleLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // SecurityGroupRule resource locator factory
-func (api *Api) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator {
+func (api *Api15) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator {
 	return &SecurityGroupRuleLocator{UrlResolver(href), api}
 }
 
@@ -5973,7 +5974,7 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 	if securityGroupRule == nil {
 		return res, fmt.Errorf("securityGroupRule is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
 	var uri, err = loc.Url("SecurityGroupRules", "create")
@@ -6013,9 +6014,9 @@ func (loc *SecurityGroupRuleLocator) Destroy() error {
 // Lists SecurityGroupRules.
 // -- Optional parameters:
 // view
-func (loc *SecurityGroupRuleLocator) Index(options ApiParams) ([]*SecurityGroupRule, error) {
+func (loc *SecurityGroupRuleLocator) Index(options rsapi.ApiParams) ([]*SecurityGroupRule, error) {
 	var res []*SecurityGroupRule
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("SecurityGroupRules", "index")
 	if err != nil {
 		return res, err
@@ -6038,9 +6039,9 @@ func (loc *SecurityGroupRuleLocator) Index(options ApiParams) ([]*SecurityGroupR
 // Displays information about a single SecurityGroupRule.
 // -- Optional parameters:
 // view
-func (loc *SecurityGroupRuleLocator) Show(options ApiParams) (*SecurityGroupRule, error) {
+func (loc *SecurityGroupRuleLocator) Show(options rsapi.ApiParams) (*SecurityGroupRule, error) {
 	var res *SecurityGroupRule
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("SecurityGroupRules", "show")
 	if err != nil {
 		return res, err
@@ -6065,7 +6066,7 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 	if securityGroupRule == nil {
 		return fmt.Errorf("securityGroupRule is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
 	var uri, err = loc.Url("SecurityGroupRules", "update")
@@ -6108,11 +6109,11 @@ type Server struct {
 // Server resource locator, exposes resource actions.
 type ServerLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Server resource locator factory
-func (api *Api) ServerLocator(href string) *ServerLocator {
+func (api *Api15) ServerLocator(href string) *ServerLocator {
 	return &ServerLocator{UrlResolver(href), api}
 }
 
@@ -6141,7 +6142,7 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	if server == nil {
 		return res, fmt.Errorf("server is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server": server,
 	}
 	var uri, err = loc.Url("Servers", "create")
@@ -6188,9 +6189,9 @@ func (loc *ServerLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *ServerLocator) Index(options ApiParams) ([]*Server, error) {
+func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
 	var res []*Server
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Servers", "index")
 	if err != nil {
 		return res, err
@@ -6229,9 +6230,9 @@ func (loc *ServerLocator) Launch() error {
 // Shows the information of a single server.
 // -- Optional parameters:
 // view
-func (loc *ServerLocator) Show(options ApiParams) (*Server, error) {
+func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 	var res *Server
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Servers", "show")
 	if err != nil {
 		return res, err
@@ -6272,7 +6273,7 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server": server,
 	}
 	var uri, err = loc.Url("Servers", "update")
@@ -6293,7 +6294,7 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server": server,
 	}
 	var uri, err = loc.Url("Servers", "wrap_instance")
@@ -6335,11 +6336,11 @@ type ServerArray struct {
 // ServerArray resource locator, exposes resource actions.
 type ServerArrayLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // ServerArray resource locator factory
-func (api *Api) ServerArrayLocator(href string) *ServerArrayLocator {
+func (api *Api15) ServerArrayLocator(href string) *ServerArrayLocator {
 	return &ServerArrayLocator{UrlResolver(href), api}
 }
 
@@ -6368,7 +6369,7 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 	if serverArray == nil {
 		return res, fmt.Errorf("serverArray is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server_array": serverArray,
 	}
 	var uri, err = loc.Url("ServerArrays", "create")
@@ -6430,9 +6431,9 @@ func (loc *ServerArrayLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *ServerArrayLocator) Index(options ApiParams) ([]*ServerArray, error) {
+func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, error) {
 	var res []*ServerArray
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("ServerArrays", "index")
 	if err != nil {
 		return res, err
@@ -6505,9 +6506,9 @@ func (loc *ServerArrayLocator) MultiTerminate() error {
 // Shows the information of a single server array.
 // -- Optional parameters:
 // view
-func (loc *ServerArrayLocator) Show(options ApiParams) (*ServerArray, error) {
+func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) (*ServerArray, error) {
 	var res *ServerArray
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("ServerArrays", "show")
 	if err != nil {
 		return res, err
@@ -6532,7 +6533,7 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	if serverArray == nil {
 		return fmt.Errorf("serverArray is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server_array": serverArray,
 	}
 	var uri, err = loc.Url("ServerArrays", "update")
@@ -6568,11 +6569,11 @@ type ServerTemplate struct {
 // ServerTemplate resource locator, exposes resource actions.
 type ServerTemplateLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // ServerTemplate resource locator factory
-func (api *Api) ServerTemplateLocator(href string) *ServerTemplateLocator {
+func (api *Api15) ServerTemplateLocator(href string) *ServerTemplateLocator {
 	return &ServerTemplateLocator{UrlResolver(href), api}
 }
 
@@ -6584,7 +6585,7 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 	if serverTemplate == nil {
 		return fmt.Errorf("serverTemplate is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
 	var uri, err = loc.Url("ServerTemplates", "clone")
@@ -6613,7 +6614,7 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 	if freezeRepositories == "" {
 		return fmt.Errorf("freezeRepositories is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"commit_head_dependencies": commitHeadDependencies,
 		"commit_message":           commitMessage,
 		"freeze_repositories":      freezeRepositories,
@@ -6636,7 +6637,7 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 	if serverTemplate == nil {
 		return res, fmt.Errorf("serverTemplate is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
 	var uri, err = loc.Url("ServerTemplates", "create")
@@ -6701,9 +6702,9 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 // -- Optional parameters:
 // filter
 // view
-func (loc *ServerTemplateLocator) Index(options ApiParams) ([]*ServerTemplate, error) {
+func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) ([]*ServerTemplate, error) {
 	var res []*ServerTemplate
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("ServerTemplates", "index")
 	if err != nil {
 		return res, err
@@ -6729,14 +6730,14 @@ func (loc *ServerTemplateLocator) Index(options ApiParams) ([]*ServerTemplate, e
 // allow_comments: Allow users to leave comments on this ServerTemplate.
 // categories: List of Categories.
 // email_comments: Email me when a user comments on this ServerTemplate.
-func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptions *Descriptions, options ApiParams) error {
+func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptions *Descriptions, options rsapi.ApiParams) error {
 	if len(accountGroupHrefs) == 0 {
 		return fmt.Errorf("accountGroupHrefs is required")
 	}
 	if descriptions == nil {
 		return fmt.Errorf("descriptions is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"account_group_hrefs": accountGroupHrefs,
 		"descriptions":        descriptions,
 	}, options)
@@ -6782,9 +6783,9 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 // details please see Inputs#index.)
 // -- Optional parameters:
 // view
-func (loc *ServerTemplateLocator) Show(options ApiParams) (*ServerTemplate, error) {
+func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) (*ServerTemplate, error) {
 	var res *ServerTemplate
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("ServerTemplates", "show")
 	if err != nil {
 		return res, err
@@ -6825,7 +6826,7 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 	if targetRepositoryHref == "" {
 		return fmt.Errorf("targetRepositoryHref is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"source_repository_href": sourceRepositoryHref,
 		"target_repository_href": targetRepositoryHref,
 	}
@@ -6848,7 +6849,7 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 	if serverTemplate == nil {
 		return fmt.Errorf("serverTemplate is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
 	var uri, err = loc.Url("ServerTemplates", "update")
@@ -6879,11 +6880,11 @@ type ServerTemplateMultiCloudImage struct {
 // ServerTemplateMultiCloudImage resource locator, exposes resource actions.
 type ServerTemplateMultiCloudImageLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // ServerTemplateMultiCloudImage resource locator factory
-func (api *Api) ServerTemplateMultiCloudImageLocator(href string) *ServerTemplateMultiCloudImageLocator {
+func (api *Api15) ServerTemplateMultiCloudImageLocator(href string) *ServerTemplateMultiCloudImageLocator {
 	return &ServerTemplateMultiCloudImageLocator{UrlResolver(href), api}
 }
 
@@ -6896,7 +6897,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 	if serverTemplateMultiCloudImage == nil {
 		return res, fmt.Errorf("serverTemplateMultiCloudImage is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"server_template_multi_cloud_image": serverTemplateMultiCloudImage,
 	}
 	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "create")
@@ -6935,9 +6936,9 @@ func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *ServerTemplateMultiCloudImageLocator) Index(options ApiParams) ([]*ServerTemplateMultiCloudImage, error) {
+func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*ServerTemplateMultiCloudImage, error) {
 	var res []*ServerTemplateMultiCloudImage
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "index")
 	if err != nil {
 		return res, err
@@ -6974,9 +6975,9 @@ func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 // Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.
 // -- Optional parameters:
 // view
-func (loc *ServerTemplateMultiCloudImageLocator) Show(options ApiParams) (*ServerTemplateMultiCloudImage, error) {
+func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.ApiParams) (*ServerTemplateMultiCloudImage, error) {
 	var res *ServerTemplateMultiCloudImage
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "show")
 	if err != nil {
 		return res, err
@@ -7014,11 +7015,11 @@ type Session struct {
 // Session resource locator, exposes resource actions.
 type SessionLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Session resource locator factory
-func (api *Api) SessionLocator(href string) *SessionLocator {
+func (api *Api15) SessionLocator(href string) *SessionLocator {
 	return &SessionLocator{UrlResolver(href), api}
 }
 
@@ -7038,9 +7039,9 @@ func (api *Api) SessionLocator(href string) *SessionLocator {
 // email: The email to login with if not using existing session.
 // password: The corresponding password.
 // view: Extended view shows account permissions and products
-func (loc *SessionLocator) Accounts(options ApiParams) ([]*Account, error) {
+func (loc *SessionLocator) Accounts(options rsapi.ApiParams) ([]*Account, error) {
 	var res []*Account
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Sessions", "accounts")
 	if err != nil {
 		return res, err
@@ -7124,11 +7125,11 @@ type SshKey struct {
 // SshKey resource locator, exposes resource actions.
 type SshKeyLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // SshKey resource locator factory
-func (api *Api) SshKeyLocator(href string) *SshKeyLocator {
+func (api *Api15) SshKeyLocator(href string) *SshKeyLocator {
 	return &SshKeyLocator{UrlResolver(href), api}
 }
 
@@ -7141,7 +7142,7 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	if sshKey == nil {
 		return res, fmt.Errorf("sshKey is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"ssh_key": sshKey,
 	}
 	var uri, err = loc.Url("SshKeys", "create")
@@ -7180,9 +7181,9 @@ func (loc *SshKeyLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *SshKeyLocator) Index(options ApiParams) ([]*SshKey, error) {
+func (loc *SshKeyLocator) Index(options rsapi.ApiParams) ([]*SshKey, error) {
 	var res []*SshKey
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("SshKeys", "index")
 	if err != nil {
 		return res, err
@@ -7204,9 +7205,9 @@ func (loc *SshKeyLocator) Index(options ApiParams) ([]*SshKey, error) {
 // Displays information about a single ssh key.
 // -- Optional parameters:
 // view
-func (loc *SshKeyLocator) Show(options ApiParams) (*SshKey, error) {
+func (loc *SshKeyLocator) Show(options rsapi.ApiParams) (*SshKey, error) {
 	var res *SshKey
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("SshKeys", "show")
 	if err != nil {
 		return res, err
@@ -7244,11 +7245,11 @@ type Subnet struct {
 // Subnet resource locator, exposes resource actions.
 type SubnetLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Subnet resource locator factory
-func (api *Api) SubnetLocator(href string) *SubnetLocator {
+func (api *Api15) SubnetLocator(href string) *SubnetLocator {
 	return &SubnetLocator{UrlResolver(href), api}
 }
 
@@ -7262,7 +7263,7 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	if subnet == nil {
 		return res, fmt.Errorf("subnet is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"subnet": subnet,
 	}
 	var uri, err = loc.Url("Subnets", "create")
@@ -7302,9 +7303,9 @@ func (loc *SubnetLocator) Destroy() error {
 // Lists subnets of a given cloud.
 // -- Optional parameters:
 // filter
-func (loc *SubnetLocator) Index(options ApiParams) ([]*Subnet, error) {
+func (loc *SubnetLocator) Index(options rsapi.ApiParams) ([]*Subnet, error) {
 	var res []*Subnet
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Subnets", "index")
 	if err != nil {
 		return res, err
@@ -7352,7 +7353,7 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	if subnet == nil {
 		return fmt.Errorf("subnet is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"subnet": subnet,
 	}
 	var uri, err = loc.Url("Subnets", "update")
@@ -7377,11 +7378,11 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 // Tag resource locator, exposes resource actions.
 type TagLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Tag resource locator factory
-func (api *Api) TagLocator(href string) *TagLocator {
+func (api *Api15) TagLocator(href string) *TagLocator {
 	return &TagLocator{UrlResolver(href), api}
 }
 
@@ -7396,7 +7397,7 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 	if len(resourceHrefs) == 0 {
 		return res, fmt.Errorf("resourceHrefs is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"resource_hrefs": resourceHrefs,
 	}
 	var uri, err = loc.Url("Tags", "by_resource")
@@ -7436,7 +7437,7 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 // include_tags_with_prefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
 // match_all: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
 // with_deleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
-func (loc *TagLocator) ByTag(resourceType string, tags []string, options ApiParams) ([]*map[string]string, error) {
+func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.ApiParams) ([]*map[string]string, error) {
 	var res []*map[string]string
 	if resourceType == "" {
 		return res, fmt.Errorf("resourceType is required")
@@ -7444,7 +7445,7 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options ApiPara
 	if len(tags) == 0 {
 		return res, fmt.Errorf("tags is required")
 	}
-	var params = mergeOptionals(ApiParams{
+	var params = mergeOptionals(rsapi.ApiParams{
 		"resource_type": resourceType,
 		"tags":          tags,
 	}, options)
@@ -7480,7 +7481,7 @@ func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 	if len(tags) == 0 {
 		return fmt.Errorf("tags is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
@@ -7509,7 +7510,7 @@ func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error 
 	if len(tags) == 0 {
 		return fmt.Errorf("tags is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
@@ -7541,11 +7542,11 @@ type Task struct {
 // Task resource locator, exposes resource actions.
 type TaskLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Task resource locator factory
-func (api *Api) TaskLocator(href string) *TaskLocator {
+func (api *Api15) TaskLocator(href string) *TaskLocator {
 	return &TaskLocator{UrlResolver(href), api}
 }
 
@@ -7556,9 +7557,9 @@ func (api *Api) TaskLocator(href string) *TaskLocator {
 // Displays information of a given task within the context of an instance.
 // -- Optional parameters:
 // view
-func (loc *TaskLocator) Show(options ApiParams) (*Task, error) {
+func (loc *TaskLocator) Show(options rsapi.ApiParams) (*Task, error) {
 	var res *Task
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Tasks", "show")
 	if err != nil {
 		return res, err
@@ -7599,11 +7600,11 @@ type User struct {
 // User resource locator, exposes resource actions.
 type UserLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // User resource locator factory
-func (api *Api) UserLocator(href string) *UserLocator {
+func (api *Api15) UserLocator(href string) *UserLocator {
 	return &UserLocator{UrlResolver(href), api}
 }
 
@@ -7630,7 +7631,7 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 	if user == nil {
 		return res, fmt.Errorf("user is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"user": user,
 	}
 	var uri, err = loc.Url("Users", "create")
@@ -7654,9 +7655,9 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 // a child account, the user has to login to the child account first.
 // -- Optional parameters:
 // filter
-func (loc *UserLocator) Index(options ApiParams) ([]*User, error) {
+func (loc *UserLocator) Index(options rsapi.ApiParams) ([]*User, error) {
 	var res []*User
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Users", "index")
 	if err != nil {
 		return res, err
@@ -7720,7 +7721,7 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 	if user == nil {
 		return fmt.Errorf("user is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"user": user,
 	}
 	var uri, err = loc.Url("Users", "update")
@@ -7741,11 +7742,11 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 // UserData resource locator, exposes resource actions.
 type UserDataLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // UserData resource locator factory
-func (api *Api) UserDataLocator(href string) *UserDataLocator {
+func (api *Api15) UserDataLocator(href string) *UserDataLocator {
 	return &UserDataLocator{UrlResolver(href), api}
 }
 
@@ -7795,11 +7796,11 @@ type Volume struct {
 // Volume resource locator, exposes resource actions.
 type VolumeLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // Volume resource locator factory
-func (api *Api) VolumeLocator(href string) *VolumeLocator {
+func (api *Api15) VolumeLocator(href string) *VolumeLocator {
 	return &VolumeLocator{UrlResolver(href), api}
 }
 
@@ -7812,7 +7813,7 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	if volume == nil {
 		return res, fmt.Errorf("volume is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"volume": volume,
 	}
 	var uri, err = loc.Url("Volumes", "create")
@@ -7851,9 +7852,9 @@ func (loc *VolumeLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *VolumeLocator) Index(options ApiParams) ([]*Volume, error) {
+func (loc *VolumeLocator) Index(options rsapi.ApiParams) ([]*Volume, error) {
 	var res []*Volume
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Volumes", "index")
 	if err != nil {
 		return res, err
@@ -7875,9 +7876,9 @@ func (loc *VolumeLocator) Index(options ApiParams) ([]*Volume, error) {
 // Displays information about a single volume.
 // -- Optional parameters:
 // view
-func (loc *VolumeLocator) Show(options ApiParams) (*Volume, error) {
+func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 	var res *Volume
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("Volumes", "show")
 	if err != nil {
 		return res, err
@@ -7914,11 +7915,11 @@ type VolumeAttachment struct {
 // VolumeAttachment resource locator, exposes resource actions.
 type VolumeAttachmentLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // VolumeAttachment resource locator factory
-func (api *Api) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator {
+func (api *Api15) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator {
 	return &VolumeAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -7934,7 +7935,7 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 	if volumeAttachment == nil {
 		return res, fmt.Errorf("volumeAttachment is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"volume_attachment": volumeAttachment,
 	}
 	var uri, err = loc.Url("VolumeAttachments", "create")
@@ -7960,8 +7961,8 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 // Deletes a given volume attachment.
 // -- Optional parameters:
 // force: Specifies whether to force the detachment of a volume.
-func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
-	var params = mergeOptionals(ApiParams{}, options)
+func (loc *VolumeAttachmentLocator) Destroy(options rsapi.ApiParams) error {
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("VolumeAttachments", "destroy")
 	if err != nil {
 		return err
@@ -7979,9 +7980,9 @@ func (loc *VolumeAttachmentLocator) Destroy(options ApiParams) error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *VolumeAttachmentLocator) Index(options ApiParams) ([]*VolumeAttachment, error) {
+func (loc *VolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*VolumeAttachment, error) {
 	var res []*VolumeAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("VolumeAttachments", "index")
 	if err != nil {
 		return res, err
@@ -8006,9 +8007,9 @@ func (loc *VolumeAttachmentLocator) Index(options ApiParams) ([]*VolumeAttachmen
 // Displays information about a single volume attachment.
 // -- Optional parameters:
 // view
-func (loc *VolumeAttachmentLocator) Show(options ApiParams) (*VolumeAttachment, error) {
+func (loc *VolumeAttachmentLocator) Show(options rsapi.ApiParams) (*VolumeAttachment, error) {
 	var res *VolumeAttachment
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("VolumeAttachments", "show")
 	if err != nil {
 		return res, err
@@ -8049,11 +8050,11 @@ type VolumeSnapshot struct {
 // VolumeSnapshot resource locator, exposes resource actions.
 type VolumeSnapshotLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // VolumeSnapshot resource locator factory
-func (api *Api) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
+func (api *Api15) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 	return &VolumeSnapshotLocator{UrlResolver(href), api}
 }
 
@@ -8067,7 +8068,7 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 	if volumeSnapshot == nil {
 		return res, fmt.Errorf("volumeSnapshot is required")
 	}
-	var params = ApiParams{
+	var params = rsapi.ApiParams{
 		"volume_snapshot": volumeSnapshot,
 	}
 	var uri, err = loc.Url("VolumeSnapshots", "create")
@@ -8108,9 +8109,9 @@ func (loc *VolumeSnapshotLocator) Destroy() error {
 // -- Optional parameters:
 // filter
 // view
-func (loc *VolumeSnapshotLocator) Index(options ApiParams) ([]*VolumeSnapshot, error) {
+func (loc *VolumeSnapshotLocator) Index(options rsapi.ApiParams) ([]*VolumeSnapshot, error) {
 	var res []*VolumeSnapshot
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("VolumeSnapshots", "index")
 	if err != nil {
 		return res, err
@@ -8133,9 +8134,9 @@ func (loc *VolumeSnapshotLocator) Index(options ApiParams) ([]*VolumeSnapshot, e
 // Displays information about a single volume_snapshot.
 // -- Optional parameters:
 // view
-func (loc *VolumeSnapshotLocator) Show(options ApiParams) (*VolumeSnapshot, error) {
+func (loc *VolumeSnapshotLocator) Show(options rsapi.ApiParams) (*VolumeSnapshot, error) {
 	var res *VolumeSnapshot
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("VolumeSnapshots", "show")
 	if err != nil {
 		return res, err
@@ -8172,11 +8173,11 @@ type VolumeType struct {
 // VolumeType resource locator, exposes resource actions.
 type VolumeTypeLocator struct {
 	UrlResolver
-	api *Api
+	api *Api15
 }
 
 // VolumeType resource locator factory
-func (api *Api) VolumeTypeLocator(href string) *VolumeTypeLocator {
+func (api *Api15) VolumeTypeLocator(href string) *VolumeTypeLocator {
 	return &VolumeTypeLocator{UrlResolver(href), api}
 }
 
@@ -8187,9 +8188,9 @@ func (api *Api) VolumeTypeLocator(href string) *VolumeTypeLocator {
 // -- Optional parameters:
 // filter
 // view
-func (loc *VolumeTypeLocator) Index(options ApiParams) ([]*VolumeType, error) {
+func (loc *VolumeTypeLocator) Index(options rsapi.ApiParams) ([]*VolumeType, error) {
 	var res []*VolumeType
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("VolumeTypes", "index")
 	if err != nil {
 		return res, err
@@ -8211,9 +8212,9 @@ func (loc *VolumeTypeLocator) Index(options ApiParams) ([]*VolumeType, error) {
 // Displays information about a single Volume Type.
 // -- Optional parameters:
 // view
-func (loc *VolumeTypeLocator) Show(options ApiParams) (*VolumeType, error) {
+func (loc *VolumeTypeLocator) Show(options rsapi.ApiParams) (*VolumeType, error) {
 	var res *VolumeType
-	var params = mergeOptionals(ApiParams{}, options)
+	var params = mergeOptionals(rsapi.ApiParams{}, options)
 	var uri, err = loc.Url("VolumeTypes", "show")
 	if err != nil {
 		return res, err

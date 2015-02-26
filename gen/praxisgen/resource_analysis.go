@@ -9,7 +9,8 @@ import (
 
 // Create API descriptor from raw resources and types
 func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, desc *gen.ApiDescriptor) error {
-	var resource = gen.Resource{Name: name}
+	name = inflect.Singularize(name)
+	var resource = gen.Resource{Name: name, ClientName: a.ClientName}
 
 	// Description
 	if d, ok := res["description"]; ok {

@@ -7,13 +7,14 @@ import (
 	"strings"
 
 	"github.com/rightscale/rsc/rsapi15"
+	"github.com/rightscale/rsc/rsapi16"
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 
 // Command line client entry point.
 func main() {
 	app := kingpin.New("rsc", "A RightScale API client")
-	app.Version("0.1.0")
+	app.Version("0.2.0")
 
 	var cmdLine, err = ParseCommandLine(app)
 	if err != nil {
@@ -32,6 +33,14 @@ func main() {
 
 	case "api15":
 		var client, err2 = rsapi15.FromCommandLine(cmdLine)
+		if err2 != nil {
+			err = err2
+		} else if client != nil {
+			resp, err = client.RunCommand(cmdLine.Command)
+		}
+
+	case "api16":
+		var client, err2 = rsapi16.FromCommandLine(cmdLine)
 		if err2 != nil {
 			err = err2
 		} else if client != nil {

@@ -125,6 +125,7 @@ func (d *ApiDescriptor) uniqueTypeName(prefix string) string {
 // Data structure used to describe API resources.
 type Resource struct {
 	Name        string       // Resource name, e.g. "ServerArray"
+	ClientName  string       // Name of go client struct, e.g. "Api15"
 	Description string       // Resource description
 	Attributes  []*Attribute // Resource attributes
 	Actions     []*Action    // Resource actions, e.g. "index", "show", "update" ...

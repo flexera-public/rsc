@@ -98,10 +98,11 @@ import (
 	"time"
 
 	"github.com/rightscale/rsc/metadata"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // Helper function that merges optional parameters into payload
-func mergeOptionals(params, options ApiParams) ApiParams {
+func mergeOptionals(params, options rsapi.ApiParams) rsapi.ApiParams {
 	for name, value := range options {
 		params[name] = value
 	}
@@ -150,11 +151,11 @@ type {{.Name}} struct { {{range .Attributes}}
 // {{.Name}} resource locator, exposes resource actions.
 type {{.Name}}Locator struct {
 	UrlResolver
-	api *Api
+	api *{{.ClientName}}
 }
 
 // {{.Name}} resource locator factory
-func (api *Api) {{.Name}}Locator(href string) *{{.Name}}Locator {
+func (api *{{.ClientName}}) {{.Name}}Locator(href string) *{{.Name}}Locator {
 	return &{{.Name}}Locator{UrlResolver(href), api}
 }
 //===== Actions

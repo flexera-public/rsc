@@ -6,6 +6,7 @@ import (
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/rsapi15"
+	"github.com/rightscale/rsc/rsapi16"
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 
@@ -84,11 +85,14 @@ func IsClientCommand(cmd string) bool {
 const (
 	// Command for API 1.5 client
 	Api15Command = "api15"
+
+	// Command for API 1.6 client
+	Api16Command = "api16"
 )
 
 var (
 	// List of all supported client commands
-	AllCommands = []string{Api15Command}
+	AllCommands = []string{Api15Command, Api16Command}
 
 	// Default command
 	DefaultClientCommand string
@@ -98,6 +102,9 @@ var (
 func RegisterClientCommands(app *kingpin.Application) {
 	var api15Cmd = app.Command(Api15Command, "RightScale API 1.5 client")
 	rsapi15.RegisterCommands(api15Cmd)
+
+	var api16Cmd = app.Command(Api16Command, "RightScale API 1.6 client")
+	rsapi16.RegisterCommands(api16Cmd)
 
 	// Register default client commands, hard coded for now (only one client at the moment...)
 	DefaultClientCommand = Api15Command

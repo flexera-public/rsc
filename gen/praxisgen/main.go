@@ -25,6 +25,7 @@ func main() {
 	var pkgName = flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
 	var targetVersion = flag.String("target", "",
 		"Target version, only generate code for this version.\nIf this option is specified then the generated code lives directly under package <pkg>, otherwise it lives under <pkg>.<version>.")
+	var clientName = flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
 	flag.Parse()
 
 	metadataDir := *metadataDirVal
@@ -39,6 +40,10 @@ func main() {
 
 	if *pkgName == "" {
 		check(fmt.Errorf("-pkg option is required."))
+	}
+
+	if *clientName == "" {
+		check(fmt.Errorf("-client option is required."))
 	}
 
 	indexFile := path.Join(metadataDir, "index.json")
@@ -91,7 +96,7 @@ func main() {
 			}
 			apiTypes[typeName.(string)] = typeData
 		}
-		var analyzer = NewApiAnalyzer(version, apiResources, apiTypes)
+		var analyzer = NewApiAnalyzer(version, *clientName, apiResources, apiTypes)
 		d, err := analyzer.Analyze()
 		check(err)
 		descriptors[version] = d

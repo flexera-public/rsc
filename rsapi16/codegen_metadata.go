@@ -2,9 +2,9 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 25, 2015 at 12:35pm (PST)
+// Feb 25, 2015 at 5:13pm (PST)
 // Command:
-// $ praxisgen -metadata=../../rsapi16/api_docs -output=../../rsapi16 -pkg=rsapi16 -target=1.6
+// $ praxisgen -metadata=../../rsapi16/api_docs -output=../../rsapi16 -pkg=rsapi16 -target=1.6 -client=Api16
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -19,8 +19,8 @@ import (
 
 // Consists of a map of resource name to resource metadata.
 var api_metadata = map[string]*metadata.Resource{
-	"Accounts": &metadata.Resource{
-		Name:        "Accounts",
+	"Account": &metadata.Resource{
+		Name:        "Account",
 		Description: `        Resources in RightScale generally belong to accounts`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -79,8 +79,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"Clouds": &metadata.Resource{
-		Name:        "Clouds",
+	"Cloud": &metadata.Resource{
+		Name:        "Cloud",
 		Description: `        Clouds provide remote resources for things like storage and compute.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -120,17 +120,17 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "int",
 						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},
@@ -139,8 +139,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"Datacenters": &metadata.Resource{
-		Name:        "Datacenters",
+	"Datacenter": &metadata.Resource{
+		Name:        "Datacenter",
 		Description: `        Datacenters are cloud resources that give you the ability to place         resources in isolated locations...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -162,16 +162,16 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[cloud_id]",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
+						Name:        "params[cloud_id]",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "int",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -199,13 +199,6 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[id]",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
@@ -219,14 +212,21 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "params[id]",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Mandatory:   true,
+						NonBlank:    false,
+					},
 				},
 				QueryParamNames:   []string{"view"},
 				PayloadParamNames: []string{},
 			},
 		},
 	},
-	"Deployments": &metadata.Resource{
-		Name:        "Deployments",
+	"Deployment": &metadata.Resource{
+		Name:        "Deployment",
 		Description: `        Deployments provide a way to group resources that logically belong         together...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -292,8 +292,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"Images": &metadata.Resource{
-		Name:        "Images",
+	"Image": &metadata.Resource{
+		Name:        "Image",
 		Description: `        Images define the initial Operating System and root disk contents         for new instances...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -309,13 +309,6 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[filter]",
-						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
@@ -329,8 +322,15 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "params[filter]",
+						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"filter, view"},
+				QueryParamNames:   []string{"view, filter"},
 				PayloadParamNames: []string{},
 			},
 
@@ -353,6 +353,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
@@ -366,21 +373,14 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
 				},
 				QueryParamNames:   []string{"view"},
 				PayloadParamNames: []string{},
 			},
 		},
 	},
-	"InstanceTypes": &metadata.Resource{
-		Name:        "InstanceTypes",
+	"InstanceType": &metadata.Resource{
+		Name:        "InstanceType",
 		Description: `        An InstanceType represents a basic hardware configuration for an         Instance...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -465,8 +465,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"Instances": &metadata.Resource{
-		Name:        "Instances",
+	"Instance": &metadata.Resource{
+		Name:        "Instance",
 		Description: `        Instances represent an entity that is runnable in the cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -572,8 +572,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"IpAddressBindings": &metadata.Resource{
-		Name:        "IpAddressBindings",
+	"IpAddressBinding": &metadata.Resource{
+		Name:        "IpAddressBinding",
 		Description: `        An IpAddressBinding represents an abstraction for binding an IpAddress         to an instance...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -595,16 +595,16 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
+						Name:        "params[cloud_id]",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "int",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "params[cloud_id]",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
 					},
@@ -658,8 +658,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"IpAddresses": &metadata.Resource{
-		Name:        "IpAddresses",
+	"IpAddress": &metadata.Resource{
+		Name:        "IpAddress",
 		Description: `        An IpAddress provides an abstraction for IPv4 addresses bindable to         Instance resources running in a Cloud...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -718,6 +718,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
@@ -731,21 +738,14 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
 				},
 				QueryParamNames:   []string{"view"},
 				PayloadParamNames: []string{},
 			},
 		},
 	},
-	"MultiCloudImages": &metadata.Resource{
-		Name:        "MultiCloudImages",
+	"MultiCloudImage": &metadata.Resource{
+		Name:        "MultiCloudImage",
 		Description: `        A MultiCloudImage is a RightScale component that functions as a pointer         to machine images in specific clouds (e...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -804,8 +804,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"NetworkInterfaceAttachments": &metadata.Resource{
-		Name:        "NetworkInterfaceAttachments",
+	"NetworkInterfaceAttachment": &metadata.Resource{
+		Name:        "NetworkInterfaceAttachment",
 		Description: `        NetworkInterfaceAttachments represent an attachment between a         NetworkInterface and another resource...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -845,17 +845,17 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[id]",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[view]",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
 						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[id]",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Mandatory:   true,
 						NonBlank:    false,
 					},
 				},
@@ -864,8 +864,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"NetworkInterfaces": &metadata.Resource{
-		Name:        "NetworkInterfaces",
+	"NetworkInterface": &metadata.Resource{
+		Name:        "NetworkInterface",
 		Description: `        Just like their physical counterparts, NetworkInterfaces join other         resources to a network...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -924,8 +924,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"Networks": &metadata.Resource{
-		Name:        "Networks",
+	"Network": &metadata.Resource{
+		Name:        "Network",
 		Description: `        A Network is a logical grouping of network devices.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -965,17 +965,17 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
 						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},
@@ -984,8 +984,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"SecurityGroups": &metadata.Resource{
-		Name:        "SecurityGroups",
+	"SecurityGroup": &metadata.Resource{
+		Name:        "SecurityGroup",
 		Description: `        Security Groups represent network security profiles that contain lists         of firewall rules for different ports and source IP addresses, as well         as trust relationships between security groups...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -1013,6 +1013,13 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "params[instance_id]",
+						Description: `The Instance with which to scope the index`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "params[cloud_id]",
 						Description: `The identifier of Cloud this resource resides in`,
 						Type:        "int",
@@ -1022,13 +1029,6 @@ var api_metadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "params[view]",
 						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "params[instance_id]",
-						Description: `The Instance with which to scope the index`,
 						Type:        "string",
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1057,13 +1057,6 @@ var api_metadata = map[string]*metadata.Resource{
 				},
 				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "params[view]",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "params[id]",
 						Description: `The identifier of the resource`,
 						Type:        "string",
@@ -1077,14 +1070,21 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "params[view]",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 				},
 				QueryParamNames:   []string{"view"},
 				PayloadParamNames: []string{},
 			},
 		},
 	},
-	"ServerArrays": &metadata.Resource{
-		Name:        "ServerArrays",
+	"ServerArray": &metadata.Resource{
+		Name:        "ServerArray",
 		Description: `        A server array represents a logical group of instances and allows to         resize(grow/shrink) that group based on certain elasticity parameters...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -1143,8 +1143,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"ServerTemplates": &metadata.Resource{
-		Name:        "ServerTemplates",
+	"ServerTemplate": &metadata.Resource{
+		Name:        "ServerTemplate",
 		Description: `        ServerTemplates allow you to pre-configure servers by starting from a         base image and adding scripts that run during the boot, operational,         and shutdown phases...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -1203,8 +1203,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"Servers": &metadata.Resource{
-		Name:        "Servers",
+	"Server": &metadata.Resource{
+		Name:        "Server",
 		Description: `        Servers represent the notion of a server/machine from RightScale's         perspective...`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -1263,8 +1263,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"SshKeys": &metadata.Resource{
-		Name:        "SshKeys",
+	"SshKey": &metadata.Resource{
+		Name:        "SshKey",
 		Description: `        Ssh Keys represent a created SSH Key that exists in the cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -1349,8 +1349,8 @@ var api_metadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"Subnets": &metadata.Resource{
-		Name:        "Subnets",
+	"Subnet": &metadata.Resource{
+		Name:        "Subnet",
 		Description: `        A Subnet is a logical grouping of network devices`,
 		Actions: []*metadata.Action{
 			&metadata.Action{

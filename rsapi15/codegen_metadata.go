@@ -1,9 +1,10 @@
 //************************************************************************//
 //                     rsc - RightScale API command line tool
 //
-// Generated Feb 24, 2015 at 9:57am (PST)
+// Generated
+// Feb 25, 2015 at 5:09pm (PST)
 // Command:
-// $ api15gen -metadata=../../rsapi15 -output=../../rsapi15
+// $ ./api15gen -metadata=../../rsapi15 -output=../../rsapi15
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//

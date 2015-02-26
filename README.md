@@ -127,18 +127,18 @@ and the `Index()` method is defined as:
 // -- Optional parameters:
 // 	filter
 // 	view
-func (loc *CloudLocator) Index(options ApiParams) ([]*Cloud, error)
+func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error)
 ```
 The following code would invoke the `Index()` method:
 ```go
-var clouds, err = api.CloudLocator("/api/clouds").Index(ApiParams{})
+var clouds, err = api.CloudLocator("/api/clouds").Index(rsapi.ApiParams{})
 ```
 `Create` actions all return a locator so that fetching the corresponding resource is convenient:
 ```go
 var volumesLocator = api.VolumeLocator("/api/clouds/1/volumes")
 var params rsapi15.VolumeParam{} // Code that sets parameters omitted for brevity
 if loc, err := volumeLocator.Create(&params); err == nil {
-	volume, err := loc.Show(ApiParams{})
+	volume, err := loc.Show(rsapi.ApiParams{})
 	// ... check error, use volume etc.
 }
 ```

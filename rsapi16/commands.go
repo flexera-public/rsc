@@ -1,4 +1,4 @@
-package rsapi15
+package rsapi16
 
 import (
 	"net/http"
@@ -12,7 +12,7 @@ import (
 var commandValues rsapi.ActionCommands
 
 // Register all commands with kinpin application
-func RegisterCommands(api15Cmd cmd.CommandProvider) {
+func RegisterCommands(api16Cmd cmd.CommandProvider) {
 	commandValues = rsapi.ActionCommands{}
 	var actionNames []string
 	for _, r := range api_metadata {
@@ -60,7 +60,7 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 				description = "Action of resources " + strings.Join(resources[:len(resources)-1], ", ") + " and " + resources[len(resources)-1]
 			}
 		}
-		var actionCmd = api15Cmd.Command(action, description)
+		var actionCmd = api16Cmd.Command(action, description)
 		var actionCmdValue = rsapi.ActionCommand{}
 		var hrefMsg = "API Resource or resource collection href on which to act, e.g. '/api/servers'"
 		var paramsMsg = "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'"
@@ -71,7 +71,7 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 }
 
 // Parse and run command
-func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
+func (a *Api16) RunCommand(cmd string) (*http.Response, error) {
 	var parsed, err = a.ParseCommand(cmd, commandValues)
 	if err != nil {
 		return nil, err

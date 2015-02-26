@@ -37,7 +37,7 @@ func parameters(a *gen.Action) string {
 		params[i] = fmt.Sprintf("%s %s", param.VarName, param.Signature())
 	}
 	if hasOptional {
-		params[countParams-1] = "options ApiParams"
+		params[countParams-1] = "options rsapi.ApiParams"
 	}
 
 	return strings.Join(params, ", ")
@@ -57,7 +57,7 @@ func paramsAsPayload(p []*gen.ActionParam) string {
 			hasOptional = true
 		}
 	}
-	mandatory := fmt.Sprintf("ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
+	mandatory := fmt.Sprintf("rsapi.ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
 	if !hasOptional {
 		return mandatory
 	}

@@ -1,4 +1,4 @@
-package rsapi15
+package rsapi16
 
 import (
 	"crypto/rand"
@@ -21,7 +21,7 @@ import (
 // (e.g. "create") and the request parameters.
 // The method makes the request and returns the raw HTTP response or an error.
 // The LoadResponse method can be used to load the response body if needed.
-func (a *Api15) Do(actionUrl, action string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api16) Do(actionUrl, action string, params rsapi.ApiParams) (*http.Response, error) {
 	// First figure out action verb and uri
 	var method string
 	switch action {
@@ -47,7 +47,7 @@ func (a *Api15) Do(actionUrl, action string, params rsapi.ApiParams) (*http.Resp
 }
 
 // Dispatch request to appropriate low-level method
-func (a *Api15) Dispatch(method, actionUrl string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api16) Dispatch(method, actionUrl string, params rsapi.ApiParams) (*http.Response, error) {
 	switch method {
 	case "GET":
 		return a.GetRaw(actionUrl, params)
@@ -62,7 +62,7 @@ func (a *Api15) Dispatch(method, actionUrl string, params rsapi.ApiParams) (*htt
 }
 
 // Low-level GET request that loads response JSON into generic object
-func (a *Api15) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
+func (a *Api16) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 	resp, err := a.GetRaw(uri, params)
 	if err != nil {
 		return nil, err
@@ -71,13 +71,13 @@ func (a *Api15) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 }
 
 // Low-level GET request
-func (a *Api15) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api16) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
 	return a.makeRequest("GET", uri, params)
 }
 
 // Low-level POST request that loads response JSON into generic object
 // Any "Location" header present in the HTTP response is returned in a map under the "Location" key.
-func (a *Api15) Post(uri string, body rsapi.ApiParams) (interface{}, error) {
+func (a *Api16) Post(uri string, body rsapi.ApiParams) (interface{}, error) {
 	resp, err := a.PostRaw(uri, body)
 	if err != nil {
 		return nil, err
@@ -86,18 +86,18 @@ func (a *Api15) Post(uri string, body rsapi.ApiParams) (interface{}, error) {
 }
 
 // Low-level POST request
-func (a *Api15) PostRaw(uri string, body rsapi.ApiParams) (*http.Response, error) {
+func (a *Api16) PostRaw(uri string, body rsapi.ApiParams) (*http.Response, error) {
 	return a.makeRequest("POST", uri, body)
 }
 
 // Low-level PUT request
-func (a *Api15) Put(uri string, body rsapi.ApiParams) error {
+func (a *Api16) Put(uri string, body rsapi.ApiParams) error {
 	_, err := a.makeRequest("PUT", uri, body)
 	return err
 }
 
 // Low-level DELETE request
-func (a *Api15) Delete(uri string) error {
+func (a *Api16) Delete(uri string) error {
 	_, err := a.makeRequest("DELETE", uri, nil)
 	return err
 }
@@ -105,7 +105,7 @@ func (a *Api15) Delete(uri string) error {
 // Deserialize JSON response into generic object.
 // If the response has a "Location" header then the returned object is a map with one key "Location"
 // containing the value of the header.
-func (a *Api15) LoadResponse(resp *http.Response) (interface{}, error) {
+func (a *Api16) LoadResponse(resp *http.Response) (interface{}, error) {
 	defer resp.Body.Close()
 	var respBody interface{}
 	jsonResp, err := ioutil.ReadAll(resp.Body)
@@ -129,7 +129,7 @@ func (a *Api15) LoadResponse(resp *http.Response) (interface{}, error) {
 }
 
 // Helper function that signs, makes and logs HTTP request
-func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api16) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Response, error) {
 	var u = url.URL{
 		Scheme: "https",
 		Host:   a.Host,
@@ -160,7 +160,7 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("X-API-Version", "1.5")
+	req.Header.Set("X-API-Version", "1.6")
 	if a.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
 	}

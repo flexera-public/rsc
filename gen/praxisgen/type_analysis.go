@@ -1,12 +1,18 @@
 package main
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
+	"regexp"
 
 	"bitbucket.org/pkg/inflect"
 
 	"github.com/rightscale/rsc/gen"
 )
+
+// Regular expression used to capture brackets in query name
+var bracketRegexp = regexp.MustCompile(`(\[|\])+`)
 
 // Analyze an attribute, create corresponding ActionParam
 func (a *ApiAnalyzer) AnalyzeAttribute(name, query string, attr map[string]interface{}) (*gen.ActionParam, error) {
@@ -82,58 +88,26 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		if !ok {
 			return nil, fmt.Errorf("Failed to retrieve attributes of struct for %s", prettify(typeDef))
 		}
-		var typeName string
-		for n, _ := range attrs {
-			typeName = inflect.Camelize(n) + "Struct"
-			break
+		var obj, err = a.CreateOrGetType(query, attrs)
+		if err != nil {
+			return nil, err
 		}
-		var obj = gen.ObjectDataType{Name: typeName}
-		obj.Fields = make([]*gen.ActionParam, len(attrs))
-
-		// Record newly analyzed type to avoid infinite recursion
-		a.typeNames[n] = typeName
-		a.descriptor.Types[typeName] = &obj
-
-		var idx = 0
-		for an, at := range attrs {
-			att, err := a.AnalyzeAttribute(an, fmt.Sprintf("%s[%s]", query, an), at.(map[string]interface{}))
-			if err != nil {
-				return nil, fmt.Errorf("Failed to compute type of attribute %s: %s", an, err.Error())
-			}
-			obj.Fields[idx] = att
-			idx += 1
-		}
-		dataType = &obj
+		dataType = obj
 	case "Hash":
-		keys, ok := typeDef["keys"].(map[string]map[string]interface{})
+		keys, ok := typeDef["keys"].(map[string]interface{})
 		if !ok {
 			dataType = new(gen.EnumerableDataType)
 		} else {
-			var typeName = toGoTypeName(n, false)
-			var obj = gen.ObjectDataType{Name: typeName}
-			obj.Fields = make([]*gen.ActionParam, len(keys))
-
-			// Record newly analyzed type to avoid infinite recursion
-			a.typeNames[n] = typeName
-			a.descriptor.Types[typeName] = &obj
-
-			var idx = 0
-			for kn, k := range keys {
-				kt, err := a.AnalyzeAttribute(kn, fmt.Sprintf("%s[%s]", query, kn), k)
-				if err != nil {
-					return nil, fmt.Errorf("Failed to compute type of key %s of hash for %s",
-						kn, prettify(typeDef))
-				}
-				obj.Fields[idx] = kt
-				idx += 1
+			var obj, err = a.CreateOrGetType(query, keys)
+			if err != nil {
+				return nil, err
 			}
-			dataType = &obj
+			dataType = obj
 		}
 	default:
 		// First check if we already analyzed that type
-		var typeName = toGoTypeName(n, false)
-		if _, ok := a.typeNames[n]; ok {
-			return a.descriptor.Types[typeName], nil
+		if t := a.GetType(n); t != nil {
+			return t, nil
 		}
 
 		// No then analyze it
@@ -146,12 +120,8 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 			return nil, fmt.Errorf("Type %s has no attributes: %s", n, prettify(typeDef))
 		}
 		var att = attrs.(map[string]interface{})
-		var obj = gen.ObjectDataType{Name: typeName}
+		var obj = a.CreateType(n)
 		obj.Fields = make([]*gen.ActionParam, len(att))
-
-		// Record newly analyzed type to avoid infinite recursion
-		a.typeNames[n] = typeName
-		a.descriptor.Types[typeName] = &obj
 
 		var idx = 0
 		for an, at := range att {
@@ -165,8 +135,28 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		}
 
 		// We're done
-		dataType = &obj
+		dataType = obj
 	}
 
 	return dataType, nil
+}
+
+// Helper method that creates or retrieve a object data type given its attributes.
+func (a *ApiAnalyzer) CreateOrGetType(query string, attributes map[string]interface{}) (*gen.ObjectDataType, error) {
+	var hasher = md5.New()
+	hasher.Write([]byte(fmt.Sprintf("%v", attributes)))
+	var md5str = hex.EncodeToString(hasher.Sum(nil))
+	var name = inflect.Camelize(bracketRegexp.ReplaceAllLiteralString(query, "_") + "_struct")
+	var obj = a.GetOrCreate(md5str, name)
+	obj.Fields = make([]*gen.ActionParam, len(attributes))
+	var idx = 0
+	for an, at := range attributes {
+		att, err := a.AnalyzeAttribute(an, fmt.Sprintf("%s[%s]", query, an), at.(map[string]interface{}))
+		if err != nil {
+			return nil, fmt.Errorf("Failed to compute type of attribute %s: %s", an, err.Error())
+		}
+		obj.Fields[idx] = att
+		idx += 1
+	}
+	return obj, nil
 }

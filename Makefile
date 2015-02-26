@@ -1,13 +1,19 @@
-.PHONY: all api15 api15gen api15json
+.PHONY: all json api15 api15gen api15json api16 praxisgen
 
-all: api15
+all: api15 api16
 	go build && go test
 
 api15: api15gen
-	cd rsapi15 && go build
+	cd rsapi15 && go generate && gobuild
 
 api15gen:
-	cd rsapi15 && go generate
+	cd gen/api15gen && go install
 
 api15json:
 	curl -s -o rsapi15/api_data.json http://reference.rightscale.com/api1.5/api_data.json
+
+api16: praxisgen
+	cd rsapi16 && go generate && gobuild
+
+praxisgen:
+	cd gen/praxisgen && go install
