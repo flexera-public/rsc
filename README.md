@@ -1,7 +1,7 @@
 rsc - A generic RightScale API client
 ==========================================
 rsc provides both a go package and command line tool for interacting with various RightScale APIs. 
-Only API 1.5 is supported at this time.
+Both API 1.5 and API 1.6 are supported at this time.
 
 Command Line Tool
 -----------------
@@ -12,12 +12,12 @@ equivalent to `rsc api15`).
 The general shape of a command line is:
 
 ```
-$ rsc [GLOBAL] ACTION HREF [PARAM=VALUE]
+$ rsc [GLOBAL] [API] ACTION HREF [PARAM=VALUE]
 ```
-where `GLOBAL` is an optional list of global flags, `ACTION` is the API action to perform (i.e
-`index`, `show`, `update`, etc.), `HREF` is the resource or resource collection href (i.e.
-`/api/servers`, `/api/servers/1` etc.) and `PARAM` and `VALUE` are the names and values of the
-action parameters.
+where `GLOBAL` is an optional list of global flags, `API` is `api15` or `api16`, `ACTION` is the 
+API action to perform (i.e `index`, `show`, `update`, etc.), `HREF` is the resource or resource
+collection href (i.e. `/api/servers`, `/api/servers/1` etc.) and `PARAM` and `VALUE` are the names
+and values of the action parameters.
 
 The list of available global flags is:
 ```
@@ -125,8 +125,8 @@ and the `Index()` method is defined as:
 // GET /api/clouds
 // Lists the clouds available to this account.
 // -- Optional parameters:
-// 	filter
-// 	view
+// filter
+// view
 func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error)
 ```
 The following code would invoke the `Index()` method:
