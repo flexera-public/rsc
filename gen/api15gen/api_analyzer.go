@@ -198,6 +198,25 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			}
 		}
 
+		// Mix in filters information
+		if filters, ok := meth["filters"]; ok {
+			var filterParam *gen.ActionParam
+			for _, p := range actionParams {
+				if p.Name == "filter" {
+					filterParam = p
+					break
+				}
+			}
+			if filterParam != nil {
+				var values = sortedKeys(filters.(map[string]interface{}))
+				var ivalues = make([]interface{}, len(values))
+				for i, v := range values {
+					ivalues[i] = v
+				}
+				filterParam.ValidValues = ivalues
+			}
+		}
+
 		// Record action
 		var action = gen.Action{
 			Name:              actionName,

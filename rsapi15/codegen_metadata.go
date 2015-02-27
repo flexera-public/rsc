@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 26, 2015 at 11:58pm (PST)
+// Feb 27, 2015 at 10:16am (PST)
 // Command:
 // $ api15gen
 //
@@ -255,6 +255,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"alert_spec_href", "status"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -274,6 +275,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"alert_spec_href", "status"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -620,6 +622,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "escalation_name", "name", "subject_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -639,6 +642,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "escalation_name", "name", "subject_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -1056,6 +1060,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"auditee_href", "user_email"},
 					},
 					&metadata.ActionParam{
 						Name:        "limit",
@@ -1091,6 +1096,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"auditee_href", "user_email"},
 					},
 					&metadata.ActionParam{
 						Name:        "limit",
@@ -1454,6 +1460,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "committed", "completed", "from_master", "latest_before"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -1464,6 +1471,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "committed", "completed", "from_master", "latest_before"},
 					},
 					&metadata.ActionParam{
 						Name:        "lineage",
@@ -1671,6 +1679,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -1681,6 +1690,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name"},
 					},
 				},
 			},
@@ -1748,6 +1758,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_type", "description", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -1767,6 +1778,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_type", "description", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2023,6 +2035,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "namespace", "repository_href", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2042,6 +2055,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "namespace", "repository_href", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2478,6 +2492,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2497,6 +2512,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2618,6 +2634,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2637,6 +2654,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2824,6 +2842,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name", "server_tag_scope"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -2843,6 +2862,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name", "server_tag_scope"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3030,6 +3050,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3049,6 +3070,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3121,6 +3143,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cpu_architecture", "description", "image_type", "name", "os_platform", "resource_uid", "visibility"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3140,6 +3163,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cpu_architecture", "description", "image_type", "name", "os_platform", "resource_uid", "visibility"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3517,6 +3541,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"datacenter_href", "deployment_href", "name", "os_platform", "parent_href", "placement_group_href", "private_dns_name", "private_ip_address", "public_dns_name", "public_ip_address", "resource_uid", "server_template_href", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3536,6 +3561,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"datacenter_href", "deployment_href", "name", "os_platform", "parent_href", "placement_group_href", "private_dns_name", "private_ip_address", "public_dns_name", "public_ip_address", "resource_uid", "server_template_href", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -4479,6 +4505,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cpu_architecture", "description", "name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -4498,6 +4525,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cpu_architecture", "description", "name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -4643,6 +4671,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"deployment_href", "name"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -4653,6 +4682,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"deployment_href", "name"},
 					},
 				},
 			},
@@ -4836,6 +4866,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"instance_href", "ip_address_href"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -4846,6 +4877,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"instance_href", "ip_address_href"},
 					},
 				},
 			},
@@ -4944,6 +4976,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"plugin", "view"},
 					},
 					&metadata.ActionParam{
 						Name:        "period",
@@ -4988,6 +5021,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"plugin", "view"},
 					},
 					&metadata.ActionParam{
 						Name:        "period",
@@ -5283,6 +5317,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name", "revision"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -5293,6 +5328,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name", "revision"},
 					},
 				},
 			},
@@ -5477,6 +5513,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "multi_cloud_image_href"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -5487,6 +5524,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "multi_cloud_image_href"},
 					},
 				},
 			},
@@ -5683,6 +5721,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cidr_block", "cloud_href", "name", "resource_uid"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -5693,6 +5732,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cidr_block", "cloud_href", "name", "resource_uid"},
 					},
 				},
 			},
@@ -5858,6 +5898,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "network_href"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -5868,6 +5909,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "network_href"},
 					},
 				},
 			},
@@ -6040,6 +6082,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "description", "name", "type"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -6050,6 +6093,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "description", "name", "type"},
 					},
 				},
 			},
@@ -6198,6 +6242,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "network_href", "network_option_group_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -6217,6 +6262,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "network_href", "network_option_group_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -6514,6 +6560,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"user_href"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -6524,6 +6571,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"user_href"},
 					},
 				},
 			},
@@ -6631,6 +6679,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -6650,6 +6699,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -6838,6 +6888,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name", "publisher", "revision"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -6857,6 +6908,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name", "publisher", "revision"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7069,6 +7121,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"runnable_href", "storage_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7088,6 +7141,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"runnable_href", "storage_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7448,6 +7502,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7467,6 +7522,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7822,6 +7878,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"lineage", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7841,6 +7898,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"lineage", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "latest_only",
@@ -8080,6 +8138,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "description", "network_href", "next_hop_href", "next_hop_ip", "next_hop_type", "route_table_href", "state"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -8090,6 +8149,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "description", "network_href", "next_hop_href", "next_hop_ip", "next_hop_type", "route_table_href", "state"},
 					},
 				},
 			},
@@ -8283,6 +8343,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "network_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -8302,6 +8363,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "network_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -8693,6 +8755,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "network_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -8712,6 +8775,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "network_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -9346,6 +9410,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "deployment_href", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -9365,6 +9430,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "deployment_href", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -10113,6 +10179,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "deployment_href", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -10132,6 +10199,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "deployment_href", "name"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -10672,6 +10740,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "lineage", "multi_cloud_image_href", "name", "revision"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -10691,6 +10760,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"description", "lineage", "multi_cloud_image_href", "name", "revision"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -11041,6 +11111,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"is_default", "multi_cloud_image_href", "server_template_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -11060,6 +11131,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"is_default", "multi_cloud_image_href", "server_template_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -11297,6 +11369,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -11316,6 +11389,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -11486,6 +11560,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"datacenter_href", "instance_href", "name", "network_href", "resource_uid", "visibility"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -11496,6 +11571,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"datacenter_href", "instance_href", "name", "network_href", "resource_uid", "visibility"},
 					},
 				},
 			},
@@ -11982,6 +12058,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"email", "first_name", "last_name"},
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -11992,6 +12069,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"email", "first_name", "last_name"},
 					},
 				},
 			},
@@ -12289,6 +12367,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"datacenter_href", "deployment_href", "description", "name", "parent_volume_snapshot_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12308,6 +12387,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"datacenter_href", "deployment_href", "description", "name", "parent_volume_snapshot_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12506,6 +12586,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"instance_href", "resource_uid", "volume_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12525,6 +12606,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"instance_href", "resource_uid", "volume_href"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12705,6 +12787,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12724,6 +12807,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12802,6 +12886,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12821,6 +12906,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
+						ValidValues: []string{"name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
