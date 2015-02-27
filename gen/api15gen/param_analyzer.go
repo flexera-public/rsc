@@ -43,7 +43,7 @@ type ParamAnalyzer struct {
 	ParamTypes map[string]*gen.ObjectDataType
 	// Parameters sorted alphabetically by name
 	Params []*gen.ActionParam
-	// Leaf parameters
+	// Leaf parameters used for command line
 	LeafParams []*gen.ActionParam
 }
 
@@ -359,6 +359,9 @@ func parseParamName(name string) string {
 	}
 	if name == "type" {
 		return "type_"
+	}
+	if name == "options" {
+		return "options_"
 	}
 	p := partsRegexp.ReplaceAllString(name, "_")
 	return inflect.CamelizeDownFirst(p)

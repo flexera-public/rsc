@@ -169,6 +169,7 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams, payload rs
 		return nil, err
 	}
 	req.Header.Set("X-API-Version", "1.5")
+	req.Header.Set("Content-Type", "application/json")
 	if a.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
 	}

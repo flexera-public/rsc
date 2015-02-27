@@ -50,6 +50,9 @@ func toGoTypeName(name string, usePointer bool) string {
 
 // Parse native names into go parameter names
 func toVarName(name string) string {
+	if name == "options" {
+		return "options_"
+	}
 	if name == "type" {
 		return "type_"
 	}

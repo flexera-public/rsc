@@ -132,8 +132,8 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 
 		// Update description with parameter descriptions
-		var mandatory = []string{}
-		var optional = []string{}
+		var mandatory []string
+		var optional []string
 		for _, p := range paramAnalyzer.Params {
 			if p.Mandatory {
 				if p.Description != "" {
@@ -148,22 +148,23 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				optional = append(optional, desc)
 			}
 		}
-		sort.Strings(mandatory)
-		sort.Strings(optional)
 		if len(mandatory) > 0 {
+			sort.Strings(mandatory)
 			description += "\n\t" + strings.Join(mandatory, "\n\t")
 		}
 		if len(optional) > 0 {
+			sort.Strings(optional)
 			description += "\n-- Optional parameters:\n\t" +
 				strings.Join(optional, "\n\t")
 		}
 
 		// Sort parameters by location
 		var actionParams = paramAnalyzer.Params
-		var pathParamNames = []string{}
-		var queryParamNames = []string{}
-		var payloadParamNames = []string{}
-		for _, p := range actionParams {
+		var leafParams = paramAnalyzer.LeafParams
+		var pathParamNames []string
+		var queryParamNames []string
+		var payloadParamNames []string
+		for _, p := range leafParams {
 			var n = p.Name
 			if isQueryParam(n) {
 				queryParamNames = append(queryParamNames, n)
@@ -173,6 +174,26 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				p.Location = gen.PathParam
 			} else {
 				payloadParamNames = append(payloadParamNames, n)
+				p.Location = gen.PayloadParam
+			}
+		}
+		for _, p := range actionParams {
+			var done = false
+			for _, ap := range leafParams {
+				if ap == p {
+					done = true
+					break
+				}
+			}
+			if done {
+				continue
+			}
+			var n = p.Name
+			if isQueryParam(n) {
+				p.Location = gen.QueryParam
+			} else if isPathParam(n, pathPatterns) {
+				p.Location = gen.PathParam
+			} else {
 				p.Location = gen.PayloadParam
 			}
 		}

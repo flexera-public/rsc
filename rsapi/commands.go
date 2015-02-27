@@ -2,6 +2,7 @@ package rsapi
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -56,15 +57,15 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 		var name = elems[0]
 		var value = elems[1]
 		var param *metadata.ActionParam
-		for _, ap := range action.Params {
+		for _, ap := range action.CommandFlags {
 			if ap.Name == name {
 				param = ap
 				break
 			}
 		}
 		if param == nil {
-			var supported = make([]string, len(action.Params))
-			for i, p := range action.Params {
+			var supported = make([]string, len(action.CommandFlags))
+			for i, p := range action.CommandFlags {
 				supported[i] = p.Name
 			}
 			return nil, fmt.Errorf("Unknown %s.%s flag '%s'. Supported flags are: %s",
@@ -133,7 +134,7 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 			}
 		}
 	}
-	for _, p := range action.Params {
+	for _, p := range action.CommandFlags {
 		_, ok := queryParams[p.Name]
 		if !ok {
 			_, ok = payloadParams[p.Name]
@@ -141,6 +142,11 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 		if p.Mandatory && !ok {
 			return nil, fmt.Errorf("Missing required flag '%s'", p.Name)
 		}
+	}
+
+	// Reconstruct data structure from flat values
+	if payloadParams, err = buildPayload(payloadParams); err != nil {
+		return nil, err
 	}
 
 	return &ParsedCommand{path.HttpMethod, path.Path, queryParams, payloadParams}, nil
@@ -152,13 +158,13 @@ func (a *Api) ShowHelp(cmd string, values ActionCommands) error {
 	if err != nil {
 		return err
 	}
-	if len(action.Params) == 0 {
+	if len(action.CommandFlags) == 0 {
 		fmt.Printf("usage: rsc [<flags>] %s %s %s\n", strings.Split(cmd, " ")[0],
 			action.Name, href)
 		return nil
 	}
-	var flagHelp = make([]string, len(action.Params))
-	for i, f := range action.Params {
+	var flagHelp = make([]string, len(action.CommandFlags))
+	for i, f := range action.CommandFlags {
 		var attrs string
 		if f.Mandatory {
 			attrs = "required"
@@ -261,4 +267,99 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 	}
 
 	return nil
+}
+
+// Reconstruct payload map from flatten values
+func buildPayload(values ApiParams) (ApiParams, error) {
+	var payload = map[string]interface{}{}
+	for name, value := range values {
+		if _, err := normalize(payload, name, value); err != nil {
+			return nil, err
+		}
+	}
+	return payload, nil
+}
+
+// Regular expressions used to capture parts of query string encoded param name by algorithm below
+var (
+	nameRegex    = regexp.MustCompile(`\A[\[\]]*([^\[\]]+)\]*(.*)`)
+	childRegexp  = regexp.MustCompile(`^\[\]\[([^\[\]]+)\]$`)
+	childRegexp2 = regexp.MustCompile(`^\[\](.+)$`)
+)
+
+// Recursively travers a query string encoded name and build up the corresponding structure.
+// "a[b]" produces a map[string]interface{} with key "b"
+// "a[]" produces a []interface{}
+func normalize(payload ApiParams, name string, value interface{}) (ApiParams, error) {
+	var matches = nameRegex.FindStringSubmatch(name)
+	if len(matches) == 0 {
+		return nil, nil
+	}
+	var k = matches[1]
+	if len(k) == 0 {
+		return nil, nil
+	}
+	var after = matches[2]
+	if after == "" {
+		payload[k] = value
+	} else if after == "[" {
+		payload[name] = value
+	} else if after == "[]" {
+		if _, ok := payload[k]; !ok {
+			payload[k] = []interface{}{}
+		}
+		if _, ok := payload[k].([]interface{}); !ok {
+			return nil, fmt.Errorf("expected array for param '%s'", k)
+		}
+		payload[k] = append(payload[k].([]interface{}), value)
+	} else {
+		matches = childRegexp.FindStringSubmatch(after)
+		if len(matches) == 0 {
+			matches = childRegexp2.FindStringSubmatch(after)
+		}
+		if len(matches) > 0 {
+			var childKey = matches[1]
+			if _, ok := payload[k]; !ok {
+				payload[k] = []interface{}{}
+			}
+			if _, ok := payload[k].([]interface{}); !ok {
+				return nil, fmt.Errorf("expected array for param '%s'", k)
+			}
+			var array = payload[k].([]interface{})
+			if len(array) == 0 {
+				var p, err = normalize(ApiParams{}, childKey, value)
+				if err != nil {
+					return nil, err
+				}
+				payload[k] = append(array, p)
+			} else {
+				var last, ok = array[len(array)-1].(ApiParams)
+				if ok {
+					_, ok = last[childKey]
+				}
+				if ok {
+					normalize(last, childKey, value)
+				} else {
+					var p, err = normalize(ApiParams{}, childKey, value)
+					if err != nil {
+						return nil, err
+					}
+					payload[k] = append(array, p)
+				}
+			}
+		} else {
+			if payload[k] == nil {
+				payload[k] = ApiParams{}
+			}
+			if _, ok := payload[k].(ApiParams); !ok {
+				return nil, fmt.Errorf("expected map for param '%s'", k)
+			}
+			var p, err = normalize(payload[k].(ApiParams), after, value)
+			if err != nil {
+				return nil, err
+			}
+			payload[k] = p
+		}
+	}
+	return payload, nil
 }

@@ -103,8 +103,8 @@ func main() {
 	}
 
 	// 3. Write code
-	var genClients = []string{}
-	var genMetadata = []string{}
+	var genClients []string
+	var genMetadata []string
 	for version, descriptor := range descriptors {
 		var pkg string
 		if len(*targetVersion) == 0 {

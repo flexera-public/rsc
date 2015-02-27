@@ -107,12 +107,12 @@ const actionMetadataTmpl = `&metadata.Action {
 				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
 					&metadata.PathPattern{
 						HttpMethod: "{{.HttpMethod}}",
-						Pattern: "{{.Path}}",
+						Pattern: "{{.Pattern}}",
 						Variables: []string{ {{if .Variables}}"{{join .Variables "\", \""}}"{{end}}},
 						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),
 					},{{end}}
 				},
-				Params: []*metadata.ActionParam{ {{range .LeafParams}}
+				CommandFlags: []*metadata.ActionParam{ {{range .LeafParams}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
 						Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
@@ -124,7 +124,17 @@ const actionMetadataTmpl = `&metadata.Action {
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
 				},
-				QueryParamNames: []string{ {{if .QueryParamNames}}"{{join .QueryParamNames ", "}}"{{end}}},
-				PayloadParamNames: []string{ {{if .PayloadParamNames}}"{{join .PayloadParamNames "\", \""}}"{{end}}},
+				ApiParams: []*metadata.ActionParam{ {{range .Params}}
+					&metadata.ActionParam{
+						Name: "{{.QueryName}}",
+						Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
+						Type: "{{.Signature}}",
+						Location: {{location .}},
+						Mandatory: {{.Mandatory}},
+						NonBlank: {{.NonBlank}},{{if .Regexp}}
+						Regexp: regexp.MustCompile("{{.Regexp}}"),{{end}}{{if .ValidValues}}
+						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
+					},{{end}}
+				},
 			},
 `

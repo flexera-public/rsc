@@ -24,7 +24,7 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	if a.DumpRequestResponse {
 		var b, err = httputil.DumpRequest(req, true)
 		if err == nil {
-			fmt.Printf("REQUEST\n-------\n%s\n", b)
+			fmt.Printf("REQUEST\n-------\n%s\n\n", b)
 		}
 	}
 	// Sign last so auth headers don't get printed or logged

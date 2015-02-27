@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 26, 2015 at 4:22pm (PST)
+// Feb 26, 2015 at 11:58pm (PST)
 // Command:
 // $ api15gen
 //
@@ -9632,7 +9632,7 @@ type NetworkOptionGroupParam struct {
 	CloudHref   string            `json:"cloud_href,omitempty"`
 	Description *string           `json:"description,omitempty"`
 	Name        *string           `json:"name,omitempty"`
-	Options     map[string]string `json:"options,omitempty"`
+	Options_    map[string]string `json:"options,omitempty"`
 	Type_       string            `json:"type,omitempty"`
 }
 

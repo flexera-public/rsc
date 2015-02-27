@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 26, 2015 at 4:22pm (PST)
+// Feb 26, 2015 at 11:58pm (PST)
 // Command:
 // $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 //
@@ -306,13 +306,13 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error
 	var res *Deployment
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
-	var idsOpt = options["ids"]
-	if idsOpt != nil {
-		queryParams["ids"] = idsOpt
-	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		queryParams["view"] = viewOpt
+	}
+	var idsOpt = options["ids"]
+	if idsOpt != nil {
+		queryParams["ids"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Deployment", "index")
@@ -1629,19 +1629,19 @@ type DeploymentLinks struct {
 }
 
 type Image2 struct {
-	ImageType          *string     `json:"image_type,omitempty"`
-	CpuArchitecture    *string     `json:"cpu_architecture,omitempty"`
-	Visibility         *string     `json:"visibility,omitempty"`
-	LegacyId           *int        `json:"legacy_id,omitempty"`
-	Href               *string     `json:"href,omitempty"`
-	Name               *string     `json:"name,omitempty"`
 	Links              *ImageLinks `json:"links,omitempty"`
+	LegacyId           *int        `json:"legacy_id,omitempty"`
+	Name               *string     `json:"name,omitempty"`
 	ResourceUid        *string     `json:"resource_uid,omitempty"`
-	VirtualizationType *string     `json:"virtualization_type,omitempty"`
-	Id                 *string     `json:"id,omitempty"`
 	Description        *string     `json:"description,omitempty"`
 	Kind               *string     `json:"kind,omitempty"`
 	OsPlatform         *string     `json:"os_platform,omitempty"`
+	Href               *string     `json:"href,omitempty"`
+	VirtualizationType *string     `json:"virtualization_type,omitempty"`
+	ImageType          *string     `json:"image_type,omitempty"`
+	Visibility         *string     `json:"visibility,omitempty"`
+	Id                 *string     `json:"id,omitempty"`
+	CpuArchitecture    *string     `json:"cpu_architecture,omitempty"`
 	RootDeviceStorage  *string     `json:"root_device_storage,omitempty"`
 	InheritedSource    *string     `json:"inherited_source,omitempty"`
 }
@@ -1651,58 +1651,58 @@ type ImageLinks struct {
 }
 
 type Incarnator struct {
-	State *string `json:"state,omitempty"`
-	Id    *int    `json:"id,omitempty"`
 	Name  *string `json:"name,omitempty"`
 	Href  *string `json:"href,omitempty"`
 	Kind  *string `json:"kind,omitempty"`
+	State *string `json:"state,omitempty"`
+	Id    *int    `json:"id,omitempty"`
 }
 
 type Instance2 struct {
+	ResourceUid        *string                    `json:"resource_uid,omitempty"`
+	MonitoringServer   *string                    `json:"monitoring_server,omitempty"`
+	MonitoringToken    *string                    `json:"monitoring_token,omitempty"`
 	Links              *InstanceLinks             `json:"links,omitempty"`
 	PublicIpAddresses  []string                   `json:"public_ip_addresses,omitempty"`
-	SshHost            *string                    `json:"ssh_host,omitempty"`
-	SecurityGroups     *SecurityGroupCollection   `json:"security_groups,omitempty"`
-	IpAddresses        []*IpAddress2              `json:"ip_addresses,omitempty"`
-	PublicDnsNames     []string                   `json:"public_dns_names,omitempty"`
-	MonitoringToken    *string                    `json:"monitoring_token,omitempty"`
-	Name               *string                    `json:"name,omitempty"`
-	Description        *string                    `json:"description,omitempty"`
 	Tags               []string                   `json:"tags,omitempty"`
-	PrivateDnsNames    []string                   `json:"private_dns_names,omitempty"`
-	Actions            []string                   `json:"actions,omitempty"`
-	State              *string                    `json:"state,omitempty"`
-	Networks           []*Network2                `json:"networks,omitempty"`
-	IsNext             *bool                      `json:"is_next,omitempty"`
-	Timestamps         *InstancesTimestampsStruct `json:"timestamps,omitempty"`
-	MonitoringId       *string                    `json:"monitoring_id,omitempty"`
-	ServerTemplate     *ServerTemplate2           `json:"server_template,omitempty"`
 	Href               *string                    `json:"href,omitempty"`
 	PrivateIpAddresses []string                   `json:"private_ip_addresses,omitempty"`
-	Kind               *string                    `json:"kind,omitempty"`
-	Locked             *bool                      `json:"locked,omitempty"`
-	ResourceUid        *string                    `json:"resource_uid,omitempty"`
+	State              *string                    `json:"state,omitempty"`
 	Subnets            *SubnetCollection          `json:"subnets,omitempty"`
+	Actions            []string                   `json:"actions,omitempty"`
+	ServerTemplate     *ServerTemplate2           `json:"server_template,omitempty"`
+	PublicDnsNames     []string                   `json:"public_dns_names,omitempty"`
+	PrivateDnsNames    []string                   `json:"private_dns_names,omitempty"`
+	Description        *string                    `json:"description,omitempty"`
+	Kind               *string                    `json:"kind,omitempty"`
+	MonitoringId       *string                    `json:"monitoring_id,omitempty"`
+	Networks           []*Network2                `json:"networks,omitempty"`
 	LegacyId           *int                       `json:"legacy_id,omitempty"`
-	Id                 *string                    `json:"id,omitempty"`
+	Locked             *bool                      `json:"locked,omitempty"`
+	Timestamps         *InstancesTimestampsStruct `json:"timestamps,omitempty"`
+	SecurityGroups     *SecurityGroupCollection   `json:"security_groups,omitempty"`
+	Name               *string                    `json:"name,omitempty"`
+	IsNext             *bool                      `json:"is_next,omitempty"`
 	OsPlatform         *string                    `json:"os_platform,omitempty"`
-	MonitoringServer   *string                    `json:"monitoring_server,omitempty"`
+	SshHost            *string                    `json:"ssh_host,omitempty"`
+	IpAddresses        []*IpAddress2              `json:"ip_addresses,omitempty"`
+	Id                 *string                    `json:"id,omitempty"`
 }
 
 type InstanceLinks struct {
-	ComputedImage           *Image2                  `json:"computed_image,omitempty"`
-	Account                 *Account2                `json:"account,omitempty"`
 	Datacenter              *Datacenter2             `json:"datacenter,omitempty"`
 	InstanceType            *InstanceType2           `json:"instance_type,omitempty"`
 	Cloud                   *Cloud2                  `json:"cloud,omitempty"`
 	Incarnator              *Incarnator              `json:"incarnator,omitempty"`
-	SecurityGroups          *SecurityGroupCollection `json:"security_groups,omitempty"`
+	Image                   *Image2                  `json:"image,omitempty"`
 	Subnets                 *SubnetCollection        `json:"subnets,omitempty"`
+	ComputedMultiCloudImage *MultiCloudImage2        `json:"computed_multi_cloud_image,omitempty"`
+	ComputedImage           *Image2                  `json:"computed_image,omitempty"`
+	Account                 *Account2                `json:"account,omitempty"`
+	MultiCloudImage         *MultiCloudImage2        `json:"multi_cloud_image,omitempty"`
 	Deployment              *Deployment2             `json:"deployment,omitempty"`
 	SshKey                  *SshKey2                 `json:"ssh_key,omitempty"`
-	ComputedMultiCloudImage *MultiCloudImage2        `json:"computed_multi_cloud_image,omitempty"`
-	Image                   *Image2                  `json:"image,omitempty"`
-	MultiCloudImage         *MultiCloudImage2        `json:"multi_cloud_image,omitempty"`
+	SecurityGroups          *SecurityGroupCollection `json:"security_groups,omitempty"`
 }
 
 type InstanceSummaryStruct struct {
@@ -1713,16 +1713,16 @@ type InstanceSummaryStruct struct {
 }
 
 type InstanceType2 struct {
-	Kind        *string            `json:"kind,omitempty"`
-	CpuSpeed    *string            `json:"cpu_speed,omitempty"`
+	Memory      *string            `json:"memory,omitempty"`
 	CpuCount    *int               `json:"cpu_count,omitempty"`
 	Links       *InstanceTypeLinks `json:"links,omitempty"`
-	Id          *string            `json:"id,omitempty"`
 	LegacyId    *int               `json:"legacy_id,omitempty"`
 	Href        *string            `json:"href,omitempty"`
 	Name        *string            `json:"name,omitempty"`
+	Kind        *string            `json:"kind,omitempty"`
+	Id          *string            `json:"id,omitempty"`
 	Description *string            `json:"description,omitempty"`
-	Memory      *string            `json:"memory,omitempty"`
+	CpuSpeed    *string            `json:"cpu_speed,omitempty"`
 }
 
 type InstanceTypeLinks struct {
@@ -1740,13 +1740,13 @@ type InstancesTimestampsStruct struct {
 }
 
 type IpAddress2 struct {
+	Href     *string         `json:"href,omitempty"`
+	Address  *string         `json:"address,omitempty"`
 	Name     *string         `json:"name,omitempty"`
 	Kind     *string         `json:"kind,omitempty"`
 	Links    *IpAddressLinks `json:"links,omitempty"`
 	Id       *string         `json:"id,omitempty"`
 	LegacyId *int            `json:"legacy_id,omitempty"`
-	Href     *string         `json:"href,omitempty"`
-	Address  *string         `json:"address,omitempty"`
 }
 
 type IpAddressBinding2 struct {
@@ -1761,9 +1761,9 @@ type IpAddressBinding2 struct {
 }
 
 type IpAddressBindingLinks struct {
+	Cloud     *Cloud2     `json:"cloud,omitempty"`
 	Instance  *Instance2  `json:"instance,omitempty"`
 	IpAddress *IpAddress2 `json:"ip_address,omitempty"`
-	Cloud     *Cloud2     `json:"cloud,omitempty"`
 }
 
 type IpAddressLinks struct {
@@ -1771,23 +1771,23 @@ type IpAddressLinks struct {
 }
 
 type MultiCloudImage2 struct {
-	Kind            *string `json:"kind,omitempty"`
-	Version         *int    `json:"version,omitempty"`
-	InheritedSource *string `json:"inherited_source,omitempty"`
 	Id              *int    `json:"id,omitempty"`
 	Href            *string `json:"href,omitempty"`
 	Name            *string `json:"name,omitempty"`
 	Description     *string `json:"description,omitempty"`
+	Kind            *string `json:"kind,omitempty"`
+	Version         *int    `json:"version,omitempty"`
+	InheritedSource *string `json:"inherited_source,omitempty"`
 }
 
 type Network2 struct {
-	Id          *string       `json:"id,omitempty"`
-	LegacyId    *int          `json:"legacy_id,omitempty"`
-	Href        *string       `json:"href,omitempty"`
 	Name        *string       `json:"name,omitempty"`
 	Description *string       `json:"description,omitempty"`
 	Kind        *string       `json:"kind,omitempty"`
 	Links       *NetworkLinks `json:"links,omitempty"`
+	Id          *string       `json:"id,omitempty"`
+	LegacyId    *int          `json:"legacy_id,omitempty"`
+	Href        *string       `json:"href,omitempty"`
 }
 
 type NetworkInterface2 struct {
@@ -1828,8 +1828,8 @@ type SecurityGroup2 struct {
 }
 
 type SecurityGroupCollection struct {
-	Count *int    `json:"count,omitempty"`
 	Href  *string `json:"href,omitempty"`
+	Count *int    `json:"count,omitempty"`
 }
 
 type SecurityGroupLinks struct {
@@ -1840,67 +1840,67 @@ type Server2 struct {
 	Tags            []string     `json:"tags,omitempty"`
 	NextInstance    *Instance2   `json:"next_instance,omitempty"`
 	CurrentInstance *Instance2   `json:"current_instance,omitempty"`
-	Name            *string      `json:"name,omitempty"`
-	Href            *string      `json:"href,omitempty"`
-	Kind            *string      `json:"kind,omitempty"`
-	Actions         []string     `json:"actions,omitempty"`
 	Instance        *Instance2   `json:"instance,omitempty"`
 	Links           *ServerLinks `json:"links,omitempty"`
 	Id              *int         `json:"id,omitempty"`
+	Name            *string      `json:"name,omitempty"`
 	Description     *string      `json:"description,omitempty"`
+	Kind            *string      `json:"kind,omitempty"`
+	Href            *string      `json:"href,omitempty"`
+	Actions         []string     `json:"actions,omitempty"`
 }
 
 type ServerArray2 struct {
-	Id              *int                               `json:"id,omitempty"`
-	Name            *string                            `json:"name,omitempty"`
-	Kind            *string                            `json:"kind,omitempty"`
-	Tags            []string                           `json:"tags,omitempty"`
-	NextInstance    *Instance2                         `json:"next_instance,omitempty"`
-	Description     *string                            `json:"description,omitempty"`
 	Actions         []string                           `json:"actions,omitempty"`
-	State           *string                            `json:"state,omitempty"`
+	Tags            []string                           `json:"tags,omitempty"`
 	Href            *string                            `json:"href,omitempty"`
+	NextInstance    *Instance2                         `json:"next_instance,omitempty"`
 	InstanceSummary *ServerArraysInstanceSummaryStruct `json:"instance_summary,omitempty"`
+	Id              *int                               `json:"id,omitempty"`
+	Description     *string                            `json:"description,omitempty"`
+	Kind            *string                            `json:"kind,omitempty"`
 	Links           *ServerArrayLinks                  `json:"links,omitempty"`
+	Name            *string                            `json:"name,omitempty"`
+	State           *string                            `json:"state,omitempty"`
 }
 
 type ServerArrayLinks struct {
+	Account          *Account2    `json:"account,omitempty"`
 	Cloud            *Cloud2      `json:"cloud,omitempty"`
 	NextInstance     *Instance2   `json:"next_instance,omitempty"`
 	CurrentInstances []*Instance2 `json:"current_instances,omitempty"`
-	Account          *Account2    `json:"account,omitempty"`
 }
 
 type ServerArraysInstanceSummaryStruct struct {
+	NotTerminatedCount *int `json:"not_terminated_count,omitempty"`
 	TotalCount         *int `json:"total_count,omitempty"`
 	HealthyCount       *int `json:"healthy_count,omitempty"`
 	UnhealthyCount     *int `json:"unhealthy_count,omitempty"`
-	NotTerminatedCount *int `json:"not_terminated_count,omitempty"`
 }
 
 type ServerLinks struct {
-	CurrentInstance *Instance2 `json:"current_instance,omitempty"`
-	Account         *Account2  `json:"account,omitempty"`
 	Cloud           *Cloud2    `json:"cloud,omitempty"`
 	NextInstance    *Instance2 `json:"next_instance,omitempty"`
+	CurrentInstance *Instance2 `json:"current_instance,omitempty"`
+	Account         *Account2  `json:"account,omitempty"`
 }
 
 type ServerTemplate2 struct {
-	Href        *string `json:"href,omitempty"`
 	Id          *int    `json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	Kind        *string `json:"kind,omitempty"`
 	Version     *int    `json:"version,omitempty"`
+	Href        *string `json:"href,omitempty"`
 }
 
 type SshKey2 struct {
+	LegacyId    *int    `json:"legacy_id,omitempty"`
 	Href        *string `json:"href,omitempty"`
 	Kind        *string `json:"kind,omitempty"`
 	ResourceUid *string `json:"resource_uid,omitempty"`
 	Fingerprint *string `json:"fingerprint,omitempty"`
 	Id          *string `json:"id,omitempty"`
-	LegacyId    *int    `json:"legacy_id,omitempty"`
 }
 
 type Subnet2 struct {
@@ -1923,11 +1923,11 @@ type SubnetLinks struct {
 }
 
 type TimestampsStruct struct {
+	BootedAt      *time.Time `json:"booted_at,omitempty"`
+	OperationalAt *time.Time `json:"operational_at,omitempty"`
+	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
 	CreatedAt     *time.Time `json:"created_at,omitempty"`
 	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 	StrandedAt    *time.Time `json:"stranded_at,omitempty"`
 	PendingAt     *time.Time `json:"pending_at,omitempty"`
-	BootedAt      *time.Time `json:"booted_at,omitempty"`
-	OperationalAt *time.Time `json:"operational_at,omitempty"`
-	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
 }

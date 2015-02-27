@@ -12,7 +12,8 @@ type Action struct {
 	Name              string
 	Description       string
 	PathPatterns      []*PathPattern // Action path patterns and variables
-	Params            []*ActionParam // All parameter details
+	ApiParams         []*ActionParam // Actual API request parameters
+	CommandFlags      []*ActionParam // Parameters initialized via command lines, these correspond to the leaves of all ApiParams.
 	QueryParamNames   []string       // Query string parameter names, e.g. "filter" in /clouds?filter[]=name==foo
 	PayloadParamNames []string       // Payload parameter names (top level keys of payload structure)
 }
@@ -27,7 +28,7 @@ const (
 	PayloadParam
 )
 
-// Resource action parametersn
+// Resource action parameters
 type ActionParam struct {
 	Name        string         // Param name
 	Description string         // Param description
@@ -89,8 +90,8 @@ type ActionPath struct {
 //   missing from the list of given values.
 func (p *PathPattern) Substitute(vars []*PathVariable) (string, []string) {
 	var values = make([]interface{}, len(p.Variables))
-	var missing = []string{}
-	var used = []string{}
+	var missing []string
+	var used []string
 	for i, n := range p.Variables {
 		for _, v := range vars {
 			if v.Name == n {

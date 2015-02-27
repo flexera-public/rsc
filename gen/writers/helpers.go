@@ -12,7 +12,7 @@ import (
 // Produce line comments by concatenating given strings and producing 80 characters long lines
 // starting with "//"
 func comment(elems ...string) string {
-	var lines = []string{}
+	var lines []string
 	for _, e := range elems {
 		lines = append(lines, strings.Split(e, "\n")...)
 	}

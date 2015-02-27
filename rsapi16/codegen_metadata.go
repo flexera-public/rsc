@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 26, 2015 at 4:22pm (PST)
+// Feb 26, 2015 at 11:58pm (PST)
 // Command:
 // $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 //
@@ -34,7 +34,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/accounts`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -45,8 +45,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -55,12 +64,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/accounts/:id",
+						Pattern:    "/api/accounts/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/accounts/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -79,8 +88,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 		},
 	},
@@ -99,7 +125,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/clouds`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -110,8 +136,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -120,12 +155,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:id",
+						Pattern:    "/api/clouds/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -144,8 +179,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 		},
 	},
@@ -165,12 +217,12 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/datacenters",
+						Pattern:    "/api/clouds/%s/datacenters",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/datacenters`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -189,8 +241,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -199,27 +268,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/datacenters/:id",
+						Pattern:    "/api/datacenters/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/datacenters/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/datacenters/:id",
+						Pattern:    "/api/clouds/%s/datacenters/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/datacenters/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: `The view to use to render this resource`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-						ValidValues: []string{"default"},
-					},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -236,9 +296,43 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 		},
 	},
@@ -257,15 +351,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/deployments`),
 					},
 				},
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "ids",
-						Description: `Comma separated list of Deployment IDs`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -275,9 +361,34 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 						ValidValues: []string{"default", "extended", "full", "link"},
 					},
+					&metadata.ActionParam{
+						Name:        "ids",
+						Description: `Comma separated list of Deployment IDs`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"ids, view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full", "link"},
+					},
+					&metadata.ActionParam{
+						Name:        "ids",
+						Description: `Comma separated list of Deployment IDs`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -286,12 +397,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/deployments/:id",
+						Pattern:    "/api/deployments/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/deployments/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `ID of the Deployment to show`,
@@ -310,8 +421,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full", "link"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `ID of the Deployment to show`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full", "link"},
+					},
+				},
 			},
 		},
 	},
@@ -325,12 +453,20 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/images",
+						Pattern:    "/api/clouds/%s/images",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/images`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -348,17 +484,34 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+				},
+				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
+						Type:        "*int",
 						Location:    metadata.PathParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "filter",
+						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"view, filter"},
-				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
@@ -367,18 +520,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/images/:id",
+						Pattern:    "/api/images/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/images/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/images/:id",
+						Pattern:    "/api/clouds/%s/images/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/images/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -405,8 +558,33 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 		},
 	},
@@ -426,20 +604,12 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/instance_types",
+						Pattern:    "/api/clouds/%s/instance_types",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instance_types`),
 					},
 				},
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -449,29 +619,6 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 						ValidValues: []string{"default"},
 					},
-				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
-			},
-
-			&metadata.Action{
-				Name:        "show",
-				Description: `      Currently not implemented.`,
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						HttpMethod: "GET",
-						Pattern:    "/api/instance_types/:id",
-						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/instance_types/([^/]+)`),
-					},
-					&metadata.PathPattern{
-						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/instance_types/:id",
-						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instance_types/([^/]+)`),
-					},
-				},
-				Params: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -480,6 +627,46 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+				},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "show",
+				Description: `      Currently not implemented.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HttpMethod: "GET",
+						Pattern:    "/api/instance_types/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`/api/instance_types/([^/]+)`),
+					},
+					&metadata.PathPattern{
+						HttpMethod: "GET",
+						Pattern:    "/api/clouds/%s/instance_types/%s",
+						Variables:  []string{"cloud_id", "id"},
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instance_types/([^/]+)`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -497,9 +684,42 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
 			},
 		},
 	},
@@ -519,12 +739,12 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/instances",
+						Pattern:    "/api/clouds/%s/instances",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "limit",
 						Description: `The maximum number of resources to return for this index`,
@@ -567,8 +787,49 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				QueryParamNames:   []string{"limit, ids, view, filter"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "limit",
+						Description: `The maximum number of resources to return for this index`,
+						Type:        "*int",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `Filter by the given cloud ID`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "ids",
+						Description: `Comma separated list of Instance RsIds`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full", "tiny", "link"},
+					},
+					&metadata.ActionParam{
+						Name:        "filter",
+						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -577,18 +838,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/instances/:id",
+						Pattern:    "/api/instances/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/instances/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/instances/:id",
+						Pattern:    "/api/clouds/%s/instances/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -615,8 +876,33 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full", "tiny"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full", "tiny"},
+					},
+				},
 			},
 		},
 	},
@@ -636,12 +922,12 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/ip_address_bindings",
+						Pattern:    "/api/clouds/%s/ip_address_bindings",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -660,8 +946,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -670,26 +973,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/ip_address_bindings/:id",
+						Pattern:    "/api/ip_address_bindings/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/ip_address_bindings/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/ip_address_bindings/:id",
+						Pattern:    "/api/clouds/%s/ip_address_bindings/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -707,9 +1002,42 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
 			},
 		},
 	},
@@ -729,12 +1057,12 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/ip_addresses",
+						Pattern:    "/api/clouds/%s/ip_addresses",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -753,8 +1081,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -763,18 +1108,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/ip_addresses/:id",
+						Pattern:    "/api/ip_addresses/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/ip_addresses/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/ip_addresses/:id",
+						Pattern:    "/api/clouds/%s/ip_addresses/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -801,8 +1146,33 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 		},
 	},
@@ -821,7 +1191,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/multi_cloud_images`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -832,8 +1202,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -842,12 +1221,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/multi_cloud_images/:id",
+						Pattern:    "/api/multi_cloud_images/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/multi_cloud_images/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -866,8 +1245,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 		},
 	},
@@ -886,7 +1282,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/network_interface_attachments`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -897,8 +1293,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -907,12 +1312,20 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/network_interface_attachments/:id",
+						Pattern:    "/api/network_interface_attachments/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/network_interface_attachments/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -922,6 +1335,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 						ValidValues: []string{"default"},
 					},
+				},
+				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -930,9 +1345,16 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -951,7 +1373,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/network_interfaces`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -962,8 +1384,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -972,12 +1403,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/network_interfaces/:id",
+						Pattern:    "/api/network_interfaces/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/network_interfaces/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -996,8 +1427,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 		},
 	},
@@ -1016,7 +1464,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/networks`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1027,8 +1475,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -1037,12 +1494,20 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/networks/:id",
+						Pattern:    "/api/networks/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/networks/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1052,6 +1517,8 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 						ValidValues: []string{"default"},
 					},
+				},
+				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -1060,9 +1527,16 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
 			},
 		},
 	},
@@ -1082,18 +1556,26 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/security_groups",
+						Pattern:    "/api/clouds/%s/security_groups",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/security_groups`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/instances/:instance_id/security_groups",
+						Pattern:    "/api/clouds/%s/instances/%s/security_groups",
 						Variables:  []string{"cloud_id", "instance_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/security_groups`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1111,17 +1593,34 @@ var api_metadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
+				},
+				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance_id",
+						Description: `The Instance with which to scope the index`,
+						Type:        "*string",
 						Location:    metadata.PathParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
 			},
 
 			&metadata.Action{
@@ -1130,26 +1629,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/security_groups/:id",
+						Pattern:    "/api/security_groups/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/security_groups/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/security_groups/:id",
+						Pattern:    "/api/clouds/%s/security_groups/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -1167,9 +1658,42 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 						ValidValues: []string{"default"},
 					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
 			},
 		},
 	},
@@ -1188,7 +1712,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/server_arrays`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1199,8 +1723,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -1209,12 +1742,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/server_arrays/:id",
+						Pattern:    "/api/server_arrays/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/server_arrays/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -1233,8 +1766,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full"},
+					},
+				},
 			},
 		},
 	},
@@ -1253,7 +1803,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/server_templates`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1264,8 +1814,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "embedded"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "embedded"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -1274,12 +1833,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/server_templates/:id",
+						Pattern:    "/api/server_templates/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/server_templates/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -1298,8 +1857,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "embedded"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "embedded"},
+					},
+				},
 			},
 		},
 	},
@@ -1318,7 +1894,7 @@ var api_metadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/api/servers`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1329,8 +1905,17 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -1339,12 +1924,12 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/servers/:id",
+						Pattern:    "/api/servers/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/servers/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The identifier of the resource`,
@@ -1363,8 +1948,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "int",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended", "full"},
+					},
+				},
 			},
 		},
 	},
@@ -1384,12 +1986,12 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/ssh_keys",
+						Pattern:    "/api/clouds/%s/ssh_keys",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -1408,8 +2010,25 @@ var api_metadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -1418,26 +2037,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/ssh_keys/:id",
+						Pattern:    "/api/ssh_keys/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/ssh_keys/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/ssh_keys/:id",
+						Pattern:    "/api/clouds/%s/ssh_keys/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -1455,9 +2066,42 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 						ValidValues: []string{"default"},
 					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
 			},
 		},
 	},
@@ -1477,18 +2121,18 @@ var api_metadata = map[string]*metadata.Resource{
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/subnets",
+						Pattern:    "/api/clouds/%s/subnets",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/subnets`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/instances/:instance_id/subnets",
+						Pattern:    "/api/clouds/%s/instances/%s/subnets",
 						Variables:  []string{"cloud_id", "instance_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets`),
 					},
 				},
-				Params: []*metadata.ActionParam{
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -1515,8 +2159,33 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance_id",
+						Description: `The Instance with which to scope the index`,
+						Type:        "*string",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -1525,26 +2194,18 @@ var api_metadata = map[string]*metadata.Resource{
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/subnets/:id",
+						Pattern:    "/api/subnets/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/subnets/([^/]+)`),
 					},
 					&metadata.PathPattern{
 						HttpMethod: "GET",
-						Pattern:    "/api/clouds/:cloud_id/subnets/:id",
+						Pattern:    "/api/clouds/%s/subnets/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/subnets/([^/]+)`),
 					},
 				},
-				Params: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
+				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_id",
 						Description: `The identifier of Cloud this resource resides in`,
@@ -1562,9 +2223,42 @@ var api_metadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 						ValidValues: []string{"default"},
 					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
 				},
-				QueryParamNames:   []string{"view"},
-				PayloadParamNames: []string{},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_id",
+						Description: `The identifier of Cloud this resource resides in`,
+						Type:        "*int",
+						Location:    metadata.PathParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `The view to use to render this resource`,
+						Type:        "*string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "id",
+						Description: `The identifier of the resource`,
+						Type:        "string",
+						Location:    metadata.PathParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
 			},
 		},
 	},
