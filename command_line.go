@@ -48,6 +48,8 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 			if err != nil {
 				return nil, err
 			}
+		} else {
+			return nil, err
 		}
 	}
 
