@@ -14,7 +14,7 @@ import (
 // Command line client entry point.
 func main() {
 	app := kingpin.New("rsc", "A RightScale API client")
-	app.Version("0.2.0")
+	app.Version("0.3.0")
 
 	var cmdLine, err = ParseCommandLine(app)
 	if err != nil {
@@ -37,8 +37,7 @@ func main() {
 			err = err2
 		} else if client != nil {
 			if cmdLine.ShowHelp {
-				client.ShowCommandHelp(cmdLine.Command)
-				return
+				err = client.ShowCommandHelp(cmdLine.Command)
 			} else {
 				resp, err = client.RunCommand(cmdLine.Command)
 			}
@@ -50,8 +49,7 @@ func main() {
 			err = err2
 		} else if client != nil {
 			if cmdLine.ShowHelp {
-				client.ShowCommandHelp(cmdLine.Command)
-				return
+				err = client.ShowCommandHelp(cmdLine.Command)
 			} else {
 				resp, err = client.RunCommand(cmdLine.Command)
 			}
