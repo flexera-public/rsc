@@ -12,8 +12,8 @@ import (
 )
 
 // Dispatch request, used by generated code
-func (a *Api16) Dispatch(method, actionUrl string, params rsapi.ApiParams) (*http.Response, error) {
-	return a.GetRaw(actionUrl, params)
+func (a *Api16) Dispatch(method, actionUrl string, queryParams, payloadParams rsapi.ApiParams) (*http.Response, error) {
+	return a.GetRaw(actionUrl, queryParams)
 }
 
 // Low-level GET request that loads response JSON into generic object

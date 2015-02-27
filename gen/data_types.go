@@ -188,12 +188,20 @@ type PathPattern struct {
 	Regexp     string   // Regular expression used to match href
 }
 
+// Possible param locations
+const (
+	PathParam    = 0
+	QueryParam   = 1
+	PayloadParam = 2
+)
+
 // Data structure used to render method params
 type ActionParam struct {
 	Name        string        // Name of parameter
 	QueryName   string        // Query string style parameter name
 	Description string        // Description of parameter
 	VarName     string        // go variable name
+	Location    int           // 0 for path param, 1 for query param, 2 for payload param
 	Type        DataType      // Type of parameter
 	Mandatory   bool          // Whether parameter is mandatory
 	NonBlank    bool          // Whether parameter must not be blank if provided (string or array)

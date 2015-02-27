@@ -106,31 +106,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			i += 1
 		}
 		sort.Strings(allParamNames)
-		var pathParamNames = []string{}
-		for _, pattern := range pathPatterns {
-			for _, v := range pattern.Variables {
-				var existing = false
-				for _, e := range pathParamNames {
-					existing = e == v
-					if existing {
-						break
-					}
-				}
-				if !existing {
-					pathParamNames = append(pathParamNames, v)
-				}
-			}
-		}
-		var queryParamNames = []string{}
-		var payloadParamNames = []string{}
-		var hasPayload = pathPatterns[0].HttpMethod == "POST" || pathPatterns[0].HttpMethod == "PUT"
-		for _, p := range allParamNames {
-			if isQueryParam(p) {
-				queryParamNames = append(queryParamNames, p)
-			} else if hasPayload && !strings.Contains(p, "[") {
-				payloadParamNames = append(payloadParamNames, p)
-			}
-		}
+
 		var contentType string
 		if c, ok := meth["content_type"].(string); ok {
 			contentType = c
@@ -182,6 +158,25 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				strings.Join(optional, "\n\t")
 		}
 
+		// Sort parameters by location
+		var actionParams = paramAnalyzer.Params
+		var pathParamNames = []string{}
+		var queryParamNames = []string{}
+		var payloadParamNames = []string{}
+		for _, p := range actionParams {
+			var n = p.Name
+			if isQueryParam(n) {
+				queryParamNames = append(queryParamNames, n)
+				p.Location = gen.QueryParam
+			} else if isPathParam(n, pathPatterns) {
+				pathParamNames = append(pathParamNames, n)
+				p.Location = gen.PathParam
+			} else {
+				payloadParamNames = append(payloadParamNames, n)
+				p.Location = gen.PayloadParam
+			}
+		}
+
 		// Record action
 		var action = gen.Action{
 			Name:              actionName,
@@ -189,7 +184,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			Description:       removeBlankLines(description),
 			ResourceName:      name,
 			PathPatterns:      pathPatterns,
-			Params:            paramAnalyzer.Params,
+			Params:            actionParams,
 			LeafParams:        paramAnalyzer.LeafParams,
 			Return:            parseReturn(actionName, name, contentType),
 			ReturnLocation:    actionName == "create" && name != "Oauth2",
@@ -296,6 +291,19 @@ func isCustom(method, path string) bool {
 // For now only consider view and filter...
 func isQueryParam(n string) bool {
 	return n == "view" || n == "filter"
+}
+
+// Look in given path patterns to chek whether given parameter name corresponds to a variable
+// name.
+func isPathParam(p string, pathPatterns []*gen.PathPattern) bool {
+	for _, pattern := range pathPatterns {
+		for _, v := range pattern.Variables {
+			if p == v {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // Resources that don't have a media type

@@ -43,25 +43,44 @@ func parameters(a *gen.Action) string {
 	return strings.Join(params, ", ")
 }
 
-// Create map out of parameter names
-func paramsAsPayload(p []*gen.ActionParam) string {
-	if len(p) == 0 {
-		return "map[string]interface{}{}"
+// Produces code that initializes a ApiParams struct with the values of parameters for the given
+// action and location.
+func paramsInitializer(action *gen.Action, location int, varName string) string {
+	var names []string
+	switch location {
+	case gen.PathParam:
+		names = action.PathParamNames
+	case gen.QueryParam:
+		names = action.QueryParamNames
+	case gen.PayloadParam:
+		names = action.PayloadParamNames
+	}
+	if len(names) == 0 {
+		return ""
 	}
 	fields := []string{}
-	hasOptional := false
-	for _, param := range p {
+	var optionals []*gen.ActionParam
+	for _, param := range action.Params {
+		if param.Location != location {
+			continue
+		}
 		if param.Mandatory {
 			fields = append(fields, fmt.Sprintf("\"%s\": %s,", param.Name, param.VarName))
 		} else {
-			hasOptional = true
+			optionals = append(optionals, param)
 		}
 	}
-	mandatory := fmt.Sprintf("rsapi.ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
-	if !hasOptional {
-		return mandatory
+	var paramsDecl = fmt.Sprintf("rsapi.ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
+	if len(optionals) == 0 {
+		return fmt.Sprintf("\n%s = %s", varName, paramsDecl)
 	}
-	return fmt.Sprintf("mergeOptionals(%s, options)", mandatory)
+	var inits = make([]string, len(optionals))
+	for i, opt := range optionals {
+		inits[i] = fmt.Sprintf("\tvar %sOpt = options[\"%s\"]\n\tif %sOpt != nil {\n\t\t%s[\"%s\"] = %sOpt\n\t}",
+			opt.VarName, opt.Name, opt.VarName, varName, opt.Name, opt.VarName)
+	}
+	var paramsInits = strings.Join(inits, "\n\t")
+	return fmt.Sprintf("\n%s = %s\n%s", varName, paramsDecl, paramsInits)
 }
 
 // Return true if signature contains pointer, false otherwise

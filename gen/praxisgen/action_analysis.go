@@ -61,8 +61,10 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 				}
 				if isPathParam {
 					pathParamNames = append(pathParamNames, pn)
+					att.Location = gen.PathParam
 				} else {
 					queryParamNames = append(queryParamNames, pn)
+					att.Location = gen.QueryParam
 				}
 				params = append(params, att)
 			}
@@ -75,20 +77,35 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		}
 
 		// Payload params analysis
+		var paramNames = make([]string, len(pathParamNames)+len(queryParamNames))
+		for i, n := range pathParamNames {
+			paramNames[i] = n
+		}
+		for i, n := range queryParamNames {
+			paramNames[len(pathParamNames)+i] = n
+		}
 		if p, ok := meth["payload"]; ok {
 			var attrs = p.(map[string]interface{})["attributes"].(map[string]interface{})
 			for pn, pt := range attrs {
-				att, err := a.AnalyzeAttribute(pn, pn, pt.(map[string]interface{}))
+				var queryName = makeUniq(pn, paramNames)
+				att, err := a.AnalyzeAttribute(pn, queryName, pt.(map[string]interface{}))
 				if err != nil {
 					return nil, fmt.Errorf("Failed to compute type of param %s: %s", pn, err.Error())
 				}
 				payloadParamNames = append(payloadParamNames, pn)
+				att.Location = gen.PayloadParam
 				params = append(params, att)
-				leafParams = append(leafParams, extractLeafParams(att)...)
+				var extracted = extractLeafParams(att)
+				for _, e := range extracted {
+					e.Location = gen.PayloadParam
+				}
+				leafParams = append(leafParams, extracted...)
 			}
 		}
 
 		// Heuristic to check whether response returns a location header
+		// Also extract response type from success response media type
+		// TBD: support actions returning multiple success responses with media types?
 		var hasLocation = false
 		var returnTypeName string
 		responses, ok := meth["responses"]

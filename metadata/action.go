@@ -17,11 +17,22 @@ type Action struct {
 	PayloadParamNames []string       // Payload parameter names (top level keys of payload structure)
 }
 
+// Indicates a parameter location (i.e. URL path, query string or request body)
+type Location int
+
+// Possible param location
+const (
+	PathParam Location = iota
+	QueryParam
+	PayloadParam
+)
+
 // Resource action parametersn
 type ActionParam struct {
 	Name        string         // Param name
 	Description string         // Param description
 	Type        string         // Param type, one of "string", "[]string", "int", "[]int" or "map[string]string"
+	Location    Location       // Param location, i.e. path, query or payload
 	Mandatory   bool           // Whether parameter is mandatory
 	NonBlank    bool           // Whether parameter value can be blank
 	Regexp      *regexp.Regexp // Regular expression used to validate parameter values

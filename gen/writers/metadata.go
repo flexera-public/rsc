@@ -25,6 +25,7 @@ func NewMetadataWriter() (*MetadataWriter, error) {
 		"toStringArray": toStringArray,
 		"toHelp":        toHelp,
 		"flagType":      flagType,
+		"location":      location,
 	}
 	headerT, err := template.New("header-metadata").Funcs(funcMap).Parse(headerMetadataTmpl)
 	if err != nil {
@@ -52,6 +53,20 @@ func (c *MetadataWriter) WriteMetadata(d *gen.ApiDescriptor, w io.Writer) error 
 		resources[i] = d.Resources[n]
 	}
 	return c.resourceTmpl.Execute(w, resources)
+}
+
+// Return code corresponding to param location
+func location(p *gen.ActionParam) string {
+	switch p.Location {
+	case gen.PathParam:
+		return "metadata.PathParam"
+	case gen.QueryParam:
+		return "metadata.QueryParam"
+	case gen.PayloadParam:
+		return "metadata.PayloadParam"
+	default:
+		return ""
+	}
 }
 
 const headerMetadataTmpl = `//************************************************************************//
@@ -102,6 +117,7 @@ const actionMetadataTmpl = `&metadata.Action {
 						Name: "{{.QueryName}}",
 						Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
 						Type: "{{flagType .}}",
+						Location: {{location .}},
 						Mandatory: {{.Mandatory}},
 						NonBlank: {{.NonBlank}},{{if .Regexp}}
 						Regexp: regexp.MustCompile("{{.Regexp}}"),{{end}}{{if .ValidValues}}

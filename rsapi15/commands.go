@@ -76,7 +76,7 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return a.Dispatch(parsed.HttpMethod, parsed.Uri, parsed.Params)
+	return a.Dispatch(parsed.HttpMethod, parsed.Uri, parsed.QueryParams, parsed.PayloadParams)
 }
 
 // Show command help

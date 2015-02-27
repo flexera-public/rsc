@@ -19,14 +19,14 @@ type ClientWriter struct {
 // Client writer factory
 func NewClientWriter() (*ClientWriter, error) {
 	funcMap := template.FuncMap{
-		"comment":         comment,
-		"now":             time.Now,
-		"commandLine":     commandLine,
-		"parameters":      parameters,
-		"paramsAsPayload": paramsAsPayload,
-		"isPointer":       isPointer,
-		"blankCondition":  blankCondition,
-		"stripStar":       stripStar,
+		"comment":           comment,
+		"now":               time.Now,
+		"commandLine":       commandLine,
+		"parameters":        parameters,
+		"paramsInitializer": paramsInitializer,
+		"isPointer":         isPointer,
+		"blankCondition":    blankCondition,
+		"stripStar":         stripStar,
 	}
 	headerT, err := template.New("header-client").Funcs(funcMap).Parse(headerTmpl)
 	if err != nil {
@@ -76,6 +76,10 @@ func (c *ClientWriter) WriteResource(resource *gen.Resource, w io.Writer) error 
 
 /***** Format helpers *****/
 
+// Generate code used to initialize instance of parameter from given parameter values
+func paramInitializer(param *gen.Action) {
+}
+
 // Inline templates
 
 const headerTmpl = `
@@ -100,14 +104,6 @@ import (
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
 )
-
-// Helper function that merges optional parameters into payload
-func mergeOptionals(params, options rsapi.ApiParams) rsapi.ApiParams {
-	for name, value := range options {
-		params[name] = value
-	}
-	return params
-}
 
 // Url resolver produces an action URL and HTTP method from its name and a given resource href.
 // The algorithm consists of first extracting the variables from the href and then substituing them
@@ -172,12 +168,13 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	{{end}}{{range .Params}}{{if and .Mandatory (blankCondition .VarName .Type)}}{{blankCondition .VarName .Type}}
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.VarName}} is required")
 	}
-	{{end}}{{end}}{{/* end range .Params */}}var params = {{paramsAsPayload .Params}}
+	{{end}}{{end}}{{/* end range .Params */}}var queryParams rsapi.ApiParams{{paramsInitializer . 1 "queryParams"}}
+	var payloadParams rsapi.ApiParams{{paramsInitializer . 2 "payloadParams"}}
 	var uri, err = loc.Url("{{$action.ResourceName}}", "{{$action.Name}}")
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}
-	var {{if .Return}}resp, {{else}}_, {{end}}err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var {{if .Return}}resp, {{else}}_, {{end}}err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return {{if $action.Return}}res, {{end}}err2
 	}

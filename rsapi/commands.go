@@ -9,12 +9,14 @@ import (
 )
 
 // Result of parsing the command line (ParseCommand method).
-// The parser infers the Uri and HTTP method of the request that need to be made and builds the map
-// of parameters coerced to the right type (as dictated by the API metadata).
+// The parser infers the Uri and HTTP method of the request that need to be made and builds the
+// maps of query string and payload parameters. The parameter values are all coerced to the type
+// dictated by the API metadata.
 type ParsedCommand struct {
-	HttpMethod string
-	Uri        string
-	Params     map[string]interface{}
+	HttpMethod    string
+	Uri           string
+	QueryParams   ApiParams
+	PayloadParams ApiParams
 }
 
 // Data structure initialized during command line parsing and used by ParseCommand to create the
@@ -44,7 +46,8 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 	}
 
 	// 2. Coerce and validate given flag values
-	var coerced = map[string]interface{}{}
+	var queryParams = ApiParams{}
+	var payloadParams = ApiParams{}
 	for _, p := range params {
 		var elems = strings.SplitN(p, "=", 2)
 		if len(elems) != 2 {
@@ -52,14 +55,14 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 		}
 		var name = elems[0]
 		var value = elems[1]
-		var flag *metadata.ActionParam
+		var param *metadata.ActionParam
 		for _, ap := range action.Params {
 			if ap.Name == name {
-				flag = ap
+				param = ap
 				break
 			}
 		}
-		if flag == nil {
+		if param == nil {
 			var supported = make([]string, len(action.Params))
 			for i, p := range action.Params {
 				supported[i] = p.Name
@@ -67,73 +70,80 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 			return nil, fmt.Errorf("Unknown %s.%s flag '%s'. Supported flags are: %s",
 				resource.Name, action.Name, name, strings.Join(supported, ", "))
 		}
-		if err := validateFlagValue(value, flag); err != nil {
+		if err := validateFlagValue(value, param); err != nil {
 			return nil, err
 		}
-		switch flag.Type {
+		var coerced = queryParams
+		if param.Location == metadata.PayloadParam {
+			coerced = payloadParams
+		}
+		switch param.Type {
 		case "string":
 			if _, ok := coerced[name]; ok {
-				return nil, fmt.Errorf("Multiple values specified for '%s'", flag.Name)
+				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
 			}
-			coerced[flag.Name] = value
+			coerced[param.Name] = value
 		case "[]string":
-			if v, ok := coerced[flag.Name]; ok {
+			if v, ok := coerced[param.Name]; ok {
 				v = append(v.([]string), value)
 			} else {
-				coerced[flag.Name] = []string{value}
+				coerced[param.Name] = []string{value}
 			}
 		case "int":
 			if _, ok := coerced[name]; ok {
-				return nil, fmt.Errorf("Multiple values specified for '%s'", flag.Name)
+				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
 			}
 			var val, err = strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
-					flag.Name, value)
+					param.Name, value)
 			}
-			coerced[flag.Name] = val
+			coerced[param.Name] = val
 		case "[]int":
 			var val, err = strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
-					flag.Name, value)
+					param.Name, value)
 			}
-			if v, ok := coerced[flag.Name]; ok {
+			if v, ok := coerced[param.Name]; ok {
 				v = append(v.([]int), val)
 			} else {
-				coerced[flag.Name] = []int{val}
+				coerced[param.Name] = []int{val}
 			}
 		case "bool":
 			if _, ok := coerced[name]; ok {
-				return nil, fmt.Errorf("Multiple values specified for '%s'", flag.Name)
+				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
 			}
 			var val, err = strconv.ParseBool(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
-					flag.Name, value)
+					param.Name, value)
 			}
-			coerced[flag.Name] = val
+			coerced[param.Name] = val
 		case "[]bool":
 			var val, err = strconv.ParseBool(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
-					flag.Name, value)
+					param.Name, value)
 			}
-			if v, ok := coerced[flag.Name]; ok {
+			if v, ok := coerced[param.Name]; ok {
 				v = append(v.([]bool), val)
 			} else {
-				coerced[flag.Name] = []bool{val}
+				coerced[param.Name] = []bool{val}
 			}
 		}
 	}
 	for _, p := range action.Params {
-		_, ok := coerced[p.Name]
+		_, ok := queryParams[p.Name]
+		if !ok {
+			_, ok = payloadParams[p.Name]
+		}
 		if p.Mandatory && !ok {
 			return nil, fmt.Errorf("Missing required flag '%s'", p.Name)
 		}
 	}
 
-	return &ParsedCommand{path.HttpMethod, path.Path, coerced}, nil
+	return &ParsedCommand{path.HttpMethod, path.Path, queryParams, payloadParams}, nil
 }
 
 // Show help for given command and flags

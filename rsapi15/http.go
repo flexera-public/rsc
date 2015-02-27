@@ -1,6 +1,7 @@
 package rsapi15
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,48 +9,54 @@ import (
 	"net/url"
 	"strconv"
 
+	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
 )
 
 // Do is a generic client method and is meant for command line tools and other higher level clients.
-// It accepts a resource or resource collection href (e.g. "/api/servers"), the name of an action
-// (e.g. "create") and the request parameters.
+// It accepts a resource href, the name of an action and resource and the action parameters.
 // The method makes the request and returns the raw HTTP response or an error.
 // The LoadResponse method can be used to load the response body if needed.
-func (a *Api15) Do(actionUrl, action string, params rsapi.ApiParams) (*http.Response, error) {
-	// First figure out action verb and uri
-	var method string
-	switch action {
-	case "show", "index":
-		method = "GET"
-	case "create":
-		method = "POST"
-	case "update":
-		method = "PUT"
-	case "destroy":
-		method = "DELETE"
-	default:
-		for _, r := range api_metadata {
-			for _, a := range r.Actions {
-				if a.Name == action {
-					method = a.PathPatterns[0].HttpMethod
-					break
-				}
-			}
-		}
+func (a *Api15) Do(resource, action, href string, params rsapi.ApiParams) (*http.Response, error) {
+	// First lookup metadata
+	var res, ok = api_metadata[resource]
+	if !ok {
+		return nil, fmt.Errorf("No resource with name '%s'", resource)
 	}
-	return a.Dispatch(method, actionUrl, params)
+	var act *metadata.Action
+	if act == nil {
+		return nil, fmt.Errorf("No action with name '%s' on %s", action, resource)
+	}
+
+	// Now lookup action request HTTP method, url, params and payload.
+	var vars, err = res.ExtractVariables(href)
+	if err != nil {
+		return nil, err
+	}
+	actionUrl, err := act.Url(vars)
+	if err != nil {
+		return nil, err
+	}
+	var payloadParams = make(rsapi.ApiParams, len(act.PayloadParamNames))
+	for _, n := range act.PayloadParamNames {
+		payloadParams[n] = params[n]
+	}
+	var queryParams = make(rsapi.ApiParams, len(act.QueryParamNames))
+	for _, n := range act.QueryParamNames {
+		queryParams[n] = params[n]
+	}
+	return a.Dispatch(actionUrl.HttpMethod, actionUrl.Path, queryParams, payloadParams)
 }
 
 // Dispatch request to appropriate low-level method
-func (a *Api15) Dispatch(method, actionUrl string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api15) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error) {
 	switch method {
 	case "GET":
 		return a.GetRaw(actionUrl, params)
 	case "POST":
-		return a.PostRaw(actionUrl, params)
+		return a.PostRaw(actionUrl, params, payload)
 	case "PUT":
-		return nil, a.Put(actionUrl, params)
+		return nil, a.Put(actionUrl, params, payload)
 	case "DELETE":
 		return nil, a.Delete(actionUrl)
 	}
@@ -67,13 +74,13 @@ func (a *Api15) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 
 // Low-level GET request
 func (a *Api15) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
-	return a.makeRequest("GET", uri, params)
+	return a.makeRequest("GET", uri, params, nil)
 }
 
 // Low-level POST request that loads response JSON into generic object
 // Any "Location" header present in the HTTP response is returned in a map under the "Location" key.
-func (a *Api15) Post(uri string, body rsapi.ApiParams) (interface{}, error) {
-	resp, err := a.PostRaw(uri, body)
+func (a *Api15) Post(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (interface{}, error) {
+	resp, err := a.PostRaw(uri, params, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -81,19 +88,19 @@ func (a *Api15) Post(uri string, body rsapi.ApiParams) (interface{}, error) {
 }
 
 // Low-level POST request
-func (a *Api15) PostRaw(uri string, body rsapi.ApiParams) (*http.Response, error) {
-	return a.makeRequest("POST", uri, body)
+func (a *Api15) PostRaw(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
+	return a.makeRequest("POST", uri, params, payload)
 }
 
 // Low-level PUT request
-func (a *Api15) Put(uri string, body rsapi.ApiParams) error {
-	_, err := a.makeRequest("PUT", uri, body)
+func (a *Api15) Put(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) error {
+	_, err := a.makeRequest("PUT", uri, params, payload)
 	return err
 }
 
 // Low-level DELETE request
 func (a *Api15) Delete(uri string) error {
-	_, err := a.makeRequest("DELETE", uri, nil)
+	_, err := a.makeRequest("DELETE", uri, nil, nil)
 	return err
 }
 
@@ -124,7 +131,7 @@ func (a *Api15) LoadResponse(resp *http.Response) (interface{}, error) {
 }
 
 // Helper function that signs, makes and logs HTTP request
-func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
 	var u = url.URL{
 		Scheme: "https",
 		Host:   a.Host,
@@ -150,7 +157,14 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Res
 		}
 		u.RawQuery = values.Encode()
 	}
-	var req, err = http.NewRequest(verb, u.String(), nil)
+	var jsonBytes []byte
+	if payload != nil {
+		var err error
+		if jsonBytes, err = json.Marshal(payload); err != nil {
+			return nil, fmt.Errorf("Failed to serialize request body - %s", err.Error())
+		}
+	}
+	var req, err = http.NewRequest(verb, u.String(), bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		return nil, err
 	}
@@ -162,7 +176,7 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Res
 	if a.FetchLocationResource {
 		var loc = resp.Header.Get("Location")
 		if loc != "" {
-			resp, err = a.makeRequest("GET", loc, rsapi.ApiParams{})
+			resp, err = a.makeRequest("GET", loc, rsapi.ApiParams{}, rsapi.ApiParams{})
 		}
 	}
 	return resp, err

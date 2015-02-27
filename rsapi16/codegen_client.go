@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 25, 2015 at 5:31pm (PST)
+// Feb 26, 2015 at 4:22pm (PST)
 // Command:
 // $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 //
@@ -20,14 +20,6 @@ import (
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
 )
-
-// Helper function that merges optional parameters into payload
-func mergeOptionals(params, options rsapi.ApiParams) rsapi.ApiParams {
-	for name, value := range options {
-		params[name] = value
-	}
-	return params
-}
 
 // Url resolver produces an action URL and HTTP method from its name and a given resource href.
 // The algorithm consists of first extracting the variables from the href and then substituing them
@@ -87,12 +79,18 @@ func (api *Api16) AccountLocator(href string) *AccountLocator {
 // GET /api/accounts
 // Currently not implemented.
 func (loc *AccountLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Account", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -102,14 +100,18 @@ func (loc *AccountLocator) Index(options rsapi.ApiParams) error {
 // GET /api/accounts/:id
 // Currently not implemented.
 func (loc *AccountLocator) Show(id int, options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Account", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -148,12 +150,18 @@ func (api *Api16) CloudLocator(href string) *CloudLocator {
 // GET /api/clouds
 // Currently not implemented.
 func (loc *CloudLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Cloud", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -163,14 +171,18 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:id
 // Currently not implemented.
 func (loc *CloudLocator) Show(id int, options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Cloud", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -212,12 +224,18 @@ func (api *Api16) DatacenterLocator(href string) *DatacenterLocator {
 // GET /api/clouds/:cloud_id/datacenters
 // Currently not implemented.
 func (loc *DatacenterLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Datacenter", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -231,14 +249,18 @@ func (loc *DatacenterLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Datacenter", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -282,12 +304,22 @@ func (api *Api16) DeploymentLocator(href string) *DeploymentLocator {
 // List all Deployments in an Account.
 func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error) {
 	var res *Deployment
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var idsOpt = options["ids"]
+	if idsOpt != nil {
+		queryParams["ids"] = idsOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Deployment", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return res, err2
 	}
@@ -304,14 +336,18 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error
 // Show a single Deployment
 func (loc *DeploymentLocator) Show(id int, options rsapi.ApiParams) (*Deployment, error) {
 	var res *Deployment
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Deployment", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return res, err2
 	}
@@ -365,12 +401,22 @@ func (api *Api16) ImageLocator(href string) *ImageLocator {
 // Lists all Images for the given Cloud.
 func (loc *ImageLocator) Index(options rsapi.ApiParams) (*Image, error) {
 	var res *Image
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		queryParams["filter"] = filterOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Image", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return res, err2
 	}
@@ -390,14 +436,18 @@ func (loc *ImageLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Image", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -443,12 +493,18 @@ func (api *Api16) InstanceTypeLocator(href string) *InstanceTypeLocator {
 // GET /api/clouds/:cloud_id/instance_types
 // Currently not implemented.
 func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("InstanceType", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -462,14 +518,18 @@ func (loc *InstanceTypeLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("InstanceType", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -537,12 +597,30 @@ func (api *Api16) InstanceLocator(href string) *InstanceLocator {
 // List all Instances in an account.
 func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
 	var res *Instance
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var limitOpt = options["limit"]
+	if limitOpt != nil {
+		queryParams["limit"] = limitOpt
+	}
+	var idsOpt = options["ids"]
+	if idsOpt != nil {
+		queryParams["ids"] = idsOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		queryParams["filter"] = filterOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Instance", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return res, err2
 	}
@@ -562,14 +640,18 @@ func (loc *InstanceLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Instance", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -611,12 +693,18 @@ func (api *Api16) IpAddressBindingLocator(href string) *IpAddressBindingLocator 
 // GET /api/clouds/:cloud_id/ip_address_bindings
 // Currently not implemented.
 func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("IpAddressBinding", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -630,14 +718,18 @@ func (loc *IpAddressBindingLocator) Show(id string, options rsapi.ApiParams) err
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("IpAddressBinding", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -677,12 +769,18 @@ func (api *Api16) IpAddressLocator(href string) *IpAddressLocator {
 // GET /api/clouds/:cloud_id/ip_addresses
 // Currently not implemented.
 func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("IpAddress", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -696,14 +794,18 @@ func (loc *IpAddressLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("IpAddress", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -745,12 +847,18 @@ func (api *Api16) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 // GET /api/multi_cloud_images
 // Currently not implemented.
 func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("MultiCloudImage", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -760,14 +868,18 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) error {
 // GET /api/multi_cloud_images/:id
 // Currently not implemented.
 func (loc *MultiCloudImageLocator) Show(id int, options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("MultiCloudImage", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -803,12 +915,18 @@ func (api *Api16) NetworkInterfaceAttachmentLocator(href string) *NetworkInterfa
 // GET /api/network_interface_attachments
 // Currently not implemented.
 func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("NetworkInterfaceAttachment", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -821,14 +939,18 @@ func (loc *NetworkInterfaceAttachmentLocator) Show(id string, options rsapi.ApiP
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("NetworkInterfaceAttachment", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -865,12 +987,18 @@ func (api *Api16) NetworkInterfaceLocator(href string) *NetworkInterfaceLocator 
 // GET /api/network_interfaces
 // Currently not implemented.
 func (loc *NetworkInterfaceLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("NetworkInterface", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -883,14 +1011,18 @@ func (loc *NetworkInterfaceLocator) Show(id string, options rsapi.ApiParams) err
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("NetworkInterface", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -928,12 +1060,18 @@ func (api *Api16) NetworkLocator(href string) *NetworkLocator {
 // GET /api/networks
 // Currently not implemented.
 func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Network", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -946,14 +1084,18 @@ func (loc *NetworkLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Network", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -995,12 +1137,18 @@ func (api *Api16) SecurityGroupLocator(href string) *SecurityGroupLocator {
 // GET /api/clouds/:cloud_id/instances/:instance_id/security_groups
 // Currently not implemented.
 func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("SecurityGroup", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1014,14 +1162,18 @@ func (loc *SecurityGroupLocator) Show(id string, options rsapi.ApiParams) error 
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("SecurityGroup", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1072,12 +1224,18 @@ func (api *Api16) ServerArrayLocator(href string) *ServerArrayLocator {
 // GET /api/server_arrays
 // Currently not implemented.
 func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("ServerArray", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1087,14 +1245,18 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) error {
 // GET /api/server_arrays/:id
 // Currently not implemented.
 func (loc *ServerArrayLocator) Show(id int, options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("ServerArray", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1139,12 +1301,18 @@ func (api *Api16) ServerTemplateLocator(href string) *ServerTemplateLocator {
 // GET /api/server_templates
 // Currently not implemented.
 func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("ServerTemplate", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1154,14 +1322,18 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) error {
 // GET /api/server_templates/:id
 // Currently not implemented.
 func (loc *ServerTemplateLocator) Show(id int, options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("ServerTemplate", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1216,12 +1388,18 @@ func (api *Api16) ServerLocator(href string) *ServerLocator {
 // GET /api/servers
 // Currently not implemented.
 func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Server", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1231,14 +1409,18 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
 // GET /api/servers/:id
 // Currently not implemented.
 func (loc *ServerLocator) Show(id int, options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Server", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1276,12 +1458,18 @@ func (api *Api16) SshKeyLocator(href string) *SshKeyLocator {
 // GET /api/clouds/:cloud_id/ssh_keys
 // Currently not implemented.
 func (loc *SshKeyLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("SshKey", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1295,14 +1483,18 @@ func (loc *SshKeyLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("SshKey", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1343,12 +1535,18 @@ func (api *Api16) SubnetLocator(href string) *SubnetLocator {
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets
 // Currently not implemented.
 func (loc *SubnetLocator) Index(options rsapi.ApiParams) error {
-	var params = mergeOptionals(rsapi.ApiParams{}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Subnet", "index")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1362,14 +1560,18 @@ func (loc *SubnetLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params = mergeOptionals(rsapi.ApiParams{
-		"id": id,
-	}, options)
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
 	var uri, err = loc.Url("Subnet", "show")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, params)
+	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err2 != nil {
 		return err2
 	}
@@ -1427,20 +1629,20 @@ type DeploymentLinks struct {
 }
 
 type Image2 struct {
+	ImageType          *string     `json:"image_type,omitempty"`
+	CpuArchitecture    *string     `json:"cpu_architecture,omitempty"`
+	Visibility         *string     `json:"visibility,omitempty"`
 	LegacyId           *int        `json:"legacy_id,omitempty"`
 	Href               *string     `json:"href,omitempty"`
-	ImageType          *string     `json:"image_type,omitempty"`
-	VirtualizationType *string     `json:"virtualization_type,omitempty"`
-	Id                 *string     `json:"id,omitempty"`
 	Name               *string     `json:"name,omitempty"`
-	Description        *string     `json:"description,omitempty"`
-	Kind               *string     `json:"kind,omitempty"`
-	RootDeviceStorage  *string     `json:"root_device_storage,omitempty"`
-	CpuArchitecture    *string     `json:"cpu_architecture,omitempty"`
 	Links              *ImageLinks `json:"links,omitempty"`
 	ResourceUid        *string     `json:"resource_uid,omitempty"`
+	VirtualizationType *string     `json:"virtualization_type,omitempty"`
+	Id                 *string     `json:"id,omitempty"`
+	Description        *string     `json:"description,omitempty"`
+	Kind               *string     `json:"kind,omitempty"`
 	OsPlatform         *string     `json:"os_platform,omitempty"`
-	Visibility         *string     `json:"visibility,omitempty"`
+	RootDeviceStorage  *string     `json:"root_device_storage,omitempty"`
 	InheritedSource    *string     `json:"inherited_source,omitempty"`
 }
 
@@ -1457,50 +1659,50 @@ type Incarnator struct {
 }
 
 type Instance2 struct {
-	OsPlatform         *string                    `json:"os_platform,omitempty"`
-	MonitoringToken    *string                    `json:"monitoring_token,omitempty"`
-	PublicDnsNames     []string                   `json:"public_dns_names,omitempty"`
-	LegacyId           *int                       `json:"legacy_id,omitempty"`
-	Tags               []string                   `json:"tags,omitempty"`
-	Networks           []*Network2                `json:"networks,omitempty"`
-	Href               *string                    `json:"href,omitempty"`
-	PublicIpAddresses  []string                   `json:"public_ip_addresses,omitempty"`
-	Kind               *string                    `json:"kind,omitempty"`
-	ResourceUid        *string                    `json:"resource_uid,omitempty"`
-	ServerTemplate     *ServerTemplate2           `json:"server_template,omitempty"`
-	IpAddresses        []*IpAddress2              `json:"ip_addresses,omitempty"`
-	IsNext             *bool                      `json:"is_next,omitempty"`
-	Actions            []string                   `json:"actions,omitempty"`
-	Timestamps         *InstancesTimestampsStruct `json:"timestamps,omitempty"`
-	SecurityGroups     *SecurityGroupCollection   `json:"security_groups,omitempty"`
-	PrivateDnsNames    []string                   `json:"private_dns_names,omitempty"`
-	PrivateIpAddresses []string                   `json:"private_ip_addresses,omitempty"`
-	Name               *string                    `json:"name,omitempty"`
-	Locked             *bool                      `json:"locked,omitempty"`
-	Id                 *string                    `json:"id,omitempty"`
-	MonitoringId       *string                    `json:"monitoring_id,omitempty"`
 	Links              *InstanceLinks             `json:"links,omitempty"`
-	State              *string                    `json:"state,omitempty"`
+	PublicIpAddresses  []string                   `json:"public_ip_addresses,omitempty"`
 	SshHost            *string                    `json:"ssh_host,omitempty"`
-	Subnets            *SubnetCollection          `json:"subnets,omitempty"`
+	SecurityGroups     *SecurityGroupCollection   `json:"security_groups,omitempty"`
+	IpAddresses        []*IpAddress2              `json:"ip_addresses,omitempty"`
+	PublicDnsNames     []string                   `json:"public_dns_names,omitempty"`
+	MonitoringToken    *string                    `json:"monitoring_token,omitempty"`
+	Name               *string                    `json:"name,omitempty"`
 	Description        *string                    `json:"description,omitempty"`
+	Tags               []string                   `json:"tags,omitempty"`
+	PrivateDnsNames    []string                   `json:"private_dns_names,omitempty"`
+	Actions            []string                   `json:"actions,omitempty"`
+	State              *string                    `json:"state,omitempty"`
+	Networks           []*Network2                `json:"networks,omitempty"`
+	IsNext             *bool                      `json:"is_next,omitempty"`
+	Timestamps         *InstancesTimestampsStruct `json:"timestamps,omitempty"`
+	MonitoringId       *string                    `json:"monitoring_id,omitempty"`
+	ServerTemplate     *ServerTemplate2           `json:"server_template,omitempty"`
+	Href               *string                    `json:"href,omitempty"`
+	PrivateIpAddresses []string                   `json:"private_ip_addresses,omitempty"`
+	Kind               *string                    `json:"kind,omitempty"`
+	Locked             *bool                      `json:"locked,omitempty"`
+	ResourceUid        *string                    `json:"resource_uid,omitempty"`
+	Subnets            *SubnetCollection          `json:"subnets,omitempty"`
+	LegacyId           *int                       `json:"legacy_id,omitempty"`
+	Id                 *string                    `json:"id,omitempty"`
+	OsPlatform         *string                    `json:"os_platform,omitempty"`
 	MonitoringServer   *string                    `json:"monitoring_server,omitempty"`
 }
 
 type InstanceLinks struct {
-	ComputedMultiCloudImage *MultiCloudImage2        `json:"computed_multi_cloud_image,omitempty"`
 	ComputedImage           *Image2                  `json:"computed_image,omitempty"`
 	Account                 *Account2                `json:"account,omitempty"`
 	Datacenter              *Datacenter2             `json:"datacenter,omitempty"`
-	Cloud                   *Cloud2                  `json:"cloud,omitempty"`
-	Image                   *Image2                  `json:"image,omitempty"`
-	SshKey                  *SshKey2                 `json:"ssh_key,omitempty"`
-	SecurityGroups          *SecurityGroupCollection `json:"security_groups,omitempty"`
-	Incarnator              *Incarnator              `json:"incarnator,omitempty"`
 	InstanceType            *InstanceType2           `json:"instance_type,omitempty"`
-	MultiCloudImage         *MultiCloudImage2        `json:"multi_cloud_image,omitempty"`
-	Deployment              *Deployment2             `json:"deployment,omitempty"`
+	Cloud                   *Cloud2                  `json:"cloud,omitempty"`
+	Incarnator              *Incarnator              `json:"incarnator,omitempty"`
+	SecurityGroups          *SecurityGroupCollection `json:"security_groups,omitempty"`
 	Subnets                 *SubnetCollection        `json:"subnets,omitempty"`
+	Deployment              *Deployment2             `json:"deployment,omitempty"`
+	SshKey                  *SshKey2                 `json:"ssh_key,omitempty"`
+	ComputedMultiCloudImage *MultiCloudImage2        `json:"computed_multi_cloud_image,omitempty"`
+	Image                   *Image2                  `json:"image,omitempty"`
+	MultiCloudImage         *MultiCloudImage2        `json:"multi_cloud_image,omitempty"`
 }
 
 type InstanceSummaryStruct struct {
@@ -1511,16 +1713,16 @@ type InstanceSummaryStruct struct {
 }
 
 type InstanceType2 struct {
-	Description *string            `json:"description,omitempty"`
 	Kind        *string            `json:"kind,omitempty"`
-	Memory      *string            `json:"memory,omitempty"`
+	CpuSpeed    *string            `json:"cpu_speed,omitempty"`
+	CpuCount    *int               `json:"cpu_count,omitempty"`
+	Links       *InstanceTypeLinks `json:"links,omitempty"`
 	Id          *string            `json:"id,omitempty"`
 	LegacyId    *int               `json:"legacy_id,omitempty"`
 	Href        *string            `json:"href,omitempty"`
 	Name        *string            `json:"name,omitempty"`
-	CpuSpeed    *string            `json:"cpu_speed,omitempty"`
-	CpuCount    *int               `json:"cpu_count,omitempty"`
-	Links       *InstanceTypeLinks `json:"links,omitempty"`
+	Description *string            `json:"description,omitempty"`
+	Memory      *string            `json:"memory,omitempty"`
 }
 
 type InstanceTypeLinks struct {
@@ -1528,23 +1730,23 @@ type InstanceTypeLinks struct {
 }
 
 type InstancesTimestampsStruct struct {
+	BootedAt      *time.Time `json:"booted_at,omitempty"`
+	OperationalAt *time.Time `json:"operational_at,omitempty"`
 	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
 	CreatedAt     *time.Time `json:"created_at,omitempty"`
 	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 	StrandedAt    *time.Time `json:"stranded_at,omitempty"`
 	PendingAt     *time.Time `json:"pending_at,omitempty"`
-	BootedAt      *time.Time `json:"booted_at,omitempty"`
-	OperationalAt *time.Time `json:"operational_at,omitempty"`
 }
 
 type IpAddress2 struct {
+	Name     *string         `json:"name,omitempty"`
 	Kind     *string         `json:"kind,omitempty"`
 	Links    *IpAddressLinks `json:"links,omitempty"`
 	Id       *string         `json:"id,omitempty"`
 	LegacyId *int            `json:"legacy_id,omitempty"`
 	Href     *string         `json:"href,omitempty"`
 	Address  *string         `json:"address,omitempty"`
-	Name     *string         `json:"name,omitempty"`
 }
 
 type IpAddressBinding2 struct {
@@ -1559,9 +1761,9 @@ type IpAddressBinding2 struct {
 }
 
 type IpAddressBindingLinks struct {
-	Cloud     *Cloud2     `json:"cloud,omitempty"`
 	Instance  *Instance2  `json:"instance,omitempty"`
 	IpAddress *IpAddress2 `json:"ip_address,omitempty"`
+	Cloud     *Cloud2     `json:"cloud,omitempty"`
 }
 
 type IpAddressLinks struct {
@@ -1569,13 +1771,13 @@ type IpAddressLinks struct {
 }
 
 type MultiCloudImage2 struct {
-	Href            *string `json:"href,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Description     *string `json:"description,omitempty"`
 	Kind            *string `json:"kind,omitempty"`
 	Version         *int    `json:"version,omitempty"`
 	InheritedSource *string `json:"inherited_source,omitempty"`
 	Id              *int    `json:"id,omitempty"`
+	Href            *string `json:"href,omitempty"`
+	Name            *string `json:"name,omitempty"`
+	Description     *string `json:"description,omitempty"`
 }
 
 type Network2 struct {
@@ -1615,12 +1817,6 @@ type NetworkLinks struct {
 	Cloud *Cloud2 `json:"cloud,omitempty"`
 }
 
-type ParamsStruct struct {
-	InstanceId *string `json:"instance_id,omitempty"`
-	CloudId    *int    `json:"cloud_id,omitempty"`
-	View       *string `json:"view,omitempty"`
-}
-
 type SecurityGroup2 struct {
 	Description *string             `json:"description,omitempty"`
 	Href        *string             `json:"href,omitempty"`
@@ -1632,8 +1828,8 @@ type SecurityGroup2 struct {
 }
 
 type SecurityGroupCollection struct {
-	Href  *string `json:"href,omitempty"`
 	Count *int    `json:"count,omitempty"`
+	Href  *string `json:"href,omitempty"`
 }
 
 type SecurityGroupLinks struct {
@@ -1641,31 +1837,31 @@ type SecurityGroupLinks struct {
 }
 
 type Server2 struct {
+	Tags            []string     `json:"tags,omitempty"`
+	NextInstance    *Instance2   `json:"next_instance,omitempty"`
 	CurrentInstance *Instance2   `json:"current_instance,omitempty"`
 	Name            *string      `json:"name,omitempty"`
-	Description     *string      `json:"description,omitempty"`
+	Href            *string      `json:"href,omitempty"`
+	Kind            *string      `json:"kind,omitempty"`
 	Actions         []string     `json:"actions,omitempty"`
 	Instance        *Instance2   `json:"instance,omitempty"`
-	NextInstance    *Instance2   `json:"next_instance,omitempty"`
 	Links           *ServerLinks `json:"links,omitempty"`
 	Id              *int         `json:"id,omitempty"`
-	Kind            *string      `json:"kind,omitempty"`
-	Href            *string      `json:"href,omitempty"`
-	Tags            []string     `json:"tags,omitempty"`
+	Description     *string      `json:"description,omitempty"`
 }
 
 type ServerArray2 struct {
 	Id              *int                               `json:"id,omitempty"`
 	Name            *string                            `json:"name,omitempty"`
-	Actions         []string                           `json:"actions,omitempty"`
+	Kind            *string                            `json:"kind,omitempty"`
 	Tags            []string                           `json:"tags,omitempty"`
 	NextInstance    *Instance2                         `json:"next_instance,omitempty"`
-	Links           *ServerArrayLinks                  `json:"links,omitempty"`
 	Description     *string                            `json:"description,omitempty"`
-	Kind            *string                            `json:"kind,omitempty"`
+	Actions         []string                           `json:"actions,omitempty"`
 	State           *string                            `json:"state,omitempty"`
 	Href            *string                            `json:"href,omitempty"`
 	InstanceSummary *ServerArraysInstanceSummaryStruct `json:"instance_summary,omitempty"`
+	Links           *ServerArrayLinks                  `json:"links,omitempty"`
 }
 
 type ServerArrayLinks struct {
@@ -1699,12 +1895,12 @@ type ServerTemplate2 struct {
 }
 
 type SshKey2 struct {
-	LegacyId    *int    `json:"legacy_id,omitempty"`
 	Href        *string `json:"href,omitempty"`
 	Kind        *string `json:"kind,omitempty"`
 	ResourceUid *string `json:"resource_uid,omitempty"`
 	Fingerprint *string `json:"fingerprint,omitempty"`
 	Id          *string `json:"id,omitempty"`
+	LegacyId    *int    `json:"legacy_id,omitempty"`
 }
 
 type Subnet2 struct {
@@ -1727,11 +1923,11 @@ type SubnetLinks struct {
 }
 
 type TimestampsStruct struct {
+	CreatedAt     *time.Time `json:"created_at,omitempty"`
+	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 	StrandedAt    *time.Time `json:"stranded_at,omitempty"`
 	PendingAt     *time.Time `json:"pending_at,omitempty"`
 	BootedAt      *time.Time `json:"booted_at,omitempty"`
 	OperationalAt *time.Time `json:"operational_at,omitempty"`
 	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
-	CreatedAt     *time.Time `json:"created_at,omitempty"`
-	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 }

@@ -37,7 +37,7 @@ func (a *Api16) RunCommand(cmd string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return a.GetRaw(parsed.Uri, parsed.Params)
+	return a.GetRaw(parsed.Uri, parsed.QueryParams)
 }
 
 // Show command help
