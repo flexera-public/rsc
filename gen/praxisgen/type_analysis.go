@@ -132,15 +132,14 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		var obj = a.CreateType(n)
 		obj.Fields = make([]*gen.ActionParam, len(att))
 
-		var idx = 0
-		for an, at := range att {
+		for idx, an := range sortedKeys(att) {
+			var at = att[an]
 			var aq = fmt.Sprintf("%s[%s]", query, an)
 			var ap, err = a.AnalyzeAttribute(an, aq, at.(map[string]interface{}))
 			if err != nil {
 				return nil, err
 			}
 			obj.Fields[idx] = ap
-			idx += 1
 		}
 
 		// We're done
@@ -158,14 +157,13 @@ func (a *ApiAnalyzer) CreateOrGetType(query string, attributes map[string]interf
 	var name = inflect.Camelize(bracketRegexp.ReplaceAllLiteralString(query, "_") + "_struct")
 	var obj = a.GetOrCreate(md5str, name)
 	obj.Fields = make([]*gen.ActionParam, len(attributes))
-	var idx = 0
-	for an, at := range attributes {
+	for idx, an := range sortedKeys(attributes) {
+		var at = attributes[an]
 		att, err := a.AnalyzeAttribute(an, fmt.Sprintf("%s[%s]", query, an), at.(map[string]interface{}))
 		if err != nil {
 			return nil, fmt.Errorf("Failed to compute type of attribute %s: %s", an, err.Error())
 		}
 		obj.Fields[idx] = att
-		idx += 1
 	}
 	return obj, nil
 }

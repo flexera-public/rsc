@@ -42,7 +42,9 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 				return nil, fmt.Errorf("Misins type declaration in %s", prettify(p))
 			}
 			var attrs = t.(map[string]interface{})["attributes"].(map[string]interface{})
-			for pn, pt := range attrs {
+			var attrNames = sortedKeys(attrs)
+			for _, pn := range attrNames {
+				var pt = attrs[pn]
 				att, err := a.AnalyzeAttribute(pn, pn, pt.(map[string]interface{}))
 				if err != nil {
 					return nil, fmt.Errorf("Failed to compute type of param %s: %s", pn, err.Error())
@@ -86,7 +88,9 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		}
 		if p, ok := meth["payload"]; ok {
 			var attrs = p.(map[string]interface{})["attributes"].(map[string]interface{})
-			for pn, pt := range attrs {
+			var attrNames = sortedKeys(attrs)
+			for _, pn := range attrNames {
+				var pt = attrs[pn]
 				var queryName = makeUniq(pn, paramNames)
 				att, err := a.AnalyzeAttribute(pn, queryName, pt.(map[string]interface{}))
 				if err != nil {
@@ -111,7 +115,9 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		responses, ok := meth["responses"]
 		if ok {
 			var resps = responses.(map[string]interface{})
-			for _, r := range resps {
+			var respNames = sortedKeys(resps)
+			for _, rName := range respNames {
+				var r = resps[rName]
 				var resp = r.(map[string]interface{})
 				if headers, ok := resp["headers"]; ok {
 					var head = headers.(map[string]interface{})
