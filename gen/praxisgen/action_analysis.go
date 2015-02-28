@@ -73,9 +73,13 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		}
 
 		// Initialize leaf params, all path and query params are leaf params
-		var leafParams = make([]*gen.ActionParam, len(params))
-		for i, p := range params {
-			leafParams[i] = p
+		var leafParams = make([]*gen.ActionParam, len(queryParamNames))
+		var idx = 0
+		for _, p := range params {
+			if p.Location == gen.QueryParam {
+				leafParams[idx] = p
+				idx += 1
+			}
 		}
 
 		// Payload params analysis

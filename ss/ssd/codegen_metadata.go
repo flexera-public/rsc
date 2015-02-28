@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 27, 2015 at 5:28pm (PST)
+// Feb 27, 2015 at 9:39pm (PST)
 // Command:
 // $ praxisgen -metadata=ssd/restful_doc -output=ssd -pkg=ssd -target=1.0 -client=Api
 //
@@ -34,16 +34,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -67,24 +58,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules/([^/]+)`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Schedule`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -116,16 +90,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -149,24 +114,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules/([^/]+)`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Schedule to update`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -198,24 +146,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules/([^/]+)`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Schedule to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -248,14 +179,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `The IDs of the Schedules to delete`,
@@ -303,14 +226,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `An optional list of template IDs to retrieve`,
 						Type:        "[]string",
@@ -351,22 +266,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -417,16 +316,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -450,24 +340,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/([^/]+)`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template to update`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -499,24 +372,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/([^/]+)`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -549,14 +405,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `The IDs of the Template to delete`,
@@ -606,22 +454,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template to download`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
@@ -662,16 +494,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/actions/compile`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -695,16 +518,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/actions/publish`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",
@@ -728,16 +542,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/actions/unpublish`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "collection_id",

@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 5:28pm (PST)
+// Feb 27, 2015 at 9:39pm (PST)
 // Command:
 // $ praxisgen -metadata=ssd/restful_doc -output=ssd -pkg=ssd -target=1.0 -client=Api
 //
@@ -54,15 +54,15 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 // A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
 // Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.
 type Schedule struct {
-	CreatedBy       *User              `json:"created_by,omitempty"`
-	Description     string             `json:"description,omitempty"`
-	Href            string             `json:"href,omitempty"`
-	Id              string             `json:"id,omitempty"`
-	Kind            string             `json:"kind,omitempty"`
-	Name            string             `json:"name,omitempty"`
-	StartRecurrence *Recurrence        `json:"start_recurrence,omitempty"`
-	StopRecurrence  *Recurrence        `json:"stop_recurrence,omitempty"`
-	Timestamps      *TimestampsStruct3 `json:"timestamps,omitempty"`
+	CreatedBy       *User             `json:"created_by,omitempty"`
+	Description     string            `json:"description,omitempty"`
+	Href            string            `json:"href,omitempty"`
+	Id              string            `json:"id,omitempty"`
+	Kind            string            `json:"kind,omitempty"`
+	Name            string            `json:"name,omitempty"`
+	StartRecurrence *Recurrence       `json:"start_recurrence,omitempty"`
+	StopRecurrence  *Recurrence       `json:"stop_recurrence,omitempty"`
+	Timestamps      *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -273,7 +273,7 @@ type Template struct {
 	RequiredParameters []string           `json:"required_parameters,omitempty"`
 	ShortDescription   string             `json:"short_description,omitempty"`
 	Source             string             `json:"source,omitempty"`
-	Timestamps         *TimestampsStruct4 `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct2 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -640,17 +640,6 @@ type TimestampsStruct struct {
 }
 
 type TimestampsStruct2 struct {
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	PublishedAt *time.Time `json:"published_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
-}
-
-type TimestampsStruct3 struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-}
-
-type TimestampsStruct4 struct {
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 	PublishedAt *time.Time `json:"published_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`

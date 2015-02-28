@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 5:28pm (PST)
+// Feb 27, 2015 at 9:39pm (PST)
 // Command:
 // $ praxisgen -metadata=ssm/restful_doc -output=ssm -pkg=ssm -target=1.0 -client=Api
 //
@@ -67,7 +67,7 @@ type Execution struct {
 	AvailableActions     []string               `json:"available_actions,omitempty"`
 	AvailableOperations  []*OperationDefinition `json:"available_operations,omitempty"`
 	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
-	Cost                 *CostStruct2           `json:"cost,omitempty"`
+	Cost                 *CostStruct            `json:"cost,omitempty"`
 	CreatedBy            *User                  `json:"created_by,omitempty"`
 	Deployment           string                 `json:"deployment,omitempty"`
 	DeploymentUrl        string                 `json:"deployment_url,omitempty"`
@@ -1184,12 +1184,6 @@ type ConfigurationOption struct {
 }
 
 type CostStruct struct {
-	Unit      *string    `json:"unit,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	Value     *string    `json:"value,omitempty"`
-}
-
-type CostStruct2 struct {
 	Unit      *string    `json:"unit,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	Value     *string    `json:"value,omitempty"`

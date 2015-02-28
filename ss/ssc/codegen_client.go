@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 5:28pm (PST)
+// Feb 27, 2015 at 9:39pm (PST)
 // Command:
 // $ praxisgen -metadata=ssc/restful_doc -output=ssc -pkg=ssc -target=1.0 -client=Api
 //
@@ -55,13 +55,13 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 // The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
 // to use in your own integration.
 type AccountPreference struct {
-	CreatedBy  *User             `json:"created_by,omitempty"`
-	GroupName  string            `json:"group_name,omitempty"`
-	Href       string            `json:"href,omitempty"`
-	Kind       string            `json:"kind,omitempty"`
-	Name       string            `json:"name,omitempty"`
-	Timestamps *TimestampsStruct `json:"timestamps,omitempty"`
-	Value      string            `json:"value,omitempty"`
+	CreatedBy  *User              `json:"created_by,omitempty"`
+	GroupName  string             `json:"group_name,omitempty"`
+	Href       string             `json:"href,omitempty"`
+	Kind       string             `json:"kind,omitempty"`
+	Name       string             `json:"name,omitempty"`
+	Timestamps *TimestampsStruct2 `json:"timestamps,omitempty"`
+	Value      string             `json:"value,omitempty"`
 }
 
 //===== Locator
@@ -499,7 +499,7 @@ type NotificationRule struct {
 	Priority    int                `json:"priority,omitempty"`
 	Source      string             `json:"source,omitempty"`
 	Target      string             `json:"target,omitempty"`
-	Timestamps  *TimestampsStruct4 `json:"timestamps,omitempty"`
+	Timestamps  *TimestampsStruct3 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -700,7 +700,7 @@ type UserPreference struct {
 	Href               string              `json:"href,omitempty"`
 	Id                 string              `json:"id,omitempty"`
 	Kind               string              `json:"kind,omitempty"`
-	Timestamps         *TimestampsStruct   `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct2  `json:"timestamps,omitempty"`
 	UserId             int                 `json:"user_id,omitempty"`
 	UserPreferenceInfo *UserPreferenceInfo `json:"user_preference_info,omitempty"`
 	Value              string              `json:"value,omitempty"`
@@ -871,17 +871,17 @@ func (loc *UserPreferenceLocator) Delete(accountId string, id string) (*UserPref
 // The UserPreferenceInfo resource defines the available user preferences supported by the system.
 // It is also used to validate values saved in UserPreference.
 type UserPreferenceInfo struct {
-	Category        string            `json:"category,omitempty"`
-	DefaultValue    string            `json:"default_value,omitempty"`
-	DisplayName     string            `json:"display_name,omitempty"`
-	HelpText        string            `json:"help_text,omitempty"`
-	Href            string            `json:"href,omitempty"`
-	Id              string            `json:"id,omitempty"`
-	Kind            string            `json:"kind,omitempty"`
-	Name            string            `json:"name,omitempty"`
-	ValueConstraint []string          `json:"value_constraint,omitempty"`
-	ValueRange      *ValueRangeStruct `json:"value_range,omitempty"`
-	ValueType       string            `json:"value_type,omitempty"`
+	Category        string                              `json:"category,omitempty"`
+	DefaultValue    string                              `json:"default_value,omitempty"`
+	DisplayName     string                              `json:"display_name,omitempty"`
+	HelpText        string                              `json:"help_text,omitempty"`
+	Href            string                              `json:"href,omitempty"`
+	Id              string                              `json:"id,omitempty"`
+	Kind            string                              `json:"kind,omitempty"`
+	Name            string                              `json:"name,omitempty"`
+	ValueConstraint []string                            `json:"value_constraint,omitempty"`
+	ValueRange      *UserPreferenceInfoValueRangeStruct `json:"value_range,omitempty"`
+	ValueType       string                              `json:"value_type,omitempty"`
 }
 
 //===== Locator
@@ -1061,11 +1061,6 @@ type TimestampsStruct3 struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
-type TimestampsStruct4 struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-}
-
 type User struct {
 	Email *string `json:"email,omitempty"`
 	Id    int     `json:"id,omitempty"`
@@ -1077,7 +1072,7 @@ type UserPreference2 struct {
 	Href               *string              `json:"href,omitempty"`
 	Id                 *string              `json:"id,omitempty"`
 	Kind               *string              `json:"kind,omitempty"`
-	Timestamps         *TimestampsStruct    `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct2   `json:"timestamps,omitempty"`
 	UserId             *int                 `json:"user_id,omitempty"`
 	UserPreferenceInfo *UserPreferenceInfo2 `json:"user_preference_info,omitempty"`
 	Value              *string              `json:"value,omitempty"`
@@ -1098,11 +1093,6 @@ type UserPreferenceInfo2 struct {
 }
 
 type UserPreferenceInfoValueRangeStruct struct {
-	Max *int `json:"max,omitempty"`
-	Min *int `json:"min,omitempty"`
-}
-
-type ValueRangeStruct struct {
 	Max *int `json:"max,omitempty"`
 	Min *int `json:"min,omitempty"`
 }

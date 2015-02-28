@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 27, 2015 at 5:28pm (PST)
+// Feb 27, 2015 at 9:39pm (PST)
 // Command:
 // $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 //
@@ -70,14 +70,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -162,14 +154,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -224,14 +208,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -280,22 +256,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -404,14 +364,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `ID of the Deployment to show`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
 						Type:        "string",
@@ -459,14 +411,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "filter",
 						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.`,
@@ -533,22 +477,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -611,14 +539,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -667,22 +587,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -745,14 +649,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `Filter by the given cloud ID`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "filter",
 						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.`,
@@ -851,22 +747,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -929,14 +809,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -985,22 +857,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1064,14 +920,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -1120,22 +968,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1228,14 +1060,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -1318,14 +1142,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1410,14 +1226,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -1501,14 +1309,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -1569,22 +1369,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "instance_id",
-						Description: `The Instance with which to scope the index`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -1641,22 +1425,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1749,14 +1517,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -1839,14 +1599,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1931,14 +1683,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -1993,14 +1737,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -2049,22 +1785,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -2134,22 +1854,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "instance_id",
-						Description: `The Instance with which to scope the index`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
 						Type:        "string",
@@ -2206,22 +1910,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "cloud_id",
-						Description: `The identifier of Cloud this resource resides in`,
-						Type:        "int",
-						Location:    metadata.PathParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The identifier of the resource`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,

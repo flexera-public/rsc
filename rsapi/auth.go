@@ -104,7 +104,7 @@ func (a *SSAuthenticator) Sign(r *http.Request, host string) error {
 		return err
 	}
 	if time.Now().After(refreshAt) {
-		authReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/catalog/new_session?account_id=%d", host, a.AccountId), nil)
+		authReq, err := http.NewRequest("GET", fmt.Sprintf("https://%s/api/catalog/new_session?account_id=%d", host, a.AccountId), nil)
 		if err != nil {
 			return err
 		}
