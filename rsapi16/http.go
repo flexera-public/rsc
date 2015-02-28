@@ -1,9 +1,7 @@
 package rsapi16
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -28,23 +26,6 @@ func (a *Api16) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 // Low-level GET request
 func (a *Api16) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
 	return a.makeRequest("GET", uri, params)
-}
-
-// Deserialize JSON response into generic object.
-func (a *Api16) LoadResponse(resp *http.Response) (interface{}, error) {
-	defer resp.Body.Close()
-	var respBody interface{}
-	jsonResp, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
-	}
-	if len(jsonResp) > 0 {
-		err = json.Unmarshal(jsonResp, &respBody)
-		if err != nil {
-			return nil, fmt.Errorf("Failed to load response (%s)", err.Error())
-		}
-	}
-	return respBody, err
 }
 
 // Helper function that signs, makes and logs HTTP request

@@ -6,8 +6,10 @@ import (
 	"os"
 	"strings"
 
+	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/rsapi15"
 	"github.com/rightscale/rsc/rsapi16"
+	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 
@@ -27,33 +29,24 @@ func main() {
 	if !IsClientCommand(topCommand) && topCommand != "setup" {
 		topCommand = DefaultClientCommand
 	}
+	var client cmd.CommandClient
 	switch topCommand {
 	case "setup":
 		err = CreateConfig(cmdLine.ConfigPath)
-
 	case "api15":
-		var client, err2 = rsapi15.FromCommandLine(cmdLine)
-		if err2 != nil {
-			err = err2
-		} else if client != nil {
-			if cmdLine.ShowHelp {
-				err = client.ShowCommandHelp(cmdLine.Command)
-			} else {
-				resp, err = client.RunCommand(cmdLine.Command)
-			}
+		client, err = rsapi15.FromCommandLine(cmdLine)
+		if err == nil {
+			resp, err = runCommand(client, cmdLine)
 		}
-
 	case "api16":
-		var client, err2 = rsapi16.FromCommandLine(cmdLine)
-		if err2 != nil {
-			err = err2
-		} else if client != nil {
-			if cmdLine.ShowHelp {
-				err = client.ShowCommandHelp(cmdLine.Command)
-			} else {
-				resp, err = client.RunCommand(cmdLine.Command)
-			}
-			resp, err = client.RunCommand(cmdLine.Command)
+		client, err = rsapi16.FromCommandLine(cmdLine)
+		if err == nil {
+			resp, err = runCommand(client, cmdLine)
+		}
+	case "ss":
+		client, err = ss.FromCommandLine(cmdLine)
+		if err == nil {
+			resp, err = runCommand(client, cmdLine)
 		}
 	}
 
@@ -108,4 +101,14 @@ func main() {
 		exitStatus = 5
 	}
 	os.Exit(exitStatus)
+}
+
+// Helper that runs command line with give command client
+func runCommand(client cmd.CommandClient, cmdLine *cmd.CommandLine) (resp *http.Response, err error) {
+	if cmdLine.ShowHelp {
+		err = client.ShowCommandHelp(cmdLine.Command)
+	} else {
+		resp, err = client.RunCommand(cmdLine.Command)
+	}
+	return
 }

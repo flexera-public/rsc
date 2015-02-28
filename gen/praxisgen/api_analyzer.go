@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sort"
-	"strconv"
 
 	"github.com/rightscale/rsc/gen"
 )
@@ -23,9 +22,9 @@ type ApiAnalyzer struct {
 
 	// Descriptor being built
 	descriptor *gen.ApiDescriptor
-	// Map of ruby type name to go type name
+	// Map of ruby type name to go type names
 	// Also used to record types that have been processed.
-	typeNames map[string]string
+	typeNames map[string][]string
 	// Map of uids to types, used to create new types from inline structs or hashes
 	typeUids map[string]*gen.ObjectDataType
 }
@@ -37,7 +36,7 @@ func NewApiAnalyzer(version, clientName string, resources, types map[string]map[
 		RawTypes:     types,
 		Version:      version,
 		ClientName:   clientName,
-		typeNames:    make(map[string]string),
+		typeNames:    make(map[string][]string),
 		typeUids:     make(map[string]*gen.ObjectDataType),
 	}
 }
@@ -99,18 +98,31 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 	}
 
 	// 3. Sort and register all types
-	var typeNames = make([]string, len(a.typeNames))
-	idx = 0
-	for _, name := range a.typeNames {
-		var uniq = makeUniq(name, a.descriptor.ResourceNames)
-		if uniq != name {
-			var existing = descriptor.Types[name]
-			existing.Name = uniq
-			delete(descriptor.Types, name)
-			descriptor.Types[uniq] = existing
+	var typeNames []string
+	var usedTypeNames []string
+	for _, names := range a.typeNames {
+		usedTypeNames = append(usedTypeNames, names...)
+	}
+	for _, names := range a.typeNames {
+		for _, name := range names {
+			var inuse = false
+			for _, n := range a.descriptor.ResourceNames {
+				if name == n {
+					inuse = true
+					break
+				}
+			}
+			var uniq = name
+			if inuse {
+				uniq = gen.MakeUniq(name, append(usedTypeNames, a.descriptor.ResourceNames...))
+				var existing = descriptor.Types[name]
+				existing.Name = uniq
+				delete(descriptor.Types, name)
+				descriptor.Types[uniq] = existing
+				usedTypeNames = append(usedTypeNames, uniq)
+			}
+			typeNames = append(typeNames, uniq)
 		}
-		typeNames[idx] = uniq
-		idx += 1
 	}
 	sort.Strings(typeNames)
 	descriptor.TypeNames = typeNames
@@ -148,28 +160,28 @@ func (a *ApiAnalyzer) AnalyzeMediaType(name string) error {
 }
 
 // GetType looks up a generated type by metadata name.
+// Only use for types explicitly declared in the metadata - not for types that we created.
 // Returns nil if not found.
 func (a *ApiAnalyzer) GetType(metadataName string) *gen.ObjectDataType {
 	if existing, ok := a.typeNames[metadataName]; ok {
-		return a.descriptor.Types[existing]
+		if len(existing) > 1 {
+			panic("Yeeepaaa, two ruby types with the same name??")
+		}
+		return a.descriptor.Types[existing[0]]
 	}
 	return nil
 }
 
 // Creates a unique go type name, records it and returns a new type with that name.
 func (a *ApiAnalyzer) CreateType(metadataName string) *gen.ObjectDataType {
-	var taken = make([]string, len(a.typeNames))
-	var idx = 0
+	var taken []string
 	for _, n := range a.typeNames {
-		taken[idx] = n
-		idx += 1
+		taken = append(taken, n...)
 	}
-	var goName = makeUniq(toGoTypeName(metadataName, false), taken)
-
-	a.typeNames[metadataName] = goName
+	var goName = gen.MakeUniq(toGoTypeName(metadataName, false), taken)
+	a.typeNames[metadataName] = append(a.typeNames[metadataName], goName)
 	var obj = gen.ObjectDataType{Name: goName}
 	a.descriptor.Types[goName] = &obj
-
 	return &obj
 }
 
@@ -181,25 +193,4 @@ func (a *ApiAnalyzer) GetOrCreate(uid, metadataName string) *gen.ObjectDataType 
 	var obj = a.CreateType(metadataName)
 	a.typeUids[uid] = obj
 	return obj
-}
-
-// Make a unique name given a prefix and a set of names
-func makeUniq(base string, taken []string) string {
-	var idx = 1
-	var uniq = base
-	var inuse = true
-	for inuse {
-		inuse = false
-		for _, gn := range taken {
-			if gn == uniq {
-				inuse = true
-				break
-			}
-		}
-		if inuse {
-			idx += 1
-			uniq = base + strconv.Itoa(idx)
-		}
-	}
-	return uniq
 }

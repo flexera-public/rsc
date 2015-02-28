@@ -14,12 +14,15 @@ import (
 	"github.com/rightscale/rsc/gen/writers"
 )
 
+// Data structure used to load content of index.json files
+type Index map[string]map[string]map[string]interface{}
+
 func main() {
 	// 1. Parse command line arguments
 	curDir, err := os.Getwd()
 	check(err)
 	var metadataDirVal = flag.String("metadata", curDir,
-		"Path to directory containig metadata files (index.json, etc.)")
+		"Path to directory(ies) containig metadata files (index.json, etc.). Multiple directories can be specified using a coma separated list.")
 	var destDirVal = flag.String("output", curDir,
 		"Path to output file")
 	var pkgName = flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
@@ -28,9 +31,11 @@ func main() {
 	var clientName = flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
 	flag.Parse()
 
-	metadataDir := *metadataDirVal
-	if stat, _ := os.Stat(metadataDir); !stat.IsDir() {
-		check(fmt.Errorf("%s is not a valid directory.", metadataDir))
+	var metadataDirs = strings.Split(*metadataDirVal, ",")
+	for _, metadataDir := range metadataDirs {
+		if stat, err := os.Stat(metadataDir); err != nil || !stat.IsDir() {
+			check(fmt.Errorf("%s is not a valid directory.", metadataDir))
+		}
 	}
 
 	destDir := *destDirVal
@@ -46,60 +51,73 @@ func main() {
 		check(fmt.Errorf("-client option is required."))
 	}
 
-	indexFile := path.Join(metadataDir, "index.json")
-	var index map[string]map[string]map[string]string
-	indexContent, err := loadFile(indexFile)
-	check(err)
-	err = json.Unmarshal(indexContent, &index)
-	if err != nil {
-		check(fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", indexFile, err.Error()))
+	var indeces = make(map[string]Index, len(metadataDirs)) // Index content mapped by directory path
+	for _, metadataDir := range metadataDirs {
+		var indexFile = path.Join(metadataDir, "index.json")
+		indexContent, err := loadFile(indexFile)
+		check(err)
+		var index Index
+		err = json.Unmarshal(indexContent, &index)
+		if err != nil {
+			check(fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", indexFile, err.Error()))
+		}
+		indeces[metadataDir] = index
 	}
 
 	// 2. Analyze
 	var descriptors = make(map[string]*gen.ApiDescriptor) // descriptors indexed by version
-	for version, resources := range index {
-		if len(*targetVersion) > 0 {
-			if version != *targetVersion {
-				fmt.Fprintf(os.Stderr, "Skipping version \"%s\"\n", version)
-				continue
+	for dirPath, index := range indeces {
+		for version, resources := range index {
+			if len(*targetVersion) > 0 {
+				if version != *targetVersion {
+					fmt.Fprintf(os.Stderr, "Skipping version \"%s\"\n", version)
+					continue
+				}
 			}
-		}
-		var apiResources = make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
-		for name, _ := range resources {
-			// Skip built-in resources (?)
-			if strings.HasSuffix(name, " (*)") {
-				continue
+			var apiResources = make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
+			for name, resource := range resources {
+				// Skip built-in resources (?)
+				if strings.HasSuffix(name, " (*)") {
+					continue
+				}
+				var fileName = fmt.Sprintf("%s.json", resource["controller"])
+				var resourcePath = path.Join(dirPath, version, "resources", fileName)
+				var resourceData map[string]interface{}
+				if err := unmarshal(resourcePath, &resourceData); err != nil {
+					check(fmt.Errorf("Failed to unmarshal content of file %s: %s", resourcePath, err.Error()))
+				}
+				apiResources[name] = resourceData
 			}
-			var fileName = fmt.Sprintf("%s::%s.json", toModuleName(version), name)
-			var resourcePath = path.Join(metadataDir, version, "resources", fileName)
-			var resourceData map[string]interface{}
-			if err := unmarshal(resourcePath, &resourceData); err != nil {
-				check(fmt.Errorf("Failed to unmarshal content of file %s: %s", resourcePath, err.Error()))
-			}
-			apiResources[name] = resourceData
-		}
 
-		var apiTypes = make(map[string]map[string]interface{}) // Type properties indexed by name indexed by type name
-		var typesDir = path.Join(metadataDir, version, "types")
-		files, err := ioutil.ReadDir(typesDir)
-		if err != nil {
-			check(fmt.Errorf("Failed to load types: %s", err.Error()))
-		}
-		for _, file := range files {
-			var typeData map[string]interface{}
-			if err := unmarshal(path.Join(typesDir, file.Name()), &typeData); err != nil {
-				check(fmt.Errorf("Failed to unmarshal content of file %s: %s", path.Join(typesDir, file.Name()), err.Error()))
+			var apiTypes = make(map[string]map[string]interface{}) // Type properties indexed by name indexed by type name
+			var typesDir = path.Join(dirPath, version, "types")
+			files, err := ioutil.ReadDir(typesDir)
+			if err != nil {
+				check(fmt.Errorf("Failed to load types: %s", err.Error()))
 			}
-			var typeName, ok = typeData["name"]
-			if !ok {
-				check(fmt.Errorf("Missing \"name\" key for type defined in %s", path.Join(typesDir, file.Name())))
+			for _, file := range files {
+				var typeData map[string]interface{}
+				if err := unmarshal(path.Join(typesDir, file.Name()), &typeData); err != nil {
+					check(fmt.Errorf("Failed to unmarshal content of file %s: %s", path.Join(typesDir, file.Name()), err.Error()))
+				}
+				var typeName, ok = typeData["name"]
+				if !ok {
+					check(fmt.Errorf("Missing \"name\" key for type defined in %s", path.Join(typesDir, file.Name())))
+				}
+				apiTypes[typeName.(string)] = typeData
 			}
-			apiTypes[typeName.(string)] = typeData
+			var analyzer = NewApiAnalyzer(version, *clientName, apiResources, apiTypes)
+			d, err := analyzer.Analyze()
+			check(err)
+			if existing, ok := descriptors[version]; ok {
+				err := existing.Merge(d)
+				if err != nil {
+					check(fmt.Errorf("Conflict between multiple metadata directory: %s", err.Error()))
+				}
+			} else {
+				descriptors[version] = d
+			}
 		}
-		var analyzer = NewApiAnalyzer(version, *clientName, apiResources, apiTypes)
-		d, err := analyzer.Analyze()
-		check(err)
-		descriptors[version] = d
 	}
 
 	// 3. Write code
@@ -136,14 +154,6 @@ func unmarshal(path string, target *map[string]interface{}) error {
 		return fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", path, err.Error())
 	}
 	return nil
-}
-
-// Convert version number in index.json to ruby module name used by resource filenames
-func toModuleName(version string) string {
-	if version == "unversioned" {
-		return "V0"
-	}
-	return fmt.Sprintf("V%s", strings.Replace(version, ".", "_", -1))
 }
 
 // Convert version number in index.json to go package name

@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 10:33am (PST)
+// Feb 27, 2015 at 5:28pm (PST)
 // Command:
 // $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 //
@@ -28,7 +28,7 @@ import (
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
-	var res, ok = api_metadata[rName]
+	var res, ok = GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}

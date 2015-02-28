@@ -15,7 +15,7 @@ var commandValues rsapi.ActionCommands
 func RegisterCommands(api15Cmd cmd.CommandProvider) {
 	commandValues = rsapi.ActionCommands{}
 	var actionNames []string
-	for _, r := range api_metadata {
+	for _, r := range GenMetadata {
 		for _, a := range r.Actions {
 			var name = a.Name
 			var exists = false
@@ -46,7 +46,7 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 		default:
 			var resources = []string{}
 			var actionDescription string
-			for name, resource := range api_metadata {
+			for name, resource := range GenMetadata {
 				for _, a := range resource.Actions {
 					if a.Name == action {
 						actionDescription = a.Description
@@ -76,7 +76,15 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return a.Dispatch(parsed.HttpMethod, parsed.Uri, parsed.QueryParams, parsed.PayloadParams)
+	var href = parsed.Uri
+	if !strings.HasPrefix(href, "/api") {
+		if strings.HasPrefix(href, "/") {
+			href = "/api" + href
+		} else {
+			href = "/api/" + href
+		}
+	}
+	return a.Dispatch(parsed.HttpMethod, href, parsed.QueryParams, parsed.PayloadParams)
 }
 
 // Show command help

@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 27, 2015 at 10:16am (PST)
+// Feb 27, 2015 at 5:28pm (PST)
 // Command:
 // $ api15gen
 //
@@ -18,7 +18,7 @@ import (
 )
 
 // Consists of a map of resource name to resource metadata.
-var api_metadata = map[string]*metadata.Resource{
+var GenMetadata = map[string]*metadata.Resource{
 	"Account": &metadata.Resource{
 		Name:        "Account",
 		Description: ``,

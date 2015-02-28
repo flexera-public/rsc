@@ -126,24 +126,27 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		}
 		var attrs, ok2 = t["attributes"]
 		if !ok2 {
-			return nil, fmt.Errorf("Type %s has no attributes: %s", n, prettify(typeDef))
-		}
-		var att = attrs.(map[string]interface{})
-		var obj = a.CreateType(n)
-		obj.Fields = make([]*gen.ActionParam, len(att))
+			// No attribute, it's a string
+			var s = gen.BasicDataType("string")
+			dataType = &s
+		} else {
+			var att = attrs.(map[string]interface{})
+			var obj = a.CreateType(n)
+			obj.Fields = make([]*gen.ActionParam, len(att))
 
-		for idx, an := range sortedKeys(att) {
-			var at = att[an]
-			var aq = fmt.Sprintf("%s[%s]", query, an)
-			var ap, err = a.AnalyzeAttribute(an, aq, at.(map[string]interface{}))
-			if err != nil {
-				return nil, err
+			for idx, an := range sortedKeys(att) {
+				var at = att[an]
+				var aq = fmt.Sprintf("%s[%s]", query, an)
+				var ap, err = a.AnalyzeAttribute(an, aq, at.(map[string]interface{}))
+				if err != nil {
+					return nil, err
+				}
+				obj.Fields[idx] = ap
 			}
-			obj.Fields[idx] = ap
-		}
 
-		// We're done
-		dataType = obj
+			// We're done
+			dataType = obj
+		}
 	}
 
 	return dataType, nil

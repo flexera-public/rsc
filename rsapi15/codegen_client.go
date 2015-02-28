@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 26, 2015 at 11:58pm (PST)
+// Feb 27, 2015 at 5:28pm (PST)
 // Command:
 // $ api15gen
 //
@@ -28,7 +28,7 @@ import (
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
-	var res, ok = api_metadata[rName]
+	var res, ok = GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}

@@ -2,6 +2,7 @@ package rsapi16
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/rsapi"
@@ -37,7 +38,15 @@ func (a *Api16) RunCommand(cmd string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return a.GetRaw(parsed.Uri, parsed.QueryParams)
+	var href = parsed.Uri
+	if !strings.HasPrefix(href, "/api") {
+		if strings.HasPrefix(href, "/") {
+			href = "/api" + href
+		} else {
+			href = "/api/" + href
+		}
+	}
+	return a.GetRaw(href, parsed.QueryParams)
 }
 
 // Show command help

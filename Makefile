@@ -1,6 +1,6 @@
-.PHONY: all api15 api15gen api15json api16 praxisgen
+.PHONY: all api15 api15gen api15json api16 praxisgen ss
 
-all: api15 api16
+all: api15 api16 ss
 	go test && go install
 
 api15: api15gen
@@ -14,6 +14,9 @@ api15json:
 
 api16: praxisgen
 	cd rsapi16 && go generate && go test
+
+ss: praxisgen
+	cd ss && go generate && go test
 
 praxisgen:
 	cd gen/praxisgen && go test && go install

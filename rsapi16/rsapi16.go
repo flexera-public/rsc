@@ -40,6 +40,6 @@ func fromApi(api *rsapi.Api, err error) (*Api16, error) {
 	if err != nil {
 		return nil, err
 	}
-	api.Metadata = api_metadata
+	api.Metadata = GenMetadata
 	return &Api16{api}, nil
 }

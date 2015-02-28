@@ -1,0 +1,313 @@
+{
+    "actions": [
+        {
+            "description": "List the AccountPreferences for this account.",
+            "name": "index",
+            "params": {
+                "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+                "example": {
+                    "account_id": "12345",
+                    "filter": [
+                        "group==portal_customization"
+                    ],
+                    "group": "12345"
+                },
+                "identity": "name",
+                "reference": "V1::MediaType::AccountPreference",
+                "type": {
+                    "attributes": {
+                        "account_id": {
+                            "description": "The account ID",
+                            "example_definition": "12345",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        },
+                        "filter": {
+                            "description": "Filter by group, so that only AccountPreferences belonging to that group are returned",
+                            "example_definition": "[\"group==portal_customization\"]",
+                            "type": {
+                                "member_attribute": {
+                                    "type": {
+                                        "name": "String"
+                                    }
+                                },
+                                "name": "Collection"
+                            }
+                        },
+                        "group": {
+                            "description": "The group that this setting belongs to, simply for organizational purposes",
+                            "example_definition": "12345",
+                            "type": {
+                                "name": "String"
+                            }
+                        }
+                    },
+                    "name": "Struct"
+                }
+            },
+            "responses": {
+                "default": {
+                    "description": null,
+                    "mime_type": "application/vnd.rightscale.self_service.account_preference",
+                    "status": 200
+                },
+                "internal_server_error": {
+                    "description": "Internal Server Error",
+                    "status": 500
+                },
+                "unauthorized": {
+                    "description": "Authentication is required and has failed or has not yet been provided.",
+                    "status": 401
+                },
+                "validation": {
+                    "description": "When parameter validation hits...",
+                    "mime_type": "application/json",
+                    "status": 400
+                }
+            },
+            "urls": [
+                [
+                    "GET",
+                    "/accounts/:account_id/account_preferences"
+                ]
+            ]
+        },
+        {
+            "description": "Get details for a particular AccountPreference",
+            "name": "show",
+            "params": {
+                "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+                "example": {
+                    "account_id": "12345",
+                    "name": "primary_color"
+                },
+                "identity": "name",
+                "reference": "V1::MediaType::AccountPreference",
+                "type": {
+                    "attributes": {
+                        "account_id": {
+                            "description": "The account ID",
+                            "example_definition": "12345",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        },
+                        "name": {
+                            "description": "The name of the AccountPreference to retrieve",
+                            "example_definition": "primary_color",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        }
+                    },
+                    "name": "Struct"
+                }
+            },
+            "responses": {
+                "default": {
+                    "description": null,
+                    "mime_type": "application/vnd.rightscale.self_service.account_preference",
+                    "status": 200
+                },
+                "internal_server_error": {
+                    "description": "Internal Server Error",
+                    "status": 500
+                },
+                "not_found": {
+                    "description": "An AccountPreference with the given account and name could not be found",
+                    "status": 404
+                },
+                "unauthorized": {
+                    "description": "Authentication is required and has failed or has not yet been provided.",
+                    "status": 401
+                },
+                "validation": {
+                    "description": "When parameter validation hits...",
+                    "mime_type": "application/json",
+                    "status": 400
+                }
+            },
+            "urls": [
+                [
+                    "GET",
+                    "/accounts/:account_id/account_preferences/:name"
+                ]
+            ]
+        },
+        {
+            "description": "Create a new AccountPreference or update an existing AccountPreference with the new value",
+            "name": "create",
+            "params": {
+                "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+                "example": {
+                    "account_id": "12345"
+                },
+                "identity": "name",
+                "reference": "V1::MediaType::AccountPreference",
+                "type": {
+                    "attributes": {
+                        "account_id": {
+                            "description": "The account ID",
+                            "example_definition": "12345",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        }
+                    },
+                    "name": "Struct"
+                }
+            },
+            "payload": {
+                "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+                "example": {
+                    "group_name": "my_custom_prefs",
+                    "name": "my_new_preference",
+                    "value": "some_custom_value"
+                },
+                "identity": "name",
+                "reference": "V1::MediaType::AccountPreference",
+                "type": {
+                    "attributes": {
+                        "group_name": {
+                            "description": "The group to place this AccountPreference in. Any string value is accepted - the group does not need to exist",
+                            "example_definition": "my_custom_prefs",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        },
+                        "name": {
+                            "description": "The name for the new AccountPreference or AccountPreference to update (note this is the key for this resource)",
+                            "example_definition": "my_new_preference",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        },
+                        "value": {
+                            "description": "The value to set for this AccountPreference",
+                            "example_definition": "some_custom_value",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        }
+                    },
+                    "name": "Struct"
+                }
+            },
+            "responses": {
+                "created": {
+                    "description": "The AccountPreference was successfully created",
+                    "multipart": {
+                        "envelope": {
+                            "description": null,
+                            "status": 200
+                        },
+                        "type": "optional"
+                    },
+                    "status": 201
+                },
+                "default": {
+                    "description": null,
+                    "status": 200
+                },
+                "internal_server_error": {
+                    "description": "Internal Server Error",
+                    "status": 500
+                },
+                "unauthorized": {
+                    "description": "Authentication is required and has failed or has not yet been provided.",
+                    "status": 401
+                },
+                "validation": {
+                    "description": "When parameter validation hits...",
+                    "mime_type": "application/json",
+                    "status": 400
+                }
+            },
+            "urls": [
+                [
+                    "POST",
+                    "/accounts/:account_id/account_preferences"
+                ]
+            ]
+        },
+        {
+            "description": "Delete an AccountPreference",
+            "name": "delete",
+            "params": {
+                "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+                "example": {
+                    "account_id": "12345",
+                    "name": "my_new_preference"
+                },
+                "identity": "name",
+                "reference": "V1::MediaType::AccountPreference",
+                "type": {
+                    "attributes": {
+                        "account_id": {
+                            "description": "The account ID",
+                            "example_definition": "12345",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        },
+                        "name": {
+                            "description": "The name of the AccountPreference to delete",
+                            "example_definition": "my_new_preference",
+                            "required": true,
+                            "type": {
+                                "name": "String"
+                            }
+                        }
+                    },
+                    "name": "Struct"
+                }
+            },
+            "responses": {
+                "default": {
+                    "description": null,
+                    "mime_type": "controller_defined",
+                    "status": 200
+                },
+                "internal_server_error": {
+                    "description": "Internal Server Error",
+                    "status": 500
+                },
+                "no_content": {
+                    "description": "AccountPreference successfully deleted",
+                    "status": 204
+                },
+                "not_found": {
+                    "description": "An AccountPreference with the given account and name could not be found",
+                    "status": 404
+                },
+                "unauthorized": {
+                    "description": "Authentication is required and has failed or has not yet been provided.",
+                    "status": 401
+                },
+                "validation": {
+                    "description": "When parameter validation hits...",
+                    "mime_type": "application/json",
+                    "status": 400
+                }
+            },
+            "urls": [
+                [
+                    "DELETE",
+                    "/accounts/:account_id/account_preferences/:name"
+                ]
+            ]
+        }
+    ],
+    "description": "\nThe AccountPreference resource stores preferences that apply account-wide, such as UI customization settings and other settings.\nThe Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings\nto use in your own integration.\n      ",
+    "media_type": "V1::MediaType::AccountPreference",
+    "mime_type": "application/vnd.rightscale.self_service.account_preference"
+}

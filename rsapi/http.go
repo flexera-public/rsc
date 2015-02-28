@@ -3,8 +3,10 @@ package rsapi
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"time"
@@ -47,4 +49,30 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, err
+}
+
+// Deserialize JSON response into generic object.
+// If the response has a "Location" header then the returned object is a map with one key "Location"
+// containing the value of the header.
+func (a *Api) LoadResponse(resp *http.Response) (interface{}, error) {
+	defer resp.Body.Close()
+	var respBody interface{}
+	jsonResp, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
+	}
+	if len(jsonResp) > 0 {
+		err = json.Unmarshal(jsonResp, &respBody)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to load response (%s)", err.Error())
+		}
+	}
+	// Special case for "Location" header, assume that if there is a location there is no body
+	loc := resp.Header.Get("Location")
+	if len(loc) > 0 {
+		var bodyMap = make(map[string]interface{})
+		bodyMap["Location"] = loc
+		respBody = interface{}(bodyMap)
+	}
+	return respBody, err
 }

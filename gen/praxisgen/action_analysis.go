@@ -87,23 +87,26 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 			paramNames[len(pathParamNames)+i] = n
 		}
 		if p, ok := meth["payload"]; ok {
-			var attrs = p.(map[string]interface{})["attributes"].(map[string]interface{})
-			var attrNames = sortedKeys(attrs)
-			for _, pn := range attrNames {
-				var pt = attrs[pn]
-				var queryName = makeUniq(pn, paramNames)
-				att, err := a.AnalyzeAttribute(pn, queryName, pt.(map[string]interface{}))
-				if err != nil {
-					return nil, fmt.Errorf("Failed to compute type of param %s: %s", pn, err.Error())
+			as, ok := p.(map[string]interface{})["attributes"]
+			if ok {
+				var attrs = as.(map[string]interface{})
+				var attrNames = sortedKeys(attrs)
+				for _, pn := range attrNames {
+					var pt = attrs[pn]
+					var queryName = gen.MakeUniq(pn, paramNames)
+					att, err := a.AnalyzeAttribute(pn, queryName, pt.(map[string]interface{}))
+					if err != nil {
+						return nil, fmt.Errorf("Failed to compute type of param %s: %s", pn, err.Error())
+					}
+					payloadParamNames = append(payloadParamNames, pn)
+					att.Location = gen.PayloadParam
+					params = append(params, att)
+					var extracted = extractLeafParams(att)
+					for _, e := range extracted {
+						e.Location = gen.PayloadParam
+					}
+					leafParams = append(leafParams, extracted...)
 				}
-				payloadParamNames = append(payloadParamNames, pn)
-				att.Location = gen.PayloadParam
-				params = append(params, att)
-				var extracted = extractLeafParams(att)
-				for _, e := range extracted {
-					e.Location = gen.PayloadParam
-				}
-				leafParams = append(leafParams, extracted...)
 			}
 		}
 
@@ -119,33 +122,55 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 			for _, rName := range respNames {
 				var r = resps[rName]
 				var resp = r.(map[string]interface{})
+				status := resp["status"]
+				var s = int(status.(float64))
+				if s < 200 || s > 299 {
+					continue // Skip error responses
+				}
 				if headers, ok := resp["headers"]; ok {
-					var head = headers.(map[string]interface{})
-					keys, ok := head["keys"]
-					if ok {
-						var headerKeys = keys.(map[string]interface{})
-						for _, k := range headerKeys {
-							if k == "Location" {
-								hasLocation = true
+					if hname, ok := headers.(string); ok {
+						// TBD is there a better way?
+						hasLocation = hname == "Location" && actionName == "create"
+					} else {
+						var head = headers.(map[string]interface{})
+						keys, ok := head["keys"]
+						if ok {
+							var headerKeys = keys.(map[string]interface{})
+							for _, k := range headerKeys {
+								// TBD is there a better way?
+								if k == "Location" && actionName == "create" {
+									hasLocation = true
+								}
+								break
 							}
-							break
 						}
 					}
 					if hasLocation {
-						break
+						returnTypeName = fmt.Sprintf("*%sLocator", resourceName)
 					}
 				}
-				if status, ok := resp["status"]; ok {
-					var s = int(status.(float64))
-					if s > 199 && s < 300 {
-						if media, ok := resp["media_type"]; ok {
-							var m = media.(map[string]interface{})
-							if name, ok := m["name"]; ok {
-								returnTypeName = toGoTypeName(name.(string), true)
-							}
-						} else if mime, ok := resp["mime_type"]; ok {
-							if mime == "controller_defined" {
-								returnTypeName = toGoTypeName(resource["media_type"].(string), true)
+				if returnTypeName == "" {
+					if media, ok := resp["media_type"]; ok {
+						var m = media.(map[string]interface{})
+						if name, ok := m["name"]; ok {
+							returnTypeName = toGoTypeName(name.(string), true)
+						}
+					} else if mime, ok := resp["mime_type"]; ok {
+						// Resticle compat
+						if mime == "controller_defined" {
+							returnTypeName = toGoTypeName(resource["media_type"].(string), true)
+						} else {
+							for n, r := range a.RawResources {
+								if mt, ok := r["mime_type"]; ok {
+									if mt == mime {
+										if actionName == "index" {
+											returnTypeName = "[]" + n
+										} else {
+											returnTypeName = n
+										}
+										break
+									}
+								}
 							}
 						}
 					}
@@ -181,11 +206,11 @@ func (a *ApiAnalyzer) ParseUrls(urls interface{}) ([]*gen.PathPattern, error) {
 	if urlElems, ok := urls.([]interface{}); ok {
 		patterns = make([]*gen.PathPattern, len(urlElems))
 		for i, elem := range urlElems {
-			if pair, ok := elem.([]string); ok {
+			if pair, ok := elem.([]interface{}); ok {
 				if len(pair) != 2 {
 					return nil, fmt.Errorf("Invalid URL pair %v, must be [verb, path]", pair)
 				}
-				patterns[i] = toPattern(pair[0], pair[1])
+				patterns[i] = toPattern(pair[0].(string), pair[1].(string))
 			} else if url, ok := elem.(map[string]interface{}); ok {
 				var verb, ok = url["verb"].(string)
 				if !ok {
@@ -197,7 +222,7 @@ func (a *ApiAnalyzer) ParseUrls(urls interface{}) ([]*gen.PathPattern, error) {
 				}
 				patterns[i] = toPattern(verb, path)
 			} else {
-				return nil, fmt.Errorf("Invalid url format %v", elem)
+				return nil, fmt.Errorf("Invalid url format %#v", elem)
 			}
 		}
 	} else {

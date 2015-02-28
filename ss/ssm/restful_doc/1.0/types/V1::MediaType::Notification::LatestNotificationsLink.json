@@ -1,0 +1,1 @@
+{"name":"V1::MediaType::Notification::LatestNotificationsLink","attributes":{"href":{"type":{"name":"String"}}},"views":{"default":{"attributes":{"href":{}}}},"link_to":"V1::MediaType::Notification","collection_link":true}

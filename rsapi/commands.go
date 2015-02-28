@@ -41,10 +41,11 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 	}
 
 	// 1. Initialize / find href as well as resource and action command definitions
-	var resource, action, path, _, params, err = a.parseCommandAndFlags(cmd, values)
+	var target, params, err = a.ParseCommandAndFlags(cmd, values)
 	if err != nil {
 		return nil, err
 	}
+	var resource, action, path = target.Resource, target.Action, target.Path
 
 	// 2. Coerce and validate given flag values
 	var queryParams = ApiParams{}
@@ -154,7 +155,8 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 
 // Show help for given command and flags
 func (a *Api) ShowHelp(cmd string, values ActionCommands) error {
-	var resource, action, _, href, _, err = a.parseCommandAndFlags(cmd, values)
+	var target, _, err = a.ParseCommandAndFlags(cmd, values)
+	var resource, action, href = target.Resource, target.Action, target.Href
 	if err != nil {
 		return err
 	}
@@ -185,26 +187,26 @@ func (a *Api) ShowHelp(cmd string, values ActionCommands) error {
 	return nil
 }
 
-// Parse command and flags and infer resource, action, href and params
-func (a *Api) parseCommandAndFlags(cmd string, commandValues ActionCommands) (resource *metadata.Resource, action *metadata.Action,
-	path *metadata.ActionPath, href string, params []string, err error) {
+// Target of command: resource type and href as well as action details
+type CommandTarget struct {
+	Resource *metadata.Resource   // Resource command applies to
+	Action   *metadata.Action     // Action command corresponds to
+	Path     *metadata.ActionPath // Action path
+	Href     string               // Resource href
+}
 
+// Parse command and flags and infer resource, action, href and params
+func (a *Api) ParseCommandAndFlags(cmd string, commandValues ActionCommands) (*CommandTarget, []string, error) {
 	var flags = commandValues[cmd]
 	if flags == nil {
-		err = fmt.Errorf("Invalid command line, try --help.")
-		return
+		return nil, nil, fmt.Errorf("Invalid command line, try --help.")
 	}
 	var elems = strings.Split(cmd, " ")
 	var actionName = elems[len(elems)-1]
-	href = flags.Href
-	if !strings.HasPrefix(href, "/api") {
-		if strings.HasPrefix(href, "/") {
-			href = "/api" + href
-		} else {
-			href = "/api/" + href
-		}
-	}
+	var href = flags.Href
+
 	var vars []*metadata.PathVariable
+	var resource *metadata.Resource
 	for _, res := range a.Metadata {
 		var err error
 		if vars, err = res.ExtractVariables(href); err == nil {
@@ -213,9 +215,9 @@ func (a *Api) parseCommandAndFlags(cmd string, commandValues ActionCommands) (re
 		}
 	}
 	if resource == nil {
-		err = fmt.Errorf("Invalid href '%s' (does not match any known href)", href)
-		return
+		return nil, nil, fmt.Errorf("Invalid href '%s' (does not match any known href)", href)
 	}
+	var action *metadata.Action
 	for _, a := range resource.Actions {
 		if a.Name == actionName {
 			action = a
@@ -227,17 +229,16 @@ func (a *Api) parseCommandAndFlags(cmd string, commandValues ActionCommands) (re
 		for i, a := range resource.Actions {
 			supported[i] = a.Name
 		}
-		err = fmt.Errorf("Unknown %s action '%s'. Supported actions are: %s",
+		return nil, nil, fmt.Errorf("Unknown %s action '%s'. Supported actions are: %s",
 			resource.Name, actionName, strings.Join(supported, ", "))
-		return
 	}
 
-	if path, err = action.Url(vars); err != nil {
-		return
+	var path, err = action.Url(vars)
+	if err != nil {
+		return nil, nil, err
 	}
 
-	params = flags.Params
-	return
+	return &CommandTarget{resource, action, path, href}, flags.Params, nil
 }
 
 // Validate flag value using validation criteria provided in metadata

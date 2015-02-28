@@ -24,6 +24,16 @@ type OAuthAuthenticator struct {
 
 // Account authenticator uses RS oauth
 func (a *OAuthAuthenticator) Sign(r *http.Request, host string) error {
+	if err := a.Refresh(host); err != nil {
+		return err
+	}
+	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
+
+	return nil
+}
+
+// Make sure access token is up-to-date
+func (a *OAuthAuthenticator) Refresh(host string) error {
 	if time.Now().After(a.RefreshAt) {
 		jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken)
 		authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", host), bytes.NewBufferString(jsonStr))
@@ -57,8 +67,6 @@ func (a *OAuthAuthenticator) Sign(r *http.Request, host string) error {
 		}
 		a.RefreshAt = time.Now().Add(d / 2)
 	}
-	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
-
 	return nil
 }
 
@@ -76,5 +84,37 @@ type RL10Authenticator struct {
 func (a *RL10Authenticator) Sign(r *http.Request, host string) error {
 	r.Header.Set("X-RLL-Secret", a.Secret)
 
+	return nil
+}
+
+// SS authenticator
+type SSAuthenticator struct {
+	*OAuthAuthenticator
+	AccountId int
+}
+
+// Account authenticator uses RS oauth
+func (a *SSAuthenticator) Sign(r *http.Request, host string) error {
+	var loginHost, err = a.ResolveHost(a.AccountId)
+	if err != nil {
+		return err
+	}
+	var refreshAt = a.RefreshAt
+	if err := a.Refresh(loginHost); err != nil {
+		return err
+	}
+	if time.Now().After(refreshAt) {
+		authReq, err := http.NewRequest("GET", fmt.Sprintf("%s/api/catalog/new_session?account_id=%d", host, a.AccountId), nil)
+		if err != nil {
+			return err
+		}
+		authReq.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
+		authReq.Header.Set("Content-Type", "application/json")
+		_, err = a.Client.Do(authReq)
+		if err != nil {
+			return fmt.Errorf("Authentication failed: %s", err.Error()) // TBD RETRY A FEW TIMES
+		}
+	}
+	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
 	return nil
 }

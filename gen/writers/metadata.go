@@ -90,7 +90,7 @@ import (
 `
 
 const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}// Consists of a map of resource name to resource metadata.
-var api_metadata = map[string]*metadata.Resource{ {{range .}}
+var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
 		Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
