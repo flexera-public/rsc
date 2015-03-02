@@ -102,15 +102,21 @@ func (d *Displayer) Output() string {
 	if outputStr, ok := d.RawOutput.(string); ok {
 		return outputStr
 	}
-	var b []byte
+	var out string
 	var err error
 	if d.prettify {
+		var b []byte
 		b, err = json.MarshalIndent(output, "", "    ")
+		if err == nil {
+			out = string(b) + "\n"
+		}
 	} else {
+		var b []byte
 		b, err = json.Marshal(output)
+		out = string(b)
 	}
 	if err != nil {
 		return fmt.Sprintf("%v", output)
 	}
-	return string(b)
+	return out
 }
