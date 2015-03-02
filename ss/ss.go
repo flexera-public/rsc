@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
@@ -58,6 +59,10 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 
 // Build client from command line
 func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
+	// Hackyity hack
+	if !strings.HasPrefix(cmdLine.Host, "selfservice") {
+		cmdLine.Host = "selfservice-3.rightscale.com"
+	}
 	if cmdLine.RL10 {
 		return nil, fmt.Errorf("RightLink 10 proxy not supported for Self-Service APIs")
 	}
