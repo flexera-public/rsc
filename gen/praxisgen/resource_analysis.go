@@ -10,7 +10,7 @@ import (
 // Create API descriptor from raw resources and types
 func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, desc *gen.ApiDescriptor) error {
 	name = inflect.Singularize(name)
-	var resource = gen.Resource{Name: name, ClientName: a.ClientName}
+	resource := gen.Resource{Name: name, ClientName: a.ClientName}
 
 	// Description
 	if d, ok := res["description"]; ok {
@@ -30,9 +30,9 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	if !ok {
 		return fmt.Errorf("Missing attributes for media type %s", prettify(m))
 	}
-	var attributes = make([]*gen.Attribute, len(attrs))
+	attributes := make([]*gen.Attribute, len(attrs))
 	for idx, n := range sortedKeys(attrs) {
-		var param, err = a.AnalyzeAttribute(n, n, attrs[n].(map[string]interface{}))
+		param, err := a.AnalyzeAttribute(n, n, attrs[n].(map[string]interface{}))
 		if err != nil {
 			return err
 		}
@@ -48,7 +48,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	resource.Actions = actions
 
 	// Name and done
-	var resName = toGoTypeName(name, false)
+	resName := toGoTypeName(name, false)
 	desc.Resources[resName] = &resource
 	desc.ResourceNames = append(desc.ResourceNames, resName)
 

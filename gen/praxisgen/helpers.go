@@ -35,7 +35,7 @@ func toGoTypeName(name string, usePointer bool) string {
 	default:
 		var typeName string
 		if strings.Contains(name, "::") {
-			var elems = strings.Split(name, "::")
+			elems := strings.Split(name, "::")
 			typeName = strings.Join(elems[2:len(elems)], "")
 		} else {
 			typeName = name
@@ -62,7 +62,7 @@ func toVarName(name string) string {
 
 // Return dumpable representation of given object
 func prettify(o interface{}) string {
-	var s, err = json.MarshalIndent(o, "", "    ")
+	s, err := json.MarshalIndent(o, "", "    ")
 	if err != nil {
 		return fmt.Sprintf("%+v", o)
 	}
@@ -95,8 +95,8 @@ func isBuiltInType(name string) bool {
 
 // Return keys of given maps sorted
 func sortedKeys(m map[string]interface{}) []string {
-	var keys = make([]string, len(m))
-	var idx = 0
+	keys := make([]string, len(m))
+	idx := 0
 	for k, _ := range m {
 		keys[idx] = k
 		idx += 1

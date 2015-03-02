@@ -18,7 +18,7 @@ import (
 // The LoadResponse method can be used to load the response body if needed.
 func (a *Api15) Do(resource, action, href string, params rsapi.ApiParams) (*http.Response, error) {
 	// First lookup metadata
-	var res, ok = GenMetadata[resource]
+	res, ok := GenMetadata[resource]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", resource)
 	}
@@ -28,7 +28,7 @@ func (a *Api15) Do(resource, action, href string, params rsapi.ApiParams) (*http
 	}
 
 	// Now lookup action request HTTP method, url, params and payload.
-	var vars, err = res.ExtractVariables(href)
+	vars, err := res.ExtractVariables(href)
 	if err != nil {
 		return nil, err
 	}
@@ -36,11 +36,11 @@ func (a *Api15) Do(resource, action, href string, params rsapi.ApiParams) (*http
 	if err != nil {
 		return nil, err
 	}
-	var payloadParams = make(rsapi.ApiParams, len(act.PayloadParamNames))
+	payloadParams := make(rsapi.ApiParams, len(act.PayloadParamNames))
 	for _, n := range act.PayloadParamNames {
 		payloadParams[n] = params[n]
 	}
-	var queryParams = make(rsapi.ApiParams, len(act.QueryParamNames))
+	queryParams := make(rsapi.ApiParams, len(act.QueryParamNames))
 	for _, n := range act.QueryParamNames {
 		queryParams[n] = params[n]
 	}
@@ -105,13 +105,13 @@ func (a *Api15) Delete(uri string) error {
 
 // Helper function that signs, makes and logs HTTP request
 func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
-	var u = url.URL{
+	u := url.URL{
 		Scheme: "https",
 		Host:   a.Host,
 		Path:   uri,
 	}
 	if params != nil {
-		var values = u.Query()
+		values := u.Query()
 		for n, p := range params {
 			switch t := p.(type) {
 			case string:
@@ -137,7 +137,7 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams, payload rs
 			return nil, fmt.Errorf("Failed to serialize request body - %s", err.Error())
 		}
 	}
-	var req, err = http.NewRequest(verb, u.String(), bytes.NewBuffer(jsonBytes))
+	req, err := http.NewRequest(verb, u.String(), bytes.NewBuffer(jsonBytes))
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams, payload rs
 	}
 	resp, err := a.PerformRequest(req)
 	if a.FetchLocationResource {
-		var loc = resp.Header.Get("Location")
+		loc := resp.Header.Get("Location")
 		if loc != "" {
 			resp, err = a.makeRequest("GET", loc, rsapi.ApiParams{}, rsapi.ApiParams{})
 		}

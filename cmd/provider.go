@@ -18,5 +18,6 @@ type CommandProvider interface {
 // Provide methods to show help about and run commands.
 type CommandClient interface {
 	ShowCommandHelp(cmdLine string) error              // Show contextual help
+	ShowCommandHrefs(cmdLine string) error             // Print API href patterns
 	RunCommand(cmdLine string) (*http.Response, error) // Run command
 }

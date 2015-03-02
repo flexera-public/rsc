@@ -17,8 +17,8 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 	var actionNames []string
 	for _, r := range GenMetadata {
 		for _, a := range r.Actions {
-			var name = a.Name
-			var exists = false
+			name := a.Name
+			exists := false
 			for _, e := range actionNames {
 				if e == name {
 					exists = true
@@ -44,7 +44,7 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 		case "delete":
 			description = "Destroy a single resource."
 		default:
-			var resources = []string{}
+			resources := []string{}
 			var actionDescription string
 			for name, resource := range GenMetadata {
 				for _, a := range resource.Actions {
@@ -60,10 +60,10 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 				description = "Action of resources " + strings.Join(resources[:len(resources)-1], ", ") + " and " + resources[len(resources)-1]
 			}
 		}
-		var actionCmd = api15Cmd.Command(action, description)
-		var actionCmdValue = rsapi.ActionCommand{}
-		var hrefMsg = "API Resource or resource collection href on which to act, e.g. '/api/servers'"
-		var paramsMsg = "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'"
+		actionCmd := api15Cmd.Command(action, description)
+		actionCmdValue := rsapi.ActionCommand{}
+		hrefMsg := "API Resource or resource collection href on which to act, e.g. '/api/servers'"
+		paramsMsg := "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'"
 		actionCmd.Arg("href", hrefMsg).Required().StringVar(&actionCmdValue.Href)
 		actionCmd.Arg("params", paramsMsg).StringsVar(&actionCmdValue.Params)
 		commandValues[actionCmd.FullCommand()] = &actionCmdValue
@@ -72,22 +72,19 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 
 // Parse and run command
 func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
-	var parsed, err = a.ParseCommand(cmd, commandValues)
+	parsed, err := a.ParseCommand(cmd, "/api", commandValues)
 	if err != nil {
 		return nil, err
 	}
-	var href = parsed.Uri
-	if !strings.HasPrefix(href, "/api") {
-		if strings.HasPrefix(href, "/") {
-			href = "/api" + href
-		} else {
-			href = "/api/" + href
-		}
-	}
-	return a.Dispatch(parsed.HttpMethod, href, parsed.QueryParams, parsed.PayloadParams)
+	return a.Dispatch(parsed.HttpMethod, parsed.Uri, parsed.QueryParams, parsed.PayloadParams)
 }
 
 // Show command help
 func (a *Api15) ShowCommandHelp(cmd string) error {
-	return a.ShowHelp(cmd, commandValues)
+	return a.ShowHelp(cmd, "/api", commandValues)
+}
+
+// Show command hrefs
+func (a *Api15) ShowCommandHrefs(cmd string) error {
+	return a.ShowHrefs(cmd, "/api", commandValues)
 }

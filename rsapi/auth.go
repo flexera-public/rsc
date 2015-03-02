@@ -95,11 +95,11 @@ type SSAuthenticator struct {
 
 // Account authenticator uses RS oauth
 func (a *SSAuthenticator) Sign(r *http.Request, host string) error {
-	var loginHost, err = a.ResolveHost(a.AccountId)
+	loginHost, err := a.ResolveHost(a.AccountId)
 	if err != nil {
 		return err
 	}
-	var refreshAt = a.RefreshAt
+	refreshAt := a.RefreshAt
 	if err := a.Refresh(loginHost); err != nil {
 		return err
 	}

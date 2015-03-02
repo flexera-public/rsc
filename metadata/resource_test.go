@@ -33,7 +33,7 @@ var _ = Describe("Resource", func() {
 		)
 
 		JustBeforeEach(func() {
-			variables, err = resource.ExtractVariables(href)
+			, err := resource.ExtractVariables(href)
 		})
 
 		Context("with a pattern that does not match", func() {

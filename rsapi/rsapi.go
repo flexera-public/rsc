@@ -46,7 +46,7 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 	if client == nil {
 		client = http.DefaultClient
 	}
-	var auth = OAuthAuthenticator{
+	auth := OAuthAuthenticator{
 		RefreshToken: refreshToken,
 		RefreshAt:    time.Now().Add(-1 * time.Hour),
 		Client:       client,
@@ -71,14 +71,14 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 // auth and configure the host. The client behaves identically to the client returned by New in
 // all other regards.
 func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
-	var rllConfig, err = ioutil.ReadFile("/var/run/rll-secret")
+	rllConfig, err := ioutil.ReadFile("/var/run/rll-secret")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err.Error())
 	}
 	var port string
 	var secret string
 	for _, line := range strings.Split(string(rllConfig), "\n") {
-		var elems = strings.Split(line, "=")
+		elems := strings.Split(line, "=")
 		if len(elems) != 2 {
 			return nil, fmt.Errorf("Invalid RLL configuration line '%s'", line)
 		}
@@ -92,8 +92,8 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 			secret = elems[1]
 		}
 	}
-	var auth = RL10Authenticator{secret}
-	var host = "localhost:" + port
+	auth := RL10Authenticator{secret}
+	host := "localhost:" + port
 	return &Api{
 		Auth:   &auth,
 		Logger: logger,

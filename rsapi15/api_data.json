@@ -235,7 +235,7 @@
         "cloud": "Associated cloud",
         "recurring_volume_attachments": "Associated recurring volume attachments"
       },
-      "description": "A VolumeSnapshot represents a Cloud storage volume at a particular point in time. One can create a snapshot regardless of whether or not a volume is attached to an Instance. When a snapshot is created,\n  various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).\n  Snapshots consist of a series of data blocks that are incrementally saved.",
+      "description": "A VolumeSnapshot represents a Cloud storage volume at a particular point in time. One can create a snapshot regardless of whether or not a volume is attached to an Instance. When a snapshot is created,\n  meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).\n  Snapshots consist of a series of data blocks that are incrementally saved.",
       "content_types": [
         "application/vnd.rightscale.volume_snapshot"
       ],

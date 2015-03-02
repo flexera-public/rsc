@@ -2,9 +2,13 @@ package rsapi
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
+	"text/tabwriter"
 
 	"github.com/rightscale/rsc/metadata"
 )
@@ -33,30 +37,34 @@ type ActionCommand struct {
 type ActionCommands map[string]*ActionCommand
 
 // Actually run command
-func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, error) {
+func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*ParsedCommand, error) {
 	// 0. Show help if requested
-	if values[cmd].ShowHelp != "" {
-		a.ShowHelp(cmd, values)
+	val, ok := values[cmd]
+	if !ok {
+		return nil, fmt.Errorf("Unknown command '%s'", cmd)
+	}
+	if val.ShowHelp != "" {
+		a.ShowHelp(cmd, hrefPrefix, values)
 		return nil, nil
 	}
 
 	// 1. Initialize / find href as well as resource and action command definitions
-	var target, params, err = a.ParseCommandAndFlags(cmd, values)
+	target, params, err := a.ParseCommandAndFlags(cmd, hrefPrefix, values)
 	if err != nil {
 		return nil, err
 	}
-	var resource, action, path = target.Resource, target.Action, target.Path
+	resource, action, path := target.Resource, target.Action, target.Path
 
 	// 2. Coerce and validate given flag values
-	var queryParams = ApiParams{}
-	var payloadParams = ApiParams{}
+	queryParams := ApiParams{}
+	payloadParams := ApiParams{}
 	for _, p := range params {
-		var elems = strings.SplitN(p, "=", 2)
+		elems := strings.SplitN(p, "=", 2)
 		if len(elems) != 2 {
 			return nil, fmt.Errorf("Arguments must be of the form NAME=VALUE, value provided was '%s'", p)
 		}
-		var name = elems[0]
-		var value = elems[1]
+		name := elems[0]
+		value := elems[1]
 		var param *metadata.ActionParam
 		for _, ap := range action.CommandFlags {
 			if ap.Name == name {
@@ -65,7 +73,7 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 			}
 		}
 		if param == nil {
-			var supported = make([]string, len(action.CommandFlags))
+			supported := make([]string, len(action.CommandFlags))
 			for i, p := range action.CommandFlags {
 				supported[i] = p.Name
 			}
@@ -75,7 +83,7 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 		if err := validateFlagValue(value, param); err != nil {
 			return nil, err
 		}
-		var coerced = queryParams
+		coerced := queryParams
 		if param.Location == metadata.PayloadParam {
 			coerced = payloadParams
 		}
@@ -95,14 +103,14 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 			if _, ok := coerced[name]; ok {
 				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
 			}
-			var val, err = strconv.Atoi(value)
+			val, err := strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
 					param.Name, value)
 			}
 			coerced[param.Name] = val
 		case "[]int":
-			var val, err = strconv.Atoi(value)
+			val, err := strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
 					param.Name, value)
@@ -116,14 +124,14 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 			if _, ok := coerced[name]; ok {
 				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
 			}
-			var val, err = strconv.ParseBool(value)
+			val, err := strconv.ParseBool(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
 					param.Name, value)
 			}
 			coerced[param.Name] = val
 		case "[]bool":
-			var val, err = strconv.ParseBool(value)
+			val, err := strconv.ParseBool(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
 					param.Name, value)
@@ -154,9 +162,9 @@ func (a *Api) ParseCommand(cmd string, values ActionCommands) (*ParsedCommand, e
 }
 
 // Show help for given command and flags
-func (a *Api) ShowHelp(cmd string, values ActionCommands) error {
-	var target, _, err = a.ParseCommandAndFlags(cmd, values)
-	var resource, action, href = target.Resource, target.Action, target.Href
+func (a *Api) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
+	target, _, err := a.ParseCommandAndFlags(cmd, hrefPrefix, values)
+	resource, action, href := target.Resource, target.Action, target.Href
 	if err != nil {
 		return err
 	}
@@ -165,7 +173,7 @@ func (a *Api) ShowHelp(cmd string, values ActionCommands) error {
 			action.Name, href)
 		return nil
 	}
-	var flagHelp = make([]string, len(action.CommandFlags))
+	flagHelp := make([]string, len(action.CommandFlags))
 	for i, f := range action.CommandFlags {
 		var attrs string
 		if f.Mandatory {
@@ -196,14 +204,17 @@ type CommandTarget struct {
 }
 
 // Parse command and flags and infer resource, action, href and params
-func (a *Api) ParseCommandAndFlags(cmd string, commandValues ActionCommands) (*CommandTarget, []string, error) {
-	var flags = commandValues[cmd]
+func (a *Api) ParseCommandAndFlags(cmd, hrefPrefix string, commandValues ActionCommands) (*CommandTarget, []string, error) {
+	flags := commandValues[cmd]
 	if flags == nil {
 		return nil, nil, fmt.Errorf("Invalid command line, try --help.")
 	}
-	var elems = strings.Split(cmd, " ")
-	var actionName = elems[len(elems)-1]
-	var href = flags.Href
+	elems := strings.Split(cmd, " ")
+	actionName := elems[len(elems)-1]
+	href := flags.Href
+	if hrefPrefix != "" && !strings.HasPrefix(href, hrefPrefix) {
+		href = path.Join(hrefPrefix, href)
+	}
 
 	var vars []*metadata.PathVariable
 	var resource *metadata.Resource
@@ -215,7 +226,7 @@ func (a *Api) ParseCommandAndFlags(cmd string, commandValues ActionCommands) (*C
 		}
 	}
 	if resource == nil {
-		return nil, nil, fmt.Errorf("Invalid href '%s' (does not match any known href)", href)
+		return nil, nil, fmt.Errorf("Invalid href '%s'. Try --hrefs.", href)
 	}
 	var action *metadata.Action
 	for _, a := range resource.Actions {
@@ -225,7 +236,7 @@ func (a *Api) ParseCommandAndFlags(cmd string, commandValues ActionCommands) (*C
 		}
 	}
 	if action == nil {
-		var supported = make([]string, len(resource.Actions))
+		supported := make([]string, len(resource.Actions))
 		for i, a := range resource.Actions {
 			supported[i] = a.Name
 		}
@@ -233,12 +244,56 @@ func (a *Api) ParseCommandAndFlags(cmd string, commandValues ActionCommands) (*C
 			resource.Name, actionName, strings.Join(supported, ", "))
 	}
 
-	var path, err = action.Url(vars)
+	path, err := action.Url(vars)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	return &CommandTarget{resource, action, path, href}, flags.Params, nil
+}
+
+// Print all known href patterns for selected resource.
+// Show all hrefs if no selected resource.
+func (a *Api) ShowHrefs(cmd, hrefPrefix string, values ActionCommands) error {
+	target, _, err := a.ParseCommandAndFlags(cmd, hrefPrefix, values)
+	resource := ""
+	if err == nil {
+		resource = target.Resource.Name
+	}
+	knownHrefs := make(map[string]interface{})
+	for resName, res := range a.Metadata {
+		if resource != "" && resName != resource {
+			continue
+		}
+		for _, action := range res.Actions {
+			for _, pattern := range action.PathPatterns {
+				vars := pattern.Variables
+				ivars := make([]interface{}, len(vars))
+				for i, v := range vars {
+					ivars[i] = interface{}(":" + v)
+				}
+				pat := fmt.Sprintf(pattern.Pattern, ivars...)
+				knownHrefs[pat] = fmt.Sprintf("%s.%s", resName, action.Name)
+			}
+		}
+	}
+	keys := make([]string, len(knownHrefs))
+	i := 0
+	for k, _ := range knownHrefs {
+		keys[i] = k
+		i += 1
+	}
+	sort.Strings(keys)
+	lines := make([]string, len(keys))
+	for i, pat := range keys {
+		names := knownHrefs[pat]
+		lines[i] = fmt.Sprintf("%s\t%s", pat, names)
+	}
+	w := tabwriter.NewWriter(os.Stdout, 0, 4, 1, ' ', 0)
+	w.Write([]byte("Href pattern\t<resource>.<action>\n"))
+	w.Write([]byte(strings.Join(lines, "\n")))
+	w.Write([]byte("\n"))
+	return w.Flush()
 }
 
 // Validate flag value using validation criteria provided in metadata
@@ -254,7 +309,7 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 			param.Name)
 	}
 	if len(param.ValidValues) > 0 {
-		var found = false
+		found := false
 		for _, v := range param.ValidValues {
 			if v == value {
 				found = true
@@ -272,7 +327,7 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 
 // Reconstruct payload map from flatten values
 func buildPayload(values ApiParams) (ApiParams, error) {
-	var payload = map[string]interface{}{}
+	payload := map[string]interface{}{}
 	for name, value := range values {
 		if _, err := normalize(payload, name, value); err != nil {
 			return nil, err
@@ -292,15 +347,15 @@ var (
 // "a[b]" produces a map[string]interface{} with key "b"
 // "a[]" produces a []interface{}
 func normalize(payload ApiParams, name string, value interface{}) (ApiParams, error) {
-	var matches = nameRegex.FindStringSubmatch(name)
+	matches := nameRegex.FindStringSubmatch(name)
 	if len(matches) == 0 {
 		return nil, nil
 	}
-	var k = matches[1]
+	k := matches[1]
 	if len(k) == 0 {
 		return nil, nil
 	}
-	var after = matches[2]
+	after := matches[2]
 	if after == "" {
 		payload[k] = value
 	} else if after == "[" {
@@ -319,29 +374,29 @@ func normalize(payload ApiParams, name string, value interface{}) (ApiParams, er
 			matches = childRegexp2.FindStringSubmatch(after)
 		}
 		if len(matches) > 0 {
-			var childKey = matches[1]
+			childKey := matches[1]
 			if _, ok := payload[k]; !ok {
 				payload[k] = []interface{}{}
 			}
 			if _, ok := payload[k].([]interface{}); !ok {
 				return nil, fmt.Errorf("expected array for param '%s'", k)
 			}
-			var array = payload[k].([]interface{})
+			array := payload[k].([]interface{})
 			if len(array) == 0 {
-				var p, err = normalize(ApiParams{}, childKey, value)
+				p, err := normalize(ApiParams{}, childKey, value)
 				if err != nil {
 					return nil, err
 				}
 				payload[k] = append(array, p)
 			} else {
-				var last, ok = array[len(array)-1].(ApiParams)
+				last, ok := array[len(array)-1].(ApiParams)
 				if ok {
 					_, ok = last[childKey]
 				}
 				if ok {
 					normalize(last, childKey, value)
 				} else {
-					var p, err = normalize(ApiParams{}, childKey, value)
+					p, err := normalize(ApiParams{}, childKey, value)
 					if err != nil {
 						return nil, err
 					}
@@ -355,7 +410,7 @@ func normalize(payload ApiParams, name string, value interface{}) (ApiParams, er
 			if _, ok := payload[k].(ApiParams); !ok {
 				return nil, fmt.Errorf("expected map for param '%s'", k)
 			}
-			var p, err = normalize(payload[k].(ApiParams), after, value)
+			p, err := normalize(payload[k].(ApiParams), after, value)
 			if err != nil {
 				return nil, err
 			}

@@ -22,10 +22,10 @@ func RegisterCommands(api16Cmd cmd.CommandProvider) {
 		case "show":
 			description = "Show information about a single resource."
 		}
-		var actionCmd = api16Cmd.Command(action, description)
-		var actionCmdValue = rsapi.ActionCommand{}
-		var hrefMsg = "API Resource or resource collection href on which to act, e.g. '/api/deployments'"
-		var paramsMsg = "Action parameters in the form QUERY=VALUE, e.g. 'view=default'"
+		actionCmd := api16Cmd.Command(action, description)
+		actionCmdValue := rsapi.ActionCommand{}
+		hrefMsg := "API Resource or resource collection href on which to act, e.g. '/api/deployments'"
+		paramsMsg := "Action parameters in the form QUERY=VALUE, e.g. 'view=default'"
 		actionCmd.Arg("href", hrefMsg).Required().StringVar(&actionCmdValue.Href)
 		actionCmd.Arg("params", paramsMsg).StringsVar(&actionCmdValue.Params)
 		commandValues[actionCmd.FullCommand()] = &actionCmdValue
@@ -34,11 +34,11 @@ func RegisterCommands(api16Cmd cmd.CommandProvider) {
 
 // Parse and run command
 func (a *Api16) RunCommand(cmd string) (*http.Response, error) {
-	var parsed, err = a.ParseCommand(cmd, commandValues)
+	parsed, err := a.ParseCommand(cmd, "/api", commandValues)
 	if err != nil {
 		return nil, err
 	}
-	var href = parsed.Uri
+	href := parsed.Uri
 	if !strings.HasPrefix(href, "/api") {
 		if strings.HasPrefix(href, "/") {
 			href = "/api" + href
@@ -51,5 +51,10 @@ func (a *Api16) RunCommand(cmd string) (*http.Response, error) {
 
 // Show command help
 func (a *Api16) ShowCommandHelp(cmd string) error {
-	return a.ShowHelp(cmd, commandValues)
+	return a.ShowHelp(cmd, "/api", commandValues)
+}
+
+// Show command hrefs
+func (a *Api16) ShowCommandHrefs(cmd string) error {
+	return a.ShowHrefs(cmd, "/api", commandValues)
 }

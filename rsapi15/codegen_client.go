@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 9:38pm (PST)
+// Mar 2, 2015 at 11:10am (PST)
 // Command:
 // $ api15gen
 //
@@ -28,7 +28,7 @@ import (
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
-	var res, ok = GenMetadata[rName]
+	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}
@@ -42,7 +42,7 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 	if action == nil {
 		return nil, fmt.Errorf("No action with name '%s' on %s", aName, rName)
 	}
-	var vars, err = res.ExtractVariables(string(*r))
+	vars, err := res.ExtractVariables(string(*r))
 	if err != nil {
 		return nil, err
 	}
@@ -81,21 +81,21 @@ func (loc *AccountLocator) Show() (*Account, error) {
 	var res *Account
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Accounts", "show")
+	uri, err := loc.Url("Accounts", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  AccountGroup ******/
@@ -143,21 +143,21 @@ func (loc *AccountGroupLocator) Index(options rsapi.ApiParams) ([]*AccountGroup,
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AccountGroups", "index")
+	uri, err := loc.Url("AccountGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/account_groups/:id
@@ -173,21 +173,21 @@ func (loc *AccountGroupLocator) Show(options rsapi.ApiParams) (*AccountGroup, er
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AccountGroups", "show")
+	uri, err := loc.Url("AccountGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Alert ******/
@@ -227,13 +227,13 @@ func (api *Api15) AlertLocator(href string) *AlertLocator {
 func (loc *AlertLocator) Disable() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Alerts", "disable")
+	uri, err := loc.Url("Alerts", "disable")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -247,13 +247,13 @@ func (loc *AlertLocator) Disable() error {
 func (loc *AlertLocator) Enable() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Alerts", "enable")
+	uri, err := loc.Url("Alerts", "enable")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -280,21 +280,21 @@ func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Alerts", "index")
+	uri, err := loc.Url("Alerts", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/alerts/:id/quench
@@ -314,21 +314,21 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	payloadParams = rsapi.ApiParams{
 		"duration": duration,
 	}
-	var uri, err = loc.Url("Alerts", "quench")
+	uri, err := loc.Url("Alerts", "quench")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
@@ -348,21 +348,21 @@ func (loc *AlertLocator) Show(options rsapi.ApiParams) (*Alert, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Alerts", "show")
+	uri, err := loc.Url("Alerts", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  AlertSpec ******/
@@ -416,15 +416,15 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 	payloadParams = rsapi.ApiParams{
 		"alert_spec": alertSpec,
 	}
-	var uri, err = loc.Url("AlertSpecs", "create")
+	uri, err := loc.Url("AlertSpecs", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -440,13 +440,13 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 func (loc *AlertSpecLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AlertSpecs", "destroy")
+	uri, err := loc.Url("AlertSpecs", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -478,21 +478,21 @@ func (loc *AlertSpecLocator) Index(options rsapi.ApiParams) ([]*AlertSpec, error
 	if withInheritedOpt != nil {
 		payloadParams["with_inherited"] = withInheritedOpt
 	}
-	var uri, err = loc.Url("AlertSpecs", "index")
+	uri, err := loc.Url("AlertSpecs", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/servers/:server_id/alert_specs/:id
@@ -511,21 +511,21 @@ func (loc *AlertSpecLocator) Show(options rsapi.ApiParams) (*AlertSpec, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AlertSpecs", "show")
+	uri, err := loc.Url("AlertSpecs", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/servers/:server_id/alert_specs/:id
@@ -542,13 +542,13 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"alert_spec": alertSpec,
 	}
-	var uri, err = loc.Url("AlertSpecs", "update")
+	uri, err := loc.Url("AlertSpecs", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -611,13 +611,13 @@ func (loc *AuditEntryLocator) Append(options rsapi.ApiParams) error {
 	if summaryOpt != nil {
 		payloadParams["summary"] = summaryOpt
 	}
-	var uri, err = loc.Url("AuditEntries", "append")
+	uri, err := loc.Url("AuditEntries", "append")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -645,15 +645,15 @@ func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options rsapi.
 	if userEmailOpt != nil {
 		payloadParams["user_email"] = userEmailOpt
 	}
-	var uri, err = loc.Url("AuditEntries", "create")
+	uri, err := loc.Url("AuditEntries", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -668,21 +668,21 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AuditEntries", "detail")
+	uri, err := loc.Url("AuditEntries", "detail")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/audit_entries
@@ -724,21 +724,21 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 		"limit":      limit,
 		"start_date": startDate,
 	}
-	var uri, err = loc.Url("AuditEntries", "index")
+	uri, err := loc.Url("AuditEntries", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/audit_entries/:id
@@ -754,21 +754,21 @@ func (loc *AuditEntryLocator) Show(options rsapi.ApiParams) (*AuditEntry, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AuditEntries", "show")
+	uri, err := loc.Url("AuditEntries", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/audit_entries/:id
@@ -788,13 +788,13 @@ func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options rsapi
 	if notifyOpt != nil {
 		payloadParams["notify"] = notifyOpt
 	}
-	var uri, err = loc.Url("AuditEntries", "update")
+	uri, err := loc.Url("AuditEntries", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -895,13 +895,13 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi
 	if yearliesOpt != nil {
 		payloadParams["yearlies"] = yearliesOpt
 	}
-	var uri, err = loc.Url("Backups", "cleanup")
+	uri, err := loc.Url("Backups", "cleanup")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -919,15 +919,15 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"backup": backup,
 	}
-	var uri, err = loc.Url("Backups", "create")
+	uri, err := loc.Url("Backups", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -940,13 +940,13 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 func (loc *BackupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Backups", "destroy")
+	uri, err := loc.Url("Backups", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -977,21 +977,21 @@ func (loc *BackupLocator) Index(lineage string, options rsapi.ApiParams) ([]*Bac
 	payloadParams = rsapi.ApiParams{
 		"lineage": lineage,
 	}
-	var uri, err = loc.Url("Backups", "index")
+	uri, err := loc.Url("Backups", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/backups/:id/restore
@@ -1016,13 +1016,13 @@ func (loc *BackupLocator) Restore(instanceHref string, options rsapi.ApiParams) 
 	if backupOpt != nil {
 		payloadParams["backup"] = backupOpt
 	}
-	var uri, err = loc.Url("Backups", "restore")
+	uri, err := loc.Url("Backups", "restore")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1033,21 +1033,21 @@ func (loc *BackupLocator) Show() (*Backup, error) {
 	var res *Backup
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Backups", "show")
+	uri, err := loc.Url("Backups", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/backups/:id
@@ -1061,13 +1061,13 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"backup": backup,
 	}
-	var uri, err = loc.Url("Backups", "update")
+	uri, err := loc.Url("Backups", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1104,15 +1104,15 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 	payloadParams = rsapi.ApiParams{
 		"child_account": childAccount,
 	}
-	var uri, err = loc.Url("ChildAccounts", "create")
+	uri, err := loc.Url("ChildAccounts", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -1133,21 +1133,21 @@ func (loc *ChildAccountLocator) Index(options rsapi.ApiParams) ([]*Account, erro
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ChildAccounts", "index")
+	uri, err := loc.Url("ChildAccounts", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // PUT /api/accounts/:id
@@ -1162,13 +1162,13 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"child_account": childAccount,
 	}
-	var uri, err = loc.Url("ChildAccounts", "update")
+	uri, err := loc.Url("ChildAccounts", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1218,21 +1218,21 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Clouds", "index")
+	uri, err := loc.Url("Clouds", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:id
@@ -1248,21 +1248,21 @@ func (loc *CloudLocator) Show(options rsapi.ApiParams) (*Cloud, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Clouds", "show")
+	uri, err := loc.Url("Clouds", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  CloudAccount ******/
@@ -1303,15 +1303,15 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 	payloadParams = rsapi.ApiParams{
 		"cloud_account": cloudAccount,
 	}
-	var uri, err = loc.Url("CloudAccounts", "create")
+	uri, err := loc.Url("CloudAccounts", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -1324,13 +1324,13 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 func (loc *CloudAccountLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("CloudAccounts", "destroy")
+	uri, err := loc.Url("CloudAccounts", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1341,21 +1341,21 @@ func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 	var res []*CloudAccount
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("CloudAccounts", "index")
+	uri, err := loc.Url("CloudAccounts", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/cloud_accounts/:id
@@ -1364,21 +1364,21 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	var res *CloudAccount
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("CloudAccounts", "show")
+	uri, err := loc.Url("CloudAccounts", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Cookbook ******/
@@ -1419,13 +1419,13 @@ func (api *Api15) CookbookLocator(href string) *CookbookLocator {
 func (loc *CookbookLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Cookbooks", "destroy")
+	uri, err := loc.Url("Cookbooks", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1442,13 +1442,13 @@ func (loc *CookbookLocator) Follow(value string) error {
 	payloadParams = rsapi.ApiParams{
 		"value": value,
 	}
-	var uri, err = loc.Url("Cookbooks", "follow")
+	uri, err := loc.Url("Cookbooks", "follow")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1465,13 +1465,13 @@ func (loc *CookbookLocator) Freeze(value string) error {
 	payloadParams = rsapi.ApiParams{
 		"value": value,
 	}
-	var uri, err = loc.Url("Cookbooks", "freeze")
+	uri, err := loc.Url("Cookbooks", "freeze")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1495,21 +1495,21 @@ func (loc *CookbookLocator) Index(options rsapi.ApiParams) ([]*Cookbook, error) 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Cookbooks", "index")
+	uri, err := loc.Url("Cookbooks", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/cookbooks/:id/obsolete
@@ -1524,13 +1524,13 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 	payloadParams = rsapi.ApiParams{
 		"value": value,
 	}
-	var uri, err = loc.Url("Cookbooks", "obsolete")
+	uri, err := loc.Url("Cookbooks", "obsolete")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1549,21 +1549,21 @@ func (loc *CookbookLocator) Show(options rsapi.ApiParams) (*Cookbook, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Cookbooks", "show")
+	uri, err := loc.Url("Cookbooks", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  CookbookAttachment ******/
@@ -1606,15 +1606,15 @@ func (loc *CookbookAttachmentLocator) Create(options rsapi.ApiParams) (*Cookbook
 	if cookbookAttachmentOpt != nil {
 		payloadParams["cookbook_attachment"] = cookbookAttachmentOpt
 	}
-	var uri, err = loc.Url("CookbookAttachments", "create")
+	uri, err := loc.Url("CookbookAttachments", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -1629,13 +1629,13 @@ func (loc *CookbookAttachmentLocator) Create(options rsapi.ApiParams) (*Cookbook
 func (loc *CookbookAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("CookbookAttachments", "destroy")
+	uri, err := loc.Url("CookbookAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1655,21 +1655,21 @@ func (loc *CookbookAttachmentLocator) Index(options rsapi.ApiParams) ([]*Cookboo
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("CookbookAttachments", "index")
+	uri, err := loc.Url("CookbookAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_attach
@@ -1684,13 +1684,13 @@ func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookA
 	payloadParams = rsapi.ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
-	var uri, err = loc.Url("CookbookAttachments", "multi_attach")
+	uri, err := loc.Url("CookbookAttachments", "multi_attach")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1707,13 +1707,13 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 	payloadParams = rsapi.ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
-	var uri, err = loc.Url("CookbookAttachments", "multi_detach")
+	uri, err := loc.Url("CookbookAttachments", "multi_detach")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1733,21 +1733,21 @@ func (loc *CookbookAttachmentLocator) Show(options rsapi.ApiParams) (*CookbookAt
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("CookbookAttachments", "show")
+	uri, err := loc.Url("CookbookAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Credential ******/
@@ -1794,15 +1794,15 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 	payloadParams = rsapi.ApiParams{
 		"credential": credential,
 	}
-	var uri, err = loc.Url("Credentials", "create")
+	uri, err := loc.Url("Credentials", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -1815,13 +1815,13 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 func (loc *CredentialLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Credentials", "destroy")
+	uri, err := loc.Url("Credentials", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1844,21 +1844,21 @@ func (loc *CredentialLocator) Index(options rsapi.ApiParams) ([]*Credential, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Credentials", "index")
+	uri, err := loc.Url("Credentials", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/credentials/:id
@@ -1874,21 +1874,21 @@ func (loc *CredentialLocator) Show(options rsapi.ApiParams) (*Credential, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Credentials", "show")
+	uri, err := loc.Url("Credentials", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/credentials/:id
@@ -1902,13 +1902,13 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	payloadParams = rsapi.ApiParams{
 		"credential": credential,
 	}
-	var uri, err = loc.Url("Credentials", "update")
+	uri, err := loc.Url("Credentials", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1960,21 +1960,21 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) ([]*Datacenter, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Datacenters", "index")
+	uri, err := loc.Url("Datacenters", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/datacenters/:id
@@ -1990,21 +1990,21 @@ func (loc *DatacenterLocator) Show(options rsapi.ApiParams) (*Datacenter, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Datacenters", "show")
+	uri, err := loc.Url("Datacenters", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Deployment ******/
@@ -2047,13 +2047,13 @@ func (loc *DeploymentLocator) Clone(options rsapi.ApiParams) error {
 	if deploymentOpt != nil {
 		payloadParams["deployment"] = deploymentOpt
 	}
-	var uri, err = loc.Url("Deployments", "clone")
+	uri, err := loc.Url("Deployments", "clone")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2070,15 +2070,15 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 	payloadParams = rsapi.ApiParams{
 		"deployment": deployment,
 	}
-	var uri, err = loc.Url("Deployments", "create")
+	uri, err := loc.Url("Deployments", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -2091,13 +2091,13 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 func (loc *DeploymentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Deployments", "destroy")
+	uri, err := loc.Url("Deployments", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2123,21 +2123,21 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Deployments", "index")
+	uri, err := loc.Url("Deployments", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/deployments/:id/lock
@@ -2147,13 +2147,13 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, err
 func (loc *DeploymentLocator) Lock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Deployments", "lock")
+	uri, err := loc.Url("Deployments", "lock")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2164,13 +2164,13 @@ func (loc *DeploymentLocator) Lock() error {
 func (loc *DeploymentLocator) Servers() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Deployments", "servers")
+	uri, err := loc.Url("Deployments", "servers")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2190,21 +2190,21 @@ func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Deployments", "show")
+	uri, err := loc.Url("Deployments", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /api/deployments/:id/unlock
@@ -2212,13 +2212,13 @@ func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error)
 func (loc *DeploymentLocator) Unlock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Deployments", "unlock")
+	uri, err := loc.Url("Deployments", "unlock")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2234,13 +2234,13 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 	payloadParams = rsapi.ApiParams{
 		"deployment": deployment,
 	}
-	var uri, err = loc.Url("Deployments", "update")
+	uri, err := loc.Url("Deployments", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2268,21 +2268,21 @@ func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
 	var res []*map[string]string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("HealthCheck", "index")
+	uri, err := loc.Url("HealthCheck", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  IdentityProvider ******/
@@ -2332,21 +2332,21 @@ func (loc *IdentityProviderLocator) Index(options rsapi.ApiParams) ([]*IdentityP
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IdentityProviders", "index")
+	uri, err := loc.Url("IdentityProviders", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/identity_providers/:id
@@ -2362,21 +2362,21 @@ func (loc *IdentityProviderLocator) Show(options rsapi.ApiParams) (*IdentityProv
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IdentityProviders", "show")
+	uri, err := loc.Url("IdentityProviders", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Image ******/
@@ -2430,21 +2430,21 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) ([]*Image, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Images", "index")
+	uri, err := loc.Url("Images", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/images/:id
@@ -2460,21 +2460,21 @@ func (loc *ImageLocator) Show(options rsapi.ApiParams) (*Image, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Images", "show")
+	uri, err := loc.Url("Images", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Input ******/
@@ -2518,21 +2518,21 @@ func (loc *InputLocator) Index(options rsapi.ApiParams) ([]*Input, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Inputs", "index")
+	uri, err := loc.Url("Inputs", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/inputs/multi_update
@@ -2610,13 +2610,13 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]string) error {
 	payloadParams = rsapi.ApiParams{
 		"inputs": inputs,
 	}
-	var uri, err = loc.Url("Inputs", "multi_update")
+	uri, err := loc.Url("Inputs", "multi_update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2685,15 +2685,15 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 	payloadParams = rsapi.ApiParams{
 		"instance": instance,
 	}
-	var uri, err = loc.Url("Instances", "create")
+	uri, err := loc.Url("Instances", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -2730,21 +2730,21 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "index")
+	uri, err := loc.Url("Instances", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/launch
@@ -2767,13 +2767,13 @@ func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
 	if inputsOpt != nil {
 		payloadParams["inputs"] = inputsOpt
 	}
-	var uri, err = loc.Url("Instances", "launch")
+	uri, err := loc.Url("Instances", "launch")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2783,13 +2783,13 @@ func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
 func (loc *InstanceLocator) Lock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "lock")
+	uri, err := loc.Url("Instances", "lock")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2830,13 +2830,13 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.ApiParams) error {
 	if rightScriptHrefOpt != nil {
 		payloadParams["right_script_href"] = rightScriptHrefOpt
 	}
-	var uri, err = loc.Url("Instances", "multi_run_executable")
+	uri, err := loc.Url("Instances", "multi_run_executable")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2861,13 +2861,13 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
 	if terminateAllOpt != nil {
 		payloadParams["terminate_all"] = terminateAllOpt
 	}
-	var uri, err = loc.Url("Instances", "multi_terminate")
+	uri, err := loc.Url("Instances", "multi_terminate")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2879,13 +2879,13 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
 func (loc *InstanceLocator) Reboot() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "reboot")
+	uri, err := loc.Url("Instances", "reboot")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2920,13 +2920,13 @@ func (loc *InstanceLocator) RunExecutable(options rsapi.ApiParams) error {
 	if rightScriptHrefOpt != nil {
 		payloadParams["right_script_href"] = rightScriptHrefOpt
 	}
-	var uri, err = loc.Url("Instances", "run_executable")
+	uri, err := loc.Url("Instances", "run_executable")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2948,13 +2948,13 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
-	var uri, err = loc.Url("Instances", "set_custom_lodgement")
+	uri, err := loc.Url("Instances", "set_custom_lodgement")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -2974,21 +2974,21 @@ func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "show")
+	uri, err := loc.Url("Instances", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/start
@@ -3000,13 +3000,13 @@ func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 func (loc *InstanceLocator) Start() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "start")
+	uri, err := loc.Url("Instances", "start")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3019,13 +3019,13 @@ func (loc *InstanceLocator) Start() error {
 func (loc *InstanceLocator) Stop() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "stop")
+	uri, err := loc.Url("Instances", "stop")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3037,13 +3037,13 @@ func (loc *InstanceLocator) Stop() error {
 func (loc *InstanceLocator) Terminate() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "terminate")
+	uri, err := loc.Url("Instances", "terminate")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3053,13 +3053,13 @@ func (loc *InstanceLocator) Terminate() error {
 func (loc *InstanceLocator) Unlock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Instances", "unlock")
+	uri, err := loc.Url("Instances", "unlock")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3075,13 +3075,13 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"instance": instance,
 	}
-	var uri, err = loc.Url("Instances", "update")
+	uri, err := loc.Url("Instances", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3139,15 +3139,15 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
-	var uri, err = loc.Url("InstanceCustomLodgements", "create")
+	uri, err := loc.Url("InstanceCustomLodgements", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -3160,13 +3160,13 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 func (loc *InstanceCustomLodgementLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("InstanceCustomLodgements", "destroy")
+	uri, err := loc.Url("InstanceCustomLodgements", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3184,21 +3184,21 @@ func (loc *InstanceCustomLodgementLocator) Index(options rsapi.ApiParams) ([]*In
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("InstanceCustomLodgements", "index")
+	uri, err := loc.Url("InstanceCustomLodgements", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
@@ -3207,21 +3207,21 @@ func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, err
 	var res *InstanceCustomLodgement
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("InstanceCustomLodgements", "show")
+	uri, err := loc.Url("InstanceCustomLodgements", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
@@ -3236,13 +3236,13 @@ func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 	payloadParams = rsapi.ApiParams{
 		"quantity": quantity,
 	}
-	var uri, err = loc.Url("InstanceCustomLodgements", "update")
+	uri, err := loc.Url("InstanceCustomLodgements", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3296,21 +3296,21 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) ([]*InstanceType,
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("InstanceTypes", "index")
+	uri, err := loc.Url("InstanceTypes", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instance_types/:id
@@ -3326,21 +3326,21 @@ func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) (*InstanceType, er
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("InstanceTypes", "show")
+	uri, err := loc.Url("InstanceTypes", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  IpAddress ******/
@@ -3382,15 +3382,15 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 	payloadParams = rsapi.ApiParams{
 		"ip_address": ipAddress,
 	}
-	var uri, err = loc.Url("IpAddresses", "create")
+	uri, err := loc.Url("IpAddresses", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -3403,13 +3403,13 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 func (loc *IpAddressLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IpAddresses", "destroy")
+	uri, err := loc.Url("IpAddresses", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3427,21 +3427,21 @@ func (loc *IpAddressLocator) Index(options rsapi.ApiParams) ([]*IpAddress, error
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IpAddresses", "index")
+	uri, err := loc.Url("IpAddresses", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses/:id
@@ -3450,21 +3450,21 @@ func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 	var res *IpAddress
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IpAddresses", "show")
+	uri, err := loc.Url("IpAddresses", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/clouds/:cloud_id/ip_addresses/:id
@@ -3478,13 +3478,13 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"ip_address": ipAddress,
 	}
-	var uri, err = loc.Url("IpAddresses", "update")
+	uri, err := loc.Url("IpAddresses", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3536,15 +3536,15 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 	payloadParams = rsapi.ApiParams{
 		"ip_address_binding": ipAddressBinding,
 	}
-	var uri, err = loc.Url("IpAddressBindings", "create")
+	uri, err := loc.Url("IpAddressBindings", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -3558,13 +3558,13 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 func (loc *IpAddressBindingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IpAddressBindings", "destroy")
+	uri, err := loc.Url("IpAddressBindings", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3583,21 +3583,21 @@ func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) ([]*IpAddress
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IpAddressBindings", "index")
+	uri, err := loc.Url("IpAddressBindings", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
@@ -3607,21 +3607,21 @@ func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	var res *IpAddressBinding
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("IpAddressBindings", "show")
+	uri, err := loc.Url("IpAddressBindings", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  MonitoringMetric ******/
@@ -3671,21 +3671,21 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 		"end":   end,
 		"start": start,
 	}
-	var uri, err = loc.Url("MonitoringMetrics", "data")
+	uri, err := loc.Url("MonitoringMetrics", "data")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics
@@ -3723,21 +3723,21 @@ func (loc *MonitoringMetricLocator) Index(options rsapi.ApiParams) ([]*Monitorin
 	if tzOpt != nil {
 		payloadParams["tz"] = tzOpt
 	}
-	var uri, err = loc.Url("MonitoringMetrics", "index")
+	uri, err := loc.Url("MonitoringMetrics", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id
@@ -3769,21 +3769,21 @@ func (loc *MonitoringMetricLocator) Show(options rsapi.ApiParams) (*MonitoringMe
 	if tzOpt != nil {
 		payloadParams["tz"] = tzOpt
 	}
-	var uri, err = loc.Url("MonitoringMetrics", "show")
+	uri, err := loc.Url("MonitoringMetrics", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  MultiCloudImage ******/
@@ -3825,13 +3825,13 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	var uri, err = loc.Url("MultiCloudImages", "clone")
+	uri, err := loc.Url("MultiCloudImages", "clone")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3848,13 +3848,13 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	payloadParams = rsapi.ApiParams{
 		"commit_message": commitMessage,
 	}
-	var uri, err = loc.Url("MultiCloudImages", "commit")
+	uri, err := loc.Url("MultiCloudImages", "commit")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3872,15 +3872,15 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	var uri, err = loc.Url("MultiCloudImages", "create")
+	uri, err := loc.Url("MultiCloudImages", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -3894,13 +3894,13 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 func (loc *MultiCloudImageLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("MultiCloudImages", "destroy")
+	uri, err := loc.Url("MultiCloudImages", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -3919,21 +3919,21 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*MultiCloud
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("MultiCloudImages", "index")
+	uri, err := loc.Url("MultiCloudImages", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/server_templates/:server_template_id/multi_cloud_images/:id
@@ -3943,21 +3943,21 @@ func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 	var res *MultiCloudImage
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("MultiCloudImages", "show")
+	uri, err := loc.Url("MultiCloudImages", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/server_templates/:server_template_id/multi_cloud_images/:id
@@ -3973,13 +3973,13 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	var uri, err = loc.Url("MultiCloudImages", "update")
+	uri, err := loc.Url("MultiCloudImages", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4020,15 +4020,15 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
-	var uri, err = loc.Url("MultiCloudImageSettings", "create")
+	uri, err := loc.Url("MultiCloudImageSettings", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -4041,13 +4041,13 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 func (loc *MultiCloudImageSettingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("MultiCloudImageSettings", "destroy")
+	uri, err := loc.Url("MultiCloudImageSettings", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4065,21 +4065,21 @@ func (loc *MultiCloudImageSettingLocator) Index(options rsapi.ApiParams) ([]*Mul
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("MultiCloudImageSettings", "index")
+	uri, err := loc.Url("MultiCloudImageSettings", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
@@ -4088,21 +4088,21 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 	var res *MultiCloudImageSetting
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("MultiCloudImageSettings", "show")
+	uri, err := loc.Url("MultiCloudImageSettings", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
@@ -4116,13 +4116,13 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
-	var uri, err = loc.Url("MultiCloudImageSettings", "update")
+	uri, err := loc.Url("MultiCloudImageSettings", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4168,15 +4168,15 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 	payloadParams = rsapi.ApiParams{
 		"network": network,
 	}
-	var uri, err = loc.Url("Networks", "create")
+	uri, err := loc.Url("Networks", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -4189,13 +4189,13 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 func (loc *NetworkLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Networks", "destroy")
+	uri, err := loc.Url("Networks", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4213,21 +4213,21 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) ([]*Network, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Networks", "index")
+	uri, err := loc.Url("Networks", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/networks/:id
@@ -4236,21 +4236,21 @@ func (loc *NetworkLocator) Show() (*Network, error) {
 	var res *Network
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Networks", "show")
+	uri, err := loc.Url("Networks", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/networks/:id
@@ -4264,13 +4264,13 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"network": network,
 	}
-	var uri, err = loc.Url("Networks", "update")
+	uri, err := loc.Url("Networks", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4317,15 +4317,15 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 	payloadParams = rsapi.ApiParams{
 		"network_gateway": networkGateway,
 	}
-	var uri, err = loc.Url("NetworkGateways", "create")
+	uri, err := loc.Url("NetworkGateways", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -4338,13 +4338,13 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 func (loc *NetworkGatewayLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkGateways", "destroy")
+	uri, err := loc.Url("NetworkGateways", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4362,21 +4362,21 @@ func (loc *NetworkGatewayLocator) Index(options rsapi.ApiParams) ([]*NetworkGate
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkGateways", "index")
+	uri, err := loc.Url("NetworkGateways", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/network_gateways/:id
@@ -4385,21 +4385,21 @@ func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 	var res *NetworkGateway
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkGateways", "show")
+	uri, err := loc.Url("NetworkGateways", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/network_gateways/:id
@@ -4413,13 +4413,13 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 	payloadParams = rsapi.ApiParams{
 		"network_gateway": networkGateway,
 	}
-	var uri, err = loc.Url("NetworkGateways", "update")
+	uri, err := loc.Url("NetworkGateways", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4471,15 +4471,15 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 	payloadParams = rsapi.ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
-	var uri, err = loc.Url("NetworkOptionGroups", "create")
+	uri, err := loc.Url("NetworkOptionGroups", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -4492,13 +4492,13 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 func (loc *NetworkOptionGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkOptionGroups", "destroy")
+	uri, err := loc.Url("NetworkOptionGroups", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4516,21 +4516,21 @@ func (loc *NetworkOptionGroupLocator) Index(options rsapi.ApiParams) ([]*Network
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkOptionGroups", "index")
+	uri, err := loc.Url("NetworkOptionGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/network_option_groups/:id
@@ -4539,21 +4539,21 @@ func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 	var res *NetworkOptionGroup
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkOptionGroups", "show")
+	uri, err := loc.Url("NetworkOptionGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/network_option_groups/:id
@@ -4567,13 +4567,13 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 	payloadParams = rsapi.ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
-	var uri, err = loc.Url("NetworkOptionGroups", "update")
+	uri, err := loc.Url("NetworkOptionGroups", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4624,15 +4624,15 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 	payloadParams = rsapi.ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
-	var uri, err = loc.Url("NetworkOptionGroupAttachments", "create")
+	uri, err := loc.Url("NetworkOptionGroupAttachments", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -4645,13 +4645,13 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkOptionGroupAttachments", "destroy")
+	uri, err := loc.Url("NetworkOptionGroupAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4674,21 +4674,21 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options rsapi.ApiParams) (
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkOptionGroupAttachments", "index")
+	uri, err := loc.Url("NetworkOptionGroupAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/network_option_group_attachments/:id
@@ -4704,21 +4704,21 @@ func (loc *NetworkOptionGroupAttachmentLocator) Show(options rsapi.ApiParams) (*
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NetworkOptionGroupAttachments", "show")
+	uri, err := loc.Url("NetworkOptionGroupAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/network_option_group_attachments/:id
@@ -4732,13 +4732,13 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 	payloadParams = rsapi.ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
-	var uri, err = loc.Url("NetworkOptionGroupAttachments", "update")
+	uri, err := loc.Url("NetworkOptionGroupAttachments", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4846,21 +4846,21 @@ func (loc *Oauth2Locator) Create(grantType string, options rsapi.ApiParams) (map
 	if rightLinkVersionOpt != nil {
 		payloadParams["right_link_version"] = rightLinkVersionOpt
 	}
-	var uri, err = loc.Url("Oauth2", "create")
+	uri, err := loc.Url("Oauth2", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  Permission ******/
@@ -4908,15 +4908,15 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 	payloadParams = rsapi.ApiParams{
 		"permission": permission,
 	}
-	var uri, err = loc.Url("Permissions", "create")
+	uri, err := loc.Url("Permissions", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -4935,13 +4935,13 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 func (loc *PermissionLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Permissions", "destroy")
+	uri, err := loc.Url("Permissions", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -4959,21 +4959,21 @@ func (loc *PermissionLocator) Index(options rsapi.ApiParams) ([]*Permission, err
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Permissions", "index")
+	uri, err := loc.Url("Permissions", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/permissions/:id
@@ -4982,21 +4982,21 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 	var res *Permission
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Permissions", "show")
+	uri, err := loc.Url("Permissions", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  PlacementGroup ******/
@@ -5039,15 +5039,15 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 	payloadParams = rsapi.ApiParams{
 		"placement_group": placementGroup,
 	}
-	var uri, err = loc.Url("PlacementGroups", "create")
+	uri, err := loc.Url("PlacementGroups", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -5060,13 +5060,13 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 func (loc *PlacementGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("PlacementGroups", "destroy")
+	uri, err := loc.Url("PlacementGroups", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5089,21 +5089,21 @@ func (loc *PlacementGroupLocator) Index(options rsapi.ApiParams) ([]*PlacementGr
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("PlacementGroups", "index")
+	uri, err := loc.Url("PlacementGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/placement_groups/:id
@@ -5119,21 +5119,21 @@ func (loc *PlacementGroupLocator) Show(options rsapi.ApiParams) (*PlacementGroup
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("PlacementGroups", "show")
+	uri, err := loc.Url("PlacementGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Preference ******/
@@ -5167,13 +5167,13 @@ func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
 func (loc *PreferenceLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Preferences", "destroy")
+	uri, err := loc.Url("Preferences", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5191,21 +5191,21 @@ func (loc *PreferenceLocator) Index(options rsapi.ApiParams) ([]*Preference, err
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Preferences", "index")
+	uri, err := loc.Url("Preferences", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/preferences/:id
@@ -5214,21 +5214,21 @@ func (loc *PreferenceLocator) Show() (*Preference, error) {
 	var res *Preference
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Preferences", "show")
+	uri, err := loc.Url("Preferences", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/preferences/:id
@@ -5244,13 +5244,13 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	payloadParams = rsapi.ApiParams{
 		"preference": preference,
 	}
-	var uri, err = loc.Url("Preferences", "update")
+	uri, err := loc.Url("Preferences", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5294,13 +5294,13 @@ func (api *Api15) PublicationLocator(href string) *PublicationLocator {
 func (loc *PublicationLocator) Import() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Publications", "import")
+	uri, err := loc.Url("Publications", "import")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5323,21 +5323,21 @@ func (loc *PublicationLocator) Index(options rsapi.ApiParams) ([]*Publication, e
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Publications", "index")
+	uri, err := loc.Url("Publications", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/publications/:id
@@ -5353,21 +5353,21 @@ func (loc *PublicationLocator) Show(options rsapi.ApiParams) (*Publication, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Publications", "show")
+	uri, err := loc.Url("Publications", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  PublicationLineage ******/
@@ -5415,21 +5415,21 @@ func (loc *PublicationLineageLocator) Show(options rsapi.ApiParams) (*Publicatio
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("PublicationLineages", "show")
+	uri, err := loc.Url("PublicationLineages", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  RecurringVolumeAttachment ******/
@@ -5478,15 +5478,15 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 	payloadParams = rsapi.ApiParams{
 		"recurring_volume_attachment": recurringVolumeAttachment,
 	}
-	var uri, err = loc.Url("RecurringVolumeAttachments", "create")
+	uri, err := loc.Url("RecurringVolumeAttachments", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -5501,13 +5501,13 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RecurringVolumeAttachments", "destroy")
+	uri, err := loc.Url("RecurringVolumeAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5532,21 +5532,21 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RecurringVolumeAttachments", "index")
+	uri, err := loc.Url("RecurringVolumeAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/recurring_volume_attachments/:id
@@ -5564,21 +5564,21 @@ func (loc *RecurringVolumeAttachmentLocator) Show(options rsapi.ApiParams) (*Rec
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RecurringVolumeAttachments", "show")
+	uri, err := loc.Url("RecurringVolumeAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Repository ******/
@@ -5651,13 +5651,13 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options rsapi.
 	if withDependenciesOpt != nil {
 		payloadParams["with_dependencies"] = withDependenciesOpt
 	}
-	var uri, err = loc.Url("Repositories", "cookbook_import")
+	uri, err := loc.Url("Repositories", "cookbook_import")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5683,21 +5683,21 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 		"asset_hrefs": assetHrefs,
 		"namespace":   namespace,
 	}
-	var uri, err = loc.Url("Repositories", "cookbook_import_preview")
+	uri, err := loc.Url("Repositories", "cookbook_import_preview")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/repositories
@@ -5722,15 +5722,15 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 	payloadParams = rsapi.ApiParams{
 		"repository": repository,
 	}
-	var uri, err = loc.Url("Repositories", "create")
+	uri, err := loc.Url("Repositories", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -5743,13 +5743,13 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 func (loc *RepositoryLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Repositories", "destroy")
+	uri, err := loc.Url("Repositories", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5772,21 +5772,21 @@ func (loc *RepositoryLocator) Index(options rsapi.ApiParams) ([]*Repository, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Repositories", "index")
+	uri, err := loc.Url("Repositories", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/repositories/:id/refetch
@@ -5803,13 +5803,13 @@ func (loc *RepositoryLocator) Refetch(options rsapi.ApiParams) error {
 	if autoImportOpt != nil {
 		payloadParams["auto_import"] = autoImportOpt
 	}
-	var uri, err = loc.Url("Repositories", "refetch")
+	uri, err := loc.Url("Repositories", "refetch")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5830,21 +5830,21 @@ func (loc *RepositoryLocator) Resolve(options rsapi.ApiParams) ([]*Repository, e
 	if importedCookbookNameOpt != nil {
 		payloadParams["imported_cookbook_name"] = importedCookbookNameOpt
 	}
-	var uri, err = loc.Url("Repositories", "resolve")
+	uri, err := loc.Url("Repositories", "resolve")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/repositories/:id
@@ -5860,21 +5860,21 @@ func (loc *RepositoryLocator) Show(options rsapi.ApiParams) (*Repository, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Repositories", "show")
+	uri, err := loc.Url("Repositories", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/repositories/:id
@@ -5898,13 +5898,13 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"repository": repository,
 	}
-	var uri, err = loc.Url("Repositories", "update")
+	uri, err := loc.Url("Repositories", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -5952,21 +5952,21 @@ func (loc *RepositoryAssetLocator) Index(options rsapi.ApiParams) ([]*Repository
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RepositoryAssets", "index")
+	uri, err := loc.Url("RepositoryAssets", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/repositories/:repository_id/repository_assets/:id
@@ -5984,21 +5984,21 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.ApiParams) (*RepositoryAss
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RepositoryAssets", "show")
+	uri, err := loc.Url("RepositoryAssets", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  RightScript ******/
@@ -6047,13 +6047,13 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	payloadParams = rsapi.ApiParams{
 		"right_script": rightScript,
 	}
-	var uri, err = loc.Url("RightScripts", "commit")
+	uri, err := loc.Url("RightScripts", "commit")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6082,21 +6082,21 @@ func (loc *RightScriptLocator) Index(options rsapi.ApiParams) ([]*RightScript, e
 	if latestOnlyOpt != nil {
 		payloadParams["latest_only"] = latestOnlyOpt
 	}
-	var uri, err = loc.Url("RightScripts", "index")
+	uri, err := loc.Url("RightScripts", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/right_scripts/:id
@@ -6105,21 +6105,21 @@ func (loc *RightScriptLocator) Show() (*RightScript, error) {
 	var res *RightScript
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RightScripts", "show")
+	uri, err := loc.Url("RightScripts", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // GET /api/right_scripts/:id/source
@@ -6127,13 +6127,13 @@ func (loc *RightScriptLocator) Show() (*RightScript, error) {
 func (loc *RightScriptLocator) ShowSource() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RightScripts", "show_source")
+	uri, err := loc.Url("RightScripts", "show_source")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6149,13 +6149,13 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"right_script": rightScript,
 	}
-	var uri, err = loc.Url("RightScripts", "update")
+	uri, err := loc.Url("RightScripts", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6165,13 +6165,13 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 func (loc *RightScriptLocator) UpdateSource() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RightScripts", "update_source")
+	uri, err := loc.Url("RightScripts", "update_source")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6220,15 +6220,15 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"route": route,
 	}
-	var uri, err = loc.Url("Routes", "create")
+	uri, err := loc.Url("Routes", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -6242,13 +6242,13 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 func (loc *RouteLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Routes", "destroy")
+	uri, err := loc.Url("Routes", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6267,21 +6267,21 @@ func (loc *RouteLocator) Index(options rsapi.ApiParams) ([]*Route, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Routes", "index")
+	uri, err := loc.Url("Routes", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/routes/:id
@@ -6291,21 +6291,21 @@ func (loc *RouteLocator) Show() (*Route, error) {
 	var res *Route
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Routes", "show")
+	uri, err := loc.Url("Routes", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/routes/:id
@@ -6320,13 +6320,13 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"route": route,
 	}
-	var uri, err = loc.Url("Routes", "update")
+	uri, err := loc.Url("Routes", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6372,15 +6372,15 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 	payloadParams = rsapi.ApiParams{
 		"route_table": routeTable,
 	}
-	var uri, err = loc.Url("RouteTables", "create")
+	uri, err := loc.Url("RouteTables", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -6393,13 +6393,13 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 func (loc *RouteTableLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RouteTables", "destroy")
+	uri, err := loc.Url("RouteTables", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6422,21 +6422,21 @@ func (loc *RouteTableLocator) Index(options rsapi.ApiParams) ([]*RouteTable, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RouteTables", "index")
+	uri, err := loc.Url("RouteTables", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/route_tables/:id
@@ -6452,21 +6452,21 @@ func (loc *RouteTableLocator) Show(options rsapi.ApiParams) (*RouteTable, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RouteTables", "show")
+	uri, err := loc.Url("RouteTables", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/route_tables/:id
@@ -6480,13 +6480,13 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"route_table": routeTable,
 	}
-	var uri, err = loc.Url("RouteTables", "update")
+	uri, err := loc.Url("RouteTables", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6535,15 +6535,15 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 	payloadParams = rsapi.ApiParams{
 		"runnable_binding": runnableBinding,
 	}
-	var uri, err = loc.Url("RunnableBindings", "create")
+	uri, err := loc.Url("RunnableBindings", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -6557,13 +6557,13 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 func (loc *RunnableBindingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RunnableBindings", "destroy")
+	uri, err := loc.Url("RunnableBindings", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6582,21 +6582,21 @@ func (loc *RunnableBindingLocator) Index(options rsapi.ApiParams) ([]*RunnableBi
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RunnableBindings", "index")
+	uri, err := loc.Url("RunnableBindings", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // PUT /api/server_templates/:server_template_id/runnable_bindings/multi_update
@@ -6611,13 +6611,13 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 	payloadParams = rsapi.ApiParams{
 		"runnable_bindings": runnableBindings,
 	}
-	var uri, err = loc.Url("RunnableBindings", "multi_update")
+	uri, err := loc.Url("RunnableBindings", "multi_update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6636,21 +6636,21 @@ func (loc *RunnableBindingLocator) Show(options rsapi.ApiParams) (*RunnableBindi
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("RunnableBindings", "show")
+	uri, err := loc.Url("RunnableBindings", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  SecurityGroup ******/
@@ -6693,15 +6693,15 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 	payloadParams = rsapi.ApiParams{
 		"security_group": securityGroup,
 	}
-	var uri, err = loc.Url("SecurityGroups", "create")
+	uri, err := loc.Url("SecurityGroups", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -6714,13 +6714,13 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 func (loc *SecurityGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SecurityGroups", "destroy")
+	uri, err := loc.Url("SecurityGroups", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6743,21 +6743,21 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) ([]*SecurityGrou
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SecurityGroups", "index")
+	uri, err := loc.Url("SecurityGroups", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/security_groups/:id
@@ -6773,21 +6773,21 @@ func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) (*SecurityGroup, 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SecurityGroups", "show")
+	uri, err := loc.Url("SecurityGroups", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  SecurityGroupRule ******/
@@ -6843,15 +6843,15 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 	payloadParams = rsapi.ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
-	var uri, err = loc.Url("SecurityGroupRules", "create")
+	uri, err := loc.Url("SecurityGroupRules", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -6865,13 +6865,13 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 func (loc *SecurityGroupRuleLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SecurityGroupRules", "destroy")
+	uri, err := loc.Url("SecurityGroupRules", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -6890,21 +6890,21 @@ func (loc *SecurityGroupRuleLocator) Index(options rsapi.ApiParams) ([]*Security
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SecurityGroupRules", "index")
+	uri, err := loc.Url("SecurityGroupRules", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/security_group_rules/:id
@@ -6921,21 +6921,21 @@ func (loc *SecurityGroupRuleLocator) Show(options rsapi.ApiParams) (*SecurityGro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SecurityGroupRules", "show")
+	uri, err := loc.Url("SecurityGroupRules", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/security_group_rules/:id
@@ -6950,13 +6950,13 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 	payloadParams = rsapi.ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
-	var uri, err = loc.Url("SecurityGroupRules", "update")
+	uri, err := loc.Url("SecurityGroupRules", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7005,13 +7005,13 @@ func (api *Api15) ServerLocator(href string) *ServerLocator {
 func (loc *ServerLocator) Clone() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Servers", "clone")
+	uri, err := loc.Url("Servers", "clone")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7029,15 +7029,15 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"server": server,
 	}
-	var uri, err = loc.Url("Servers", "create")
+	uri, err := loc.Url("Servers", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -7051,13 +7051,13 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 func (loc *ServerLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Servers", "destroy")
+	uri, err := loc.Url("Servers", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7087,21 +7087,21 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Servers", "index")
+	uri, err := loc.Url("Servers", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/servers/:id/launch
@@ -7110,13 +7110,13 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
 func (loc *ServerLocator) Launch() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Servers", "launch")
+	uri, err := loc.Url("Servers", "launch")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7135,21 +7135,21 @@ func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Servers", "show")
+	uri, err := loc.Url("Servers", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /api/servers/:id/teminate
@@ -7158,13 +7158,13 @@ func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 func (loc *ServerLocator) Terminate() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Servers", "terminate")
+	uri, err := loc.Url("Servers", "terminate")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7181,13 +7181,13 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"server": server,
 	}
-	var uri, err = loc.Url("Servers", "update")
+	uri, err := loc.Url("Servers", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7204,13 +7204,13 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"server": server,
 	}
-	var uri, err = loc.Url("Servers", "wrap_instance")
+	uri, err := loc.Url("Servers", "wrap_instance")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7258,13 +7258,13 @@ func (api *Api15) ServerArrayLocator(href string) *ServerArrayLocator {
 func (loc *ServerArrayLocator) Clone() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "clone")
+	uri, err := loc.Url("ServerArrays", "clone")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7282,15 +7282,15 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 	payloadParams = rsapi.ApiParams{
 		"server_array": serverArray,
 	}
-	var uri, err = loc.Url("ServerArrays", "create")
+	uri, err := loc.Url("ServerArrays", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -7305,13 +7305,13 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 func (loc *ServerArrayLocator) CurrentInstances() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "current_instances")
+	uri, err := loc.Url("ServerArrays", "current_instances")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7322,13 +7322,13 @@ func (loc *ServerArrayLocator) CurrentInstances() error {
 func (loc *ServerArrayLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "destroy")
+	uri, err := loc.Url("ServerArrays", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7356,21 +7356,21 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, e
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "index")
+	uri, err := loc.Url("ServerArrays", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/server_arrays/:id/launch
@@ -7379,13 +7379,13 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, e
 func (loc *ServerArrayLocator) Launch() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "launch")
+	uri, err := loc.Url("ServerArrays", "launch")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7397,13 +7397,13 @@ func (loc *ServerArrayLocator) Launch() error {
 func (loc *ServerArrayLocator) MultiRunExecutable() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "multi_run_executable")
+	uri, err := loc.Url("ServerArrays", "multi_run_executable")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7415,13 +7415,13 @@ func (loc *ServerArrayLocator) MultiRunExecutable() error {
 func (loc *ServerArrayLocator) MultiTerminate() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "multi_terminate")
+	uri, err := loc.Url("ServerArrays", "multi_terminate")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7440,21 +7440,21 @@ func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) (*ServerArray, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerArrays", "show")
+	uri, err := loc.Url("ServerArrays", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/server_arrays/:id
@@ -7469,13 +7469,13 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"server_array": serverArray,
 	}
-	var uri, err = loc.Url("ServerArrays", "update")
+	uri, err := loc.Url("ServerArrays", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7523,13 +7523,13 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 	payloadParams = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
-	var uri, err = loc.Url("ServerTemplates", "clone")
+	uri, err := loc.Url("ServerTemplates", "clone")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7556,13 +7556,13 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 		"commit_message":           commitMessage,
 		"freeze_repositories":      freezeRepositories,
 	}
-	var uri, err = loc.Url("ServerTemplates", "commit")
+	uri, err := loc.Url("ServerTemplates", "commit")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7579,15 +7579,15 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 	payloadParams = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
-	var uri, err = loc.Url("ServerTemplates", "create")
+	uri, err := loc.Url("ServerTemplates", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -7600,13 +7600,13 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 func (loc *ServerTemplateLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplates", "destroy")
+	uri, err := loc.Url("ServerTemplates", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7619,21 +7619,21 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 	var res []*map[string]string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplates", "detect_changes_in_head")
+	uri, err := loc.Url("ServerTemplates", "detect_changes_in_head")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/server_templates
@@ -7656,21 +7656,21 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) ([]*ServerTempl
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplates", "index")
+	uri, err := loc.Url("ServerTemplates", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/server_templates/:id/publish
@@ -7706,13 +7706,13 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 	if emailCommentsOpt != nil {
 		payloadParams["email_comments"] = emailCommentsOpt
 	}
-	var uri, err = loc.Url("ServerTemplates", "publish")
+	uri, err := loc.Url("ServerTemplates", "publish")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7726,21 +7726,21 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 	var res []*map[string]string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplates", "resolve")
+	uri, err := loc.Url("ServerTemplates", "resolve")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/server_templates/:id
@@ -7758,21 +7758,21 @@ func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) (*ServerTemplate
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplates", "show")
+	uri, err := loc.Url("ServerTemplates", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /api/server_templates/:id/swap_repository
@@ -7804,13 +7804,13 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 		"source_repository_href": sourceRepositoryHref,
 		"target_repository_href": targetRepositoryHref,
 	}
-	var uri, err = loc.Url("ServerTemplates", "swap_repository")
+	uri, err := loc.Url("ServerTemplates", "swap_repository")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7828,13 +7828,13 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 	payloadParams = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
-	var uri, err = loc.Url("ServerTemplates", "update")
+	uri, err := loc.Url("ServerTemplates", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7878,15 +7878,15 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 	payloadParams = rsapi.ApiParams{
 		"server_template_multi_cloud_image": serverTemplateMultiCloudImage,
 	}
-	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "create")
+	uri, err := loc.Url("ServerTemplateMultiCloudImages", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -7899,13 +7899,13 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "destroy")
+	uri, err := loc.Url("ServerTemplateMultiCloudImages", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7928,21 +7928,21 @@ func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "index")
+	uri, err := loc.Url("ServerTemplateMultiCloudImages", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/server_template_multi_cloud_images/:id/make_default
@@ -7950,13 +7950,13 @@ func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) 
 func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "make_default")
+	uri, err := loc.Url("ServerTemplateMultiCloudImages", "make_default")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -7974,21 +7974,21 @@ func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.ApiParams) (
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ServerTemplateMultiCloudImages", "show")
+	uri, err := loc.Url("ServerTemplateMultiCloudImages", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Session ******/
@@ -8053,21 +8053,21 @@ func (loc *SessionLocator) Accounts(options rsapi.ApiParams) ([]*Account, error)
 	if passwordOpt != nil {
 		payloadParams["password"] = passwordOpt
 	}
-	var uri, err = loc.Url("Sessions", "accounts")
+	uri, err := loc.Url("Sessions", "accounts")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/sessions
@@ -8079,21 +8079,21 @@ func (loc *SessionLocator) Index() ([]*Session, error) {
 	var res []*Session
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Sessions", "index")
+	uri, err := loc.Url("Sessions", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/sessions/instance
@@ -8105,21 +8105,21 @@ func (loc *SessionLocator) IndexInstanceSession() (Instance, error) {
 	var res Instance
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Sessions", "index_instance_session")
+	uri, err := loc.Url("Sessions", "index_instance_session")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  SshKey ******/
@@ -8160,15 +8160,15 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"ssh_key": sshKey,
 	}
-	var uri, err = loc.Url("SshKeys", "create")
+	uri, err := loc.Url("SshKeys", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -8181,13 +8181,13 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 func (loc *SshKeyLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SshKeys", "destroy")
+	uri, err := loc.Url("SshKeys", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8210,21 +8210,21 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) ([]*SshKey, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SshKeys", "index")
+	uri, err := loc.Url("SshKeys", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/ssh_keys/:id
@@ -8240,21 +8240,21 @@ func (loc *SshKeyLocator) Show(options rsapi.ApiParams) (*SshKey, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("SshKeys", "show")
+	uri, err := loc.Url("SshKeys", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Subnet ******/
@@ -8300,15 +8300,15 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"subnet": subnet,
 	}
-	var uri, err = loc.Url("Subnets", "create")
+	uri, err := loc.Url("Subnets", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -8322,13 +8322,13 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 func (loc *SubnetLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Subnets", "destroy")
+	uri, err := loc.Url("Subnets", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8347,21 +8347,21 @@ func (loc *SubnetLocator) Index(options rsapi.ApiParams) ([]*Subnet, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Subnets", "index")
+	uri, err := loc.Url("Subnets", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
@@ -8371,21 +8371,21 @@ func (loc *SubnetLocator) Show() (*Subnet, error) {
 	var res *Subnet
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Subnets", "show")
+	uri, err := loc.Url("Subnets", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
@@ -8400,13 +8400,13 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"subnet": subnet,
 	}
-	var uri, err = loc.Url("Subnets", "update")
+	uri, err := loc.Url("Subnets", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8446,21 +8446,21 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 	payloadParams = rsapi.ApiParams{
 		"resource_hrefs": resourceHrefs,
 	}
-	var uri, err = loc.Url("Tags", "by_resource")
+	uri, err := loc.Url("Tags", "by_resource")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/tags/by_tag
@@ -8509,21 +8509,21 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.A
 	if withDeletedOpt != nil {
 		payloadParams["with_deleted"] = withDeletedOpt
 	}
-	var uri, err = loc.Url("Tags", "by_tag")
+	uri, err := loc.Url("Tags", "by_tag")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /api/tags/multi_add
@@ -8547,13 +8547,13 @@ func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
-	var uri, err = loc.Url("Tags", "multi_add")
+	uri, err := loc.Url("Tags", "multi_add")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8578,13 +8578,13 @@ func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error 
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
-	var uri, err = loc.Url("Tags", "multi_delete")
+	uri, err := loc.Url("Tags", "multi_delete")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8630,21 +8630,21 @@ func (loc *TaskLocator) Show(options rsapi.ApiParams) (*Task, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Tasks", "show")
+	uri, err := loc.Url("Tasks", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  User ******/
@@ -8706,15 +8706,15 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"user": user,
 	}
-	var uri, err = loc.Url("Users", "create")
+	uri, err := loc.Url("Users", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -8736,21 +8736,21 @@ func (loc *UserLocator) Index(options rsapi.ApiParams) ([]*User, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Users", "index")
+	uri, err := loc.Url("Users", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/users/:id
@@ -8759,21 +8759,21 @@ func (loc *UserLocator) Show() (*User, error) {
 	var res *User
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Users", "show")
+	uri, err := loc.Url("Users", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /api/users/:id
@@ -8805,13 +8805,13 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"user": user,
 	}
-	var uri, err = loc.Url("Users", "update")
+	uri, err := loc.Url("Users", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8839,21 +8839,21 @@ func (loc *UserDataLocator) Show() (*map[string]string, error) {
 	var res *map[string]string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserDatas", "show")
+	uri, err := loc.Url("UserDatas", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Volume ******/
@@ -8900,15 +8900,15 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"volume": volume,
 	}
-	var uri, err = loc.Url("Volumes", "create")
+	uri, err := loc.Url("Volumes", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -8921,13 +8921,13 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 func (loc *VolumeLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Volumes", "destroy")
+	uri, err := loc.Url("Volumes", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -8950,21 +8950,21 @@ func (loc *VolumeLocator) Index(options rsapi.ApiParams) ([]*Volume, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Volumes", "index")
+	uri, err := loc.Url("Volumes", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/volumes/:id
@@ -8980,21 +8980,21 @@ func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Volumes", "show")
+	uri, err := loc.Url("Volumes", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  VolumeAttachment ******/
@@ -9041,15 +9041,15 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 	payloadParams = rsapi.ApiParams{
 		"volume_attachment": volumeAttachment,
 	}
-	var uri, err = loc.Url("VolumeAttachments", "create")
+	uri, err := loc.Url("VolumeAttachments", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -9072,13 +9072,13 @@ func (loc *VolumeAttachmentLocator) Destroy(options rsapi.ApiParams) error {
 	if forceOpt != nil {
 		payloadParams["force"] = forceOpt
 	}
-	var uri, err = loc.Url("VolumeAttachments", "destroy")
+	uri, err := loc.Url("VolumeAttachments", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -9102,21 +9102,21 @@ func (loc *VolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*VolumeAtt
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("VolumeAttachments", "index")
+	uri, err := loc.Url("VolumeAttachments", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments/:id
@@ -9135,21 +9135,21 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.ApiParams) (*VolumeAttach
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("VolumeAttachments", "show")
+	uri, err := loc.Url("VolumeAttachments", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  VolumeSnapshot ******/
@@ -9198,15 +9198,15 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 	payloadParams = rsapi.ApiParams{
 		"volume_snapshot": volumeSnapshot,
 	}
-	var uri, err = loc.Url("VolumeSnapshots", "create")
+	uri, err := loc.Url("VolumeSnapshots", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -9220,13 +9220,13 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 func (loc *VolumeSnapshotLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("VolumeSnapshots", "destroy")
+	uri, err := loc.Url("VolumeSnapshots", "destroy")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -9250,21 +9250,21 @@ func (loc *VolumeSnapshotLocator) Index(options rsapi.ApiParams) ([]*VolumeSnaps
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("VolumeSnapshots", "index")
+	uri, err := loc.Url("VolumeSnapshots", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
@@ -9281,21 +9281,21 @@ func (loc *VolumeSnapshotLocator) Show(options rsapi.ApiParams) (*VolumeSnapshot
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("VolumeSnapshots", "show")
+	uri, err := loc.Url("VolumeSnapshots", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  VolumeType ******/
@@ -9345,21 +9345,21 @@ func (loc *VolumeTypeLocator) Index(options rsapi.ApiParams) ([]*VolumeType, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("VolumeTypes", "index")
+	uri, err := loc.Url("VolumeTypes", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/volume_types/:id
@@ -9375,21 +9375,21 @@ func (loc *VolumeTypeLocator) Show(options rsapi.ApiParams) (*VolumeType, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("VolumeTypes", "show")
+	uri, err := loc.Url("VolumeTypes", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /****** Parameter Data Types ******/

@@ -8,7 +8,7 @@ import (
 	"github.com/rightscale/rsc/metadata"
 )
 
-var _ = Describe("Action", func() {
+_ := Describe("Action", func() {
 
 	Context("PathPattern Substitute", func() {
 		var (

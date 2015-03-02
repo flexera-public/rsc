@@ -21,17 +21,17 @@ func main() {
 	// 1. Parse command line arguments
 	curDir, err := os.Getwd()
 	check(err)
-	var metadataDirVal = flag.String("metadata", curDir,
+	metadataDirVal := flag.String("metadata", curDir,
 		"Path to directory(ies) containig metadata files (index.json, etc.). Multiple directories can be specified using a coma separated list.")
-	var destDirVal = flag.String("output", curDir,
+	destDirVal := flag.String("output", curDir,
 		"Path to output file")
-	var pkgName = flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
-	var targetVersion = flag.String("target", "",
+	pkgName := flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
+	targetVersion := flag.String("target", "",
 		"Target version, only generate code for this version.\nIf this option is specified then the generated code lives directly under package <pkg>, otherwise it lives under <pkg>.<version>.")
-	var clientName = flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
+	clientName := flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
 	flag.Parse()
 
-	var metadataDirs = strings.Split(*metadataDirVal, ",")
+	metadataDirs := strings.Split(*metadataDirVal, ",")
 	for _, metadataDir := range metadataDirs {
 		if stat, err := os.Stat(metadataDir); err != nil || !stat.IsDir() {
 			check(fmt.Errorf("%s is not a valid directory.", metadataDir))
@@ -51,9 +51,9 @@ func main() {
 		check(fmt.Errorf("-client option is required."))
 	}
 
-	var indeces = make(map[string]Index, len(metadataDirs)) // Index content mapped by directory path
+	indeces := make(map[string]Index, len(metadataDirs)) // Index content mapped by directory path
 	for _, metadataDir := range metadataDirs {
-		var indexFile = path.Join(metadataDir, "index.json")
+		indexFile := path.Join(metadataDir, "index.json")
 		indexContent, err := loadFile(indexFile)
 		check(err)
 		var index Index
@@ -65,7 +65,7 @@ func main() {
 	}
 
 	// 2. Analyze
-	var descriptors = make(map[string]*gen.ApiDescriptor) // descriptors indexed by version
+	descriptors := make(map[string]*gen.ApiDescriptor) // descriptors indexed by version
 	for dirPath, index := range indeces {
 		for version, resources := range index {
 			if len(*targetVersion) > 0 {
@@ -74,14 +74,14 @@ func main() {
 					continue
 				}
 			}
-			var apiResources = make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
+			apiResources := make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
 			for name, resource := range resources {
 				// Skip built-in resources (?)
 				if strings.HasSuffix(name, " (*)") {
 					continue
 				}
-				var fileName = fmt.Sprintf("%s.json", resource["controller"])
-				var resourcePath = path.Join(dirPath, version, "resources", fileName)
+				fileName := fmt.Sprintf("%s.json", resource["controller"])
+				resourcePath := path.Join(dirPath, version, "resources", fileName)
 				var resourceData map[string]interface{}
 				if err := unmarshal(resourcePath, &resourceData); err != nil {
 					check(fmt.Errorf("Failed to unmarshal content of file %s: %s", resourcePath, err.Error()))
@@ -89,8 +89,8 @@ func main() {
 				apiResources[name] = resourceData
 			}
 
-			var apiTypes = make(map[string]map[string]interface{}) // Type properties indexed by name indexed by type name
-			var typesDir = path.Join(dirPath, version, "types")
+			apiTypes := make(map[string]map[string]interface{}) // Type properties indexed by name indexed by type name
+			typesDir := path.Join(dirPath, version, "types")
 			files, err := ioutil.ReadDir(typesDir)
 			if err != nil {
 				check(fmt.Errorf("Failed to load types: %s", err.Error()))
@@ -100,13 +100,13 @@ func main() {
 				if err := unmarshal(path.Join(typesDir, file.Name()), &typeData); err != nil {
 					check(fmt.Errorf("Failed to unmarshal content of file %s: %s", path.Join(typesDir, file.Name()), err.Error()))
 				}
-				var typeName, ok = typeData["name"]
+				typeName, ok := typeData["name"]
 				if !ok {
 					check(fmt.Errorf("Missing \"name\" key for type defined in %s", path.Join(typesDir, file.Name())))
 				}
 				apiTypes[typeName.(string)] = typeData
 			}
-			var analyzer = NewApiAnalyzer(version, *clientName, apiResources, apiTypes)
+			analyzer := NewApiAnalyzer(version, *clientName, apiResources, apiTypes)
 			d, err := analyzer.Analyze()
 			check(err)
 			if existing, ok := descriptors[version]; ok {
@@ -129,8 +129,8 @@ func main() {
 			pkg = toPackageName(version)
 		}
 		os.MkdirAll(path.Join(destDir, pkg), 0755)
-		var clientPath = path.Join(destDir, pkg, "codegen_client.go")
-		var metadataPath = path.Join(destDir, pkg, "codegen_metadata.go")
+		clientPath := path.Join(destDir, pkg, "codegen_client.go")
+		metadataPath := path.Join(destDir, pkg, "codegen_metadata.go")
 		check(generateClient(descriptor, clientPath, *pkgName))
 		check(generateMetadata(descriptor, metadataPath, *pkgName))
 		genClients = append(genClients, clientPath)
@@ -162,9 +162,9 @@ func toPackageName(version string) string {
 	if version == "unversioned" {
 		return "v0"
 	}
-	var parts = strings.Split(version, ".")
-	var i = 1
-	var p = parts[len(parts)-i]
+	parts := strings.Split(version, ".")
+	i := 1
+	p := parts[len(parts)-i]
 	for p == "0" && i <= len(parts) {
 		i += 1
 		p = parts[len(parts)-i]

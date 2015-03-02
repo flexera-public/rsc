@@ -48,7 +48,7 @@ func (c *MetadataWriter) WriteHeader(pkg string, w io.Writer) error {
 
 // Write metadata
 func (c *MetadataWriter) WriteMetadata(d *gen.ApiDescriptor, w io.Writer) error {
-	var resources = make([]*gen.Resource, len(d.ResourceNames))
+	resources := make([]*gen.Resource, len(d.ResourceNames))
 	for i, n := range d.ResourceNames {
 		resources[i] = d.Resources[n]
 	}

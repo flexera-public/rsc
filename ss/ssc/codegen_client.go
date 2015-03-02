@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 9:39pm (PST)
+// Mar 2, 2015 at 11:10am (PST)
 // Command:
 // $ praxisgen -metadata=ssc/restful_doc -output=ssc -pkg=ssc -target=1.0 -client=Api
 //
@@ -28,7 +28,7 @@ import (
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
-	var res, ok = GenMetadata[rName]
+	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}
@@ -42,7 +42,7 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 	if action == nil {
 		return nil, fmt.Errorf("No action with name '%s' on %s", aName, rName)
 	}
-	var vars, err = res.ExtractVariables(string(*r))
+	vars, err := res.ExtractVariables(string(*r))
 	if err != nil {
 		return nil, err
 	}
@@ -55,13 +55,13 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 // The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
 // to use in your own integration.
 type AccountPreference struct {
-	CreatedBy  *User              `json:"created_by,omitempty"`
-	GroupName  string             `json:"group_name,omitempty"`
-	Href       string             `json:"href,omitempty"`
-	Kind       string             `json:"kind,omitempty"`
-	Name       string             `json:"name,omitempty"`
-	Timestamps *TimestampsStruct2 `json:"timestamps,omitempty"`
-	Value      string             `json:"value,omitempty"`
+	CreatedBy  *User             `json:"created_by,omitempty"`
+	GroupName  string            `json:"group_name,omitempty"`
+	Href       string            `json:"href,omitempty"`
+	Kind       string            `json:"kind,omitempty"`
+	Name       string            `json:"name,omitempty"`
+	Timestamps *TimestampsStruct `json:"timestamps,omitempty"`
+	Value      string            `json:"value,omitempty"`
 }
 
 //===== Locator
@@ -97,21 +97,21 @@ func (loc *AccountPreferenceLocator) Index(accountId string, options rsapi.ApiPa
 		queryParams["group"] = groupOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AccountPreference", "index")
+	uri, err := loc.Url("AccountPreference", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /accounts/:account_id/account_preferences/:name
@@ -126,21 +126,21 @@ func (loc *AccountPreferenceLocator) Show(accountId string, name string) (Accoun
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AccountPreference", "show")
+	uri, err := loc.Url("AccountPreference", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /accounts/:account_id/account_preferences
@@ -151,13 +151,13 @@ func (loc *AccountPreferenceLocator) Create(accountId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AccountPreference", "create")
+	uri, err := loc.Url("AccountPreference", "create")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -174,21 +174,21 @@ func (loc *AccountPreferenceLocator) Delete(accountId string, name string) (*Acc
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("AccountPreference", "delete")
+	uri, err := loc.Url("AccountPreference", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  Application ******/
@@ -245,21 +245,21 @@ func (loc *ApplicationLocator) Index(catalogId string, options rsapi.ApiParams) 
 		queryParams["ids"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "index")
+	uri, err := loc.Url("Application", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /catalogs/:catalog_id/applications/:id
@@ -279,21 +279,21 @@ func (loc *ApplicationLocator) Show(catalogId string, id string, options rsapi.A
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "show")
+	uri, err := loc.Url("Application", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /catalogs/:catalog_id/applications
@@ -304,13 +304,13 @@ func (loc *ApplicationLocator) Create(catalogId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "create")
+	uri, err := loc.Url("Application", "create")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -327,21 +327,21 @@ func (loc *ApplicationLocator) Update(catalogId string, id string) (*Application
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "update")
+	uri, err := loc.Url("Application", "update")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /catalogs/:catalog_id/applications
@@ -352,13 +352,13 @@ func (loc *ApplicationLocator) MultiUpdate(catalogId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "multi_update")
+	uri, err := loc.Url("Application", "multi_update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -375,21 +375,21 @@ func (loc *ApplicationLocator) Delete(catalogId string, id string) (*Application
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "delete")
+	uri, err := loc.Url("Application", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /catalogs/:catalog_id/applications
@@ -406,13 +406,13 @@ func (loc *ApplicationLocator) MultiDelete(catalogId string, ids []string) error
 		"ids": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "multi_delete")
+	uri, err := loc.Url("Application", "multi_delete")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -435,21 +435,21 @@ func (loc *ApplicationLocator) Download(apiVersion string, catalogId string, id 
 		"api_version": apiVersion,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "download")
+	uri, err := loc.Url("Application", "download")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /catalogs/:catalog_id/applications/:id/actions/launch
@@ -464,21 +464,21 @@ func (loc *ApplicationLocator) Launch(catalogId string, id string) (*Application
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Application", "launch")
+	uri, err := loc.Url("Application", "launch")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  NotificationRule ******/
@@ -499,7 +499,7 @@ type NotificationRule struct {
 	Priority    int                `json:"priority,omitempty"`
 	Source      string             `json:"source,omitempty"`
 	Target      string             `json:"target,omitempty"`
-	Timestamps  *TimestampsStruct3 `json:"timestamps,omitempty"`
+	Timestamps  *TimestampsStruct4 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -536,21 +536,21 @@ func (loc *NotificationRuleLocator) Index(accountId string, source string, optio
 		queryParams["targets"] = targetsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NotificationRule", "index")
+	uri, err := loc.Url("NotificationRule", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /accounts/:account_id/notification_rules
@@ -568,21 +568,21 @@ func (loc *NotificationRuleLocator) Create(accountId string, options rsapi.ApiPa
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NotificationRule", "create")
+	uri, err := loc.Url("NotificationRule", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PATCH /accounts/:account_id/notification_rules/:id
@@ -597,21 +597,21 @@ func (loc *NotificationRuleLocator) Patch(accountId string, id string) (*Notific
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NotificationRule", "patch")
+	uri, err := loc.Url("NotificationRule", "patch")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // GET /accounts/:account_id/notification_rules/:id
@@ -626,21 +626,21 @@ func (loc *NotificationRuleLocator) Show(accountId string, id string) (Notificat
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NotificationRule", "show")
+	uri, err := loc.Url("NotificationRule", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /accounts/:account_id/notification_rules/:id
@@ -655,21 +655,21 @@ func (loc *NotificationRuleLocator) Delete(accountId string, id string) (*Notifi
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NotificationRule", "delete")
+	uri, err := loc.Url("NotificationRule", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /accounts/:account_id/notification_rules
@@ -680,13 +680,13 @@ func (loc *NotificationRuleLocator) MultiDelete(accountId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("NotificationRule", "multi_delete")
+	uri, err := loc.Url("NotificationRule", "multi_delete")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -700,7 +700,7 @@ type UserPreference struct {
 	Href               string              `json:"href,omitempty"`
 	Id                 string              `json:"id,omitempty"`
 	Kind               string              `json:"kind,omitempty"`
-	Timestamps         *TimestampsStruct2  `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct5  `json:"timestamps,omitempty"`
 	UserId             int                 `json:"user_id,omitempty"`
 	UserPreferenceInfo *UserPreferenceInfo `json:"user_preference_info,omitempty"`
 	Value              string              `json:"value,omitempty"`
@@ -741,21 +741,21 @@ func (loc *UserPreferenceLocator) Index(accountId string, options rsapi.ApiParam
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserPreference", "index")
+	uri, err := loc.Url("UserPreference", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /accounts/:account_id/user_preferences/:id
@@ -775,21 +775,21 @@ func (loc *UserPreferenceLocator) Show(accountId string, id string, options rsap
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserPreference", "show")
+	uri, err := loc.Url("UserPreference", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /accounts/:account_id/user_preferences
@@ -802,13 +802,13 @@ func (loc *UserPreferenceLocator) Create(accountId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserPreference", "create")
+	uri, err := loc.Url("UserPreference", "create")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -826,13 +826,13 @@ func (loc *UserPreferenceLocator) Update(accountId string, id string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserPreference", "update")
+	uri, err := loc.Url("UserPreference", "update")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -849,21 +849,21 @@ func (loc *UserPreferenceLocator) Delete(accountId string, id string) (*UserPref
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserPreference", "delete")
+	uri, err := loc.Url("UserPreference", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 /******  UserPreferenceInfo ******/
@@ -871,17 +871,17 @@ func (loc *UserPreferenceLocator) Delete(accountId string, id string) (*UserPref
 // The UserPreferenceInfo resource defines the available user preferences supported by the system.
 // It is also used to validate values saved in UserPreference.
 type UserPreferenceInfo struct {
-	Category        string                              `json:"category,omitempty"`
-	DefaultValue    string                              `json:"default_value,omitempty"`
-	DisplayName     string                              `json:"display_name,omitempty"`
-	HelpText        string                              `json:"help_text,omitempty"`
-	Href            string                              `json:"href,omitempty"`
-	Id              string                              `json:"id,omitempty"`
-	Kind            string                              `json:"kind,omitempty"`
-	Name            string                              `json:"name,omitempty"`
-	ValueConstraint []string                            `json:"value_constraint,omitempty"`
-	ValueRange      *UserPreferenceInfoValueRangeStruct `json:"value_range,omitempty"`
-	ValueType       string                              `json:"value_type,omitempty"`
+	Category        string            `json:"category,omitempty"`
+	DefaultValue    string            `json:"default_value,omitempty"`
+	DisplayName     string            `json:"display_name,omitempty"`
+	HelpText        string            `json:"help_text,omitempty"`
+	Href            string            `json:"href,omitempty"`
+	Id              string            `json:"id,omitempty"`
+	Kind            string            `json:"kind,omitempty"`
+	Name            string            `json:"name,omitempty"`
+	ValueConstraint []string          `json:"value_constraint,omitempty"`
+	ValueRange      *ValueRangeStruct `json:"value_range,omitempty"`
+	ValueType       string            `json:"value_type,omitempty"`
 }
 
 //===== Locator
@@ -913,21 +913,21 @@ func (loc *UserPreferenceInfoLocator) Index(accountId string, options rsapi.ApiP
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserPreferenceInfo", "index")
+	uri, err := loc.Url("UserPreferenceInfo", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /accounts/:account_id/user_preference_infos/:id
@@ -942,21 +942,21 @@ func (loc *UserPreferenceInfoLocator) Show(accountId string, id string) (UserPre
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("UserPreferenceInfo", "show")
+	uri, err := loc.Url("UserPreferenceInfo", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /****** Parameter Data Types ******/
@@ -1061,6 +1061,16 @@ type TimestampsStruct3 struct {
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
+type TimestampsStruct4 struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+}
+
+type TimestampsStruct5 struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+}
+
 type User struct {
 	Email *string `json:"email,omitempty"`
 	Id    int     `json:"id,omitempty"`
@@ -1072,7 +1082,7 @@ type UserPreference2 struct {
 	Href               *string              `json:"href,omitempty"`
 	Id                 *string              `json:"id,omitempty"`
 	Kind               *string              `json:"kind,omitempty"`
-	Timestamps         *TimestampsStruct2   `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct    `json:"timestamps,omitempty"`
 	UserId             *int                 `json:"user_id,omitempty"`
 	UserPreferenceInfo *UserPreferenceInfo2 `json:"user_preference_info,omitempty"`
 	Value              *string              `json:"value,omitempty"`
@@ -1093,6 +1103,11 @@ type UserPreferenceInfo2 struct {
 }
 
 type UserPreferenceInfoValueRangeStruct struct {
+	Max *int `json:"max,omitempty"`
+	Min *int `json:"min,omitempty"`
+}
+
+type ValueRangeStruct struct {
 	Max *int `json:"max,omitempty"`
 	Min *int `json:"min,omitempty"`
 }

@@ -20,4 +20,5 @@ type CommandLine struct {
 	Dump                bool   // Whether to dump raw HTTP request and response to stdout
 	Pretty              bool   // Whether to display response body or extract values using pretty printer
 	ShowHelp            bool   // Whether to show help for action flags
+	ShowHrefs           bool   // Whether to print all known API href patterns
 }

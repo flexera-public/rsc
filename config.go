@@ -49,10 +49,10 @@ func (cfg *ClientConfig) Save(path string) error {
 
 // Create configuration file and save it to file at given path
 func CreateConfig(path string) error {
-	var config, _ = LoadConfig(path)
+	config, _ := LoadConfig(path)
 	var tokenDef, accountDef, hostDef string
 	if config != nil {
-		var yn = PromptConfirmation("Found existing configuration file %v, overwrite? (y/N): ", path)
+		yn := PromptConfirmation("Found existing configuration file %v, overwrite? (y/N): ", path)
 		if yn != "y" {
 			PrintSuccess("Exiting")
 			return nil
@@ -92,7 +92,7 @@ func CreateConfig(path string) error {
 		config.Host = newHost
 	}
 
-	var err = config.Save(path)
+	err := config.Save(path)
 	if err != nil {
 		return fmt.Errorf("Failed to save config: %s", err.Error())
 	}

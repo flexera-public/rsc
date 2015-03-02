@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 9:39pm (PST)
+// Mar 2, 2015 at 11:10am (PST)
 // Command:
 // $ praxisgen -metadata=ssd/restful_doc -output=ssd -pkg=ssd -target=1.0 -client=Api
 //
@@ -28,7 +28,7 @@ import (
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
-	var res, ok = GenMetadata[rName]
+	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}
@@ -42,7 +42,7 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 	if action == nil {
 		return nil, fmt.Errorf("No action with name '%s' on %s", aName, rName)
 	}
-	var vars, err = res.ExtractVariables(string(*r))
+	vars, err := res.ExtractVariables(string(*r))
 	if err != nil {
 		return nil, err
 	}
@@ -54,15 +54,15 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 // A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
 // Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.
 type Schedule struct {
-	CreatedBy       *User             `json:"created_by,omitempty"`
-	Description     string            `json:"description,omitempty"`
-	Href            string            `json:"href,omitempty"`
-	Id              string            `json:"id,omitempty"`
-	Kind            string            `json:"kind,omitempty"`
-	Name            string            `json:"name,omitempty"`
-	StartRecurrence *Recurrence       `json:"start_recurrence,omitempty"`
-	StopRecurrence  *Recurrence       `json:"stop_recurrence,omitempty"`
-	Timestamps      *TimestampsStruct `json:"timestamps,omitempty"`
+	CreatedBy       *User              `json:"created_by,omitempty"`
+	Description     string             `json:"description,omitempty"`
+	Href            string             `json:"href,omitempty"`
+	Id              string             `json:"id,omitempty"`
+	Kind            string             `json:"kind,omitempty"`
+	Name            string             `json:"name,omitempty"`
+	StartRecurrence *Recurrence        `json:"start_recurrence,omitempty"`
+	StopRecurrence  *Recurrence        `json:"stop_recurrence,omitempty"`
+	Timestamps      *TimestampsStruct3 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -89,21 +89,21 @@ func (loc *ScheduleLocator) Index(collectionId string) ([]Schedule, error) {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Schedule", "index")
+	uri, err := loc.Url("Schedule", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /collections/:collection_id/schedules/:id
@@ -118,21 +118,21 @@ func (loc *ScheduleLocator) Show(collectionId string, id string) (Schedule, erro
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Schedule", "show")
+	uri, err := loc.Url("Schedule", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /collections/:collection_id/schedules
@@ -144,21 +144,21 @@ func (loc *ScheduleLocator) Create(collectionId string) (*Schedule, error) {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Schedule", "create")
+	uri, err := loc.Url("Schedule", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PATCH /collections/:collection_id/schedules/:id
@@ -174,21 +174,21 @@ func (loc *ScheduleLocator) Update(collectionId string, id string) (*Schedule, e
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Schedule", "update")
+	uri, err := loc.Url("Schedule", "update")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /collections/:collection_id/schedules/:id
@@ -204,21 +204,21 @@ func (loc *ScheduleLocator) Delete(collectionId string, id string) (*Schedule, e
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Schedule", "delete")
+	uri, err := loc.Url("Schedule", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /collections/:collection_id/schedules
@@ -236,13 +236,13 @@ func (loc *ScheduleLocator) MultiDelete(collectionId string, ids []string) error
 		"ids": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Schedule", "multi_delete")
+	uri, err := loc.Url("Schedule", "multi_delete")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -273,7 +273,7 @@ type Template struct {
 	RequiredParameters []string           `json:"required_parameters,omitempty"`
 	ShortDescription   string             `json:"short_description,omitempty"`
 	Source             string             `json:"source,omitempty"`
-	Timestamps         *TimestampsStruct2 `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct4 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -305,21 +305,21 @@ func (loc *TemplateLocator) Index(collectionId string, options rsapi.ApiParams) 
 		queryParams["ids"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "index")
+	uri, err := loc.Url("Template", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /collections/:collection_id/templates/:id
@@ -339,21 +339,21 @@ func (loc *TemplateLocator) Show(collectionId string, id string, options rsapi.A
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "show")
+	uri, err := loc.Url("Template", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /collections/:collection_id/templates
@@ -365,21 +365,21 @@ func (loc *TemplateLocator) Create(collectionId string) (*Template, error) {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "create")
+	uri, err := loc.Url("Template", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PUT /collections/:collection_id/templates/:id
@@ -394,21 +394,21 @@ func (loc *TemplateLocator) Update(collectionId string, id string) (*Template, e
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "update")
+	uri, err := loc.Url("Template", "update")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /collections/:collection_id/templates/:id
@@ -423,21 +423,21 @@ func (loc *TemplateLocator) Delete(collectionId string, id string) (*Template, e
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "delete")
+	uri, err := loc.Url("Template", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /collections/:collection_id/templates
@@ -454,13 +454,13 @@ func (loc *TemplateLocator) MultiDelete(collectionId string, ids []string) error
 		"ids": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "multi_delete")
+	uri, err := loc.Url("Template", "multi_delete")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -483,21 +483,21 @@ func (loc *TemplateLocator) Download(apiVersion string, collectionId string, id 
 		"api_version": apiVersion,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "download")
+	uri, err := loc.Url("Template", "download")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /collections/:collection_id/templates/actions/compile
@@ -509,21 +509,21 @@ func (loc *TemplateLocator) Compile(collectionId string) (*Template, error) {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "compile")
+	uri, err := loc.Url("Template", "compile")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /collections/:collection_id/templates/actions/publish
@@ -534,13 +534,13 @@ func (loc *TemplateLocator) Publish(collectionId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "publish")
+	uri, err := loc.Url("Template", "publish")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -553,13 +553,13 @@ func (loc *TemplateLocator) Unpublish(collectionId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Template", "unpublish")
+	uri, err := loc.Url("Template", "unpublish")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -640,6 +640,17 @@ type TimestampsStruct struct {
 }
 
 type TimestampsStruct2 struct {
+	CreatedAt   *time.Time `json:"created_at,omitempty"`
+	PublishedAt *time.Time `json:"published_at,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+}
+
+type TimestampsStruct3 struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+}
+
+type TimestampsStruct4 struct {
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 	PublishedAt *time.Time `json:"published_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`

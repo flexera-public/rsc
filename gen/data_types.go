@@ -33,11 +33,11 @@ func (d *ApiDescriptor) Merge(other *ApiDescriptor) error {
 	for _, name := range d.TypeNames {
 		for i, otherName := range other.TypeNames {
 			if name == otherName {
-				var newName = MakeUniq(otherName, append(d.TypeNames, other.TypeNames...))
-				var first = other.TypeNames[:i]
-				var last = append([]string{newName}, other.TypeNames[i+1:]...)
+				newName := MakeUniq(otherName, append(d.TypeNames, other.TypeNames...))
+				first := other.TypeNames[:i]
+				last := append([]string{newName}, other.TypeNames[i+1:]...)
 				other.TypeNames = append(first, last...)
-				var type_ = other.Types[name]
+				type_ := other.Types[name]
 				delete(other.Types, name)
 				type_.Name = newName
 				other.Types[newName] = type_
@@ -59,18 +59,18 @@ func (d *ApiDescriptor) Merge(other *ApiDescriptor) error {
 func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType) {
 
 	// 1. Make sure data type names don't clash with resource names
-	var rawTypeNames = make([]string, len(rawTypes))
-	var idx = 0
+	rawTypeNames := make([]string, len(rawTypes))
+	idx := 0
 	for n, _ := range rawTypes {
 		rawTypeNames[idx] = n
 		idx += 1
 	}
 	sort.Strings(rawTypeNames)
 	for _, tn := range rawTypeNames {
-		var types = rawTypes[tn]
+		types := rawTypes[tn]
 		for rn, _ := range d.Resources {
 			if tn == rn {
-				var oldTn = tn
+				oldTn := tn
 				if strings.HasSuffix(tn, "Param") {
 					tn = fmt.Sprintf("%s2", tn)
 				} else {
@@ -93,12 +93,12 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 	}
 	sort.Strings(rawTypeNames)
 	for _, tn := range rawTypeNames {
-		var types = rawTypes[tn]
-		var first = types[0]
+		types := rawTypes[tn]
+		first := types[0]
 		d.Types[tn] = first
 		if len(types) > 1 {
 			for i, ty := range types[1:] {
-				var found = false
+				found := false
 				for j := 0; j < i+1; j++ {
 					if ty.IsEquivalent(types[j]) {
 						found = true
@@ -106,7 +106,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 					}
 				}
 				if !found {
-					var newName = d.uniqueTypeName(tn)
+					newName := d.uniqueTypeName(tn)
 					ty.Name = newName
 					d.Types[newName] = ty
 				}
@@ -116,7 +116,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 
 	// 3. Finally initialize .ResourceNames and .TypeNames
 	idx = 0
-	var resourceNames = make([]string, len(d.Resources))
+	resourceNames := make([]string, len(d.Resources))
 	for n, _ := range d.Resources {
 		resourceNames[idx] = n
 		idx += 1
@@ -124,7 +124,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 	sort.Strings(resourceNames)
 	d.ResourceNames = resourceNames
 
-	var typeNames = make([]string, len(d.Types))
+	typeNames := make([]string, len(d.Types))
 	idx = 0
 	for tn, _ := range d.Types {
 		typeNames[idx] = tn
@@ -136,15 +136,15 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 
 // Build unique type name by appending "next available index" to given prefix
 func (d *ApiDescriptor) uniqueTypeName(prefix string) string {
-	var u = fmt.Sprintf("%s%d", prefix, 2)
-	var taken = false
+	u := fmt.Sprintf("%s%d", prefix, 2)
+	taken := false
 	for _, tn := range d.TypeNames {
 		if tn == u {
 			taken = true
 			break
 		}
 	}
-	var idx = 3
+	idx := 3
 	for taken {
 		u = fmt.Sprintf("%s%d", prefix, idx)
 		taken = false
@@ -197,8 +197,8 @@ type Action struct {
 
 // MandatoryParams returns the list of all action mandatory parameters
 func (a *Action) MandatoryParams() []*ActionParam {
-	var m = make([]*ActionParam, len(a.Params))
-	var i = 0
+	m := make([]*ActionParam, len(a.Params))
+	i := 0
 	for _, p := range a.Params {
 		if p.Mandatory {
 			m[i] = p
@@ -350,7 +350,7 @@ type EnumerableDataType int
 
 // true if other is also an enumerable data type
 func (e *EnumerableDataType) IsEquivalent(other DataType) bool {
-	var _, ok = other.(*EnumerableDataType)
+	_, ok := other.(*EnumerableDataType)
 	return ok
 }
 
@@ -363,9 +363,9 @@ func (b ByName) Less(i, j int) bool { return b[i].Name < b[j].Name }
 
 // Make a unique name given a prefix and a set of names
 func MakeUniq(base string, taken []string) string {
-	var idx = 1
-	var uniq = base
-	var inuse = true
+	idx := 1
+	uniq := base
+	inuse := true
 	for inuse {
 		inuse = false
 		for _, gn := range taken {

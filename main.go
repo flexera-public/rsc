@@ -18,14 +18,14 @@ func main() {
 	app := kingpin.New("rsc", "A RightScale API client")
 	app.Version("0.3.0")
 
-	var cmdLine, err = ParseCommandLine(app)
+	cmdLine, err := ParseCommandLine(app)
 	if err != nil {
 		PrintFatal(err.Error())
 	}
 
 	// Execute appropriate command
 	var resp *http.Response
-	var topCommand = strings.Split(cmdLine.Command, " ")[0]
+	topCommand := strings.Split(cmdLine.Command, " ")[0]
 	if !IsClientCommand(topCommand) && topCommand != "setup" {
 		topCommand = DefaultClientCommand
 	}
@@ -63,7 +63,7 @@ func main() {
 	if err != nil {
 		PrintFatal(err.Error())
 	}
-	var moreThanOneError = false
+	moreThanOneError := false
 	if cmdLine.ExtractOneSelect != "" {
 		err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)
 		if err != nil {
@@ -85,7 +85,7 @@ func main() {
 
 	// We're done, print output and figure out correct exit code
 	fmt.Printf(displayer.Output())
-	var exitStatus = 0
+	exitStatus := 0
 	switch {
 	case moreThanOneError:
 		exitStatus = 6
@@ -105,9 +105,12 @@ func main() {
 
 // Helper that runs command line with give command client
 func runCommand(client cmd.CommandClient, cmdLine *cmd.CommandLine) (resp *http.Response, err error) {
-	if cmdLine.ShowHelp {
+	switch {
+	case cmdLine.ShowHelp:
 		err = client.ShowCommandHelp(cmdLine.Command)
-	} else {
+	case cmdLine.ShowHrefs:
+		err = client.ShowCommandHrefs(cmdLine.Command)
+	default:
 		resp, err = client.RunCommand(cmdLine.Command)
 	}
 	return

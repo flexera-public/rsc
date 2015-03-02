@@ -39,7 +39,7 @@ var _ = Describe("Printer", func() {
 		})
 
 		It("prompts confirmation", func() {
-			var y = main.PromptConfirmation(format)
+			y := main.PromptConfirmation(format)
 			Ω(y).Should(Equal("y"))
 			Ω(testOut.String()).Should(Equal(main.Warningize(format)))
 		})

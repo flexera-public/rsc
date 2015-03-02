@@ -19,12 +19,13 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	RegisterClientCommands(app)
 
 	// 2. Parse flags
-	var cmdLine = cmd.CommandLine{}
+	cmdLine := cmd.CommandLine{}
 	app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).StringVar(&cmdLine.ConfigPath)
 	app.Flag("account", "RightScale account ID").Short('a').IntVar(&cmdLine.Account)
 	app.Flag("host", "RightScale API host (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)
 	app.Flag("key", "OAuth access token or API key").Short('k').StringVar(&cmdLine.Token)
 	app.Flag("rl10", "Proxy requests through RightLink 10 (exclusive with '--key')").BoolVar(&cmdLine.RL10)
+	app.Flag("hrefs", "List all known href patterns for selected API").BoolVar(&cmdLine.ShowHrefs)
 	app.Flag("x1", "Extract single value using given JSON:select expression").StringVar(&cmdLine.ExtractOneSelect)
 	app.Flag("xm", "Extract zero, one or multiple values using given JSON:select expression and return space separated list (useful for bash scripts)").StringVar(&cmdLine.ExtractSelector)
 	app.Flag("xj", "Extract zero, one or multiple values using given JSON:select expression and return JSON").StringVar(&cmdLine.ExtractSelectorJson)
@@ -34,14 +35,14 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("dump", "Dump HTTP request and response for debugging").BoolVar(&cmdLine.Dump)
 	app.Flag("pp", "Pretty print response body").BoolVar(&cmdLine.Pretty)
 
-	var args = os.Args[1:]
-	var cmd, err = app.Parse(args)
+	args := os.Args[1:]
+	cmd, err := app.Parse(args)
 	if err != nil {
 		// This is a bit hacky: basically doing `rsc api15 index clouds --help` results
 		// in a command line that kingpin is unable to parse. So capture the `--help` and
 		// retry parsing without it.
-		var lastArgIndex = len(args)
-		var help = args[lastArgIndex-1]
+		lastArgIndex := len(args)
+		help := args[lastArgIndex-1]
 		if help == "--help" || help == "-h" || help == "-help" || help == "-?" {
 			cmdLine.ShowHelp = true
 			lastArgIndex -= 1
@@ -106,13 +107,13 @@ var (
 
 // Register all API client commands
 func RegisterClientCommands(app *kingpin.Application) {
-	var api15Cmd = app.Command(Api15Command, "RightScale API 1.5 client")
+	api15Cmd := app.Command(Api15Command, "RightScale API 1.5 client")
 	rsapi15.RegisterCommands(api15Cmd)
 
-	var api16Cmd = app.Command(Api16Command, "RightScale API 1.6 client")
+	api16Cmd := app.Command(Api16Command, "RightScale API 1.6 client")
 	rsapi16.RegisterCommands(api16Cmd)
 
-	var ssCmd = app.Command(SSCommand, "Self-Service client")
+	ssCmd := app.Command(SSCommand, "Self-Service client")
 	ss.RegisterCommands(ssCmd)
 
 	// Register default client commands, hard coded for now (only one client at the moment...)

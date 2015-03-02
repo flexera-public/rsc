@@ -159,13 +159,13 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 
 		// Sort parameters by location
-		var actionParams = paramAnalyzer.Params
-		var leafParams = paramAnalyzer.LeafParams
+		actionParams := paramAnalyzer.Params
+		leafParams := paramAnalyzer.LeafParams
 		var pathParamNames []string
 		var queryParamNames []string
 		var payloadParamNames []string
 		for _, p := range leafParams {
-			var n = p.Name
+			n := p.Name
 			if isQueryParam(n) {
 				queryParamNames = append(queryParamNames, n)
 				p.Location = gen.QueryParam
@@ -178,7 +178,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			}
 		}
 		for _, p := range actionParams {
-			var done = false
+			done := false
 			for _, ap := range leafParams {
 				if ap == p {
 					done = true
@@ -188,7 +188,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			if done {
 				continue
 			}
-			var n = p.Name
+			n := p.Name
 			if isQueryParam(n) {
 				p.Location = gen.QueryParam
 			} else if isPathParam(n, pathPatterns) {
@@ -208,8 +208,8 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				}
 			}
 			if filterParam != nil {
-				var values = sortedKeys(filters.(map[string]interface{}))
-				var ivalues = make([]interface{}, len(values))
+				values := sortedKeys(filters.(map[string]interface{}))
+				ivalues := make([]interface{}, len(values))
 				for i, v := range values {
 					ivalues[i] = v
 				}
@@ -218,7 +218,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 
 		// Record action
-		var action = gen.Action{
+		action := gen.Action{
 			Name:              actionName,
 			MethodName:        inflect.Camelize(actionName),
 			Description:       removeBlankLines(description),
@@ -248,11 +248,13 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 
 /** Helper methods for parsing raw JSON **/
 
-// Regular expression used to extract routes from JSON
-var routeRegexp = regexp.MustCompile(`\{[^\}]+\}`)
+var (
+	// Regular expression used to extract routes from JSON
+	routeRegexp = regexp.MustCompile(`\{[^\}]+\}`)
 
-// Regular expression that captures variables in a path
-var routeVariablesRegexp = regexp.MustCompile(`/:([^/]+)`)
+	// Regular expression that captures variables in a path
+	routeVariablesRegexp = regexp.MustCompile(`/:([^/]+)`)
+)
 
 func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) {
 	// :(((( some routes are empty
@@ -274,18 +276,18 @@ func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) 
 	case "Servers#terminate":
 		method, paths = "POST", []string{"/api/servers/:id/teminate"}
 	default:
-		var bounds = routeRegexp.FindAllStringIndex(route, -1)
-		var matches = make([]string, len(bounds))
-		var prev = 0
+		bounds := routeRegexp.FindAllStringIndex(route, -1)
+		matches := make([]string, len(bounds))
+		prev := 0
 		for i, bound := range bounds {
 			matches[i] = route[prev:bound[0]]
 			prev = bound[1]
 		}
 		method = strings.TrimRight(matches[0][0:7], " ")
 		paths = make([]string, len(bounds))
-		var j = 0
+		j := 0
 		for _, r := range matches {
-			var path = strings.TrimRight(r[7:], " ")
+			path := strings.TrimRight(r[7:], " ")
 			path = strings.TrimSuffix(path, "(.:format)?")
 			if isDeprecated(path) || isCustom(method, path) {
 				continue
@@ -297,15 +299,15 @@ func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) 
 	}
 	pathPatterns = make([]*gen.PathPattern, len(paths))
 	for i, p := range paths {
-		var rx = routeVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(p), `/([^/]+)`)
+		rx := routeVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(p), `/([^/]+)`)
 		rx = fmt.Sprintf("^%s$", rx)
-		var pattern = gen.PathPattern{
+		pattern := gen.PathPattern{
 			HttpMethod: method,
 			Path:       p,
 			Pattern:    routeVariablesRegexp.ReplaceAllLiteralString(p, "/%s"),
 			Regexp:     rx,
 		}
-		var matches = routeVariablesRegexp.FindAllStringSubmatch(p, -1)
+		matches := routeVariablesRegexp.FindAllStringSubmatch(p, -1)
 		if len(matches) > 0 {
 			pattern.Variables = make([]string, len(matches))
 			for i, m := range matches {
@@ -381,8 +383,8 @@ func parseReturn(kind, resName, contentType string) string {
 			if contentType == "application/vnd.rightscale.text" {
 				return "string"
 			}
-			var elems = strings.SplitN(contentType[27:], ";", 2)
-			var name = resourceType(inflect.Camelize(elems[0]))
+			elems := strings.SplitN(contentType[27:], ";", 2)
+			name := resourceType(inflect.Camelize(elems[0]))
 			if len(elems) > 1 && elems[1] == "type=collection" {
 				name = "[]*" + name
 			}
@@ -410,8 +412,8 @@ func resourceType(resName string) string {
 
 // Return keys of given maps sorted
 func sortedKeys(m map[string]interface{}) []string {
-	var keys = make([]string, len(m))
-	var idx = 0
+	keys := make([]string, len(m))
+	idx := 0
 	for k, _ := range m {
 		keys[idx] = k
 		idx += 1

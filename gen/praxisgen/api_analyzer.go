@@ -43,7 +43,7 @@ func NewApiAnalyzer(version, clientName string, resources, types map[string]map[
 
 // Create API descriptor from raw resources and types
 func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
-	var descriptor = gen.ApiDescriptor{
+	descriptor := gen.ApiDescriptor{
 		Version:   a.Version,
 		Resources: make(map[string]*gen.Resource),
 		Types:     make(map[string]*gen.ObjectDataType),
@@ -51,8 +51,8 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 	a.descriptor = &descriptor
 
 	// Sort resource names so iterations are always done in the same order
-	var rawResourceNames = make([]string, len(a.RawResources))
-	var idx = 0
+	rawResourceNames := make([]string, len(a.RawResources))
+	idx := 0
 	for name, _ := range a.RawResources {
 		rawResourceNames[idx] = name
 		idx += 1
@@ -62,8 +62,8 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 	// 1. Do a first pass to collect all media types (resource and responses) so the go type
 	// names are the most natural.
 	for _, name := range rawResourceNames {
-		var resource = a.RawResources[name]
-		var err = a.AnalyzeMediaType(resource["media_type"].(string))
+		resource := a.RawResources[name]
+		err := a.AnalyzeMediaType(resource["media_type"].(string))
 		if err != nil {
 			return nil, err
 		}
@@ -72,13 +72,13 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 			continue
 		}
 		for _, ac := range actions.([]interface{}) {
-			var action = ac.(map[string]interface{})
+			action := ac.(map[string]interface{})
 			responses, ok := action["responses"]
 			if ok {
 				for _, r := range responses.(map[string]interface{}) {
 					mediaType, ok := r.(map[string]interface{})["media_type"]
 					if ok {
-						var m = mediaType.(map[string]interface{})
+						m := mediaType.(map[string]interface{})
 						err := a.AnalyzeMediaType(m["name"].(string))
 						if err != nil {
 							return nil, err
@@ -91,7 +91,7 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 
 	// 2. Now do another pass to analyze each resource
 	for _, name := range rawResourceNames {
-		var err = a.AnalyzeResource(name, a.RawResources[name], &descriptor)
+		err := a.AnalyzeResource(name, a.RawResources[name], &descriptor)
 		if err != nil {
 			return nil, err
 		}
@@ -105,17 +105,17 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 	}
 	for _, names := range a.typeNames {
 		for _, name := range names {
-			var inuse = false
+			inuse := false
 			for _, n := range a.descriptor.ResourceNames {
 				if name == n {
 					inuse = true
 					break
 				}
 			}
-			var uniq = name
+			uniq := name
 			if inuse {
 				uniq = gen.MakeUniq(name, append(usedTypeNames, a.descriptor.ResourceNames...))
-				var existing = descriptor.Types[name]
+				existing := descriptor.Types[name]
 				existing.Name = uniq
 				delete(descriptor.Types, name)
 				descriptor.Types[uniq] = existing
@@ -134,20 +134,20 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 // Analyze media type, recurse through all types and create corresponding ObjectDataTypes and
 // ActionParams.
 func (a *ApiAnalyzer) AnalyzeMediaType(name string) error {
-	var mtype, ok = a.RawTypes[name]
+	mtype, ok := a.RawTypes[name]
 	if !ok {
 		return fmt.Errorf("Unknown media type %s", name)
 	}
 	if a.GetType(name) != nil {
 		return nil // Already analyzed
 	}
-	var obj = a.CreateType(name)
-	var attributes = mtype["attributes"].(map[string]interface{})
-	var fields = make([]*gen.ActionParam, len(attributes))
-	var idx = 0
+	obj := a.CreateType(name)
+	attributes := mtype["attributes"].(map[string]interface{})
+	fields := make([]*gen.ActionParam, len(attributes))
+	idx := 0
 	for _, attName := range sortedKeys(attributes) {
-		var att = attributes[attName]
-		var param, err = a.AnalyzeAttribute(attName, attName, att.(map[string]interface{}))
+		att := attributes[attName]
+		param, err := a.AnalyzeAttribute(attName, attName, att.(map[string]interface{}))
 		if err != nil {
 			return err
 		}
@@ -178,9 +178,9 @@ func (a *ApiAnalyzer) CreateType(metadataName string) *gen.ObjectDataType {
 	for _, n := range a.typeNames {
 		taken = append(taken, n...)
 	}
-	var goName = gen.MakeUniq(toGoTypeName(metadataName, false), taken)
+	goName := gen.MakeUniq(toGoTypeName(metadataName, false), taken)
 	a.typeNames[metadataName] = append(a.typeNames[metadataName], goName)
-	var obj = gen.ObjectDataType{Name: goName}
+	obj := gen.ObjectDataType{Name: goName}
 	a.descriptor.Types[goName] = &obj
 	return &obj
 }
@@ -190,7 +190,7 @@ func (a *ApiAnalyzer) GetOrCreate(uid, metadataName string) *gen.ObjectDataType 
 	if existing, ok := a.typeUids[uid]; ok {
 		return existing
 	}
-	var obj = a.CreateType(metadataName)
+	obj := a.CreateType(metadataName)
 	a.typeUids[uid] = obj
 	return obj
 }

@@ -34,7 +34,7 @@ func (a *Api) Do(service, resource, action, href string, params rsapi.ApiParams)
 	}
 
 	// First lookup metadata
-	var res, ok = md[resource]
+	res, ok := md[resource]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s' in service %s", resource, service)
 	}
@@ -44,7 +44,7 @@ func (a *Api) Do(service, resource, action, href string, params rsapi.ApiParams)
 	}
 
 	// Now lookup action request HTTP method, url, params and payload.
-	var vars, err = res.ExtractVariables(href)
+	vars, err := res.ExtractVariables(href)
 	if err != nil {
 		return nil, err
 	}
@@ -52,11 +52,11 @@ func (a *Api) Do(service, resource, action, href string, params rsapi.ApiParams)
 	if err != nil {
 		return nil, err
 	}
-	var payloadParams = make(rsapi.ApiParams, len(act.PayloadParamNames))
+	payloadParams := make(rsapi.ApiParams, len(act.PayloadParamNames))
 	for _, n := range act.PayloadParamNames {
 		payloadParams[n] = params[n]
 	}
-	var queryParams = make(rsapi.ApiParams, len(act.QueryParamNames))
+	queryParams := make(rsapi.ApiParams, len(act.QueryParamNames))
 	for _, n := range act.QueryParamNames {
 		queryParams[n] = params[n]
 	}

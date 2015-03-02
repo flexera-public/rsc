@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 27, 2015 at 9:38pm (PST)
+// Mar 2, 2015 at 11:10am (PST)
 // Command:
 // $ api15gen
 //

@@ -23,7 +23,7 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 	return fromApi(rsapi.New(accountId, refreshToken, host, logger, client))
 }
 
-// NewRL10 returns a API 1.6 client that uses the information stored in /var/run/rll-secret to do
+// NewRL10 returns a API 1.6 client that uses the information stored in //run/rll-secret to do
 // auth and configure the host. The client behaves identically to the new returned by New in
 // all other regards.
 func NewRL10(logger *log.Logger, client rsapi.HttpClient) (*Api16, error) {

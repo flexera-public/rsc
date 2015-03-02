@@ -59,7 +59,7 @@ func (c *ClientWriter) WriteTypeSectionHeader(w io.Writer) {
 
 // Write type declaration for resource action arguments
 func (c *ClientWriter) WriteType(o *gen.ObjectDataType, w io.Writer) {
-	var fields = make([]string, len(o.Fields))
+	fields := make([]string, len(o.Fields))
 	for i, f := range o.Fields {
 		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.VarName),
 			f.Signature(), f.Name)
@@ -112,7 +112,7 @@ import (
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
-	var res, ok = GenMetadata[rName]
+	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}
@@ -126,7 +126,7 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 	if action == nil {
 		return nil, fmt.Errorf("No action with name '%s' on %s", aName, rName)
 	}
-	var vars, err = res.ExtractVariables(string(*r))
+	vars, err := res.ExtractVariables(string(*r))
 	if err != nil {
 		return nil, err
 	}
@@ -170,23 +170,23 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	}
 	{{end}}{{end}}{{/* end range .Params */}}var queryParams rsapi.ApiParams{{paramsInitializer . 1 "queryParams"}}
 	var payloadParams rsapi.ApiParams{{paramsInitializer . 2 "payloadParams"}}
-	var uri, err = loc.Url("{{$action.ResourceName}}", "{{$action.Name}}")
+	uri, err := loc.Url("{{$action.ResourceName}}", "{{$action.Name}}")
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}
-	var {{if .Return}}resp, {{else}}_, {{end}}err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return {{if $action.Return}}res, {{end}}err2
+	{{if .Return}}resp, {{else}}_, {{end}}err {{if .Return}}:{{end}}= loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return {{if $action.Return}}res, {{end}}err
 	}
-	{{if .ReturnLocation}}var location = resp.Header.Get("Location")
+	{{if .ReturnLocation}}location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
 		return &{{stripStar .Return}}{UrlResolver(location), loc.api}, nil
 	}{{else if .Return}}defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
-	return res, err4{{else}}return nil{{end}}`
+	err = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
+	return res, err{{else}}return nil{{end}}`

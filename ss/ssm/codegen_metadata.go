@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Feb 27, 2015 at 9:39pm (PST)
+// Mar 2, 2015 at 11:10am (PST)
 // Command:
 // $ praxisgen -metadata=ssm/restful_doc -output=ssm -pkg=ssm -target=1.0 -client=Api
 //

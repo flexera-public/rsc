@@ -11,7 +11,7 @@ import (
 type Action struct {
 	Name              string
 	Description       string
-	PathPatterns      []*PathPattern // Action path patterns and variables
+	PathPatterns      []*PathPattern // Action path patterns and
 	ApiParams         []*ActionParam // Actual API request parameters
 	CommandFlags      []*ActionParam // Parameters initialized via command lines, these correspond to the leaves of all ApiParams.
 	QueryParamNames   []string       // Query string parameter names, e.g. "filter" in /clouds?filter[]=name==foo
@@ -55,11 +55,11 @@ type PathPattern struct {
 // parameter, the method returns a URL built from substituting the values of the later (longer) path.
 // The method returns an error in case no path pattern can have all its variables subsituted.
 func (a *Action) Url(vars []*PathVariable) (*ActionPath, error) {
-	var candidates = make([]*ActionPath, len(a.PathPatterns))
-	var allMissing = []string{}
-	var j = 0
+	candidates := make([]*ActionPath, len(a.PathPatterns))
+	allMissing := []string{}
+	j := 0
 	for _, p := range a.PathPatterns {
-		var path, names = p.Substitute(vars)
+		path, names := p.Substitute(vars)
 		if path == "" {
 			allMissing = append(allMissing, names...)
 		} else {
@@ -89,7 +89,7 @@ type ActionPath struct {
 // - If the substitution fails, it returns an empty string and the list of variable names that are
 //   missing from the list of given values.
 func (p *PathPattern) Substitute(vars []*PathVariable) (string, []string) {
-	var values = make([]interface{}, len(p.Variables))
+	values := make([]interface{}, len(p.Variables))
 	var missing []string
 	var used []string
 	for i, n := range p.Variables {

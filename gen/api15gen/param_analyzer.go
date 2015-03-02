@@ -58,16 +58,16 @@ func (p *ParamAnalyzer) Analyze() {
 	// Order params using their length so "foo[bar]" is analyzed before "foo"
 	params := p.rawParams
 	paths := make([]string, len(params))
-	var i = 0
+	i := 0
 	for n, _ := range params {
 		paths[i] = n
 		i += 1
 	}
 	sort.Strings(paths)
 	sort.Sort(ByReverseLength(paths))
-	var rawLeafParams = []string{}
+	rawLeafParams := []string{}
 	for _, p := range paths {
-		var hasLeaf = false
+		hasLeaf := false
 		for _, r := range rawLeafParams {
 			if strings.HasPrefix(r, p) {
 				hasLeaf = true
@@ -84,19 +84,19 @@ func (p *ParamAnalyzer) Analyze() {
 
 	// Iterate through all params and build corresponding ActionParam structs
 	p.parsed = map[string]*gen.ActionParam{}
-	var top = map[string]*gen.ActionParam{}
+	top := map[string]*gen.ActionParam{}
 	for _, path := range paths {
 		if strings.HasSuffix(path, "[*]") {
 			// Cheat a little bit - there a couple of cases where parent type is
 			// Hash instead of Enumerable, make that enumerable everywhere
 			// There are also cases where there's no parent path, fix that up also
-			var matches = parentPathRegexp.FindStringSubmatch(path)
+			matches := parentPathRegexp.FindStringSubmatch(path)
 			if hashParam, ok := params[matches[1]].(map[string]interface{}); ok {
 				hashParam["class"] = "Enumerable"
 			} else {
 				// Create parent
-				var rawParams = map[string]interface{}{}
-				var parentPath = matches[1]
+				rawParams := map[string]interface{}{}
+				parentPath := matches[1]
 				p.parsed[parentPath] = p.newParam(parentPath, rawParams,
 					new(gen.EnumerableDataType))
 				if parentPathRegexp.FindStringSubmatch(parentPath) == nil {
@@ -106,10 +106,10 @@ func (p *ParamAnalyzer) Analyze() {
 			continue
 		}
 		var child *gen.ActionParam
-		var origPath = path
-		var origParam = params[path].(map[string]interface{})
-		var matches = parentPathRegexp.FindStringSubmatch(path)
-		var isTop = (matches == nil)
+		origPath := path
+		origParam := params[path].(map[string]interface{})
+		matches := parentPathRegexp.FindStringSubmatch(path)
+		isTop := (matches == nil)
 		if prev, ok := p.parsed[path]; ok {
 			if isTop {
 				top[path] = prev
@@ -140,8 +140,8 @@ func (p *ParamAnalyzer) Analyze() {
 				p.parsed[path] = child
 				if isArrayChild {
 					// Generate array item as it's not listed explicitly in JSON
-					var itemPath = matches[1] + "[item]"
-					var typeName = p.typeName(matches[1])
+					itemPath := matches[1] + "[item]"
+					typeName := p.typeName(matches[1])
 					parent = p.newParam(itemPath, map[string]interface{}{},
 						&gen.ObjectDataType{typeName, []*gen.ActionParam{child}})
 					p.parsed[parentPath] = parent
@@ -154,13 +154,13 @@ func (p *ParamAnalyzer) Analyze() {
 		}
 		if isTop {
 			if _, ok := p.parsed[path]; !ok {
-				var actionParam = p.parseParam(path, origParam, nil)
+				actionParam := p.parseParam(path, origParam, nil)
 				p.parsed[path] = actionParam
 			}
 			top[path] = p.parsed[path]
 		} else {
-			var matches = rootRegexp.FindStringSubmatch(origPath)
-			var rootPath = matches[1]
+			matches := rootRegexp.FindStringSubmatch(origPath)
+			rootPath := matches[1]
 			if _, ok := p.parsed[rootPath]; !ok {
 				p.parsed[rootPath] = p.parseParam(rootPath,
 					params[rootPath].(map[string]interface{}), child)
@@ -174,7 +174,7 @@ func (p *ParamAnalyzer) Analyze() {
 	}
 
 	i = 0
-	var res = make([]*gen.ActionParam, len(top))
+	res := make([]*gen.ActionParam, len(top))
 	for _, param := range top {
 		res[i] = param
 		i += 1
@@ -219,25 +219,25 @@ func appendSorted(params []*gen.ActionParam, param *gen.ActionParam) []*gen.Acti
 
 // Parse data type in context
 func (p *ParamAnalyzer) parseDataType(path string, child *gen.ActionParam) gen.DataType {
-	var param = p.rawParams[path].(map[string]interface{})
-	var class = "String"
+	param := p.rawParams[path].(map[string]interface{})
+	class := "String"
 	if c, ok := param["class"].(string); ok {
 		class = c
 	}
 	var res gen.DataType
 	switch class {
 	case "Integer":
-		var i = gen.BasicDataType("int")
+		i := gen.BasicDataType("int")
 		res = &i
 	case "String":
-		var s = gen.BasicDataType("string")
+		s := gen.BasicDataType("string")
 		res = &s
 	case "Array":
 		if child != nil {
 			res = &gen.ArrayDataType{child}
 		} else {
-			var s = gen.BasicDataType("string")
-			var p = p.newParam(fmt.Sprintf("%s[item]", path),
+			s := gen.BasicDataType("string")
+			p := p.newParam(fmt.Sprintf("%s[item]", path),
 				map[string]interface{}{}, &s)
 			res = &gen.ArrayDataType{p}
 		}
@@ -246,10 +246,10 @@ func (p *ParamAnalyzer) parseDataType(path string, child *gen.ActionParam) gen.D
 	case "Hash":
 		if current, ok := p.parsed[path]; ok {
 			res = current.Type
-			var o = res.(*gen.ObjectDataType)
+			o := res.(*gen.ObjectDataType)
 			o.Fields = appendSorted(o.Fields, child)
 		} else {
-			var oname = p.typeName(path)
+			oname := p.typeName(path)
 			res = &gen.ObjectDataType{oname, []*gen.ActionParam{child}}
 		}
 	}
@@ -258,7 +258,7 @@ func (p *ParamAnalyzer) parseDataType(path string, child *gen.ActionParam) gen.D
 
 func (p *ParamAnalyzer) typeName(path string) string {
 	matches := childPathRegexp.FindStringSubmatch(path)
-	var res = path
+	res := path
 	if matches != nil {
 		res = matches[1]
 	}
@@ -292,7 +292,7 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 		validValues = v.([]interface{})
 	}
 	native := nativeNameFromPath(path)
-	var isLeaf = false
+	isLeaf := false
 	if _, ok := dType.(*gen.EnumerableDataType); ok {
 		isLeaf = true
 	} else {
@@ -303,11 +303,11 @@ func (p *ParamAnalyzer) newParam(path string, param map[string]interface{}, dTyp
 			}
 		}
 	}
-	var queryName = path
+	queryName := path
 	if _, ok := dType.(*gen.ArrayDataType); ok {
 		queryName += "[]"
 	}
-	var actionParam = &gen.ActionParam{
+	actionParam := &gen.ActionParam{
 		Name:        native,
 		QueryName:   queryName,
 		Description: removeBlankLines(description),

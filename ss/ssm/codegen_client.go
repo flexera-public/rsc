@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Feb 27, 2015 at 9:39pm (PST)
+// Mar 2, 2015 at 11:10am (PST)
 // Command:
 // $ praxisgen -metadata=ssm/restful_doc -output=ssm -pkg=ssm -target=1.0 -client=Api
 //
@@ -28,7 +28,7 @@ import (
 type UrlResolver string
 
 func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
-	var res, ok = GenMetadata[rName]
+	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
 	}
@@ -42,7 +42,7 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 	if action == nil {
 		return nil, fmt.Errorf("No action with name '%s' on %s", aName, rName)
 	}
-	var vars, err = res.ExtractVariables(string(*r))
+	vars, err := res.ExtractVariables(string(*r))
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ type Execution struct {
 	AvailableActions     []string               `json:"available_actions,omitempty"`
 	AvailableOperations  []*OperationDefinition `json:"available_operations,omitempty"`
 	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
-	Cost                 *CostStruct            `json:"cost,omitempty"`
+	Cost                 *CostStruct2           `json:"cost,omitempty"`
 	CreatedBy            *User                  `json:"created_by,omitempty"`
 	Deployment           string                 `json:"deployment,omitempty"`
 	DeploymentUrl        string                 `json:"deployment_url,omitempty"`
@@ -128,21 +128,21 @@ func (loc *ExecutionLocator) Index(projectId string, options rsapi.ApiParams) ([
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "index")
+	uri, err := loc.Url("Execution", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /projects/:project_id/executions/:id
@@ -162,21 +162,21 @@ func (loc *ExecutionLocator) Show(id string, projectId string, options rsapi.Api
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "show")
+	uri, err := loc.Url("Execution", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /projects/:project_id/executions
@@ -187,13 +187,13 @@ func (loc *ExecutionLocator) Create(projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "create")
+	uri, err := loc.Url("Execution", "create")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -215,21 +215,21 @@ func (loc *ExecutionLocator) Delete(id string, projectId string, options rsapi.A
 		queryParams["force"] = forceOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "delete")
+	uri, err := loc.Url("Execution", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /projects/:project_id/executions
@@ -250,13 +250,13 @@ func (loc *ExecutionLocator) MultiDelete(ids []string, projectId string, options
 		queryParams["force"] = forceOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "multi_delete")
+	uri, err := loc.Url("Execution", "multi_delete")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -279,21 +279,21 @@ func (loc *ExecutionLocator) Download(apiVersion string, id string, projectId st
 		"api_version": apiVersion,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "download")
+	uri, err := loc.Url("Execution", "download")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /projects/:project_id/executions/:id/actions/launch
@@ -308,21 +308,21 @@ func (loc *ExecutionLocator) Launch(id string, projectId string) (*Execution, er
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "launch")
+	uri, err := loc.Url("Execution", "launch")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /projects/:project_id/executions/:id/actions/start
@@ -337,21 +337,21 @@ func (loc *ExecutionLocator) Start(id string, projectId string) (*Execution, err
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "start")
+	uri, err := loc.Url("Execution", "start")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /projects/:project_id/executions/:id/actions/stop
@@ -366,21 +366,21 @@ func (loc *ExecutionLocator) Stop(id string, projectId string) (*Execution, erro
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "stop")
+	uri, err := loc.Url("Execution", "stop")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /projects/:project_id/executions/:id/actions/terminate
@@ -395,21 +395,21 @@ func (loc *ExecutionLocator) Terminate(id string, projectId string) (*Execution,
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "terminate")
+	uri, err := loc.Url("Execution", "terminate")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /projects/:project_id/executions/actions/launch
@@ -426,13 +426,13 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string, projectId string) error {
 		"ids": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "multi_launch")
+	uri, err := loc.Url("Execution", "multi_launch")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -451,13 +451,13 @@ func (loc *ExecutionLocator) MultiStart(ids []string, projectId string) error {
 		"ids": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "multi_start")
+	uri, err := loc.Url("Execution", "multi_start")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -476,13 +476,13 @@ func (loc *ExecutionLocator) MultiStop(ids []string, projectId string) error {
 		"ids": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "multi_stop")
+	uri, err := loc.Url("Execution", "multi_stop")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -501,13 +501,13 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string, projectId string) erro
 		"ids": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Execution", "multi_terminate")
+	uri, err := loc.Url("Execution", "multi_terminate")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -562,21 +562,21 @@ func (loc *NotificationLocator) Index(projectId string, options rsapi.ApiParams)
 		queryParams["ids"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Notification", "index")
+	uri, err := loc.Url("Notification", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /projects/:project_id/notifications/:id
@@ -591,21 +591,21 @@ func (loc *NotificationLocator) Show(id string, projectId string) (Notification,
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Notification", "show")
+	uri, err := loc.Url("Notification", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  Operation ******/
@@ -668,21 +668,21 @@ func (loc *OperationLocator) Index(projectId string, options rsapi.ApiParams) ([
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Operation", "index")
+	uri, err := loc.Url("Operation", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /projects/:project_id/operations/:id
@@ -702,21 +702,21 @@ func (loc *OperationLocator) Show(id string, projectId string, options rsapi.Api
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Operation", "show")
+	uri, err := loc.Url("Operation", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /projects/:project_id/operations
@@ -728,15 +728,15 @@ func (loc *OperationLocator) Create(projectId string) (*OperationLocator, error)
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("Operation", "create")
+	uri, err := loc.Url("Operation", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
-	var location = resp.Header.Get("Location")
+	location := resp.Header.Get("Location")
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
@@ -750,21 +750,21 @@ func (loc *OperationLocator) Create(projectId string) (*OperationLocator, error)
 // Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
 // All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)
 type ScheduledAction struct {
-	Action                string                `json:"action,omitempty"`
-	CreatedBy             *User                 `json:"created_by,omitempty"`
-	Execution             *Execution            `json:"execution,omitempty"`
-	FirstOccurrence       time.Time             `json:"first_occurrence,omitempty"`
-	Href                  string                `json:"href,omitempty"`
-	Id                    string                `json:"id,omitempty"`
-	Kind                  string                `json:"kind,omitempty"`
-	Links                 *ScheduledActionLinks `json:"links,omitempty"`
-	Mandatory             bool                  `json:"mandatory,omitempty"`
-	Name                  string                `json:"name,omitempty"`
-	NextOccurrence        time.Time             `json:"next_occurrence,omitempty"`
-	Recurrence            string                `json:"recurrence,omitempty"`
-	RecurrenceDescription string                `json:"recurrence_description,omitempty"`
-	Timestamps            *TimestampsStruct3    `json:"timestamps,omitempty"`
-	Timezone              string                `json:"timezone,omitempty"`
+	Action                string                      `json:"action,omitempty"`
+	CreatedBy             *User                       `json:"created_by,omitempty"`
+	Execution             *Execution                  `json:"execution,omitempty"`
+	FirstOccurrence       time.Time                   `json:"first_occurrence,omitempty"`
+	Href                  string                      `json:"href,omitempty"`
+	Id                    string                      `json:"id,omitempty"`
+	Kind                  string                      `json:"kind,omitempty"`
+	Links                 *ScheduledActionLinks       `json:"links,omitempty"`
+	Mandatory             bool                        `json:"mandatory,omitempty"`
+	Name                  string                      `json:"name,omitempty"`
+	NextOccurrence        time.Time                   `json:"next_occurrence,omitempty"`
+	Recurrence            string                      `json:"recurrence,omitempty"`
+	RecurrenceDescription string                      `json:"recurrence_description,omitempty"`
+	Timestamps            *NextActionTimestampsStruct `json:"timestamps,omitempty"`
+	Timezone              string                      `json:"timezone,omitempty"`
 }
 
 //===== Locator
@@ -796,21 +796,21 @@ func (loc *ScheduledActionLocator) Index(projectId string, options rsapi.ApiPara
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledAction", "index")
+	uri, err := loc.Url("ScheduledAction", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /projects/:project_id/scheduled_actions/:id
@@ -825,21 +825,21 @@ func (loc *ScheduledActionLocator) Show(id string, projectId string) (ScheduledA
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledAction", "show")
+	uri, err := loc.Url("ScheduledAction", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /projects/:project_id/scheduled_actions
@@ -851,21 +851,21 @@ func (loc *ScheduledActionLocator) Create(projectId string) (*ScheduledAction, e
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledAction", "create")
+	uri, err := loc.Url("ScheduledAction", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PATCH /projects/:project_id/scheduled_actions/:id
@@ -880,21 +880,21 @@ func (loc *ScheduledActionLocator) Patch(id string, projectId string) (*Schedule
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledAction", "patch")
+	uri, err := loc.Url("ScheduledAction", "patch")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /projects/:project_id/scheduled_actions/:id
@@ -909,21 +909,21 @@ func (loc *ScheduledActionLocator) Delete(id string, projectId string) (*Schedul
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledAction", "delete")
+	uri, err := loc.Url("ScheduledAction", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /projects/:project_id/scheduled_actions/:id/actions/skip
@@ -937,13 +937,13 @@ func (loc *ScheduledActionLocator) Skip(id string, projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledAction", "skip")
+	uri, err := loc.Url("ScheduledAction", "skip")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -954,22 +954,22 @@ func (loc *ScheduledActionLocator) Skip(id string, projectId string) error {
 // Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
 // All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)
 type ScheduledOperation struct {
-	CreatedBy             *User                    `json:"created_by,omitempty"`
-	Execution             *Execution               `json:"execution,omitempty"`
-	FirstOccurrence       time.Time                `json:"first_occurrence,omitempty"`
-	Href                  string                   `json:"href,omitempty"`
-	Id                    string                   `json:"id,omitempty"`
-	Kind                  string                   `json:"kind,omitempty"`
-	LastRun               *Operation               `json:"last_run,omitempty"`
-	Links                 *ScheduledOperationLinks `json:"links,omitempty"`
-	Mandatory             bool                     `json:"mandatory,omitempty"`
-	Name                  string                   `json:"name,omitempty"`
-	NextOccurrence        time.Time                `json:"next_occurrence,omitempty"`
-	Operation             *OperationStruct         `json:"operation,omitempty"`
-	Recurrence            string                   `json:"recurrence,omitempty"`
-	RecurrenceDescription string                   `json:"recurrence_description,omitempty"`
-	Timestamps            *TimestampsStruct4       `json:"timestamps,omitempty"`
-	Timezone              string                   `json:"timezone,omitempty"`
+	CreatedBy             *User                         `json:"created_by,omitempty"`
+	Execution             *Execution                    `json:"execution,omitempty"`
+	FirstOccurrence       time.Time                     `json:"first_occurrence,omitempty"`
+	Href                  string                        `json:"href,omitempty"`
+	Id                    string                        `json:"id,omitempty"`
+	Kind                  string                        `json:"kind,omitempty"`
+	LastRun               *Operation                    `json:"last_run,omitempty"`
+	Links                 *ScheduledOperationLinks      `json:"links,omitempty"`
+	Mandatory             bool                          `json:"mandatory,omitempty"`
+	Name                  string                        `json:"name,omitempty"`
+	NextOccurrence        time.Time                     `json:"next_occurrence,omitempty"`
+	Operation             *NextOperationOperationStruct `json:"operation,omitempty"`
+	Recurrence            string                        `json:"recurrence,omitempty"`
+	RecurrenceDescription string                        `json:"recurrence_description,omitempty"`
+	Timestamps            *NextActionTimestampsStruct   `json:"timestamps,omitempty"`
+	Timezone              string                        `json:"timezone,omitempty"`
 }
 
 //===== Locator
@@ -1001,21 +1001,21 @@ func (loc *ScheduledOperationLocator) Index(projectId string, options rsapi.ApiP
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledOperation", "index")
+	uri, err := loc.Url("ScheduledOperation", "index")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /projects/:project_id/scheduled_operations/:id
@@ -1030,21 +1030,21 @@ func (loc *ScheduledOperationLocator) Show(id string, projectId string) (Schedul
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledOperation", "show")
+	uri, err := loc.Url("ScheduledOperation", "show")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, &res)
-	return res, err4
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /projects/:project_id/scheduled_operations
@@ -1056,21 +1056,21 @@ func (loc *ScheduledOperationLocator) Create(projectId string) (*ScheduledOperat
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledOperation", "create")
+	uri, err := loc.Url("ScheduledOperation", "create")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // PATCH /projects/:project_id/scheduled_operations/:id
@@ -1085,21 +1085,21 @@ func (loc *ScheduledOperationLocator) Patch(id string, projectId string) (*Sched
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledOperation", "patch")
+	uri, err := loc.Url("ScheduledOperation", "patch")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // DELETE /projects/:project_id/scheduled_operations/:id
@@ -1114,21 +1114,21 @@ func (loc *ScheduledOperationLocator) Delete(id string, projectId string) (*Sche
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledOperation", "delete")
+	uri, err := loc.Url("ScheduledOperation", "delete")
 	if err != nil {
 		return res, err
 	}
-	var resp, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return res, err2
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
 	}
 	defer resp.Body.Close()
-	var respBody, err3 = ioutil.ReadAll(resp.Body)
-	if err3 != nil {
-		return res, err3
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
-	var err4 = json.Unmarshal(respBody, res)
-	return res, err4
+	err = json.Unmarshal(respBody, res)
+	return res, err
 }
 
 // POST /projects/:project_id/scheduled_operations/:id/actions/skip
@@ -1142,13 +1142,13 @@ func (loc *ScheduledOperationLocator) Skip(id string, projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	var uri, err = loc.Url("ScheduledOperation", "skip")
+	uri, err := loc.Url("ScheduledOperation", "skip")
 	if err != nil {
 		return err
 	}
-	var _, err2 = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err2 != nil {
-		return err2
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -1184,6 +1184,12 @@ type ConfigurationOption struct {
 }
 
 type CostStruct struct {
+	Unit      *string    `json:"unit,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	Value     *string    `json:"value,omitempty"`
+}
+
+type CostStruct2 struct {
 	Unit      *string    `json:"unit,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	Value     *string    `json:"value,omitempty"`
@@ -1317,11 +1323,6 @@ type OperationRunningOperationsLink struct {
 	Href *string `json:"href,omitempty"`
 }
 
-type OperationStruct struct {
-	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
-	Name                 string                 `json:"name,omitempty"`
-}
-
 type Output struct {
 	Category    *string `json:"category,omitempty"`
 	Description *string `json:"description,omitempty"`
@@ -1415,16 +1416,6 @@ type TimestampsStruct2 struct {
 	CreatedAt    *time.Time `json:"created_at,omitempty"`
 	LaunchedAt   *time.Time `json:"launched_at,omitempty"`
 	TerminatedAt *time.Time `json:"terminated_at,omitempty"`
-}
-
-type TimestampsStruct3 struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-}
-
-type TimestampsStruct4 struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type User struct {

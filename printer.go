@@ -9,11 +9,13 @@ import (
 
 /** Global Helpers **/
 
-var Titleize = ansi.ColorFunc("blue+hb")
-var SubTitleize = ansi.ColorFunc("blue")
-var Errorize = ansi.ColorFunc("red")
-var Successize = ansi.ColorFunc("green")
-var Warningize = ansi.ColorFunc("yellow")
+var (
+	Titleize    = ansi.ColorFunc("blue+hb")
+	SubTitleize = ansi.ColorFunc("blue")
+	Errorize    = ansi.ColorFunc("red")
+	Successize  = ansi.ColorFunc("green")
+	Warningize  = ansi.ColorFunc("yellow")
+)
 
 func PromptConfirmation(format string, a ...interface{}) string {
 	m := fmt.Sprintf(format, a...)

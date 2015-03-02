@@ -131,7 +131,7 @@ func stripStar(text string) string {
 
 // Convert []interface{} into []string
 func toStringArray(a []interface{}) []string {
-	var res = make([]string, len(a))
+	res := make([]string, len(a))
 	for i, v := range a {
 		res[i] = fmt.Sprintf("%v", v)
 	}
@@ -157,12 +157,12 @@ func toHelp(long string) string {
 
 // Type of flag, one of "string", "[]string", "int" or "map"
 func flagType(param *gen.ActionParam) string {
-	var path = param.QueryName
+	path := param.QueryName
 	if strings.HasSuffix(path, "[]") {
 		return "[]string"
 	}
 	if strings.Contains(path, "[]") {
-		var _, ok = param.Type.(*gen.BasicDataType)
+		_, ok := param.Type.(*gen.BasicDataType)
 		if !ok {
 			panic("Wooaat? an array with a non basic leaf???")
 		}
@@ -173,7 +173,7 @@ func flagType(param *gen.ActionParam) string {
 	} else if _, ok := param.Type.(*gen.EnumerableDataType); ok {
 		return "map"
 	}
-	var b, ok = param.Type.(*gen.BasicDataType)
+	b, ok := param.Type.(*gen.BasicDataType)
 	if !ok {
 		panic("Wooaat? a object leaf???")
 	}

@@ -21,7 +21,7 @@ var commandValues rsapi.ActionCommands
 func RegisterCommands(ssCmd cmd.CommandProvider) {
 	commandValues = rsapi.ActionCommands{}
 	var actionNames []string
-	var allResources = ssm.GenMetadata
+	allResources := ssm.GenMetadata
 	for n, r := range ssc.GenMetadata {
 		allResources[n] = r
 	}
@@ -30,8 +30,8 @@ func RegisterCommands(ssCmd cmd.CommandProvider) {
 	}
 	for _, r := range allResources {
 		for _, a := range r.Actions {
-			var name = a.Name
-			var exists = false
+			name := a.Name
+			exists := false
 			for _, e := range actionNames {
 				if e == name {
 					exists = true
@@ -57,7 +57,7 @@ func RegisterCommands(ssCmd cmd.CommandProvider) {
 		case "delete":
 			description = "Destroy a single resource."
 		default:
-			var resources = []string{}
+			resources := []string{}
 			var actionDescription string
 			for name, resource := range allResources {
 				for _, a := range resource.Actions {
@@ -73,10 +73,10 @@ func RegisterCommands(ssCmd cmd.CommandProvider) {
 				description = "Action of resources " + strings.Join(resources[:len(resources)-1], ", ") + " and " + resources[len(resources)-1]
 			}
 		}
-		var actionCmd = ssCmd.Command(action, description)
-		var actionCmdValue = rsapi.ActionCommand{}
-		var hrefMsg = "API Resource or resource collection href on which to act, e.g. '/projects/1/executions/2'"
-		var paramsMsg = "Action parameters in the form QUERY=VALUE, e.g. 'execution[name]=my\\ execution'"
+		actionCmd := ssCmd.Command(action, description)
+		actionCmdValue := rsapi.ActionCommand{}
+		hrefMsg := "API Resource or resource collection href on which to act, e.g. '/projects/1/executions/2'"
+		paramsMsg := "Action parameters in the form QUERY=VALUE, e.g. 'execution[name]=my\\ execution'"
 		actionCmd.Arg("href", hrefMsg).Required().StringVar(&actionCmdValue.Href)
 		actionCmd.Arg("params", paramsMsg).StringsVar(&actionCmdValue.Params)
 		commandValues[actionCmd.FullCommand()] = &actionCmdValue
@@ -85,17 +85,17 @@ func RegisterCommands(ssCmd cmd.CommandProvider) {
 
 // Parse and run command
 func (a *Api) RunCommand(cmd string) (*http.Response, error) {
-	var parsed, err = a.ParseCommand(cmd, commandValues)
+	parsed, err := a.ParseCommand(cmd, "", commandValues)
 	if err != nil {
 		return nil, err
 	}
-	var target, _, _ = a.ParseCommandAndFlags(cmd, commandValues)
+	target, _, _ := a.ParseCommandAndFlags(cmd, "", commandValues)
 	service, err := getResourceService(target.Resource)
 	if err != nil {
 		return nil, err
 	}
 	var dispatch DispatchFunc
-	var href = parsed.Uri
+	href := parsed.Uri
 	switch service {
 	case "manager":
 		dispatch = a.managerClient.Dispatch
@@ -110,7 +110,7 @@ func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 
 // Show command help
 func (a *Api) ShowCommandHelp(cmd string) error {
-	var target, _, err = a.ParseCommandAndFlags(cmd, commandValues)
+	target, _, err := a.ParseCommandAndFlags(cmd, "", commandValues)
 	if err != nil {
 		return err
 	}
@@ -118,7 +118,7 @@ func (a *Api) ShowCommandHelp(cmd string) error {
 	if err != nil {
 		return err
 	}
-	var showHelp func(string, rsapi.ActionCommands) error
+	var showHelp func(string, string, rsapi.ActionCommands) error
 	switch service {
 	case "manager":
 		showHelp = a.managerClient.ShowHelp
@@ -127,13 +127,42 @@ func (a *Api) ShowCommandHelp(cmd string) error {
 	case "designer":
 		showHelp = a.designerClient.ShowHelp
 	}
-	return showHelp(cmd, commandValues)
+	return showHelp(cmd, "", commandValues)
+}
+
+// Show command hrefs
+func (a *Api) ShowCommandHrefs(cmd string) error {
+	target, _, err := a.ParseCommandAndFlags(cmd, "", commandValues)
+	var service string
+	if err == nil {
+		service, err = getResourceService(target.Resource)
+	}
+	if err == nil {
+		var showHrefs func(string, string, rsapi.ActionCommands) error
+		switch service {
+		case "manager":
+			showHrefs = a.managerClient.ShowHrefs
+		case "catalog":
+			showHrefs = a.catalogClient.ShowHrefs
+		case "designer":
+			showHrefs = a.designerClient.ShowHrefs
+		}
+		return showHrefs(cmd, "", commandValues)
+	} else {
+		fmt.Println("DESIGNER")
+		a.designerClient.ShowHrefs(cmd, "", commandValues)
+		fmt.Println("\nCATALOG")
+		a.catalogClient.ShowHrefs(cmd, "", commandValues)
+		fmt.Println("\nMANAGER")
+		a.managerClient.ShowHrefs(cmd, "", commandValues)
+		return nil
+	}
 }
 
 // Retrieve name of service containing given resource or error if none contain it
 // name is one of "designer", "catalog" or "manager"
 func getResourceService(resource *metadata.Resource) (string, error) {
-	var resourceName = resource.Name
+	resourceName := resource.Name
 	var service string
 	switch {
 	case containsResource(resourceName, ssm.GenMetadata):

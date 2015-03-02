@@ -72,7 +72,7 @@ var _ = Describe("ApiAnalyzer ParseRoute", func() {
 		})
 	})
 
-	Context("given multiple routes with multiple variables", func() {
+	Context("given multiple routes with multiple ", func() {
 		BeforeEach(func() {
 			route = "GET    /api/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}"
 			route += "GET    /api/instances/:instance_id/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}"

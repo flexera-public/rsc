@@ -22,11 +22,11 @@ type Displayer struct {
 // Factory method for displayer, reads body out of response
 func NewDisplayer(resp *http.Response) (*Displayer, error) {
 	defer resp.Body.Close()
-	var js, err = ioutil.ReadAll(resp.Body)
+	js, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
 	}
-	var disp = Displayer{response: resp, body: string(js)}
+	disp := Displayer{response: resp, body: string(js)}
 	if len(js) > 2 {
 		err = json.Unmarshal(js, &disp.RawOutput)
 		if err != nil {
@@ -42,7 +42,7 @@ func (d *Displayer) ApplySingleExtract(extract string) error {
 	if err := d.ApplyExtract(extract, true); err != nil {
 		return err
 	}
-	var outputs = d.RawOutput.([]interface{})
+	outputs := d.RawOutput.([]interface{})
 	if len(outputs) > 1 {
 		return fmt.Errorf("JSON selector '%s' returned more than one value, returned values are:\n%v\nOriginal JSON:\n%s",
 			extract, outputs, d.body)
@@ -57,14 +57,14 @@ func (d *Displayer) ApplySingleExtract(extract string) error {
 
 // Apply JSON selector
 func (d *Displayer) ApplyExtract(selector string, json bool) error {
-	var parser, err = jsonselect.CreateParserFromString(d.body)
+	parser, err := jsonselect.CreateParserFromString(d.body)
 	if err != nil {
 		return fmt.Errorf("Failed to load response JSON: %s, JSON was:\n%s",
 			err.Error(), d.body)
 	}
 	outputs, err := parser.GetValues(selector)
 	if !json {
-		var strs = make([]string, len(outputs))
+		strs := make([]string, len(outputs))
 		for i, o := range outputs {
 			strs[i] = fmt.Sprintf("%v", o)
 		}
@@ -95,7 +95,7 @@ func (d *Displayer) Pretty() {
 
 // Return output
 func (d *Displayer) Output() string {
-	var output = d.RawOutput
+	output := d.RawOutput
 	if output == nil {
 		return ""
 	}

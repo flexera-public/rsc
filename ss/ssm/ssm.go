@@ -20,7 +20,7 @@ type Api struct {
 // If no HTTP client is specified then the default client is used.
 func New(accountId int, refreshToken string, host string, logger *log.Logger,
 	client rsapi.HttpClient) (*Api, error) {
-	var base, err = rsapi.New(accountId, refreshToken, host, logger, client)
+	base, err := rsapi.New(accountId, refreshToken, host, logger, client)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 
 // Build client from command line
 func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
-	var base, err = rsapi.FromCommandLine(cmdLine)
+	base, err := rsapi.FromCommandLine(cmdLine)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func fromBase(api *rsapi.Api) *Api {
 
 // Dispatch request to appropriate low-level method
 func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error) {
-	var details = dispatch.RequestDetails{
+	details := dispatch.RequestDetails{
 		HttpMethod:            method,
 		Host:                  a.Host,
 		Url:                   actionUrl,

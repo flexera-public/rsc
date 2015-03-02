@@ -30,13 +30,13 @@ func (a *Api16) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, erro
 
 // Helper function that signs, makes and logs HTTP request
 func (a *Api16) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Response, error) {
-	var u = url.URL{
+	u := url.URL{
 		Scheme: "https",
 		Host:   a.Host,
 		Path:   uri,
 	}
 	if params != nil {
-		var values = u.Query()
+		values := u.Query()
 		for n, p := range params {
 			switch t := p.(type) {
 			case string:
@@ -55,7 +55,7 @@ func (a *Api16) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Res
 		}
 		u.RawQuery = values.Encode()
 	}
-	var req, err = http.NewRequest(verb, u.String(), nil)
+	req, err := http.NewRequest(verb, u.String(), nil)
 	if err != nil {
 		return nil, err
 	}

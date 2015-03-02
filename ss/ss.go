@@ -50,7 +50,7 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 	if err != nil {
 		return nil, err
 	}
-	var api = Api{a, d, c, m}
+	api := Api{a, d, c, m}
 	setupMetadata(a, d, c, m)
 
 	return &api, nil
@@ -77,7 +77,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	if err != nil {
 		return nil, err
 	}
-	var api = Api{a, d, c, m}
+	api := Api{a, d, c, m}
 	setupMetadata(a, d, c, m)
 
 	return &api, nil
@@ -86,7 +86,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 // Merge all metadata so that Api object has access to all commands and actions for command line
 // parsing.
 func setupMetadata(a *rsapi.Api, d *ssd.Api, c *ssc.Api, m *ssm.Api) {
-	var md = map[string]*metadata.Resource{}
+	md := map[string]*metadata.Resource{}
 	for n, r := range d.Metadata {
 		md[n] = r
 	}
