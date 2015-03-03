@@ -9,7 +9,9 @@ type CommandLine struct {
 	ConfigPath          string // Path to rsc config file, defaults to $HOME/.rsc
 	Account             int    // RightScale account, optional
 	Host                string // API hostname, optional
-	Token               string // Auth token, required unless RL10 is true
+	Token               string // Auth token, alternative to Username+Password or RL10
+	Username            string // Login username, alternative to Token or RL10
+	Password            string // Login pasword, alternative to Token or RL10
 	RL10                bool   // Whether to send requests using the RL10 proxy
 	NoRedirect          bool   // Whether to disable auto-redirects
 	FetchResource       bool   // Whether to fetch resource returned in 'Location' header

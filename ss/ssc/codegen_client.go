@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 2, 2015 at 11:10am (PST)
+// Mar 2, 2015 at 5:58pm (PST)
 // Command:
 // $ praxisgen -metadata=ssc/restful_doc -output=ssc -pkg=ssc -target=1.0 -client=Api
 //
@@ -55,13 +55,13 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 // The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
 // to use in your own integration.
 type AccountPreference struct {
-	CreatedBy  *User             `json:"created_by,omitempty"`
-	GroupName  string            `json:"group_name,omitempty"`
-	Href       string            `json:"href,omitempty"`
-	Kind       string            `json:"kind,omitempty"`
-	Name       string            `json:"name,omitempty"`
-	Timestamps *TimestampsStruct `json:"timestamps,omitempty"`
-	Value      string            `json:"value,omitempty"`
+	CreatedBy  *User              `json:"created_by,omitempty"`
+	GroupName  string             `json:"group_name,omitempty"`
+	Href       string             `json:"href,omitempty"`
+	Kind       string             `json:"kind,omitempty"`
+	Name       string             `json:"name,omitempty"`
+	Timestamps *TimestampsStruct3 `json:"timestamps,omitempty"`
+	Value      string             `json:"value,omitempty"`
 }
 
 //===== Locator
@@ -499,7 +499,7 @@ type NotificationRule struct {
 	Priority    int                `json:"priority,omitempty"`
 	Source      string             `json:"source,omitempty"`
 	Target      string             `json:"target,omitempty"`
-	Timestamps  *TimestampsStruct4 `json:"timestamps,omitempty"`
+	Timestamps  *TimestampsStruct2 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -700,7 +700,7 @@ type UserPreference struct {
 	Href               string              `json:"href,omitempty"`
 	Id                 string              `json:"id,omitempty"`
 	Kind               string              `json:"kind,omitempty"`
-	Timestamps         *TimestampsStruct5  `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct   `json:"timestamps,omitempty"`
 	UserId             int                 `json:"user_id,omitempty"`
 	UserPreferenceInfo *UserPreferenceInfo `json:"user_preference_info,omitempty"`
 	Value              string              `json:"value,omitempty"`
@@ -972,20 +972,20 @@ type AccountPreference2 struct {
 }
 
 type Application2 struct {
-	CompiledCat        *string            `json:"compiled_cat,omitempty"`
-	CreatedBy          *User              `json:"created_by,omitempty"`
-	Href               *string            `json:"href,omitempty"`
-	Id                 string             `json:"id,omitempty"`
-	Kind               *string            `json:"kind,omitempty"`
-	LongDescription    *string            `json:"long_description,omitempty"`
-	Name               *string            `json:"name,omitempty"`
-	Parameters         []*Parameter       `json:"parameters,omitempty"`
-	RequiredParameters []string           `json:"required_parameters,omitempty"`
-	ScheduleRequired   *bool              `json:"schedule_required,omitempty"`
-	Schedules          []*Schedule        `json:"schedules,omitempty"`
-	ShortDescription   *string            `json:"short_description,omitempty"`
-	TemplateInfo       *TemplateInfo      `json:"template_info,omitempty"`
-	Timestamps         *TimestampsStruct2 `json:"timestamps,omitempty"`
+	CompiledCat        *string           `json:"compiled_cat,omitempty"`
+	CreatedBy          *User             `json:"created_by,omitempty"`
+	Href               *string           `json:"href,omitempty"`
+	Id                 string            `json:"id,omitempty"`
+	Kind               *string           `json:"kind,omitempty"`
+	LongDescription    *string           `json:"long_description,omitempty"`
+	Name               *string           `json:"name,omitempty"`
+	Parameters         []*Parameter      `json:"parameters,omitempty"`
+	RequiredParameters []string          `json:"required_parameters,omitempty"`
+	ScheduleRequired   *bool             `json:"schedule_required,omitempty"`
+	Schedules          []*Schedule       `json:"schedules,omitempty"`
+	ShortDescription   *string           `json:"short_description,omitempty"`
+	TemplateInfo       *TemplateInfo     `json:"template_info,omitempty"`
+	Timestamps         *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
 type NotificationRule2 struct {
@@ -997,7 +997,7 @@ type NotificationRule2 struct {
 	Priority    *int               `json:"priority,omitempty"`
 	Source      *string            `json:"source,omitempty"`
 	Target      *string            `json:"target,omitempty"`
-	Timestamps  *TimestampsStruct3 `json:"timestamps,omitempty"`
+	Timestamps  *TimestampsStruct2 `json:"timestamps,omitempty"`
 }
 
 type Parameter struct {
@@ -1057,16 +1057,6 @@ type TimestampsStruct2 struct {
 }
 
 type TimestampsStruct3 struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-}
-
-type TimestampsStruct4 struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-}
-
-type TimestampsStruct5 struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }

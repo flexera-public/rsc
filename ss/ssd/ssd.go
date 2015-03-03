@@ -3,6 +3,7 @@ package ssd
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/rsapi"
@@ -18,9 +19,9 @@ type Api struct {
 // logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, refreshToken string, host string, logger *log.Logger,
+func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logger,
 	client rsapi.HttpClient) (*Api, error) {
-	base, err := rsapi.New(accountId, refreshToken, host, logger, client)
+	base, err := rsapi.New(accountId, host, auth, logger, client)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +40,8 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 // Wrap generic client
 func fromBase(api *rsapi.Api) *Api {
 	api.Metadata = GenMetadata
-	api.Auth = &rsapi.SSAuthenticator{api.Auth.(*rsapi.OAuthAuthenticator), api.AccountId}
+	fiveMnAgo := time.Now().Add(-time.Duration(5) * time.Minute)
+	api.Auth = &rsapi.SSAuthenticator{api.Auth, api.AccountId, fiveMnAgo, api.Client}
 	return &Api{api}
 }
 

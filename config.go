@@ -9,9 +9,10 @@ import (
 
 // Basic configuration settings required by all clients
 type ClientConfig struct {
-	Account int    // RightScale account ID
-	Host    string // RightScale API host, e.g. "us-3.rightscale.com"
-	Token   string // RightScale API refresh token
+	Account   int    // RightScale account ID
+	LoginHost string // RightScale API login host, e.g. "us-3.rightscale.com"
+	Email     string // RightScale API login email
+	Password  string // RightScale API login password
 }
 
 // LoadConfig loads the client configuration from disk
@@ -25,17 +26,17 @@ func LoadConfig(path string) (*ClientConfig, error) {
 	if err != nil {
 		return nil, err
 	}
-	config.Token, err = Decrypt(config.Token)
+	config.Password, err = Decrypt(config.Password)
 	return &config, err
 }
 
-// Save config encrypts the token and persists the config to file
+// Save config encrypts the password and persists the config to file
 func (cfg *ClientConfig) Save(path string) error {
-	encrypted, err := Encrypt(cfg.Token)
+	encrypted, err := Encrypt(cfg.Password)
 	if err != nil {
-		return fmt.Errorf("Failed to encrypt token: %s", err.Error())
+		return fmt.Errorf("Failed to encrypt password: %s", err.Error())
 	}
-	cfg.Token = encrypted
+	cfg.Password = encrypted
 	bytes, err := json.Marshal(cfg)
 	if err != nil {
 		return fmt.Errorf("Failed to serialize config: %s", err.Error())
@@ -50,19 +51,20 @@ func (cfg *ClientConfig) Save(path string) error {
 // Create configuration file and save it to file at given path
 func CreateConfig(path string) error {
 	config, _ := LoadConfig(path)
-	var tokenDef, accountDef, hostDef string
+	var emailDef, passwordDef, accountDef, hostDef string
 	if config != nil {
 		yn := PromptConfirmation("Found existing configuration file %v, overwrite? (y/N): ", path)
 		if yn != "y" {
 			PrintSuccess("Exiting")
 			return nil
 		}
+		emailDef = fmt.Sprintf(" (%v)", config.Email)
 		accountDef = fmt.Sprintf(" (%v)", config.Account)
-		tokenDef = " (leave blank to leave unchanged)"
-		if config.Host == "" {
-			config.Host = "my.rightscale.com"
+		passwordDef = " (leave blank to leave unchanged)"
+		if config.LoginHost == "" {
+			config.LoginHost = "my.rightscale.com"
 		}
-		hostDef = fmt.Sprintf(" (%v)", config.Host)
+		hostDef = fmt.Sprintf(" (%v)", config.LoginHost)
 	} else {
 		config = &ClientConfig{}
 	}
@@ -78,18 +80,25 @@ func CreateConfig(path string) error {
 		config.Account = a
 	}
 
-	fmt.Fprintf(out, "Refresh Token%v: ", tokenDef)
-	var newToken string
-	fmt.Fscanln(in, &newToken)
-	if newToken != "" {
-		config.Token = newToken
+	fmt.Fprintf(out, "Login email%v: ", emailDef)
+	var newEmail string
+	fmt.Fscanln(in, &newEmail)
+	if newEmail != "" {
+		config.Email = newEmail
 	}
 
-	fmt.Fprintf(out, "API Host%v: ", hostDef)
-	var newHost string
-	fmt.Fscanln(in, &newHost)
-	if newHost != "" {
-		config.Host = newHost
+	fmt.Fprintf(out, "Login password%v: ", passwordDef)
+	var newPassword string
+	fmt.Fscanln(in, &newPassword)
+	if newPassword != "" {
+		config.Password = newPassword
+	}
+
+	fmt.Fprintf(out, "API Login host%v: ", hostDef)
+	var newLoginHost string
+	fmt.Fscanln(in, &newLoginHost)
+	if newLoginHost != "" {
+		config.LoginHost = newLoginHost
 	}
 
 	err := config.Save(path)

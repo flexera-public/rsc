@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
@@ -33,21 +32,21 @@ type DispatchFunc func(method, actionUrl string, params, payload rsapi.ApiParams
 // logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, refreshToken string, host string, logger *log.Logger,
+func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logger,
 	client rsapi.HttpClient) (*Api, error) {
-	a, err := rsapi.New(accountId, refreshToken, host, logger, client)
+	a, err := rsapi.New(accountId, host, auth, logger, client)
 	if err != nil {
 		return nil, err
 	}
-	d, err := ssd.New(accountId, refreshToken, host, logger, client)
+	d, err := ssd.New(accountId, host, auth, logger, client)
 	if err != nil {
 		return nil, err
 	}
-	c, err := ssc.New(accountId, refreshToken, host, logger, client)
+	c, err := ssc.New(accountId, host, auth, logger, client)
 	if err != nil {
 		return nil, err
 	}
-	m, err := ssm.New(accountId, refreshToken, host, logger, client)
+	m, err := ssm.New(accountId, host, auth, logger, client)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +58,6 @@ func New(accountId int, refreshToken string, host string, logger *log.Logger,
 
 // Build client from command line
 func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
-	// Hackyity hack
-	if !strings.HasPrefix(cmdLine.Host, "selfservice") {
-		cmdLine.Host = "selfservice-3.rightscale.com"
-	}
 	if cmdLine.RL10 {
 		return nil, fmt.Errorf("RightLink 10 proxy not supported for Self-Service APIs")
 	}

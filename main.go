@@ -84,6 +84,10 @@ func main() {
 	}
 
 	// We're done, print output and figure out correct exit code
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		// Let user know if something went wrong
+		fmt.Fprintf(os.Stderr, "%d: %s\n", resp.StatusCode, http.StatusText(resp.StatusCode))
+	}
 	fmt.Printf(displayer.Output())
 	exitStatus := 0
 	switch {

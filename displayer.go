@@ -30,8 +30,7 @@ func NewDisplayer(resp *http.Response) (*Displayer, error) {
 	if len(js) > 2 {
 		err = json.Unmarshal(js, &disp.RawOutput)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to unmarshal response JSON: %s, response body was:\n%s",
-				err.Error(), js)
+			disp.RawOutput = string(js)
 		}
 	}
 	return &disp, nil
@@ -100,7 +99,11 @@ func (d *Displayer) Output() string {
 		return ""
 	}
 	if outputStr, ok := d.RawOutput.(string); ok {
-		return outputStr
+		suffix := ""
+		if d.prettify {
+			suffix = "\n"
+		}
+		return outputStr + suffix
 	}
 	var out string
 	var err error
@@ -116,7 +119,11 @@ func (d *Displayer) Output() string {
 		out = string(b)
 	}
 	if err != nil {
-		return fmt.Sprintf("%v", output)
+		fm := "%v"
+		if d.prettify {
+			fm += "\n"
+		}
+		return fmt.Sprintf(fm, output)
 	}
 	return out
 }

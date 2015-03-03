@@ -41,26 +41,13 @@ type HttpClient interface {
 // logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, refreshToken string, host string, logger *log.Logger,
-	client HttpClient) (*Api, error) {
+func New(accountId int, host string, auth Authenticator, logger *log.Logger, client HttpClient) (*Api, error) {
 	if client == nil {
 		client = http.DefaultClient
 	}
-	auth := OAuthAuthenticator{
-		RefreshToken: refreshToken,
-		RefreshAt:    time.Now().Add(-1 * time.Hour),
-		Client:       client,
-	}
-	if host == "" {
-		if resolved, err := auth.ResolveHost(accountId); err != nil {
-			return nil, err
-		} else {
-			host = resolved
-		}
-	}
 	return &Api{
 		AccountId: accountId,
-		Auth:      &auth,
+		Auth:      auth,
 		Logger:    logger,
 		Host:      host,
 		Client:    client,
@@ -118,15 +105,29 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	var err error
 	if cmdLine.RL10 {
 		client, err = NewRL10(nil, httpClient)
+	} else if cmdLine.Token != "" {
+		auth := OAuthAuthenticator{
+			RefreshToken: cmdLine.Token,
+			AccessToken:  "",
+			RefreshAt:    time.Now().Add(-time.Duration(5) * time.Minute),
+			Client:       httpClient,
+		}
+		client, err = New(cmdLine.Account, cmdLine.Host, &auth, nil, httpClient)
 	} else {
-		client, err = New(cmdLine.Account, cmdLine.Token, cmdLine.Host, nil, httpClient)
+		auth := LoginAuthenticator{
+			Username:  cmdLine.Username,
+			Password:  cmdLine.Password,
+			RefreshAt: time.Now().Add(-time.Duration(5) * time.Minute),
+			Client:    httpClient,
+		}
+		client, err = New(cmdLine.Account, cmdLine.Host, &auth, nil, httpClient)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create API session: %v", err.Error())
 	}
 	if !cmdLine.ShowHelp {
-		if cmdLine.Token == "" && !cmdLine.RL10 {
-			return nil, fmt.Errorf("Missing OAuth token, use '-token TOKEN' or 'setup'")
+		if cmdLine.Token == "" && cmdLine.Username == "" && !cmdLine.RL10 {
+			return nil, fmt.Errorf("Missing authentication information, use '--email EMAIL --password PWD', '--token TOKEN' or 'setup'")
 		}
 		client.DumpRequestResponse = cmdLine.Dump
 		client.FetchLocationResource = cmdLine.FetchResource

@@ -6,12 +6,58 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 )
 
 // Authenticator interface
 type Authenticator interface {
-	Sign(req *http.Request, host string) error // Sign http Request (add auth headers)
+	Sign(req *http.Request, host string, accountId int) error // Sign http Request (add auth headers)
+}
+
+// Login authenticator uses username/password
+type LoginAuthenticator struct {
+	Username  string
+	Password  string
+	Cookies   map[int][]*http.Cookie
+	RefreshAt time.Time
+	Client    HttpClient
+}
+
+// Account authenticator uses RS oauth
+func (a *LoginAuthenticator) Sign(r *http.Request, host string, accountId int) error {
+	if err := a.Refresh(host, accountId); err != nil {
+		return err
+	}
+	for _, c := range a.Cookies[accountId] {
+		r.AddCookie(c)
+	}
+	return nil
+}
+
+// Make sure global session cookie is up-to-date
+func (a *LoginAuthenticator) Refresh(host string, accountId int) error {
+	if time.Now().After(a.RefreshAt) {
+		jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
+			a.Username, a.Password, accountId)
+		authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/sessions", host),
+			bytes.NewBufferString(jsonStr))
+		if err != nil {
+			return fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
+		}
+		authReq.Header.Set("X-API-Version", "1.5")
+		authReq.Header.Set("Content-Type", "application/json")
+		resp, err := a.Client.Do(authReq)
+		if err != nil {
+			return fmt.Errorf("Authentication failed: %s", err.Error()) // TBD RETRY A FEW TIMES
+		}
+		if a.Cookies == nil {
+			a.Cookies = make(map[int][]*http.Cookie)
+		}
+		a.Cookies[accountId] = resp.Cookies()
+		a.RefreshAt = time.Now().Add(time.Duration(2) * time.Hour)
+	}
+	return nil
 }
 
 // OAuth authenticator uses the user oauth refresh token
@@ -23,7 +69,7 @@ type OAuthAuthenticator struct {
 }
 
 // Account authenticator uses RS oauth
-func (a *OAuthAuthenticator) Sign(r *http.Request, host string) error {
+func (a *OAuthAuthenticator) Sign(r *http.Request, host string, accountId int) error {
 	if err := a.Refresh(host); err != nil {
 		return err
 	}
@@ -81,7 +127,7 @@ type RL10Authenticator struct {
 }
 
 // RL10 authenticator uses special header
-func (a *RL10Authenticator) Sign(r *http.Request, host string) error {
+func (a *RL10Authenticator) Sign(r *http.Request, host string, accountId int) error {
 	r.Header.Set("X-RLL-Secret", a.Secret)
 
 	return nil
@@ -89,32 +135,42 @@ func (a *RL10Authenticator) Sign(r *http.Request, host string) error {
 
 // SS authenticator
 type SSAuthenticator struct {
-	*OAuthAuthenticator
+	CoreAuth  Authenticator // Authentication against core
 	AccountId int
+	RefreshAt time.Time
+	Client    HttpClient
 }
 
 // Account authenticator uses RS oauth
-func (a *SSAuthenticator) Sign(r *http.Request, host string) error {
-	loginHost, err := a.ResolveHost(a.AccountId)
-	if err != nil {
-		return err
-	}
+func (a *SSAuthenticator) Sign(r *http.Request, host string, accountId int) error {
 	refreshAt := a.RefreshAt
-	if err := a.Refresh(loginHost); err != nil {
-		return err
-	}
 	if time.Now().After(refreshAt) {
-		authReq, err := http.NewRequest("GET", fmt.Sprintf("https://%s/api/catalog/new_session?account_id=%d", host, a.AccountId), nil)
+		authReq, err := http.NewRequest("GET",
+			fmt.Sprintf("https://%s/api/catalog/new_session?account_id=%d",
+				ssHost(host), accountId), nil)
 		if err != nil {
 			return err
 		}
-		authReq.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
+		a.CoreAuth.Sign(authReq, host, accountId)
 		authReq.Header.Set("Content-Type", "application/json")
 		_, err = a.Client.Do(authReq)
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err.Error()) // TBD RETRY A FEW TIMES
 		}
 	}
-	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
+	a.CoreAuth.Sign(r, host, accountId)
+	r.Host = ssHost(host)
+
 	return nil
+}
+
+// Return Self-service endpoint from login endpoint
+// The following isn't great but seems better than having to enter by hand
+func ssHost(host string) string {
+	urlElems := strings.Split(host, ".")
+	hostPrefix := urlElems[0]
+	elems := strings.Split(hostPrefix, "-")
+	elems[len(elems)-2] = "selfservice"
+	ssLoginHostPrefix := strings.Join(elems, "-")
+	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
 }

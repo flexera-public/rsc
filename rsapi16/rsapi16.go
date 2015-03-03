@@ -18,9 +18,9 @@ type Api16 struct {
 // logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, refreshToken string, host string, logger *log.Logger,
+func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logger,
 	client rsapi.HttpClient) (*Api16, error) {
-	return fromApi(rsapi.New(accountId, refreshToken, host, logger, client))
+	return fromApi(rsapi.New(accountId, host, auth, logger, client))
 }
 
 // NewRL10 returns a API 1.6 client that uses the information stored in //run/rll-secret to do

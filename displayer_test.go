@@ -32,14 +32,15 @@ var _ = Describe("Displayer", func() {
 	})
 
 	Context("with a response containing invalid JSON", func() {
+		var invalidJson = "{notvalid}"
 		BeforeEach(func() {
-			var invalidJson = "{notvalid}"
 			resp = makeResponse(invalidJson, nil)
 		})
 
-		It("NewDisplayer returns an error", func() {
-			Ω(displayer).Should(BeNil())
-			Ω(err).ShouldNot(BeNil())
+		It("NewDisplayer contains the raw value", func() {
+			Ω(displayer).ShouldNot(BeNil())
+			Ω(displayer.RawOutput).Should(Equal(invalidJson))
+			Ω(err).Should(BeNil())
 		})
 	})
 
@@ -94,7 +95,7 @@ var _ = Describe("Displayer", func() {
 				Ω(displayer).ShouldNot(BeNil())
 				displayer.Pretty()
 				var pretty, _ = json.MarshalIndent(value, "", "    ")
-				Ω(displayer.Output()).Should(Equal(string(pretty)))
+				Ω(displayer.Output()).Should(Equal(string(pretty) + "\n"))
 			})
 		})
 

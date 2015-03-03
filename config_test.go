@@ -69,21 +69,23 @@ var _ = Describe("Config", func() {
 					Ω(err).ShouldNot(HaveOccurred())
 					Ω(config).ShouldNot(BeNil())
 					Ω(config.Account).Should(BeZero())
-					Ω(config.Host).Should(BeZero())
-					Ω(config.Token).Should(BeZero())
+					Ω(config.LoginHost).Should(BeZero())
+					Ω(config.Email).Should(BeZero())
+					Ω(config.Password).Should(BeZero())
 				})
 			})
 
 			Context("containing a config", func() {
 				var (
-					account int
-					host    string
-					token   string
+					account  int
+					host     string
+					email    string
+					password string
 				)
 
 				JustBeforeEach(func() {
-					var cfg = fmt.Sprintf(`{"Account":%d,"Host":"%s","Token":"%s"}`,
-						account, host, token)
+					var cfg = fmt.Sprintf(`{"Account":%d,"Email":"%s","LoginHost":"%s","Password":"%s"}`,
+						account, email, host, password)
 					tempFile.WriteString(cfg)
 					config, err = main.LoadConfig(path)
 				})
@@ -95,25 +97,27 @@ var _ = Describe("Config", func() {
 
 					BeforeEach(func() {
 						account = 42
-						host = "Host"
-						token, _ = main.Encrypt(tok)
+						email = "test@test.com"
+						host = "LoginHost"
+						password, _ = main.Encrypt(tok)
 					})
 
 					It("loads", func() {
 						Ω(err).ShouldNot(HaveOccurred())
 						Ω(config).ShouldNot(BeNil())
 						Ω(config.Account).Should(Equal(account))
-						Ω(config.Host).Should(Equal(host))
-						Ω(config.Token).Should(Equal(tok))
+						Ω(config.Email).Should(Equal(email))
+						Ω(config.LoginHost).Should(Equal(host))
+						Ω(config.Password).Should(Equal(tok))
 					})
 
 				})
 
-				Context("with an non encrypted token", func() {
+				Context("with an non encrypted password", func() {
 					BeforeEach(func() {
 						account = 42
 						host = "host"
-						token = "tok"
+						password = "tok"
 					})
 
 					It("returns an error", func() {
@@ -148,7 +152,7 @@ var _ = Describe("Config", func() {
 		Context("with valid input values", func() {
 			BeforeEach(func() {
 				testOut = &bytes.Buffer{}
-				testIn = bytes.NewReader([]byte("\n\n\n\n"))
+				testIn = bytes.NewReader([]byte("\n\n\n\n\n"))
 			})
 
 			Context("with an invalid path", func() {
@@ -177,7 +181,7 @@ var _ = Describe("Config", func() {
 
 				Context("which contains a valid config", func() {
 					BeforeEach(func() {
-						var cfg = `{"Account":2,"Host":"s","Token":"OlVr2Xv9jZfg1zf+LACM+WJNnFxg4Bm46Yc/kA=="}`
+						var cfg = `{"Account":2,"Email":"test@test.com","LoginHost":"s","Password":"OlVr2Xv9jZfg1zf+LACM+WJNnFxg4Bm46Yc/kA=="}`
 						tempFile.WriteString(cfg)
 					})
 
@@ -214,16 +218,17 @@ var _ = Describe("Config", func() {
 
 					Context("setting inputs", func() {
 						var (
-							account string
-							token   string
-							host    string
+							account  string
+							email    string
+							password string
+							host     string
 						)
 
 						Context("given an incorrect account", func() {
 							BeforeEach(func() {
 								account = "foo"
-								var inputs = fmt.Sprintf("%s\n%s\n%s\n",
-									account, token, host)
+								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n",
+									account, email, password, host)
 								testIn = bytes.NewReader([]byte(inputs))
 							})
 
@@ -236,10 +241,11 @@ var _ = Describe("Config", func() {
 						Context("given correct values", func() {
 							BeforeEach(func() {
 								account = "71"
-								token = "tok"
+								email = "test@test.com"
+								password = "tok"
 								host = "host"
-								var inputs = fmt.Sprintf("%s\n%s\n%s\n",
-									account, token, host)
+								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n",
+									account, email, password, host)
 								testIn = bytes.NewReader([]byte(inputs))
 							})
 
@@ -248,8 +254,9 @@ var _ = Describe("Config", func() {
 								config, err := main.LoadConfig(tempFile.Name())
 								Ω(err).ShouldNot(HaveOccurred())
 								Ω(config.Account).Should(Equal(71))
-								Ω(config.Token).Should(Equal(token))
-								Ω(config.Host).Should(Equal(host))
+								Ω(config.Email).Should(Equal(email))
+								Ω(config.Password).Should(Equal(password))
+								Ω(config.LoginHost).Should(Equal(host))
 							})
 						})
 					})

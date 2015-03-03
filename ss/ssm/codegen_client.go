@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 2, 2015 at 11:10am (PST)
+// Mar 2, 2015 at 5:58pm (PST)
 // Command:
 // $ praxisgen -metadata=ssm/restful_doc -output=ssm -pkg=ssm -target=1.0 -client=Api
 //
@@ -518,15 +518,15 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string, projectId string) erro
 // these Notifications are the start and completion of Operations. Currently notifications are only
 // available via the API/UI and are not distributed externally to users.
 type Notification struct {
-	Category   string                               `json:"category,omitempty"`
-	Execution  *Execution                           `json:"execution,omitempty"`
-	Href       string                               `json:"href,omitempty"`
-	Id         string                               `json:"id,omitempty"`
-	Kind       string                               `json:"kind,omitempty"`
-	Links      *NotificationLinks                   `json:"links,omitempty"`
-	Message    string                               `json:"message,omitempty"`
-	Read       bool                                 `json:"read,omitempty"`
-	Timestamps *LatestNotificationsTimestampsStruct `json:"timestamps,omitempty"`
+	Category   string             `json:"category,omitempty"`
+	Execution  *Execution         `json:"execution,omitempty"`
+	Href       string             `json:"href,omitempty"`
+	Id         string             `json:"id,omitempty"`
+	Kind       string             `json:"kind,omitempty"`
+	Links      *NotificationLinks `json:"links,omitempty"`
+	Message    string             `json:"message,omitempty"`
+	Read       bool               `json:"read,omitempty"`
+	Timestamps *TimestampsStruct3 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -954,22 +954,22 @@ func (loc *ScheduledActionLocator) Skip(id string, projectId string) error {
 // Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
 // All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)
 type ScheduledOperation struct {
-	CreatedBy             *User                         `json:"created_by,omitempty"`
-	Execution             *Execution                    `json:"execution,omitempty"`
-	FirstOccurrence       time.Time                     `json:"first_occurrence,omitempty"`
-	Href                  string                        `json:"href,omitempty"`
-	Id                    string                        `json:"id,omitempty"`
-	Kind                  string                        `json:"kind,omitempty"`
-	LastRun               *Operation                    `json:"last_run,omitempty"`
-	Links                 *ScheduledOperationLinks      `json:"links,omitempty"`
-	Mandatory             bool                          `json:"mandatory,omitempty"`
-	Name                  string                        `json:"name,omitempty"`
-	NextOccurrence        time.Time                     `json:"next_occurrence,omitempty"`
-	Operation             *NextOperationOperationStruct `json:"operation,omitempty"`
-	Recurrence            string                        `json:"recurrence,omitempty"`
-	RecurrenceDescription string                        `json:"recurrence_description,omitempty"`
-	Timestamps            *NextActionTimestampsStruct   `json:"timestamps,omitempty"`
-	Timezone              string                        `json:"timezone,omitempty"`
+	CreatedBy             *User                    `json:"created_by,omitempty"`
+	Execution             *Execution               `json:"execution,omitempty"`
+	FirstOccurrence       time.Time                `json:"first_occurrence,omitempty"`
+	Href                  string                   `json:"href,omitempty"`
+	Id                    string                   `json:"id,omitempty"`
+	Kind                  string                   `json:"kind,omitempty"`
+	LastRun               *Operation               `json:"last_run,omitempty"`
+	Links                 *ScheduledOperationLinks `json:"links,omitempty"`
+	Mandatory             bool                     `json:"mandatory,omitempty"`
+	Name                  string                   `json:"name,omitempty"`
+	NextOccurrence        time.Time                `json:"next_occurrence,omitempty"`
+	Operation             *OperationStruct         `json:"operation,omitempty"`
+	Recurrence            string                   `json:"recurrence,omitempty"`
+	RecurrenceDescription string                   `json:"recurrence_description,omitempty"`
+	Timestamps            *TimestampsStruct4       `json:"timestamps,omitempty"`
+	Timezone              string                   `json:"timezone,omitempty"`
 }
 
 //===== Locator
@@ -1323,6 +1323,11 @@ type OperationRunningOperationsLink struct {
 	Href *string `json:"href,omitempty"`
 }
 
+type OperationStruct struct {
+	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
+	Name                 string                 `json:"name,omitempty"`
+}
+
 type Output struct {
 	Category    *string `json:"category,omitempty"`
 	Description *string `json:"description,omitempty"`
@@ -1416,6 +1421,15 @@ type TimestampsStruct2 struct {
 	CreatedAt    *time.Time `json:"created_at,omitempty"`
 	LaunchedAt   *time.Time `json:"launched_at,omitempty"`
 	TerminatedAt *time.Time `json:"terminated_at,omitempty"`
+}
+
+type TimestampsStruct3 struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+}
+
+type TimestampsStruct4 struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type User struct {

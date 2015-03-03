@@ -26,11 +26,13 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	if a.DumpRequestResponse {
 		b, err := httputil.DumpRequest(req, true)
 		if err == nil {
-			fmt.Printf("REQUEST\n-------\n%s\n\n", b)
+			fmt.Printf("%s\n", string(b))
+		} else {
+			fmt.Printf("Failed to dump request content - %s\n", err.Error())
 		}
 	}
 	// Sign last so auth headers don't get printed or logged
-	if err := a.Auth.Sign(req, a.Host); err != nil {
+	if err := a.Auth.Sign(req, a.Host, a.AccountId); err != nil {
 		return nil, err
 	}
 	resp, err := a.Client.Do(req)
@@ -44,7 +46,9 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	if a.DumpRequestResponse {
 		b, err := httputil.DumpResponse(resp, false)
 		if err == nil {
-			fmt.Printf("RESPONSE\n--------\n%s", b)
+			fmt.Printf("--------\n%s", b)
+		} else {
+			fmt.Printf("Failed to dump response content - %s\n", err.Error())
 		}
 	}
 

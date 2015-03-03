@@ -22,13 +22,15 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	cmdLine := cmd.CommandLine{}
 	app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).StringVar(&cmdLine.ConfigPath)
 	app.Flag("account", "RightScale account ID").Short('a').IntVar(&cmdLine.Account)
-	app.Flag("host", "RightScale API host (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)
-	app.Flag("key", "OAuth access token or API key").Short('k').StringVar(&cmdLine.Token)
-	app.Flag("rl10", "Proxy requests through RightLink 10 (exclusive with '--key')").BoolVar(&cmdLine.RL10)
-	app.Flag("hrefs", "List all known href patterns for selected API").BoolVar(&cmdLine.ShowHrefs)
-	app.Flag("x1", "Extract single value using given JSON:select expression").StringVar(&cmdLine.ExtractOneSelect)
-	app.Flag("xm", "Extract zero, one or multiple values using given JSON:select expression and return space separated list (useful for bash scripts)").StringVar(&cmdLine.ExtractSelector)
-	app.Flag("xj", "Extract zero, one or multiple values using given JSON:select expression and return JSON").StringVar(&cmdLine.ExtractSelectorJson)
+	app.Flag("host", "RightScale login endpoint (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)
+	app.Flag("email", "Login email, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Username)
+	app.Flag("pwd", "Login password, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Password)
+	app.Flag("key", "OAuth access token or API key, use --email and --password or use --key or --rl10").Short('k').StringVar(&cmdLine.Token)
+	app.Flag("rl10", "Proxy requests through RL 10 agent, use --email and --password or use --key or --rl10").BoolVar(&cmdLine.RL10)
+	app.Flag("hrefs", "List all known href patterns for selected API or resource").BoolVar(&cmdLine.ShowHrefs)
+	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
+	app.Flag("xm", "Extract zero, one or more values using JSON:select and return space separated list").StringVar(&cmdLine.ExtractSelector)
+	app.Flag("xj", "Extract zero, one or more values using JSON:select and return JSON").StringVar(&cmdLine.ExtractSelectorJson)
 	app.Flag("xh", "Extract header with given name").StringVar(&cmdLine.ExtractHeader)
 	app.Flag("noRedirect", "Do not follow redirect responses").Short('n').BoolVar(&cmdLine.NoRedirect)
 	app.Flag("fetch", "Fetch resource with href present in 'Location' header").BoolVar(&cmdLine.FetchResource)
@@ -60,11 +62,14 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 		if cmdLine.Account == 0 {
 			cmdLine.Account = config.Account
 		}
-		if cmdLine.Token == "" {
-			cmdLine.Token = config.Token
+		if cmdLine.Username == "" {
+			cmdLine.Username = config.Email
+		}
+		if cmdLine.Password == "" {
+			cmdLine.Password = config.Password
 		}
 		if cmdLine.Host == "" {
-			cmdLine.Host = config.Host
+			cmdLine.Host = config.LoginHost
 		}
 	}
 
