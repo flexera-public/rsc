@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Mar 2, 2015 at 11:10am (PST)
+// Mar 2, 2015 at 9:07pm (PST)
 // Command:
 // $ api15gen
 //
@@ -85,7 +85,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -120,7 +120,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -280,7 +280,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -396,7 +396,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -647,7 +647,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -656,7 +656,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "with_inherited",
 						Description: `Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -709,7 +709,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -897,7 +897,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "detail",
 						Description: `The details to be appended to the audit entry record.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -905,7 +905,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "notify",
 						Description: `The event notification category. Defaults to 'None'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -913,7 +913,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "offset",
 						Description: `The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.`,
-						Type:        "*int",
+						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -921,7 +921,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "summary",
 						Description: `The updated summary for the audit entry, maximum length is 255 characters.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -994,7 +994,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "notify",
 						Description: `The event notification category. Defaults to 'None'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1002,7 +1002,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "user_email",
 						Description: `The email of the user (who created/triggered the audit entry). Only usable with instance role.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1117,7 +1117,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1152,7 +1152,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1210,7 +1210,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "notify",
 						Description: `The event notification category. Defaults to 'None'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1296,7 +1296,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "cloud_href",
 						Description: `Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1304,7 +1304,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "dailies",
 						Description: `The number of daily backups(the latest one in each day) that should be kept.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1328,7 +1328,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "monthlies",
 						Description: `The number of monthly backups(the latest one in each month) that should be kept.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1336,7 +1336,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "weeklies",
 						Description: `The number of weekly backups(the latest one in each week) that should be kept.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1344,7 +1344,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "yearlies",
 						Description: `The number of yearly backups(the latest one in each year) that should be kept.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1783,7 +1783,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -1818,7 +1818,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2060,7 +2060,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2130,7 +2130,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2262,7 +2262,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2395,7 +2395,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2517,7 +2517,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2552,7 +2552,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2659,7 +2659,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2694,7 +2694,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2867,7 +2867,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -2932,7 +2932,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3075,7 +3075,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3110,7 +3110,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3168,7 +3168,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3203,7 +3203,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3255,7 +3255,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3566,7 +3566,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3637,7 +3637,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "api_behavior",
 						Description: `When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3757,7 +3757,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "ignore_lock",
 						Description: `Specifies the ability to ignore the lock(s) on the Instance(s).`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3774,7 +3774,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "recipe_name",
 						Description: `The name of the recipe to be run.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3782,7 +3782,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "right_script_href",
 						Description: `The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3838,7 +3838,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "terminate_all",
 						Description: `Specifies the ability to terminate all instances.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3934,7 +3934,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "ignore_lock",
 						Description: `Specifies the ability to ignore the lock on the Instance.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3951,7 +3951,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "recipe_name",
 						Description: `The name of the recipe to run.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3959,7 +3959,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "right_script_href",
 						Description: `The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4050,7 +4050,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4416,7 +4416,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4530,7 +4530,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4565,7 +4565,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5026,7 +5026,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "period",
 						Description: `The time scale for which the graph is generated. Default is 'day'`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5035,7 +5035,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "size",
 						Description: `The size of the graph to be generated. Default is 'small'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5044,7 +5044,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "title",
 						Description: `The title of the graph.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5052,7 +5052,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "tz",
 						Description: `The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences. `,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5111,7 +5111,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "period",
 						Description: `The time scale for which the graph is generated. Default is 'day'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5120,7 +5120,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "size",
 						Description: `The size of the graph to be generated. Default is 'small'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5129,7 +5129,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "title",
 						Description: `The title of the graph.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -5137,7 +5137,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "tz",
 						Description: `The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences. `,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6267,7 +6267,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6302,7 +6302,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6423,7 +6423,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "account_id",
 						Description: `The client's account ID (only needed for instance agent clients).`,
-						Type:        "*int",
+						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6431,7 +6431,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "client_id",
 						Description: `The client ID (only needed for confidential clients).`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6439,7 +6439,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "client_secret",
 						Description: `The client secret (only needed for confidential clients).`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6456,7 +6456,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "r_s_version",
 						Description: `The RightAgent protocol version the client conforms to (only needed for instance agent clients).`,
-						Type:        "*int",
+						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6464,7 +6464,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "refresh_token",
 						Description: `The refresh token obtained from OAuth grant.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6472,7 +6472,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "right_link_version",
 						Description: `The RightLink gem version the client conforms to (only needed for instance agent clients).`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6704,7 +6704,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6739,7 +6739,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6913,7 +6913,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6948,7 +6948,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -6988,7 +6988,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7146,7 +7146,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7193,7 +7193,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7275,7 +7275,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "follow",
 						Description: `A flag indicating whether imported cookbooks should be followed.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7284,7 +7284,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "namespace",
 						Description: `The namespace to import into.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7293,7 +7293,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "repository_commit_reference",
 						Description: `Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7301,7 +7301,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "with_dependencies",
 						Description: `A flag indicating whether dependencies should automatically be imported.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7527,7 +7527,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7562,7 +7562,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "auto_import",
 						Description: `Whether cookbooks should automatically be imported after repositories are fetched.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7630,7 +7630,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7768,7 +7768,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7803,7 +7803,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7903,7 +7903,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "latest_only",
 						Description: `Whether or not to return only the latest version for each lineage.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7912,7 +7912,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -8368,7 +8368,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -8403,7 +8403,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -8557,7 +8557,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -8658,7 +8658,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -8780,7 +8780,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -8815,7 +8815,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9004,7 +9004,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9045,7 +9045,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9435,7 +9435,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9491,7 +9491,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10204,7 +10204,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10290,7 +10290,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10765,7 +10765,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10857,7 +10857,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "allow_comments",
 						Description: `Allow users to leave comments on this ServerTemplate.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10882,7 +10882,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "email_comments",
 						Description: `Email me when a user comments on this ServerTemplate.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10932,7 +10932,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11136,7 +11136,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11186,7 +11186,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11242,7 +11242,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "email",
 						Description: `The email to login with if not using existing session.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11250,7 +11250,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "password",
 						Description: `The corresponding password.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11258,7 +11258,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Extended view shows account permissions and products`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11394,7 +11394,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11429,7 +11429,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11750,7 +11750,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "include_tags_with_prefix",
 						Description: `If included, all tags matching this prefix will be returned. If not included, no tags will be returned.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11758,7 +11758,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "match_all",
 						Description: `If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11784,7 +11784,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "with_deleted",
 						Description: `If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11928,7 +11928,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12392,7 +12392,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12427,7 +12427,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12552,7 +12552,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "force",
 						Description: `Specifies whether to force the detachment of a volume.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12611,7 +12611,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12664,7 +12664,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12812,7 +12812,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12853,7 +12853,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12911,7 +12911,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12946,7 +12946,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,

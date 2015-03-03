@@ -164,10 +164,10 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 // Show help for given command and flags
 func (a *Api) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 	target, _, err := a.ParseCommandAndFlags(cmd, hrefPrefix, values)
-	resource, action, href := target.Resource, target.Action, target.Href
 	if err != nil {
 		return err
 	}
+	resource, action, href := target.Resource, target.Action, target.Href
 	if len(action.CommandFlags) == 0 {
 		fmt.Printf("usage: rsc [<flags>] %s %s %s\n", strings.Split(cmd, " ")[0],
 			action.Name, href)

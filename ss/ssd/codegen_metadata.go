@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Mar 2, 2015 at 11:10am (PST)
+// Mar 2, 2015 at 9:07pm (PST)
 // Command:
 // $ praxisgen -metadata=ssd/restful_doc -output=ssd -pkg=ssd -target=1.0 -client=Api
 //
@@ -296,7 +296,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,

@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated
-// Mar 2, 2015 at 11:10am (PST)
+// Mar 2, 2015 at 9:07pm (PST)
 // Command:
 // $ praxisgen -metadata=ssc/restful_doc -output=ssc -pkg=ssc -target=1.0 -client=Api
 //
@@ -72,7 +72,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "group",
 						Description: `The group that this setting belongs to, simply for organizational purposes`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -256,7 +256,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -553,7 +553,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "targets",
 						Description: `Comma separated list of target ids. Note, currently only "me" is allowed.`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -777,7 +777,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -828,7 +828,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
-						Type:        "*string",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,

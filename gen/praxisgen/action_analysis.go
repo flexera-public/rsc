@@ -131,7 +131,9 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 				if s < 200 || s > 299 {
 					continue // Skip error responses
 				}
-				if headers, ok := resp["headers"]; ok {
+				if s == 201 && actionName == "create" {
+					hasLocation = true
+				} else if headers, ok := resp["headers"]; ok {
 					if hname, ok := headers.(string); ok {
 						// TBD is there a better way?
 						hasLocation = hname == "Location" && actionName == "create"
@@ -149,9 +151,6 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 							}
 						}
 					}
-					if hasLocation {
-						returnTypeName = fmt.Sprintf("*%sLocator", resourceName)
-					}
 				}
 				if returnTypeName == "" {
 					if media, ok := resp["media_type"]; ok {
@@ -161,25 +160,24 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						}
 					} else if mime, ok := resp["mime_type"]; ok {
 						// Resticle compat
-						if mime == "controller_defined" {
-							returnTypeName = toGoTypeName(resource["media_type"].(string), true)
-						} else {
-							for n, r := range a.RawResources {
-								if mt, ok := r["mime_type"]; ok {
-									if mt == mime {
-										if actionName == "index" {
-											returnTypeName = "[]" + n
-										} else {
-											returnTypeName = n
-										}
-										break
+						for n, r := range a.RawResources {
+							if mt, ok := r["mime_type"]; ok {
+								if mt == mime {
+									if actionName == "index" {
+										returnTypeName = "[]*" + n
+									} else {
+										returnTypeName = "*" + n
 									}
+									break
 								}
 							}
 						}
 					}
 				}
 			}
+		}
+		if hasLocation {
+			returnTypeName = fmt.Sprintf("*%sLocator", resourceName)
 		}
 
 		// Record action

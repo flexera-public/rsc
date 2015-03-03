@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"regexp"
 
@@ -155,7 +156,8 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 // Helper method that creates or retrieve a object data type given its attributes.
 func (a *ApiAnalyzer) CreateOrGetType(query string, attributes map[string]interface{}) (*gen.ObjectDataType, error) {
 	hasher := md5.New()
-	hasher.Write([]byte(fmt.Sprintf("%v", attributes)))
+	val, _ := json.Marshal(attributes)
+	hasher.Write(val)
 	md5str := hex.EncodeToString(hasher.Sum(nil))
 	name := inflect.Camelize(bracketRegexp.ReplaceAllLiteralString(query, "_") + "_struct")
 	obj := a.GetOrCreate(md5str, name)

@@ -36,7 +36,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 		if err != nil {
 			return err
 		}
-		attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.SignatureIgnoreMandatory()}
+		attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.Signature()}
 	}
 	resource.Attributes = attributes
 

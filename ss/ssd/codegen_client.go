@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 2, 2015 at 11:10am (PST)
+// Mar 2, 2015 at 9:07pm (PST)
 // Command:
 // $ praxisgen -metadata=ssd/restful_doc -output=ssd -pkg=ssd -target=1.0 -client=Api
 //
@@ -54,15 +54,15 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 // A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
 // Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.
 type Schedule struct {
-	CreatedBy       *User              `json:"created_by,omitempty"`
-	Description     string             `json:"description,omitempty"`
-	Href            string             `json:"href,omitempty"`
-	Id              string             `json:"id,omitempty"`
-	Kind            string             `json:"kind,omitempty"`
-	Name            string             `json:"name,omitempty"`
-	StartRecurrence *Recurrence        `json:"start_recurrence,omitempty"`
-	StopRecurrence  *Recurrence        `json:"stop_recurrence,omitempty"`
-	Timestamps      *TimestampsStruct3 `json:"timestamps,omitempty"`
+	CreatedBy       *User             `json:"created_by,omitempty"`
+	Description     string            `json:"description,omitempty"`
+	Href            string            `json:"href,omitempty"`
+	Id              string            `json:"id,omitempty"`
+	Kind            string            `json:"kind,omitempty"`
+	Name            string            `json:"name,omitempty"`
+	StartRecurrence *Recurrence       `json:"start_recurrence,omitempty"`
+	StopRecurrence  *Recurrence       `json:"stop_recurrence,omitempty"`
+	Timestamps      *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -82,8 +82,8 @@ func (api *Api) ScheduleLocator(href string) *ScheduleLocator {
 
 // GET /collections/:collection_id/schedules
 // List the schedules available in Designer.
-func (loc *ScheduleLocator) Index(collectionId string) ([]Schedule, error) {
-	var res []Schedule
+func (loc *ScheduleLocator) Index(collectionId string) ([]*Schedule, error) {
+	var res []*Schedule
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
@@ -108,8 +108,8 @@ func (loc *ScheduleLocator) Index(collectionId string) ([]Schedule, error) {
 
 // GET /collections/:collection_id/schedules/:id
 // Show detailed information about a given Schedule.
-func (loc *ScheduleLocator) Show(collectionId string, id string) (Schedule, error) {
-	var res Schedule
+func (loc *ScheduleLocator) Show(collectionId string, id string) (*Schedule, error) {
+	var res *Schedule
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
@@ -131,14 +131,14 @@ func (loc *ScheduleLocator) Show(collectionId string, id string) (Schedule, erro
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, &res)
+	err = json.Unmarshal(respBody, res)
 	return res, err
 }
 
 // POST /collections/:collection_id/schedules
 // Create a new Schedule.
-func (loc *ScheduleLocator) Create(collectionId string) (*Schedule, error) {
-	var res *Schedule
+func (loc *ScheduleLocator) Create(collectionId string) (*ScheduleLocator, error) {
+	var res *ScheduleLocator
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
@@ -152,73 +152,58 @@ func (loc *ScheduleLocator) Create(collectionId string) (*Schedule, error) {
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ScheduleLocator{UrlResolver(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
 }
 
 // PATCH /collections/:collection_id/schedules/:id
 // Update one or more attributes of an existing Schedule.
 // Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
-func (loc *ScheduleLocator) Update(collectionId string, id string) (*Schedule, error) {
-	var res *Schedule
+func (loc *ScheduleLocator) Update(collectionId string, id string) error {
 	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
+		return fmt.Errorf("collectionId is required")
 	}
 	if id == "" {
-		return res, fmt.Errorf("id is required")
+		return fmt.Errorf("id is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Schedule", "update")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
+	return nil
 }
 
 // DELETE /collections/:collection_id/schedules/:id
 // Delete a Schedule from the system.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
-func (loc *ScheduleLocator) Delete(collectionId string, id string) (*Schedule, error) {
-	var res *Schedule
+func (loc *ScheduleLocator) Delete(collectionId string, id string) error {
 	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
+		return fmt.Errorf("collectionId is required")
 	}
 	if id == "" {
-		return res, fmt.Errorf("id is required")
+		return fmt.Errorf("id is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Schedule", "delete")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
+	return nil
 }
 
 // DELETE /collections/:collection_id/schedules
@@ -273,7 +258,7 @@ type Template struct {
 	RequiredParameters []string           `json:"required_parameters,omitempty"`
 	ShortDescription   string             `json:"short_description,omitempty"`
 	Source             string             `json:"source,omitempty"`
-	Timestamps         *TimestampsStruct4 `json:"timestamps,omitempty"`
+	Timestamps         *TimestampsStruct2 `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -293,8 +278,8 @@ func (api *Api) TemplateLocator(href string) *TemplateLocator {
 
 // GET /collections/:collection_id/templates
 // List the templates available in Designer along with some general details.
-func (loc *TemplateLocator) Index(collectionId string, options rsapi.ApiParams) ([]Template, error) {
-	var res []Template
+func (loc *TemplateLocator) Index(collectionId string, options rsapi.ApiParams) ([]*Template, error) {
+	var res []*Template
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
@@ -324,8 +309,8 @@ func (loc *TemplateLocator) Index(collectionId string, options rsapi.ApiParams) 
 
 // GET /collections/:collection_id/templates/:id
 // Show detailed information about a given Template. Use the views specified below for more information.
-func (loc *TemplateLocator) Show(collectionId string, id string, options rsapi.ApiParams) (Template, error) {
-	var res Template
+func (loc *TemplateLocator) Show(collectionId string, id string, options rsapi.ApiParams) (*Template, error) {
+	var res *Template
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
@@ -352,14 +337,14 @@ func (loc *TemplateLocator) Show(collectionId string, id string, options rsapi.A
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, &res)
+	err = json.Unmarshal(respBody, res)
 	return res, err
 }
 
 // POST /collections/:collection_id/templates
 // Create a new Template by uploading its content to Designer.
-func (loc *TemplateLocator) Create(collectionId string) (*Template, error) {
-	var res *Template
+func (loc *TemplateLocator) Create(collectionId string) (*TemplateLocator, error) {
+	var res *TemplateLocator
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
@@ -373,71 +358,56 @@ func (loc *TemplateLocator) Create(collectionId string) (*Template, error) {
 	if err != nil {
 		return res, err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &TemplateLocator{UrlResolver(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
 }
 
 // PUT /collections/:collection_id/templates/:id
 // Update the content of an existing Template (a Template with the same "name" value in the CAT).
-func (loc *TemplateLocator) Update(collectionId string, id string) (*Template, error) {
-	var res *Template
+func (loc *TemplateLocator) Update(collectionId string, id string) error {
 	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
+		return fmt.Errorf("collectionId is required")
 	}
 	if id == "" {
-		return res, fmt.Errorf("id is required")
+		return fmt.Errorf("id is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Template", "update")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
+	return nil
 }
 
 // DELETE /collections/:collection_id/templates/:id
 // Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
-func (loc *TemplateLocator) Delete(collectionId string, id string) (*Template, error) {
-	var res *Template
+func (loc *TemplateLocator) Delete(collectionId string, id string) error {
 	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
+		return fmt.Errorf("collectionId is required")
 	}
 	if id == "" {
-		return res, fmt.Errorf("id is required")
+		return fmt.Errorf("id is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Template", "delete")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
+	return nil
 }
 
 // DELETE /collections/:collection_id/templates
@@ -467,16 +437,15 @@ func (loc *TemplateLocator) MultiDelete(collectionId string, ids []string) error
 
 // GET /collections/:collection_id/templates/:id/download
 // Download the source of a Template.
-func (loc *TemplateLocator) Download(apiVersion string, collectionId string, id string) (*Template, error) {
-	var res *Template
+func (loc *TemplateLocator) Download(apiVersion string, collectionId string, id string) error {
 	if apiVersion == "" {
-		return res, fmt.Errorf("apiVersion is required")
+		return fmt.Errorf("apiVersion is required")
 	}
 	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
+		return fmt.Errorf("collectionId is required")
 	}
 	if id == "" {
-		return res, fmt.Errorf("id is required")
+		return fmt.Errorf("id is required")
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -485,45 +454,32 @@ func (loc *TemplateLocator) Download(apiVersion string, collectionId string, id 
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Template", "download")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
+	return nil
 }
 
 // POST /collections/:collection_id/templates/actions/compile
 // Compile the Template, but don't save it to Designer. Useful for debugging a CAT file while you are still authoring it.
-func (loc *TemplateLocator) Compile(collectionId string) (*Template, error) {
-	var res *Template
+func (loc *TemplateLocator) Compile(collectionId string) error {
 	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
+		return fmt.Errorf("collectionId is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Template", "compile")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
+	return nil
 }
 
 // POST /collections/:collection_id/templates/actions/publish
@@ -567,35 +523,35 @@ func (loc *TemplateLocator) Unpublish(collectionId string) error {
 /****** Parameter Data Types ******/
 
 type ApplicationInfo struct {
-	Href *string `json:"href,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Href string `json:"href,omitempty"`
+	Name string `json:"name,omitempty"`
 }
 
 type Parameter struct {
-	Default     *string                     `json:"default,omitempty"`
-	Description *string                     `json:"description,omitempty"`
-	Name        *string                     `json:"name,omitempty"`
+	Default     string                      `json:"default,omitempty"`
+	Description string                      `json:"description,omitempty"`
+	Name        string                      `json:"name,omitempty"`
 	Operations  []string                    `json:"operations,omitempty"`
-	Type_       *string                     `json:"type,omitempty"`
+	Type_       string                      `json:"type,omitempty"`
 	Ui          *ParametersUiStruct         `json:"ui,omitempty"`
 	Validation  *ParametersValidationStruct `json:"validation,omitempty"`
 }
 
 type ParametersUiStruct struct {
-	Category *string `json:"category,omitempty"`
-	Index    *int    `json:"index,omitempty"`
-	Label    *string `json:"label,omitempty"`
+	Category string `json:"category,omitempty"`
+	Index    int    `json:"index,omitempty"`
+	Label    string `json:"label,omitempty"`
 }
 
 type ParametersValidationStruct struct {
-	AllowedPattern        *string  `json:"allowed_pattern,omitempty"`
+	AllowedPattern        string   `json:"allowed_pattern,omitempty"`
 	AllowedValues         []string `json:"allowed_values,omitempty"`
-	ConstraintDescription *string  `json:"constraint_description,omitempty"`
-	MaxLength             *int     `json:"max_length,omitempty"`
-	MaxValue              *int     `json:"max_value,omitempty"`
-	MinLength             *int     `json:"min_length,omitempty"`
-	MinValue              *int     `json:"min_value,omitempty"`
-	NoEcho                *bool    `json:"no_echo,omitempty"`
+	ConstraintDescription string   `json:"constraint_description,omitempty"`
+	MaxLength             int      `json:"max_length,omitempty"`
+	MaxValue              int      `json:"max_value,omitempty"`
+	MinLength             int      `json:"min_length,omitempty"`
+	MinValue              int      `json:"min_value,omitempty"`
+	NoEcho                bool     `json:"no_echo,omitempty"`
 }
 
 type Recurrence struct {
@@ -606,11 +562,11 @@ type Recurrence struct {
 
 type Schedule2 struct {
 	CreatedBy       *User             `json:"created_by,omitempty"`
-	Description     *string           `json:"description,omitempty"`
-	Href            *string           `json:"href,omitempty"`
+	Description     string            `json:"description,omitempty"`
+	Href            string            `json:"href,omitempty"`
 	Id              string            `json:"id,omitempty"`
-	Kind            *string           `json:"kind,omitempty"`
-	Name            *string           `json:"name,omitempty"`
+	Kind            string            `json:"kind,omitempty"`
+	Name            string            `json:"name,omitempty"`
 	StartRecurrence *Recurrence       `json:"start_recurrence,omitempty"`
 	StopRecurrence  *Recurrence       `json:"stop_recurrence,omitempty"`
 	Timestamps      *TimestampsStruct `json:"timestamps,omitempty"`
@@ -618,46 +574,35 @@ type Schedule2 struct {
 
 type Template2 struct {
 	ApplicationInfo    *ApplicationInfo   `json:"application_info,omitempty"`
-	CompiledCat        *string            `json:"compiled_cat,omitempty"`
+	CompiledCat        string             `json:"compiled_cat,omitempty"`
 	CreatedBy          *User              `json:"created_by,omitempty"`
-	Filename           *string            `json:"filename,omitempty"`
-	Href               *string            `json:"href,omitempty"`
+	Filename           string             `json:"filename,omitempty"`
+	Href               string             `json:"href,omitempty"`
 	Id                 string             `json:"id,omitempty"`
-	Kind               *string            `json:"kind,omitempty"`
-	LongDescription    *string            `json:"long_description,omitempty"`
-	Name               *string            `json:"name,omitempty"`
+	Kind               string             `json:"kind,omitempty"`
+	LongDescription    string             `json:"long_description,omitempty"`
+	Name               string             `json:"name,omitempty"`
 	Parameters         []*Parameter       `json:"parameters,omitempty"`
 	PublishedBy        *User              `json:"published_by,omitempty"`
 	RequiredParameters []string           `json:"required_parameters,omitempty"`
-	ShortDescription   *string            `json:"short_description,omitempty"`
-	Source             *string            `json:"source,omitempty"`
+	ShortDescription   string             `json:"short_description,omitempty"`
+	Source             string             `json:"source,omitempty"`
 	Timestamps         *TimestampsStruct2 `json:"timestamps,omitempty"`
 }
 
 type TimestampsStruct struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
 
 type TimestampsStruct2 struct {
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	PublishedAt *time.Time `json:"published_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
-}
-
-type TimestampsStruct3 struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-}
-
-type TimestampsStruct4 struct {
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	PublishedAt *time.Time `json:"published_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	CreatedAt   time.Time `json:"created_at,omitempty"`
+	PublishedAt time.Time `json:"published_at,omitempty"`
+	UpdatedAt   time.Time `json:"updated_at,omitempty"`
 }
 
 type User struct {
-	Email *string `json:"email,omitempty"`
-	Id    int     `json:"id,omitempty"`
-	Name  *string `json:"name,omitempty"`
+	Email string `json:"email,omitempty"`
+	Id    int    `json:"id,omitempty"`
+	Name  string `json:"name,omitempty"`
 }
