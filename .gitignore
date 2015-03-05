@@ -4,3 +4,4 @@ gen/praxis/praxisgen
 gen/api15gen/api15gen
 rsc
 gen/praxisgen/praxisgen
+version.go

@@ -3,6 +3,9 @@ rsc - A generic RightScale API client
 rsc provides both a go package and command line tool for interacting with various RightScale APIs. 
 Both API 1.5 and API 1.6 are supported at this time.
 
+- Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
+  ![Code Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)
+
 Command Line Tool
 -----------------
 The command line tool uses subcommands to interact with each API, for example `rsc api15`
