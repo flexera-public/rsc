@@ -2,9 +2,9 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 4, 2015 at 6:42pm (PST)
+// Mar 4, 2015 at 9:23pm (PST)
 // Command:
-// $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
+// $ praxisgen -metadata=rsapi16/api_docs -output=rsapi16 -pkg=rsapi16 -target=1.6 -client=Api16
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//

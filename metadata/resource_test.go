@@ -24,16 +24,16 @@ var _ = Describe("Resource", func() {
 			r1       = regexp.MustCompile(`/clouds`)
 			r2       = regexp.MustCompile(`/clouds/([^/]+)`)
 			r3       = regexp.MustCompile(`/clouds/([^/]+)/instances/([^/]+)`)
-			pattern1 = metadata.PathPattern{"", []string{}, r1}
-			pattern2 = metadata.PathPattern{"%s", []string{"a"}, r2}
-			pattern3 = metadata.PathPattern{"%s%s", []string{"a", "b"}, r3}
+			pattern1 = metadata.PathPattern{"GET", "", []string{}, r1}
+			pattern2 = metadata.PathPattern{"GET", "%s", []string{"a"}, r2}
+			pattern3 = metadata.PathPattern{"GET", "%s%s", []string{"a", "b"}, r3}
 			a        = metadata.Action{PathPatterns: []*metadata.PathPattern{&pattern1}}
 			b        = metadata.Action{PathPatterns: []*metadata.PathPattern{&pattern2}}
 			c        = metadata.Action{PathPatterns: []*metadata.PathPattern{&pattern2, &pattern3}}
 		)
 
 		JustBeforeEach(func() {
-			, err := resource.ExtractVariables(href)
+			variables, err = resource.ExtractVariables(href)
 		})
 
 		Context("with a pattern that does not match", func() {

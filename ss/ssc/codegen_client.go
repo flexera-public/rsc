@@ -2,9 +2,9 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 4, 2015 at 6:42pm (PST)
+// Mar 4, 2015 at 9:23pm (PST)
 // Command:
-// $ praxisgen -metadata=ssc/restful_doc -output=ssc -pkg=ssc -target=1.0 -client=Api
+// $ praxisgen -metadata=ss/ssc/restful_doc -output=ss/ssc -pkg=ssc -target=1.0 -client=Api
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//

@@ -8,7 +8,7 @@ import (
 	"github.com/rightscale/rsc/metadata"
 )
 
-_ := Describe("Action", func() {
+var _ = Describe("Action", func() {
 
 	Context("PathPattern Substitute", func() {
 		var (
@@ -38,7 +38,7 @@ _ := Describe("Action", func() {
 
 			BeforeEach(func() {
 				variables = []*metadata.PathVariable{&a, &b, &c}
-				pattern = &metadata.PathPattern{p, []string{}, r}
+				pattern = &metadata.PathPattern{"GET", p, []string{}, r}
 			})
 
 			It("returns the pattern as is", func() {
@@ -56,7 +56,7 @@ _ := Describe("Action", func() {
 
 			BeforeEach(func() {
 				variables = []*metadata.PathVariable{&a, &b, &c}
-				pattern = &metadata.PathPattern{p, []string{"a"}, r}
+				pattern = &metadata.PathPattern{"GET", p, []string{"a"}, r}
 			})
 
 			It("returns the substituted pattern with the matched variables", func() {
@@ -74,7 +74,7 @@ _ := Describe("Action", func() {
 
 			BeforeEach(func() {
 				variables = []*metadata.PathVariable{&a, &b, &c}
-				pattern = &metadata.PathPattern{p, []string{"a", "d"}, r}
+				pattern = &metadata.PathPattern{"GET", p, []string{"a", "d"}, r}
 			})
 
 			It("returns an empty string and the unmatched variables", func() {
@@ -96,14 +96,18 @@ _ := Describe("Action", func() {
 
 			// Test data
 			prefix = "/a/path/pattern/with/one/"
-			p1     = &metadata.PathPattern{prefix + "%s", []string{"a"}, nil}
-			p2     = &metadata.PathPattern{"%s%s", []string{"a", "b"}, nil}
+			p1     = &metadata.PathPattern{"GET", prefix + "%s", []string{"a"}, nil}
+			p2     = &metadata.PathPattern{"GET", "%s%s", []string{"a", "b"}, nil}
 			a      = metadata.PathVariable{"a", "1"}
 			b      = metadata.PathVariable{"b", "2"}
 		)
 
 		JustBeforeEach(func() {
-			url, err = action.Url(variables)
+			var p *metadata.ActionPath
+			p, err = action.Url(variables)
+			if err == nil {
+				url = p.Path
+			}
 		})
 
 		Context("with a single matching pattern", func() {
@@ -157,7 +161,6 @@ _ := Describe("Action", func() {
 			})
 
 			It("returns an error", func() {
-				Ω(url).Should(BeEmpty())
 				Ω(err).Should(HaveOccurred())
 			})
 		})

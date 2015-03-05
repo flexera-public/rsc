@@ -1,4 +1,3 @@
-//go:generate api15gen
 package rsapi15
 
 import (
