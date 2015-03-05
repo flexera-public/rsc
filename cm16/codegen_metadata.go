@@ -2,12 +2,12 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated with:
-// $ praxisgen -metadata=rsapi16/api_docs -output=rsapi16 -pkg=rsapi16 -target=1.6 -client=Api16
+// $ praxisgen -metadata=cm16/api_docs -output=cm16 -pkg=cm16 -target=1.6 -client=Api
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rsapi16
+package cm16
 
 import (
 	"regexp"

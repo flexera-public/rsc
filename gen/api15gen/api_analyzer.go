@@ -239,7 +239,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 	name = inflect.Singularize(name)
 	descriptor.Resources[name] = &gen.Resource{
 		Name:        name,
-		ClientName:  "Api15",
+		ClientName:  "Api",
 		Description: removeBlankLines(description),
 		Actions:     actions,
 		Attributes:  attributes,

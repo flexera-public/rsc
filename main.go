@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/rightscale/rsc/cm15"
+	"github.com/rightscale/rsc/cm16"
 	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/rsapi15"
-	"github.com/rightscale/rsc/rsapi16"
 	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
 
@@ -37,13 +37,13 @@ func main() {
 	switch topCommand {
 	case "setup":
 		err = CreateConfig(cmdLine.ConfigPath)
-	case "api15":
-		client, err = rsapi15.FromCommandLine(cmdLine)
+	case "cm15":
+		client, err = cm15.FromCommandLine(cmdLine)
 		if err == nil {
 			resp, err = runCommand(client, cmdLine)
 		}
-	case "api16":
-		client, err = rsapi16.FromCommandLine(cmdLine)
+	case "cm16":
+		client, err = cm16.FromCommandLine(cmdLine)
 		if err == nil {
 			resp, err = runCommand(client, cmdLine)
 		}

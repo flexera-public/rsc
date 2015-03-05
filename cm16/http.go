@@ -1,4 +1,4 @@
-package rsapi16
+package cm16
 
 import (
 	"fmt"
@@ -10,12 +10,12 @@ import (
 )
 
 // Dispatch request, used by generated code
-func (a *Api16) Dispatch(method, actionUrl string, queryParams, payloadParams rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) Dispatch(method, actionUrl string, queryParams, payloadParams rsapi.ApiParams) (*http.Response, error) {
 	return a.GetRaw(actionUrl, queryParams)
 }
 
 // Low-level GET request that loads response JSON into generic object
-func (a *Api16) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
+func (a *Api) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 	resp, err := a.GetRaw(uri, params)
 	if err != nil {
 		return nil, err
@@ -24,12 +24,12 @@ func (a *Api16) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 }
 
 // Low-level GET request
-func (a *Api16) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
 	return a.makeRequest("GET", uri, params)
 }
 
 // Helper function that signs, makes and logs HTTP request
-func (a *Api16) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Response, error) {
 	u := url.URL{
 		Scheme: "https",
 		Host:   a.Host,

@@ -2,12 +2,12 @@
 //                     RightScale API client
 //
 // Generated with:
-// $ api15gen -metadata=rsapi15 -output=rsapi15
+// $ api15gen -metadata=cm15 -output=cm15
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rsapi15
+package cm15
 
 import (
 	"encoding/json"
@@ -63,11 +63,11 @@ type Account struct {
 // Account resource locator, exposes resource actions.
 type AccountLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Account resource locator factory
-func (api *Api15) AccountLocator(href string) *AccountLocator {
+func (api *Api) AccountLocator(href string) *AccountLocator {
 	return &AccountLocator{UrlResolver(href), api}
 }
 
@@ -113,11 +113,11 @@ type AccountGroup struct {
 // AccountGroup resource locator, exposes resource actions.
 type AccountGroupLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // AccountGroup resource locator factory
-func (api *Api15) AccountGroupLocator(href string) *AccountGroupLocator {
+func (api *Api) AccountGroupLocator(href string) *AccountGroupLocator {
 	return &AccountGroupLocator{UrlResolver(href), api}
 }
 
@@ -206,11 +206,11 @@ type Alert struct {
 // Alert resource locator, exposes resource actions.
 type AlertLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Alert resource locator factory
-func (api *Api15) AlertLocator(href string) *AlertLocator {
+func (api *Api) AlertLocator(href string) *AlertLocator {
 	return &AlertLocator{UrlResolver(href), api}
 }
 
@@ -389,11 +389,11 @@ type AlertSpec struct {
 // AlertSpec resource locator, exposes resource actions.
 type AlertSpecLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // AlertSpec resource locator factory
-func (api *Api15) AlertSpecLocator(href string) *AlertSpecLocator {
+func (api *Api) AlertSpecLocator(href string) *AlertSpecLocator {
 	return &AlertSpecLocator{UrlResolver(href), api}
 }
 
@@ -568,11 +568,11 @@ type AuditEntry struct {
 // AuditEntry resource locator, exposes resource actions.
 type AuditEntryLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // AuditEntry resource locator factory
-func (api *Api15) AuditEntryLocator(href string) *AuditEntryLocator {
+func (api *Api) AuditEntryLocator(href string) *AuditEntryLocator {
 	return &AuditEntryLocator{UrlResolver(href), api}
 }
 
@@ -818,11 +818,11 @@ type Backup struct {
 // Backup resource locator, exposes resource actions.
 type BackupLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Backup resource locator factory
-func (api *Api15) BackupLocator(href string) *BackupLocator {
+func (api *Api) BackupLocator(href string) *BackupLocator {
 	return &BackupLocator{UrlResolver(href), api}
 }
 
@@ -1077,11 +1077,11 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 // ChildAccount resource locator, exposes resource actions.
 type ChildAccountLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // ChildAccount resource locator factory
-func (api *Api15) ChildAccountLocator(href string) *ChildAccountLocator {
+func (api *Api) ChildAccountLocator(href string) *ChildAccountLocator {
 	return &ChildAccountLocator{UrlResolver(href), api}
 }
 
@@ -1188,11 +1188,11 @@ type Cloud struct {
 // Cloud resource locator, exposes resource actions.
 type CloudLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Cloud resource locator factory
-func (api *Api15) CloudLocator(href string) *CloudLocator {
+func (api *Api) CloudLocator(href string) *CloudLocator {
 	return &CloudLocator{UrlResolver(href), api}
 }
 
@@ -1277,11 +1277,11 @@ type CloudAccount struct {
 // CloudAccount resource locator, exposes resource actions.
 type CloudAccountLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // CloudAccount resource locator factory
-func (api *Api15) CloudAccountLocator(href string) *CloudAccountLocator {
+func (api *Api) CloudAccountLocator(href string) *CloudAccountLocator {
 	return &CloudAccountLocator{UrlResolver(href), api}
 }
 
@@ -1402,11 +1402,11 @@ type Cookbook struct {
 // Cookbook resource locator, exposes resource actions.
 type CookbookLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Cookbook resource locator factory
-func (api *Api15) CookbookLocator(href string) *CookbookLocator {
+func (api *Api) CookbookLocator(href string) *CookbookLocator {
 	return &CookbookLocator{UrlResolver(href), api}
 }
 
@@ -1579,11 +1579,11 @@ type CookbookAttachment struct {
 // CookbookAttachment resource locator, exposes resource actions.
 type CookbookAttachmentLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // CookbookAttachment resource locator factory
-func (api *Api15) CookbookAttachmentLocator(href string) *CookbookAttachmentLocator {
+func (api *Api) CookbookAttachmentLocator(href string) *CookbookAttachmentLocator {
 	return &CookbookAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -1770,11 +1770,11 @@ type Credential struct {
 // Credential resource locator, exposes resource actions.
 type CredentialLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Credential resource locator factory
-func (api *Api15) CredentialLocator(href string) *CredentialLocator {
+func (api *Api) CredentialLocator(href string) *CredentialLocator {
 	return &CredentialLocator{UrlResolver(href), api}
 }
 
@@ -1930,11 +1930,11 @@ type Datacenter struct {
 // Datacenter resource locator, exposes resource actions.
 type DatacenterLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Datacenter resource locator factory
-func (api *Api15) DatacenterLocator(href string) *DatacenterLocator {
+func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
 	return &DatacenterLocator{UrlResolver(href), api}
 }
 
@@ -2023,11 +2023,11 @@ type Deployment struct {
 // Deployment resource locator, exposes resource actions.
 type DeploymentLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Deployment resource locator factory
-func (api *Api15) DeploymentLocator(href string) *DeploymentLocator {
+func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
 	return &DeploymentLocator{UrlResolver(href), api}
 }
 
@@ -2250,11 +2250,11 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 // HealthCheck resource locator, exposes resource actions.
 type HealthCheckLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // HealthCheck resource locator factory
-func (api *Api15) HealthCheckLocator(href string) *HealthCheckLocator {
+func (api *Api) HealthCheckLocator(href string) *HealthCheckLocator {
 	return &HealthCheckLocator{UrlResolver(href), api}
 }
 
@@ -2302,11 +2302,11 @@ type IdentityProvider struct {
 // IdentityProvider resource locator, exposes resource actions.
 type IdentityProviderLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // IdentityProvider resource locator factory
-func (api *Api15) IdentityProviderLocator(href string) *IdentityProviderLocator {
+func (api *Api) IdentityProviderLocator(href string) *IdentityProviderLocator {
 	return &IdentityProviderLocator{UrlResolver(href), api}
 }
 
@@ -2400,11 +2400,11 @@ type Image struct {
 // Image resource locator, exposes resource actions.
 type ImageLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Image resource locator factory
-func (api *Api15) ImageLocator(href string) *ImageLocator {
+func (api *Api) ImageLocator(href string) *ImageLocator {
 	return &ImageLocator{UrlResolver(href), api}
 }
 
@@ -2491,11 +2491,11 @@ type Input struct {
 // Input resource locator, exposes resource actions.
 type InputLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Input resource locator factory
-func (api *Api15) InputLocator(href string) *InputLocator {
+func (api *Api) InputLocator(href string) *InputLocator {
 	return &InputLocator{UrlResolver(href), api}
 }
 
@@ -2661,11 +2661,11 @@ type Instance struct {
 // Instance resource locator, exposes resource actions.
 type InstanceLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Instance resource locator factory
-func (api *Api15) InstanceLocator(href string) *InstanceLocator {
+func (api *Api) InstanceLocator(href string) *InstanceLocator {
 	return &InstanceLocator{UrlResolver(href), api}
 }
 
@@ -3109,11 +3109,11 @@ type InstanceCustomLodgement struct {
 // InstanceCustomLodgement resource locator, exposes resource actions.
 type InstanceCustomLodgementLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // InstanceCustomLodgement resource locator factory
-func (api *Api15) InstanceCustomLodgementLocator(href string) *InstanceCustomLodgementLocator {
+func (api *Api) InstanceCustomLodgementLocator(href string) *InstanceCustomLodgementLocator {
 	return &InstanceCustomLodgementLocator{UrlResolver(href), api}
 }
 
@@ -3266,11 +3266,11 @@ type InstanceType struct {
 // InstanceType resource locator, exposes resource actions.
 type InstanceTypeLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // InstanceType resource locator factory
-func (api *Api15) InstanceTypeLocator(href string) *InstanceTypeLocator {
+func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
 	return &InstanceTypeLocator{UrlResolver(href), api}
 }
 
@@ -3358,11 +3358,11 @@ type IpAddress struct {
 // IpAddress resource locator, exposes resource actions.
 type IpAddressLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // IpAddress resource locator factory
-func (api *Api15) IpAddressLocator(href string) *IpAddressLocator {
+func (api *Api) IpAddressLocator(href string) *IpAddressLocator {
 	return &IpAddressLocator{UrlResolver(href), api}
 }
 
@@ -3506,11 +3506,11 @@ type IpAddressBinding struct {
 // IpAddressBinding resource locator, exposes resource actions.
 type IpAddressBindingLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // IpAddressBinding resource locator factory
-func (api *Api15) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
+func (api *Api) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
 	return &IpAddressBindingLocator{UrlResolver(href), api}
 }
 
@@ -3638,11 +3638,11 @@ type MonitoringMetric struct {
 // MonitoringMetric resource locator, exposes resource actions.
 type MonitoringMetricLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // MonitoringMetric resource locator factory
-func (api *Api15) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
+func (api *Api) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
 	return &MonitoringMetricLocator{UrlResolver(href), api}
 }
 
@@ -3802,11 +3802,11 @@ type MultiCloudImage struct {
 // MultiCloudImage resource locator, exposes resource actions.
 type MultiCloudImageLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // MultiCloudImage resource locator factory
-func (api *Api15) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
+func (api *Api) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 	return &MultiCloudImageLocator{UrlResolver(href), api}
 }
 
@@ -3996,11 +3996,11 @@ type MultiCloudImageSetting struct {
 // MultiCloudImageSetting resource locator, exposes resource actions.
 type MultiCloudImageSettingLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // MultiCloudImageSetting resource locator factory
-func (api *Api15) MultiCloudImageSettingLocator(href string) *MultiCloudImageSettingLocator {
+func (api *Api) MultiCloudImageSettingLocator(href string) *MultiCloudImageSettingLocator {
 	return &MultiCloudImageSettingLocator{UrlResolver(href), api}
 }
 
@@ -4144,11 +4144,11 @@ type Network struct {
 // Network resource locator, exposes resource actions.
 type NetworkLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Network resource locator factory
-func (api *Api15) NetworkLocator(href string) *NetworkLocator {
+func (api *Api) NetworkLocator(href string) *NetworkLocator {
 	return &NetworkLocator{UrlResolver(href), api}
 }
 
@@ -4293,11 +4293,11 @@ type NetworkGateway struct {
 // NetworkGateway resource locator, exposes resource actions.
 type NetworkGatewayLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // NetworkGateway resource locator factory
-func (api *Api15) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
+func (api *Api) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
 	return &NetworkGatewayLocator{UrlResolver(href), api}
 }
 
@@ -4447,11 +4447,11 @@ type NetworkOptionGroup struct {
 // NetworkOptionGroup resource locator, exposes resource actions.
 type NetworkOptionGroupLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // NetworkOptionGroup resource locator factory
-func (api *Api15) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLocator {
+func (api *Api) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLocator {
 	return &NetworkOptionGroupLocator{UrlResolver(href), api}
 }
 
@@ -4600,11 +4600,11 @@ type NetworkOptionGroupAttachment struct {
 // NetworkOptionGroupAttachment resource locator, exposes resource actions.
 type NetworkOptionGroupAttachmentLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // NetworkOptionGroupAttachment resource locator factory
-func (api *Api15) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptionGroupAttachmentLocator {
+func (api *Api) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptionGroupAttachmentLocator {
 	return &NetworkOptionGroupAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -4772,11 +4772,11 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 // Oauth2 resource locator, exposes resource actions.
 type Oauth2Locator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Oauth2 resource locator factory
-func (api *Api15) Oauth2Locator(href string) *Oauth2Locator {
+func (api *Api) Oauth2Locator(href string) *Oauth2Locator {
 	return &Oauth2Locator{UrlResolver(href), api}
 }
 
@@ -4875,11 +4875,11 @@ type Permission struct {
 // Permission resource locator, exposes resource actions.
 type PermissionLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Permission resource locator factory
-func (api *Api15) PermissionLocator(href string) *PermissionLocator {
+func (api *Api) PermissionLocator(href string) *PermissionLocator {
 	return &PermissionLocator{UrlResolver(href), api}
 }
 
@@ -5015,11 +5015,11 @@ type PlacementGroup struct {
 // PlacementGroup resource locator, exposes resource actions.
 type PlacementGroupLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // PlacementGroup resource locator factory
-func (api *Api15) PlacementGroupLocator(href string) *PlacementGroupLocator {
+func (api *Api) PlacementGroupLocator(href string) *PlacementGroupLocator {
 	return &PlacementGroupLocator{UrlResolver(href), api}
 }
 
@@ -5150,11 +5150,11 @@ type Preference struct {
 // Preference resource locator, exposes resource actions.
 type PreferenceLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Preference resource locator factory
-func (api *Api15) PreferenceLocator(href string) *PreferenceLocator {
+func (api *Api) PreferenceLocator(href string) *PreferenceLocator {
 	return &PreferenceLocator{UrlResolver(href), api}
 }
 
@@ -5276,11 +5276,11 @@ type Publication struct {
 // Publication resource locator, exposes resource actions.
 type PublicationLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Publication resource locator factory
-func (api *Api15) PublicationLocator(href string) *PublicationLocator {
+func (api *Api) PublicationLocator(href string) *PublicationLocator {
 	return &PublicationLocator{UrlResolver(href), api}
 }
 
@@ -5390,11 +5390,11 @@ type PublicationLineage struct {
 // PublicationLineage resource locator, exposes resource actions.
 type PublicationLineageLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // PublicationLineage resource locator factory
-func (api *Api15) PublicationLineageLocator(href string) *PublicationLineageLocator {
+func (api *Api) PublicationLineageLocator(href string) *PublicationLineageLocator {
 	return &PublicationLineageLocator{UrlResolver(href), api}
 }
 
@@ -5452,11 +5452,11 @@ type RecurringVolumeAttachment struct {
 // RecurringVolumeAttachment resource locator, exposes resource actions.
 type RecurringVolumeAttachmentLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // RecurringVolumeAttachment resource locator factory
-func (api *Api15) RecurringVolumeAttachmentLocator(href string) *RecurringVolumeAttachmentLocator {
+func (api *Api) RecurringVolumeAttachmentLocator(href string) *RecurringVolumeAttachmentLocator {
 	return &RecurringVolumeAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -5606,11 +5606,11 @@ type Repository struct {
 // Repository resource locator, exposes resource actions.
 type RepositoryLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Repository resource locator factory
-func (api *Api15) RepositoryLocator(href string) *RepositoryLocator {
+func (api *Api) RepositoryLocator(href string) *RepositoryLocator {
 	return &RepositoryLocator{UrlResolver(href), api}
 }
 
@@ -5925,11 +5925,11 @@ type RepositoryAsset struct {
 // RepositoryAsset resource locator, exposes resource actions.
 type RepositoryAssetLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // RepositoryAsset resource locator factory
-func (api *Api15) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
+func (api *Api) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 	return &RepositoryAssetLocator{UrlResolver(href), api}
 }
 
@@ -6024,11 +6024,11 @@ type RightScript struct {
 // RightScript resource locator, exposes resource actions.
 type RightScriptLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // RightScript resource locator factory
-func (api *Api15) RightScriptLocator(href string) *RightScriptLocator {
+func (api *Api) RightScriptLocator(href string) *RightScriptLocator {
 	return &RightScriptLocator{UrlResolver(href), api}
 }
 
@@ -6195,11 +6195,11 @@ type Route struct {
 // Route resource locator, exposes resource actions.
 type RouteLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Route resource locator factory
-func (api *Api15) RouteLocator(href string) *RouteLocator {
+func (api *Api) RouteLocator(href string) *RouteLocator {
 	return &RouteLocator{UrlResolver(href), api}
 }
 
@@ -6348,11 +6348,11 @@ type RouteTable struct {
 // RouteTable resource locator, exposes resource actions.
 type RouteTableLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // RouteTable resource locator factory
-func (api *Api15) RouteTableLocator(href string) *RouteTableLocator {
+func (api *Api) RouteTableLocator(href string) *RouteTableLocator {
 	return &RouteTableLocator{UrlResolver(href), api}
 }
 
@@ -6509,11 +6509,11 @@ type RunnableBinding struct {
 // RunnableBinding resource locator, exposes resource actions.
 type RunnableBindingLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // RunnableBinding resource locator factory
-func (api *Api15) RunnableBindingLocator(href string) *RunnableBindingLocator {
+func (api *Api) RunnableBindingLocator(href string) *RunnableBindingLocator {
 	return &RunnableBindingLocator{UrlResolver(href), api}
 }
 
@@ -6669,11 +6669,11 @@ type SecurityGroup struct {
 // SecurityGroup resource locator, exposes resource actions.
 type SecurityGroupLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // SecurityGroup resource locator factory
-func (api *Api15) SecurityGroupLocator(href string) *SecurityGroupLocator {
+func (api *Api) SecurityGroupLocator(href string) *SecurityGroupLocator {
 	return &SecurityGroupLocator{UrlResolver(href), api}
 }
 
@@ -6813,11 +6813,11 @@ type SecurityGroupRule struct {
 // SecurityGroupRule resource locator, exposes resource actions.
 type SecurityGroupRuleLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // SecurityGroupRule resource locator factory
-func (api *Api15) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator {
+func (api *Api) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator {
 	return &SecurityGroupRuleLocator{UrlResolver(href), api}
 }
 
@@ -6988,11 +6988,11 @@ type Server struct {
 // Server resource locator, exposes resource actions.
 type ServerLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Server resource locator factory
-func (api *Api15) ServerLocator(href string) *ServerLocator {
+func (api *Api) ServerLocator(href string) *ServerLocator {
 	return &ServerLocator{UrlResolver(href), api}
 }
 
@@ -7241,11 +7241,11 @@ type ServerArray struct {
 // ServerArray resource locator, exposes resource actions.
 type ServerArrayLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // ServerArray resource locator factory
-func (api *Api15) ServerArrayLocator(href string) *ServerArrayLocator {
+func (api *Api) ServerArrayLocator(href string) *ServerArrayLocator {
 	return &ServerArrayLocator{UrlResolver(href), api}
 }
 
@@ -7500,11 +7500,11 @@ type ServerTemplate struct {
 // ServerTemplate resource locator, exposes resource actions.
 type ServerTemplateLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // ServerTemplate resource locator factory
-func (api *Api15) ServerTemplateLocator(href string) *ServerTemplateLocator {
+func (api *Api) ServerTemplateLocator(href string) *ServerTemplateLocator {
 	return &ServerTemplateLocator{UrlResolver(href), api}
 }
 
@@ -7854,11 +7854,11 @@ type ServerTemplateMultiCloudImage struct {
 // ServerTemplateMultiCloudImage resource locator, exposes resource actions.
 type ServerTemplateMultiCloudImageLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // ServerTemplateMultiCloudImage resource locator factory
-func (api *Api15) ServerTemplateMultiCloudImageLocator(href string) *ServerTemplateMultiCloudImageLocator {
+func (api *Api) ServerTemplateMultiCloudImageLocator(href string) *ServerTemplateMultiCloudImageLocator {
 	return &ServerTemplateMultiCloudImageLocator{UrlResolver(href), api}
 }
 
@@ -8009,11 +8009,11 @@ type Session struct {
 // Session resource locator, exposes resource actions.
 type SessionLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Session resource locator factory
-func (api *Api15) SessionLocator(href string) *SessionLocator {
+func (api *Api) SessionLocator(href string) *SessionLocator {
 	return &SessionLocator{UrlResolver(href), api}
 }
 
@@ -8136,11 +8136,11 @@ type SshKey struct {
 // SshKey resource locator, exposes resource actions.
 type SshKeyLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // SshKey resource locator factory
-func (api *Api15) SshKeyLocator(href string) *SshKeyLocator {
+func (api *Api) SshKeyLocator(href string) *SshKeyLocator {
 	return &SshKeyLocator{UrlResolver(href), api}
 }
 
@@ -8275,11 +8275,11 @@ type Subnet struct {
 // Subnet resource locator, exposes resource actions.
 type SubnetLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Subnet resource locator factory
-func (api *Api15) SubnetLocator(href string) *SubnetLocator {
+func (api *Api) SubnetLocator(href string) *SubnetLocator {
 	return &SubnetLocator{UrlResolver(href), api}
 }
 
@@ -8420,11 +8420,11 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 // Tag resource locator, exposes resource actions.
 type TagLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Tag resource locator factory
-func (api *Api15) TagLocator(href string) *TagLocator {
+func (api *Api) TagLocator(href string) *TagLocator {
 	return &TagLocator{UrlResolver(href), api}
 }
 
@@ -8604,11 +8604,11 @@ type Task struct {
 // Task resource locator, exposes resource actions.
 type TaskLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Task resource locator factory
-func (api *Api15) TaskLocator(href string) *TaskLocator {
+func (api *Api) TaskLocator(href string) *TaskLocator {
 	return &TaskLocator{UrlResolver(href), api}
 }
 
@@ -8668,11 +8668,11 @@ type User struct {
 // User resource locator, exposes resource actions.
 type UserLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // User resource locator factory
-func (api *Api15) UserLocator(href string) *UserLocator {
+func (api *Api) UserLocator(href string) *UserLocator {
 	return &UserLocator{UrlResolver(href), api}
 }
 
@@ -8821,11 +8821,11 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 // UserData resource locator, exposes resource actions.
 type UserDataLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // UserData resource locator factory
-func (api *Api15) UserDataLocator(href string) *UserDataLocator {
+func (api *Api) UserDataLocator(href string) *UserDataLocator {
 	return &UserDataLocator{UrlResolver(href), api}
 }
 
@@ -8876,11 +8876,11 @@ type Volume struct {
 // Volume resource locator, exposes resource actions.
 type VolumeLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // Volume resource locator factory
-func (api *Api15) VolumeLocator(href string) *VolumeLocator {
+func (api *Api) VolumeLocator(href string) *VolumeLocator {
 	return &VolumeLocator{UrlResolver(href), api}
 }
 
@@ -9014,11 +9014,11 @@ type VolumeAttachment struct {
 // VolumeAttachment resource locator, exposes resource actions.
 type VolumeAttachmentLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // VolumeAttachment resource locator factory
-func (api *Api15) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator {
+func (api *Api) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator {
 	return &VolumeAttachmentLocator{UrlResolver(href), api}
 }
 
@@ -9173,11 +9173,11 @@ type VolumeSnapshot struct {
 // VolumeSnapshot resource locator, exposes resource actions.
 type VolumeSnapshotLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // VolumeSnapshot resource locator factory
-func (api *Api15) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
+func (api *Api) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 	return &VolumeSnapshotLocator{UrlResolver(href), api}
 }
 
@@ -9315,11 +9315,11 @@ type VolumeType struct {
 // VolumeType resource locator, exposes resource actions.
 type VolumeTypeLocator struct {
 	UrlResolver
-	api *Api15
+	api *Api
 }
 
 // VolumeType resource locator factory
-func (api *Api15) VolumeTypeLocator(href string) *VolumeTypeLocator {
+func (api *Api) VolumeTypeLocator(href string) *VolumeTypeLocator {
 	return &VolumeTypeLocator{UrlResolver(href), api}
 }
 

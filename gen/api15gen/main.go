@@ -77,7 +77,7 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader("rsapi15", f))
+	check(c.WriteHeader("cm15", f))
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)
@@ -106,7 +106,7 @@ func generateMetadata(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader("rsapi15", f))
+	check(c.WriteHeader("cm15", f))
 	check(c.WriteMetadata(descriptor, f))
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()

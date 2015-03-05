@@ -1,12 +1,8 @@
 tags
-./rsc
-gen/praxis/praxisgen
-gen/api15gen/api15gen
 rsc
+gen/api15gen/api15gen
 gen/praxisgen/praxisgen
-version.go
-*/codegen_*.go
-*/*/codegen_*.go
 *.coverprofile
 Godeps/_workspace/src/github.com/jessevdk/go-flags/
 Godeps/_workspace/src/github.com/rlmcpherson/s3gof3r/
+Godeps/_workspace/src/golang.org/x/tools/

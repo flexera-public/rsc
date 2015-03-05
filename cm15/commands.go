@@ -1,4 +1,4 @@
-package rsapi15
+package cm15
 
 import (
 	"net/http"
@@ -71,7 +71,7 @@ func RegisterCommands(api15Cmd cmd.CommandProvider) {
 }
 
 // Parse and run command
-func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
+func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 	parsed, err := a.ParseCommand(cmd, "/api", commandValues)
 	if err != nil {
 		return nil, err
@@ -80,11 +80,11 @@ func (a *Api15) RunCommand(cmd string) (*http.Response, error) {
 }
 
 // Show command help
-func (a *Api15) ShowCommandHelp(cmd string) error {
+func (a *Api) ShowCommandHelp(cmd string) error {
 	return a.ShowHelp(cmd, "/api", commandValues)
 }
 
 // Show command hrefs
-func (a *Api15) ShowCommandHrefs(cmd string) error {
+func (a *Api) ShowCommandHrefs(cmd string) error {
 	return a.ShowHrefs(cmd, "/api", commandValues)
 }

@@ -1,4 +1,4 @@
-package rsapi15
+package cm15
 
 import (
 	"bytes"
@@ -16,7 +16,7 @@ import (
 // It accepts a resource href, the name of an action and resource and the action parameters.
 // The method makes the request and returns the raw HTTP response or an error.
 // The LoadResponse method can be used to load the response body if needed.
-func (a *Api15) Do(resource, action, href string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) Do(resource, action, href string, params rsapi.ApiParams) (*http.Response, error) {
 	// First lookup metadata
 	res, ok := GenMetadata[resource]
 	if !ok {
@@ -48,7 +48,7 @@ func (a *Api15) Do(resource, action, href string, params rsapi.ApiParams) (*http
 }
 
 // Dispatch request to appropriate low-level method
-func (a *Api15) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error) {
 	switch method {
 	case "GET":
 		return a.GetRaw(actionUrl, params)
@@ -63,7 +63,7 @@ func (a *Api15) Dispatch(method, actionUrl string, params, payload rsapi.ApiPara
 }
 
 // Low-level GET request that loads response JSON into generic object
-func (a *Api15) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
+func (a *Api) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 	resp, err := a.GetRaw(uri, params)
 	if err != nil {
 		return nil, err
@@ -72,13 +72,13 @@ func (a *Api15) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
 }
 
 // Low-level GET request
-func (a *Api15) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
 	return a.makeRequest("GET", uri, params, nil)
 }
 
 // Low-level POST request that loads response JSON into generic object
 // Any "Location" header present in the HTTP response is returned in a map under the "Location" key.
-func (a *Api15) Post(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (interface{}, error) {
+func (a *Api) Post(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (interface{}, error) {
 	resp, err := a.PostRaw(uri, params, payload)
 	if err != nil {
 		return nil, err
@@ -87,24 +87,24 @@ func (a *Api15) Post(uri string, params rsapi.ApiParams, payload rsapi.ApiParams
 }
 
 // Low-level POST request
-func (a *Api15) PostRaw(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) PostRaw(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
 	return a.makeRequest("POST", uri, params, payload)
 }
 
 // Low-level PUT request
-func (a *Api15) Put(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) error {
+func (a *Api) Put(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) error {
 	_, err := a.makeRequest("PUT", uri, params, payload)
 	return err
 }
 
 // Low-level DELETE request
-func (a *Api15) Delete(uri string) error {
+func (a *Api) Delete(uri string) error {
 	_, err := a.makeRequest("DELETE", uri, nil, nil)
 	return err
 }
 
 // Helper function that signs, makes and logs HTTP request
-func (a *Api15) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
 	u := url.URL{
 		Scheme: "https",
 		Host:   a.Host,

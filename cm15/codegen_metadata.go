@@ -2,12 +2,12 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated with:
-// $ api15gen -metadata=rsapi15 -output=rsapi15
+// $ api15gen -metadata=cm15 -output=cm15
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rsapi15
+package cm15
 
 import (
 	"regexp"
