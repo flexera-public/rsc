@@ -21,11 +21,14 @@ var commandValues rsapi.ActionCommands
 func RegisterCommands(ssCmd cmd.CommandProvider) {
 	commandValues = rsapi.ActionCommands{}
 	var actionNames []string
-	allResources := ssm.GenMetadata
+	allResources := make(map[string]*metadata.Resource, len(ssc.GenMetadata)+len(ssd.GenMetadata)+len(ssm.GenMetadata))
 	for n, r := range ssc.GenMetadata {
 		allResources[n] = r
 	}
 	for n, r := range ssd.GenMetadata {
+		allResources[n] = r
+	}
+	for n, r := range ssm.GenMetadata {
 		allResources[n] = r
 	}
 	for _, r := range allResources {
@@ -165,12 +168,12 @@ func getResourceService(resource *metadata.Resource) (string, error) {
 	resourceName := resource.Name
 	var service string
 	switch {
-	case containsResource(resourceName, ssm.GenMetadata):
-		service = "manager"
 	case containsResource(resourceName, ssc.GenMetadata):
 		service = "catalog"
 	case containsResource(resourceName, ssd.GenMetadata):
 		service = "designer"
+	case containsResource(resourceName, ssm.GenMetadata):
+		service = "manager"
 	default:
 		return "", fmt.Errorf("Unknown resource %s", resourceName)
 	}

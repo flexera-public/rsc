@@ -260,7 +260,7 @@ func (a *Api) ShowHrefs(cmd, hrefPrefix string, values ActionCommands) error {
 	if err == nil {
 		resource = target.Resource.Name
 	}
-	knownHrefs := make(map[string]interface{})
+	knownHrefs := make(map[string][][2]string)
 	for resName, res := range a.Metadata {
 		if resource != "" && resName != resource {
 			continue
@@ -273,7 +273,7 @@ func (a *Api) ShowHrefs(cmd, hrefPrefix string, values ActionCommands) error {
 					ivars[i] = interface{}(":" + v)
 				}
 				pat := fmt.Sprintf(pattern.Pattern, ivars...)
-				knownHrefs[pat] = fmt.Sprintf("%s.%s", resName, action.Name)
+				knownHrefs[pat] = append(knownHrefs[pat], [2]string{pattern.HttpMethod, fmt.Sprintf("%s.%s", resName, action.Name)})
 			}
 		}
 	}
@@ -284,13 +284,15 @@ func (a *Api) ShowHrefs(cmd, hrefPrefix string, values ActionCommands) error {
 		i += 1
 	}
 	sort.Strings(keys)
-	lines := make([]string, len(keys))
-	for i, pat := range keys {
-		names := knownHrefs[pat]
-		lines[i] = fmt.Sprintf("%s\t%s", pat, names)
+	var lines []string
+	for _, pat := range keys {
+		routes := knownHrefs[pat]
+		for _, names := range routes {
+			lines = append(lines, fmt.Sprintf("%s\t%s\t%s", names[0], pat, names[1]))
+		}
 	}
 	w := tabwriter.NewWriter(os.Stdout, 0, 4, 1, ' ', 0)
-	w.Write([]byte("Href pattern\t<resource>.<action>\n"))
+	w.Write([]byte("Method\tHref Pattern\tResource.Action\n"))
 	w.Write([]byte(strings.Join(lines, "\n")))
 	w.Write([]byte("\n"))
 	return w.Flush()

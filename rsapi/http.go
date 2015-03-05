@@ -35,6 +35,8 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	if err := a.Auth.Sign(req, a.Host, a.AccountId); err != nil {
 		return nil, err
 	}
+	// TBD: Read version from same place as command line tool
+	req.Header.Set("User-Agent", "rsc/0.3.0")
 	resp, err := a.Client.Do(req)
 	if err != nil {
 		return nil, err
