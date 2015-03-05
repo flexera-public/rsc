@@ -8,7 +8,7 @@ go:
 env:
   global:
     # RSBIN_KEY= to upload to rightscale-binaries bucket in q&b acct:
-  - secure: "YjLlVtUV7KokAQNt0HeBeM4T05T1yJbL6PAYJB0kAy7mOsVrun4D7vRuovqXExP83NrI+hsoqddjh7QhRxb7GZHXK+ryWewL5zgLyj1MMKGVdpke2PFbAET8iMoNVzz59OkpbsaW145YnQXfHcEl3/UN4EZJIWy8TvnwYrk6PAk="
+  - secure: "ijNb1OR2HyNxKXMPemlYit+QEyJDahpm0L5nTI4sevJ2+99+L/p/rBGOUfrCxnnAD3Swn9jzkqLjfwZiUqL5MRMzNHtTnCKgmVRZpH6xMeFpZlQqTGVpOeLr1jVbbXlopjro1dtPEFE1ytu0k0AQS2G/kljOwN4FB3pnDsPPKZ0="
     # GITHUB_TOKEN= to push code coverage comment to github
   - secure: "HyJrsXL+WJkcL5TA4px0SZL6rY6Ft7IX8R7qq0K99bh9nX2Hl1my3nMY7OqcPE/Q0t0FUvOcq5U1c1wL1PBz9gu4n2Wpz4gU28drnUocFZir2osUOG0QCHrdeaXSKn2zekyCB5puxJleEIZqCh36rR2F8SwCh/88d6poUXFyvxI="
     # COV_KEY= code coverage upload keys
@@ -37,7 +37,7 @@ script:
   - echo $PATH
   - which gof3r
   # Deploy build result to s3
-  - export AWS_ACCESS_KEY_ID=AKIAIH2GBWLUIUE3CDPQ
+  - export AWS_ACCESS_KEY_ID=AKIAIX3L4RHHIREAHABQ
   - export AWS_SECRET_ACCESS_KEY=${RSBIN_KEY}
   - make upload
   # Compute code coverage
