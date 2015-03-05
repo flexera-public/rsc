@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 
 	"github.com/rightscale/rsc/gen"
@@ -22,11 +21,8 @@ type ApiAnalyzer struct {
 
 	// Descriptor being built
 	descriptor *gen.ApiDescriptor
-	// Map of ruby type name to go type names
-	// Also used to record types that have been processed.
-	typeNames map[string][]string
-	// Map of uids to types, used to create new types from inline structs or hashes
-	typeUids map[string]*gen.ObjectDataType
+	// Temporary data structure used to create types and keep track of names
+	Registry *TypeRegistry
 }
 
 // Factory method for API analyzer
@@ -36,8 +32,7 @@ func NewApiAnalyzer(version, clientName string, resources, types map[string]map[
 		RawTypes:     types,
 		Version:      version,
 		ClientName:   clientName,
-		typeNames:    make(map[string][]string),
-		typeUids:     make(map[string]*gen.ObjectDataType),
+		Registry:     NewTypeRegistry(),
 	}
 }
 
@@ -59,37 +54,7 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 	}
 	sort.Strings(rawResourceNames)
 
-	// 1. Do a first pass to collect all media types (resource and responses) so the go type
-	// names are the most natural.
-	for _, name := range rawResourceNames {
-		resource := a.RawResources[name]
-		err := a.AnalyzeMediaType(resource["media_type"].(string))
-		if err != nil {
-			return nil, err
-		}
-		actions, ok := resource["actions"]
-		if !ok {
-			continue
-		}
-		for _, ac := range actions.([]interface{}) {
-			action := ac.(map[string]interface{})
-			responses, ok := action["responses"]
-			if ok {
-				for _, r := range responses.(map[string]interface{}) {
-					mediaType, ok := r.(map[string]interface{})["media_type"]
-					if ok {
-						m := mediaType.(map[string]interface{})
-						err := a.AnalyzeMediaType(m["name"].(string))
-						if err != nil {
-							return nil, err
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// 2. Now do another pass to analyze each resource
+	// Analyze each resource
 	for _, name := range rawResourceNames {
 		err := a.AnalyzeResource(name, a.RawResources[name], &descriptor)
 		if err != nil {
@@ -97,100 +62,60 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 		}
 	}
 
-	// 3. Sort and register all types
-	var typeNames []string
-	var usedTypeNames []string
-	for _, names := range a.typeNames {
-		usedTypeNames = append(usedTypeNames, names...)
-	}
-	for _, names := range a.typeNames {
-		for _, name := range names {
-			inuse := false
-			for _, n := range a.descriptor.ResourceNames {
-				if name == n {
-					inuse = true
-					break
-				}
-			}
-			uniq := name
-			if inuse {
-				uniq = gen.MakeUniq(name, append(usedTypeNames, a.descriptor.ResourceNames...))
-				existing := descriptor.Types[name]
-				existing.Name = uniq
-				delete(descriptor.Types, name)
-				descriptor.Types[uniq] = existing
-				usedTypeNames = append(usedTypeNames, uniq)
-			}
-			typeNames = append(typeNames, uniq)
-		}
-	}
-	sort.Strings(typeNames)
-	descriptor.TypeNames = typeNames
-
 	// We're done
+	a.Registry.FinalizeTypeNames(&descriptor)
 	return &descriptor, nil
 }
 
-// Analyze media type, recurse through all types and create corresponding ObjectDataTypes and
-// ActionParams.
-func (a *ApiAnalyzer) AnalyzeMediaType(name string) error {
-	mtype, ok := a.RawTypes[name]
-	if !ok {
-		return fmt.Errorf("Unknown media type %s", name)
-	}
-	if a.GetType(name) != nil {
-		return nil // Already analyzed
-	}
-	obj := a.CreateType(name)
-	attributes := mtype["attributes"].(map[string]interface{})
-	fields := make([]*gen.ActionParam, len(attributes))
-	idx := 0
-	for _, attName := range sortedKeys(attributes) {
-		att := attributes[attName]
-		param, err := a.AnalyzeAttribute(attName, attName, att.(map[string]interface{}))
-		if err != nil {
-			return err
-		}
-		fields[idx] = param
-		idx += 1
-	}
-	obj.Fields = fields
-
-	return nil
+// Registry of all created types
+// There are types that have a one to one mapping with types defined in the metadata (named types)
+// and types that are created from inline structs and hashes (inline types). We need to
+// differentiate because the names for the later are not guarenteed to be unique.
+// Keep track of all types during analysis, FinalizeTypeNames should be called at the end to
+// resolve all the type names and make sure that different data structures end up with different
+// names.
+type TypeRegistry struct {
+	ResourceTypeNames []string
+	NamedTypes        map[string]*gen.ObjectDataType
+	InlineTypes       map[string][]*gen.ObjectDataType
 }
 
-// GetType looks up a generated type by metadata name.
-// Only use for types explicitly declared in the metadata - not for types that we created.
-// Returns nil if not found.
-func (a *ApiAnalyzer) GetType(metadataName string) *gen.ObjectDataType {
-	if existing, ok := a.typeNames[metadataName]; ok {
-		if len(existing) > 1 {
-			panic("Yeeepaaa, two ruby types with the same name??")
-		}
-		return a.descriptor.Types[existing[0]]
+// Type registry factory
+func NewTypeRegistry() *TypeRegistry {
+	return &TypeRegistry{
+		NamedTypes:  make(map[string]*gen.ObjectDataType),
+		InlineTypes: make(map[string][]*gen.ObjectDataType),
 	}
-	return nil
 }
 
-// Creates a unique go type name, records it and returns a new type with that name.
-func (a *ApiAnalyzer) CreateType(metadataName string) *gen.ObjectDataType {
-	var taken []string
-	for _, n := range a.typeNames {
-		taken = append(taken, n...)
-	}
-	goName := gen.MakeUniq(toGoTypeName(metadataName, false), taken)
-	a.typeNames[metadataName] = append(a.typeNames[metadataName], goName)
+// Retrieve named type
+func (reg *TypeRegistry) GetNamedType(name string) *gen.ObjectDataType {
+	return reg.NamedTypes[toGoTypeName(name, false)]
+}
+
+// Create named type
+func (reg *TypeRegistry) CreateNamedType(name string) *gen.ObjectDataType {
+	goName := toGoTypeName(name, false)
 	obj := gen.ObjectDataType{Name: goName}
-	a.descriptor.Types[goName] = &obj
+	if _, ok := reg.NamedTypes[goName]; ok {
+		panic("BUG: Can't create two named types with same name....")
+	}
+	reg.NamedTypes[goName] = &obj
 	return &obj
 }
 
-// Use given unique id to look up existing type and create new one if not found
-func (a *ApiAnalyzer) GetOrCreate(uid, metadataName string) *gen.ObjectDataType {
-	if existing, ok := a.typeUids[uid]; ok {
-		return existing
+// Create inline type
+func (reg *TypeRegistry) CreateInlineType(name string) *gen.ObjectDataType {
+	goName := toGoTypeName(name, false)
+	obj := gen.ObjectDataType{Name: goName}
+	reg.InlineTypes[goName] = append(reg.InlineTypes[goName], &obj)
+	return &obj
+}
+
+// Finalize all type names, should be called once after analysis.
+func (reg *TypeRegistry) FinalizeTypeNames(d *gen.ApiDescriptor) {
+	for n, named := range reg.NamedTypes {
+		reg.InlineTypes[n] = append(reg.InlineTypes[n], named)
 	}
-	obj := a.CreateType(metadataName)
-	a.typeUids[uid] = obj
-	return obj
+	d.FinalizeTypeNames(reg.InlineTypes)
 }

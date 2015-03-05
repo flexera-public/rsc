@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 2, 2015 at 9:07pm (PST)
+// Mar 4, 2015 at 6:42pm (PST)
 // Command:
 // $ praxisgen -metadata=api_docs -output=. -pkg=rsapi16 -target=1.6 -client=Api16
 //
@@ -454,6 +454,128 @@ func (loc *ImageLocator) Show(id string, options rsapi.ApiParams) error {
 	return nil
 }
 
+/******  Instance ******/
+
+// Instances represent an entity that is runnable in the cloud.
+// An instance of type "next" is a container of information that expresses
+// how to configure a future instance when we decide to launch or start
+// it. A "next" instance generally only exists in the RightScale realm,
+// and usually doesn't have any corresponding representation existing in
+// the cloud. However, if an instance is not of type "next", it will
+// generally represent an existing running (or provisioned) virtual
+// machine existing in the cloud.
+type Instance struct {
+	Actions            []string                 `json:"actions,omitempty"`
+	Description        string                   `json:"description,omitempty"`
+	Href               string                   `json:"href,omitempty"`
+	Id                 string                   `json:"id,omitempty"`
+	IpAddresses        []*IpAddress             `json:"ip_addresses,omitempty"`
+	IsNext             bool                     `json:"is_next,omitempty"`
+	Kind               string                   `json:"kind,omitempty"`
+	LegacyId           int                      `json:"legacy_id,omitempty"`
+	Links              *InstanceLinks           `json:"links,omitempty"`
+	Locked             bool                     `json:"locked,omitempty"`
+	MonitoringId       string                   `json:"monitoring_id,omitempty"`
+	MonitoringServer   string                   `json:"monitoring_server,omitempty"`
+	MonitoringToken    string                   `json:"monitoring_token,omitempty"`
+	Name               string                   `json:"name,omitempty"`
+	Networks           []*Network               `json:"networks,omitempty"`
+	OsPlatform         string                   `json:"os_platform,omitempty"`
+	PrivateDnsNames    []string                 `json:"private_dns_names,omitempty"`
+	PrivateIpAddresses []string                 `json:"private_ip_addresses,omitempty"`
+	PublicDnsNames     []string                 `json:"public_dns_names,omitempty"`
+	PublicIpAddresses  []string                 `json:"public_ip_addresses,omitempty"`
+	ResourceUid        string                   `json:"resource_uid,omitempty"`
+	SecurityGroups     *SecurityGroupCollection `json:"security_groups,omitempty"`
+	ServerTemplate     *ServerTemplate          `json:"server_template,omitempty"`
+	SshHost            string                   `json:"ssh_host,omitempty"`
+	State              string                   `json:"state,omitempty"`
+	Subnets            *SubnetCollection        `json:"subnets,omitempty"`
+	Tags               []string                 `json:"tags,omitempty"`
+	Timestamps         *TimestampsStruct        `json:"timestamps,omitempty"`
+}
+
+//===== Locator
+
+// Instance resource locator, exposes resource actions.
+type InstanceLocator struct {
+	UrlResolver
+	api *Api16
+}
+
+// Instance resource locator factory
+func (api *Api16) InstanceLocator(href string) *InstanceLocator {
+	return &InstanceLocator{UrlResolver(href), api}
+}
+
+//===== Actions
+
+// GET /api/instances
+// GET /api/clouds/:cloud_id/instances
+// List all Instances in an account.
+func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
+	var res *Instance
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		queryParams["filter"] = filterOpt
+	}
+	var idsOpt = options["ids"]
+	if idsOpt != nil {
+		queryParams["ids"] = idsOpt
+	}
+	var limitOpt = options["limit"]
+	if limitOpt != nil {
+		queryParams["limit"] = limitOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("Instance", "index")
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, res)
+	return res, err
+}
+
+// GET /api/instances/:id
+// GET /api/clouds/:cloud_id/instances/:id
+// Currently not implemented.
+func (loc *InstanceLocator) Show(id string, options rsapi.ApiParams) error {
+	if id == "" {
+		return fmt.Errorf("id is required")
+	}
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("Instance", "show")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 /******  InstanceType ******/
 
 // An InstanceType represents a basic hardware configuration for an
@@ -536,107 +658,61 @@ func (loc *InstanceTypeLocator) Show(id string, options rsapi.ApiParams) error {
 	return nil
 }
 
-/******  Instance ******/
+/******  IpAddress ******/
 
-// Instances represent an entity that is runnable in the cloud.
-// An instance of type "next" is a container of information that expresses
-// how to configure a future instance when we decide to launch or start
-// it. A "next" instance generally only exists in the RightScale realm,
-// and usually doesn't have any corresponding representation existing in
-// the cloud. However, if an instance is not of type "next", it will
-// generally represent an existing running (or provisioned) virtual
-// machine existing in the cloud.
-type Instance struct {
-	Actions            []string                   `json:"actions,omitempty"`
-	Description        string                     `json:"description,omitempty"`
-	Href               string                     `json:"href,omitempty"`
-	Id                 string                     `json:"id,omitempty"`
-	IpAddresses        []*IpAddress               `json:"ip_addresses,omitempty"`
-	IsNext             bool                       `json:"is_next,omitempty"`
-	Kind               string                     `json:"kind,omitempty"`
-	LegacyId           int                        `json:"legacy_id,omitempty"`
-	Links              *InstanceLinks             `json:"links,omitempty"`
-	Locked             bool                       `json:"locked,omitempty"`
-	MonitoringId       string                     `json:"monitoring_id,omitempty"`
-	MonitoringServer   string                     `json:"monitoring_server,omitempty"`
-	MonitoringToken    string                     `json:"monitoring_token,omitempty"`
-	Name               string                     `json:"name,omitempty"`
-	Networks           []*Network                 `json:"networks,omitempty"`
-	OsPlatform         string                     `json:"os_platform,omitempty"`
-	PrivateDnsNames    []string                   `json:"private_dns_names,omitempty"`
-	PrivateIpAddresses []string                   `json:"private_ip_addresses,omitempty"`
-	PublicDnsNames     []string                   `json:"public_dns_names,omitempty"`
-	PublicIpAddresses  []string                   `json:"public_ip_addresses,omitempty"`
-	ResourceUid        string                     `json:"resource_uid,omitempty"`
-	SecurityGroups     *SecurityGroupCollection   `json:"security_groups,omitempty"`
-	ServerTemplate     *ServerTemplate            `json:"server_template,omitempty"`
-	SshHost            string                     `json:"ssh_host,omitempty"`
-	State              string                     `json:"state,omitempty"`
-	Subnets            *SubnetCollection          `json:"subnets,omitempty"`
-	Tags               []string                   `json:"tags,omitempty"`
-	Timestamps         *InstancesTimestampsStruct `json:"timestamps,omitempty"`
+// An IpAddress provides an abstraction for IPv4 addresses bindable to
+// Instance resources running in a Cloud.
+type IpAddress struct {
+	Address  string          `json:"address,omitempty"`
+	Href     string          `json:"href,omitempty"`
+	Id       string          `json:"id,omitempty"`
+	Kind     string          `json:"kind,omitempty"`
+	LegacyId int             `json:"legacy_id,omitempty"`
+	Links    *IpAddressLinks `json:"links,omitempty"`
+	Name     string          `json:"name,omitempty"`
 }
 
 //===== Locator
 
-// Instance resource locator, exposes resource actions.
-type InstanceLocator struct {
+// IpAddress resource locator, exposes resource actions.
+type IpAddressLocator struct {
 	UrlResolver
 	api *Api16
 }
 
-// Instance resource locator factory
-func (api *Api16) InstanceLocator(href string) *InstanceLocator {
-	return &InstanceLocator{UrlResolver(href), api}
+// IpAddress resource locator factory
+func (api *Api16) IpAddressLocator(href string) *IpAddressLocator {
+	return &IpAddressLocator{UrlResolver(href), api}
 }
 
 //===== Actions
 
-// GET /api/instances
-// GET /api/clouds/:cloud_id/instances
-// List all Instances in an account.
-func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
-	var res *Instance
+// GET /api/ip_addresses
+// GET /api/clouds/:cloud_id/ip_addresses
+// Currently not implemented.
+func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
-	var filterOpt = options["filter"]
-	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
-	}
-	var idsOpt = options["ids"]
-	if idsOpt != nil {
-		queryParams["ids"] = idsOpt
-	}
-	var limitOpt = options["limit"]
-	if limitOpt != nil {
-		queryParams["limit"] = limitOpt
-	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instance", "index")
+	uri, err := loc.Url("IpAddress", "index")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, res)
-	return res, err
+	return nil
 }
 
-// GET /api/instances/:id
-// GET /api/clouds/:cloud_id/instances/:id
+// GET /api/ip_addresses/:id
+// GET /api/clouds/:cloud_id/ip_addresses/:id
 // Currently not implemented.
-func (loc *InstanceLocator) Show(id string, options rsapi.ApiParams) error {
+func (loc *IpAddressLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -647,7 +723,7 @@ func (loc *InstanceLocator) Show(id string, options rsapi.ApiParams) error {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instance", "show")
+	uri, err := loc.Url("IpAddress", "show")
 	if err != nil {
 		return err
 	}
@@ -736,82 +812,6 @@ func (loc *IpAddressBindingLocator) Show(id string, options rsapi.ApiParams) err
 	return nil
 }
 
-/******  IpAddress ******/
-
-// An IpAddress provides an abstraction for IPv4 addresses bindable to
-// Instance resources running in a Cloud.
-type IpAddress struct {
-	Address  string          `json:"address,omitempty"`
-	Href     string          `json:"href,omitempty"`
-	Id       string          `json:"id,omitempty"`
-	Kind     string          `json:"kind,omitempty"`
-	LegacyId int             `json:"legacy_id,omitempty"`
-	Links    *IpAddressLinks `json:"links,omitempty"`
-	Name     string          `json:"name,omitempty"`
-}
-
-//===== Locator
-
-// IpAddress resource locator, exposes resource actions.
-type IpAddressLocator struct {
-	UrlResolver
-	api *Api16
-}
-
-// IpAddress resource locator factory
-func (api *Api16) IpAddressLocator(href string) *IpAddressLocator {
-	return &IpAddressLocator{UrlResolver(href), api}
-}
-
-//===== Actions
-
-// GET /api/ip_addresses
-// GET /api/clouds/:cloud_id/ip_addresses
-// Currently not implemented.
-func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		queryParams["view"] = viewOpt
-	}
-	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddress", "index")
-	if err != nil {
-		return err
-	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// GET /api/ip_addresses/:id
-// GET /api/clouds/:cloud_id/ip_addresses/:id
-// Currently not implemented.
-func (loc *IpAddressLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		queryParams["view"] = viewOpt
-	}
-	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddress", "show")
-	if err != nil {
-		return err
-	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 /******  MultiCloudImage ******/
 
 // A MultiCloudImage is a RightScale component that functions as a pointer
@@ -886,35 +886,37 @@ func (loc *MultiCloudImageLocator) Show(id int, options rsapi.ApiParams) error {
 	return nil
 }
 
-/******  NetworkInterfaceAttachment ******/
+/******  Network ******/
 
-// NetworkInterfaceAttachments represent an attachment between a
-// NetworkInterface and another resource.
-type NetworkInterfaceAttachment struct {
-	Href  string                           `json:"href,omitempty"`
-	Id    string                           `json:"id,omitempty"`
-	Kind  string                           `json:"kind,omitempty"`
-	Links *NetworkInterfaceAttachmentLinks `json:"links,omitempty"`
+// A Network is a logical grouping of network devices.
+type Network struct {
+	Description string        `json:"description,omitempty"`
+	Href        string        `json:"href,omitempty"`
+	Id          string        `json:"id,omitempty"`
+	Kind        string        `json:"kind,omitempty"`
+	LegacyId    int           `json:"legacy_id,omitempty"`
+	Links       *NetworkLinks `json:"links,omitempty"`
+	Name        string        `json:"name,omitempty"`
 }
 
 //===== Locator
 
-// NetworkInterfaceAttachment resource locator, exposes resource actions.
-type NetworkInterfaceAttachmentLocator struct {
+// Network resource locator, exposes resource actions.
+type NetworkLocator struct {
 	UrlResolver
 	api *Api16
 }
 
-// NetworkInterfaceAttachment resource locator factory
-func (api *Api16) NetworkInterfaceAttachmentLocator(href string) *NetworkInterfaceAttachmentLocator {
-	return &NetworkInterfaceAttachmentLocator{UrlResolver(href), api}
+// Network resource locator factory
+func (api *Api16) NetworkLocator(href string) *NetworkLocator {
+	return &NetworkLocator{UrlResolver(href), api}
 }
 
 //===== Actions
 
-// GET /api/network_interface_attachments
+// GET /api/networks
 // Currently not implemented.
-func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) error {
+func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -922,7 +924,7 @@ func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkInterfaceAttachment", "index")
+	uri, err := loc.Url("Network", "index")
 	if err != nil {
 		return err
 	}
@@ -933,9 +935,9 @@ func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) err
 	return nil
 }
 
-// GET /api/network_interface_attachments/:id
+// GET /api/networks/:id
 // Currently not implemented.
-func (loc *NetworkInterfaceAttachmentLocator) Show(id string, options rsapi.ApiParams) error {
+func (loc *NetworkLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -946,7 +948,7 @@ func (loc *NetworkInterfaceAttachmentLocator) Show(id string, options rsapi.ApiP
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkInterfaceAttachment", "show")
+	uri, err := loc.Url("Network", "show")
 	if err != nil {
 		return err
 	}
@@ -1029,37 +1031,35 @@ func (loc *NetworkInterfaceLocator) Show(id string, options rsapi.ApiParams) err
 	return nil
 }
 
-/******  Network ******/
+/******  NetworkInterfaceAttachment ******/
 
-// A Network is a logical grouping of network devices.
-type Network struct {
-	Description string        `json:"description,omitempty"`
-	Href        string        `json:"href,omitempty"`
-	Id          string        `json:"id,omitempty"`
-	Kind        string        `json:"kind,omitempty"`
-	LegacyId    int           `json:"legacy_id,omitempty"`
-	Links       *NetworkLinks `json:"links,omitempty"`
-	Name        string        `json:"name,omitempty"`
+// NetworkInterfaceAttachments represent an attachment between a
+// NetworkInterface and another resource.
+type NetworkInterfaceAttachment struct {
+	Href  string                           `json:"href,omitempty"`
+	Id    string                           `json:"id,omitempty"`
+	Kind  string                           `json:"kind,omitempty"`
+	Links *NetworkInterfaceAttachmentLinks `json:"links,omitempty"`
 }
 
 //===== Locator
 
-// Network resource locator, exposes resource actions.
-type NetworkLocator struct {
+// NetworkInterfaceAttachment resource locator, exposes resource actions.
+type NetworkInterfaceAttachmentLocator struct {
 	UrlResolver
 	api *Api16
 }
 
-// Network resource locator factory
-func (api *Api16) NetworkLocator(href string) *NetworkLocator {
-	return &NetworkLocator{UrlResolver(href), api}
+// NetworkInterfaceAttachment resource locator factory
+func (api *Api16) NetworkInterfaceAttachmentLocator(href string) *NetworkInterfaceAttachmentLocator {
+	return &NetworkInterfaceAttachmentLocator{UrlResolver(href), api}
 }
 
 //===== Actions
 
-// GET /api/networks
+// GET /api/network_interface_attachments
 // Currently not implemented.
-func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
+func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1067,7 +1067,7 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Network", "index")
+	uri, err := loc.Url("NetworkInterfaceAttachment", "index")
 	if err != nil {
 		return err
 	}
@@ -1078,9 +1078,9 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
 	return nil
 }
 
-// GET /api/networks/:id
+// GET /api/network_interface_attachments/:id
 // Currently not implemented.
-func (loc *NetworkLocator) Show(id string, options rsapi.ApiParams) error {
+func (loc *NetworkInterfaceAttachmentLocator) Show(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -1091,7 +1091,7 @@ func (loc *NetworkLocator) Show(id string, options rsapi.ApiParams) error {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Network", "show")
+	uri, err := loc.Url("NetworkInterfaceAttachment", "show")
 	if err != nil {
 		return err
 	}
@@ -1180,6 +1180,93 @@ func (loc *SecurityGroupLocator) Show(id string, options rsapi.ApiParams) error 
 	return nil
 }
 
+/******  Server ******/
+
+// Servers represent the notion of a server/machine from RightScale's
+// perspective. A Server, does not always have a corresponding VM running
+// or provisioned in a cloud. Some clouds use the word "servers" to refer
+// to created VMs. These allocated VMs are not called Servers in the
+// RightScale API, they are called Instances.
+// A Server always has a next_instance association, which will define the
+// configuration to apply to a new instance when the server is launched or
+// started (starting servers is not yet supported through this API). Once
+// a Server is launched/started, a current_instance relationship will
+// exist.  Accessing the current_instance of a server results in immediate
+// runtime modification of this running server. Changes to the
+// next_instance association prepares the configuration for the next
+// instance launch/start (therefore they have no effect until such
+// operation is performed).
+type Server struct {
+	Actions         []string     `json:"actions,omitempty"`
+	CurrentInstance *Instance    `json:"current_instance,omitempty"`
+	Description     string       `json:"description,omitempty"`
+	Href            string       `json:"href,omitempty"`
+	Id              int          `json:"id,omitempty"`
+	Instance        *Instance    `json:"instance,omitempty"`
+	Kind            string       `json:"kind,omitempty"`
+	Links           *ServerLinks `json:"links,omitempty"`
+	Name            string       `json:"name,omitempty"`
+	NextInstance    *Instance    `json:"next_instance,omitempty"`
+	Tags            []string     `json:"tags,omitempty"`
+}
+
+//===== Locator
+
+// Server resource locator, exposes resource actions.
+type ServerLocator struct {
+	UrlResolver
+	api *Api16
+}
+
+// Server resource locator factory
+func (api *Api16) ServerLocator(href string) *ServerLocator {
+	return &ServerLocator{UrlResolver(href), api}
+}
+
+//===== Actions
+
+// GET /api/servers
+// Currently not implemented.
+func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("Server", "index")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GET /api/servers/:id
+// Currently not implemented.
+func (loc *ServerLocator) Show(id int, options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		queryParams["view"] = viewOpt
+	}
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("Server", "show")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 /******  ServerArray ******/
 
 // A server array represents a logical group of instances and allows to
@@ -1193,17 +1280,17 @@ func (loc *SecurityGroupLocator) Show(id string, options rsapi.ApiParams) error 
 // configuration for the next instance that is to be launched in the array
 // and will therefore not affect any of the currently running instances.
 type ServerArray struct {
-	Actions         []string                           `json:"actions,omitempty"`
-	Description     string                             `json:"description,omitempty"`
-	Href            string                             `json:"href,omitempty"`
-	Id              int                                `json:"id,omitempty"`
-	InstanceSummary *ServerArraysInstanceSummaryStruct `json:"instance_summary,omitempty"`
-	Kind            string                             `json:"kind,omitempty"`
-	Links           *ServerArrayLinks                  `json:"links,omitempty"`
-	Name            string                             `json:"name,omitempty"`
-	NextInstance    *Instance                          `json:"next_instance,omitempty"`
-	State           string                             `json:"state,omitempty"`
-	Tags            []string                           `json:"tags,omitempty"`
+	Actions         []string               `json:"actions,omitempty"`
+	Description     string                 `json:"description,omitempty"`
+	Href            string                 `json:"href,omitempty"`
+	Id              int                    `json:"id,omitempty"`
+	InstanceSummary *InstanceSummaryStruct `json:"instance_summary,omitempty"`
+	Kind            string                 `json:"kind,omitempty"`
+	Links           *ServerArrayLinks      `json:"links,omitempty"`
+	Name            string                 `json:"name,omitempty"`
+	NextInstance    *Instance              `json:"next_instance,omitempty"`
+	State           string                 `json:"state,omitempty"`
+	Tags            []string               `json:"tags,omitempty"`
 }
 
 //===== Locator
@@ -1330,93 +1417,6 @@ func (loc *ServerTemplateLocator) Show(id int, options rsapi.ApiParams) error {
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("ServerTemplate", "show")
-	if err != nil {
-		return err
-	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-/******  Server ******/
-
-// Servers represent the notion of a server/machine from RightScale's
-// perspective. A Server, does not always have a corresponding VM running
-// or provisioned in a cloud. Some clouds use the word "servers" to refer
-// to created VMs. These allocated VMs are not called Servers in the
-// RightScale API, they are called Instances.
-// A Server always has a next_instance association, which will define the
-// configuration to apply to a new instance when the server is launched or
-// started (starting servers is not yet supported through this API). Once
-// a Server is launched/started, a current_instance relationship will
-// exist.  Accessing the current_instance of a server results in immediate
-// runtime modification of this running server. Changes to the
-// next_instance association prepares the configuration for the next
-// instance launch/start (therefore they have no effect until such
-// operation is performed).
-type Server struct {
-	Actions         []string     `json:"actions,omitempty"`
-	CurrentInstance *Instance    `json:"current_instance,omitempty"`
-	Description     string       `json:"description,omitempty"`
-	Href            string       `json:"href,omitempty"`
-	Id              int          `json:"id,omitempty"`
-	Instance        *Instance    `json:"instance,omitempty"`
-	Kind            string       `json:"kind,omitempty"`
-	Links           *ServerLinks `json:"links,omitempty"`
-	Name            string       `json:"name,omitempty"`
-	NextInstance    *Instance    `json:"next_instance,omitempty"`
-	Tags            []string     `json:"tags,omitempty"`
-}
-
-//===== Locator
-
-// Server resource locator, exposes resource actions.
-type ServerLocator struct {
-	UrlResolver
-	api *Api16
-}
-
-// Server resource locator factory
-func (api *Api16) ServerLocator(href string) *ServerLocator {
-	return &ServerLocator{UrlResolver(href), api}
-}
-
-//===== Actions
-
-// GET /api/servers
-// Currently not implemented.
-func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		queryParams["view"] = viewOpt
-	}
-	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Server", "index")
-	if err != nil {
-		return err
-	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// GET /api/servers/:id
-// Currently not implemented.
-func (loc *ServerLocator) Show(id int, options rsapi.ApiParams) error {
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		queryParams["view"] = viewOpt
-	}
-	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Server", "show")
 	if err != nil {
 		return err
 	}
@@ -1580,14 +1580,14 @@ func (loc *SubnetLocator) Show(id string, options rsapi.ApiParams) error {
 
 /****** Parameter Data Types ******/
 
-type Account2 struct {
+type AccountParam struct {
 	Href string `json:"href,omitempty"`
 	Id   int    `json:"id,omitempty"`
 	Kind string `json:"kind,omitempty"`
 	Name string `json:"name,omitempty"`
 }
 
-type Cloud2 struct {
+type CloudParam struct {
 	CloudType   string `json:"cloud_type,omitempty"`
 	Description string `json:"description,omitempty"`
 	Href        string `json:"href,omitempty"`
@@ -1596,7 +1596,11 @@ type Cloud2 struct {
 	Name        string `json:"name,omitempty"`
 }
 
-type Datacenter2 struct {
+type DatacenterLinks struct {
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type DatacenterParam struct {
 	Description string           `json:"description,omitempty"`
 	Href        string           `json:"href,omitempty"`
 	Id          string           `json:"id,omitempty"`
@@ -1606,29 +1610,29 @@ type Datacenter2 struct {
 	Name        string           `json:"name,omitempty"`
 }
 
-type DatacenterLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
-}
-
-type Deployment2 struct {
-	Description  string           `json:"description,omitempty"`
-	Href         string           `json:"href,omitempty"`
-	Id           int              `json:"id,omitempty"`
-	Instances    []*Instance2     `json:"instances,omitempty"`
-	Kind         string           `json:"kind,omitempty"`
-	Links        *DeploymentLinks `json:"links,omitempty"`
-	Locked       bool             `json:"locked,omitempty"`
-	Name         string           `json:"name,omitempty"`
-	ServerArrays []*ServerArray2  `json:"server_arrays,omitempty"`
-	Servers      []*Server2       `json:"servers,omitempty"`
-	Tags         []string         `json:"tags,omitempty"`
-}
-
 type DeploymentLinks struct {
-	Account *Account2 `json:"account,omitempty"`
+	Account *AccountParam `json:"account,omitempty"`
 }
 
-type Image2 struct {
+type DeploymentParam struct {
+	Description  string              `json:"description,omitempty"`
+	Href         string              `json:"href,omitempty"`
+	Id           int                 `json:"id,omitempty"`
+	Instances    []*InstanceParam    `json:"instances,omitempty"`
+	Kind         string              `json:"kind,omitempty"`
+	Links        *DeploymentLinks    `json:"links,omitempty"`
+	Locked       bool                `json:"locked,omitempty"`
+	Name         string              `json:"name,omitempty"`
+	ServerArrays []*ServerArrayParam `json:"server_arrays,omitempty"`
+	Servers      []*ServerParam      `json:"servers,omitempty"`
+	Tags         []string            `json:"tags,omitempty"`
+}
+
+type ImageLinks struct {
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type ImageParam struct {
 	CpuArchitecture    string      `json:"cpu_architecture,omitempty"`
 	Description        string      `json:"description,omitempty"`
 	Href               string      `json:"href,omitempty"`
@@ -1646,10 +1650,6 @@ type Image2 struct {
 	Visibility         string      `json:"visibility,omitempty"`
 }
 
-type ImageLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
-}
-
 type Incarnator struct {
 	Href  string `json:"href,omitempty"`
 	Id    int    `json:"id,omitempty"`
@@ -1658,12 +1658,28 @@ type Incarnator struct {
 	State string `json:"state,omitempty"`
 }
 
-type Instance2 struct {
+type InstanceLinks struct {
+	Account                 *AccountParam            `json:"account,omitempty"`
+	Cloud                   *CloudParam              `json:"cloud,omitempty"`
+	ComputedImage           *ImageParam              `json:"computed_image,omitempty"`
+	ComputedMultiCloudImage *MultiCloudImageParam    `json:"computed_multi_cloud_image,omitempty"`
+	Datacenter              *DatacenterParam         `json:"datacenter,omitempty"`
+	Deployment              *DeploymentParam         `json:"deployment,omitempty"`
+	Image                   *ImageParam              `json:"image,omitempty"`
+	Incarnator              *Incarnator              `json:"incarnator,omitempty"`
+	InstanceType            *InstanceTypeParam       `json:"instance_type,omitempty"`
+	MultiCloudImage         *MultiCloudImageParam    `json:"multi_cloud_image,omitempty"`
+	SecurityGroups          *SecurityGroupCollection `json:"security_groups,omitempty"`
+	SshKey                  *SshKeyParam             `json:"ssh_key,omitempty"`
+	Subnets                 *SubnetCollection        `json:"subnets,omitempty"`
+}
+
+type InstanceParam struct {
 	Actions            []string                   `json:"actions,omitempty"`
 	Description        string                     `json:"description,omitempty"`
 	Href               string                     `json:"href,omitempty"`
 	Id                 string                     `json:"id,omitempty"`
-	IpAddresses        []*IpAddress2              `json:"ip_addresses,omitempty"`
+	IpAddresses        []*IpAddressParam          `json:"ip_addresses,omitempty"`
 	IsNext             bool                       `json:"is_next,omitempty"`
 	Kind               string                     `json:"kind,omitempty"`
 	LegacyId           int                        `json:"legacy_id,omitempty"`
@@ -1673,7 +1689,7 @@ type Instance2 struct {
 	MonitoringServer   string                     `json:"monitoring_server,omitempty"`
 	MonitoringToken    string                     `json:"monitoring_token,omitempty"`
 	Name               string                     `json:"name,omitempty"`
-	Networks           []*Network2                `json:"networks,omitempty"`
+	Networks           []*NetworkParam            `json:"networks,omitempty"`
 	OsPlatform         string                     `json:"os_platform,omitempty"`
 	PrivateDnsNames    []string                   `json:"private_dns_names,omitempty"`
 	PrivateIpAddresses []string                   `json:"private_ip_addresses,omitempty"`
@@ -1681,7 +1697,7 @@ type Instance2 struct {
 	PublicIpAddresses  []string                   `json:"public_ip_addresses,omitempty"`
 	ResourceUid        string                     `json:"resource_uid,omitempty"`
 	SecurityGroups     *SecurityGroupCollection   `json:"security_groups,omitempty"`
-	ServerTemplate     *ServerTemplate2           `json:"server_template,omitempty"`
+	ServerTemplate     *ServerTemplateParam       `json:"server_template,omitempty"`
 	SshHost            string                     `json:"ssh_host,omitempty"`
 	State              string                     `json:"state,omitempty"`
 	Subnets            *SubnetCollection          `json:"subnets,omitempty"`
@@ -1689,23 +1705,18 @@ type Instance2 struct {
 	Timestamps         *InstancesTimestampsStruct `json:"timestamps,omitempty"`
 }
 
-type InstanceLinks struct {
-	Account                 *Account2                `json:"account,omitempty"`
-	Cloud                   *Cloud2                  `json:"cloud,omitempty"`
-	ComputedImage           *Image2                  `json:"computed_image,omitempty"`
-	ComputedMultiCloudImage *MultiCloudImage2        `json:"computed_multi_cloud_image,omitempty"`
-	Datacenter              *Datacenter2             `json:"datacenter,omitempty"`
-	Deployment              *Deployment2             `json:"deployment,omitempty"`
-	Image                   *Image2                  `json:"image,omitempty"`
-	Incarnator              *Incarnator              `json:"incarnator,omitempty"`
-	InstanceType            *InstanceType2           `json:"instance_type,omitempty"`
-	MultiCloudImage         *MultiCloudImage2        `json:"multi_cloud_image,omitempty"`
-	SecurityGroups          *SecurityGroupCollection `json:"security_groups,omitempty"`
-	SshKey                  *SshKey2                 `json:"ssh_key,omitempty"`
-	Subnets                 *SubnetCollection        `json:"subnets,omitempty"`
+type InstanceSummaryStruct struct {
+	HealthyCount       int `json:"healthy_count,omitempty"`
+	NotTerminatedCount int `json:"not_terminated_count,omitempty"`
+	TotalCount         int `json:"total_count,omitempty"`
+	UnhealthyCount     int `json:"unhealthy_count,omitempty"`
 }
 
-type InstanceType2 struct {
+type InstanceTypeLinks struct {
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type InstanceTypeParam struct {
 	CpuCount    int                `json:"cpu_count,omitempty"`
 	CpuSpeed    string             `json:"cpu_speed,omitempty"`
 	Description string             `json:"description,omitempty"`
@@ -1718,8 +1729,11 @@ type InstanceType2 struct {
 	Name        string             `json:"name,omitempty"`
 }
 
-type InstanceTypeLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
+type InstancesLinksDeploymentServerArraysInstanceSummaryStruct struct {
+	HealthyCount       int `json:"healthy_count,omitempty"`
+	NotTerminatedCount int `json:"not_terminated_count,omitempty"`
+	TotalCount         int `json:"total_count,omitempty"`
+	UnhealthyCount     int `json:"unhealthy_count,omitempty"`
 }
 
 type InstancesTimestampsStruct struct {
@@ -1732,7 +1746,17 @@ type InstancesTimestampsStruct struct {
 	UpdatedAt     time.Time `json:"updated_at,omitempty"`
 }
 
-type IpAddress2 struct {
+type IpAddressBindingLinks struct {
+	Cloud     *CloudParam     `json:"cloud,omitempty"`
+	Instance  *InstanceParam  `json:"instance,omitempty"`
+	IpAddress *IpAddressParam `json:"ip_address,omitempty"`
+}
+
+type IpAddressLinks struct {
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type IpAddressParam struct {
 	Address  string          `json:"address,omitempty"`
 	Href     string          `json:"href,omitempty"`
 	Id       string          `json:"id,omitempty"`
@@ -1742,28 +1766,7 @@ type IpAddress2 struct {
 	Name     string          `json:"name,omitempty"`
 }
 
-type IpAddressBinding2 struct {
-	Href        string                 `json:"href,omitempty"`
-	Id          string                 `json:"id,omitempty"`
-	Kind        string                 `json:"kind,omitempty"`
-	LegacyId    int                    `json:"legacy_id,omitempty"`
-	Links       *IpAddressBindingLinks `json:"links,omitempty"`
-	PrivatePort int                    `json:"private_port,omitempty"`
-	Protocol    string                 `json:"protocol,omitempty"`
-	PublicPort  int                    `json:"public_port,omitempty"`
-}
-
-type IpAddressBindingLinks struct {
-	Cloud     *Cloud2     `json:"cloud,omitempty"`
-	Instance  *Instance2  `json:"instance,omitempty"`
-	IpAddress *IpAddress2 `json:"ip_address,omitempty"`
-}
-
-type IpAddressLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
-}
-
-type MultiCloudImage2 struct {
+type MultiCloudImageParam struct {
 	Description     string `json:"description,omitempty"`
 	Href            string `json:"href,omitempty"`
 	Id              int    `json:"id,omitempty"`
@@ -1773,7 +1776,19 @@ type MultiCloudImage2 struct {
 	Version         int    `json:"version,omitempty"`
 }
 
-type Network2 struct {
+type NetworkInterfaceAttachmentLinks struct {
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type NetworkInterfaceLinks struct {
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type NetworkLinks struct {
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type NetworkParam struct {
 	Description string        `json:"description,omitempty"`
 	Href        string        `json:"href,omitempty"`
 	Id          string        `json:"id,omitempty"`
@@ -1783,102 +1798,58 @@ type Network2 struct {
 	Name        string        `json:"name,omitempty"`
 }
 
-type NetworkInterface2 struct {
-	Description string                 `json:"description,omitempty"`
-	Href        string                 `json:"href,omitempty"`
-	Id          string                 `json:"id,omitempty"`
-	Kind        string                 `json:"kind,omitempty"`
-	Links       *NetworkInterfaceLinks `json:"links,omitempty"`
-}
-
-type NetworkInterfaceAttachment2 struct {
-	Href  string                           `json:"href,omitempty"`
-	Id    string                           `json:"id,omitempty"`
-	Kind  string                           `json:"kind,omitempty"`
-	Links *NetworkInterfaceAttachmentLinks `json:"links,omitempty"`
-}
-
-type NetworkInterfaceAttachmentLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
-}
-
-type NetworkInterfaceLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
-}
-
-type NetworkLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
-}
-
-type SecurityGroup2 struct {
-	Description string              `json:"description,omitempty"`
-	Href        string              `json:"href,omitempty"`
-	Id          string              `json:"id,omitempty"`
-	Kind        string              `json:"kind,omitempty"`
-	LegacyId    int                 `json:"legacy_id,omitempty"`
-	Links       *SecurityGroupLinks `json:"links,omitempty"`
-	Name        string              `json:"name,omitempty"`
-}
-
 type SecurityGroupCollection struct {
 	Count int    `json:"count,omitempty"`
 	Href  string `json:"href,omitempty"`
 }
 
 type SecurityGroupLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
-}
-
-type Server2 struct {
-	Actions         []string     `json:"actions,omitempty"`
-	CurrentInstance *Instance2   `json:"current_instance,omitempty"`
-	Description     string       `json:"description,omitempty"`
-	Href            string       `json:"href,omitempty"`
-	Id              int          `json:"id,omitempty"`
-	Instance        *Instance2   `json:"instance,omitempty"`
-	Kind            string       `json:"kind,omitempty"`
-	Links           *ServerLinks `json:"links,omitempty"`
-	Name            string       `json:"name,omitempty"`
-	NextInstance    *Instance2   `json:"next_instance,omitempty"`
-	Tags            []string     `json:"tags,omitempty"`
-}
-
-type ServerArray2 struct {
-	Actions         []string                           `json:"actions,omitempty"`
-	Description     string                             `json:"description,omitempty"`
-	Href            string                             `json:"href,omitempty"`
-	Id              int                                `json:"id,omitempty"`
-	InstanceSummary *ServerArraysInstanceSummaryStruct `json:"instance_summary,omitempty"`
-	Kind            string                             `json:"kind,omitempty"`
-	Links           *ServerArrayLinks                  `json:"links,omitempty"`
-	Name            string                             `json:"name,omitempty"`
-	NextInstance    *Instance2                         `json:"next_instance,omitempty"`
-	State           string                             `json:"state,omitempty"`
-	Tags            []string                           `json:"tags,omitempty"`
+	Cloud *CloudParam `json:"cloud,omitempty"`
 }
 
 type ServerArrayLinks struct {
-	Account          *Account2    `json:"account,omitempty"`
-	Cloud            *Cloud2      `json:"cloud,omitempty"`
-	CurrentInstances []*Instance2 `json:"current_instances,omitempty"`
-	NextInstance     *Instance2   `json:"next_instance,omitempty"`
+	Account          *AccountParam    `json:"account,omitempty"`
+	Cloud            *CloudParam      `json:"cloud,omitempty"`
+	CurrentInstances []*InstanceParam `json:"current_instances,omitempty"`
+	NextInstance     *InstanceParam   `json:"next_instance,omitempty"`
 }
 
-type ServerArraysInstanceSummaryStruct struct {
-	HealthyCount       int `json:"healthy_count,omitempty"`
-	NotTerminatedCount int `json:"not_terminated_count,omitempty"`
-	TotalCount         int `json:"total_count,omitempty"`
-	UnhealthyCount     int `json:"unhealthy_count,omitempty"`
+type ServerArrayParam struct {
+	Actions         []string                                                   `json:"actions,omitempty"`
+	Description     string                                                     `json:"description,omitempty"`
+	Href            string                                                     `json:"href,omitempty"`
+	Id              int                                                        `json:"id,omitempty"`
+	InstanceSummary *InstancesLinksDeploymentServerArraysInstanceSummaryStruct `json:"instance_summary,omitempty"`
+	Kind            string                                                     `json:"kind,omitempty"`
+	Links           *ServerArrayLinks                                          `json:"links,omitempty"`
+	Name            string                                                     `json:"name,omitempty"`
+	NextInstance    *InstanceParam                                             `json:"next_instance,omitempty"`
+	State           string                                                     `json:"state,omitempty"`
+	Tags            []string                                                   `json:"tags,omitempty"`
 }
 
 type ServerLinks struct {
-	Account         *Account2  `json:"account,omitempty"`
-	Cloud           *Cloud2    `json:"cloud,omitempty"`
-	CurrentInstance *Instance2 `json:"current_instance,omitempty"`
-	NextInstance    *Instance2 `json:"next_instance,omitempty"`
+	Account         *AccountParam  `json:"account,omitempty"`
+	Cloud           *CloudParam    `json:"cloud,omitempty"`
+	CurrentInstance *InstanceParam `json:"current_instance,omitempty"`
+	NextInstance    *InstanceParam `json:"next_instance,omitempty"`
 }
 
-type ServerTemplate2 struct {
+type ServerParam struct {
+	Actions         []string       `json:"actions,omitempty"`
+	CurrentInstance *InstanceParam `json:"current_instance,omitempty"`
+	Description     string         `json:"description,omitempty"`
+	Href            string         `json:"href,omitempty"`
+	Id              int            `json:"id,omitempty"`
+	Instance        *InstanceParam `json:"instance,omitempty"`
+	Kind            string         `json:"kind,omitempty"`
+	Links           *ServerLinks   `json:"links,omitempty"`
+	Name            string         `json:"name,omitempty"`
+	NextInstance    *InstanceParam `json:"next_instance,omitempty"`
+	Tags            []string       `json:"tags,omitempty"`
+}
+
+type ServerTemplateParam struct {
 	Description string `json:"description,omitempty"`
 	Href        string `json:"href,omitempty"`
 	Id          int    `json:"id,omitempty"`
@@ -1887,7 +1858,7 @@ type ServerTemplate2 struct {
 	Version     int    `json:"version,omitempty"`
 }
 
-type SshKey2 struct {
+type SshKeyParam struct {
 	Fingerprint string `json:"fingerprint,omitempty"`
 	Href        string `json:"href,omitempty"`
 	Id          string `json:"id,omitempty"`
@@ -1896,21 +1867,21 @@ type SshKey2 struct {
 	ResourceUid string `json:"resource_uid,omitempty"`
 }
 
-type Subnet2 struct {
-	Description string       `json:"description,omitempty"`
-	Href        string       `json:"href,omitempty"`
-	Id          string       `json:"id,omitempty"`
-	Kind        string       `json:"kind,omitempty"`
-	LegacyId    int          `json:"legacy_id,omitempty"`
-	Links       *SubnetLinks `json:"links,omitempty"`
-	Name        string       `json:"name,omitempty"`
-}
-
 type SubnetCollection struct {
 	Count int    `json:"count,omitempty"`
 	Href  string `json:"href,omitempty"`
 }
 
 type SubnetLinks struct {
-	Cloud *Cloud2 `json:"cloud,omitempty"`
+	Cloud *CloudParam `json:"cloud,omitempty"`
+}
+
+type TimestampsStruct struct {
+	BootedAt      time.Time `json:"booted_at,omitempty"`
+	CreatedAt     time.Time `json:"created_at,omitempty"`
+	OperationalAt time.Time `json:"operational_at,omitempty"`
+	PendingAt     time.Time `json:"pending_at,omitempty"`
+	StrandedAt    time.Time `json:"stranded_at,omitempty"`
+	TerminatedAt  time.Time `json:"terminated_at,omitempty"`
+	UpdatedAt     time.Time `json:"updated_at,omitempty"`
 }

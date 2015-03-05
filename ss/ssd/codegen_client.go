@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 2, 2015 at 9:07pm (PST)
+// Mar 4, 2015 at 6:42pm (PST)
 // Command:
 // $ praxisgen -metadata=ssd/restful_doc -output=ssd -pkg=ssd -target=1.0 -client=Api
 //
@@ -244,21 +244,21 @@ func (loc *ScheduleLocator) MultiDelete(collectionId string, ids []string) error
 // CAT files are uniquely identified by the name of the CloudApplication, which is specified as the "name"
 // attribute inside of a CAT file.
 type Template struct {
-	ApplicationInfo    *ApplicationInfo   `json:"application_info,omitempty"`
-	CompiledCat        string             `json:"compiled_cat,omitempty"`
-	CreatedBy          *User              `json:"created_by,omitempty"`
-	Filename           string             `json:"filename,omitempty"`
-	Href               string             `json:"href,omitempty"`
-	Id                 string             `json:"id,omitempty"`
-	Kind               string             `json:"kind,omitempty"`
-	LongDescription    string             `json:"long_description,omitempty"`
-	Name               string             `json:"name,omitempty"`
-	Parameters         []*Parameter       `json:"parameters,omitempty"`
-	PublishedBy        *User              `json:"published_by,omitempty"`
-	RequiredParameters []string           `json:"required_parameters,omitempty"`
-	ShortDescription   string             `json:"short_description,omitempty"`
-	Source             string             `json:"source,omitempty"`
-	Timestamps         *TimestampsStruct2 `json:"timestamps,omitempty"`
+	ApplicationInfo    *ApplicationInfo  `json:"application_info,omitempty"`
+	CompiledCat        string            `json:"compiled_cat,omitempty"`
+	CreatedBy          *User             `json:"created_by,omitempty"`
+	Filename           string            `json:"filename,omitempty"`
+	Href               string            `json:"href,omitempty"`
+	Id                 string            `json:"id,omitempty"`
+	Kind               string            `json:"kind,omitempty"`
+	LongDescription    string            `json:"long_description,omitempty"`
+	Name               string            `json:"name,omitempty"`
+	Parameters         []*Parameter      `json:"parameters,omitempty"`
+	PublishedBy        *User             `json:"published_by,omitempty"`
+	RequiredParameters []string          `json:"required_parameters,omitempty"`
+	ShortDescription   string            `json:"short_description,omitempty"`
+	Source             string            `json:"source,omitempty"`
+	Timestamps         *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -558,36 +558,6 @@ type Recurrence struct {
 	Hour   int    `json:"hour,omitempty"`
 	Minute int    `json:"minute,omitempty"`
 	Rule   string `json:"rule,omitempty"`
-}
-
-type Schedule2 struct {
-	CreatedBy       *User             `json:"created_by,omitempty"`
-	Description     string            `json:"description,omitempty"`
-	Href            string            `json:"href,omitempty"`
-	Id              string            `json:"id,omitempty"`
-	Kind            string            `json:"kind,omitempty"`
-	Name            string            `json:"name,omitempty"`
-	StartRecurrence *Recurrence       `json:"start_recurrence,omitempty"`
-	StopRecurrence  *Recurrence       `json:"stop_recurrence,omitempty"`
-	Timestamps      *TimestampsStruct `json:"timestamps,omitempty"`
-}
-
-type Template2 struct {
-	ApplicationInfo    *ApplicationInfo   `json:"application_info,omitempty"`
-	CompiledCat        string             `json:"compiled_cat,omitempty"`
-	CreatedBy          *User              `json:"created_by,omitempty"`
-	Filename           string             `json:"filename,omitempty"`
-	Href               string             `json:"href,omitempty"`
-	Id                 string             `json:"id,omitempty"`
-	Kind               string             `json:"kind,omitempty"`
-	LongDescription    string             `json:"long_description,omitempty"`
-	Name               string             `json:"name,omitempty"`
-	Parameters         []*Parameter       `json:"parameters,omitempty"`
-	PublishedBy        *User              `json:"published_by,omitempty"`
-	RequiredParameters []string           `json:"required_parameters,omitempty"`
-	ShortDescription   string             `json:"short_description,omitempty"`
-	Source             string             `json:"source,omitempty"`
-	Timestamps         *TimestampsStruct2 `json:"timestamps,omitempty"`
 }
 
 type TimestampsStruct struct {

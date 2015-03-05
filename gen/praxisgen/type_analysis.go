@@ -1,9 +1,6 @@
 package main
 
 import (
-	"crypto/md5"
-	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"regexp"
 
@@ -116,7 +113,7 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		}
 	default:
 		// First check if we already analyzed that type
-		if t := a.GetType(n); t != nil {
+		if t := a.Registry.GetNamedType(n); t != nil {
 			return t, nil
 		}
 
@@ -132,7 +129,7 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 			dataType = &s
 		} else {
 			att := attrs.(map[string]interface{})
-			obj := a.CreateType(n)
+			obj := a.Registry.CreateNamedType(n)
 			obj.Fields = make([]*gen.ActionParam, len(att))
 
 			for idx, an := range sortedKeys(att) {
@@ -155,12 +152,8 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 
 // Helper method that creates or retrieve a object data type given its attributes.
 func (a *ApiAnalyzer) CreateOrGetType(query string, attributes map[string]interface{}) (*gen.ObjectDataType, error) {
-	hasher := md5.New()
-	val, _ := json.Marshal(attributes)
-	hasher.Write(val)
-	md5str := hex.EncodeToString(hasher.Sum(nil))
 	name := inflect.Camelize(bracketRegexp.ReplaceAllLiteralString(query, "_") + "_struct")
-	obj := a.GetOrCreate(md5str, name)
+	obj := a.Registry.CreateInlineType(name)
 	obj.Fields = make([]*gen.ActionParam, len(attributes))
 	for idx, an := range sortedKeys(attributes) {
 		at := attributes[an]

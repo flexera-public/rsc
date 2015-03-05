@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated
-// Mar 2, 2015 at 9:07pm (PST)
+// Mar 4, 2015 at 6:42pm (PST)
 // Command:
 // $ praxisgen -metadata=ssc/restful_doc -output=ssc -pkg=ssc -target=1.0 -client=Api
 //
@@ -468,15 +468,15 @@ func (loc *ApplicationLocator) Launch(catalogId string, id string) error {
 // corresponds to a user (for now) and a minimum severity used to filter
 // out events with lower severities.
 type NotificationRule struct {
-	AccountId   string             `json:"account_id,omitempty"`
-	Href        string             `json:"href,omitempty"`
-	Id          string             `json:"id,omitempty"`
-	Kind        string             `json:"kind,omitempty"`
-	MinSeverity string             `json:"min_severity,omitempty"`
-	Priority    int                `json:"priority,omitempty"`
-	Source      string             `json:"source,omitempty"`
-	Target      string             `json:"target,omitempty"`
-	Timestamps  *TimestampsStruct2 `json:"timestamps,omitempty"`
+	AccountId   string            `json:"account_id,omitempty"`
+	Href        string            `json:"href,omitempty"`
+	Id          string            `json:"id,omitempty"`
+	Kind        string            `json:"kind,omitempty"`
+	MinSeverity string            `json:"min_severity,omitempty"`
+	Priority    int               `json:"priority,omitempty"`
+	Source      string            `json:"source,omitempty"`
+	Target      string            `json:"target,omitempty"`
+	Timestamps  *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
 //===== Locator
@@ -832,17 +832,17 @@ func (loc *UserPreferenceLocator) Delete(accountId string, id string) error {
 // The UserPreferenceInfo resource defines the available user preferences supported by the system.
 // It is also used to validate values saved in UserPreference.
 type UserPreferenceInfo struct {
-	Category        string                              `json:"category,omitempty"`
-	DefaultValue    string                              `json:"default_value,omitempty"`
-	DisplayName     string                              `json:"display_name,omitempty"`
-	HelpText        string                              `json:"help_text,omitempty"`
-	Href            string                              `json:"href,omitempty"`
-	Id              string                              `json:"id,omitempty"`
-	Kind            string                              `json:"kind,omitempty"`
-	Name            string                              `json:"name,omitempty"`
-	ValueConstraint []string                            `json:"value_constraint,omitempty"`
-	ValueRange      *UserPreferenceInfoValueRangeStruct `json:"value_range,omitempty"`
-	ValueType       string                              `json:"value_type,omitempty"`
+	Category        string            `json:"category,omitempty"`
+	DefaultValue    string            `json:"default_value,omitempty"`
+	DisplayName     string            `json:"display_name,omitempty"`
+	HelpText        string            `json:"help_text,omitempty"`
+	Href            string            `json:"href,omitempty"`
+	Id              string            `json:"id,omitempty"`
+	Kind            string            `json:"kind,omitempty"`
+	Name            string            `json:"name,omitempty"`
+	ValueConstraint []string          `json:"value_constraint,omitempty"`
+	ValueRange      *ValueRangeStruct `json:"value_range,omitempty"`
+	ValueType       string            `json:"value_type,omitempty"`
 }
 
 //===== Locator
@@ -922,45 +922,6 @@ func (loc *UserPreferenceInfoLocator) Show(accountId string, id string) (*UserPr
 
 /****** Parameter Data Types ******/
 
-type AccountPreference2 struct {
-	CreatedBy  *User             `json:"created_by,omitempty"`
-	GroupName  string            `json:"group_name,omitempty"`
-	Href       string            `json:"href,omitempty"`
-	Kind       string            `json:"kind,omitempty"`
-	Name       string            `json:"name,omitempty"`
-	Timestamps *TimestampsStruct `json:"timestamps,omitempty"`
-	Value      string            `json:"value,omitempty"`
-}
-
-type Application2 struct {
-	CompiledCat        string            `json:"compiled_cat,omitempty"`
-	CreatedBy          *User             `json:"created_by,omitempty"`
-	Href               string            `json:"href,omitempty"`
-	Id                 string            `json:"id,omitempty"`
-	Kind               string            `json:"kind,omitempty"`
-	LongDescription    string            `json:"long_description,omitempty"`
-	Name               string            `json:"name,omitempty"`
-	Parameters         []*Parameter      `json:"parameters,omitempty"`
-	RequiredParameters []string          `json:"required_parameters,omitempty"`
-	ScheduleRequired   bool              `json:"schedule_required,omitempty"`
-	Schedules          []*Schedule       `json:"schedules,omitempty"`
-	ShortDescription   string            `json:"short_description,omitempty"`
-	TemplateInfo       *TemplateInfo     `json:"template_info,omitempty"`
-	Timestamps         *TimestampsStruct `json:"timestamps,omitempty"`
-}
-
-type NotificationRule2 struct {
-	AccountId   string             `json:"account_id,omitempty"`
-	Href        string             `json:"href,omitempty"`
-	Id          string             `json:"id,omitempty"`
-	Kind        string             `json:"kind,omitempty"`
-	MinSeverity string             `json:"min_severity,omitempty"`
-	Priority    int                `json:"priority,omitempty"`
-	Source      string             `json:"source,omitempty"`
-	Target      string             `json:"target,omitempty"`
-	Timestamps  *TimestampsStruct2 `json:"timestamps,omitempty"`
-}
-
 type Parameter struct {
 	Default     string                      `json:"default,omitempty"`
 	Description string                      `json:"description,omitempty"`
@@ -1012,29 +973,13 @@ type TimestampsStruct struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
 
-type TimestampsStruct2 struct {
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
-}
-
 type User struct {
 	Email string `json:"email,omitempty"`
 	Id    int    `json:"id,omitempty"`
 	Name  string `json:"name,omitempty"`
 }
 
-type UserPreference2 struct {
-	CreatedBy          *User                `json:"created_by,omitempty"`
-	Href               string               `json:"href,omitempty"`
-	Id                 string               `json:"id,omitempty"`
-	Kind               string               `json:"kind,omitempty"`
-	Timestamps         *TimestampsStruct    `json:"timestamps,omitempty"`
-	UserId             int                  `json:"user_id,omitempty"`
-	UserPreferenceInfo *UserPreferenceInfo2 `json:"user_preference_info,omitempty"`
-	Value              string               `json:"value,omitempty"`
-}
-
-type UserPreferenceInfo2 struct {
+type UserPreferenceInfoParam struct {
 	Category        string                              `json:"category,omitempty"`
 	DefaultValue    string                              `json:"default_value,omitempty"`
 	DisplayName     string                              `json:"display_name,omitempty"`
@@ -1049,6 +994,11 @@ type UserPreferenceInfo2 struct {
 }
 
 type UserPreferenceInfoValueRangeStruct struct {
+	Max int `json:"max,omitempty"`
+	Min int `json:"min,omitempty"`
+}
+
+type ValueRangeStruct struct {
 	Max int `json:"max,omitempty"`
 	Min int `json:"min,omitempty"`
 }
