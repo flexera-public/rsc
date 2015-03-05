@@ -1,7 +1,7 @@
-rsc - An experimental generic RightScale API client
-==========================================
+# rsc - An experimental generic RightScale API client
+
 rsc provides both a go package and a command line tool for interacting with various RightScale APIs. 
-The RightScale API 1.5, RightScale API 1.6 and Self-Service products are supported at this time.
+The RightScale API 1.5, RightScale API 1.6 and Self-Service APIs are supported at this time.
 
 - Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
   ![Code Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)
@@ -14,11 +14,19 @@ rsc can be used in one of three ways:
 * As a way to build higher level generic API clients. The `Do` methods exposed for each API make
   it possible to write generic code that can make any API request given a resource and action name.
 
-*NOTE*: rsc is still work in progress. The test coverage is currently very limited, use at your
+*NOTE*: rsc is work in progress. The test coverage is currently very limited, use at your
 own risk. Please use github issues to report problems.
 
-Command Line Tool
------------------
+## API References
+
+* [RightScale API 1.5](http://reference.rightscale.com/api1.5/index.html)
+* [RightScale API 1.6](http://dev-api-docs.rightscale.com/#/1.6/controller/V1_6::Accounts)
+* [Self-Service Designer](https://s3.amazonaws.com/rs_api_docs/selfservice/designer/index.html#/1.0/controller/V1::Controller::Schedule)
+* [Self-Service Catalog](https://s3.amazonaws.com/rs_api_docs/selfservice/catalog/index.html#/1.0/controller/V1::Controller::AccountPreference)
+* [Self-Service Manager](https://s3.amazonaws.com/rs_api_docs/selfservice/manager/index.html#/1.0/controller/V1::Controller::ScheduledAction)
+
+## Command Line Tool
+
 The command line tool uses subcommands to interact with each API. Use `rsc api15` to send requests
 to the RightScale API 1.5, `rsc api16` to send requests to the RightScale API 1.6 and `rsc ss` to
 send requests to the Self-Service APIs. `api15` is currently the default client so `rsc` is
@@ -34,7 +42,7 @@ the API action to perform (i.e `index`, `show`, `update`, etc.), `HREF` is the r
 collection href (i.e. `/api/servers`, `/api/servers/1` etc.) and `PARAM` and `VALUE` are the names
 and values of the action parameters (e.g. `view=extended`).
 
-=== Global Flags
+### Global Flags
 
 The list of global flags is:
 ```
@@ -77,7 +85,7 @@ $ rsc --xm .name index clouds
 ```
 extracts the names of each cloud from the response and prints the result as a space separated list.
 
-=== Actions and Parameters
+### Actions and Parameters
 
 The names of the action and its parameters follow the API documentation. Parameter names use form
 encoding to represent nested data structures. For example with API 1.5 the command line to create
@@ -93,7 +101,7 @@ The `/api/` prefix for API 1.5 and API 1.6 hrefs is optional so the following li
 ```
 $ rsc index clouds
 ```
-=== <a name="config"></a>Setup and Config
+### <a name="config"></a>Setup and Config
 rsc has a top level `setup` command which creates a rsc config file. The config file contains the
 RightScale account ID, API host, user email and (encrypted) password so that these flags don't have
 to be provided each time the tool is invoked.
@@ -103,7 +111,7 @@ By default the config file is created in `$HOME/.rsc`, the location can be overr
 users. The config file itself is a simple JSON file that can be edited manually (apart from the
 password value that needs to be encrypted by rsc).
 
-=== Built-in Help
+### Built-in Help
 The `--help` flag is available on all commands. It displays contextual help, for example:
 ```
 $ rsc index --help
@@ -136,12 +144,12 @@ GET    /api/clouds     Cloud.index
 GET    /api/clouds/:id Cloud.show
 ```
 
-Go Package
-----------
+## Go Package
+
 Each API is encapsulated in a different package: package `rsapi15` for API 1.5, package `rsapi16`
 for API 1.6 and package `ss` for Self-service.
 
-=== Using the Discrete Methods
+### Using the Discrete Methods
 
 The packages contain "resource locators", one per resource exposed by the underlying API.
 
@@ -190,7 +198,7 @@ if loc, err := volumeLocator.Create(&params); err == nil {
 }
 ```
 
-=== Using the Generic Methods
+### Using the Generic Methods
 
 Each package also contains a generic `Do` method which sends requests for a given resource and
 action name together with generic parameters:
@@ -205,8 +213,8 @@ that can load the response body:
 ```go
 func (a *Api) LoadResponse(resp *http.Response) (interface{}, error)
 ```
-Building: API Metadata and Code Generation
----------------
+## Building: API Metadata and Code Generation
+
 Part of the `rsc` source code (the vast majority in terms of lines of code) is automatically 
 generated from API metadata. There are currently two code generators: `api15gen` consumes the
 RightScale API 1.5 metadata hosted [here](http://reference.rightscale.com/api1.5/api_data.json) and
@@ -221,8 +229,8 @@ for information on how `go generate` works. The `go generate` comments live in t
 The Makefile included in the source code contains a `rsc` target that can be invoked to generate
 the code and build the command line tool.
 
-Directory Structure
--------------------
+## Directory Structure
+
 There is one package / sub-directory per API wrapped by rsc, currently these are the `rsapi15`,
 `rsapi16` and `ss` directories. These directories contain the code generated by the generator from
 the JSON: the `codegen_client.go` and `codegen_metadata.go` files.
@@ -248,7 +256,7 @@ for example.
 Finally, the `cmd` package contains common code used by `rsc` and each API command line processing
 code to access command line flags.
 
-=== Contributing (internal)
+### Contributing (internal)
 
 To add support for a new API:
   1. Create a subdirectory whose name matches the name of the go package (`rsapi15`, `ss`, etc.).
