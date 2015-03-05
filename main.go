@@ -11,6 +11,9 @@ import (
 	"github.com/rightscale/rsc/rsapi16"
 	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
+
+	_ "bitbucket.org/pkg/inflect"
+	_ "github.com/kr/text"
 )
 
 // Command line client entry point.
