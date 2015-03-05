@@ -55,7 +55,7 @@ install: $(NAME)
 	go install
 
 # the standard build produces a "local" executable, a linux tgz, and a darwin (macos) tgz
-build: $(NAME) api15 api16 ss build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64.tgz build/$(NAME)-linux-arm.tgz build/$(NAME)-windows-amd64.zip
+build: $(NAME) generate build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64.tgz build/$(NAME)-linux-arm.tgz build/$(NAME)-windows-amd64.zip
 
 # create a tgz with the binary and any artifacts that are necessary
 # note the hack to allow for various GOOS & GOARCH combos, sigh
@@ -112,13 +112,13 @@ lint:
 	  else echo "All .go files formatted correctly"; fi
 	#go vet ./...
 
-travis-test: lint api15 api16 ss
+travis-test: lint generate
 	ginkgo -r -cover
 
 # running ginkgo twice, sadly, the problem is that -cover modifies the source code with the effect
 # that if there are errors the output of gingko refers to incorrect line numbers
 # tip: if you don't like colors use gingkgo -r -noColor
-test: lint api15 api16 ss
+test: lint generate
 	ginkgo -r
 	ginkgo -r -cover
 	go tool cover -func=`basename $$PWD`.coverprofile

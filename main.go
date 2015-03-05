@@ -12,6 +12,7 @@ import (
 	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
 
+	// phoney references to make Godep pull these in for the code generators
 	_ "bitbucket.org/pkg/inflect"
 	_ "github.com/kr/text"
 )
