@@ -310,7 +310,7 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 		return fmt.Errorf("Invalid value for '%s', value must not be blank",
 			param.Name)
 	}
-	if len(param.ValidValues) > 0 {
+	if len(param.ValidValues) > 0 && param.Name != "filter[]" { // filter[] is special: it has values just so --help can list them
 		found := false
 		for _, v := range param.ValidValues {
 			if v == value {
