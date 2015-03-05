@@ -89,7 +89,7 @@ upload: depend
 version:
 	@echo "package main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
-	@echo "version.go: `cat version.go`"
+	@echo "version.go: `tail -1 version.go`"
 
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
 # Travis doing this. The folllowing just relies on go get no reinstalling when it's already
