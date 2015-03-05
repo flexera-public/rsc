@@ -48,8 +48,11 @@ PATH:=$(PWD)/Godeps/_workspace/bin:$(PATH)
 
 # the default target builds a binary in the top-level dir for whatever the local OS is
 default: $(NAME)
-$(NAME): *.go version depend
+$(NAME): *.go version depend generate
 	go build -o $(NAME) .
+
+install: $(NAME)
+	go install
 
 # the standard build produces a "local" executable, a linux tgz, and a darwin (macos) tgz
 build: $(NAME) api15 api16 ss build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64.tgz build/$(NAME)-linux-arm.tgz build/$(NAME)-windows-amd64.zip
@@ -104,10 +107,10 @@ clean:
 # gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
 # and then pointlessly complains about bad formatting in imported packages, sigh
 lint:
-	@if gofmt -l *.go */*.go | grep .go; then \
+	@if gofmt -l *.go */*.go 2>&1 | grep .go; then \
 	  echo "^- Repo contains improperly formatted go files" && exit 1; \
 	  else echo "All .go files formatted correctly"; fi
-	go vet ./...
+	#go vet ./...
 
 travis-test: lint api15 api16 ss
 	ginkgo -r -cover
@@ -124,21 +127,14 @@ test: lint api15 api16 ss
 
 .PHONY: rsc test generate api15gen praxisgen api15json 
 
-rsc: test generate
-	go install
-
-test:
-	ginkgo -r
-
 generate: api15gen praxisgen
 	go generate
 
 api15gen:
-	cd gen/api15gen && go test && go install
+	cd gen/api15gen && go install
 
 praxisgen:
 	cd gen/praxisgen && go test && go install
 
 api15json:
 	curl -s -o rsapi15/api_data.json http://reference.rightscale.com/api1.5/api_data.json
-

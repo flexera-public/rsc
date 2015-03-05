@@ -5,3 +5,6 @@ gen/api15gen/api15gen
 rsc
 gen/praxisgen/praxisgen
 version.go
+*/codegen_*.go
+*/*/codegen_*.go
+*.coverprofile
