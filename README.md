@@ -29,7 +29,7 @@ Jump to:
 * [RightScale SS 1.0 Catalog](https://s3.amazonaws.com/rs_api_docs/selfservice/catalog/index.html#/1.0/controller/V1::Controller::AccountPreference)
 * [RightScale SS 1.0 Manager](https://s3.amazonaws.com/rs_api_docs/selfservice/manager/index.html#/1.0/controller/V1::Controller::ScheduledAction)
 
-## <a anme="usage"></a>Command Line Tool
+## <a name="usage"></a>Command Line Tool
 
 The command line tool uses subcommands to interact with each API. Use `rsc cm15` to send requests
 to the RightScale Cloud Management API 1.5, `rsc cm16` to send requests to the RightScale Cloud
@@ -266,7 +266,7 @@ The `rsapi` package also includes authenticators which sign API requests by addi
 (cookie in the case of email/password authentication, OAuth header in the case of OAuth and custom header in
 the case of RightLink 10). Finally it contains common code used by all the clients to parse the command line.
 
-## <a name="contributing"></a>Development & Contributing]
+## <a name="contributing"></a>Development & Contributing
 
 ### Building
 
