@@ -1,0 +1,38 @@
+{
+	"ImportPath": "github.com/rightscale/rsc",
+	"GoVersion": "go1.4",
+	"Deps": [
+		{
+			"ImportPath": "github.com/alecthomas/units",
+			"Rev": "6b4e7dc5e3143b85ea77909c72caf89416fc2915"
+		},
+		{
+			"ImportPath": "github.com/coddingtonbear/go-jsonselect",
+			"Rev": "91587385271fea0ec1d570a5fc97de8b6b0685d7"
+		},
+		{
+			"ImportPath": "github.com/coddingtonbear/go-simplejson",
+			"Comment": "v0.4.3-16-ga582018",
+			"Rev": "a582018feafb39c4884d1b03cad98b91e2804276"
+		},
+		{
+			"ImportPath": "github.com/mgutz/ansi",
+			"Rev": "cc83c1ed67dc0f4b2a85a03980caa8a3a325a7f1"
+		},
+		{
+			"ImportPath": "github.com/onsi/ginkgo",
+			"Comment": "v1.1.0-28-g7d3d52b",
+			"Rev": "7d3d52b3a3a79d745c2a03ee81b5bc2086642201"
+		},
+		{
+			"ImportPath": "github.com/onsi/gomega",
+			"Comment": "v1.0-26-gdc751ce",
+			"Rev": "dc751ce5f266d83c26fae5c0a9093973b29cb61d"
+		},
+		{
+			"ImportPath": "gopkg.in/alecthomas/kingpin.v1",
+			"Comment": "v1.3.5",
+			"Rev": "a1508bd4f5b75aaa7ce97f411fcdc72138434bbb"
+		}
+	]
+}
