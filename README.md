@@ -338,3 +338,4 @@ code).
 ## License
 
 The rsc source code is subject the MIT license, see the [LICENSE](https://github.com/rightscale/rsc/edit/master/LICENSE) file.
+
