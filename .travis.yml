@@ -8,7 +8,7 @@ go:
 env:
   global:
     # RSBIN_KEY= to upload to rightscale-binaries bucket in q&b acct:
-  - secure: "DyIQwj43UeDH4F8ZDreOANGaqGWPduk5Bh2iSCiHYtuXzIRJUGeig9lzt3BH+DywJo5XoYbeKhq5oFrFt0ZHIDjSwAE2KgazEdwu33GBbua3qiu5kn1hf0dqhRifyRPEzCmYj8hUh9B1MaEI+nGk4DBi2viQDB4RVuVS0RQteqg="
+  - secure: "YjLlVtUV7KokAQNt0HeBeM4T05T1yJbL6PAYJB0kAy7mOsVrun4D7vRuovqXExP83NrI+hsoqddjh7QhRxb7GZHXK+ryWewL5zgLyj1MMKGVdpke2PFbAET8iMoNVzz59OkpbsaW145YnQXfHcEl3/UN4EZJIWy8TvnwYrk6PAk="
     # GITHUB_TOKEN= to push code coverage comment to github
   - secure: "HyJrsXL+WJkcL5TA4px0SZL6rY6Ft7IX8R7qq0K99bh9nX2Hl1my3nMY7OqcPE/Q0t0FUvOcq5U1c1wL1PBz9gu4n2Wpz4gU28drnUocFZir2osUOG0QCHrdeaXSKn2zekyCB5puxJleEIZqCh36rR2F8SwCh/88d6poUXFyvxI="
     # COV_KEY= code coverage upload keys
