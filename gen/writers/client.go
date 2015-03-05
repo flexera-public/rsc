@@ -54,7 +54,7 @@ func (c *ClientWriter) WriteResourceHeader(name string, w io.Writer) {
 
 // Write separator between resources and data types
 func (c *ClientWriter) WriteTypeSectionHeader(w io.Writer) {
-	fmt.Fprintln(w, "\n/****** Parameter Data Types ******/\n\n")
+	fmt.Fprintf(w, "\n/****** Parameter Data Types ******/\n\n\n")
 }
 
 // Write type declaration for resource action arguments
