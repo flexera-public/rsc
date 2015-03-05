@@ -40,6 +40,7 @@ DEPEND=golang.org/x/tools/cmd/cover github.com/onsi/ginkgo/ginkgo \
 
 TRAVIS_BRANCH?=dev
 DATE=$(shell date '+%F %T')
+SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
 # by manually adding the godep workspace to the path we don't need to run godep itself
 GOPATH:=$(PWD)/Godeps/_workspace:$(GOPATH)
@@ -92,6 +93,8 @@ upload: depend
 version:
 	@echo "package main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
+	@echo "package rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
+	  >rsapi/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
@@ -101,8 +104,9 @@ depend:
 	go get $(DEPEND)
 
 clean:
-	rm -rf build _aws-sdk
+	rm -rf build
 	@echo "package main; const VV = \"$(NAME) unversioned - $(DATE)\"" >version.go
+	@echo "package rsapi; const UA = \"$(NAME)/unversioned-$(SECONDS)\"">rsapi/user_agent.go
 
 # gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
 # and then pointlessly complains about bad formatting in imported packages, sigh

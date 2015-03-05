@@ -36,7 +36,7 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 	// TBD: Read version from same place as command line tool
-	req.Header.Set("User-Agent", "rsc/0.3.0")
+	req.Header.Set("User-Agent", UA)
 	resp, err := a.Client.Do(req)
 	if err != nil {
 		return nil, err
