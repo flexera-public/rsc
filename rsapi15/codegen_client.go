@@ -1,9 +1,7 @@
 //************************************************************************//
 //                     RightScale API client
 //
-// Generated
-// Mar 4, 2015 at 10:20pm (PST)
-// Command:
+// Generated with:
 // $ api15gen -metadata=rsapi15 -output=rsapi15
 //
 // The content of this file is auto-generated, DO NOT MODIFY

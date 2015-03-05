@@ -86,8 +86,7 @@ const headerTmpl = `
 //************************************************************************//
 //                     RightScale API client
 //
-{{comment "Generated " (now.Format "Jan 2, 2006 at 3:04pm (PST)")}}
-// Command:
+// Generated with:
 {{comment commandLine}}
 //
 // The content of this file is auto-generated, DO NOT MODIFY

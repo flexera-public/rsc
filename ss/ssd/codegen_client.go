@@ -1,9 +1,7 @@
 //************************************************************************//
 //                     RightScale API client
 //
-// Generated
-// Mar 4, 2015 at 10:20pm (PST)
-// Command:
+// Generated with:
 // $ praxisgen -metadata=ss/ssd/restful_doc -output=ss/ssd -pkg=ssd -target=1.0 -client=Api
 //
 // The content of this file is auto-generated, DO NOT MODIFY

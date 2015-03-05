@@ -8,3 +8,5 @@ version.go
 */codegen_*.go
 */*/codegen_*.go
 *.coverprofile
+Godeps/_workspace/src/github.com/jessevdk/go-flags/
+Godeps/_workspace/src/github.com/rlmcpherson/s3gof3r/
