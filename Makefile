@@ -110,7 +110,7 @@ lint:
 	@if gofmt -l *.go */*.go 2>&1 | grep .go; then \
 	  echo "^- Repo contains improperly formatted go files" && exit 1; \
 	  else echo "All .go files formatted correctly"; fi
-	#go vet ./...
+	go tool vet -composites=false .
 
 travis-test: lint generate
 	ginkgo -r -cover
