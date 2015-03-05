@@ -37,7 +37,7 @@ script:
   - echo $PATH
   - which gof3r
   # Deploy build result to s3
-  - export AWS_ACCESS_KEY_ID=AKIAIX3L4RHHIREAHABQ # rightlinklite bucket access
+  - export AWS_ACCESS_KEY_ID=AKIAIH2GBWLUIUE3CDPQ
   - export AWS_SECRET_ACCESS_KEY=${RSBIN_KEY}
   - make upload
   # Compute code coverage
