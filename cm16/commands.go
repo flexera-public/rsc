@@ -4,32 +4,21 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/rsapi"
+)
+
+const (
+	// Used by rsc to display command line help
+	ApiName = "RightScale CM API 1.6"
 )
 
 // Data structure that holds parsed command line values
 var commandValues rsapi.ActionCommands
 
 // Register all commands with kinpin application
-func RegisterCommands(api16Cmd cmd.CommandProvider) {
+func RegisterCommands(registrar *rsapi.Registrar) {
 	commandValues = rsapi.ActionCommands{}
-	for _, action := range []string{"index", "show"} {
-		var description string
-		switch action {
-		case "index":
-			description = "Lists all resources of given type in account."
-		case "show":
-			description = "Show information about a single resource."
-		}
-		actionCmd := api16Cmd.Command(action, description)
-		actionCmdValue := rsapi.ActionCommand{}
-		hrefMsg := "API Resource or resource collection href on which to act, e.g. '/api/deployments'"
-		paramsMsg := "Action parameters in the form QUERY=VALUE, e.g. 'view=default'"
-		actionCmd.Arg("href", hrefMsg).Required().StringVar(&actionCmdValue.Href)
-		actionCmd.Arg("params", paramsMsg).StringsVar(&actionCmdValue.Params)
-		commandValues[actionCmd.FullCommand()] = &actionCmdValue
-	}
+	registrar.RegisterActionCommands(ApiName, GenMetadata, commandValues)
 }
 
 // Parse and run command
@@ -55,6 +44,6 @@ func (a *Api) ShowCommandHelp(cmd string) error {
 }
 
 // Show command hrefs
-func (a *Api) ShowCommandHrefs(cmd string) error {
-	return a.ShowHrefs(cmd, "/api", commandValues)
+func (a *Api) ShowApiActions(cmd string) error {
+	return a.ShowActions(cmd, "/api", commandValues)
 }

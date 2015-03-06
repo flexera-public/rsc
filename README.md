@@ -62,7 +62,6 @@ The list of global flags is:
   --pwd=PWD         Login password, use --email and --password or use --key or --rl10
   -k, --key=KEY     OAuth access token or API key, use --email and --password or use --key or --rl10
   --rl10            Proxy requests through RL 10 agent, use --email and --password or use --key or --rl10
-  --hrefs           List all known href patterns for selected API or resource
   --x1=X1           Extract single value using JSON:select
   --xm=XM           Extract zero, one or more values using JSON:select and return space separated list
   --xj=XJ           Extract zero, one or more values using JSON:select and return JSON
@@ -93,11 +92,29 @@ is convenient to consume from bash scripts for example.
 
 ### Actions and Parameters
 
-The names of the action and its parameters follow the API documentation. Parameter names use form
-encoding to represent nested data structures used in request bodies. For example with API 1.5 the command
-line to create a volume is:
+The names of the actions available for a given API or a given API resource can be listed with the
+special `actions` action:
 ```
-$ rsc --pp --fetch cm15 create clouds/1/volumes \
+$ rsc cm15 actions
+```
+(output of example above not shown for brevity)
+To get the actions available on a resource specify the resource href as in:
+```
+$ rsc cm15 actions /api/clouds/1/volumes
+Action  Href                              Resource
+======= ================================= ========
+create  /api/clouds/:cloud_id             Volume
+------- --------------------------------- --------
+destroy /api/clouds/:cloud_id/volumes/:id Volume
+------- --------------------------------- --------
+index   /api/clouds/:cloud_id             Volume
+------- --------------------------------- --------
+show    /api/clouds/:cloud_id/volumes/:id Volume
+```
+Parameters use url form encoding to represent nested data structures used in request bodies. For example
+using the RightScale CM API 1.5 the command line to create a volume is:
+```
+$ rsc --pp --fetch cm15 create /api/clouds/1/volumes \
 volume[name]="My New Volume" \
 volume[size]="10" \
 volume[datacenter_href]="/api/clouds/1/datacenters/5K443K2CF8NS6" \
@@ -105,7 +122,10 @@ volume[volume_type_href]="/api/clouds/1/volume_types/BDVEN383N1EN2"
 ```
 (the `--pp` and `--fetch` options above are optional, `--fetch` makes a subsequent API call to retrieve
 the newly created resource and `--pp` pretty prints the corresponding response).
-
+Use the name of the fields followed by `[]` to represent arrays:
+```
+$ rsc cm16 index /api/deployments filter[]=description=="awesome deployment" filter[]=name=="app servers"
+```
 The `/api/` prefix for CM API 1.5 and CM API 1.6 hrefs is optional so the following lists all deployments
 in the account using the default view:
 ```
@@ -156,11 +176,7 @@ Method Href Pattern    Resource.Action
 GET    /api/clouds     Cloud.index
 GET    /api/clouds/:id Cloud.show
 ```
-Simply executing:
-```
-rsc --hrefs ss
-```
-lists all the actions supported by the Self-Service API and the corresponding href patterns.
+
 
 ## <a name="go"></a>Go Package
 

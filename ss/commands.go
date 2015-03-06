@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"path"
-	"strings"
 
-	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss/ssc"
@@ -14,76 +12,20 @@ import (
 	"github.com/rightscale/rsc/ss/ssm"
 )
 
+const (
+	// Used by rsc to display command line help
+	ApiName = "RightScale Self-Service APIs"
+)
+
 // Data structure that holds parsed command line values
 var commandValues rsapi.ActionCommands
 
 // Register all commands with kinpin application
-func RegisterCommands(ssCmd cmd.CommandProvider) {
+func RegisterCommands(registrar rsapi.ApiCommandRegistrar) {
 	commandValues = rsapi.ActionCommands{}
-	var actionNames []string
-	allResources := make(map[string]*metadata.Resource, len(ssc.GenMetadata)+len(ssd.GenMetadata)+len(ssm.GenMetadata))
-	for n, r := range ssc.GenMetadata {
-		allResources[n] = r
-	}
-	for n, r := range ssd.GenMetadata {
-		allResources[n] = r
-	}
-	for n, r := range ssm.GenMetadata {
-		allResources[n] = r
-	}
-	for _, r := range allResources {
-		for _, a := range r.Actions {
-			name := a.Name
-			exists := false
-			for _, e := range actionNames {
-				if e == name {
-					exists = true
-					break
-				}
-			}
-			if !exists {
-				actionNames = append(actionNames, name)
-			}
-		}
-	}
-	for _, action := range actionNames {
-		var description string
-		switch action {
-		case "show":
-			description = "Show information about a single resource."
-		case "index":
-			description = "Lists all resources of given type in account."
-		case "create":
-			description = "Create new resource."
-		case "update":
-			description = "Update existing resource."
-		case "delete":
-			description = "Destroy a single resource."
-		default:
-			resources := []string{}
-			var actionDescription string
-			for name, resource := range allResources {
-				for _, a := range resource.Actions {
-					if a.Name == action {
-						actionDescription = a.Description
-						resources = append(resources, name)
-					}
-				}
-			}
-			if len(resources) == 1 {
-				description = actionDescription
-			} else {
-				description = "Action of resources " + strings.Join(resources[:len(resources)-1], ", ") + " and " + resources[len(resources)-1]
-			}
-		}
-		actionCmd := ssCmd.Command(action, description)
-		actionCmdValue := rsapi.ActionCommand{}
-		hrefMsg := "API Resource or resource collection href on which to act, e.g. '/projects/1/executions/2'"
-		paramsMsg := "Action parameters in the form QUERY=VALUE, e.g. 'execution[name]=my\\ execution'"
-		actionCmd.Arg("href", hrefMsg).Required().StringVar(&actionCmdValue.Href)
-		actionCmd.Arg("params", paramsMsg).StringsVar(&actionCmdValue.Params)
-		commandValues[actionCmd.FullCommand()] = &actionCmdValue
-	}
+	registrar.RegisterActionCommands(ApiName, ssd.GenMetadata, commandValues)
+	registrar.RegisterActionCommands(ApiName, ssc.GenMetadata, commandValues)
+	registrar.RegisterActionCommands(ApiName, ssm.GenMetadata, commandValues)
 }
 
 // Parse and run command
@@ -133,8 +75,8 @@ func (a *Api) ShowCommandHelp(cmd string) error {
 	return showHelp(cmd, "", commandValues)
 }
 
-// Show command hrefs
-func (a *Api) ShowCommandHrefs(cmd string) error {
+// Show command actions
+func (a *Api) ShowApiActions(cmd string) error {
 	target, _, err := a.ParseCommandAndFlags(cmd, "", commandValues)
 	var service string
 	if err == nil {
@@ -144,20 +86,20 @@ func (a *Api) ShowCommandHrefs(cmd string) error {
 		var showHrefs func(string, string, rsapi.ActionCommands) error
 		switch service {
 		case "manager":
-			showHrefs = a.managerClient.ShowHrefs
+			showHrefs = a.managerClient.ShowActions
 		case "catalog":
-			showHrefs = a.catalogClient.ShowHrefs
+			showHrefs = a.catalogClient.ShowActions
 		case "designer":
-			showHrefs = a.designerClient.ShowHrefs
+			showHrefs = a.designerClient.ShowActions
 		}
 		return showHrefs(cmd, "", commandValues)
 	} else {
 		fmt.Println("DESIGNER")
-		a.designerClient.ShowHrefs(cmd, "", commandValues)
+		a.designerClient.ShowActions(cmd, "", commandValues)
 		fmt.Println("\nCATALOG")
-		a.catalogClient.ShowHrefs(cmd, "", commandValues)
+		a.catalogClient.ShowActions(cmd, "", commandValues)
 		fmt.Println("\nMANAGER")
-		a.managerClient.ShowHrefs(cmd, "", commandValues)
+		a.managerClient.ShowActions(cmd, "", commandValues)
 		return nil
 	}
 }

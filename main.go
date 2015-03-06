@@ -6,10 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rightscale/rsc/cm15"
-	"github.com/rightscale/rsc/cm16"
 	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
 
 	// phoney references to make Godep pull these in for the code generators
@@ -30,25 +27,11 @@ func main() {
 	// Execute appropriate command
 	var resp *http.Response
 	topCommand := strings.Split(cmdLine.Command, " ")[0]
-	if !IsClientCommand(topCommand) && topCommand != "setup" {
-		topCommand = DefaultClientCommand
-	}
-	var client cmd.CommandClient
-	switch topCommand {
-	case "setup":
+	if topCommand == "setup" {
 		err = CreateConfig(cmdLine.ConfigPath)
-	case "cm15":
-		client, err = cm15.FromCommandLine(cmdLine)
-		if err == nil {
-			resp, err = runCommand(client, cmdLine)
-		}
-	case "cm16":
-		client, err = cm16.FromCommandLine(cmdLine)
-		if err == nil {
-			resp, err = runCommand(client, cmdLine)
-		}
-	case "ss":
-		client, err = ss.FromCommandLine(cmdLine)
+	} else {
+		var client cmd.CommandClient
+		client, err = ApiClient(topCommand, cmdLine)
 		if err == nil {
 			resp, err = runCommand(client, cmdLine)
 		}
@@ -113,12 +96,12 @@ func main() {
 
 // Helper that runs command line with give command client
 func runCommand(client cmd.CommandClient, cmdLine *cmd.CommandLine) (resp *http.Response, err error) {
-	switch {
-	case cmdLine.ShowHelp:
+	cmds := strings.Split(cmdLine.Command, " ")
+	if cmdLine.ShowHelp {
 		err = client.ShowCommandHelp(cmdLine.Command)
-	case cmdLine.ShowHrefs:
-		err = client.ShowCommandHrefs(cmdLine.Command)
-	default:
+	} else if len(cmds) > 1 && cmds[1] == "actions" {
+		err = client.ShowApiActions(cmdLine.Command)
+	} else {
 		resp, err = client.RunCommand(cmdLine.Command)
 	}
 	return
