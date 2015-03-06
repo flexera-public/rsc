@@ -10,9 +10,9 @@ env:
     # RSBIN_KEY= to upload to rightscale-binaries bucket in q&b acct:
   - secure: "ijNb1OR2HyNxKXMPemlYit+QEyJDahpm0L5nTI4sevJ2+99+L/p/rBGOUfrCxnnAD3Swn9jzkqLjfwZiUqL5MRMzNHtTnCKgmVRZpH6xMeFpZlQqTGVpOeLr1jVbbXlopjro1dtPEFE1ytu0k0AQS2G/kljOwN4FB3pnDsPPKZ0="
     # GITHUB_TOKEN= to push code coverage comment to github
-  - secure: "HyJrsXL+WJkcL5TA4px0SZL6rY6Ft7IX8R7qq0K99bh9nX2Hl1my3nMY7OqcPE/Q0t0FUvOcq5U1c1wL1PBz9gu4n2Wpz4gU28drnUocFZir2osUOG0QCHrdeaXSKn2zekyCB5puxJleEIZqCh36rR2F8SwCh/88d6poUXFyvxI="
+  - secure: "R0jYF8nVbEZ5lH/wb8rAfJ6SIpJOpjqmNgmac2kHF1RR+aUgXslYs45KP3OuOvTul8G4fPBrXaZ5Mrn1ipExDoy3MFtpgMJPfVR7qrazDQwGcUGeMde/mSrFczXGOKI9u6GRM+KaaOZ5nQAPowiC0KCMnCu0L3z8vWxejeopZK0="
     # COV_KEY= code coverage upload keys
-  - secure: "QUrs0MYfT0DN+aDCIfe8WVDRHOlMjYCEZp5/qPk8P100AROijwz+hD1HT5QuO70pD5RvaoI+GIrCb0eiSX48hp/u5bs6PcgD+M+F2M/6HrGDb6Hdo8azi/M0x63f50ku5r+PyhMD/4Ohsjb24HwGl4CKcmzfYJ+w1Ipw1NygkNI="
+  - secure: "TMMLVu0xRJb/33/2xexO6AJGlLjwidbp5uZxLwDWuQMTc/mTx/ia4peBCDkGkkFDD+8J93eCODZHzvB9cOFEEflnwpSs1uxetpG6Rmip+1mtuXWTd1dj6rHuTiK1HEaa/qEUsL6iXBuJfhgi9ZcVDplCMqkqcnBip+koX1asBXU="
 
 # sudo=false makes the build run using a container
 sudo: false
@@ -61,13 +61,13 @@ script:
   # Deploy code coverage result to S3
   - export AWS_ACCESS_KEY_ID=AKIAI4RIGBPD3NP2RQ3Q # code coverage bucket access
   - export AWS_SECRET_ACCESS_KEY=${COV_KEY}
-    #- gof3r put -b rs-code-coverage -k ${NAME}/${FILENAME} -m x-amz-acl:public-read < ${FILENAME}
+  - gof3r put -b rs-code-coverage -k ${NAME}/${FILENAME} -m x-amz-acl:public-read < ${FILENAME}
   # Deploy code coverage badge to S3
   - export COVERAGE_INT=$(echo $COVERAGE | cut -d. -f1)
   - export BADGE_FILENAME=cc_badge_${TRAVIS_BRANCH}.svg
   - export BADGE_COLOR=$( if [ ${COVERAGE_INT} -gt 80 ] ; then echo brightgreen ; elif [ ${COVERAGE_INT} -gt 40 ] ; then echo yellow ; else echo red ; fi )
   - wget "http://img.shields.io/badge/coverage-${COVERAGE}%25-${BADGE_COLOR}.svg" -O ${BADGE_FILENAME}
-    #- gof3r put -b rs-code-coverage -k ${NAME}/${BADGE_FILENAME} -m x-amz-acl:public-read -m cache-control:no-cache < ${BADGE_FILENAME}
+  - gof3r put -b rs-code-coverage -k ${NAME}/${BADGE_FILENAME} -m x-amz-acl:public-read -m cache-control:no-cache -m content-type:image/svg+xml < ${BADGE_FILENAME}
 
 notifications:
   slack:
