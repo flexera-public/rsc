@@ -4,11 +4,9 @@
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs as well as
 the RightScale Self-Service 1.0 APIs (latest version for this product).
 
-<p style='text-align: center;'>
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](http://gocover.io/_badge/github.com/rightscale/rsc?0)](http://gocover.io/github.com/rightscale/rsc)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE)
-</p>
 
 `rsc` can be used in one of two ways:
 
