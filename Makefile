@@ -24,6 +24,10 @@
 # travis-test: just runs unit tests recursively
 # clean: removes build stuff
 #
+# the upload target is used in the .travis.yml file and pushes binary archives to
+# https://$(BUCKET).s3.amazonaws.com/rsbin/$(NAME)/$(BRANCH)/$(NAME)-$(GOOS)-$(GOARCH).tgz
+# (.zip for windows)
+#
 # HACKS - a couple of things here are unconventional in order to keep travis-ci fast:
 # - use 'godep save' on your laptop if you add dependencies, but we don't use godep in the
 #   makefile, instead, we simply add the godep workspace to the GOPATH

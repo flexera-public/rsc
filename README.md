@@ -38,6 +38,24 @@ The command line tool uses subcommands to interact with each API. Use `rsc cm15`
 to the RightScale Cloud Management API 1.5, `rsc cm16` to send requests to the RightScale Cloud
 Management API 1.6 and `rsc ss` to send requests to the RightScale Self-Service API 1.0.
 
+### Download & Install
+
+Download a statically linked binary and run it as follows:
+```
+$ curl https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-linux-amd64.tgz |\
+  tar -zxf - -O ./rsc/rsc > rsc
+$ chmod +x ./rsc
+$ ./rsc --version
+rsc master - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
+```
+
+- MacOS: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-darwin-amd64.tgz`
+- Windows: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-windows-amd64.zip`
+- RasPi: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-linux-arm.tgz`
+See further down in the README for building from source.
+
+### Command line
+
 The general shape of a command line is:
 
 ```
