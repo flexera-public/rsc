@@ -200,15 +200,6 @@ view=string
 ```
 The help lists the valid values for views and filters for example. It also indicates which flags are mandatory.
 
-Another useful global flag is `--hrefs` which lists the valid Href pattern for the given resource or all
-resources if no resource is specified. For example:
-```
-$ rsc --hrefs cm15 index clouds
-Method Href Pattern    Resource.Action
-GET    /api/clouds     Cloud.index
-GET    /api/clouds/:id Cloud.show
-```
-
 -----
 ## <a name="go"></a>Go Package
 
