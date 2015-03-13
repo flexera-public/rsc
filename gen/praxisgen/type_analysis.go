@@ -63,6 +63,11 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 	if !ok {
 		return nil, fmt.Errorf("Missing type name in %s", prettify(typeDef))
 	}
+	if n == "Tempfile" {
+		//TODO: support multipart file upload...
+		fmt.Printf("Warn: %s is a TempFile - file upload is currently not supported, generating code using string.\n", query)
+		n = "String"
+	}
 	if isBuiltInType(n) {
 		n = "String"
 	}

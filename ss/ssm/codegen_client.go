@@ -179,13 +179,50 @@ func (loc *ExecutionLocator) Show(id string, projectId string, options rsapi.Api
 
 // POST /projects/:project_id/executions
 // Create a new execution from a CAT, a compiled CAT, an Application in the Catalog, or a Template in Designer
-func (loc *ExecutionLocator) Create(projectId string) (*ExecutionLocator, error) {
+func (loc *ExecutionLocator) Create(projectId string, options rsapi.ApiParams) (*ExecutionLocator, error) {
 	var res *ExecutionLocator
 	if projectId == "" {
 		return res, fmt.Errorf("projectId is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var applicationHrefOpt = options["application_href"]
+	if applicationHrefOpt != nil {
+		payloadParams["application_href"] = applicationHrefOpt
+	}
+	var compiledCatOpt = options["compiled_cat"]
+	if compiledCatOpt != nil {
+		payloadParams["compiled_cat"] = compiledCatOpt
+	}
+	var descriptionOpt = options["description"]
+	if descriptionOpt != nil {
+		payloadParams["description"] = descriptionOpt
+	}
+	var nameOpt = options["name"]
+	if nameOpt != nil {
+		payloadParams["name"] = nameOpt
+	}
+	var options_Opt = options["options"]
+	if options_Opt != nil {
+		payloadParams["options"] = options_Opt
+	}
+	var scheduledActionsOpt = options["scheduled_actions"]
+	if scheduledActionsOpt != nil {
+		payloadParams["scheduled_actions"] = scheduledActionsOpt
+	}
+	var scheduledOperationsOpt = options["scheduled_operations"]
+	if scheduledOperationsOpt != nil {
+		payloadParams["scheduled_operations"] = scheduledOperationsOpt
+	}
+	var sourceOpt = options["source"]
+	if sourceOpt != nil {
+		payloadParams["source"] = sourceOpt
+	}
+	var templateHrefOpt = options["template_href"]
+	if templateHrefOpt != nil {
+		payloadParams["template_href"] = templateHrefOpt
+	}
 	uri, err := loc.Url("Execution", "create")
 	if err != nil {
 		return res, err
@@ -683,13 +720,27 @@ func (loc *OperationLocator) Show(id string, projectId string, options rsapi.Api
 
 // POST /projects/:project_id/operations
 // Trigger an Operation to run by specifying the Execution ID and the name of the Operation.
-func (loc *OperationLocator) Create(projectId string) (*OperationLocator, error) {
+func (loc *OperationLocator) Create(projectId string, executionId string, name string, options rsapi.ApiParams) (*OperationLocator, error) {
 	var res *OperationLocator
 	if projectId == "" {
 		return res, fmt.Errorf("projectId is required")
 	}
+	if executionId == "" {
+		return res, fmt.Errorf("executionId is required")
+	}
+	if name == "" {
+		return res, fmt.Errorf("name is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"execution_id": executionId,
+		"name":         name,
+	}
+	var options_Opt = options["options"]
+	if options_Opt != nil {
+		payloadParams["options"] = options_Opt
+	}
 	uri, err := loc.Url("Operation", "create")
 	if err != nil {
 		return res, err
@@ -806,13 +857,40 @@ func (loc *ScheduledActionLocator) Show(id string, projectId string) (*Scheduled
 
 // POST /projects/:project_id/scheduled_actions
 // Create a new ScheduledAction resource.
-func (loc *ScheduledActionLocator) Create(projectId string) (*ScheduledActionLocator, error) {
+func (loc *ScheduledActionLocator) Create(projectId string, action string, executionId string, firstOccurrence time.Time, options rsapi.ApiParams) (*ScheduledActionLocator, error) {
 	var res *ScheduledActionLocator
 	if projectId == "" {
 		return res, fmt.Errorf("projectId is required")
 	}
+	if action == "" {
+		return res, fmt.Errorf("action is required")
+	}
+	if executionId == "" {
+		return res, fmt.Errorf("executionId is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"action":           action,
+		"execution_id":     executionId,
+		"first_occurrence": firstOccurrence,
+	}
+	var mandatoryOpt = options["mandatory"]
+	if mandatoryOpt != nil {
+		payloadParams["mandatory"] = mandatoryOpt
+	}
+	var nameOpt = options["name"]
+	if nameOpt != nil {
+		payloadParams["name"] = nameOpt
+	}
+	var recurrenceOpt = options["recurrence"]
+	if recurrenceOpt != nil {
+		payloadParams["recurrence"] = recurrenceOpt
+	}
+	var timezoneOpt = options["timezone"]
+	if timezoneOpt != nil {
+		payloadParams["timezone"] = timezoneOpt
+	}
 	uri, err := loc.Url("ScheduledAction", "create")
 	if err != nil {
 		return res, err
@@ -831,7 +909,7 @@ func (loc *ScheduledActionLocator) Create(projectId string) (*ScheduledActionLoc
 
 // PATCH /projects/:project_id/scheduled_actions/:id
 // Update one or more ScheduledAction properties. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledActions created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
-func (loc *ScheduledActionLocator) Patch(id string, projectId string) error {
+func (loc *ScheduledActionLocator) Patch(id string, projectId string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -840,6 +918,19 @@ func (loc *ScheduledActionLocator) Patch(id string, projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
+	var nextOccurrenceOpt = options["next_occurrence"]
+	if nextOccurrenceOpt != nil {
+		payloadParams["next_occurrence"] = nextOccurrenceOpt
+	}
+	var recurrenceOpt = options["recurrence"]
+	if recurrenceOpt != nil {
+		payloadParams["recurrence"] = recurrenceOpt
+	}
 	uri, err := loc.Url("ScheduledAction", "patch")
 	if err != nil {
 		return err
@@ -853,7 +944,7 @@ func (loc *ScheduledActionLocator) Patch(id string, projectId string) error {
 
 // DELETE /projects/:project_id/scheduled_actions/:id
 // Delete a ScheduledAction. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
-func (loc *ScheduledActionLocator) Delete(id string, projectId string) error {
+func (loc *ScheduledActionLocator) Delete(id string, projectId string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -862,6 +953,11 @@ func (loc *ScheduledActionLocator) Delete(id string, projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
 	uri, err := loc.Url("ScheduledAction", "delete")
 	if err != nil {
 		return err
@@ -875,7 +971,7 @@ func (loc *ScheduledActionLocator) Delete(id string, projectId string) error {
 
 // POST /projects/:project_id/scheduled_actions/:id/actions/skip
 // Skips the requested number of ScheduledAction occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledAction is returned.
-func (loc *ScheduledActionLocator) Skip(id string, projectId string) error {
+func (loc *ScheduledActionLocator) Skip(id string, projectId string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -884,6 +980,15 @@ func (loc *ScheduledActionLocator) Skip(id string, projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var countOpt = options["count"]
+	if countOpt != nil {
+		payloadParams["count"] = countOpt
+	}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
 	uri, err := loc.Url("ScheduledAction", "skip")
 	if err != nil {
 		return err
@@ -996,13 +1101,40 @@ func (loc *ScheduledOperationLocator) Show(id string, projectId string) (*Schedu
 
 // POST /projects/:project_id/scheduled_operations
 // Create a new ScheduledOperation resource.
-func (loc *ScheduledOperationLocator) Create(projectId string) (*ScheduledOperationLocator, error) {
+func (loc *ScheduledOperationLocator) Create(projectId string, executionId string, firstOccurrence time.Time, operation *OperationStruct, options rsapi.ApiParams) (*ScheduledOperationLocator, error) {
 	var res *ScheduledOperationLocator
 	if projectId == "" {
 		return res, fmt.Errorf("projectId is required")
 	}
+	if executionId == "" {
+		return res, fmt.Errorf("executionId is required")
+	}
+	if operation == nil {
+		return res, fmt.Errorf("operation is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"execution_id":     executionId,
+		"first_occurrence": firstOccurrence,
+		"operation":        operation,
+	}
+	var mandatoryOpt = options["mandatory"]
+	if mandatoryOpt != nil {
+		payloadParams["mandatory"] = mandatoryOpt
+	}
+	var nameOpt = options["name"]
+	if nameOpt != nil {
+		payloadParams["name"] = nameOpt
+	}
+	var recurrenceOpt = options["recurrence"]
+	if recurrenceOpt != nil {
+		payloadParams["recurrence"] = recurrenceOpt
+	}
+	var timezoneOpt = options["timezone"]
+	if timezoneOpt != nil {
+		payloadParams["timezone"] = timezoneOpt
+	}
 	uri, err := loc.Url("ScheduledOperation", "create")
 	if err != nil {
 		return res, err
@@ -1021,7 +1153,7 @@ func (loc *ScheduledOperationLocator) Create(projectId string) (*ScheduledOperat
 
 // PATCH /projects/:project_id/scheduled_operations/:id
 // Update one or more ScheduledOperation properties. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledOperations created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
-func (loc *ScheduledOperationLocator) Patch(id string, projectId string) error {
+func (loc *ScheduledOperationLocator) Patch(id string, projectId string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -1030,6 +1162,19 @@ func (loc *ScheduledOperationLocator) Patch(id string, projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
+	var nextOccurrenceOpt = options["next_occurrence"]
+	if nextOccurrenceOpt != nil {
+		payloadParams["next_occurrence"] = nextOccurrenceOpt
+	}
+	var recurrenceOpt = options["recurrence"]
+	if recurrenceOpt != nil {
+		payloadParams["recurrence"] = recurrenceOpt
+	}
 	uri, err := loc.Url("ScheduledOperation", "patch")
 	if err != nil {
 		return err
@@ -1043,7 +1188,7 @@ func (loc *ScheduledOperationLocator) Patch(id string, projectId string) error {
 
 // DELETE /projects/:project_id/scheduled_operations/:id
 // Delete a ScheduledOperation. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
-func (loc *ScheduledOperationLocator) Delete(id string, projectId string) error {
+func (loc *ScheduledOperationLocator) Delete(id string, projectId string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -1052,6 +1197,11 @@ func (loc *ScheduledOperationLocator) Delete(id string, projectId string) error 
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
 	uri, err := loc.Url("ScheduledOperation", "delete")
 	if err != nil {
 		return err
@@ -1065,7 +1215,7 @@ func (loc *ScheduledOperationLocator) Delete(id string, projectId string) error 
 
 // POST /projects/:project_id/scheduled_operations/:id/actions/skip
 // Skips the requested number of ScheduledOperation occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledOperation is returned.
-func (loc *ScheduledOperationLocator) Skip(id string, projectId string) error {
+func (loc *ScheduledOperationLocator) Skip(id string, projectId string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -1074,6 +1224,15 @@ func (loc *ScheduledOperationLocator) Skip(id string, projectId string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var countOpt = options["count"]
+	if countOpt != nil {
+		payloadParams["count"] = countOpt
+	}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
 	uri, err := loc.Url("ScheduledOperation", "skip")
 	if err != nil {
 		return err
@@ -1107,6 +1266,23 @@ type AvailableOperationsParametersValidationStruct struct {
 	MinLength             int      `json:"min_length,omitempty"`
 	MinValue              int      `json:"min_value,omitempty"`
 	NoEcho                bool     `json:"no_echo,omitempty"`
+}
+
+type CompiledCAT struct {
+	Conditions         map[string]string `json:"conditions,omitempty"`
+	Definitions        map[string]string `json:"definitions,omitempty"`
+	LongDescription    string            `json:"long_description,omitempty"`
+	Mappings           map[string]string `json:"mappings,omitempty"`
+	Name               string            `json:"name,omitempty"`
+	Namespaces         []*Namespace      `json:"namespaces,omitempty"`
+	Operations         map[string]string `json:"operations,omitempty"`
+	Outputs            map[string]string `json:"outputs,omitempty"`
+	Parameters         map[string]string `json:"parameters,omitempty"`
+	RequiredParameters []string          `json:"required_parameters,omitempty"`
+	Resources          map[string]string `json:"resources,omitempty"`
+	RsCaVer            int               `json:"rs_ca_ver,omitempty"`
+	ShortDescription   string            `json:"short_description,omitempty"`
+	Source             string            `json:"source,omitempty"`
 }
 
 type ConfigurationOption struct {
@@ -1211,6 +1387,27 @@ type LatestNotificationsTimestampsStruct struct {
 type LaunchedFrom struct {
 	Type_ string `json:"type,omitempty"`
 	Value string `json:"value,omitempty"`
+}
+
+type Namespace struct {
+	Name    string            `json:"name,omitempty"`
+	Service *NamespaceService `json:"service,omitempty"`
+	Types   []*NamespaceType  `json:"types,omitempty"`
+}
+
+type NamespaceService struct {
+	Auth    string            `json:"auth,omitempty"`
+	Headers map[string]string `json:"headers,omitempty"`
+	Host    string            `json:"host,omitempty"`
+	Path    string            `json:"path,omitempty"`
+}
+
+type NamespaceType struct {
+	Delete    string            `json:"delete,omitempty"`
+	Fields    map[string]string `json:"fields,omitempty"`
+	Name      string            `json:"name,omitempty"`
+	Path      string            `json:"path,omitempty"`
+	Provision string            `json:"provision,omitempty"`
 }
 
 type NotificationLatestNotificationsLink struct {

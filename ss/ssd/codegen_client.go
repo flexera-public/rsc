@@ -135,13 +135,31 @@ func (loc *ScheduleLocator) Show(collectionId string, id string) (*Schedule, err
 
 // POST /collections/:collection_id/schedules
 // Create a new Schedule.
-func (loc *ScheduleLocator) Create(collectionId string) (*ScheduleLocator, error) {
+func (loc *ScheduleLocator) Create(collectionId string, name string, startRecurrence *Recurrence, stopRecurrence *Recurrence, options rsapi.ApiParams) (*ScheduleLocator, error) {
 	var res *ScheduleLocator
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
+	if name == "" {
+		return res, fmt.Errorf("name is required")
+	}
+	if startRecurrence == nil {
+		return res, fmt.Errorf("startRecurrence is required")
+	}
+	if stopRecurrence == nil {
+		return res, fmt.Errorf("stopRecurrence is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"name":             name,
+		"start_recurrence": startRecurrence,
+		"stop_recurrence":  stopRecurrence,
+	}
+	var descriptionOpt = options["description"]
+	if descriptionOpt != nil {
+		payloadParams["description"] = descriptionOpt
+	}
 	uri, err := loc.Url("Schedule", "create")
 	if err != nil {
 		return res, err
@@ -161,7 +179,7 @@ func (loc *ScheduleLocator) Create(collectionId string) (*ScheduleLocator, error
 // PATCH /collections/:collection_id/schedules/:id
 // Update one or more attributes of an existing Schedule.
 // Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
-func (loc *ScheduleLocator) Update(collectionId string, id string) error {
+func (loc *ScheduleLocator) Update(collectionId string, id string, options rsapi.ApiParams) error {
 	if collectionId == "" {
 		return fmt.Errorf("collectionId is required")
 	}
@@ -170,6 +188,23 @@ func (loc *ScheduleLocator) Update(collectionId string, id string) error {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var descriptionOpt = options["description"]
+	if descriptionOpt != nil {
+		payloadParams["description"] = descriptionOpt
+	}
+	var nameOpt = options["name"]
+	if nameOpt != nil {
+		payloadParams["name"] = nameOpt
+	}
+	var startRecurrenceOpt = options["start_recurrence"]
+	if startRecurrenceOpt != nil {
+		payloadParams["start_recurrence"] = startRecurrenceOpt
+	}
+	var stopRecurrenceOpt = options["stop_recurrence"]
+	if stopRecurrenceOpt != nil {
+		payloadParams["stop_recurrence"] = stopRecurrenceOpt
+	}
 	uri, err := loc.Url("Schedule", "update")
 	if err != nil {
 		return err
@@ -341,13 +376,19 @@ func (loc *TemplateLocator) Show(collectionId string, id string, options rsapi.A
 
 // POST /collections/:collection_id/templates
 // Create a new Template by uploading its content to Designer.
-func (loc *TemplateLocator) Create(collectionId string) (*TemplateLocator, error) {
+func (loc *TemplateLocator) Create(collectionId string, source *FileUpload) (*TemplateLocator, error) {
 	var res *TemplateLocator
 	if collectionId == "" {
 		return res, fmt.Errorf("collectionId is required")
 	}
+	if source == nil {
+		return res, fmt.Errorf("source is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"source": source,
+	}
 	uri, err := loc.Url("Template", "create")
 	if err != nil {
 		return res, err
@@ -366,15 +407,21 @@ func (loc *TemplateLocator) Create(collectionId string) (*TemplateLocator, error
 
 // PUT /collections/:collection_id/templates/:id
 // Update the content of an existing Template (a Template with the same "name" value in the CAT).
-func (loc *TemplateLocator) Update(collectionId string, id string) error {
+func (loc *TemplateLocator) Update(collectionId string, id string, source *FileUpload) error {
 	if collectionId == "" {
 		return fmt.Errorf("collectionId is required")
 	}
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
+	if source == nil {
+		return fmt.Errorf("source is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"source": source,
+	}
 	uri, err := loc.Url("Template", "update")
 	if err != nil {
 		return err
@@ -463,12 +510,18 @@ func (loc *TemplateLocator) Download(apiVersion string, collectionId string, id 
 
 // POST /collections/:collection_id/templates/actions/compile
 // Compile the Template, but don't save it to Designer. Useful for debugging a CAT file while you are still authoring it.
-func (loc *TemplateLocator) Compile(collectionId string) error {
+func (loc *TemplateLocator) Compile(collectionId string, source string) error {
 	if collectionId == "" {
 		return fmt.Errorf("collectionId is required")
 	}
+	if source == "" {
+		return fmt.Errorf("source is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"source": source,
+	}
 	uri, err := loc.Url("Template", "compile")
 	if err != nil {
 		return err
@@ -482,12 +535,38 @@ func (loc *TemplateLocator) Compile(collectionId string) error {
 
 // POST /collections/:collection_id/templates/actions/publish
 // Publish the given Template to the Catalog so that users can launch it.
-func (loc *TemplateLocator) Publish(collectionId string) error {
+func (loc *TemplateLocator) Publish(collectionId string, id string, options rsapi.ApiParams) error {
 	if collectionId == "" {
 		return fmt.Errorf("collectionId is required")
 	}
+	if id == "" {
+		return fmt.Errorf("id is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"id": id,
+	}
+	var nameOpt = options["name"]
+	if nameOpt != nil {
+		payloadParams["name"] = nameOpt
+	}
+	var overriddenApplicationHrefOpt = options["overridden_application_href"]
+	if overriddenApplicationHrefOpt != nil {
+		payloadParams["overridden_application_href"] = overriddenApplicationHrefOpt
+	}
+	var scheduleRequiredOpt = options["schedule_required"]
+	if scheduleRequiredOpt != nil {
+		payloadParams["schedule_required"] = scheduleRequiredOpt
+	}
+	var schedulesOpt = options["schedules"]
+	if schedulesOpt != nil {
+		payloadParams["schedules"] = schedulesOpt
+	}
+	var shortDescriptionOpt = options["short_description"]
+	if shortDescriptionOpt != nil {
+		payloadParams["short_description"] = shortDescriptionOpt
+	}
 	uri, err := loc.Url("Template", "publish")
 	if err != nil {
 		return err
@@ -501,12 +580,18 @@ func (loc *TemplateLocator) Publish(collectionId string) error {
 
 // POST /collections/:collection_id/templates/actions/unpublish
 // Remove a publication from the Catalog by specifying its associated Template.
-func (loc *TemplateLocator) Unpublish(collectionId string) error {
+func (loc *TemplateLocator) Unpublish(collectionId string, id string) error {
 	if collectionId == "" {
 		return fmt.Errorf("collectionId is required")
 	}
+	if id == "" {
+		return fmt.Errorf("id is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"id": id,
+	}
 	uri, err := loc.Url("Template", "unpublish")
 	if err != nil {
 		return err
@@ -523,6 +608,14 @@ func (loc *TemplateLocator) Unpublish(collectionId string) error {
 type ApplicationInfo struct {
 	Href string `json:"href,omitempty"`
 	Name string `json:"name,omitempty"`
+}
+
+type FileUpload struct {
+	Filename string `json:"filename,omitempty"`
+	Head     string `json:"head,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Tempfile string `json:"tempfile,omitempty"`
+	Type_    string `json:"type,omitempty"`
 }
 
 type Parameter struct {

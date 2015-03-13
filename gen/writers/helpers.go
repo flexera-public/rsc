@@ -164,7 +164,10 @@ func flagType(param *gen.ActionParam) string {
 	if strings.Contains(path, "[]") {
 		_, ok := param.Type.(*gen.BasicDataType)
 		if !ok {
-			panic("Wooaat? an array with a non basic leaf???")
+			if _, ok := param.Type.(*gen.EnumerableDataType); ok {
+				return "[]string"
+			}
+			panic(fmt.Sprintf("Wooaat? an array with a non basic leaf??? - %#v", param.Type))
 		}
 		return "[]string"
 	}
