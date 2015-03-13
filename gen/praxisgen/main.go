@@ -10,6 +10,8 @@ import (
 	"path"
 	"strings"
 
+	"bitbucket.org/pkg/inflect"
+
 	"github.com/rightscale/rsc/gen"
 	"github.com/rightscale/rsc/gen/writers"
 )
@@ -29,6 +31,7 @@ func main() {
 	targetVersion := flag.String("target", "",
 		"Target version, only generate code for this version.\nIf this option is specified then the generated code lives directly under package <pkg>, otherwise it lives under <pkg>.<version>.")
 	clientName := flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
+	tool := flag.String("tool", "rsc", "Tool or library for which to generate code, supported values are 'rsc' or 'angular'")
 	flag.Parse()
 
 	metadataDirs := strings.Split(*metadataDirVal, ",")
@@ -43,12 +46,14 @@ func main() {
 		check(fmt.Errorf("%s is not a valid directory.", destDir))
 	}
 
-	if *pkgName == "" {
-		check(fmt.Errorf("-pkg option is required."))
-	}
+	if *tool == "rsc" {
+		if *pkgName == "" {
+			check(fmt.Errorf("-pkg option is required."))
+		}
 
-	if *clientName == "" {
-		check(fmt.Errorf("-client option is required."))
+		if *clientName == "" {
+			check(fmt.Errorf("-client option is required."))
+		}
 	}
 
 	indeces := make(map[string]Index, len(metadataDirs)) // Index content mapped by directory path
@@ -121,25 +126,35 @@ func main() {
 	}
 
 	// 3. Write code
-	var genClients []string
-	var genMetadata []string
+	var generated []string
 	for version, descriptor := range descriptors {
 		var pkg string
 		if len(*targetVersion) == 0 {
 			pkg = toPackageName(version)
 		}
 		os.MkdirAll(path.Join(destDir, pkg), 0755)
-		clientPath := path.Join(destDir, pkg, "codegen_client.go")
-		metadataPath := path.Join(destDir, pkg, "codegen_metadata.go")
-		check(generateClient(descriptor, clientPath, *pkgName))
-		check(generateMetadata(descriptor, metadataPath, *pkgName))
-		genClients = append(genClients, clientPath)
-		genMetadata = append(genMetadata, metadataPath)
+		switch *tool {
+		case "rsc":
+			clientPath := path.Join(destDir, pkg, "codegen_client.go")
+			metadataPath := path.Join(destDir, pkg, "codegen_metadata.go")
+			check(generateClient(descriptor, clientPath, *pkgName))
+			check(generateMetadata(descriptor, metadataPath, *pkgName))
+			generated = append(generated, clientPath)
+			generated = append(generated, metadataPath)
+		case "angular":
+			pkgPath := path.Join(destDir, pkg)
+			files, err := generateAngular(descriptor, pkgPath)
+			check(err)
+			generated = append(generated, files...)
+		default:
+			check(fmt.Errorf("Invalid tool '%s', supported clients are 'rsc' and 'angular'",
+				*tool))
+		}
 	}
 
 	// 4. Say something...
-	for i := 0; i < len(genClients); i++ {
-		fmt.Printf("%s\n%s\n", genClients[i], genMetadata[i])
+	for i := 0; i < len(generated); i++ {
+		fmt.Printf("%s\n", generated[i])
 	}
 }
 
@@ -220,6 +235,27 @@ func generateMetadata(descriptor *gen.ApiDescriptor, codegen, pkg string) error 
 		return fmt.Errorf("Failed to format generated metadata code:\n%s", o)
 	}
 	return nil
+}
+
+// Generate API metadata, drives the metadata writer.
+func generateAngular(descriptor *gen.ApiDescriptor, pkgDir string) ([]string, error) {
+	var files []string
+	for _, name := range descriptor.ResourceNames {
+		res := descriptor.Resources[name]
+		codegen := path.Join(pkgDir, inflect.Underscore(name)+".js")
+		f, err := os.Create(codegen)
+		if err != nil {
+			return files, err
+		}
+		c, err := writers.NewAngularWriter()
+		if err != nil {
+			return files, err
+		}
+		check(c.WriteResource(res, f))
+		f.Close()
+		files = append(files, codegen)
+	}
+	return files, nil
 }
 
 // Helper function that reads content from given file

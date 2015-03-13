@@ -5,7 +5,6 @@ import (
 	"io"
 	"strings"
 	"text/template"
-	"time"
 
 	"github.com/rightscale/rsc/gen"
 )
@@ -20,7 +19,6 @@ type ClientWriter struct {
 func NewClientWriter() (*ClientWriter, error) {
 	funcMap := template.FuncMap{
 		"comment":           comment,
-		"now":               time.Now,
 		"commandLine":       commandLine,
 		"parameters":        parameters,
 		"paramsInitializer": paramsInitializer,
@@ -72,12 +70,6 @@ func (c *ClientWriter) WriteType(o *gen.ObjectDataType, w io.Writer) {
 // Write code for a resource
 func (c *ClientWriter) WriteResource(resource *gen.Resource, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
-}
-
-/***** Format helpers *****/
-
-// Generate code used to initialize instance of parameter from given parameter values
-func paramInitializer(param *gen.Action) {
 }
 
 // Inline templates
