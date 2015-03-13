@@ -196,6 +196,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 			ReturnLocation:    hasLocation,
 			QueryParamNames:   queryParamNames,
 			PayloadParamNames: payloadParamNames,
+			PathParamNames:    pathParamNames,
 		}
 		actions[i] = &action
 	}
