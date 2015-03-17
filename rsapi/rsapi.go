@@ -54,11 +54,11 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 	}, nil
 }
 
-// NewRL10 returns a API client that uses the information stored in /var/run/rll-secret to do
+// NewRL10 returns a API client that uses the information stored in /var/run/rightlink/secret to do
 // auth and configure the host. The client behaves identically to the client returned by New in
 // all other regards.
 func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
-	rllConfig, err := ioutil.ReadFile("/var/run/rll-secret")
+	rllConfig, err := ioutil.ReadFile("/var/run/rightlink/secret")
 	if err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err.Error())
 	}
