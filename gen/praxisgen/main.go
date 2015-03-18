@@ -85,7 +85,7 @@ func main() {
 				if strings.HasSuffix(name, " (*)") {
 					continue
 				}
-				fileName := fmt.Sprintf("%s.json", resource["controller"])
+				fileName := strings.Replace(fmt.Sprintf("%s.json", resource["controller"]), "::", "-", -1)
 				resourcePath := path.Join(dirPath, version, "resources", fileName)
 				var resourceData map[string]interface{}
 				if err := unmarshal(resourcePath, &resourceData); err != nil {
