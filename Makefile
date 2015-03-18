@@ -47,7 +47,12 @@ DATE=$(shell date '+%F %T')
 SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
 # by manually adding the godep workspace to the path we don't need to run godep itself
-GOPATH:=$(PWD)/Godeps/_workspace:$(GOPATH)
+ifeq ($(OS),Windows_NT)
+	SHELL:=/bin/dash
+	GOPATH:=$(shell cygpath --windows $(PWD))/Godeps/_workspace;$(GOPATH)
+else
+	GOPATH:=$(PWD)/Godeps/_workspace:$(GOPATH)
+endif
 # because of the Godep path we build ginkgo into the godep workspace
 PATH:=$(PWD)/Godeps/_workspace/bin:$(PATH)
 
