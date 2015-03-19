@@ -51,6 +51,9 @@ func (a *LoginAuthenticator) Refresh(host string, accountId int) error {
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err.Error()) // TBD RETRY A FEW TIMES
 		}
+		if resp.StatusCode != 204 {
+			return fmt.Errorf("Authentication failed: %s", resp.Status)
+		}
 		if a.Cookies == nil {
 			a.Cookies = make(map[int][]*http.Cookie)
 		}
@@ -97,6 +100,9 @@ func (a *OAuthAuthenticator) Refresh(host string) error {
 		jsonBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to read response): %s", err.Error())
+		}
+		if resp.StatusCode != 204 {
+			return fmt.Errorf("Authentication failed: %s", resp.Status)
 		}
 		err = json.Unmarshal(jsonBytes, &session)
 		if err != nil {
