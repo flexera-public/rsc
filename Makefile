@@ -120,8 +120,7 @@ depend:
 
 clean:
 	rm -rf build
-	@echo "package main; const VV = \"$(NAME) unversioned - $(DATE)\"" >version.go
-	@echo "package rsapi; const UA = \"$(NAME)/unversioned-$(SECONDS)\"">rsapi/user_agent.go
+	git checkout -f version.go rsapi/user_agent.go
 
 # gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
 # and then pointlessly complains about bad formatting in imported packages, sigh
