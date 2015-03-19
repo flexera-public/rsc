@@ -222,7 +222,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			Name:              actionName,
 			MethodName:        inflect.Camelize(actionName),
 			Description:       removeBlankLines(description),
-			ResourceName:      name,
+			ResourceName:      inflect.Singularize(name),
 			PathPatterns:      pathPatterns,
 			Params:            actionParams,
 			LeafParams:        paramAnalyzer.LeafParams,

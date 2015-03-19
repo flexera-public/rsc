@@ -79,7 +79,7 @@ func (loc *AccountLocator) Show() (*Account, error) {
 	var res *Account
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Accounts", "show")
+	uri, err := loc.Url("Account", "show")
 	if err != nil {
 		return res, err
 	}
@@ -141,7 +141,7 @@ func (loc *AccountGroupLocator) Index(options rsapi.ApiParams) ([]*AccountGroup,
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AccountGroups", "index")
+	uri, err := loc.Url("AccountGroup", "index")
 	if err != nil {
 		return res, err
 	}
@@ -171,7 +171,7 @@ func (loc *AccountGroupLocator) Show(options rsapi.ApiParams) (*AccountGroup, er
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AccountGroups", "show")
+	uri, err := loc.Url("AccountGroup", "show")
 	if err != nil {
 		return res, err
 	}
@@ -225,7 +225,7 @@ func (api *Api) AlertLocator(href string) *AlertLocator {
 func (loc *AlertLocator) Disable() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Alerts", "disable")
+	uri, err := loc.Url("Alert", "disable")
 	if err != nil {
 		return err
 	}
@@ -245,7 +245,7 @@ func (loc *AlertLocator) Disable() error {
 func (loc *AlertLocator) Enable() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Alerts", "enable")
+	uri, err := loc.Url("Alert", "enable")
 	if err != nil {
 		return err
 	}
@@ -278,7 +278,7 @@ func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Alerts", "index")
+	uri, err := loc.Url("Alert", "index")
 	if err != nil {
 		return res, err
 	}
@@ -312,7 +312,7 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	payloadParams = rsapi.ApiParams{
 		"duration": duration,
 	}
-	uri, err := loc.Url("Alerts", "quench")
+	uri, err := loc.Url("Alert", "quench")
 	if err != nil {
 		return res, err
 	}
@@ -346,7 +346,7 @@ func (loc *AlertLocator) Show(options rsapi.ApiParams) (*Alert, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Alerts", "show")
+	uri, err := loc.Url("Alert", "show")
 	if err != nil {
 		return res, err
 	}
@@ -414,7 +414,7 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 	payloadParams = rsapi.ApiParams{
 		"alert_spec": alertSpec,
 	}
-	uri, err := loc.Url("AlertSpecs", "create")
+	uri, err := loc.Url("AlertSpec", "create")
 	if err != nil {
 		return res, err
 	}
@@ -438,7 +438,7 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 func (loc *AlertSpecLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AlertSpecs", "destroy")
+	uri, err := loc.Url("AlertSpec", "destroy")
 	if err != nil {
 		return err
 	}
@@ -476,7 +476,7 @@ func (loc *AlertSpecLocator) Index(options rsapi.ApiParams) ([]*AlertSpec, error
 	if withInheritedOpt != nil {
 		payloadParams["with_inherited"] = withInheritedOpt
 	}
-	uri, err := loc.Url("AlertSpecs", "index")
+	uri, err := loc.Url("AlertSpec", "index")
 	if err != nil {
 		return res, err
 	}
@@ -509,7 +509,7 @@ func (loc *AlertSpecLocator) Show(options rsapi.ApiParams) (*AlertSpec, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AlertSpecs", "show")
+	uri, err := loc.Url("AlertSpec", "show")
 	if err != nil {
 		return res, err
 	}
@@ -540,7 +540,7 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"alert_spec": alertSpec,
 	}
-	uri, err := loc.Url("AlertSpecs", "update")
+	uri, err := loc.Url("AlertSpec", "update")
 	if err != nil {
 		return err
 	}
@@ -609,7 +609,7 @@ func (loc *AuditEntryLocator) Append(options rsapi.ApiParams) error {
 	if summaryOpt != nil {
 		payloadParams["summary"] = summaryOpt
 	}
-	uri, err := loc.Url("AuditEntries", "append")
+	uri, err := loc.Url("AuditEntry", "append")
 	if err != nil {
 		return err
 	}
@@ -643,7 +643,7 @@ func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options rsapi.
 	if userEmailOpt != nil {
 		payloadParams["user_email"] = userEmailOpt
 	}
-	uri, err := loc.Url("AuditEntries", "create")
+	uri, err := loc.Url("AuditEntry", "create")
 	if err != nil {
 		return res, err
 	}
@@ -666,7 +666,7 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AuditEntries", "detail")
+	uri, err := loc.Url("AuditEntry", "detail")
 	if err != nil {
 		return res, err
 	}
@@ -722,7 +722,7 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 		"limit":      limit,
 		"start_date": startDate,
 	}
-	uri, err := loc.Url("AuditEntries", "index")
+	uri, err := loc.Url("AuditEntry", "index")
 	if err != nil {
 		return res, err
 	}
@@ -752,7 +752,7 @@ func (loc *AuditEntryLocator) Show(options rsapi.ApiParams) (*AuditEntry, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AuditEntries", "show")
+	uri, err := loc.Url("AuditEntry", "show")
 	if err != nil {
 		return res, err
 	}
@@ -786,7 +786,7 @@ func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options rsapi
 	if notifyOpt != nil {
 		payloadParams["notify"] = notifyOpt
 	}
-	uri, err := loc.Url("AuditEntries", "update")
+	uri, err := loc.Url("AuditEntry", "update")
 	if err != nil {
 		return err
 	}
@@ -893,7 +893,7 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi
 	if yearliesOpt != nil {
 		payloadParams["yearlies"] = yearliesOpt
 	}
-	uri, err := loc.Url("Backups", "cleanup")
+	uri, err := loc.Url("Backup", "cleanup")
 	if err != nil {
 		return err
 	}
@@ -917,7 +917,7 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"backup": backup,
 	}
-	uri, err := loc.Url("Backups", "create")
+	uri, err := loc.Url("Backup", "create")
 	if err != nil {
 		return res, err
 	}
@@ -938,7 +938,7 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 func (loc *BackupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Backups", "destroy")
+	uri, err := loc.Url("Backup", "destroy")
 	if err != nil {
 		return err
 	}
@@ -975,7 +975,7 @@ func (loc *BackupLocator) Index(lineage string, options rsapi.ApiParams) ([]*Bac
 	payloadParams = rsapi.ApiParams{
 		"lineage": lineage,
 	}
-	uri, err := loc.Url("Backups", "index")
+	uri, err := loc.Url("Backup", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1014,7 +1014,7 @@ func (loc *BackupLocator) Restore(instanceHref string, options rsapi.ApiParams) 
 	if backupOpt != nil {
 		payloadParams["backup"] = backupOpt
 	}
-	uri, err := loc.Url("Backups", "restore")
+	uri, err := loc.Url("Backup", "restore")
 	if err != nil {
 		return err
 	}
@@ -1031,7 +1031,7 @@ func (loc *BackupLocator) Show() (*Backup, error) {
 	var res *Backup
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Backups", "show")
+	uri, err := loc.Url("Backup", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1059,7 +1059,7 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"backup": backup,
 	}
-	uri, err := loc.Url("Backups", "update")
+	uri, err := loc.Url("Backup", "update")
 	if err != nil {
 		return err
 	}
@@ -1102,7 +1102,7 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 	payloadParams = rsapi.ApiParams{
 		"child_account": childAccount,
 	}
-	uri, err := loc.Url("ChildAccounts", "create")
+	uri, err := loc.Url("ChildAccount", "create")
 	if err != nil {
 		return res, err
 	}
@@ -1131,7 +1131,7 @@ func (loc *ChildAccountLocator) Index(options rsapi.ApiParams) ([]*Account, erro
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ChildAccounts", "index")
+	uri, err := loc.Url("ChildAccount", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1160,7 +1160,7 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"child_account": childAccount,
 	}
-	uri, err := loc.Url("ChildAccounts", "update")
+	uri, err := loc.Url("ChildAccount", "update")
 	if err != nil {
 		return err
 	}
@@ -1175,12 +1175,12 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 
 // Represents a Cloud (within the context of the account in the session).
 type Cloud struct {
-	Capabilities []string            `json:"capabilities,omitempty"`
-	CloudType    string              `json:"cloud_type,omitempty"`
-	Description  string              `json:"description,omitempty"`
-	DisplayName  string              `json:"display_name,omitempty"`
-	Links        []map[string]string `json:"links,omitempty"`
-	Name         string              `json:"name,omitempty"`
+	Capabilities []map[string]interface{} `json:"capabilities,omitempty"`
+	CloudType    string                   `json:"cloud_type,omitempty"`
+	Description  string                   `json:"description,omitempty"`
+	DisplayName  string                   `json:"display_name,omitempty"`
+	Links        []map[string]string      `json:"links,omitempty"`
+	Name         string                   `json:"name,omitempty"`
 }
 
 //===== Locator
@@ -1216,7 +1216,7 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Clouds", "index")
+	uri, err := loc.Url("Cloud", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1246,7 +1246,7 @@ func (loc *CloudLocator) Show(options rsapi.ApiParams) (*Cloud, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Clouds", "show")
+	uri, err := loc.Url("Cloud", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1301,7 +1301,7 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 	payloadParams = rsapi.ApiParams{
 		"cloud_account": cloudAccount,
 	}
-	uri, err := loc.Url("CloudAccounts", "create")
+	uri, err := loc.Url("CloudAccount", "create")
 	if err != nil {
 		return res, err
 	}
@@ -1322,7 +1322,7 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 func (loc *CloudAccountLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CloudAccounts", "destroy")
+	uri, err := loc.Url("CloudAccount", "destroy")
 	if err != nil {
 		return err
 	}
@@ -1339,7 +1339,7 @@ func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 	var res []*CloudAccount
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CloudAccounts", "index")
+	uri, err := loc.Url("CloudAccount", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1362,7 +1362,7 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	var res *CloudAccount
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CloudAccounts", "show")
+	uri, err := loc.Url("CloudAccount", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1417,7 +1417,7 @@ func (api *Api) CookbookLocator(href string) *CookbookLocator {
 func (loc *CookbookLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Cookbooks", "destroy")
+	uri, err := loc.Url("Cookbook", "destroy")
 	if err != nil {
 		return err
 	}
@@ -1440,7 +1440,7 @@ func (loc *CookbookLocator) Follow(value string) error {
 	payloadParams = rsapi.ApiParams{
 		"value": value,
 	}
-	uri, err := loc.Url("Cookbooks", "follow")
+	uri, err := loc.Url("Cookbook", "follow")
 	if err != nil {
 		return err
 	}
@@ -1463,7 +1463,7 @@ func (loc *CookbookLocator) Freeze(value string) error {
 	payloadParams = rsapi.ApiParams{
 		"value": value,
 	}
-	uri, err := loc.Url("Cookbooks", "freeze")
+	uri, err := loc.Url("Cookbook", "freeze")
 	if err != nil {
 		return err
 	}
@@ -1493,7 +1493,7 @@ func (loc *CookbookLocator) Index(options rsapi.ApiParams) ([]*Cookbook, error) 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Cookbooks", "index")
+	uri, err := loc.Url("Cookbook", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1522,7 +1522,7 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 	payloadParams = rsapi.ApiParams{
 		"value": value,
 	}
-	uri, err := loc.Url("Cookbooks", "obsolete")
+	uri, err := loc.Url("Cookbook", "obsolete")
 	if err != nil {
 		return err
 	}
@@ -1547,7 +1547,7 @@ func (loc *CookbookLocator) Show(options rsapi.ApiParams) (*Cookbook, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Cookbooks", "show")
+	uri, err := loc.Url("Cookbook", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1604,7 +1604,7 @@ func (loc *CookbookAttachmentLocator) Create(options rsapi.ApiParams) (*Cookbook
 	if cookbookAttachmentOpt != nil {
 		payloadParams["cookbook_attachment"] = cookbookAttachmentOpt
 	}
-	uri, err := loc.Url("CookbookAttachments", "create")
+	uri, err := loc.Url("CookbookAttachment", "create")
 	if err != nil {
 		return res, err
 	}
@@ -1627,7 +1627,7 @@ func (loc *CookbookAttachmentLocator) Create(options rsapi.ApiParams) (*Cookbook
 func (loc *CookbookAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CookbookAttachments", "destroy")
+	uri, err := loc.Url("CookbookAttachment", "destroy")
 	if err != nil {
 		return err
 	}
@@ -1653,7 +1653,7 @@ func (loc *CookbookAttachmentLocator) Index(options rsapi.ApiParams) ([]*Cookboo
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CookbookAttachments", "index")
+	uri, err := loc.Url("CookbookAttachment", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1682,7 +1682,7 @@ func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookA
 	payloadParams = rsapi.ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
-	uri, err := loc.Url("CookbookAttachments", "multi_attach")
+	uri, err := loc.Url("CookbookAttachment", "multi_attach")
 	if err != nil {
 		return err
 	}
@@ -1705,7 +1705,7 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 	payloadParams = rsapi.ApiParams{
 		"cookbook_attachments": cookbookAttachments,
 	}
-	uri, err := loc.Url("CookbookAttachments", "multi_detach")
+	uri, err := loc.Url("CookbookAttachment", "multi_detach")
 	if err != nil {
 		return err
 	}
@@ -1731,7 +1731,7 @@ func (loc *CookbookAttachmentLocator) Show(options rsapi.ApiParams) (*CookbookAt
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CookbookAttachments", "show")
+	uri, err := loc.Url("CookbookAttachment", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1792,7 +1792,7 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 	payloadParams = rsapi.ApiParams{
 		"credential": credential,
 	}
-	uri, err := loc.Url("Credentials", "create")
+	uri, err := loc.Url("Credential", "create")
 	if err != nil {
 		return res, err
 	}
@@ -1813,7 +1813,7 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 func (loc *CredentialLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Credentials", "destroy")
+	uri, err := loc.Url("Credential", "destroy")
 	if err != nil {
 		return err
 	}
@@ -1842,7 +1842,7 @@ func (loc *CredentialLocator) Index(options rsapi.ApiParams) ([]*Credential, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Credentials", "index")
+	uri, err := loc.Url("Credential", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1872,7 +1872,7 @@ func (loc *CredentialLocator) Show(options rsapi.ApiParams) (*Credential, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Credentials", "show")
+	uri, err := loc.Url("Credential", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1900,7 +1900,7 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	payloadParams = rsapi.ApiParams{
 		"credential": credential,
 	}
-	uri, err := loc.Url("Credentials", "update")
+	uri, err := loc.Url("Credential", "update")
 	if err != nil {
 		return err
 	}
@@ -1958,7 +1958,7 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) ([]*Datacenter, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Datacenters", "index")
+	uri, err := loc.Url("Datacenter", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1988,7 +1988,7 @@ func (loc *DatacenterLocator) Show(options rsapi.ApiParams) (*Datacenter, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Datacenters", "show")
+	uri, err := loc.Url("Datacenter", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2045,7 +2045,7 @@ func (loc *DeploymentLocator) Clone(options rsapi.ApiParams) error {
 	if deploymentOpt != nil {
 		payloadParams["deployment"] = deploymentOpt
 	}
-	uri, err := loc.Url("Deployments", "clone")
+	uri, err := loc.Url("Deployment", "clone")
 	if err != nil {
 		return err
 	}
@@ -2068,7 +2068,7 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 	payloadParams = rsapi.ApiParams{
 		"deployment": deployment,
 	}
-	uri, err := loc.Url("Deployments", "create")
+	uri, err := loc.Url("Deployment", "create")
 	if err != nil {
 		return res, err
 	}
@@ -2089,7 +2089,7 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 func (loc *DeploymentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Deployments", "destroy")
+	uri, err := loc.Url("Deployment", "destroy")
 	if err != nil {
 		return err
 	}
@@ -2121,7 +2121,7 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Deployments", "index")
+	uri, err := loc.Url("Deployment", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2145,7 +2145,7 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, err
 func (loc *DeploymentLocator) Lock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Deployments", "lock")
+	uri, err := loc.Url("Deployment", "lock")
 	if err != nil {
 		return err
 	}
@@ -2162,7 +2162,7 @@ func (loc *DeploymentLocator) Lock() error {
 func (loc *DeploymentLocator) Servers() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Deployments", "servers")
+	uri, err := loc.Url("Deployment", "servers")
 	if err != nil {
 		return err
 	}
@@ -2188,7 +2188,7 @@ func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Deployments", "show")
+	uri, err := loc.Url("Deployment", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2210,7 +2210,7 @@ func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error)
 func (loc *DeploymentLocator) Unlock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Deployments", "unlock")
+	uri, err := loc.Url("Deployment", "unlock")
 	if err != nil {
 		return err
 	}
@@ -2232,7 +2232,7 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 	payloadParams = rsapi.ApiParams{
 		"deployment": deployment,
 	}
-	uri, err := loc.Url("Deployments", "update")
+	uri, err := loc.Url("Deployment", "update")
 	if err != nil {
 		return err
 	}
@@ -2330,7 +2330,7 @@ func (loc *IdentityProviderLocator) Index(options rsapi.ApiParams) ([]*IdentityP
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IdentityProviders", "index")
+	uri, err := loc.Url("IdentityProvider", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2360,7 +2360,7 @@ func (loc *IdentityProviderLocator) Show(options rsapi.ApiParams) (*IdentityProv
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IdentityProviders", "show")
+	uri, err := loc.Url("IdentityProvider", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2428,7 +2428,7 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) ([]*Image, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Images", "index")
+	uri, err := loc.Url("Image", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2458,7 +2458,7 @@ func (loc *ImageLocator) Show(options rsapi.ApiParams) (*Image, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Images", "show")
+	uri, err := loc.Url("Image", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2516,7 +2516,7 @@ func (loc *InputLocator) Index(options rsapi.ApiParams) ([]*Input, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Inputs", "index")
+	uri, err := loc.Url("Input", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2608,7 +2608,7 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]string) error {
 	payloadParams = rsapi.ApiParams{
 		"inputs": inputs,
 	}
-	uri, err := loc.Url("Inputs", "multi_update")
+	uri, err := loc.Url("Input", "multi_update")
 	if err != nil {
 		return err
 	}
@@ -2683,7 +2683,7 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 	payloadParams = rsapi.ApiParams{
 		"instance": instance,
 	}
-	uri, err := loc.Url("Instances", "create")
+	uri, err := loc.Url("Instance", "create")
 	if err != nil {
 		return res, err
 	}
@@ -2728,7 +2728,7 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "index")
+	uri, err := loc.Url("Instance", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2765,7 +2765,7 @@ func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
 	if inputsOpt != nil {
 		payloadParams["inputs"] = inputsOpt
 	}
-	uri, err := loc.Url("Instances", "launch")
+	uri, err := loc.Url("Instance", "launch")
 	if err != nil {
 		return err
 	}
@@ -2781,7 +2781,7 @@ func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
 func (loc *InstanceLocator) Lock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "lock")
+	uri, err := loc.Url("Instance", "lock")
 	if err != nil {
 		return err
 	}
@@ -2828,7 +2828,7 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.ApiParams) error {
 	if rightScriptHrefOpt != nil {
 		payloadParams["right_script_href"] = rightScriptHrefOpt
 	}
-	uri, err := loc.Url("Instances", "multi_run_executable")
+	uri, err := loc.Url("Instance", "multi_run_executable")
 	if err != nil {
 		return err
 	}
@@ -2859,7 +2859,7 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
 	if terminateAllOpt != nil {
 		payloadParams["terminate_all"] = terminateAllOpt
 	}
-	uri, err := loc.Url("Instances", "multi_terminate")
+	uri, err := loc.Url("Instance", "multi_terminate")
 	if err != nil {
 		return err
 	}
@@ -2877,7 +2877,7 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
 func (loc *InstanceLocator) Reboot() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "reboot")
+	uri, err := loc.Url("Instance", "reboot")
 	if err != nil {
 		return err
 	}
@@ -2918,7 +2918,7 @@ func (loc *InstanceLocator) RunExecutable(options rsapi.ApiParams) error {
 	if rightScriptHrefOpt != nil {
 		payloadParams["right_script_href"] = rightScriptHrefOpt
 	}
-	uri, err := loc.Url("Instances", "run_executable")
+	uri, err := loc.Url("Instance", "run_executable")
 	if err != nil {
 		return err
 	}
@@ -2946,7 +2946,7 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
-	uri, err := loc.Url("Instances", "set_custom_lodgement")
+	uri, err := loc.Url("Instance", "set_custom_lodgement")
 	if err != nil {
 		return err
 	}
@@ -2972,7 +2972,7 @@ func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "show")
+	uri, err := loc.Url("Instance", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2998,7 +2998,7 @@ func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 func (loc *InstanceLocator) Start() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "start")
+	uri, err := loc.Url("Instance", "start")
 	if err != nil {
 		return err
 	}
@@ -3017,7 +3017,7 @@ func (loc *InstanceLocator) Start() error {
 func (loc *InstanceLocator) Stop() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "stop")
+	uri, err := loc.Url("Instance", "stop")
 	if err != nil {
 		return err
 	}
@@ -3035,7 +3035,7 @@ func (loc *InstanceLocator) Stop() error {
 func (loc *InstanceLocator) Terminate() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "terminate")
+	uri, err := loc.Url("Instance", "terminate")
 	if err != nil {
 		return err
 	}
@@ -3051,7 +3051,7 @@ func (loc *InstanceLocator) Terminate() error {
 func (loc *InstanceLocator) Unlock() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instances", "unlock")
+	uri, err := loc.Url("Instance", "unlock")
 	if err != nil {
 		return err
 	}
@@ -3073,7 +3073,7 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"instance": instance,
 	}
-	uri, err := loc.Url("Instances", "update")
+	uri, err := loc.Url("Instance", "update")
 	if err != nil {
 		return err
 	}
@@ -3137,7 +3137,7 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 		"quantity":  quantity,
 		"timeframe": timeframe,
 	}
-	uri, err := loc.Url("InstanceCustomLodgements", "create")
+	uri, err := loc.Url("InstanceCustomLodgement", "create")
 	if err != nil {
 		return res, err
 	}
@@ -3158,7 +3158,7 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 func (loc *InstanceCustomLodgementLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceCustomLodgements", "destroy")
+	uri, err := loc.Url("InstanceCustomLodgement", "destroy")
 	if err != nil {
 		return err
 	}
@@ -3182,7 +3182,7 @@ func (loc *InstanceCustomLodgementLocator) Index(options rsapi.ApiParams) ([]*In
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceCustomLodgements", "index")
+	uri, err := loc.Url("InstanceCustomLodgement", "index")
 	if err != nil {
 		return res, err
 	}
@@ -3205,7 +3205,7 @@ func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, err
 	var res *InstanceCustomLodgement
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceCustomLodgements", "show")
+	uri, err := loc.Url("InstanceCustomLodgement", "show")
 	if err != nil {
 		return res, err
 	}
@@ -3234,7 +3234,7 @@ func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 	payloadParams = rsapi.ApiParams{
 		"quantity": quantity,
 	}
-	uri, err := loc.Url("InstanceCustomLodgements", "update")
+	uri, err := loc.Url("InstanceCustomLodgement", "update")
 	if err != nil {
 		return err
 	}
@@ -3294,7 +3294,7 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) ([]*InstanceType,
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceTypes", "index")
+	uri, err := loc.Url("InstanceType", "index")
 	if err != nil {
 		return res, err
 	}
@@ -3324,7 +3324,7 @@ func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) (*InstanceType, er
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceTypes", "show")
+	uri, err := loc.Url("InstanceType", "show")
 	if err != nil {
 		return res, err
 	}
@@ -3380,7 +3380,7 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 	payloadParams = rsapi.ApiParams{
 		"ip_address": ipAddress,
 	}
-	uri, err := loc.Url("IpAddresses", "create")
+	uri, err := loc.Url("IpAddress", "create")
 	if err != nil {
 		return res, err
 	}
@@ -3401,7 +3401,7 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 func (loc *IpAddressLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddresses", "destroy")
+	uri, err := loc.Url("IpAddress", "destroy")
 	if err != nil {
 		return err
 	}
@@ -3425,7 +3425,7 @@ func (loc *IpAddressLocator) Index(options rsapi.ApiParams) ([]*IpAddress, error
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddresses", "index")
+	uri, err := loc.Url("IpAddress", "index")
 	if err != nil {
 		return res, err
 	}
@@ -3448,7 +3448,7 @@ func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 	var res *IpAddress
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddresses", "show")
+	uri, err := loc.Url("IpAddress", "show")
 	if err != nil {
 		return res, err
 	}
@@ -3476,7 +3476,7 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"ip_address": ipAddress,
 	}
-	uri, err := loc.Url("IpAddresses", "update")
+	uri, err := loc.Url("IpAddress", "update")
 	if err != nil {
 		return err
 	}
@@ -3534,7 +3534,7 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 	payloadParams = rsapi.ApiParams{
 		"ip_address_binding": ipAddressBinding,
 	}
-	uri, err := loc.Url("IpAddressBindings", "create")
+	uri, err := loc.Url("IpAddressBinding", "create")
 	if err != nil {
 		return res, err
 	}
@@ -3556,7 +3556,7 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 func (loc *IpAddressBindingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddressBindings", "destroy")
+	uri, err := loc.Url("IpAddressBinding", "destroy")
 	if err != nil {
 		return err
 	}
@@ -3581,7 +3581,7 @@ func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) ([]*IpAddress
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddressBindings", "index")
+	uri, err := loc.Url("IpAddressBinding", "index")
 	if err != nil {
 		return res, err
 	}
@@ -3605,7 +3605,7 @@ func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	var res *IpAddressBinding
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("IpAddressBindings", "show")
+	uri, err := loc.Url("IpAddressBinding", "show")
 	if err != nil {
 		return res, err
 	}
@@ -3669,7 +3669,7 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 		"end":   end,
 		"start": start,
 	}
-	uri, err := loc.Url("MonitoringMetrics", "data")
+	uri, err := loc.Url("MonitoringMetric", "data")
 	if err != nil {
 		return res, err
 	}
@@ -3721,7 +3721,7 @@ func (loc *MonitoringMetricLocator) Index(options rsapi.ApiParams) ([]*Monitorin
 	if tzOpt != nil {
 		payloadParams["tz"] = tzOpt
 	}
-	uri, err := loc.Url("MonitoringMetrics", "index")
+	uri, err := loc.Url("MonitoringMetric", "index")
 	if err != nil {
 		return res, err
 	}
@@ -3767,7 +3767,7 @@ func (loc *MonitoringMetricLocator) Show(options rsapi.ApiParams) (*MonitoringMe
 	if tzOpt != nil {
 		payloadParams["tz"] = tzOpt
 	}
-	uri, err := loc.Url("MonitoringMetrics", "show")
+	uri, err := loc.Url("MonitoringMetric", "show")
 	if err != nil {
 		return res, err
 	}
@@ -3823,7 +3823,7 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	uri, err := loc.Url("MultiCloudImages", "clone")
+	uri, err := loc.Url("MultiCloudImage", "clone")
 	if err != nil {
 		return err
 	}
@@ -3846,7 +3846,7 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	payloadParams = rsapi.ApiParams{
 		"commit_message": commitMessage,
 	}
-	uri, err := loc.Url("MultiCloudImages", "commit")
+	uri, err := loc.Url("MultiCloudImage", "commit")
 	if err != nil {
 		return err
 	}
@@ -3870,7 +3870,7 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	uri, err := loc.Url("MultiCloudImages", "create")
+	uri, err := loc.Url("MultiCloudImage", "create")
 	if err != nil {
 		return res, err
 	}
@@ -3892,7 +3892,7 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 func (loc *MultiCloudImageLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("MultiCloudImages", "destroy")
+	uri, err := loc.Url("MultiCloudImage", "destroy")
 	if err != nil {
 		return err
 	}
@@ -3917,7 +3917,7 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*MultiCloud
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("MultiCloudImages", "index")
+	uri, err := loc.Url("MultiCloudImage", "index")
 	if err != nil {
 		return res, err
 	}
@@ -3941,7 +3941,7 @@ func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 	var res *MultiCloudImage
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("MultiCloudImages", "show")
+	uri, err := loc.Url("MultiCloudImage", "show")
 	if err != nil {
 		return res, err
 	}
@@ -3971,7 +3971,7 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image": multiCloudImage,
 	}
-	uri, err := loc.Url("MultiCloudImages", "update")
+	uri, err := loc.Url("MultiCloudImage", "update")
 	if err != nil {
 		return err
 	}
@@ -4018,7 +4018,7 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
-	uri, err := loc.Url("MultiCloudImageSettings", "create")
+	uri, err := loc.Url("MultiCloudImageSetting", "create")
 	if err != nil {
 		return res, err
 	}
@@ -4039,7 +4039,7 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 func (loc *MultiCloudImageSettingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("MultiCloudImageSettings", "destroy")
+	uri, err := loc.Url("MultiCloudImageSetting", "destroy")
 	if err != nil {
 		return err
 	}
@@ -4063,7 +4063,7 @@ func (loc *MultiCloudImageSettingLocator) Index(options rsapi.ApiParams) ([]*Mul
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("MultiCloudImageSettings", "index")
+	uri, err := loc.Url("MultiCloudImageSetting", "index")
 	if err != nil {
 		return res, err
 	}
@@ -4086,7 +4086,7 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 	var res *MultiCloudImageSetting
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("MultiCloudImageSettings", "show")
+	uri, err := loc.Url("MultiCloudImageSetting", "show")
 	if err != nil {
 		return res, err
 	}
@@ -4114,7 +4114,7 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 	payloadParams = rsapi.ApiParams{
 		"multi_cloud_image_setting": multiCloudImageSetting,
 	}
-	uri, err := loc.Url("MultiCloudImageSettings", "update")
+	uri, err := loc.Url("MultiCloudImageSetting", "update")
 	if err != nil {
 		return err
 	}
@@ -4166,7 +4166,7 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 	payloadParams = rsapi.ApiParams{
 		"network": network,
 	}
-	uri, err := loc.Url("Networks", "create")
+	uri, err := loc.Url("Network", "create")
 	if err != nil {
 		return res, err
 	}
@@ -4187,7 +4187,7 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 func (loc *NetworkLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Networks", "destroy")
+	uri, err := loc.Url("Network", "destroy")
 	if err != nil {
 		return err
 	}
@@ -4211,7 +4211,7 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) ([]*Network, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Networks", "index")
+	uri, err := loc.Url("Network", "index")
 	if err != nil {
 		return res, err
 	}
@@ -4234,7 +4234,7 @@ func (loc *NetworkLocator) Show() (*Network, error) {
 	var res *Network
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Networks", "show")
+	uri, err := loc.Url("Network", "show")
 	if err != nil {
 		return res, err
 	}
@@ -4262,7 +4262,7 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"network": network,
 	}
-	uri, err := loc.Url("Networks", "update")
+	uri, err := loc.Url("Network", "update")
 	if err != nil {
 		return err
 	}
@@ -4315,7 +4315,7 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 	payloadParams = rsapi.ApiParams{
 		"network_gateway": networkGateway,
 	}
-	uri, err := loc.Url("NetworkGateways", "create")
+	uri, err := loc.Url("NetworkGateway", "create")
 	if err != nil {
 		return res, err
 	}
@@ -4336,7 +4336,7 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 func (loc *NetworkGatewayLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkGateways", "destroy")
+	uri, err := loc.Url("NetworkGateway", "destroy")
 	if err != nil {
 		return err
 	}
@@ -4360,7 +4360,7 @@ func (loc *NetworkGatewayLocator) Index(options rsapi.ApiParams) ([]*NetworkGate
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkGateways", "index")
+	uri, err := loc.Url("NetworkGateway", "index")
 	if err != nil {
 		return res, err
 	}
@@ -4383,7 +4383,7 @@ func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 	var res *NetworkGateway
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkGateways", "show")
+	uri, err := loc.Url("NetworkGateway", "show")
 	if err != nil {
 		return res, err
 	}
@@ -4411,7 +4411,7 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 	payloadParams = rsapi.ApiParams{
 		"network_gateway": networkGateway,
 	}
-	uri, err := loc.Url("NetworkGateways", "update")
+	uri, err := loc.Url("NetworkGateway", "update")
 	if err != nil {
 		return err
 	}
@@ -4469,7 +4469,7 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 	payloadParams = rsapi.ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
-	uri, err := loc.Url("NetworkOptionGroups", "create")
+	uri, err := loc.Url("NetworkOptionGroup", "create")
 	if err != nil {
 		return res, err
 	}
@@ -4490,7 +4490,7 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 func (loc *NetworkOptionGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkOptionGroups", "destroy")
+	uri, err := loc.Url("NetworkOptionGroup", "destroy")
 	if err != nil {
 		return err
 	}
@@ -4514,7 +4514,7 @@ func (loc *NetworkOptionGroupLocator) Index(options rsapi.ApiParams) ([]*Network
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkOptionGroups", "index")
+	uri, err := loc.Url("NetworkOptionGroup", "index")
 	if err != nil {
 		return res, err
 	}
@@ -4537,7 +4537,7 @@ func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 	var res *NetworkOptionGroup
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkOptionGroups", "show")
+	uri, err := loc.Url("NetworkOptionGroup", "show")
 	if err != nil {
 		return res, err
 	}
@@ -4565,7 +4565,7 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 	payloadParams = rsapi.ApiParams{
 		"network_option_group": networkOptionGroup,
 	}
-	uri, err := loc.Url("NetworkOptionGroups", "update")
+	uri, err := loc.Url("NetworkOptionGroup", "update")
 	if err != nil {
 		return err
 	}
@@ -4622,7 +4622,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 	payloadParams = rsapi.ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
-	uri, err := loc.Url("NetworkOptionGroupAttachments", "create")
+	uri, err := loc.Url("NetworkOptionGroupAttachment", "create")
 	if err != nil {
 		return res, err
 	}
@@ -4643,7 +4643,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkOptionGroupAttachments", "destroy")
+	uri, err := loc.Url("NetworkOptionGroupAttachment", "destroy")
 	if err != nil {
 		return err
 	}
@@ -4672,7 +4672,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options rsapi.ApiParams) (
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkOptionGroupAttachments", "index")
+	uri, err := loc.Url("NetworkOptionGroupAttachment", "index")
 	if err != nil {
 		return res, err
 	}
@@ -4702,7 +4702,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Show(options rsapi.ApiParams) (*
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NetworkOptionGroupAttachments", "show")
+	uri, err := loc.Url("NetworkOptionGroupAttachment", "show")
 	if err != nil {
 		return res, err
 	}
@@ -4730,7 +4730,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 	payloadParams = rsapi.ApiParams{
 		"network_option_group_attachment": networkOptionGroupAttachment,
 	}
-	uri, err := loc.Url("NetworkOptionGroupAttachments", "update")
+	uri, err := loc.Url("NetworkOptionGroupAttachment", "update")
 	if err != nil {
 		return err
 	}
@@ -4906,7 +4906,7 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 	payloadParams = rsapi.ApiParams{
 		"permission": permission,
 	}
-	uri, err := loc.Url("Permissions", "create")
+	uri, err := loc.Url("Permission", "create")
 	if err != nil {
 		return res, err
 	}
@@ -4933,7 +4933,7 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 func (loc *PermissionLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Permissions", "destroy")
+	uri, err := loc.Url("Permission", "destroy")
 	if err != nil {
 		return err
 	}
@@ -4957,7 +4957,7 @@ func (loc *PermissionLocator) Index(options rsapi.ApiParams) ([]*Permission, err
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Permissions", "index")
+	uri, err := loc.Url("Permission", "index")
 	if err != nil {
 		return res, err
 	}
@@ -4980,7 +4980,7 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 	var res *Permission
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Permissions", "show")
+	uri, err := loc.Url("Permission", "show")
 	if err != nil {
 		return res, err
 	}
@@ -5037,7 +5037,7 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 	payloadParams = rsapi.ApiParams{
 		"placement_group": placementGroup,
 	}
-	uri, err := loc.Url("PlacementGroups", "create")
+	uri, err := loc.Url("PlacementGroup", "create")
 	if err != nil {
 		return res, err
 	}
@@ -5058,7 +5058,7 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 func (loc *PlacementGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("PlacementGroups", "destroy")
+	uri, err := loc.Url("PlacementGroup", "destroy")
 	if err != nil {
 		return err
 	}
@@ -5087,7 +5087,7 @@ func (loc *PlacementGroupLocator) Index(options rsapi.ApiParams) ([]*PlacementGr
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("PlacementGroups", "index")
+	uri, err := loc.Url("PlacementGroup", "index")
 	if err != nil {
 		return res, err
 	}
@@ -5117,7 +5117,7 @@ func (loc *PlacementGroupLocator) Show(options rsapi.ApiParams) (*PlacementGroup
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("PlacementGroups", "show")
+	uri, err := loc.Url("PlacementGroup", "show")
 	if err != nil {
 		return res, err
 	}
@@ -5165,7 +5165,7 @@ func (api *Api) PreferenceLocator(href string) *PreferenceLocator {
 func (loc *PreferenceLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Preferences", "destroy")
+	uri, err := loc.Url("Preference", "destroy")
 	if err != nil {
 		return err
 	}
@@ -5189,7 +5189,7 @@ func (loc *PreferenceLocator) Index(options rsapi.ApiParams) ([]*Preference, err
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Preferences", "index")
+	uri, err := loc.Url("Preference", "index")
 	if err != nil {
 		return res, err
 	}
@@ -5212,7 +5212,7 @@ func (loc *PreferenceLocator) Show() (*Preference, error) {
 	var res *Preference
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Preferences", "show")
+	uri, err := loc.Url("Preference", "show")
 	if err != nil {
 		return res, err
 	}
@@ -5242,7 +5242,7 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	payloadParams = rsapi.ApiParams{
 		"preference": preference,
 	}
-	uri, err := loc.Url("Preferences", "update")
+	uri, err := loc.Url("Preference", "update")
 	if err != nil {
 		return err
 	}
@@ -5292,7 +5292,7 @@ func (api *Api) PublicationLocator(href string) *PublicationLocator {
 func (loc *PublicationLocator) Import() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Publications", "import")
+	uri, err := loc.Url("Publication", "import")
 	if err != nil {
 		return err
 	}
@@ -5321,7 +5321,7 @@ func (loc *PublicationLocator) Index(options rsapi.ApiParams) ([]*Publication, e
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Publications", "index")
+	uri, err := loc.Url("Publication", "index")
 	if err != nil {
 		return res, err
 	}
@@ -5351,7 +5351,7 @@ func (loc *PublicationLocator) Show(options rsapi.ApiParams) (*Publication, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Publications", "show")
+	uri, err := loc.Url("Publication", "show")
 	if err != nil {
 		return res, err
 	}
@@ -5413,7 +5413,7 @@ func (loc *PublicationLineageLocator) Show(options rsapi.ApiParams) (*Publicatio
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("PublicationLineages", "show")
+	uri, err := loc.Url("PublicationLineage", "show")
 	if err != nil {
 		return res, err
 	}
@@ -5476,7 +5476,7 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 	payloadParams = rsapi.ApiParams{
 		"recurring_volume_attachment": recurringVolumeAttachment,
 	}
-	uri, err := loc.Url("RecurringVolumeAttachments", "create")
+	uri, err := loc.Url("RecurringVolumeAttachment", "create")
 	if err != nil {
 		return res, err
 	}
@@ -5499,7 +5499,7 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RecurringVolumeAttachments", "destroy")
+	uri, err := loc.Url("RecurringVolumeAttachment", "destroy")
 	if err != nil {
 		return err
 	}
@@ -5530,7 +5530,7 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RecurringVolumeAttachments", "index")
+	uri, err := loc.Url("RecurringVolumeAttachment", "index")
 	if err != nil {
 		return res, err
 	}
@@ -5562,7 +5562,7 @@ func (loc *RecurringVolumeAttachmentLocator) Show(options rsapi.ApiParams) (*Rec
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RecurringVolumeAttachments", "show")
+	uri, err := loc.Url("RecurringVolumeAttachment", "show")
 	if err != nil {
 		return res, err
 	}
@@ -5649,7 +5649,7 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options rsapi.
 	if withDependenciesOpt != nil {
 		payloadParams["with_dependencies"] = withDependenciesOpt
 	}
-	uri, err := loc.Url("Repositories", "cookbook_import")
+	uri, err := loc.Url("Repository", "cookbook_import")
 	if err != nil {
 		return err
 	}
@@ -5681,7 +5681,7 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 		"asset_hrefs": assetHrefs,
 		"namespace":   namespace,
 	}
-	uri, err := loc.Url("Repositories", "cookbook_import_preview")
+	uri, err := loc.Url("Repository", "cookbook_import_preview")
 	if err != nil {
 		return res, err
 	}
@@ -5720,7 +5720,7 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 	payloadParams = rsapi.ApiParams{
 		"repository": repository,
 	}
-	uri, err := loc.Url("Repositories", "create")
+	uri, err := loc.Url("Repository", "create")
 	if err != nil {
 		return res, err
 	}
@@ -5741,7 +5741,7 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 func (loc *RepositoryLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Repositories", "destroy")
+	uri, err := loc.Url("Repository", "destroy")
 	if err != nil {
 		return err
 	}
@@ -5770,7 +5770,7 @@ func (loc *RepositoryLocator) Index(options rsapi.ApiParams) ([]*Repository, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Repositories", "index")
+	uri, err := loc.Url("Repository", "index")
 	if err != nil {
 		return res, err
 	}
@@ -5801,7 +5801,7 @@ func (loc *RepositoryLocator) Refetch(options rsapi.ApiParams) error {
 	if autoImportOpt != nil {
 		payloadParams["auto_import"] = autoImportOpt
 	}
-	uri, err := loc.Url("Repositories", "refetch")
+	uri, err := loc.Url("Repository", "refetch")
 	if err != nil {
 		return err
 	}
@@ -5828,7 +5828,7 @@ func (loc *RepositoryLocator) Resolve(options rsapi.ApiParams) ([]*Repository, e
 	if importedCookbookNameOpt != nil {
 		payloadParams["imported_cookbook_name"] = importedCookbookNameOpt
 	}
-	uri, err := loc.Url("Repositories", "resolve")
+	uri, err := loc.Url("Repository", "resolve")
 	if err != nil {
 		return res, err
 	}
@@ -5858,7 +5858,7 @@ func (loc *RepositoryLocator) Show(options rsapi.ApiParams) (*Repository, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Repositories", "show")
+	uri, err := loc.Url("Repository", "show")
 	if err != nil {
 		return res, err
 	}
@@ -5896,7 +5896,7 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"repository": repository,
 	}
-	uri, err := loc.Url("Repositories", "update")
+	uri, err := loc.Url("Repository", "update")
 	if err != nil {
 		return err
 	}
@@ -5950,7 +5950,7 @@ func (loc *RepositoryAssetLocator) Index(options rsapi.ApiParams) ([]*Repository
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RepositoryAssets", "index")
+	uri, err := loc.Url("RepositoryAsset", "index")
 	if err != nil {
 		return res, err
 	}
@@ -5982,7 +5982,7 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.ApiParams) (*RepositoryAss
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RepositoryAssets", "show")
+	uri, err := loc.Url("RepositoryAsset", "show")
 	if err != nil {
 		return res, err
 	}
@@ -6045,7 +6045,7 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	payloadParams = rsapi.ApiParams{
 		"right_script": rightScript,
 	}
-	uri, err := loc.Url("RightScripts", "commit")
+	uri, err := loc.Url("RightScript", "commit")
 	if err != nil {
 		return err
 	}
@@ -6080,7 +6080,7 @@ func (loc *RightScriptLocator) Index(options rsapi.ApiParams) ([]*RightScript, e
 	if latestOnlyOpt != nil {
 		payloadParams["latest_only"] = latestOnlyOpt
 	}
-	uri, err := loc.Url("RightScripts", "index")
+	uri, err := loc.Url("RightScript", "index")
 	if err != nil {
 		return res, err
 	}
@@ -6103,7 +6103,7 @@ func (loc *RightScriptLocator) Show() (*RightScript, error) {
 	var res *RightScript
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RightScripts", "show")
+	uri, err := loc.Url("RightScript", "show")
 	if err != nil {
 		return res, err
 	}
@@ -6125,7 +6125,7 @@ func (loc *RightScriptLocator) Show() (*RightScript, error) {
 func (loc *RightScriptLocator) ShowSource() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RightScripts", "show_source")
+	uri, err := loc.Url("RightScript", "show_source")
 	if err != nil {
 		return err
 	}
@@ -6147,7 +6147,7 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"right_script": rightScript,
 	}
-	uri, err := loc.Url("RightScripts", "update")
+	uri, err := loc.Url("RightScript", "update")
 	if err != nil {
 		return err
 	}
@@ -6163,7 +6163,7 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 func (loc *RightScriptLocator) UpdateSource() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RightScripts", "update_source")
+	uri, err := loc.Url("RightScript", "update_source")
 	if err != nil {
 		return err
 	}
@@ -6218,7 +6218,7 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"route": route,
 	}
-	uri, err := loc.Url("Routes", "create")
+	uri, err := loc.Url("Route", "create")
 	if err != nil {
 		return res, err
 	}
@@ -6240,7 +6240,7 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 func (loc *RouteLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Routes", "destroy")
+	uri, err := loc.Url("Route", "destroy")
 	if err != nil {
 		return err
 	}
@@ -6265,7 +6265,7 @@ func (loc *RouteLocator) Index(options rsapi.ApiParams) ([]*Route, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Routes", "index")
+	uri, err := loc.Url("Route", "index")
 	if err != nil {
 		return res, err
 	}
@@ -6289,7 +6289,7 @@ func (loc *RouteLocator) Show() (*Route, error) {
 	var res *Route
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Routes", "show")
+	uri, err := loc.Url("Route", "show")
 	if err != nil {
 		return res, err
 	}
@@ -6318,7 +6318,7 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"route": route,
 	}
-	uri, err := loc.Url("Routes", "update")
+	uri, err := loc.Url("Route", "update")
 	if err != nil {
 		return err
 	}
@@ -6370,7 +6370,7 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 	payloadParams = rsapi.ApiParams{
 		"route_table": routeTable,
 	}
-	uri, err := loc.Url("RouteTables", "create")
+	uri, err := loc.Url("RouteTable", "create")
 	if err != nil {
 		return res, err
 	}
@@ -6391,7 +6391,7 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 func (loc *RouteTableLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RouteTables", "destroy")
+	uri, err := loc.Url("RouteTable", "destroy")
 	if err != nil {
 		return err
 	}
@@ -6420,7 +6420,7 @@ func (loc *RouteTableLocator) Index(options rsapi.ApiParams) ([]*RouteTable, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RouteTables", "index")
+	uri, err := loc.Url("RouteTable", "index")
 	if err != nil {
 		return res, err
 	}
@@ -6450,7 +6450,7 @@ func (loc *RouteTableLocator) Show(options rsapi.ApiParams) (*RouteTable, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RouteTables", "show")
+	uri, err := loc.Url("RouteTable", "show")
 	if err != nil {
 		return res, err
 	}
@@ -6478,7 +6478,7 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"route_table": routeTable,
 	}
-	uri, err := loc.Url("RouteTables", "update")
+	uri, err := loc.Url("RouteTable", "update")
 	if err != nil {
 		return err
 	}
@@ -6533,7 +6533,7 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 	payloadParams = rsapi.ApiParams{
 		"runnable_binding": runnableBinding,
 	}
-	uri, err := loc.Url("RunnableBindings", "create")
+	uri, err := loc.Url("RunnableBinding", "create")
 	if err != nil {
 		return res, err
 	}
@@ -6555,7 +6555,7 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 func (loc *RunnableBindingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RunnableBindings", "destroy")
+	uri, err := loc.Url("RunnableBinding", "destroy")
 	if err != nil {
 		return err
 	}
@@ -6580,7 +6580,7 @@ func (loc *RunnableBindingLocator) Index(options rsapi.ApiParams) ([]*RunnableBi
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RunnableBindings", "index")
+	uri, err := loc.Url("RunnableBinding", "index")
 	if err != nil {
 		return res, err
 	}
@@ -6609,7 +6609,7 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 	payloadParams = rsapi.ApiParams{
 		"runnable_bindings": runnableBindings,
 	}
-	uri, err := loc.Url("RunnableBindings", "multi_update")
+	uri, err := loc.Url("RunnableBinding", "multi_update")
 	if err != nil {
 		return err
 	}
@@ -6634,7 +6634,7 @@ func (loc *RunnableBindingLocator) Show(options rsapi.ApiParams) (*RunnableBindi
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("RunnableBindings", "show")
+	uri, err := loc.Url("RunnableBinding", "show")
 	if err != nil {
 		return res, err
 	}
@@ -6691,7 +6691,7 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 	payloadParams = rsapi.ApiParams{
 		"security_group": securityGroup,
 	}
-	uri, err := loc.Url("SecurityGroups", "create")
+	uri, err := loc.Url("SecurityGroup", "create")
 	if err != nil {
 		return res, err
 	}
@@ -6712,7 +6712,7 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 func (loc *SecurityGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SecurityGroups", "destroy")
+	uri, err := loc.Url("SecurityGroup", "destroy")
 	if err != nil {
 		return err
 	}
@@ -6741,7 +6741,7 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) ([]*SecurityGrou
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SecurityGroups", "index")
+	uri, err := loc.Url("SecurityGroup", "index")
 	if err != nil {
 		return res, err
 	}
@@ -6771,7 +6771,7 @@ func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) (*SecurityGroup, 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SecurityGroups", "show")
+	uri, err := loc.Url("SecurityGroup", "show")
 	if err != nil {
 		return res, err
 	}
@@ -6841,7 +6841,7 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 	payloadParams = rsapi.ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
-	uri, err := loc.Url("SecurityGroupRules", "create")
+	uri, err := loc.Url("SecurityGroupRule", "create")
 	if err != nil {
 		return res, err
 	}
@@ -6863,7 +6863,7 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 func (loc *SecurityGroupRuleLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SecurityGroupRules", "destroy")
+	uri, err := loc.Url("SecurityGroupRule", "destroy")
 	if err != nil {
 		return err
 	}
@@ -6888,7 +6888,7 @@ func (loc *SecurityGroupRuleLocator) Index(options rsapi.ApiParams) ([]*Security
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SecurityGroupRules", "index")
+	uri, err := loc.Url("SecurityGroupRule", "index")
 	if err != nil {
 		return res, err
 	}
@@ -6919,7 +6919,7 @@ func (loc *SecurityGroupRuleLocator) Show(options rsapi.ApiParams) (*SecurityGro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SecurityGroupRules", "show")
+	uri, err := loc.Url("SecurityGroupRule", "show")
 	if err != nil {
 		return res, err
 	}
@@ -6948,7 +6948,7 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 	payloadParams = rsapi.ApiParams{
 		"security_group_rule": securityGroupRule,
 	}
-	uri, err := loc.Url("SecurityGroupRules", "update")
+	uri, err := loc.Url("SecurityGroupRule", "update")
 	if err != nil {
 		return err
 	}
@@ -7003,7 +7003,7 @@ func (api *Api) ServerLocator(href string) *ServerLocator {
 func (loc *ServerLocator) Clone() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Servers", "clone")
+	uri, err := loc.Url("Server", "clone")
 	if err != nil {
 		return err
 	}
@@ -7027,7 +7027,7 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"server": server,
 	}
-	uri, err := loc.Url("Servers", "create")
+	uri, err := loc.Url("Server", "create")
 	if err != nil {
 		return res, err
 	}
@@ -7049,7 +7049,7 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 func (loc *ServerLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Servers", "destroy")
+	uri, err := loc.Url("Server", "destroy")
 	if err != nil {
 		return err
 	}
@@ -7085,7 +7085,7 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Servers", "index")
+	uri, err := loc.Url("Server", "index")
 	if err != nil {
 		return res, err
 	}
@@ -7108,7 +7108,7 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
 func (loc *ServerLocator) Launch() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Servers", "launch")
+	uri, err := loc.Url("Server", "launch")
 	if err != nil {
 		return err
 	}
@@ -7133,7 +7133,7 @@ func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Servers", "show")
+	uri, err := loc.Url("Server", "show")
 	if err != nil {
 		return res, err
 	}
@@ -7156,7 +7156,7 @@ func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 func (loc *ServerLocator) Terminate() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Servers", "terminate")
+	uri, err := loc.Url("Server", "terminate")
 	if err != nil {
 		return err
 	}
@@ -7179,7 +7179,7 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"server": server,
 	}
-	uri, err := loc.Url("Servers", "update")
+	uri, err := loc.Url("Server", "update")
 	if err != nil {
 		return err
 	}
@@ -7202,7 +7202,7 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"server": server,
 	}
-	uri, err := loc.Url("Servers", "wrap_instance")
+	uri, err := loc.Url("Server", "wrap_instance")
 	if err != nil {
 		return err
 	}
@@ -7256,7 +7256,7 @@ func (api *Api) ServerArrayLocator(href string) *ServerArrayLocator {
 func (loc *ServerArrayLocator) Clone() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "clone")
+	uri, err := loc.Url("ServerArray", "clone")
 	if err != nil {
 		return err
 	}
@@ -7280,7 +7280,7 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 	payloadParams = rsapi.ApiParams{
 		"server_array": serverArray,
 	}
-	uri, err := loc.Url("ServerArrays", "create")
+	uri, err := loc.Url("ServerArray", "create")
 	if err != nil {
 		return res, err
 	}
@@ -7303,7 +7303,7 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 func (loc *ServerArrayLocator) CurrentInstances() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "current_instances")
+	uri, err := loc.Url("ServerArray", "current_instances")
 	if err != nil {
 		return err
 	}
@@ -7320,7 +7320,7 @@ func (loc *ServerArrayLocator) CurrentInstances() error {
 func (loc *ServerArrayLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "destroy")
+	uri, err := loc.Url("ServerArray", "destroy")
 	if err != nil {
 		return err
 	}
@@ -7354,7 +7354,7 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, e
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "index")
+	uri, err := loc.Url("ServerArray", "index")
 	if err != nil {
 		return res, err
 	}
@@ -7377,7 +7377,7 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, e
 func (loc *ServerArrayLocator) Launch() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "launch")
+	uri, err := loc.Url("ServerArray", "launch")
 	if err != nil {
 		return err
 	}
@@ -7395,7 +7395,7 @@ func (loc *ServerArrayLocator) Launch() error {
 func (loc *ServerArrayLocator) MultiRunExecutable() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "multi_run_executable")
+	uri, err := loc.Url("ServerArray", "multi_run_executable")
 	if err != nil {
 		return err
 	}
@@ -7413,7 +7413,7 @@ func (loc *ServerArrayLocator) MultiRunExecutable() error {
 func (loc *ServerArrayLocator) MultiTerminate() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "multi_terminate")
+	uri, err := loc.Url("ServerArray", "multi_terminate")
 	if err != nil {
 		return err
 	}
@@ -7438,7 +7438,7 @@ func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) (*ServerArray, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerArrays", "show")
+	uri, err := loc.Url("ServerArray", "show")
 	if err != nil {
 		return res, err
 	}
@@ -7467,7 +7467,7 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"server_array": serverArray,
 	}
-	uri, err := loc.Url("ServerArrays", "update")
+	uri, err := loc.Url("ServerArray", "update")
 	if err != nil {
 		return err
 	}
@@ -7521,7 +7521,7 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 	payloadParams = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
-	uri, err := loc.Url("ServerTemplates", "clone")
+	uri, err := loc.Url("ServerTemplate", "clone")
 	if err != nil {
 		return err
 	}
@@ -7554,7 +7554,7 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 		"commit_message":           commitMessage,
 		"freeze_repositories":      freezeRepositories,
 	}
-	uri, err := loc.Url("ServerTemplates", "commit")
+	uri, err := loc.Url("ServerTemplate", "commit")
 	if err != nil {
 		return err
 	}
@@ -7577,7 +7577,7 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 	payloadParams = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
-	uri, err := loc.Url("ServerTemplates", "create")
+	uri, err := loc.Url("ServerTemplate", "create")
 	if err != nil {
 		return res, err
 	}
@@ -7598,7 +7598,7 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 func (loc *ServerTemplateLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplates", "destroy")
+	uri, err := loc.Url("ServerTemplate", "destroy")
 	if err != nil {
 		return err
 	}
@@ -7617,7 +7617,7 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 	var res []*map[string]string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplates", "detect_changes_in_head")
+	uri, err := loc.Url("ServerTemplate", "detect_changes_in_head")
 	if err != nil {
 		return res, err
 	}
@@ -7654,7 +7654,7 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) ([]*ServerTempl
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplates", "index")
+	uri, err := loc.Url("ServerTemplate", "index")
 	if err != nil {
 		return res, err
 	}
@@ -7704,7 +7704,7 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 	if emailCommentsOpt != nil {
 		payloadParams["email_comments"] = emailCommentsOpt
 	}
-	uri, err := loc.Url("ServerTemplates", "publish")
+	uri, err := loc.Url("ServerTemplate", "publish")
 	if err != nil {
 		return err
 	}
@@ -7724,7 +7724,7 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 	var res []*map[string]string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplates", "resolve")
+	uri, err := loc.Url("ServerTemplate", "resolve")
 	if err != nil {
 		return res, err
 	}
@@ -7756,7 +7756,7 @@ func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) (*ServerTemplate
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplates", "show")
+	uri, err := loc.Url("ServerTemplate", "show")
 	if err != nil {
 		return res, err
 	}
@@ -7802,7 +7802,7 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 		"source_repository_href": sourceRepositoryHref,
 		"target_repository_href": targetRepositoryHref,
 	}
-	uri, err := loc.Url("ServerTemplates", "swap_repository")
+	uri, err := loc.Url("ServerTemplate", "swap_repository")
 	if err != nil {
 		return err
 	}
@@ -7826,7 +7826,7 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 	payloadParams = rsapi.ApiParams{
 		"server_template": serverTemplate,
 	}
-	uri, err := loc.Url("ServerTemplates", "update")
+	uri, err := loc.Url("ServerTemplate", "update")
 	if err != nil {
 		return err
 	}
@@ -7876,7 +7876,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 	payloadParams = rsapi.ApiParams{
 		"server_template_multi_cloud_image": serverTemplateMultiCloudImage,
 	}
-	uri, err := loc.Url("ServerTemplateMultiCloudImages", "create")
+	uri, err := loc.Url("ServerTemplateMultiCloudImage", "create")
 	if err != nil {
 		return res, err
 	}
@@ -7897,7 +7897,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplateMultiCloudImages", "destroy")
+	uri, err := loc.Url("ServerTemplateMultiCloudImage", "destroy")
 	if err != nil {
 		return err
 	}
@@ -7926,7 +7926,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplateMultiCloudImages", "index")
+	uri, err := loc.Url("ServerTemplateMultiCloudImage", "index")
 	if err != nil {
 		return res, err
 	}
@@ -7948,7 +7948,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) 
 func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplateMultiCloudImages", "make_default")
+	uri, err := loc.Url("ServerTemplateMultiCloudImage", "make_default")
 	if err != nil {
 		return err
 	}
@@ -7972,7 +7972,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.ApiParams) (
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ServerTemplateMultiCloudImages", "show")
+	uri, err := loc.Url("ServerTemplateMultiCloudImage", "show")
 	if err != nil {
 		return res, err
 	}
@@ -8051,7 +8051,7 @@ func (loc *SessionLocator) Accounts(options rsapi.ApiParams) ([]*Account, error)
 	if passwordOpt != nil {
 		payloadParams["password"] = passwordOpt
 	}
-	uri, err := loc.Url("Sessions", "accounts")
+	uri, err := loc.Url("Session", "accounts")
 	if err != nil {
 		return res, err
 	}
@@ -8077,7 +8077,7 @@ func (loc *SessionLocator) Index() ([]*Session, error) {
 	var res []*Session
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Sessions", "index")
+	uri, err := loc.Url("Session", "index")
 	if err != nil {
 		return res, err
 	}
@@ -8103,7 +8103,7 @@ func (loc *SessionLocator) IndexInstanceSession() (Instance, error) {
 	var res Instance
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Sessions", "index_instance_session")
+	uri, err := loc.Url("Session", "index_instance_session")
 	if err != nil {
 		return res, err
 	}
@@ -8158,7 +8158,7 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"ssh_key": sshKey,
 	}
-	uri, err := loc.Url("SshKeys", "create")
+	uri, err := loc.Url("SshKey", "create")
 	if err != nil {
 		return res, err
 	}
@@ -8179,7 +8179,7 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 func (loc *SshKeyLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SshKeys", "destroy")
+	uri, err := loc.Url("SshKey", "destroy")
 	if err != nil {
 		return err
 	}
@@ -8208,7 +8208,7 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) ([]*SshKey, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SshKeys", "index")
+	uri, err := loc.Url("SshKey", "index")
 	if err != nil {
 		return res, err
 	}
@@ -8238,7 +8238,7 @@ func (loc *SshKeyLocator) Show(options rsapi.ApiParams) (*SshKey, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("SshKeys", "show")
+	uri, err := loc.Url("SshKey", "show")
 	if err != nil {
 		return res, err
 	}
@@ -8298,7 +8298,7 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"subnet": subnet,
 	}
-	uri, err := loc.Url("Subnets", "create")
+	uri, err := loc.Url("Subnet", "create")
 	if err != nil {
 		return res, err
 	}
@@ -8320,7 +8320,7 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 func (loc *SubnetLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Subnets", "destroy")
+	uri, err := loc.Url("Subnet", "destroy")
 	if err != nil {
 		return err
 	}
@@ -8345,7 +8345,7 @@ func (loc *SubnetLocator) Index(options rsapi.ApiParams) ([]*Subnet, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Subnets", "index")
+	uri, err := loc.Url("Subnet", "index")
 	if err != nil {
 		return res, err
 	}
@@ -8369,7 +8369,7 @@ func (loc *SubnetLocator) Show() (*Subnet, error) {
 	var res *Subnet
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Subnets", "show")
+	uri, err := loc.Url("Subnet", "show")
 	if err != nil {
 		return res, err
 	}
@@ -8398,7 +8398,7 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"subnet": subnet,
 	}
-	uri, err := loc.Url("Subnets", "update")
+	uri, err := loc.Url("Subnet", "update")
 	if err != nil {
 		return err
 	}
@@ -8444,7 +8444,7 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 	payloadParams = rsapi.ApiParams{
 		"resource_hrefs": resourceHrefs,
 	}
-	uri, err := loc.Url("Tags", "by_resource")
+	uri, err := loc.Url("Tag", "by_resource")
 	if err != nil {
 		return res, err
 	}
@@ -8507,7 +8507,7 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.A
 	if withDeletedOpt != nil {
 		payloadParams["with_deleted"] = withDeletedOpt
 	}
-	uri, err := loc.Url("Tags", "by_tag")
+	uri, err := loc.Url("Tag", "by_tag")
 	if err != nil {
 		return res, err
 	}
@@ -8545,7 +8545,7 @@ func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
-	uri, err := loc.Url("Tags", "multi_add")
+	uri, err := loc.Url("Tag", "multi_add")
 	if err != nil {
 		return err
 	}
@@ -8576,7 +8576,7 @@ func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error 
 		"resource_hrefs": resourceHrefs,
 		"tags":           tags,
 	}
-	uri, err := loc.Url("Tags", "multi_delete")
+	uri, err := loc.Url("Tag", "multi_delete")
 	if err != nil {
 		return err
 	}
@@ -8628,7 +8628,7 @@ func (loc *TaskLocator) Show(options rsapi.ApiParams) (*Task, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Tasks", "show")
+	uri, err := loc.Url("Task", "show")
 	if err != nil {
 		return res, err
 	}
@@ -8704,7 +8704,7 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"user": user,
 	}
-	uri, err := loc.Url("Users", "create")
+	uri, err := loc.Url("User", "create")
 	if err != nil {
 		return res, err
 	}
@@ -8734,7 +8734,7 @@ func (loc *UserLocator) Index(options rsapi.ApiParams) ([]*User, error) {
 		queryParams["filter"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Users", "index")
+	uri, err := loc.Url("User", "index")
 	if err != nil {
 		return res, err
 	}
@@ -8757,7 +8757,7 @@ func (loc *UserLocator) Show() (*User, error) {
 	var res *User
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Users", "show")
+	uri, err := loc.Url("User", "show")
 	if err != nil {
 		return res, err
 	}
@@ -8803,7 +8803,7 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 	payloadParams = rsapi.ApiParams{
 		"user": user,
 	}
-	uri, err := loc.Url("Users", "update")
+	uri, err := loc.Url("User", "update")
 	if err != nil {
 		return err
 	}
@@ -8837,7 +8837,7 @@ func (loc *UserDataLocator) Show() (*map[string]string, error) {
 	var res *map[string]string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("UserDatas", "show")
+	uri, err := loc.Url("UserData", "show")
 	if err != nil {
 		return res, err
 	}
@@ -8898,7 +8898,7 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	payloadParams = rsapi.ApiParams{
 		"volume": volume,
 	}
-	uri, err := loc.Url("Volumes", "create")
+	uri, err := loc.Url("Volume", "create")
 	if err != nil {
 		return res, err
 	}
@@ -8919,7 +8919,7 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 func (loc *VolumeLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Volumes", "destroy")
+	uri, err := loc.Url("Volume", "destroy")
 	if err != nil {
 		return err
 	}
@@ -8948,7 +8948,7 @@ func (loc *VolumeLocator) Index(options rsapi.ApiParams) ([]*Volume, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Volumes", "index")
+	uri, err := loc.Url("Volume", "index")
 	if err != nil {
 		return res, err
 	}
@@ -8978,7 +8978,7 @@ func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Volumes", "show")
+	uri, err := loc.Url("Volume", "show")
 	if err != nil {
 		return res, err
 	}
@@ -9039,7 +9039,7 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 	payloadParams = rsapi.ApiParams{
 		"volume_attachment": volumeAttachment,
 	}
-	uri, err := loc.Url("VolumeAttachments", "create")
+	uri, err := loc.Url("VolumeAttachment", "create")
 	if err != nil {
 		return res, err
 	}
@@ -9070,7 +9070,7 @@ func (loc *VolumeAttachmentLocator) Destroy(options rsapi.ApiParams) error {
 	if forceOpt != nil {
 		payloadParams["force"] = forceOpt
 	}
-	uri, err := loc.Url("VolumeAttachments", "destroy")
+	uri, err := loc.Url("VolumeAttachment", "destroy")
 	if err != nil {
 		return err
 	}
@@ -9100,7 +9100,7 @@ func (loc *VolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*VolumeAtt
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("VolumeAttachments", "index")
+	uri, err := loc.Url("VolumeAttachment", "index")
 	if err != nil {
 		return res, err
 	}
@@ -9133,7 +9133,7 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.ApiParams) (*VolumeAttach
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("VolumeAttachments", "show")
+	uri, err := loc.Url("VolumeAttachment", "show")
 	if err != nil {
 		return res, err
 	}
@@ -9196,7 +9196,7 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 	payloadParams = rsapi.ApiParams{
 		"volume_snapshot": volumeSnapshot,
 	}
-	uri, err := loc.Url("VolumeSnapshots", "create")
+	uri, err := loc.Url("VolumeSnapshot", "create")
 	if err != nil {
 		return res, err
 	}
@@ -9218,7 +9218,7 @@ func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*
 func (loc *VolumeSnapshotLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("VolumeSnapshots", "destroy")
+	uri, err := loc.Url("VolumeSnapshot", "destroy")
 	if err != nil {
 		return err
 	}
@@ -9248,7 +9248,7 @@ func (loc *VolumeSnapshotLocator) Index(options rsapi.ApiParams) ([]*VolumeSnaps
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("VolumeSnapshots", "index")
+	uri, err := loc.Url("VolumeSnapshot", "index")
 	if err != nil {
 		return res, err
 	}
@@ -9279,7 +9279,7 @@ func (loc *VolumeSnapshotLocator) Show(options rsapi.ApiParams) (*VolumeSnapshot
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("VolumeSnapshots", "show")
+	uri, err := loc.Url("VolumeSnapshot", "show")
 	if err != nil {
 		return res, err
 	}
@@ -9343,7 +9343,7 @@ func (loc *VolumeTypeLocator) Index(options rsapi.ApiParams) ([]*VolumeType, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("VolumeTypes", "index")
+	uri, err := loc.Url("VolumeType", "index")
 	if err != nil {
 		return res, err
 	}
@@ -9373,7 +9373,7 @@ func (loc *VolumeTypeLocator) Show(options rsapi.ApiParams) (*VolumeType, error)
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("VolumeTypes", "show")
+	uri, err := loc.Url("VolumeType", "show")
 	if err != nil {
 		return res, err
 	}
