@@ -79,18 +79,24 @@ build/$(NAME)-%.tgz: *.go version depend
 	  sed -i -e "s/BRANCH/$(TRAVIS_BRANCH)/" build/*/*.sh; \
 	  chmod +x build/*/*.sh; \
 	fi
-	tar -zcf $@ -C build ./$(NAME)
+	tar -zcf $@ -C build $(NAME)
 	rm -r build/$(NAME)
 
+# create a zip with the binary and any artifacts that are necessary
+# note the hack to allow for various GOOS & GOARCH combos, sigh
 build/$(NAME)-%.zip: *.go version depend
-	touch $@
+	rm -rf build/$(NAME)
+	mkdir -p build/$(NAME)
+	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME).exe .
+	cd build; zip -r $(notdir $@) $(NAME)
+	rm -r build/$(NAME)
 
 # upload assumes you have AWS_ACCESS_KEY_ID and AWS_SECRET_KEY env variables set,
 # which happens in the .travis.yml for CI
 upload: depend
 	@which gof3r >/dev/null || (echo 'Please "go get github.com/rlmcpherson/s3gof3r/gof3r"'; false)
 	(cd build; set -ex; \
-	  for f in *.tgz; do \
+	  for f in *.tgz *.zip; do \
 	    gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$(TRAVIS_COMMIT)/$$f <$$f; \
 	    if [ "$(TRAVIS_PULL_REQUEST)" = "false" ]; then \
 	      gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$(TRAVIS_BRANCH)/$$f <$$f; \
