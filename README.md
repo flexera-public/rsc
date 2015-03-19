@@ -249,12 +249,12 @@ A cloud resource is defined as:
 ```go
 // Represents a Cloud (within the context of the account in the session).
 type Cloud struct {
-	Capabilities []string            `json:"capabilities,omitempty"`
-	CloudType    string              `json:"cloud_type,omitempty"`
-	Description  string              `json:"description,omitempty"`
-	DisplayName  string              `json:"display_name,omitempty"`
-	Links        []map[string]string `json:"links,omitempty"`
-	Name         string              `json:"name,omitempty"`
+	Capabilities []map[string]interface{} `json:"capabilities,omitempty"`
+	CloudType    string                   `json:"cloud_type,omitempty"`
+	Description  string                   `json:"description,omitempty"`
+	DisplayName  string                   `json:"display_name,omitempty"`
+	Links        []map[string]string      `json:"links,omitempty"`
+	Name         string                   `json:"name,omitempty"`
 }
 ```
 and the `Index()` method is defined as:
