@@ -101,7 +101,7 @@ func (a *OAuthAuthenticator) Refresh(host string) error {
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to read response): %s", err.Error())
 		}
-		if resp.StatusCode != 204 {
+		if resp.StatusCode != 200 {
 			return fmt.Errorf("Authentication failed: %s", resp.Status)
 		}
 		err = json.Unmarshal(jsonBytes, &session)
