@@ -2,5 +2,6 @@ tags
 rsc
 gen/api15gen/api15gen
 gen/praxisgen/praxisgen
+*.exe
 *.coverprofile
 build
