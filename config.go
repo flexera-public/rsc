@@ -34,16 +34,16 @@ func LoadConfig(path string) (*ClientConfig, error) {
 func (cfg *ClientConfig) Save(path string) error {
 	encrypted, err := Encrypt(cfg.Password)
 	if err != nil {
-		return fmt.Errorf("Failed to encrypt password: %s", err.Error())
+		return fmt.Errorf("Failed to encrypt password: %s", err)
 	}
 	cfg.Password = encrypted
 	bytes, err := json.Marshal(cfg)
 	if err != nil {
-		return fmt.Errorf("Failed to serialize config: %s", err.Error())
+		return fmt.Errorf("Failed to serialize config: %s", err)
 	}
 	err = ioutil.WriteFile(path, bytes, 0644)
 	if err != nil {
-		return fmt.Errorf("Failed to write config file: %s", err.Error())
+		return fmt.Errorf("Failed to write config file: %s", err)
 	}
 	return nil
 }
@@ -103,7 +103,7 @@ func CreateConfig(path string) error {
 
 	err := config.Save(path)
 	if err != nil {
-		return fmt.Errorf("Failed to save config: %s", err.Error())
+		return fmt.Errorf("Failed to save config: %s", err)
 	}
 
 	return nil

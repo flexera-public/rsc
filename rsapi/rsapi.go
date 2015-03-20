@@ -21,10 +21,19 @@ type Api struct {
 	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
 	Host                  string        // API host, e.g. "us-3.rightscale.com"
 	Client                HttpClient    // Underlying http client
-	DumpRequestResponse   bool          // Whether to dump HTTP requests and responses to STDOUT
+	DumpRequestResponse   Format        // Whether to dump HTTP requests and responses to STDOUT, and if so in which format
 	FetchLocationResource bool          // Whether to fetch resource pointed by Location header
 	Metadata              ApiMetadata   // Generated API metadata
 }
+
+// Request/response dump format
+type Format int
+
+const (
+	NoDump Format = iota
+	Debug
+	Json
+)
 
 // Api metadata consists of resource metadata indexed by resource name
 type ApiMetadata map[string]*metadata.Resource
@@ -58,11 +67,11 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 	}, nil
 }
 
-// NewRL10 returns a API client that uses the information stored in /var/run/rll-secret to do
+// NewRL10 returns a API client that uses the information stored in /var/run/rightlink/secret to do
 // auth and configure the host. The client behaves identically to the client returned by New in
 // all other regards.
 func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
-	rllConfig, err := ioutil.ReadFile("/var/run/rll-secret")
+	rllConfig, err := ioutil.ReadFile(RllSecret)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
@@ -133,7 +142,12 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		if cmdLine.Token == "" && cmdLine.Username == "" && !cmdLine.RL10 {
 			return nil, fmt.Errorf("Missing authentication information, use '--email EMAIL --password PWD', '--token TOKEN' or 'setup'")
 		}
-		client.DumpRequestResponse = cmdLine.Dump
+		client.DumpRequestResponse = NoDump
+		if cmdLine.Dump == "json" {
+			client.DumpRequestResponse = Json
+		} else if cmdLine.Dump == "debug" {
+			client.DumpRequestResponse = Debug
+		}
 		client.FetchLocationResource = cmdLine.FetchResource
 	}
 	return client, nil

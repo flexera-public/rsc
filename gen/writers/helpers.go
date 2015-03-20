@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kr/text"
 	"github.com/rightscale/rsc/gen"
+	"github.com/rightscale/rsc/gen/writers/text"
 )
 
 // Produce line comments by concatenating given strings and producing 80 characters long lines
@@ -164,7 +164,10 @@ func flagType(param *gen.ActionParam) string {
 	if strings.Contains(path, "[]") {
 		_, ok := param.Type.(*gen.BasicDataType)
 		if !ok {
-			panic("Wooaat? an array with a non basic leaf???")
+			if _, ok := param.Type.(*gen.EnumerableDataType); ok {
+				return "[]string"
+			}
+			panic(fmt.Sprintf("Wooaat? an array with a non basic leaf??? - %#v", param.Type))
 		}
 		return "[]string"
 	}

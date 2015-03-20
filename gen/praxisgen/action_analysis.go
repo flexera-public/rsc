@@ -91,7 +91,10 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 			paramNames[len(pathParamNames)+i] = n
 		}
 		if p, ok := meth["payload"]; ok {
-			as, ok := p.(map[string]interface{})["attributes"]
+			as, ok := p.(map[string]interface{})["type"]
+			if ok {
+				as, ok = as.(map[string]interface{})["attributes"]
+			}
 			if ok {
 				attrs := as.(map[string]interface{})
 				attrNames := sortedKeys(attrs)
@@ -105,7 +108,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 					payloadParamNames = append(payloadParamNames, pn)
 					att.Location = gen.PayloadParam
 					params = append(params, att)
-					extracted := extractLeafParams(att)
+					extracted := extractLeafParams(att, make(map[string]*[]*gen.ActionParam))
 					for _, e := range extracted {
 						e.Location = gen.PayloadParam
 					}
@@ -193,6 +196,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 			ReturnLocation:    hasLocation,
 			QueryParamNames:   queryParamNames,
 			PayloadParamNames: payloadParamNames,
+			PathParamNames:    pathParamNames,
 		}
 		actions[i] = &action
 	}
@@ -253,18 +257,31 @@ func toPattern(verb, path string) *gen.PathPattern {
 }
 
 // Extract leaf parameters from given action param
-func extractLeafParams(a *gen.ActionParam) []*gen.ActionParam {
+func extractLeafParams(a *gen.ActionParam, seen map[string]*[]*gen.ActionParam) []*gen.ActionParam {
 	switch t := a.Type.(type) {
 	case *gen.BasicDataType, *gen.EnumerableDataType:
 		return []*gen.ActionParam{a}
 	case *gen.ArrayDataType:
-		return extractLeafParams(t.ElemType)
+		p := t.ElemType
+		eq, ok := seen[p.Name]
+		if !ok {
+			eq = &[]*gen.ActionParam{}
+			seen[p.Name] = eq
+			*eq = extractLeafParams(p, seen)
+		}
+		return *eq
 	case *gen.ObjectDataType:
 		params := []*gen.ActionParam{}
 		for _, f := range t.Fields {
-			params = append(params, extractLeafParams(f)...)
+			eq, ok := seen[f.Name]
+			if !ok {
+				eq = &[]*gen.ActionParam{}
+				seen[f.Name] = eq
+				*eq = extractLeafParams(f, seen)
+			}
+			params = append(params, *eq...)
 		}
 		return params
 	}
-	return nil // not reached
+	return nil
 }

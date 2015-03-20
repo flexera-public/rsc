@@ -204,31 +204,14 @@ type CommandTarget struct {
 }
 
 // Parse command and flags and infer resource, action, href and params
-func (a *Api) ParseCommandAndFlags(cmd, hrefPrefix string, commandValues ActionCommands) (*CommandTarget, []string, error) {
-	flags := commandValues[cmd]
-	if flags == nil {
-		return nil, nil, fmt.Errorf("Invalid command line, try --help.")
-	}
-	elems := strings.Split(cmd, " ")
-	actionName := elems[len(elems)-1]
-	href := flags.Href
-	if hrefPrefix != "" && !strings.HasPrefix(href, hrefPrefix) {
-		href = path.Join(hrefPrefix, href)
-	}
-
-	var vars []*metadata.PathVariable
-	var resource *metadata.Resource
-	for _, res := range a.Metadata {
-		var err error
-		if vars, err = res.ExtractVariables(href); err == nil {
-			resource = res
-			break
-		}
-	}
-	if resource == nil {
-		return nil, nil, fmt.Errorf("Invalid href '%s'. Try --hrefs.", href)
+func (a *Api) ParseCommandAndFlags(cmd, hrefPrefix string, values ActionCommands) (*CommandTarget, []string, error) {
+	resource, vars, err := a.parseResource(cmd, hrefPrefix, values)
+	if err != nil {
+		return nil, nil, err
 	}
 	var action *metadata.Action
+	elems := strings.Split(cmd, " ")
+	actionName := elems[len(elems)-1]
 	for _, a := range resource.Actions {
 		if a.Name == actionName {
 			action = a
@@ -248,20 +231,28 @@ func (a *Api) ParseCommandAndFlags(cmd, hrefPrefix string, commandValues ActionC
 	if err != nil {
 		return nil, nil, err
 	}
+	flags := values[cmd]
 
-	return &CommandTarget{resource, action, path, href}, flags.Params, nil
+	return &CommandTarget{resource, action, path, flags.Href}, flags.Params, nil
 }
 
-// Print all known href patterns for selected resource.
-// Show all hrefs if no selected resource.
-func (a *Api) ShowHrefs(cmd, hrefPrefix string, values ActionCommands) error {
-	target, _, err := a.ParseCommandAndFlags(cmd, hrefPrefix, values)
+// Print all known actions for API or selected resource if any.
+func (a *Api) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
+	res, _, err := a.parseResource(cmd, hrefPrefix, values)
 	resource := ""
 	if err == nil {
-		resource = target.Resource.Name
+		resource = res.Name
 	}
-	knownHrefs := make(map[string][][2]string)
-	for resName, res := range a.Metadata {
+	actions := make(map[string][][2]string)
+	resNames := make([]string, len(a.Metadata))
+	idx := 0
+	for n, _ := range a.Metadata {
+		resNames[idx] = n
+		idx += 1
+	}
+	sort.Strings(resNames)
+	for _, resName := range resNames {
+		res := a.Metadata[resName]
 		if resource != "" && resName != resource {
 			continue
 		}
@@ -272,30 +263,95 @@ func (a *Api) ShowHrefs(cmd, hrefPrefix string, values ActionCommands) error {
 				for i, v := range vars {
 					ivars[i] = interface{}(":" + v)
 				}
-				pat := fmt.Sprintf(pattern.Pattern, ivars...)
-				knownHrefs[pat] = append(knownHrefs[pat], [2]string{pattern.HttpMethod, fmt.Sprintf("%s.%s", resName, action.Name)})
+				subPattern := pattern.Pattern
+				subPatternEnd := strings.LastIndex(subPattern, "%s")
+				if subPatternEnd > 0 && subPatternEnd < len(subPattern)-2 {
+					subPattern = subPattern[:subPatternEnd+2]
+				}
+				pat := fmt.Sprintf(subPattern, ivars...)
+				actions[action.Name] = append(actions[action.Name], [2]string{pat, resName})
 			}
 		}
 	}
-	keys := make([]string, len(knownHrefs))
+	keys := make([]string, len(actions))
 	i := 0
-	for k, _ := range knownHrefs {
+	for k, _ := range actions {
 		keys[i] = k
 		i += 1
 	}
 	sort.Strings(keys)
 	var lines []string
-	for _, pat := range keys {
-		routes := knownHrefs[pat]
-		for _, names := range routes {
-			lines = append(lines, fmt.Sprintf("%s\t%s\t%s", names[0], pat, names[1]))
+	actionTitle := "Action"
+	hrefTitle := "Href"
+	resourceTitle := "Resource"
+	maxActionLen := len(actionTitle)
+	maxHrefLen := len(hrefTitle)
+	maxResourceLen := len(resourceTitle)
+	for _, name := range keys {
+		if len(name) > maxActionLen {
+			maxActionLen = len(name)
+		}
+		as := actions[name]
+		for _, action := range as {
+			if len(action[0]) > maxHrefLen {
+				maxHrefLen = len(action[0])
+			}
+			if len(action[1]) > maxResourceLen {
+				maxResourceLen = len(action[1])
+			}
+		}
+	}
+	for idx, name := range keys {
+		as := actions[name]
+		for i, action := range as {
+			title := ""
+			if i == 0 {
+				title = name
+				if idx > 0 {
+					lines = append(lines, fmt.Sprintf("%s\t%s\t%s",
+						strings.Repeat("-", maxActionLen),
+						strings.Repeat("-", maxHrefLen),
+						strings.Repeat("-", maxResourceLen)))
+				}
+			}
+			lines = append(lines, fmt.Sprintf("%s\t%s\t%s", title, action[0], action[1]))
 		}
 	}
 	w := tabwriter.NewWriter(os.Stdout, 0, 4, 1, ' ', 0)
-	w.Write([]byte("Method\tHref Pattern\tResource.Action\n"))
+	w.Write([]byte(fmt.Sprintf("%s\t%s\t%s\n", actionTitle, hrefTitle, resourceTitle)))
+	w.Write([]byte(fmt.Sprintf("%s\t%s\t%s\n", strings.Repeat("=", maxActionLen),
+		strings.Repeat("=", maxHrefLen),
+		strings.Repeat("=", maxResourceLen))))
 	w.Write([]byte(strings.Join(lines, "\n")))
 	w.Write([]byte("\n"))
 	return w.Flush()
+}
+
+// Identify action resource if any
+// Return error if no resource could be identified
+func (a *Api) parseResource(cmd, hrefPrefix string, commandValues ActionCommands) (*metadata.Resource, []*metadata.PathVariable, error) {
+	flags := commandValues[cmd]
+	if flags == nil {
+		return nil, nil, fmt.Errorf("Invalid command line, try --help.")
+	}
+	href := flags.Href
+	if hrefPrefix != "" && !strings.HasPrefix(href, hrefPrefix) {
+		href = path.Join(hrefPrefix, href)
+	}
+
+	var vars []*metadata.PathVariable
+	var resource *metadata.Resource
+	for _, res := range a.Metadata {
+		var err error
+		if vars, err = res.ExtractVariables(href); err == nil {
+			resource = res
+			break
+		}
+	}
+	if resource == nil {
+		return nil, nil, fmt.Errorf("Invalid href '%s'. Try --hrefs.", href)
+	}
+	return resource, vars, nil
 }
 
 // Validate flag value using validation criteria provided in metadata

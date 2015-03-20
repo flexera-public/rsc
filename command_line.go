@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path"
 
 	"github.com/rightscale/rsc/cm15"
 	"github.com/rightscale/rsc/cm16"
 	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
 )
@@ -14,8 +16,7 @@ import (
 // Retrieve command and top level flag values
 func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	// 1. Register all commands
-	app.Command("setup",
-		"create config file, defaults to $HOME/.rsc, use '--config' to override")
+	app.Command("setup", "create config file, defaults to $HOME/.rsc, use '--config' to override")
 	RegisterClientCommands(app)
 
 	// 2. Parse flags
@@ -27,19 +28,22 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("pwd", "Login password, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Password)
 	app.Flag("key", "OAuth access token or API key, use --email and --password or use --key or --rl10").Short('k').StringVar(&cmdLine.Token)
 	app.Flag("rl10", "Proxy requests through RL 10 agent, use --email and --password or use --key or --rl10").BoolVar(&cmdLine.RL10)
-	app.Flag("hrefs", "List all known href patterns for selected API or resource").BoolVar(&cmdLine.ShowHrefs)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
 	app.Flag("xm", "Extract zero, one or more values using JSON:select and return space separated list").StringVar(&cmdLine.ExtractSelector)
 	app.Flag("xj", "Extract zero, one or more values using JSON:select and return JSON").StringVar(&cmdLine.ExtractSelectorJson)
 	app.Flag("xh", "Extract header with given name").StringVar(&cmdLine.ExtractHeader)
 	app.Flag("noRedirect", "Do not follow redirect responses").Short('n').BoolVar(&cmdLine.NoRedirect)
 	app.Flag("fetch", "Fetch resource with href present in 'Location' header").BoolVar(&cmdLine.FetchResource)
-	app.Flag("dump", "Dump HTTP request and response for debugging").BoolVar(&cmdLine.Dump)
+	d := &cmdLine.Dump // strange, not sure why Kingpin forces that
+	app.Flag("dump", "Dump HTTP request and response. Possible values are 'debug' or 'json'.").EnumVar(&d, "debug", "json")
 	app.Flag("pp", "Pretty print response body").BoolVar(&cmdLine.Pretty)
 
 	args := os.Args[1:]
+	if len(args) == 0 {
+		args = []string{"--help"}
+	}
 	cmd, err := app.Parse(args)
-	if err != nil {
+	if err != nil && len(args) > 0 {
 		// This is a bit hacky: basically doing `rsc api15 index clouds --help` results
 		// in a command line that kingpin is unable to parse. So capture the `--help` and
 		// retry parsing without it.
@@ -78,16 +82,6 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	return &cmdLine, nil
 }
 
-// Check whether given command corresponds to a API client command
-func IsClientCommand(cmd string) bool {
-	for _, c := range AllCommands {
-		if cmd == c {
-			return true
-		}
-	}
-	return false
-}
-
 // Update the code below when adding new clients. This is the only place that needs to be changed.
 
 // List all client commands below
@@ -99,25 +93,34 @@ const (
 	Cm16Command = "cm16"
 
 	// Command for SS client
-	SSCommand = "ss"
+	SsCommand = "ss"
 )
 
-var (
-	// List of all supported client commands
-	AllCommands = []string{Cm15Command, Cm16Command, SSCommand}
-
-	// Default command
-	DefaultClientCommand string
-)
+// Instantiate client with given name from command line arguments
+func ApiClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error) {
+	switch name {
+	case Cm15Command:
+		return cm15.FromCommandLine(cmdLine)
+	case Cm16Command:
+		return cm16.FromCommandLine(cmdLine)
+	case SsCommand:
+		return ss.FromCommandLine(cmdLine)
+	default:
+		return nil, fmt.Errorf("No client for '%s'", name)
+	}
+}
 
 // Register all API client commands
 func RegisterClientCommands(app *kingpin.Application) {
-	cm15Cmd := app.Command(Cm15Command, "RightScale CM API 1.5 client")
-	cm15.RegisterCommands(cm15Cmd)
+	cm15Cmd := app.Command(Cm15Command, cm15.ApiName)
+	registrar := rsapi.Registrar{ApiCmd: cm15Cmd}
+	cm15.RegisterCommands(&registrar)
 
-	cm16Cmd := app.Command(Cm16Command, "RightScale CM API 1.6 client")
-	cm16.RegisterCommands(cm16Cmd)
+	cm16Cmd := app.Command(Cm16Command, cm16.ApiName)
+	registrar = rsapi.Registrar{ApiCmd: cm16Cmd}
+	cm16.RegisterCommands(&registrar)
 
-	ssCmd := app.Command(SSCommand, "RightScale SS API 1.0 client")
-	ss.RegisterCommands(ssCmd)
+	ssCmd := app.Command(SsCommand, ss.ApiName)
+	registrar = rsapi.Registrar{ApiCmd: ssCmd}
+	ss.RegisterCommands(&registrar)
 }

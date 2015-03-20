@@ -2,7 +2,9 @@ tags
 rsc
 gen/api15gen/api15gen
 gen/praxisgen/praxisgen
+*.exe
 *.coverprofile
-Godeps/_workspace/src/github.com/jessevdk/go-flags/
-Godeps/_workspace/src/github.com/rlmcpherson/s3gof3r/
-Godeps/_workspace/src/golang.org/x/tools/
+build
+Godeps/_workspace/src/github.com/jessevdk/
+Godeps/_workspace/src/github.com/rlmcpherson/
+Godeps/_workspace/src/golang.org/

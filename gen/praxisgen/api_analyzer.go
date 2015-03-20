@@ -75,9 +75,8 @@ func (a *ApiAnalyzer) Analyze() (*gen.ApiDescriptor, error) {
 // resolve all the type names and make sure that different data structures end up with different
 // names.
 type TypeRegistry struct {
-	ResourceTypeNames []string
-	NamedTypes        map[string]*gen.ObjectDataType
-	InlineTypes       map[string][]*gen.ObjectDataType
+	NamedTypes  map[string]*gen.ObjectDataType
+	InlineTypes map[string][]*gen.ObjectDataType
 }
 
 // Type registry factory

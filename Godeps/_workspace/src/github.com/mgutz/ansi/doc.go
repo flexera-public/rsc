@@ -1,26 +1,20 @@
 /*
-Package ansi is a small, fast library to create ANSI colored strings and codes.
-
-Installation
-
-    # this installs the color viewer and the package
-    go get -u github.com/mgutz/ansi/cmd/ansi-mgutz
+Small, fast library to create ANSI colored strings and codes.
 
 Example
 
-	// colorize a string, SLOW
+	// colorize a string, slowest method
 	msg := ansi.Color("foo", "red+b:white")
 
-	// create a closure to avoid recalculating ANSI code compilation
+	// create a closure to avoid escape code compilation
 	phosphorize := ansi.ColorFunc("green+h:black")
-	msg = phosphorize("Bring back the 80s!")
-	msg2 := phospohorize("Look, I'm a CRT!")
+	msg := phosphorize("Bring back the 80s!")
 
-	// cache escape codes and build strings manually
+	// cache escape codes and build strings manually, faster than closure
 	lime := ansi.ColorCode("green+h:black")
 	reset := ansi.ColorCode("reset")
 
-	fmt.Println(lime, "Bring back the 80s!", reset)
+	msg := lime + "Bring back the 80s!" + reset
 
 Other examples
 
@@ -35,7 +29,8 @@ Other examples
 
 To view color combinations, from terminal
 
-	ansi-mgutz
+	cd $GOPATH/src/github.com/mgutz/ansi
+	go test
 
 Style format
 

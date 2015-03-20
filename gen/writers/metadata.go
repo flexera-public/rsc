@@ -4,7 +4,6 @@ import (
 	"io"
 	"strings"
 	"text/template"
-	"time"
 
 	"github.com/rightscale/rsc/gen"
 )
@@ -19,7 +18,6 @@ type MetadataWriter struct {
 func NewMetadataWriter() (*MetadataWriter, error) {
 	funcMap := template.FuncMap{
 		"comment":       comment,
-		"now":           time.Now,
 		"join":          strings.Join,
 		"commandLine":   commandLine,
 		"toStringArray": toStringArray,

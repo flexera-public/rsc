@@ -6,7 +6,7 @@
 	"asset_counts": "int",
 	"asset_paths": "[]string",
 	"associate_public_ip_address": "bool",
-	"capabilities": "[]string",
+	"capabilities": "[]map[string]interface{}",
 	"cidr_block": "string",
 	"cidr_ips": "[]string",
 	"cloud_specific_attributes": "map[string]string",

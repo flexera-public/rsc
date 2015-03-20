@@ -10,8 +10,11 @@ import (
 	"path"
 	"strings"
 
+	"bitbucket.org/pkg/inflect"
+
 	"github.com/rightscale/rsc/gen"
 	"github.com/rightscale/rsc/gen/writers"
+	"gopkg.in/alecthomas/kingpin.v1"
 )
 
 // Data structure used to load content of index.json files
@@ -20,7 +23,7 @@ type Index map[string]map[string]map[string]interface{}
 func main() {
 	// 1. Parse command line arguments
 	curDir, err := os.Getwd()
-	check(err)
+	kingpin.FatalIfError(err, "")
 	metadataDirVal := flag.String("metadata", curDir,
 		"Path to directory(ies) containig metadata files (index.json, etc.). Multiple directories can be specified using a coma separated list.")
 	destDirVal := flag.String("output", curDir,
@@ -29,37 +32,40 @@ func main() {
 	targetVersion := flag.String("target", "",
 		"Target version, only generate code for this version.\nIf this option is specified then the generated code lives directly under package <pkg>, otherwise it lives under <pkg>.<version>.")
 	clientName := flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
+	tool := flag.String("tool", "rsc", "Tool or library for which to generate code, supported values are 'rsc' or 'angular'")
 	flag.Parse()
 
 	metadataDirs := strings.Split(*metadataDirVal, ",")
 	for _, metadataDir := range metadataDirs {
 		if stat, err := os.Stat(metadataDir); err != nil || !stat.IsDir() {
-			check(fmt.Errorf("%s is not a valid directory.", metadataDir))
+			kingpin.Fatalf("%s is not a valid directory.", metadataDir)
 		}
 	}
 
 	destDir := *destDirVal
 	if stat, _ := os.Stat(destDir); stat != nil && !stat.IsDir() {
-		check(fmt.Errorf("%s is not a valid directory.", destDir))
+		kingpin.Fatalf("%s is not a valid directory.", destDir)
 	}
 
-	if *pkgName == "" {
-		check(fmt.Errorf("-pkg option is required."))
-	}
+	if *tool == "rsc" {
+		if *pkgName == "" {
+			kingpin.Fatalf("-pkg option is required.")
+		}
 
-	if *clientName == "" {
-		check(fmt.Errorf("-client option is required."))
+		if *clientName == "" {
+			kingpin.Fatalf("-client option is required.")
+		}
 	}
 
 	indeces := make(map[string]Index, len(metadataDirs)) // Index content mapped by directory path
 	for _, metadataDir := range metadataDirs {
 		indexFile := path.Join(metadataDir, "index.json")
 		indexContent, err := loadFile(indexFile)
-		check(err)
+		kingpin.FatalIfError(err, "")
 		var index Index
 		err = json.Unmarshal(indexContent, &index)
 		if err != nil {
-			check(fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", indexFile, err.Error()))
+			kingpin.Fatalf("Cannot unmarshal JSON read from '%s': %s", indexFile, err)
 		}
 		indeces[metadataDir] = index
 	}
@@ -80,11 +86,11 @@ func main() {
 				if strings.HasSuffix(name, " (*)") {
 					continue
 				}
-				fileName := fmt.Sprintf("%s.json", resource["controller"])
+				fileName := strings.Replace(fmt.Sprintf("%s.json", resource["controller"]), "::", "-", -1)
 				resourcePath := path.Join(dirPath, version, "resources", fileName)
 				var resourceData map[string]interface{}
 				if err := unmarshal(resourcePath, &resourceData); err != nil {
-					check(fmt.Errorf("Failed to unmarshal content of file %s: %s", resourcePath, err.Error()))
+					kingpin.Fatalf("Failed to unmarshal content of file %s: %s", resourcePath, err)
 				}
 				apiResources[name] = resourceData
 			}
@@ -93,26 +99,26 @@ func main() {
 			typesDir := path.Join(dirPath, version, "types")
 			files, err := ioutil.ReadDir(typesDir)
 			if err != nil {
-				check(fmt.Errorf("Failed to load types: %s", err.Error()))
+				kingpin.Fatalf("Failed to load types: %s", err)
 			}
 			for _, file := range files {
 				var typeData map[string]interface{}
 				if err := unmarshal(path.Join(typesDir, file.Name()), &typeData); err != nil {
-					check(fmt.Errorf("Failed to unmarshal content of file %s: %s", path.Join(typesDir, file.Name()), err.Error()))
+					kingpin.Fatalf("Failed to unmarshal content of file %s: %s", path.Join(typesDir, file.Name()), err)
 				}
 				typeName, ok := typeData["name"]
 				if !ok {
-					check(fmt.Errorf("Missing \"name\" key for type defined in %s", path.Join(typesDir, file.Name())))
+					kingpin.Fatalf("Missing \"name\" key for type defined in %s", path.Join(typesDir, file.Name()))
 				}
 				apiTypes[typeName.(string)] = typeData
 			}
 			analyzer := NewApiAnalyzer(version, *clientName, apiResources, apiTypes)
 			d, err := analyzer.Analyze()
-			check(err)
+			kingpin.FatalIfError(err, "")
 			if existing, ok := descriptors[version]; ok {
 				err := existing.Merge(d)
 				if err != nil {
-					check(fmt.Errorf("Conflict between multiple metadata directory: %s", err.Error()))
+					kingpin.Fatalf("Conflict between multiple metadata directory: %s", err)
 				}
 			} else {
 				descriptors[version] = d
@@ -121,25 +127,34 @@ func main() {
 	}
 
 	// 3. Write code
-	var genClients []string
-	var genMetadata []string
+	var generated []string
 	for version, descriptor := range descriptors {
 		var pkg string
 		if len(*targetVersion) == 0 {
 			pkg = toPackageName(version)
 		}
 		os.MkdirAll(path.Join(destDir, pkg), 0755)
-		clientPath := path.Join(destDir, pkg, "codegen_client.go")
-		metadataPath := path.Join(destDir, pkg, "codegen_metadata.go")
-		check(generateClient(descriptor, clientPath, *pkgName))
-		check(generateMetadata(descriptor, metadataPath, *pkgName))
-		genClients = append(genClients, clientPath)
-		genMetadata = append(genMetadata, metadataPath)
+		switch *tool {
+		case "rsc":
+			clientPath := path.Join(destDir, pkg, "codegen_client.go")
+			metadataPath := path.Join(destDir, pkg, "codegen_metadata.go")
+			kingpin.FatalIfError(generateClient(descriptor, clientPath, *pkgName), "")
+			kingpin.FatalIfError(generateMetadata(descriptor, metadataPath, *pkgName), "")
+			generated = append(generated, clientPath)
+			generated = append(generated, metadataPath)
+		case "angular":
+			pkgPath := path.Join(destDir, pkg)
+			files, err := generateAngular(descriptor, pkgPath)
+			kingpin.FatalIfError(err, "")
+			generated = append(generated, files...)
+		default:
+			kingpin.Fatalf("Invalid tool '%s', supported clients are 'rsc' and 'angular'", *tool)
+		}
 	}
 
 	// 4. Say something...
-	for i := 0; i < len(genClients); i++ {
-		fmt.Printf("%s\n%s\n", genClients[i], genMetadata[i])
+	for i := 0; i < len(generated); i++ {
+		fmt.Printf("%s\n", generated[i])
 	}
 }
 
@@ -147,11 +162,11 @@ func main() {
 func unmarshal(path string, target *map[string]interface{}) error {
 	content, err := loadFile(path)
 	if err != nil {
-		return fmt.Errorf("Failed to load media type JSON from '%s': %s", path, err.Error())
+		return fmt.Errorf("Failed to load media type JSON from '%s': %s", path, err)
 	}
 	err = json.Unmarshal(content, target)
 	if err != nil {
-		return fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", path, err.Error())
+		return fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", path, err)
 	}
 	return nil
 }
@@ -183,11 +198,11 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen, pkg string) error {
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader(pkg, f))
+	kingpin.FatalIfError(c.WriteHeader(pkg, f), "")
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)
-		check(c.WriteResource(resource, f))
+		kingpin.FatalIfError(c.WriteResource(resource, f), "")
 	}
 	c.WriteTypeSectionHeader(f)
 	for _, name := range descriptor.TypeNames {
@@ -212,14 +227,35 @@ func generateMetadata(descriptor *gen.ApiDescriptor, codegen, pkg string) error 
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader(pkg, f))
-	check(c.WriteMetadata(descriptor, f))
+	kingpin.FatalIfError(c.WriteHeader(pkg, f), "")
+	kingpin.FatalIfError(c.WriteMetadata(descriptor, f), "")
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("Failed to format generated metadata code:\n%s", o)
 	}
 	return nil
+}
+
+// Generate API metadata, drives the metadata writer.
+func generateAngular(descriptor *gen.ApiDescriptor, pkgDir string) ([]string, error) {
+	var files []string
+	for _, name := range descriptor.ResourceNames {
+		res := descriptor.Resources[name]
+		codegen := path.Join(pkgDir, inflect.Underscore(name)+".js")
+		f, err := os.Create(codegen)
+		if err != nil {
+			return files, err
+		}
+		c, err := writers.NewAngularWriter()
+		if err != nil {
+			return files, err
+		}
+		kingpin.FatalIfError(c.WriteResource(res, f), "")
+		f.Close()
+		files = append(files, codegen)
+	}
+	return files, nil
 }
 
 // Helper function that reads content from given file
@@ -229,15 +265,7 @@ func loadFile(file string) ([]byte, error) {
 	}
 	js, err := ioutil.ReadFile(file)
 	if err != nil {
-		return nil, fmt.Errorf("Cannot read '%s': %s", file, err.Error())
+		return nil, fmt.Errorf("Cannot read '%s': %s", file, err)
 	}
 	return js, nil
-}
-
-// Panic if error is not nil
-func check(err error) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "praxisgen: %s\n", err.Error())
-		os.Exit(1)
-	}
 }

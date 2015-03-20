@@ -2,72 +2,22 @@ package cm15
 
 import (
 	"net/http"
-	"strings"
 
-	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/rsapi"
+)
+
+const (
+	// Used by rsc to display command line help
+	ApiName = "RightScale CM API 1.5"
 )
 
 // Data structure that holds parsed command line values
 var commandValues rsapi.ActionCommands
 
 // Register all commands with kinpin application
-func RegisterCommands(api15Cmd cmd.CommandProvider) {
+func RegisterCommands(registrar rsapi.ApiCommandRegistrar) {
 	commandValues = rsapi.ActionCommands{}
-	var actionNames []string
-	for _, r := range GenMetadata {
-		for _, a := range r.Actions {
-			name := a.Name
-			exists := false
-			for _, e := range actionNames {
-				if e == name {
-					exists = true
-					break
-				}
-			}
-			if !exists {
-				actionNames = append(actionNames, name)
-			}
-		}
-	}
-	for _, action := range actionNames {
-		var description string
-		switch action {
-		case "show":
-			description = "Show information about a single resource."
-		case "index":
-			description = "Lists all resources of given type in account."
-		case "create":
-			description = "Create new resource."
-		case "update":
-			description = "Update existing resource."
-		case "delete":
-			description = "Destroy a single resource."
-		default:
-			resources := []string{}
-			var actionDescription string
-			for name, resource := range GenMetadata {
-				for _, a := range resource.Actions {
-					if a.Name == action {
-						actionDescription = a.Description
-						resources = append(resources, name)
-					}
-				}
-			}
-			if len(resources) == 1 {
-				description = actionDescription
-			} else {
-				description = "Action of resources " + strings.Join(resources[:len(resources)-1], ", ") + " and " + resources[len(resources)-1]
-			}
-		}
-		actionCmd := api15Cmd.Command(action, description)
-		actionCmdValue := rsapi.ActionCommand{}
-		hrefMsg := "API Resource or resource collection href on which to act, e.g. '/api/servers'"
-		paramsMsg := "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'"
-		actionCmd.Arg("href", hrefMsg).Required().StringVar(&actionCmdValue.Href)
-		actionCmd.Arg("params", paramsMsg).StringsVar(&actionCmdValue.Params)
-		commandValues[actionCmd.FullCommand()] = &actionCmdValue
-	}
+	registrar.RegisterActionCommands(ApiName, GenMetadata, commandValues)
 }
 
 // Parse and run command
@@ -85,6 +35,6 @@ func (a *Api) ShowCommandHelp(cmd string) error {
 }
 
 // Show command hrefs
-func (a *Api) ShowCommandHrefs(cmd string) error {
-	return a.ShowHrefs(cmd, "/api", commandValues)
+func (a *Api) ShowApiActions(cmd string) error {
+	return a.ShowActions(cmd, "/api", commandValues)
 }
