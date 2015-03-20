@@ -11,12 +11,13 @@ import (
 
 	"github.com/rightscale/rsc/gen"
 	"github.com/rightscale/rsc/gen/writers"
+	"gopkg.in/alecthomas/kingpin.v1"
 )
 
 func main() {
 	// 1. Parse command line arguments
 	curDir, err := os.Getwd()
-	check(err)
+	kingpin.FatalIfError(err, "")
 	metadataDirVal := flag.String("metadata", curDir,
 		"Path to directory containig metadata files (api_data.json and attributes.json)")
 	destDirVal := flag.String("output", curDir,
@@ -25,30 +26,30 @@ func main() {
 
 	metadataDir := *metadataDirVal
 	if stat, _ := os.Stat(metadataDir); !stat.IsDir() {
-		check(fmt.Errorf("%s is not a valid directory", metadataDir))
+		kingpin.Fatalf("%s is not a valid directory", metadataDir)
 	}
 
 	destDir := *destDirVal
 	if stat, _ := os.Stat(destDir); stat != nil && !stat.IsDir() {
-		check(fmt.Errorf("%s is not a valid directory", destDir))
+		kingpin.Fatalf("%s is not a valid directory", destDir)
 	}
 
 	apiDataFile := path.Join(metadataDir, "api_data.json")
 	var apiData map[string]interface{}
 	apiDataText, err := loadFile(apiDataFile)
-	check(err)
+	kingpin.FatalIfError(err, "")
 	err = json.Unmarshal(apiDataText, &apiData)
 	if err != nil {
-		check(fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", apiDataFile, err.Error()))
+		kingpin.Fatalf("Cannot unmarshal JSON read from '%s': %s", apiDataFile, err)
 	}
 
 	attributesFile := path.Join(metadataDir, "attributes.json")
 	var attributes map[string]string
 	attributesText, err := loadFile(attributesFile)
-	check(err)
+	kingpin.FatalIfError(err, "")
 	err = json.Unmarshal(attributesText, &attributes)
 	if err != nil {
-		check(fmt.Errorf("Cannot unmarshal JSON read from '%s': %s", attributesFile, err.Error()))
+		kingpin.Fatalf("Cannot unmarshal JSON read from '%s': %s", attributesFile, err)
 	}
 
 	// 2. Analyze
@@ -57,11 +58,11 @@ func main() {
 
 	// 3. Write codegen_client.go
 	var clientPath = path.Join(destDir, "codegen_client.go")
-	check(generateClient(descriptor, clientPath))
+	kingpin.FatalIfError(generateClient(descriptor, clientPath), "")
 
 	// 4. Write codegen_metadata.go
 	var metadataPath = path.Join(destDir, "codegen_metadata.go")
-	check(generateMetadata(descriptor, metadataPath))
+	kingpin.FatalIfError(generateMetadata(descriptor, metadataPath), "")
 
 	// 5. Say something...
 	fmt.Printf("%s\n%s\n", clientPath, metadataPath)
@@ -77,11 +78,11 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader("cm15", f))
+	kingpin.FatalIfError(c.WriteHeader("cm15", f), "")
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)
-		check(c.WriteResource(resource, f))
+		kingpin.FatalIfError(c.WriteResource(resource, f), "")
 	}
 	c.WriteTypeSectionHeader(f)
 	for _, name := range descriptor.TypeNames {
@@ -106,8 +107,8 @@ func generateMetadata(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	check(c.WriteHeader("cm15", f))
-	check(c.WriteMetadata(descriptor, f))
+	kingpin.FatalIfError(c.WriteHeader("cm15", f), "")
+	kingpin.FatalIfError(c.WriteMetadata(descriptor, f), "")
 	f.Close()
 	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
 	if err != nil {
@@ -123,15 +124,7 @@ func loadFile(file string) ([]byte, error) {
 	}
 	js, err := ioutil.ReadFile(file)
 	if err != nil {
-		return nil, fmt.Errorf("Cannot read '%s': %s", file, err.Error())
+		return nil, fmt.Errorf("Cannot read '%s': %s", file, err)
 	}
 	return js, nil
-}
-
-// Panic if error is not nil
-func check(err error) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "api15gen: %s\n", err.Error())
-		os.Exit(1)
-	}
 }
