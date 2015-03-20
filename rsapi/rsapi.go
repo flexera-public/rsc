@@ -54,6 +54,10 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 	if client == nil {
 		client = http.DefaultClient
 	}
+	host, err := auth.ResolveHost(host, accountId)
+	if err != nil {
+		return nil, err
+	}
 	return &Api{
 		AccountId: accountId,
 		Auth:      auth,
@@ -69,7 +73,7 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 	rllConfig, err := ioutil.ReadFile(RllSecret)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to load RLL config: %s", err.Error())
+		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
 	var port string
 	var secret string
@@ -132,7 +136,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		client, err = New(cmdLine.Account, cmdLine.Host, &auth, nil, httpClient)
 	}
 	if err != nil {
-		return nil, fmt.Errorf("Failed to create API session: %v", err.Error())
+		return nil, fmt.Errorf("Failed to create API session: %v", err)
 	}
 	if !cmdLine.ShowHelp {
 		if cmdLine.Token == "" && cmdLine.Username == "" && !cmdLine.RL10 {
