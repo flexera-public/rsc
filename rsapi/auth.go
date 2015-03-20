@@ -16,7 +16,7 @@ type Authenticator interface {
 	ResolveHost(host string, accountId int) (string, error)
 }
 
-func LoginAndOAuthResolveHost(authReq *http.Request, host string, accountId int) (string, error) {
+func resolveHost(authReq *http.Request, host string, accountId int) (string, error) {
 	redirectHost := host
 	client := http.Client{
 		// Pretty much a direct copy/paste from;
@@ -69,7 +69,7 @@ type LoginAuthenticator struct {
 }
 
 func (a *LoginAuthenticator) Sign(r *http.Request, host string, accountId int) error {
-	if _,err := a.Refresh(host, accountId); err != nil {
+	if err := a.Refresh(host, accountId); err != nil {
 		return err
 	}
 	for _, c := range a.Cookies[accountId] {
@@ -93,18 +93,18 @@ func (a *LoginAuthenticator) newLoginRequest(host string, accountId int) (*http.
 }
 
 // Make sure global session cookie is up-to-date
-func (a *LoginAuthenticator) Refresh(host string, accountId int) (string, error) {
+func (a *LoginAuthenticator) Refresh(host string, accountId int) error {
 	if time.Now().After(a.RefreshAt) {
 		authReq, authErr := a.newLoginRequest(host,accountId)
 		if authErr != nil {
-			return host, authErr
+			return authErr
 		}
 		resp, err := a.Client.Do(authReq)
 		if err != nil {
-			return host, fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
+			return fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
 		}
 		if resp.StatusCode != 204 {
-			return host, fmt.Errorf("Authentication failed: %s", resp.Status)
+			return fmt.Errorf("Authentication failed: %s", resp.Status)
 		}
 		if a.Cookies == nil {
 			a.Cookies = make(map[int][]*http.Cookie)
@@ -112,7 +112,7 @@ func (a *LoginAuthenticator) Refresh(host string, accountId int) (string, error)
 		a.Cookies[accountId] = resp.Cookies()
 		a.RefreshAt = time.Now().Add(time.Duration(2) * time.Hour)
 	}
-	return host, nil
+	return nil
 }
 
 // To be called from rsapi.Api to verify credentials, and (re)set host if redirected
@@ -121,7 +121,7 @@ func (a *LoginAuthenticator) ResolveHost(host string, accountId int) (string, er
 	if authErr != nil {
 		return host, authErr
 	}
-	return LoginAndOAuthResolveHost(authReq, host,accountId)
+	return resolveHost(authReq,host,accountId)
 }
 
 // OAuth authenticator uses the user oauth refresh token
@@ -134,7 +134,7 @@ type OAuthAuthenticator struct {
 
 // Account authenticator uses RS oauth
 func (a *OAuthAuthenticator) Sign(r *http.Request, host string, accountId int) error {
-	if _, err := a.Refresh(host); err != nil {
+	if err := a.Refresh(host); err != nil {
 		return err
 	}
 	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
@@ -155,41 +155,41 @@ func (a *OAuthAuthenticator) newLoginRequest(host string) (*http.Request, error)
 }
 
 // Make sure access token is up-to-date
-func (a *OAuthAuthenticator) Refresh(host string) (string, error) {
+func (a *OAuthAuthenticator) Refresh(host string) error {
 	if time.Now().After(a.RefreshAt) {
 		authReq, authErr := a.newLoginRequest(host)
 		if authErr != nil {
-			return host, fmt.Errorf("Authentication failed: %s", authErr)
+			return fmt.Errorf("Authentication failed: %s", authErr)
 		}
 		resp, err := a.Client.Do(authReq)
 		if err != nil {
-			return host, fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
+			return fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
 		}
 		defer resp.Body.Close()
 		var session map[string]interface{}
 		jsonBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			return host, fmt.Errorf("Authentication failed (failed to read response): %s", err)
+			return fmt.Errorf("Authentication failed (failed to read response): %s", err)
 		}
 		if resp.StatusCode != 200 {
-			return host, fmt.Errorf("Authentication failed: %s", resp.Status)
+			return fmt.Errorf("Authentication failed: %s", resp.Status)
 		}
 		err = json.Unmarshal(jsonBytes, &session)
 		if err != nil {
-			return host, fmt.Errorf("Authentication failed (failed to load response JSON): %s", err)
+			return fmt.Errorf("Authentication failed (failed to load response JSON): %s", err)
 		}
 		accessToken, ok := session["access_token"].(string)
 		if !ok {
-			return host, fmt.Errorf("Unexpected auth response: %s", jsonBytes)
+			return fmt.Errorf("Unexpected auth response: %s", jsonBytes)
 		}
 		a.AccessToken = accessToken
 		d, err := time.ParseDuration(fmt.Sprintf("%vs", session["expires_in"]))
 		if err != nil {
-			return host, fmt.Errorf("Authentication failed (failed to parse token duration): %s", err)
+			return fmt.Errorf("Authentication failed (failed to parse token duration): %s", err)
 		}
 		a.RefreshAt = time.Now().Add(d / 2)
 	}
-	return host, nil
+	return nil
 }
 
 // To be called from rsapi.Api to verify credentials, and (re)set host if redirected
@@ -204,7 +204,7 @@ func (a *OAuthAuthenticator) ResolveHost(host string, accountId int) (string, er
 	if authErr != nil {
 		return host, authErr
 	}
-	return LoginAndOAuthResolveHost(authReq,host,accountId)
+	return resolveHost(authReq,host,accountId)
 }
 
 // RightLink 10 authenticator
