@@ -94,7 +94,7 @@ The list of global flags is:
   --xh=XH           Extract header with given name
   -n, --noRedirect  Do not follow redirect responses
   --fetch           Fetch resource with href present in 'Location' header
-  --dump            Dump HTTP request and response for debugging
+  --dump=DUMP       Dump HTTP request and response. Possible values are 'debug' or 'json'.
   --pp              Pretty print response body
 ```
 

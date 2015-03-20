@@ -21,10 +21,19 @@ type Api struct {
 	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
 	Host                  string        // API host, e.g. "us-3.rightscale.com"
 	Client                HttpClient    // Underlying http client
-	DumpRequestResponse   bool          // Whether to dump HTTP requests and responses to STDOUT
+	DumpRequestResponse   Format        // Whether to dump HTTP requests and responses to STDOUT, and if so in which format
 	FetchLocationResource bool          // Whether to fetch resource pointed by Location header
 	Metadata              ApiMetadata   // Generated API metadata
 }
+
+// Request/response dump format
+type Format int
+
+const (
+	NoDump Format = iota
+	Debug
+	Json
+)
 
 // Api metadata consists of resource metadata indexed by resource name
 type ApiMetadata map[string]*metadata.Resource
@@ -129,7 +138,12 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		if cmdLine.Token == "" && cmdLine.Username == "" && !cmdLine.RL10 {
 			return nil, fmt.Errorf("Missing authentication information, use '--email EMAIL --password PWD', '--token TOKEN' or 'setup'")
 		}
-		client.DumpRequestResponse = cmdLine.Dump
+		client.DumpRequestResponse = NoDump
+		if cmdLine.Dump == "json" {
+			client.DumpRequestResponse = Json
+		} else if cmdLine.Dump == "debug" {
+			client.DumpRequestResponse = Debug
+		}
 		client.FetchLocationResource = cmdLine.FetchResource
 	}
 	return client, nil

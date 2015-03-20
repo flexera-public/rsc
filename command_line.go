@@ -16,8 +16,7 @@ import (
 // Retrieve command and top level flag values
 func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	// 1. Register all commands
-	app.Command("setup",
-		"create config file, defaults to $HOME/.rsc, use '--config' to override")
+	app.Command("setup", "create config file, defaults to $HOME/.rsc, use '--config' to override")
 	RegisterClientCommands(app)
 
 	// 2. Parse flags
@@ -35,7 +34,8 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("xh", "Extract header with given name").StringVar(&cmdLine.ExtractHeader)
 	app.Flag("noRedirect", "Do not follow redirect responses").Short('n').BoolVar(&cmdLine.NoRedirect)
 	app.Flag("fetch", "Fetch resource with href present in 'Location' header").BoolVar(&cmdLine.FetchResource)
-	app.Flag("dump", "Dump HTTP request and response for debugging").BoolVar(&cmdLine.Dump)
+	d := &cmdLine.Dump // strange, not sure why Kingpin forces that
+	app.Flag("dump", "Dump HTTP request and response. Possible values are 'debug' or 'json'.").EnumVar(&d, "debug", "json")
 	app.Flag("pp", "Pretty print response body").BoolVar(&cmdLine.Pretty)
 
 	args := os.Args[1:]

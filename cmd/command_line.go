@@ -21,7 +21,7 @@ type CommandLine struct {
 	ExtractSelector     string // JSON select expression to extract zero or more values from response, optional
 	ExtractSelectorJson string // JSON select expression to extract zero or more values from response, extracted values are displayed using JSON encoding, optional
 	ExtractHeader       string // Name of header to extract from response, optional
-	Dump                bool   // Whether to dump raw HTTP request and response to stdout
+	Dump                string // Whether to dump raw HTTP request and response to stdout (values are empty string - don't dump, "debug" or "json")
 	Pretty              bool   // Whether to display response body or extract values using pretty printer
 	ShowHelp            bool   // Whether to show help for action flags
 }
