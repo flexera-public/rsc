@@ -9,9 +9,8 @@ import (
 	"github.com/rightscale/rsc/cmd"
 	"gopkg.in/alecthomas/kingpin.v1"
 
-	// phoney references to make Godep pull these in for the code generators
+	// phoney reference to make Godep pull this in for the code generators
 	_ "bitbucket.org/pkg/inflect"
-	_ "github.com/kr/text"
 )
 
 // Command line client entry point.

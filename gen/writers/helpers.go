@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kr/text"
 	"github.com/rightscale/rsc/gen"
+	"github.com/rightscale/rsc/gen/writers/text"
 )
 
 // Produce line comments by concatenating given strings and producing 80 characters long lines

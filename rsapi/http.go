@@ -65,12 +65,12 @@ func (a *Api) LoadResponse(resp *http.Response) (interface{}, error) {
 	var respBody interface{}
 	jsonResp, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
+		return nil, fmt.Errorf("Failed to read response (%s)", err)
 	}
 	if len(jsonResp) > 0 {
 		err = json.Unmarshal(jsonResp, &respBody)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to load response (%s)", err.Error())
+			return nil, fmt.Errorf("Failed to load response (%s)", err)
 		}
 	}
 	// Special case for "Location" header, assume that if there is a location there is no body

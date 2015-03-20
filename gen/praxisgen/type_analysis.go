@@ -92,7 +92,7 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		}
 		elemType, err := a.AnalyzeAttribute(n+"Member", query+"[]", member)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to compute type of \"member_attribute\": %s", err.Error())
+			return nil, fmt.Errorf("Failed to compute type of \"member_attribute\": %s", err)
 		}
 		dataType = &gen.ArrayDataType{elemType}
 	case "Struct":
@@ -164,7 +164,7 @@ func (a *ApiAnalyzer) CreateOrGetType(query string, attributes map[string]interf
 		at := attributes[an]
 		att, err := a.AnalyzeAttribute(an, fmt.Sprintf("%s[%s]", query, an), at.(map[string]interface{}))
 		if err != nil {
-			return nil, fmt.Errorf("Failed to compute type of attribute %s: %s", an, err.Error())
+			return nil, fmt.Errorf("Failed to compute type of attribute %s: %s", an, err)
 		}
 		obj.Fields[idx] = att
 	}

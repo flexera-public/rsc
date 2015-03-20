@@ -24,7 +24,7 @@ func NewDisplayer(resp *http.Response) (*Displayer, error) {
 	defer resp.Body.Close()
 	js, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to read response (%s)", err.Error())
+		return nil, fmt.Errorf("Failed to read response (%s)", err)
 	}
 	disp := Displayer{response: resp, body: string(js)}
 	if len(js) > 2 {
@@ -58,8 +58,7 @@ func (d *Displayer) ApplySingleExtract(extract string) error {
 func (d *Displayer) ApplyExtract(selector string, json bool) error {
 	parser, err := jsonselect.CreateParserFromString(d.body)
 	if err != nil {
-		return fmt.Errorf("Failed to load response JSON: %s, JSON was:\n%s",
-			err.Error(), d.body)
+		return fmt.Errorf("Failed to load response JSON: %s, JSON was:\n%s", err, d.body)
 	}
 	outputs, err := parser.GetValues(selector)
 	if !json {
@@ -73,7 +72,7 @@ func (d *Displayer) ApplyExtract(selector string, json bool) error {
 	}
 	if err != nil {
 		return fmt.Errorf("Failed to apply JSON selector '%s' to response: %s, JSON was:\n%s",
-			selector, err.Error(), d.body)
+			selector, err, d.body)
 	}
 	return nil
 }

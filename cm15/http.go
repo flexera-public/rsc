@@ -134,7 +134,7 @@ func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsap
 	if payload != nil {
 		var err error
 		if jsonBytes, err = json.Marshal(payload); err != nil {
-			return nil, fmt.Errorf("Failed to serialize request body - %s", err.Error())
+			return nil, fmt.Errorf("Failed to serialize request body - %s", err)
 		}
 	}
 	req, err := http.NewRequest(verb, u.String(), bytes.NewBuffer(jsonBytes))
