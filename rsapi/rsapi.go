@@ -54,9 +54,9 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 	if client == nil {
 		client = http.DefaultClient
 	}
-	host, err := auth.ResolveHost(host,accountId)
+	host, err := auth.ResolveHost(host, accountId)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	return &Api{
 		AccountId: accountId,

@@ -16,16 +16,17 @@ type Authenticator interface {
 	ResolveHost(host string, accountId int) (string, error)
 }
 
+var omitHeaders map[string]bool = map[string]bool{
+	"Content-Type":   true,
+	"Content-Length": true,
+}
+
 func resolveHost(authReq *http.Request, host string, accountId int) (string, error) {
 	redirectHost := host
 	client := http.Client{
 		// Pretty much a direct copy/paste from;
 		// https://github.com/rightscale/go-lib/blob/42736168b5205993699ecc52391c84fa3f8520d2/net/clients/httpClient.go#L345-L375
 		CheckRedirect: func(nextRequest *http.Request, via []*http.Request) error {
-			omitHeaders := map[string]bool {
-				"Content-Type": true,
-				"Content-Length": true,
-			}
 			viaCount := len(via)
 			// Just go with the standard redirect count
 			maxRedirects := 10
@@ -68,6 +69,7 @@ type LoginAuthenticator struct {
 	Client    HttpClient
 }
 
+// Add username/password authorization cookies to the *http.Request
 func (a *LoginAuthenticator) Sign(r *http.Request, host string, accountId int) error {
 	if err := a.Refresh(host, accountId); err != nil {
 		return err
@@ -78,24 +80,10 @@ func (a *LoginAuthenticator) Sign(r *http.Request, host string, accountId int) e
 	return nil
 }
 
-// Return a new *http.Request with the specified host, and username/password
-func (a *LoginAuthenticator) newLoginRequest(host string, accountId int) (*http.Request, error) {
-	jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
-		a.Username, a.Password, accountId)
-	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/sessions", host),
-		bytes.NewBufferString(jsonStr))
-	if err != nil {
-		return authReq, fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
-	}
-	authReq.Header.Set("X-API-Version", "1.5")
-	authReq.Header.Set("Content-Type", "application/json")
-	return authReq,nil
-}
-
 // Make sure global session cookie is up-to-date
 func (a *LoginAuthenticator) Refresh(host string, accountId int) error {
 	if time.Now().After(a.RefreshAt) {
-		authReq, authErr := a.newLoginRequest(host,accountId)
+		authReq, authErr := a.newLoginRequest(host, accountId)
 		if authErr != nil {
 			return authErr
 		}
@@ -117,11 +105,25 @@ func (a *LoginAuthenticator) Refresh(host string, accountId int) error {
 
 // To be called from rsapi.Api to verify credentials, and (re)set host if redirected
 func (a *LoginAuthenticator) ResolveHost(host string, accountId int) (string, error) {
-	authReq, authErr := a.newLoginRequest(host,accountId)
+	authReq, authErr := a.newLoginRequest(host, accountId)
 	if authErr != nil {
 		return host, authErr
 	}
-	return resolveHost(authReq,host,accountId)
+	return resolveHost(authReq, host, accountId)
+}
+
+// Return a new *http.Request with the specified host, and username/password
+func (a *LoginAuthenticator) newLoginRequest(host string, accountId int) (*http.Request, error) {
+	jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
+		a.Username, a.Password, accountId)
+	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/sessions", host),
+		bytes.NewBufferString(jsonStr))
+	if err != nil {
+		return authReq, fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
+	}
+	authReq.Header.Set("X-API-Version", "1.5")
+	authReq.Header.Set("Content-Type", "application/json")
+	return authReq, nil
 }
 
 // OAuth authenticator uses the user oauth refresh token
@@ -132,7 +134,7 @@ type OAuthAuthenticator struct {
 	Client       HttpClient
 }
 
-// Account authenticator uses RS oauth
+// Add OAuth bearer header to the *http.Request
 func (a *OAuthAuthenticator) Sign(r *http.Request, host string, accountId int) error {
 	if err := a.Refresh(host); err != nil {
 		return err
@@ -140,18 +142,6 @@ func (a *OAuthAuthenticator) Sign(r *http.Request, host string, accountId int) e
 	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
 
 	return nil
-}
-
-// Return a new *http.Request with the specified host, and oauth refresh token
-func (a *OAuthAuthenticator) newLoginRequest(host string) (*http.Request, error) {
-	jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken)
-	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", host), bytes.NewBufferString(jsonStr))
-	if err != nil {
-		return nil, fmt.Errorf("Authentication failed (failed to build request): %s", err)
-	}
-	authReq.Header.Set("X-API-Version", "1.5")
-	authReq.Header.Set("Content-Type", "application/json")
-	return authReq, nil
 }
 
 // Make sure access token is up-to-date
@@ -204,7 +194,19 @@ func (a *OAuthAuthenticator) ResolveHost(host string, accountId int) (string, er
 	if authErr != nil {
 		return host, authErr
 	}
-	return resolveHost(authReq,host,accountId)
+	return resolveHost(authReq, host, accountId)
+}
+
+// Return a new *http.Request with the specified host, and oauth refresh token
+func (a *OAuthAuthenticator) newLoginRequest(host string) (*http.Request, error) {
+	jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken)
+	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", host), bytes.NewBufferString(jsonStr))
+	if err != nil {
+		return nil, fmt.Errorf("Authentication failed (failed to build request): %s", err)
+	}
+	authReq.Header.Set("X-API-Version", "1.5")
+	authReq.Header.Set("Content-Type", "application/json")
+	return authReq, nil
 }
 
 // RightLink 10 authenticator
@@ -260,7 +262,7 @@ func (a *SSAuthenticator) Sign(r *http.Request, host string, accountId int) erro
 // will already have occurred since the rsapi.Api for the core has already been
 // initialized and (if necessary) redirected.
 func (a *SSAuthenticator) ResolveHost(host string, accountId int) (string, error) {
-	return ssHost(host),nil
+	return ssHost(host), nil
 }
 
 // Return Self-service endpoint from login endpoint
