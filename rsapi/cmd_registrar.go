@@ -2,6 +2,7 @@ package rsapi
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/rightscale/rsc/metadata"
@@ -43,6 +44,7 @@ func (r *Registrar) RegisterActionCommands(apiName string, res map[string]*metad
 			}
 		}
 	}
+	sort.Strings(actionNames)
 	for _, action := range actionNames {
 		if _, ok := cmds[fmt.Sprintf("%s %s", r.ApiCmd.FullCommand(), action)]; ok {
 			continue // Already registered - can happen with SS where multiple APIs are registered under the same command
@@ -69,7 +71,7 @@ func (r *Registrar) RegisterActionCommands(apiName string, res map[string]*metad
 				description = "Create new resource."
 			case "update":
 				description = "Update existing resource."
-			case "delete":
+			case "destroy":
 				description = "Destroy a single resource."
 			default:
 				if len(resources) > 1 {
