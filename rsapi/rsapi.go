@@ -1,10 +1,11 @@
 package rsapi
 
 import (
+	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -72,13 +73,16 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 // auth and configure the host. The client behaves identically to the client returned by New in
 // all other regards.
 func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
-	rllConfig, err := ioutil.ReadFile(RllSecret)
+	rllConfig, err := os.Open(RllSecret)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
+	defer rllConfig.Close()
 	var port string
 	var secret string
-	for _, line := range strings.Split(string(rllConfig), "\n") {
+	scanner := bufio.NewScanner(rllConfig)
+	for scanner.Scan() {
+		line := scanner.Text()
 		elems := strings.Split(line, "=")
 		if len(elems) != 2 {
 			return nil, fmt.Errorf("Invalid RLL configuration line '%s'", line)
@@ -92,6 +96,9 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 		case "RS_RLL_SECRET":
 			secret = elems[1]
 		}
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
 	auth := RL10Authenticator{secret}
 	host := "localhost:" + port
