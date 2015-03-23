@@ -15,6 +15,11 @@ import (
 
 // Log request, dump its content if required then make request and log response and dump it.
 func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
+	if a.Unsecure {
+		req.URL.Scheme = "http"
+	} else {
+		req.URL.Scheme = "https"
+	}
 	var id string
 	var startedAt time.Time
 	if a.Logger != nil {

@@ -21,6 +21,7 @@ type Api struct {
 	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
 	Host                  string        // API host, e.g. "us-3.rightscale.com"
 	Client                HttpClient    // Underlying http client
+	Unsecure              bool          // Whether HTTP should be used instead of HTTPS (used by RL10 proxied requests)
 	DumpRequestResponse   Format        // Whether to dump HTTP requests and responses to STDOUT, and if so in which format
 	FetchLocationResource bool          // Whether to fetch resource pointed by Location header
 	Metadata              ApiMetadata   // Generated API metadata
@@ -95,10 +96,11 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 	auth := RL10Authenticator{secret}
 	host := "localhost:" + port
 	return &Api{
-		Auth:   &auth,
-		Logger: logger,
-		Host:   host,
-		Client: client,
+		Auth:     &auth,
+		Logger:   logger,
+		Host:     host,
+		Client:   client,
+		Unsecure: true,
 	}, nil
 }
 

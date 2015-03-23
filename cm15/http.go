@@ -106,9 +106,8 @@ func (a *Api) Delete(uri string) error {
 // Helper function that signs, makes and logs HTTP request
 func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
 	u := url.URL{
-		Scheme: "https",
-		Host:   a.Host,
-		Path:   uri,
+		Host: a.Host,
+		Path: uri,
 	}
 	if params != nil {
 		values := u.Query()
