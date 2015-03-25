@@ -1921,7 +1921,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "value",
 						Description: `The value to set for this UserPreference`,
-						Type:        "string",
+						Type:        "interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1947,7 +1947,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "value",
 						Description: `The value to set for this UserPreference`,
-						Type:        "string",
+						Type:        "interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1978,7 +1978,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "value",
 						Description: `The value to set for this UserPreference`,
-						Type:        "string",
+						Type:        "interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1996,7 +1996,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "value",
 						Description: `The value to set for this UserPreference`,
-						Type:        "string",
+						Type:        "interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,

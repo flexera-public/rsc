@@ -1114,14 +1114,14 @@ type AvailableOperationsParametersUiStruct struct {
 }
 
 type AvailableOperationsParametersValidationStruct struct {
-	AllowedPattern        string   `json:"allowed_pattern,omitempty"`
-	AllowedValues         []string `json:"allowed_values,omitempty"`
-	ConstraintDescription string   `json:"constraint_description,omitempty"`
-	MaxLength             int      `json:"max_length,omitempty"`
-	MaxValue              int      `json:"max_value,omitempty"`
-	MinLength             int      `json:"min_length,omitempty"`
-	MinValue              int      `json:"min_value,omitempty"`
-	NoEcho                bool     `json:"no_echo,omitempty"`
+	AllowedPattern        string        `json:"allowed_pattern,omitempty"`
+	AllowedValues         []interface{} `json:"allowed_values,omitempty"`
+	ConstraintDescription string        `json:"constraint_description,omitempty"`
+	MaxLength             int           `json:"max_length,omitempty"`
+	MaxValue              int           `json:"max_value,omitempty"`
+	MinLength             int           `json:"min_length,omitempty"`
+	MinValue              int           `json:"min_value,omitempty"`
+	NoEcho                bool          `json:"no_echo,omitempty"`
 }
 
 type CompiledCAT struct {
@@ -1142,9 +1142,9 @@ type CompiledCAT struct {
 }
 
 type ConfigurationOption struct {
-	Name  string `json:"name,omitempty"`
-	Type_ string `json:"type,omitempty"`
-	Value string `json:"value,omitempty"`
+	Name  string      `json:"name,omitempty"`
+	Type_ string      `json:"type,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 type CostStruct struct {
@@ -1241,8 +1241,8 @@ type LatestNotificationsTimestampsStruct struct {
 }
 
 type LaunchedFrom struct {
-	Type_ string `json:"type,omitempty"`
-	Value string `json:"value,omitempty"`
+	Type_ string      `json:"type,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 type Namespace struct {
@@ -1325,19 +1325,19 @@ type OperationStruct struct {
 }
 
 type Output struct {
-	Category    string `json:"category,omitempty"`
-	Description string `json:"description,omitempty"`
-	Index       int    `json:"index,omitempty"`
-	Label       string `json:"label,omitempty"`
-	Name        string `json:"name,omitempty"`
-	Value       string `json:"value,omitempty"`
+	Category    string      `json:"category,omitempty"`
+	Description string      `json:"description,omitempty"`
+	Index       int         `json:"index,omitempty"`
+	Label       string      `json:"label,omitempty"`
+	Name        string      `json:"name,omitempty"`
+	Value       interface{} `json:"value,omitempty"`
 }
 
 type Parameter struct {
-	Default     string                                         `json:"default,omitempty"`
+	Default     interface{}                                    `json:"default,omitempty"`
 	Description string                                         `json:"description,omitempty"`
 	Name        string                                         `json:"name,omitempty"`
-	Operations  []string                                       `json:"operations,omitempty"`
+	Operations  []interface{}                                  `json:"operations,omitempty"`
 	Type_       string                                         `json:"type,omitempty"`
 	Ui          *AvailableOperationsParametersUiStruct         `json:"ui,omitempty"`
 	Validation  *AvailableOperationsParametersValidationStruct `json:"validation,omitempty"`

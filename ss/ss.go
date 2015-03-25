@@ -2,6 +2,7 @@ package ss
 
 import (
 	"path"
+	"strings"
 	"time"
 
 	"github.com/rightscale/rsc/cmd"
@@ -31,6 +32,17 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	fiveMnAgo := time.Now().Add(-time.Duration(5) * time.Minute)
 	api.Auth = &rsapi.SSAuthenticator{api.Auth, api.AccountId, fiveMnAgo, api.Client}
 	return &Api{api}, nil
+}
+
+// Return Self-service endpoint from login endpoint
+// The following isn't great but seems better than having to enter by hand
+func HostFromLogin(host string) string {
+	urlElems := strings.Split(host, ".")
+	hostPrefix := urlElems[0]
+	elems := strings.Split(hostPrefix, "-")
+	elems[len(elems)-2] = "selfservice"
+	ssLoginHostPrefix := strings.Join(elems, "-")
+	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
 }
 
 // Whether we've already adjusted the action path patterns in the SS APIs generated metadata

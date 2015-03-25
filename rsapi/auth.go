@@ -241,7 +241,7 @@ func (a *SSAuthenticator) Sign(r *http.Request, host string, accountId int) erro
 	if time.Now().After(refreshAt) {
 		authReq, err := http.NewRequest("GET",
 			fmt.Sprintf("https://%s/api/catalog/new_session?account_id=%d",
-				ssHost(host), accountId), nil)
+				SSHostFromLogin(host), accountId), nil)
 		if err != nil {
 			return err
 		}
@@ -253,7 +253,7 @@ func (a *SSAuthenticator) Sign(r *http.Request, host string, accountId int) erro
 		}
 	}
 	a.CoreAuth.Sign(r, host, accountId)
-	r.Host = ssHost(host)
+	r.Host = SSHostFromLogin(host)
 
 	return nil
 }
@@ -262,12 +262,12 @@ func (a *SSAuthenticator) Sign(r *http.Request, host string, accountId int) erro
 // will already have occurred since the rsapi.Api for the core has already been
 // initialized and (if necessary) redirected.
 func (a *SSAuthenticator) ResolveHost(host string, accountId int) (string, error) {
-	return ssHost(host), nil
+	return SSHostFromLogin(host), nil
 }
 
 // Return Self-service endpoint from login endpoint
 // The following isn't great but seems better than having to enter by hand
-func ssHost(host string) string {
+func SSHostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")
 	hostPrefix := urlElems[0]
 	elems := strings.Split(hostPrefix, "-")

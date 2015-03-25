@@ -821,16 +821,13 @@ func (loc *UserPreferenceLocator) Show(options rsapi.ApiParams) (*UserPreference
 // Create a new UserPreference.
 // Multiple resources can be created at once with a multipart request.
 // Values are validated with the corresponding UserPreferenceInfo.
-func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId string, value string) (*UserPreferenceLocator, error) {
+func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId string, value interface{}) (*UserPreferenceLocator, error) {
 	var res *UserPreferenceLocator
 	if userId == "" {
 		return res, fmt.Errorf("userId is required")
 	}
 	if userPreferenceInfoId == "" {
 		return res, fmt.Errorf("userPreferenceInfoId is required")
-	}
-	if value == "" {
-		return res, fmt.Errorf("value is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
@@ -859,10 +856,7 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 // Update the value of a UserPreference.
 // Multiple values may be updated using a multipart request.
 // Values are validated with the corresponding UserPreferenceInfo.
-func (loc *UserPreferenceLocator) Update(value string, options rsapi.ApiParams) error {
-	if value == "" {
-		return fmt.Errorf("value is required")
-	}
+func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{
@@ -1003,9 +997,9 @@ type CompiledCAT struct {
 }
 
 type ConfigurationOption struct {
-	Name  string `json:"name,omitempty"`
-	Type_ string `json:"type,omitempty"`
-	Value string `json:"value,omitempty"`
+	Name  string      `json:"name,omitempty"`
+	Type_ string      `json:"type,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 }
 
 type Namespace struct {
@@ -1030,10 +1024,10 @@ type NamespaceType struct {
 }
 
 type Parameter struct {
-	Default     string                      `json:"default,omitempty"`
+	Default     interface{}                 `json:"default,omitempty"`
 	Description string                      `json:"description,omitempty"`
 	Name        string                      `json:"name,omitempty"`
-	Operations  []string                    `json:"operations,omitempty"`
+	Operations  []interface{}               `json:"operations,omitempty"`
 	Type_       string                      `json:"type,omitempty"`
 	Ui          *ParametersUiStruct         `json:"ui,omitempty"`
 	Validation  *ParametersValidationStruct `json:"validation,omitempty"`
@@ -1046,14 +1040,14 @@ type ParametersUiStruct struct {
 }
 
 type ParametersValidationStruct struct {
-	AllowedPattern        string   `json:"allowed_pattern,omitempty"`
-	AllowedValues         []string `json:"allowed_values,omitempty"`
-	ConstraintDescription string   `json:"constraint_description,omitempty"`
-	MaxLength             int      `json:"max_length,omitempty"`
-	MaxValue              int      `json:"max_value,omitempty"`
-	MinLength             int      `json:"min_length,omitempty"`
-	MinValue              int      `json:"min_value,omitempty"`
-	NoEcho                bool     `json:"no_echo,omitempty"`
+	AllowedPattern        string        `json:"allowed_pattern,omitempty"`
+	AllowedValues         []interface{} `json:"allowed_values,omitempty"`
+	ConstraintDescription string        `json:"constraint_description,omitempty"`
+	MaxLength             int           `json:"max_length,omitempty"`
+	MaxValue              int           `json:"max_value,omitempty"`
+	MinLength             int           `json:"min_length,omitempty"`
+	MinValue              int           `json:"min_value,omitempty"`
+	NoEcho                bool          `json:"no_echo,omitempty"`
 }
 
 type Recurrence struct {

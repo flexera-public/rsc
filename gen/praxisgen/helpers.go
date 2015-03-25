@@ -18,7 +18,7 @@ var (
 	blankRegexp = regexp.MustCompile(`^\s*$`)
 
 	// List of praxis built-in types for which there is no "type" member in the corresponding JSON
-	BuiltInTypes = []string{"RsId", "IP", "QueryFilter", "Href", "Tag", "CSV", "Object"}
+	BuiltInTypes = []string{"RsId", "IP", "QueryFilter", "Href", "Tag", "CSV"}
 )
 
 // Produce go type name from given ruby type name

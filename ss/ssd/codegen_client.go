@@ -550,10 +550,10 @@ type FileUpload struct {
 }
 
 type Parameter struct {
-	Default     string                      `json:"default,omitempty"`
+	Default     interface{}                 `json:"default,omitempty"`
 	Description string                      `json:"description,omitempty"`
 	Name        string                      `json:"name,omitempty"`
-	Operations  []string                    `json:"operations,omitempty"`
+	Operations  []interface{}               `json:"operations,omitempty"`
 	Type_       string                      `json:"type,omitempty"`
 	Ui          *ParametersUiStruct         `json:"ui,omitempty"`
 	Validation  *ParametersValidationStruct `json:"validation,omitempty"`
@@ -566,14 +566,14 @@ type ParametersUiStruct struct {
 }
 
 type ParametersValidationStruct struct {
-	AllowedPattern        string   `json:"allowed_pattern,omitempty"`
-	AllowedValues         []string `json:"allowed_values,omitempty"`
-	ConstraintDescription string   `json:"constraint_description,omitempty"`
-	MaxLength             int      `json:"max_length,omitempty"`
-	MaxValue              int      `json:"max_value,omitempty"`
-	MinLength             int      `json:"min_length,omitempty"`
-	MinValue              int      `json:"min_value,omitempty"`
-	NoEcho                bool     `json:"no_echo,omitempty"`
+	AllowedPattern        string        `json:"allowed_pattern,omitempty"`
+	AllowedValues         []interface{} `json:"allowed_values,omitempty"`
+	ConstraintDescription string        `json:"constraint_description,omitempty"`
+	MaxLength             int           `json:"max_length,omitempty"`
+	MaxValue              int           `json:"max_value,omitempty"`
+	MinLength             int           `json:"min_length,omitempty"`
+	MinValue              int           `json:"min_value,omitempty"`
+	NoEcho                bool          `json:"no_echo,omitempty"`
 }
 
 type Recurrence struct {
