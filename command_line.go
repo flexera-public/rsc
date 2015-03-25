@@ -77,9 +77,25 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 		}
 	}
 
-	// 4. Set command and we're done
+	// 4. Validate we have everything we need
+	validateCommandLine(&cmdLine)
+
+	// 5. Set command and we're done
 	cmdLine.Command = cmd
 	return &cmdLine, nil
+}
+
+// Make sure all the required information is there
+func validateCommandLine(cmd *cmd.CommandLine) {
+	if cmd.Account == 0 {
+		kingpin.Fatalf("missing --account option")
+	}
+	if cmd.Host == "" {
+		kingpin.Fatalf("missing --host option")
+	}
+	if cmd.Password == "" && cmd.Token == "" && !cmd.RL10 {
+		kingpin.Fatalf("missing login info, use --email and --password or use --key or --rl10")
+	}
 }
 
 // Update the code below when adding new clients. This is the only place that needs to be changed.

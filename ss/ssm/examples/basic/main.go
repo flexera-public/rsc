@@ -1,6 +1,6 @@
-// This basic example illustrates how to setup a CM 1.5 client to make a simple
+// This basic example illustrates how to setup a Self-Service client to make a simple
 // API call. The reference for the API can be found at
-// http://reference.rightscale.com/api1.5/index.html.
+// https://s3.amazonaws.com/rs_api_docs/selfservice/manager/index.html#/
 package main
 
 import (
@@ -48,7 +48,7 @@ func main() {
 
 	// 3. Make execution index call using expanded view
 	l := client.ExecutionLocator(fmt.Sprintf("/projects/%d/executions", *account))
-	execs, err := l.Index(rsapi.ApiParams{"view": "expanded"})
+	execs, err := l.Index(rsapi.ApiParams{})
 	if err != nil {
 		fail("failed to list executions: %s", err)
 	}
