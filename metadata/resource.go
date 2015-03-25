@@ -3,6 +3,7 @@ package metadata
 import (
 	"fmt"
 	"sort"
+	"strings"
 )
 
 // Resource command
@@ -16,13 +17,10 @@ type Resource struct {
 // make it up. It does that by matching the href against all the resource action path patterns
 // and finding the longest one that matches.
 func (r *Resource) ExtractVariables(href string) ([]*PathVariable, error) {
-	matches := []*PathPattern{}
-	for _, action := range r.Actions {
-		for _, pattern := range action.PathPatterns {
-			if pattern.Regexp.MatchString(href) {
-				matches = append(matches, pattern)
-			}
-		}
+	matches := r.findMatches(href)
+	if len(matches) == 0 && !strings.HasPrefix("/", href) {
+		href = "/" + href
+		matches = r.findMatches(href)
 	}
 	if len(matches) == 0 {
 		return nil, fmt.Errorf("Href does not match any action path of resource %s", r.Name)
@@ -45,4 +43,27 @@ func (r *Resource) ExtractVariables(href string) ([]*PathVariable, error) {
 
 	}
 	return variables, nil
+}
+
+// Retrieve action with given name, returns nil if none is found.
+func (r *Resource) GetAction(name string) *Action {
+	for _, a := range r.Actions {
+		if a.Name == name {
+			return a
+		}
+	}
+	return nil
+}
+
+// Find paths that match given href
+func (r *Resource) findMatches(href string) []*PathPattern {
+	var matches []*PathPattern
+	for _, action := range r.Actions {
+		for _, pattern := range action.PathPatterns {
+			if pattern.Regexp.MatchString(href) {
+				matches = append(matches, pattern)
+			}
+		}
+	}
+	return matches
 }

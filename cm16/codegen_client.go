@@ -97,7 +97,7 @@ func (loc *AccountLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/accounts/:id
 // Currently not implemented.
-func (loc *AccountLocator) Show(id int, options rsapi.ApiParams) error {
+func (loc *AccountLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -168,7 +168,7 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/clouds/:id
 // Currently not implemented.
-func (loc *CloudLocator) Show(id int, options rsapi.ApiParams) error {
+func (loc *CloudLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -243,10 +243,7 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) error {
 // GET /api/datacenters/:id
 // GET /api/clouds/:cloud_id/datacenters/:id
 // Currently not implemented.
-func (loc *DatacenterLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *DatacenterLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -326,13 +323,13 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // GET /api/deployments/:id
 // Show a single Deployment
-func (loc *DeploymentLocator) Show(id int, options rsapi.ApiParams) (*Deployment, error) {
+func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error) {
 	var res *Deployment
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
@@ -354,7 +351,7 @@ func (loc *DeploymentLocator) Show(id int, options rsapi.ApiParams) (*Deployment
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -423,17 +420,14 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) (*Image, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // GET /api/images/:id
 // GET /api/clouds/:cloud_id/images/:id
 // Currently not implemented.
-func (loc *ImageLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *ImageLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -545,17 +539,14 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // GET /api/instances/:id
 // GET /api/clouds/:cloud_id/instances/:id
 // Currently not implemented.
-func (loc *InstanceLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *InstanceLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -634,10 +625,7 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) error {
 // GET /api/instance_types/:id
 // GET /api/clouds/:cloud_id/instance_types/:id
 // Currently not implemented.
-func (loc *InstanceTypeLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -710,10 +698,7 @@ func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
 // GET /api/ip_addresses/:id
 // GET /api/clouds/:cloud_id/ip_addresses/:id
 // Currently not implemented.
-func (loc *IpAddressLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *IpAddressLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -788,10 +773,7 @@ func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) error {
 // GET /api/ip_address_bindings/:id
 // GET /api/clouds/:cloud_id/ip_address_bindings/:id
 // Currently not implemented.
-func (loc *IpAddressBindingLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *IpAddressBindingLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -865,7 +847,7 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/multi_cloud_images/:id
 // Currently not implemented.
-func (loc *MultiCloudImageLocator) Show(id int, options rsapi.ApiParams) error {
+func (loc *MultiCloudImageLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -935,10 +917,7 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/networks/:id
 // Currently not implemented.
-func (loc *NetworkLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *NetworkLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1007,10 +986,7 @@ func (loc *NetworkInterfaceLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/network_interfaces/:id
 // Currently not implemented.
-func (loc *NetworkInterfaceLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *NetworkInterfaceLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1078,10 +1054,7 @@ func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) err
 
 // GET /api/network_interface_attachments/:id
 // Currently not implemented.
-func (loc *NetworkInterfaceAttachmentLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *NetworkInterfaceAttachmentLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1156,10 +1129,7 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) error {
 // GET /api/security_groups/:id
 // GET /api/clouds/:cloud_id/security_groups/:id
 // Currently not implemented.
-func (loc *SecurityGroupLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1246,7 +1216,7 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/servers/:id
 // Currently not implemented.
-func (loc *ServerLocator) Show(id int, options rsapi.ApiParams) error {
+func (loc *ServerLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1329,7 +1299,7 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/server_arrays/:id
 // Currently not implemented.
-func (loc *ServerArrayLocator) Show(id int, options rsapi.ApiParams) error {
+func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1406,7 +1376,7 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/server_templates/:id
 // Currently not implemented.
-func (loc *ServerTemplateLocator) Show(id int, options rsapi.ApiParams) error {
+func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1477,10 +1447,7 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) error {
 // GET /api/ssh_keys/:id
 // GET /api/clouds/:cloud_id/ssh_keys/:id
 // Currently not implemented.
-func (loc *SshKeyLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *SshKeyLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1554,10 +1521,7 @@ func (loc *SubnetLocator) Index(options rsapi.ApiParams) error {
 // GET /api/subnets/:id
 // GET /api/clouds/:cloud_id/subnets/:id
 // Currently not implemented.
-func (loc *SubnetLocator) Show(id string, options rsapi.ApiParams) error {
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *SubnetLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -1735,13 +1699,13 @@ type InstancesLinksDeploymentServerArraysInstanceSummaryStruct struct {
 }
 
 type InstancesTimestampsStruct struct {
-	BootedAt      time.Time `json:"booted_at,omitempty"`
-	CreatedAt     time.Time `json:"created_at,omitempty"`
-	OperationalAt time.Time `json:"operational_at,omitempty"`
-	PendingAt     time.Time `json:"pending_at,omitempty"`
-	StrandedAt    time.Time `json:"stranded_at,omitempty"`
-	TerminatedAt  time.Time `json:"terminated_at,omitempty"`
-	UpdatedAt     time.Time `json:"updated_at,omitempty"`
+	BootedAt      *time.Time `json:"booted_at,omitempty"`
+	CreatedAt     *time.Time `json:"created_at,omitempty"`
+	OperationalAt *time.Time `json:"operational_at,omitempty"`
+	PendingAt     *time.Time `json:"pending_at,omitempty"`
+	StrandedAt    *time.Time `json:"stranded_at,omitempty"`
+	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
+	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 }
 
 type IpAddressBindingLinks struct {
@@ -1875,11 +1839,11 @@ type SubnetLinks struct {
 }
 
 type TimestampsStruct struct {
-	BootedAt      time.Time `json:"booted_at,omitempty"`
-	CreatedAt     time.Time `json:"created_at,omitempty"`
-	OperationalAt time.Time `json:"operational_at,omitempty"`
-	PendingAt     time.Time `json:"pending_at,omitempty"`
-	StrandedAt    time.Time `json:"stranded_at,omitempty"`
-	TerminatedAt  time.Time `json:"terminated_at,omitempty"`
-	UpdatedAt     time.Time `json:"updated_at,omitempty"`
+	BootedAt      *time.Time `json:"booted_at,omitempty"`
+	CreatedAt     *time.Time `json:"created_at,omitempty"`
+	OperationalAt *time.Time `json:"operational_at,omitempty"`
+	PendingAt     *time.Time `json:"pending_at,omitempty"`
+	StrandedAt    *time.Time `json:"stranded_at,omitempty"`
+	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
+	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 }

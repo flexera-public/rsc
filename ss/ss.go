@@ -1,9 +1,8 @@
 package ss
 
 import (
-	"fmt"
-	"log"
-	"net/http"
+	"path"
+	"time"
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
@@ -13,85 +12,65 @@ import (
 	"github.com/rightscale/rsc/ss/ssm"
 )
 
+// Metadata synthetized from all SS APIs metadata
+var GenMetadata map[string]*metadata.Resource
+
 // Self-Service 1.0 common client to all self-service APIs
 type Api struct {
-	*rsapi.Api     // not used to make actual API calls, just to parse command line, TBD: refactor so this is not needed
-	designerClient *ssd.Api
-	catalogClient  *ssc.Api
-	managerClient  *ssm.Api
-}
-
-// Api dispatch function type
-// Used to call proper "Dispatch" method depending on service (ssm vs. ssc vs. ssd)
-type DispatchFunc func(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error)
-
-// New returns a client that uses User oauth authentication.
-// logger and client are optional.
-// host may be blank in which case client attempts to resolve it using auth.
-// If no HTTP client is specified then the default client is used.
-func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logger,
-	client rsapi.HttpClient) (*Api, error) {
-	a, err := rsapi.New(accountId, host, auth, logger, client)
-	if err != nil {
-		return nil, err
-	}
-	d, err := ssd.New(accountId, host, auth, logger, client)
-	if err != nil {
-		return nil, err
-	}
-	c, err := ssc.New(accountId, host, auth, logger, client)
-	if err != nil {
-		return nil, err
-	}
-	m, err := ssm.New(accountId, host, auth, logger, client)
-	if err != nil {
-		return nil, err
-	}
-	api := Api{a, d, c, m}
-	setupMetadata(a, d, c, m)
-
-	return &api, nil
+	*rsapi.Api
 }
 
 // Build client from command line
 func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
-	if cmdLine.RL10 {
-		return nil, fmt.Errorf("RightLink 10 proxy not supported for Self-Service APIs")
-	}
-	a, err := rsapi.FromCommandLine(cmdLine)
+	api, err := rsapi.FromCommandLine(cmdLine)
 	if err != nil {
 		return nil, err
 	}
-	d, err := ssd.FromCommandLine(cmdLine)
-	if err != nil {
-		return nil, err
-	}
-	c, err := ssc.FromCommandLine(cmdLine)
-	if err != nil {
-		return nil, err
-	}
-	m, err := ssm.FromCommandLine(cmdLine)
-	if err != nil {
-		return nil, err
-	}
-	api := Api{a, d, c, m}
-	setupMetadata(a, d, c, m)
-
-	return &api, nil
+	setupMetadata()
+	api.Metadata = GenMetadata
+	fiveMnAgo := time.Now().Add(-time.Duration(5) * time.Minute)
+	api.Auth = &rsapi.SSAuthenticator{api.Auth, api.AccountId, fiveMnAgo, api.Client}
+	return &Api{api}, nil
 }
 
-// Merge all metadata so that Api object has access to all commands and actions for command line
-// parsing.
-func setupMetadata(a *rsapi.Api, d *ssd.Api, c *ssc.Api, m *ssm.Api) {
-	md := map[string]*metadata.Resource{}
-	for n, r := range d.Metadata {
-		md[n] = r
+// Whether we've already adjusted the action path patterns in the SS APIs generated metadata
+var pathFixupDone bool
+
+// Initialize GenMetadata from each SS API generated metadata
+func setupMetadata() {
+	GenMetadata = map[string]*metadata.Resource{}
+	for n, r := range ssd.GenMetadata {
+		GenMetadata[n] = r
+		if pathFixupDone {
+			continue
+		}
+		for _, a := range r.Actions {
+			for _, p := range a.PathPatterns {
+				p.Pattern = path.Join("designer", p.Pattern)
+			}
+		}
 	}
-	for n, r := range c.Metadata {
-		md[n] = r
+	for n, r := range ssc.GenMetadata {
+		GenMetadata[n] = r
+		if pathFixupDone {
+			continue
+		}
+		for _, a := range r.Actions {
+			for _, p := range a.PathPatterns {
+				p.Pattern = path.Join("catalog", p.Pattern)
+			}
+		}
 	}
-	for n, r := range m.Metadata {
-		md[n] = r
+	for n, r := range ssm.GenMetadata {
+		GenMetadata[n] = r
+		if pathFixupDone {
+			continue
+		}
+		for _, a := range r.Actions {
+			for _, p := range a.PathPatterns {
+				p.Pattern = path.Join("manager", p.Pattern)
+			}
+		}
 	}
-	a.Metadata = md
+	pathFixupDone = true
 }

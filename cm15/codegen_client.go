@@ -92,7 +92,7 @@ func (loc *AccountLocator) Show() (*Account, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -184,7 +184,7 @@ func (loc *AccountGroupLocator) Show(options rsapi.ApiParams) (*AccountGroup, er
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -359,7 +359,7 @@ func (loc *AlertLocator) Show(options rsapi.ApiParams) (*Alert, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -522,7 +522,7 @@ func (loc *AlertSpecLocator) Show(options rsapi.ApiParams) (*AlertSpec, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -765,7 +765,7 @@ func (loc *AuditEntryLocator) Show(options rsapi.ApiParams) (*AuditEntry, error)
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -1044,7 +1044,7 @@ func (loc *BackupLocator) Show() (*Backup, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -1259,7 +1259,7 @@ func (loc *CloudLocator) Show(options rsapi.ApiParams) (*Cloud, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -1375,7 +1375,7 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -1560,7 +1560,7 @@ func (loc *CookbookLocator) Show(options rsapi.ApiParams) (*Cookbook, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -1744,7 +1744,7 @@ func (loc *CookbookAttachmentLocator) Show(options rsapi.ApiParams) (*CookbookAt
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -1885,7 +1885,7 @@ func (loc *CredentialLocator) Show(options rsapi.ApiParams) (*Credential, error)
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -2001,7 +2001,7 @@ func (loc *DatacenterLocator) Show(options rsapi.ApiParams) (*Datacenter, error)
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -2201,7 +2201,7 @@ func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error)
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -2373,7 +2373,7 @@ func (loc *IdentityProviderLocator) Show(options rsapi.ApiParams) (*IdentityProv
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -2471,7 +2471,7 @@ func (loc *ImageLocator) Show(options rsapi.ApiParams) (*Image, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -2599,7 +2599,7 @@ func (loc *InputLocator) Index(options rsapi.ApiParams) ([]*Input, error) {
 // (ex: -d inputs[MY_INPUT]="text:foobar").
 // If the old format is used, the input is parsed using 1.0 semantics.
 // If the new format is used, the input is parsed using the new 2.0 semantics.
-func (loc *InputLocator) MultiUpdate(inputs map[string]string) error {
+func (loc *InputLocator) MultiUpdate(inputs map[string]interface{}) error {
 	if len(inputs) == 0 {
 		return fmt.Errorf("inputs is required")
 	}
@@ -2985,7 +2985,7 @@ func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -3218,7 +3218,7 @@ func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, err
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -3337,7 +3337,7 @@ func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) (*InstanceType, er
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -3461,7 +3461,7 @@ func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -3618,7 +3618,7 @@ func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -3780,7 +3780,7 @@ func (loc *MonitoringMetricLocator) Show(options rsapi.ApiParams) (*MonitoringMe
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -3954,7 +3954,7 @@ func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -4099,7 +4099,7 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -4247,7 +4247,7 @@ func (loc *NetworkLocator) Show() (*Network, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -4396,7 +4396,7 @@ func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -4550,7 +4550,7 @@ func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -4715,7 +4715,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Show(options rsapi.ApiParams) (*
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -4993,7 +4993,7 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -5130,7 +5130,7 @@ func (loc *PlacementGroupLocator) Show(options rsapi.ApiParams) (*PlacementGroup
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -5225,7 +5225,7 @@ func (loc *PreferenceLocator) Show() (*Preference, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -5364,7 +5364,7 @@ func (loc *PublicationLocator) Show(options rsapi.ApiParams) (*Publication, erro
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -5426,7 +5426,7 @@ func (loc *PublicationLineageLocator) Show(options rsapi.ApiParams) (*Publicatio
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -5575,7 +5575,7 @@ func (loc *RecurringVolumeAttachmentLocator) Show(options rsapi.ApiParams) (*Rec
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -5871,7 +5871,7 @@ func (loc *RepositoryLocator) Show(options rsapi.ApiParams) (*Repository, error)
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -5995,7 +5995,7 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.ApiParams) (*RepositoryAss
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -6116,7 +6116,7 @@ func (loc *RightScriptLocator) Show() (*RightScript, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -6302,7 +6302,7 @@ func (loc *RouteLocator) Show() (*Route, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -6463,7 +6463,7 @@ func (loc *RouteTableLocator) Show(options rsapi.ApiParams) (*RouteTable, error)
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -6647,7 +6647,7 @@ func (loc *RunnableBindingLocator) Show(options rsapi.ApiParams) (*RunnableBindi
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -6784,7 +6784,7 @@ func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) (*SecurityGroup, 
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -6932,7 +6932,7 @@ func (loc *SecurityGroupRuleLocator) Show(options rsapi.ApiParams) (*SecurityGro
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -7146,7 +7146,7 @@ func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -7451,7 +7451,7 @@ func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) (*ServerArray, erro
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -7769,7 +7769,7 @@ func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) (*ServerTemplate
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -7985,7 +7985,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.ApiParams) (
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -8251,7 +8251,7 @@ func (loc *SshKeyLocator) Show(options rsapi.ApiParams) (*SshKey, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -8382,7 +8382,7 @@ func (loc *SubnetLocator) Show() (*Subnet, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -8641,7 +8641,7 @@ func (loc *TaskLocator) Show(options rsapi.ApiParams) (*Task, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -8770,7 +8770,7 @@ func (loc *UserLocator) Show() (*User, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -8850,7 +8850,7 @@ func (loc *UserDataLocator) Show() (*map[string]string, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -8991,7 +8991,7 @@ func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -9146,7 +9146,7 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.ApiParams) (*VolumeAttach
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -9292,7 +9292,7 @@ func (loc *VolumeSnapshotLocator) Show(options rsapi.ApiParams) (*VolumeSnapshot
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -9386,7 +9386,7 @@ func (loc *VolumeTypeLocator) Show(options rsapi.ApiParams) (*VolumeType, error)
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -9466,9 +9466,9 @@ type ChildAccountParam2 struct {
 }
 
 type CloudAccountParam struct {
-	CloudHref string            `json:"cloud_href,omitempty"`
-	Creds     map[string]string `json:"creds,omitempty"`
-	Token     string            `json:"token,omitempty"`
+	CloudHref string                 `json:"cloud_href,omitempty"`
+	Creds     map[string]interface{} `json:"creds,omitempty"`
+	Token     string                 `json:"token,omitempty"`
 }
 
 type CloudSpecificAttributes struct {
@@ -9558,10 +9558,10 @@ type InstanceParam struct {
 }
 
 type InstanceParam2 struct {
-	Href                string            `json:"href,omitempty"`
-	Inputs              map[string]string `json:"inputs,omitempty"`
-	MultiCloudImageHref string            `json:"multi_cloud_image_href,omitempty"`
-	ServerTemplateHref  string            `json:"server_template_href,omitempty"`
+	Href                string                 `json:"href,omitempty"`
+	Inputs              map[string]interface{} `json:"inputs,omitempty"`
+	MultiCloudImageHref string                 `json:"multi_cloud_image_href,omitempty"`
+	ServerTemplateHref  string                 `json:"server_template_href,omitempty"`
 }
 
 type IpAddressBindingParam struct {
@@ -9627,11 +9627,11 @@ type NetworkOptionGroupAttachmentParam2 struct {
 }
 
 type NetworkOptionGroupParam struct {
-	CloudHref   string            `json:"cloud_href,omitempty"`
-	Description string            `json:"description,omitempty"`
-	Name        string            `json:"name,omitempty"`
-	Options_    map[string]string `json:"options,omitempty"`
-	Type_       string            `json:"type,omitempty"`
+	CloudHref   string                 `json:"cloud_href,omitempty"`
+	Description string                 `json:"description,omitempty"`
+	Name        string                 `json:"name,omitempty"`
+	Options_    map[string]interface{} `json:"options,omitempty"`
+	Type_       string                 `json:"type,omitempty"`
 }
 
 type NetworkOptionGroupParam2 struct {

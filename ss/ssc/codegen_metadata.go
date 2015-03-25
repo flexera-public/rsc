@@ -52,14 +52,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: `Filter by group, so that only AccountPreferences belonging to that group are returned`,
 						Type:        "[]string",
@@ -90,24 +82,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "name",
-						Description: `The name of the AccountPreference to retrieve`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -149,14 +124,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "group_name",
 						Description: `The group to place this AccountPreference in. Any string value is accepted - the group does not need to exist`,
 						Type:        "string",
@@ -195,24 +162,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "name",
-						Description: `The name of the AccountPreference to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -242,14 +192,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `An optional list of Application IDs to retrieve. If not specified, all are returned.`,
@@ -284,22 +226,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The Application ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -614,14 +540,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat",
 						Description: `The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.`,
@@ -983,22 +901,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The Application ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat",
 						Description: `The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.`,
@@ -1369,14 +1271,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "compiled_cat",
 						Description: `The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.`,
 						Type:        "*CompiledCAT",
@@ -1455,24 +1349,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The Application ID to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -1497,14 +1374,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `The Application IDs to delete`,
@@ -1546,22 +1415,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The Application ID to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -1588,7 +1441,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_date",
 						Description: `When the CloudApp should be automatically terminated.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1637,22 +1490,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "catalog_id",
-						Description: `The catalog ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The Application ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "description",
 						Description: `The description for the execution. The description of the Application will be used if none is provided.`,
 						Type:        "string",
@@ -1663,7 +1500,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_date",
 						Description: `When the CloudApp should be automatically terminated.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1731,14 +1568,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `Account ID of the target and resource.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "source",
 						Description: `List all notification rules where the target is the current user.`,
 						Type:        "string",
@@ -1805,14 +1634,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `Account ID of the target and resource.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
@@ -1872,22 +1693,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `Account ID of the target and resource.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `Notification rule id`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "min_severity",
 						Description: `The lowest level of notifications for the target to receive.`,
 						Type:        "string",
@@ -1911,24 +1716,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `Account ID of the target and resource.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `Notification rule id`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -1943,24 +1731,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `Account ID of the target and resource.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `Notification rule id`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2001,14 +1772,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `Account ID of the target and resource.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `Notification rule id`,
@@ -2073,14 +1836,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: `Filter by user, so that only UserPreference belonging to that user are returned. Use "me" as a shortcut for the current user ID.`,
 						Type:        "[]string",
@@ -2123,22 +1878,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the UserPreference to retrieve`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -2190,14 +1929,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "user_id",
 						Description: `Administrators can create preferences for other users by providing this value`,
 						Type:        "string",
@@ -2237,7 +1968,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id2",
+						Name:        "id",
 						Description: `In a multipart request, the ID of the UserPreference to update`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
@@ -2255,23 +1986,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "id",
-						Description: `The ID of the UserPreference to update, or "*" for a multipart request`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id2",
 						Description: `In a multipart request, the ID of the UserPreference to update`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
@@ -2301,24 +2016,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the UserPreference to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -2349,14 +2047,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: `Filter by category and/or name`,
 						Type:        "[]string",
@@ -2379,24 +2069,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The account ID`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the UserPreferenceInfo to retrieve`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 		},
 	},

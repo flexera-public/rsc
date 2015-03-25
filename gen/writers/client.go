@@ -22,7 +22,6 @@ func NewClientWriter() (*ClientWriter, error) {
 		"commandLine":       commandLine,
 		"parameters":        parameters,
 		"paramsInitializer": paramsInitializer,
-		"isPointer":         isPointer,
 		"blankCondition":    blankCondition,
 		"stripStar":         stripStar,
 	}
@@ -179,5 +178,5 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, {{if not (isPointer .Return)}}&{{end}}res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err{{else}}return nil{{end}}`

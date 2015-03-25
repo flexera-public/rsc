@@ -9,27 +9,48 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Dispatch request, used by generated code
-func (a *Api) Dispatch(method, actionUrl string, queryParams, payloadParams rsapi.ApiParams) (*http.Response, error) {
-	return a.GetRaw(actionUrl, queryParams)
-}
+// BuildRequest builds a HTTP request from a resource name and href and an action name and
+// parameters.
+// It is intended for generic clients that need to consume APIs in a generic maner.
+// The method builds an HTTP request that can be fed to PerformRequest.
+func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams) (*http.Request, error) {
+	// First lookup metadata
+	res, ok := GenMetadata[resource]
+	if !ok {
+		return nil, fmt.Errorf("No resource with name '%s'", resource)
+	}
+	act := res.GetAction(action)
+	if act == nil {
+		return nil, fmt.Errorf("No action with name '%s' on %s", action, resource)
+	}
 
-// Low-level GET request that loads response JSON into generic object
-func (a *Api) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
-	resp, err := a.GetRaw(uri, params)
+	// Now lookup action request HTTP method, url, params and payload.
+	vars, err := res.ExtractVariables(href)
 	if err != nil {
 		return nil, err
 	}
-	return a.LoadResponse(resp)
-}
-
-// Low-level GET request
-func (a *Api) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
-	return a.makeRequest("GET", uri, params)
+	actionUrl, err := act.Url(vars)
+	if err != nil {
+		return nil, err
+	}
+	queryParams := make(rsapi.ApiParams, len(act.QueryParamNames))
+	for _, n := range act.QueryParamNames {
+		queryParams[n] = params[n]
+	}
+	return a.buildHttpRequest(actionUrl.Path, queryParams)
 }
 
 // Helper function that signs, makes and logs HTTP request
-func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Response, error) {
+func (a *Api) Dispatch(verb, uri string, params, payload rsapi.ApiParams) (*http.Response, error) {
+	req, err := a.buildHttpRequest(uri, params)
+	if err != nil {
+		return nil, err
+	}
+	return a.PerformRequest(req)
+}
+
+// Helper function that puts together and HTTP request from its uri and params.
+func (a *Api) buildHttpRequest(uri string, params rsapi.ApiParams) (*http.Request, error) {
 	u := url.URL{
 		Host: a.Host,
 		Path: uri,
@@ -54,7 +75,7 @@ func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Respo
 		}
 		u.RawQuery = values.Encode()
 	}
-	req, err := http.NewRequest(verb, u.String(), nil)
+	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -62,5 +83,5 @@ func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams) (*http.Respo
 	if a.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
 	}
-	return a.PerformRequest(req)
+	return req, nil
 }

@@ -79,11 +79,8 @@ func (api *Api) AccountPreferenceLocator(href string) *AccountPreferenceLocator 
 
 // GET /accounts/:account_id/account_preferences
 // List the AccountPreferences for this account.
-func (loc *AccountPreferenceLocator) Index(accountId string, options rsapi.ApiParams) ([]*AccountPreference, error) {
+func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountPreference, error) {
 	var res []*AccountPreference
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
@@ -114,14 +111,8 @@ func (loc *AccountPreferenceLocator) Index(accountId string, options rsapi.ApiPa
 
 // GET /accounts/:account_id/account_preferences/:name
 // Get details for a particular AccountPreference
-func (loc *AccountPreferenceLocator) Show(accountId string, name string) (*AccountPreference, error) {
+func (loc *AccountPreferenceLocator) Show() (*AccountPreference, error) {
 	var res *AccountPreference
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
-	if name == "" {
-		return res, fmt.Errorf("name is required")
-	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("AccountPreference", "show")
@@ -137,17 +128,14 @@ func (loc *AccountPreferenceLocator) Show(accountId string, name string) (*Accou
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // POST /accounts/:account_id/account_preferences
 // Create a new AccountPreference or update an existing AccountPreference with the new value
-func (loc *AccountPreferenceLocator) Create(accountId string, groupName string, name string, value string) (*AccountPreferenceLocator, error) {
+func (loc *AccountPreferenceLocator) Create(groupName string, name string, value string) (*AccountPreferenceLocator, error) {
 	var res *AccountPreferenceLocator
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
 	if groupName == "" {
 		return res, fmt.Errorf("groupName is required")
 	}
@@ -182,13 +170,7 @@ func (loc *AccountPreferenceLocator) Create(accountId string, groupName string, 
 
 // DELETE /accounts/:account_id/account_preferences/:name
 // Delete an AccountPreference
-func (loc *AccountPreferenceLocator) Delete(accountId string, name string) error {
-	if accountId == "" {
-		return fmt.Errorf("accountId is required")
-	}
-	if name == "" {
-		return fmt.Errorf("name is required")
-	}
+func (loc *AccountPreferenceLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("AccountPreference", "delete")
@@ -244,11 +226,8 @@ func (api *Api) ApplicationLocator(href string) *ApplicationLocator {
 
 // GET /catalogs/:catalog_id/applications
 // List the Applications available in the specified Catalog.
-func (loc *ApplicationLocator) Index(catalogId string, options rsapi.ApiParams) ([]*Application, error) {
+func (loc *ApplicationLocator) Index(options rsapi.ApiParams) ([]*Application, error) {
 	var res []*Application
-	if catalogId == "" {
-		return res, fmt.Errorf("catalogId is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var idsOpt = options["ids"]
@@ -275,14 +254,8 @@ func (loc *ApplicationLocator) Index(catalogId string, options rsapi.ApiParams) 
 
 // GET /catalogs/:catalog_id/applications/:id
 // Show detailed information about a given Application.
-func (loc *ApplicationLocator) Show(catalogId string, id string, options rsapi.ApiParams) (*Application, error) {
+func (loc *ApplicationLocator) Show(options rsapi.ApiParams) (*Application, error) {
 	var res *Application
-	if catalogId == "" {
-		return res, fmt.Errorf("catalogId is required")
-	}
-	if id == "" {
-		return res, fmt.Errorf("id is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -303,17 +276,14 @@ func (loc *ApplicationLocator) Show(catalogId string, id string, options rsapi.A
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // POST /catalogs/:catalog_id/applications
 // Create a new Application in the Catalog.
-func (loc *ApplicationLocator) Create(catalogId string, compiledCat *CompiledCAT, name string, shortDescription string, options rsapi.ApiParams) (*ApplicationLocator, error) {
+func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, shortDescription string, options rsapi.ApiParams) (*ApplicationLocator, error) {
 	var res *ApplicationLocator
-	if catalogId == "" {
-		return res, fmt.Errorf("catalogId is required")
-	}
 	if compiledCat == nil {
 		return res, fmt.Errorf("compiledCat is required")
 	}
@@ -364,13 +334,7 @@ func (loc *ApplicationLocator) Create(catalogId string, compiledCat *CompiledCAT
 
 // PUT /catalogs/:catalog_id/applications/:id
 // Update the content of an existing Application.
-func (loc *ApplicationLocator) Update(catalogId string, id string, options rsapi.ApiParams) error {
-	if catalogId == "" {
-		return fmt.Errorf("catalogId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *ApplicationLocator) Update(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
@@ -415,10 +379,7 @@ func (loc *ApplicationLocator) Update(catalogId string, id string, options rsapi
 
 // PUT /catalogs/:catalog_id/applications
 // Update the content of multiple Applications.
-func (loc *ApplicationLocator) MultiUpdate(catalogId string, id string, options rsapi.ApiParams) error {
-	if catalogId == "" {
-		return fmt.Errorf("catalogId is required")
-	}
+func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -468,13 +429,7 @@ func (loc *ApplicationLocator) MultiUpdate(catalogId string, id string, options 
 
 // DELETE /catalogs/:catalog_id/applications/:id
 // Delete an Application from the Catalog
-func (loc *ApplicationLocator) Delete(catalogId string, id string) error {
-	if catalogId == "" {
-		return fmt.Errorf("catalogId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *ApplicationLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Application", "delete")
@@ -490,10 +445,7 @@ func (loc *ApplicationLocator) Delete(catalogId string, id string) error {
 
 // DELETE /catalogs/:catalog_id/applications
 // Delete multiple Applications from the Catalog
-func (loc *ApplicationLocator) MultiDelete(catalogId string, ids []string) error {
-	if catalogId == "" {
-		return fmt.Errorf("catalogId is required")
-	}
+func (loc *ApplicationLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
@@ -515,15 +467,9 @@ func (loc *ApplicationLocator) MultiDelete(catalogId string, ids []string) error
 
 // GET /catalogs/:catalog_id/applications/:id/download
 // Download the underlying CAT source of an Application.
-func (loc *ApplicationLocator) Download(apiVersion string, catalogId string, id string) error {
+func (loc *ApplicationLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
 		return fmt.Errorf("apiVersion is required")
-	}
-	if catalogId == "" {
-		return fmt.Errorf("catalogId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -543,13 +489,7 @@ func (loc *ApplicationLocator) Download(apiVersion string, catalogId string, id 
 
 // POST /catalogs/:catalog_id/applications/:id/actions/launch
 // Launches an Application by creating an Execution with ScheduledActions as needed to match the optional Schedule provided.
-func (loc *ApplicationLocator) Launch(catalogId string, id string, options rsapi.ApiParams) error {
-	if catalogId == "" {
-		return fmt.Errorf("catalogId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *ApplicationLocator) Launch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
@@ -622,11 +562,8 @@ func (api *Api) NotificationRuleLocator(href string) *NotificationRuleLocator {
 
 // GET /accounts/:account_id/notification_rules
 // List all notification rules, potentially filtering by a collection of resources.
-func (loc *NotificationRuleLocator) Index(accountId string, source string, options rsapi.ApiParams) ([]*NotificationRule, error) {
+func (loc *NotificationRuleLocator) Index(source string, options rsapi.ApiParams) ([]*NotificationRule, error) {
 	var res []*NotificationRule
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
 	if source == "" {
 		return res, fmt.Errorf("source is required")
 	}
@@ -659,11 +596,8 @@ func (loc *NotificationRuleLocator) Index(accountId string, source string, optio
 // POST /accounts/:account_id/notification_rules
 // Create one notification rule for a specific target and source.
 // The source must be unique in the scope of target and account.
-func (loc *NotificationRuleLocator) Create(accountId string, minSeverity string, source string, target string, options rsapi.ApiParams) (*NotificationRuleLocator, error) {
+func (loc *NotificationRuleLocator) Create(minSeverity string, source string, target string, options rsapi.ApiParams) (*NotificationRuleLocator, error) {
 	var res *NotificationRuleLocator
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
 	if minSeverity == "" {
 		return res, fmt.Errorf("minSeverity is required")
 	}
@@ -703,13 +637,7 @@ func (loc *NotificationRuleLocator) Create(accountId string, minSeverity string,
 
 // PATCH /accounts/:account_id/notification_rules/:id
 // Change min severity of existing rule
-func (loc *NotificationRuleLocator) Patch(accountId string, id string, minSeverity string) error {
-	if accountId == "" {
-		return fmt.Errorf("accountId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
 	if minSeverity == "" {
 		return fmt.Errorf("minSeverity is required")
 	}
@@ -731,14 +659,8 @@ func (loc *NotificationRuleLocator) Patch(accountId string, id string, minSeveri
 
 // GET /accounts/:account_id/notification_rules/:id
 // Show one notification rule.
-func (loc *NotificationRuleLocator) Show(accountId string, id string) (*NotificationRule, error) {
+func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 	var res *NotificationRule
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
-	if id == "" {
-		return res, fmt.Errorf("id is required")
-	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("NotificationRule", "show")
@@ -754,19 +676,13 @@ func (loc *NotificationRuleLocator) Show(accountId string, id string) (*Notifica
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // DELETE /accounts/:account_id/notification_rules/:id
 // Delete one notification rule.
-func (loc *NotificationRuleLocator) Delete(accountId string, id string) error {
-	if accountId == "" {
-		return fmt.Errorf("accountId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *NotificationRuleLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("NotificationRule", "delete")
@@ -782,10 +698,7 @@ func (loc *NotificationRuleLocator) Delete(accountId string, id string) error {
 
 // DELETE /accounts/:account_id/notification_rules
 // Delete one or more notification rules by id or source and target.
-func (loc *NotificationRuleLocator) MultiDelete(accountId string, options rsapi.ApiParams) error {
-	if accountId == "" {
-		return fmt.Errorf("accountId is required")
-	}
+func (loc *NotificationRuleLocator) MultiDelete(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
@@ -846,11 +759,8 @@ func (api *Api) UserPreferenceLocator(href string) *UserPreferenceLocator {
 // List the UserPreference for users in this account.
 // Only administrators and infrastructure users may request the preferences of other users.
 // Users who are not members of the admin role need to specify a filter with their ID in order to retrieve their preferences.
-func (loc *UserPreferenceLocator) Index(accountId string, options rsapi.ApiParams) ([]*UserPreference, error) {
+func (loc *UserPreferenceLocator) Index(options rsapi.ApiParams) ([]*UserPreference, error) {
 	var res []*UserPreference
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
@@ -881,14 +791,8 @@ func (loc *UserPreferenceLocator) Index(accountId string, options rsapi.ApiParam
 
 // GET /accounts/:account_id/user_preferences/:id
 // Get details for a particular UserPreference
-func (loc *UserPreferenceLocator) Show(accountId string, id string, options rsapi.ApiParams) (*UserPreference, error) {
+func (loc *UserPreferenceLocator) Show(options rsapi.ApiParams) (*UserPreference, error) {
 	var res *UserPreference
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
-	if id == "" {
-		return res, fmt.Errorf("id is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -909,7 +813,7 @@ func (loc *UserPreferenceLocator) Show(accountId string, id string, options rsap
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
@@ -917,11 +821,8 @@ func (loc *UserPreferenceLocator) Show(accountId string, id string, options rsap
 // Create a new UserPreference.
 // Multiple resources can be created at once with a multipart request.
 // Values are validated with the corresponding UserPreferenceInfo.
-func (loc *UserPreferenceLocator) Create(accountId string, userId string, userPreferenceInfoId string, value string) (*UserPreferenceLocator, error) {
+func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId string, value string) (*UserPreferenceLocator, error) {
 	var res *UserPreferenceLocator
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
 	if userId == "" {
 		return res, fmt.Errorf("userId is required")
 	}
@@ -958,13 +859,7 @@ func (loc *UserPreferenceLocator) Create(accountId string, userId string, userPr
 // Update the value of a UserPreference.
 // Multiple values may be updated using a multipart request.
 // Values are validated with the corresponding UserPreferenceInfo.
-func (loc *UserPreferenceLocator) Update(accountId string, id string, value string, options rsapi.ApiParams) error {
-	if accountId == "" {
-		return fmt.Errorf("accountId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *UserPreferenceLocator) Update(value string, options rsapi.ApiParams) error {
 	if value == "" {
 		return fmt.Errorf("value is required")
 	}
@@ -990,13 +885,7 @@ func (loc *UserPreferenceLocator) Update(accountId string, id string, value stri
 
 // DELETE /accounts/:account_id/user_preferences/:id
 // Delete a UserPreference
-func (loc *UserPreferenceLocator) Delete(accountId string, id string) error {
-	if accountId == "" {
-		return fmt.Errorf("accountId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *UserPreferenceLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("UserPreference", "delete")
@@ -1045,11 +934,8 @@ func (api *Api) UserPreferenceInfoLocator(href string) *UserPreferenceInfoLocato
 
 // GET /accounts/:account_id/user_preference_infos
 // List the UserPreferenceInfo.
-func (loc *UserPreferenceInfoLocator) Index(accountId string, options rsapi.ApiParams) ([]*UserPreferenceInfo, error) {
+func (loc *UserPreferenceInfoLocator) Index(options rsapi.ApiParams) ([]*UserPreferenceInfo, error) {
 	var res []*UserPreferenceInfo
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
@@ -1076,14 +962,8 @@ func (loc *UserPreferenceInfoLocator) Index(accountId string, options rsapi.ApiP
 
 // GET /accounts/:account_id/user_preference_infos/:id
 // Get details for a particular UserPreferenceInfo
-func (loc *UserPreferenceInfoLocator) Show(accountId string, id string) (*UserPreferenceInfo, error) {
+func (loc *UserPreferenceInfoLocator) Show() (*UserPreferenceInfo, error) {
 	var res *UserPreferenceInfo
-	if accountId == "" {
-		return res, fmt.Errorf("accountId is required")
-	}
-	if id == "" {
-		return res, fmt.Errorf("id is required")
-	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("UserPreferenceInfo", "show")
@@ -1099,27 +979,27 @@ func (loc *UserPreferenceInfoLocator) Show(accountId string, id string) (*UserPr
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 /****** Parameter Data Types ******/
 
 type CompiledCAT struct {
-	Conditions         map[string]string `json:"conditions,omitempty"`
-	Definitions        map[string]string `json:"definitions,omitempty"`
-	LongDescription    string            `json:"long_description,omitempty"`
-	Mappings           map[string]string `json:"mappings,omitempty"`
-	Name               string            `json:"name,omitempty"`
-	Namespaces         []*Namespace      `json:"namespaces,omitempty"`
-	Operations         map[string]string `json:"operations,omitempty"`
-	Outputs            map[string]string `json:"outputs,omitempty"`
-	Parameters         map[string]string `json:"parameters,omitempty"`
-	RequiredParameters []string          `json:"required_parameters,omitempty"`
-	Resources          map[string]string `json:"resources,omitempty"`
-	RsCaVer            int               `json:"rs_ca_ver,omitempty"`
-	ShortDescription   string            `json:"short_description,omitempty"`
-	Source             string            `json:"source,omitempty"`
+	Conditions         map[string]interface{} `json:"conditions,omitempty"`
+	Definitions        map[string]interface{} `json:"definitions,omitempty"`
+	LongDescription    string                 `json:"long_description,omitempty"`
+	Mappings           map[string]interface{} `json:"mappings,omitempty"`
+	Name               string                 `json:"name,omitempty"`
+	Namespaces         []*Namespace           `json:"namespaces,omitempty"`
+	Operations         map[string]interface{} `json:"operations,omitempty"`
+	Outputs            map[string]interface{} `json:"outputs,omitempty"`
+	Parameters         map[string]interface{} `json:"parameters,omitempty"`
+	RequiredParameters []string               `json:"required_parameters,omitempty"`
+	Resources          map[string]interface{} `json:"resources,omitempty"`
+	RsCaVer            int                    `json:"rs_ca_ver,omitempty"`
+	ShortDescription   string                 `json:"short_description,omitempty"`
+	Source             string                 `json:"source,omitempty"`
 }
 
 type ConfigurationOption struct {
@@ -1135,18 +1015,18 @@ type Namespace struct {
 }
 
 type NamespaceService struct {
-	Auth    string            `json:"auth,omitempty"`
-	Headers map[string]string `json:"headers,omitempty"`
-	Host    string            `json:"host,omitempty"`
-	Path    string            `json:"path,omitempty"`
+	Auth    string                 `json:"auth,omitempty"`
+	Headers map[string]interface{} `json:"headers,omitempty"`
+	Host    string                 `json:"host,omitempty"`
+	Path    string                 `json:"path,omitempty"`
 }
 
 type NamespaceType struct {
-	Delete    string            `json:"delete,omitempty"`
-	Fields    map[string]string `json:"fields,omitempty"`
-	Name      string            `json:"name,omitempty"`
-	Path      string            `json:"path,omitempty"`
-	Provision string            `json:"provision,omitempty"`
+	Delete    string                 `json:"delete,omitempty"`
+	Fields    map[string]interface{} `json:"fields,omitempty"`
+	Name      string                 `json:"name,omitempty"`
+	Path      string                 `json:"path,omitempty"`
+	Provision string                 `json:"provision,omitempty"`
 }
 
 type Parameter struct {
@@ -1196,8 +1076,8 @@ type TemplateInfo struct {
 }
 
 type TimestampsStruct struct {
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type User struct {

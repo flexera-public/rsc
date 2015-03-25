@@ -33,16 +33,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -57,24 +48,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Schedule`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -155,14 +129,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "description",
 						Description: `An optional description that will help users understand the purpose of the Schedule`,
@@ -277,22 +243,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Schedule to update`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "description",
 						Description: `An optional description that will help users understand the purpose of the Schedule`,
 						Type:        "string",
@@ -339,24 +289,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Schedule to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -381,14 +314,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `The IDs of the Schedules to delete`,
@@ -428,14 +353,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `An optional list of template IDs to retrieve`,
 						Type:        "[]string",
@@ -469,22 +386,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -552,14 +453,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "source",
 						Description: `Multipart File Upload`,
 						Type:        "*FileUpload",
@@ -625,22 +518,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template to update`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "source",
 						Description: `Multipart File Upload`,
 						Type:        "*FileUpload",
@@ -663,24 +540,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -705,14 +565,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `The IDs of the Template to delete`,
@@ -754,22 +606,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Template to download`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -795,14 +631,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "source",
 						Description: `The source of the CAT as a string`,
@@ -877,14 +705,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The ID of a Template to publish`,
 						Type:        "string",
@@ -957,14 +777,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "collection_id",
-						Description: `The collection ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "id",
 						Description: `The ID of the Template to unpublish`,

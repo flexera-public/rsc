@@ -83,11 +83,6 @@ func paramsInitializer(action *gen.Action, location int, varName string) string 
 	return fmt.Sprintf("\n%s = %s\n%s", varName, paramsDecl, paramsInits)
 }
 
-// Return true if signature contains pointer, false otherwise
-func isPointer(sig string) bool {
-	return strings.HasPrefix(sig, "*")
-}
-
 // Command line used to run tool
 func commandLine() string {
 	return fmt.Sprintf("$ %s %s", os.Args[0], strings.Join(os.Args[1:], " "))

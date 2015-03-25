@@ -67,8 +67,8 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 				} else {
 					queryParamNames = append(queryParamNames, pn)
 					att.Location = gen.QueryParam
+					params = append(params, att)
 				}
-				params = append(params, att)
 			}
 		}
 
@@ -83,12 +83,9 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		}
 
 		// Payload params analysis
-		paramNames := make([]string, len(pathParamNames)+len(queryParamNames))
-		for i, n := range pathParamNames {
-			paramNames[i] = n
-		}
+		paramNames := make([]string, len(queryParamNames))
 		for i, n := range queryParamNames {
-			paramNames[len(pathParamNames)+i] = n
+			paramNames[i] = n
 		}
 		if p, ok := meth["payload"]; ok {
 			as, ok := p.(map[string]interface{})["type"]

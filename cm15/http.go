@@ -8,21 +8,20 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Do is a generic client method and is meant for command line tools and other higher level clients.
-// It accepts a resource href, the name of an action and resource and the action parameters.
-// The method makes the request and returns the raw HTTP response or an error.
-// The LoadResponse method can be used to load the response body if needed.
-func (a *Api) Do(resource, action, href string, params rsapi.ApiParams) (*http.Response, error) {
+// BuildRequest builds a HTTP request from a resource name and href and an action name and
+// parameters.
+// It is intended for generic clients that need to consume APIs in a generic maner.
+// The method builds an HTTP request that can be fed to PerformRequest.
+func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams) (*http.Request, error) {
 	// First lookup metadata
 	res, ok := GenMetadata[resource]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", resource)
 	}
-	var act *metadata.Action
+	act := res.GetAction(action)
 	if act == nil {
 		return nil, fmt.Errorf("No action with name '%s' on %s", action, resource)
 	}
@@ -44,67 +43,28 @@ func (a *Api) Do(resource, action, href string, params rsapi.ApiParams) (*http.R
 	for _, n := range act.QueryParamNames {
 		queryParams[n] = params[n]
 	}
-	return a.Dispatch(actionUrl.HttpMethod, actionUrl.Path, queryParams, payloadParams)
+	return a.buildHttpRequest(actionUrl.HttpMethod, actionUrl.Path, queryParams, payloadParams)
 }
 
-// Dispatch request to appropriate low-level method
-func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error) {
-	switch method {
-	case "GET":
-		return a.GetRaw(actionUrl, params)
-	case "POST":
-		return a.PostRaw(actionUrl, params, payload)
-	case "PUT":
-		return nil, a.Put(actionUrl, params, payload)
-	case "DELETE":
-		return nil, a.Delete(actionUrl)
-	}
-	return nil, fmt.Errorf("Unsupported HTTP method %s", method)
-}
-
-// Low-level GET request that loads response JSON into generic object
-func (a *Api) Get(uri string, params rsapi.ApiParams) (interface{}, error) {
-	resp, err := a.GetRaw(uri, params)
+// Helper function that signs, makes and logs HTTP request.
+// Used by generated client code.
+func (a *Api) Dispatch(verb, uri string, params, payload rsapi.ApiParams) (*http.Response, error) {
+	req, err := a.buildHttpRequest(verb, uri, params, payload)
 	if err != nil {
 		return nil, err
 	}
-	return a.LoadResponse(resp)
-}
-
-// Low-level GET request
-func (a *Api) GetRaw(uri string, params rsapi.ApiParams) (*http.Response, error) {
-	return a.makeRequest("GET", uri, params, nil)
-}
-
-// Low-level POST request that loads response JSON into generic object
-// Any "Location" header present in the HTTP response is returned in a map under the "Location" key.
-func (a *Api) Post(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (interface{}, error) {
-	resp, err := a.PostRaw(uri, params, payload)
-	if err != nil {
-		return nil, err
+	resp, err := a.PerformRequest(req)
+	if a.FetchLocationResource {
+		loc := resp.Header.Get("Location")
+		if loc != "" {
+			resp, err = a.Dispatch("GET", loc, rsapi.ApiParams{}, rsapi.ApiParams{})
+		}
 	}
-	return a.LoadResponse(resp)
+	return resp, err
 }
 
-// Low-level POST request
-func (a *Api) PostRaw(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
-	return a.makeRequest("POST", uri, params, payload)
-}
-
-// Low-level PUT request
-func (a *Api) Put(uri string, params rsapi.ApiParams, payload rsapi.ApiParams) error {
-	_, err := a.makeRequest("PUT", uri, params, payload)
-	return err
-}
-
-// Low-level DELETE request
-func (a *Api) Delete(uri string) error {
-	_, err := a.makeRequest("DELETE", uri, nil, nil)
-	return err
-}
-
-// Helper function that signs, makes and logs HTTP request
-func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Response, error) {
+// Helper function that puts together and HTTP request from its verb, uri and params.
+func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Request, error) {
 	u := url.URL{
 		Host: a.Host,
 		Path: uri,
@@ -145,12 +105,5 @@ func (a *Api) makeRequest(verb, uri string, params rsapi.ApiParams, payload rsap
 	if a.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
 	}
-	resp, err := a.PerformRequest(req)
-	if a.FetchLocationResource {
-		loc := resp.Header.Get("Location")
-		if loc != "" {
-			resp, err = a.makeRequest("GET", loc, rsapi.ApiParams{}, rsapi.ApiParams{})
-		}
-	}
-	return resp, err
+	return req, nil
 }

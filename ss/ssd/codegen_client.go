@@ -80,11 +80,8 @@ func (api *Api) ScheduleLocator(href string) *ScheduleLocator {
 
 // GET /collections/:collection_id/schedules
 // List the schedules available in Designer.
-func (loc *ScheduleLocator) Index(collectionId string) ([]*Schedule, error) {
+func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 	var res []*Schedule
-	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
-	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Schedule", "index")
@@ -106,14 +103,8 @@ func (loc *ScheduleLocator) Index(collectionId string) ([]*Schedule, error) {
 
 // GET /collections/:collection_id/schedules/:id
 // Show detailed information about a given Schedule.
-func (loc *ScheduleLocator) Show(collectionId string, id string) (*Schedule, error) {
+func (loc *ScheduleLocator) Show() (*Schedule, error) {
 	var res *Schedule
-	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
-	}
-	if id == "" {
-		return res, fmt.Errorf("id is required")
-	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Schedule", "show")
@@ -129,17 +120,14 @@ func (loc *ScheduleLocator) Show(collectionId string, id string) (*Schedule, err
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // POST /collections/:collection_id/schedules
 // Create a new Schedule.
-func (loc *ScheduleLocator) Create(collectionId string, name string, startRecurrence *Recurrence, stopRecurrence *Recurrence, options rsapi.ApiParams) (*ScheduleLocator, error) {
+func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, stopRecurrence *Recurrence, options rsapi.ApiParams) (*ScheduleLocator, error) {
 	var res *ScheduleLocator
-	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
-	}
 	if name == "" {
 		return res, fmt.Errorf("name is required")
 	}
@@ -179,13 +167,7 @@ func (loc *ScheduleLocator) Create(collectionId string, name string, startRecurr
 // PATCH /collections/:collection_id/schedules/:id
 // Update one or more attributes of an existing Schedule.
 // Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
-func (loc *ScheduleLocator) Update(collectionId string, id string, options rsapi.ApiParams) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
@@ -219,13 +201,7 @@ func (loc *ScheduleLocator) Update(collectionId string, id string, options rsapi
 // DELETE /collections/:collection_id/schedules/:id
 // Delete a Schedule from the system.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
-func (loc *ScheduleLocator) Delete(collectionId string, id string) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *ScheduleLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Schedule", "delete")
@@ -242,10 +218,7 @@ func (loc *ScheduleLocator) Delete(collectionId string, id string) error {
 // DELETE /collections/:collection_id/schedules
 // Delete multiple Schedules from the system in bulk.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
-func (loc *ScheduleLocator) MultiDelete(collectionId string, ids []string) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
+func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
@@ -311,11 +284,8 @@ func (api *Api) TemplateLocator(href string) *TemplateLocator {
 
 // GET /collections/:collection_id/templates
 // List the templates available in Designer along with some general details.
-func (loc *TemplateLocator) Index(collectionId string, options rsapi.ApiParams) ([]*Template, error) {
+func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) {
 	var res []*Template
-	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var idsOpt = options["ids"]
@@ -342,14 +312,8 @@ func (loc *TemplateLocator) Index(collectionId string, options rsapi.ApiParams) 
 
 // GET /collections/:collection_id/templates/:id
 // Show detailed information about a given Template. Use the views specified below for more information.
-func (loc *TemplateLocator) Show(collectionId string, id string, options rsapi.ApiParams) (*Template, error) {
+func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
 	var res *Template
-	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
-	}
-	if id == "" {
-		return res, fmt.Errorf("id is required")
-	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
 	var viewOpt = options["view"]
@@ -370,17 +334,14 @@ func (loc *TemplateLocator) Show(collectionId string, id string, options rsapi.A
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, res)
+	err = json.Unmarshal(respBody, &res)
 	return res, err
 }
 
 // POST /collections/:collection_id/templates
 // Create a new Template by uploading its content to Designer.
-func (loc *TemplateLocator) Create(collectionId string, source *FileUpload) (*TemplateLocator, error) {
+func (loc *TemplateLocator) Create(source *FileUpload) (*TemplateLocator, error) {
 	var res *TemplateLocator
-	if collectionId == "" {
-		return res, fmt.Errorf("collectionId is required")
-	}
 	if source == nil {
 		return res, fmt.Errorf("source is required")
 	}
@@ -407,13 +368,7 @@ func (loc *TemplateLocator) Create(collectionId string, source *FileUpload) (*Te
 
 // PUT /collections/:collection_id/templates/:id
 // Update the content of an existing Template (a Template with the same "name" value in the CAT).
-func (loc *TemplateLocator) Update(collectionId string, id string, source *FileUpload) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *TemplateLocator) Update(source *FileUpload) error {
 	if source == nil {
 		return fmt.Errorf("source is required")
 	}
@@ -435,13 +390,7 @@ func (loc *TemplateLocator) Update(collectionId string, id string, source *FileU
 
 // DELETE /collections/:collection_id/templates/:id
 // Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
-func (loc *TemplateLocator) Delete(collectionId string, id string) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
-	}
+func (loc *TemplateLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Template", "delete")
@@ -457,10 +406,7 @@ func (loc *TemplateLocator) Delete(collectionId string, id string) error {
 
 // DELETE /collections/:collection_id/templates
 // Delete multiple Templates from the system in bulk. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
-func (loc *TemplateLocator) MultiDelete(collectionId string, ids []string) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
+func (loc *TemplateLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
@@ -482,15 +428,9 @@ func (loc *TemplateLocator) MultiDelete(collectionId string, ids []string) error
 
 // GET /collections/:collection_id/templates/:id/download
 // Download the source of a Template.
-func (loc *TemplateLocator) Download(apiVersion string, collectionId string, id string) error {
+func (loc *TemplateLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
 		return fmt.Errorf("apiVersion is required")
-	}
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
-	if id == "" {
-		return fmt.Errorf("id is required")
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -510,10 +450,7 @@ func (loc *TemplateLocator) Download(apiVersion string, collectionId string, id 
 
 // POST /collections/:collection_id/templates/actions/compile
 // Compile the Template, but don't save it to Designer. Useful for debugging a CAT file while you are still authoring it.
-func (loc *TemplateLocator) Compile(collectionId string, source string) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
+func (loc *TemplateLocator) Compile(source string) error {
 	if source == "" {
 		return fmt.Errorf("source is required")
 	}
@@ -535,10 +472,7 @@ func (loc *TemplateLocator) Compile(collectionId string, source string) error {
 
 // POST /collections/:collection_id/templates/actions/publish
 // Publish the given Template to the Catalog so that users can launch it.
-func (loc *TemplateLocator) Publish(collectionId string, id string, options rsapi.ApiParams) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
+func (loc *TemplateLocator) Publish(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -580,10 +514,7 @@ func (loc *TemplateLocator) Publish(collectionId string, id string, options rsap
 
 // POST /collections/:collection_id/templates/actions/unpublish
 // Remove a publication from the Catalog by specifying its associated Template.
-func (loc *TemplateLocator) Unpublish(collectionId string, id string) error {
-	if collectionId == "" {
-		return fmt.Errorf("collectionId is required")
-	}
+func (loc *TemplateLocator) Unpublish(id string) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
@@ -652,14 +583,14 @@ type Recurrence struct {
 }
 
 type TimestampsStruct struct {
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type TimestampsStruct2 struct {
-	CreatedAt   time.Time `json:"created_at,omitempty"`
-	PublishedAt time.Time `json:"published_at,omitempty"`
-	UpdatedAt   time.Time `json:"updated_at,omitempty"`
+	CreatedAt   *time.Time `json:"created_at,omitempty"`
+	PublishedAt *time.Time `json:"published_at,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }
 
 type User struct {

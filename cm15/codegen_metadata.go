@@ -3315,7 +3315,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "inputs",
 						Description: ``,
-						Type:        "map[string]string",
+						Type:        "map[string]interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -3644,7 +3644,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "inputs",
 						Description: ``,
-						Type:        "map[string]string",
+						Type:        "map[string]interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3764,7 +3764,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "inputs",
 						Description: ``,
-						Type:        "map[string]string",
+						Type:        "map[string]interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3941,7 +3941,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "inputs",
 						Description: ``,
-						Type:        "map[string]string",
+						Type:        "map[string]interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,

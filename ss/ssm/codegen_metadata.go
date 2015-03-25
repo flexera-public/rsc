@@ -77,14 +77,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
 						Type:        "string",
@@ -119,22 +111,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the execution`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -1912,14 +1888,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "application_href",
 						Description: `The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and template_href.`,
 						Type:        "string",
@@ -2024,22 +1992,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `ID of execution to delete`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -2089,14 +2041,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -2130,22 +2074,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the execution`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -2161,24 +2089,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the execution`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2193,24 +2104,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the execution`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2225,24 +2119,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the execution`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2257,24 +2134,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the execution`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2304,14 +2164,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Description: `List of execution IDs to launch`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
 						Mandatory:   true,
 						NonBlank:    false,
 					},
@@ -2348,14 +2200,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -2389,14 +2233,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -2427,14 +2263,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Description: `List of execution IDs to terminate`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
 						Mandatory:   true,
 						NonBlank:    false,
 					},
@@ -2492,14 +2320,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -2515,24 +2335,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The Notification ID to return`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -2612,14 +2415,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
 						Type:        "string",
@@ -2654,22 +2449,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The ID of the Operation to get details for`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -2738,14 +2517,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "execution_id",
 						Description: `The Execution ID on which to run the operation`,
 						Type:        "string",
@@ -2807,14 +2578,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -2830,24 +2593,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledAction.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2881,7 +2627,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the action will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2921,14 +2667,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "action",
 						Description: `The name of the action to be run.`,
 						Type:        "string",
@@ -2947,7 +2685,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the action will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3010,7 +2748,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -3026,22 +2764,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledAction to update.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "force",
 						Description: `Allows modifying 'mandatory' ScheduledActions`,
 						Type:        "bool",
@@ -3052,7 +2774,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -3090,22 +2812,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledAction to delete.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "force",
 						Description: `Allows deleting 'mandatory' ScheduledActions.`,
@@ -3147,22 +2853,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledAction.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "count",
 						Description: `The number of scheduled occurrences to skip. If not provided, the default count is 1.`,
@@ -3217,14 +2907,6 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -3240,24 +2922,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledOperation.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-				},
+				ApiParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -3283,7 +2948,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the operation will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3356,14 +3021,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "execution_id",
 						Description: `Id of the Execuion.`,
 						Type:        "string",
@@ -3374,7 +3031,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the operation will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3445,7 +3102,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -3461,22 +3118,6 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledOperation to update.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "force",
 						Description: `Allows modifying 'mandatory' ScheduledOperations`,
 						Type:        "bool",
@@ -3487,7 +3128,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -3525,22 +3166,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledOperation to delete.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "force",
 						Description: `Allows deleting 'mandatory' ScheduledOperations.`,
@@ -3582,22 +3207,6 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "id",
-						Description: `The id of the ScheduledOperation.`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "project_id",
-						Description: `The project ID (currently the account ID)`,
-						Type:        "string",
-						Location:    metadata.PathParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 					&metadata.ActionParam{
 						Name:        "count",
 						Description: `The number of scheduled occurrences to skip. If not provided, the default count is 1.`,

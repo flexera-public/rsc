@@ -264,11 +264,9 @@ func (a *Api) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 					ivars[i] = interface{}(":" + v)
 				}
 				subPattern := pattern.Pattern
-				subPatternEnd := strings.LastIndex(subPattern, "%s")
-				if subPatternEnd > 0 && subPatternEnd < len(subPattern)-2 {
-					subPattern = subPattern[:subPatternEnd+2]
-				}
 				pat := fmt.Sprintf(subPattern, ivars...)
+				pat = strings.TrimSuffix(pat, "/actions/"+action.Name)
+				pat = strings.TrimSuffix(pat, "/"+action.Name)
 				actions[action.Name] = append(actions[action.Name], [2]string{pat, resName})
 			}
 		}
@@ -349,7 +347,8 @@ func (a *Api) parseResource(cmd, hrefPrefix string, commandValues ActionCommands
 		}
 	}
 	if resource == nil {
-		return nil, nil, fmt.Errorf("Invalid href '%s'. Try --hrefs.", href)
+		return nil, nil, fmt.Errorf("Invalid href '%s'. Try '%s %s actions'.", href,
+			os.Args[0], strings.Split(cmd, " ")[0])
 	}
 	return resource, vars, nil
 }

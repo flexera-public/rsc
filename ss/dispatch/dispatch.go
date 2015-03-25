@@ -30,10 +30,7 @@ type RequestDetails struct {
 
 // Dispatch request to appropriate low-level method
 func Dispatch(details *RequestDetails, client ApiClient) (*http.Response, error) {
-	var u = url.URL{
-		Host: details.Host,
-		Path: details.Url,
-	}
+	var u = url.URL{Host: details.Host, Path: details.Url}
 	var params = details.Params
 	if params != nil {
 		var values = u.Query()

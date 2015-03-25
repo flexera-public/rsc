@@ -1,44 +1,27 @@
 package ss
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
+	"strconv"
 
-	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
-	"github.com/rightscale/rsc/ss/ssc"
-	"github.com/rightscale/rsc/ss/ssd"
-	"github.com/rightscale/rsc/ss/ssm"
 )
 
-// Do is a generic client method and is meant for command line tools and other higher level clients.
-// It accepts the service name (one of "designer", "catalog" or "manager"), a resource href, the
-// name of an action and resource and the action parameters.
-// The method makes the request and returns the raw HTTP response or an error.
-// The LoadResponse method can be used to load the response body if needed.
-func (a *Api) Do(service, resource, action, href string, params rsapi.ApiParams) (*http.Response, error) {
-	var md map[string]*metadata.Resource
-	var dispatch DispatchFunc
-	switch service {
-	case "designer":
-		md = ssd.GenMetadata
-		dispatch = a.designerClient.Dispatch
-	case "catalog":
-		md = ssc.GenMetadata
-		dispatch = a.catalogClient.Dispatch
-	case "manager":
-		md = ssm.GenMetadata
-		dispatch = a.managerClient.Dispatch
-	default:
-		return nil, fmt.Errorf("Unknown service %s, must be one of 'designer', 'catalog' or 'manager'", service)
-	}
-
+// BuildRequest builds a HTTP request from a resource name and href and an action name and
+// parameters.
+// It is intended for generic clients that need to consume APIs in a generic maner.
+// The method builds an HTTP request that can be fed to PerformRequest.
+func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams) (*http.Request, error) {
 	// First lookup metadata
-	res, ok := md[resource]
+	res, ok := GenMetadata[resource]
 	if !ok {
-		return nil, fmt.Errorf("No resource with name '%s' in service %s", resource, service)
+		return nil, fmt.Errorf("No resource with name '%s'", resource)
 	}
-	var act *metadata.Action
+	act := res.GetAction(action)
 	if act == nil {
 		return nil, fmt.Errorf("No action with name '%s' on %s", action, resource)
 	}
@@ -60,5 +43,67 @@ func (a *Api) Do(service, resource, action, href string, params rsapi.ApiParams)
 	for _, n := range act.QueryParamNames {
 		queryParams[n] = params[n]
 	}
-	return dispatch(actionUrl.HttpMethod, actionUrl.Path, queryParams, payloadParams)
+	return a.buildHttpRequest(actionUrl.HttpMethod, actionUrl.Path, queryParams, payloadParams)
+}
+
+// Helper function that signs, makes and logs HTTP request.
+// Used by generated client code.
+func (a *Api) Dispatch(verb, uri string, params, payload rsapi.ApiParams) (*http.Response, error) {
+	req, err := a.buildHttpRequest(verb, uri, params, payload)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := a.PerformRequest(req)
+	if a.FetchLocationResource {
+		loc := resp.Header.Get("Location")
+		if loc != "" {
+			resp, err = a.Dispatch("GET", loc, rsapi.ApiParams{}, rsapi.ApiParams{})
+		}
+	}
+	return resp, err
+}
+
+// Helper function that puts together and HTTP request from its verb, uri and params.
+func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Request, error) {
+	u := url.URL{
+		Host: a.Host,
+		Path: uri,
+	}
+	if params != nil {
+		values := u.Query()
+		for n, p := range params {
+			switch t := p.(type) {
+			case string:
+				values.Set(n, t)
+			case []string:
+				for _, e := range t {
+					values.Add(n, e)
+				}
+			case map[string]string:
+				for pn, e := range t {
+					values.Add(pn, e)
+				}
+			default:
+				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string or an array of strings", p)
+			}
+		}
+		u.RawQuery = values.Encode()
+	}
+	var jsonBytes []byte
+	if payload != nil {
+		var err error
+		if jsonBytes, err = json.Marshal(payload); err != nil {
+			return nil, fmt.Errorf("Failed to serialize request body - %s", err)
+		}
+	}
+	req, err := http.NewRequest(verb, u.String(), bytes.NewBuffer(jsonBytes))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("X-API-Version", "1.0")
+	req.Header.Set("Content-Type", "application/json")
+	if a.AccountId > 0 {
+		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
+	}
+	return req, nil
 }

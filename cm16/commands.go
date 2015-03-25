@@ -35,7 +35,7 @@ func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 			href = "/api/" + href
 		}
 	}
-	return a.GetRaw(href, parsed.QueryParams)
+	return a.Dispatch("GET", href, parsed.QueryParams, nil)
 }
 
 // Show command help

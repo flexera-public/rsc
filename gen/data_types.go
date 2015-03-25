@@ -261,7 +261,7 @@ func (p *ActionParam) Signature() (sig string) {
 	case *ObjectDataType:
 		sig = fmt.Sprintf("*%s", t.Name)
 	case *EnumerableDataType:
-		sig = "map[string]string"
+		sig = "map[string]interface{}"
 	}
 	return
 }
