@@ -56,9 +56,12 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 	if client == nil {
 		client = http.DefaultClient
 	}
-	host, err := auth.ResolveHost(host, accountId)
-	if err != nil {
-		return nil, err
+	if auth != nil {
+		var err error
+		host, err = auth.ResolveHost(host, accountId)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return &Api{
 		AccountId: accountId,
@@ -135,7 +138,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 			Client:       httpClient,
 		}
 		client, err = New(cmdLine.Account, cmdLine.Host, &auth, nil, httpClient)
-	} else {
+	} else if cmdLine.Username != "" && cmdLine.Password != "" {
 		auth := LoginAuthenticator{
 			Username:  cmdLine.Username,
 			Password:  cmdLine.Password,
@@ -143,11 +146,15 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 			Client:    httpClient,
 		}
 		client, err = New(cmdLine.Account, cmdLine.Host, &auth, nil, httpClient)
+	} else {
+		// No auth, used by tests
+		client, err = New(cmdLine.Account, cmdLine.Host, nil, nil, httpClient)
+		client.Unsecure = true
 	}
 	if err != nil {
 		return nil, fmt.Errorf("Failed to create API session: %v", err)
 	}
-	if !cmdLine.ShowHelp {
+	if !cmdLine.ShowHelp && !cmdLine.NoAuth {
 		if cmdLine.Token == "" && cmdLine.Username == "" && !cmdLine.RL10 {
 			return nil, fmt.Errorf("Missing authentication information, use '--email EMAIL --password PWD', '--token TOKEN' or 'setup'")
 		}

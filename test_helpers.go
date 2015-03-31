@@ -13,6 +13,9 @@ var (
 
 	// Controls where fmt.(F)Scanf should read, defaults to stdin.
 	in io.Reader = os.Stdin
+
+	// Hi-jack os.Exit for recording test.
+	osExit = os.Exit
 )
 
 // SetOutput changes where functions print, mainly useful for testing

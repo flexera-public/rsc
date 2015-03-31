@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/mgutz/ansi"
 )
@@ -47,7 +46,7 @@ func PrintError(format string, a ...interface{}) {
 
 func PrintFatal(format string, a ...interface{}) {
 	PrintError(format, a...)
-	os.Exit(1)
+	osExit(1)
 }
 
 func FormatName(name string) string {

@@ -28,6 +28,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("pwd", "Login password, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Password)
 	app.Flag("key", "OAuth access token or API key, use --email and --password or use --key or --rl10").Short('k').StringVar(&cmdLine.Token)
 	app.Flag("rl10", "Proxy requests through RL 10 agent, use --email and --password or use --key or --rl10").BoolVar(&cmdLine.RL10)
+	app.Flag("noAuth", "Make unauthenticated requests, used for testing").BoolVar(&cmdLine.NoAuth)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
 	app.Flag("xm", "Extract zero, one or more values using JSON:select and return space separated list").StringVar(&cmdLine.ExtractSelector)
 	app.Flag("xj", "Extract zero, one or more values using JSON:select and return JSON").StringVar(&cmdLine.ExtractSelectorJson)
@@ -62,23 +63,27 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	}
 
 	// 3. Complement with defaults from config at given path
-	if config, err := LoadConfig(cmdLine.ConfigPath); err == nil {
-		if cmdLine.Account == 0 {
-			cmdLine.Account = config.Account
-		}
-		if cmdLine.Username == "" {
-			cmdLine.Username = config.Email
-		}
-		if cmdLine.Password == "" {
-			cmdLine.Password = config.Password
-		}
-		if cmdLine.Host == "" {
-			cmdLine.Host = config.LoginHost
+	if !cmdLine.NoAuth {
+		if config, err := LoadConfig(cmdLine.ConfigPath); err == nil {
+			if cmdLine.Account == 0 {
+				cmdLine.Account = config.Account
+			}
+			if cmdLine.Username == "" {
+				cmdLine.Username = config.Email
+			}
+			if cmdLine.Password == "" {
+				cmdLine.Password = config.Password
+			}
+			if cmdLine.Host == "" {
+				cmdLine.Host = config.LoginHost
+			}
 		}
 	}
 
 	// 4. Validate we have everything we need
-	validateCommandLine(&cmdLine)
+	if cmd != "setup" {
+		validateCommandLine(&cmdLine)
+	}
 
 	// 5. Set command and we're done
 	cmdLine.Command = cmd
@@ -93,7 +98,7 @@ func validateCommandLine(cmd *cmd.CommandLine) {
 	if cmd.Host == "" {
 		kingpin.Fatalf("missing --host option")
 	}
-	if cmd.Password == "" && cmd.Token == "" && !cmd.RL10 {
+	if cmd.Password == "" && cmd.Token == "" && !cmd.RL10 && !cmd.NoAuth {
 		kingpin.Fatalf("missing login info, use --email and --password or use --key or --rl10")
 	}
 }

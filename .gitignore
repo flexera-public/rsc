@@ -8,3 +8,4 @@ build
 Godeps/_workspace/src/github.com/jessevdk/
 Godeps/_workspace/src/github.com/rlmcpherson/
 Godeps/_workspace/src/golang.org/
+recorder/recorder

@@ -74,7 +74,7 @@ func main() {
 		// Let user know if something went wrong
 		fmt.Fprintf(os.Stderr, "%d: %s\n", resp.StatusCode, http.StatusText(resp.StatusCode))
 	}
-	fmt.Printf(displayer.Output())
+	fmt.Fprintf(out, displayer.Output())
 	exitStatus := 0
 	switch {
 	case moreThanOneError:
@@ -90,7 +90,7 @@ func main() {
 	case resp.StatusCode > 499:
 		exitStatus = 5
 	}
-	os.Exit(exitStatus)
+	osExit(exitStatus)
 }
 
 // Helper that runs command line with give command client

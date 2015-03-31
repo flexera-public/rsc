@@ -15,6 +15,7 @@ type CommandLine struct {
 	Username            string // Login username, alternative to Token or RL10
 	Password            string // Login pasword, alternative to Token or RL10
 	RL10                bool   // Whether to send requests using the RL10 proxy
+	NoAuth              bool   // Whether to send requests unauthenticated
 	NoRedirect          bool   // Whether to disable auto-redirects
 	FetchResource       bool   // Whether to fetch resource returned in 'Location' header
 	ExtractOneSelect    string // JSON select expression to extract single value from response, optional
