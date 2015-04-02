@@ -20,9 +20,9 @@ sudo: false
 # I'm putting as many tasks as possible into the Makefile, hence the make depend...
 install:
   - export PATH=$PATH:$HOME/gopath/bin # travis' worker doesn't seem to do this consistently
-  - (cd $GOROOT/src && GOOS=darwin GOARCH=amd64 ./make.bash --no-clean)
-  - (cd $GOROOT/src && GOOS=linux GOARCH=arm ./make.bash --no-clean)
-  - (cd $GOROOT/src && GOOS=windows GOARCH=amd64 ./make.bash --no-clean)
+  - (cd $GOROOT/src && GOOS=darwin GOARCH=amd64 ./make.bash --no-clean) >/dev/null
+  - (cd $GOROOT/src && GOOS=linux GOARCH=arm ./make.bash --no-clean) >/dev/null
+  - (cd $GOROOT/src && GOOS=windows GOARCH=amd64 ./make.bash --no-clean) >/dev/null
   - make depend
 
 before_script: make build
