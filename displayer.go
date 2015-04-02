@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 
-	"github.com/coddingtonbear/go-jsonselect"
+	"github.com/rightscale/go-jsonselect"
 )
 
 // Displayer provides helper methods to display command responses back to the user
@@ -72,12 +71,12 @@ func (d *Displayer) ApplyExtract(selector string, js bool) error {
 	}
 	outputs, err := parser.GetValues(selector)
 	if !js {
-		strs := make([]string, len(outputs))
-		for i, o := range outputs {
+		out := ""
+		for _, o := range outputs {
 			b, _ := json.Marshal(o)
-			strs[i] = string(b)
+			out += string(b) + "\n"
 		}
-		d.RawOutput = strings.Join(strs, "\n")
+		d.RawOutput = out
 	} else {
 		d.RawOutput = outputs
 	}

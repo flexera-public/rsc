@@ -38,7 +38,7 @@ BUCKET=rightscale-binaries
 ACL=public-read
 # Dependencies not handled by Godep, i.e. that are used to build/test/upload this puppy
 DEPEND=golang.org/x/tools/cmd/cover github.com/onsi/ginkgo/ginkgo \
-			 github.com/rlmcpherson/s3gof3r/gof3r
+			 github.com/rlmcpherson/s3gof3r/gof3r github.com/tools/godep
 
 #=== below this line ideally remains unchanged, add new targets at the end  ===
 
@@ -117,6 +117,7 @@ version:
 # there, like your laptop.
 depend:
 	go get $(DEPEND)
+	godep restore
 
 clean:
 	rm -rf build

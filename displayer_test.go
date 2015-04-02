@@ -73,7 +73,7 @@ var _ = Describe("Displayer", func() {
 		It("Applies json selects that extract multiple values not in JSON", func() {
 			Ω(displayer).ShouldNot(BeNil())
 			Ω(displayer.ApplyExtract(".m .a", false)).ShouldNot(HaveOccurred())
-			Ω(displayer.RawOutput).Should(Equal("1\n2"))
+			Ω(displayer.RawOutput).Should(Equal("1\n2\n"))
 		})
 
 		Context("with the go value corresponding to the JSON data", func() {
