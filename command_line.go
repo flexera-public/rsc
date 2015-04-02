@@ -93,7 +93,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 
 // Make sure all the required information is there
 func validateCommandLine(cmd *cmd.CommandLine) {
-	if cmd.Account == 0 {
+	if cmd.Account == 0 && cmd.Token == "" {
 		kingpin.Fatalf("missing --account option")
 	}
 	if cmd.Host == "" {
