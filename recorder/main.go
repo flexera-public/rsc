@@ -15,7 +15,8 @@ import (
 import "os/exec"
 
 var (
-	output  = kingpin.Flag("output", "path to generated file").Short('o').Default("recording.json").String()
+	input   = kingpin.Flag("input", "path to JSON file containing command lines to run").Short('i').Default("commands.json").String()
+	output  = kingpin.Flag("output", "path to generated file").Short('o').Default("recording_new.json").String()
 	key     = kingpin.Flag("key", "API key").Short('k').String()
 	account = kingpin.Flag("account", "RightScale account").Short('a').Default("60073").Int()
 	host    = kingpin.Flag("host", "RightScale host").Short('h').Default("us-3.rightscale.com").String()
@@ -33,8 +34,12 @@ func main() {
 		kingpin.Fatalf("Please set RS_KEY to your API key")
 	}
 	os.RemoveAll(*output)
-	write("[\n")
-	for i, t := range TestCases {
+	var testCases []string
+	fc, err := os.Open(*input)
+	kingpin.FatalIfError(err, "")
+	err = json.NewDecoder(fc).Decode(&testCases)
+	kingpin.FatalIfError(err, "fail to load commands")
+	for _, t := range testCases {
 		args := makeArgs(t, k)
 		cmd := exec.Command("rsc", args...)
 		// Remove key, dump and host from args so it doesn't get printed or recorded
@@ -71,23 +76,20 @@ func main() {
 			Stdout:   out.String(),
 			RR:       rr,
 		}
-		js, err := json.Marshal(record)
+		js, err := json.MarshalIndent(record, "", "    ")
 		if err != nil {
 			kingpin.Fatalf("failed to serialize record: %s", err)
 		}
-		write(string(js))
-		if i < len(TestCases)-1 {
-			write(",\n")
-		}
+		write(js)
 	}
-	write("]\n")
 }
 
 // Helper function that appends a string to output file
-func write(s string) {
+func write(b []byte) {
 	f, err := os.OpenFile(*output, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	kingpin.FatalIfError(err, "failed to open output file")
-	f.WriteString(s)
+	f.Write(b)
+	f.WriteString("\n")
 	f.Close()
 }
 

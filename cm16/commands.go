@@ -2,6 +2,7 @@ package cm16
 
 import (
 	"net/http"
+	"path"
 	"strings"
 
 	"github.com/rightscale/rsc/rsapi"
@@ -29,11 +30,7 @@ func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 	}
 	href := parsed.Uri
 	if !strings.HasPrefix(href, "/api") {
-		if strings.HasPrefix(href, "/") {
-			href = "/api" + href
-		} else {
-			href = "/api/" + href
-		}
+		href = path.Join("/api", href)
 	}
 	return a.Dispatch("GET", href, parsed.QueryParams, nil)
 }

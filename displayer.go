@@ -49,24 +49,35 @@ func (d *Displayer) ApplySingleExtract(extract string) error {
 	if len(outputs) == 0 {
 		d.RawOutput = ""
 	} else {
+		switch v := outputs[0].(type) {
+		case nil:
+			d.RawOutput = ""
+		case float64, bool:
+			d.RawOutput = fmt.Sprint(v)
+		case string:
+			d.RawOutput = v
+		default:
+			d.RawOutput = v
+		}
 		d.RawOutput = outputs[0]
 	}
 	return nil
 }
 
 // Apply JSON selector
-func (d *Displayer) ApplyExtract(selector string, json bool) error {
+func (d *Displayer) ApplyExtract(selector string, js bool) error {
 	parser, err := jsonselect.CreateParserFromString(d.body)
 	if err != nil {
 		return fmt.Errorf("Failed to load response JSON: %s, JSON was:\n%s", err, d.body)
 	}
 	outputs, err := parser.GetValues(selector)
-	if !json {
+	if !js {
 		strs := make([]string, len(outputs))
 		for i, o := range outputs {
-			strs[i] = fmt.Sprintf("%v", o)
+			b, _ := json.Marshal(o)
+			strs[i] = string(b)
 		}
-		d.RawOutput = strings.Join(strs, " ")
+		d.RawOutput = strings.Join(strs, "\n")
 	} else {
 		d.RawOutput = outputs
 	}

@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"regexp"
@@ -28,15 +29,16 @@ var _ = Describe("Recorded request", func() {
 		fmt.Fprintf(os.Stdout, "Cannot open recording: %s\n", err.Error())
 		os.Exit(1)
 	}
-
-	// Read a test case, which is a json struct
-	var testCases []recording.Recording
-	err = json.NewDecoder(f).Decode(&testCases)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Json decode: %s\n", err.Error())
-	}
+	decoder := json.NewDecoder(f)
 	// Iterate through test cases
-	for _, testCase := range testCases {
+	for {
+		var testCase recording.Recording
+		err := decoder.Decode(&testCase)
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			fmt.Fprintf(os.Stderr, "Json decode: %s\n", err.Error())
+		}
 		// Perform the test by running main() with the command line args set
 		It(strings.Join(testCase.CmdArgs, " "), func() {
 			//server := httptest.NewTLSServer(http.HandlerFunc(handler))

@@ -1,3 +1,3 @@
 package rsapi
 
-const UA = "rsc/dev-1427991148-master"
+const UA = "rsc/dev-1427997327-"
