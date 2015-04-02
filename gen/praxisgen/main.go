@@ -97,10 +97,7 @@ func main() {
 
 			apiTypes := make(map[string]map[string]interface{}) // Type properties indexed by name indexed by type name
 			typesDir := path.Join(dirPath, version, "types")
-			files, err := ioutil.ReadDir(typesDir)
-			if err != nil {
-				kingpin.Fatalf("Failed to load types: %s", err)
-			}
+			files, _ := ioutil.ReadDir(typesDir)
 			for _, file := range files {
 				var typeData map[string]interface{}
 				if err := unmarshal(path.Join(typesDir, file.Name()), &typeData); err != nil {
