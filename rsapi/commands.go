@@ -265,8 +265,11 @@ func (a *Api) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 				}
 				subPattern := pattern.Pattern
 				pat := fmt.Sprintf(subPattern, ivars...)
-				pat = strings.TrimSuffix(pat, "/actions/"+action.Name)
-				pat = strings.TrimSuffix(pat, "/"+action.Name)
+				var ok bool
+				pat, ok = shortenPattern(res, pat, "/actions/"+action.Name)
+				if !ok {
+					pat, _ = shortenPattern(res, pat, "/"+action.Name)
+				}
 				actions[action.Name] = append(actions[action.Name], [2]string{pat, resName})
 			}
 		}
@@ -475,4 +478,27 @@ func normalize(payload ApiParams, name string, value interface{}) (ApiParams, er
 		}
 	}
 	return payload, nil
+}
+
+// Attempt to shorten action pattern for display by looking at other action hrefs
+// and picking one that doesn't have the suffix if there is one.
+func shortenPattern(res *metadata.Resource, pattern, suffix string) (string, bool) {
+	if strings.HasSuffix(pattern, suffix) {
+		pat := strings.TrimSuffix(pattern, suffix)
+		for _, action := range res.Actions {
+			for _, pattern2 := range action.PathPatterns {
+				vars := pattern2.Variables
+				ivars := make([]interface{}, len(vars))
+				for i, v := range vars {
+					ivars[i] = interface{}(":" + v)
+				}
+				subPattern := pattern2.Pattern
+				pat2 := fmt.Sprintf(subPattern, ivars...)
+				if pat == pat2 {
+					return pat, true
+				}
+			}
+		}
+	}
+	return pattern, false
 }
