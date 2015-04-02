@@ -21,6 +21,7 @@ Jump to:
 * [Command line usage](#usage)
 * [Go package usage](#go)
 * [Development & Contributing](#contributing)
+* [Command Line Help and Cookbook](COOKBOOK.md)
 
 ## <a name="reference"></a>API References
 
@@ -119,6 +120,8 @@ $ rsc --xm .name cm15 index clouds
 ```
 extracts the names of each cloud from the response and prints the result as a space separated list which
 is convenient to consume from bash scripts.
+
+For additional help on extracting values see the [Command Line Help and Cookbook](COOKBOOK.md).
 
 ### Actions and Parameters
 
