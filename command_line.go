@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/rightscale/rsc/cm15"
 	"github.com/rightscale/rsc/cm16"
@@ -28,7 +29,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("email", "Login email, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Username)
 	app.Flag("pwd", "Login password, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Password)
 	app.Flag("key", "OAuth access token or API key, use --email and --password or use --key or --rl10").Short('k').StringVar(&cmdLine.Token)
-	app.Flag("rl10", "Proxy requests through RL 10 agent, use --email and --password or use --key or --rl10").BoolVar(&cmdLine.RL10)
+	app.Flag("rl10", "Proxy requests through RightLink 10 agent, use --email and --password or use --key or --rl10").BoolVar(&cmdLine.RL10)
 	app.Flag("noAuth", "Make unauthenticated requests, used for testing").BoolVar(&cmdLine.NoAuth)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
 	app.Flag("xm", "Extract zero, one or more values using JSON:select and return newline separated list").StringVar(&cmdLine.ExtractSelector)
@@ -80,26 +81,32 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 			}
 		}
 	}
+	cmdLine.Command = cmd
 
-	// 4. Validate we have everything we need
-	if cmd != "setup" {
-		validateCommandLine(&cmdLine)
+	// 4. Special RL10 case (auth is handled differently)
+	if strings.Split(cmdLine.Command, " ")[0] == "rl10" {
+		cmdLine.RL10 = true
 	}
 
-	// 5. Set command and we're done
-	cmdLine.Command = cmd
+	// 6. Validate we have everything we need
+	validateCommandLine(&cmdLine)
+
+	// 7. We're done
 	return &cmdLine, nil
 }
 
 // Make sure all the required information is there
-func validateCommandLine(cmd *cmd.CommandLine) {
-	if cmd.Account == 0 && cmd.Token == "" {
+func validateCommandLine(cmdLine *cmd.CommandLine) {
+	if cmdLine.Command == "setup" || cmdLine.Command == "actions" || cmdLine.ShowHelp || cmdLine.RL10 {
+		return
+	}
+	if cmdLine.Account == 0 && cmdLine.Token == "" {
 		kingpin.Fatalf("missing --account option")
 	}
-	if cmd.Host == "" {
+	if cmdLine.Host == "" {
 		kingpin.Fatalf("missing --host option")
 	}
-	if cmd.Password == "" && cmd.Token == "" && !cmd.RL10 && !cmd.NoAuth {
+	if cmdLine.Password == "" && cmdLine.Token == "" && !cmdLine.NoAuth {
 		kingpin.Fatalf("missing login info, use --email and --password or use --key or --rl10")
 	}
 }
@@ -153,5 +160,5 @@ func RegisterClientCommands(app *kingpin.Application) {
 
 	rl10Cmd := app.Command(Rl10Command, rl10.ApiName)
 	registrar = rsapi.Registrar{ApiCmd: rl10Cmd}
-	ss.RegisterCommands(&registrar)
+	rl10.RegisterCommands(&registrar)
 }
