@@ -15,6 +15,8 @@ type ApiDescriptor struct {
 	Types         map[string]*ObjectDataType // Types used by resource actions indexed by name
 	ResourceNames []string                   // Resource names ordered alphabetically
 	TypeNames     []string                   // Type names ordered alphabetically
+	NeedTime      bool                       // Whether generated code uses the time.Time package
+	NeedJson      bool                       // Whether generated code uses encoding/json package
 }
 
 // Merge two descriptors together, make sure there are no duplicate resource names and that

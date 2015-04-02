@@ -40,8 +40,9 @@ func NewClientWriter() (*ClientWriter, error) {
 }
 
 // Write header text
-func (c *ClientWriter) WriteHeader(pkg string, w io.Writer) error {
-	return c.headerTmpl.Execute(w, pkg)
+func (c *ClientWriter) WriteHeader(pkg string, needTime, needJson bool, w io.Writer) error {
+	ctx := map[string]interface{}{"Pkg": pkg, "NeedTime": needTime, "NeedJson": needJson}
+	return c.headerTmpl.Execute(w, ctx)
 }
 
 // Write resource header
@@ -83,14 +84,14 @@ const headerTmpl = `
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package {{.}}
+package {{.Pkg}}
 
 import (
-	"encoding/json"
-	"fmt"
+	{{if .NeedJson}}"encoding/json"
+	{{end}}"fmt"
 	"io/ioutil"
-	"time"
-
+	{{if .NeedTime}}"time"
+	{{end}}
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
 )
@@ -178,5 +179,6 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err{{else}}return nil{{end}}`
+	{{if eq .Return "string"}}res = string(respBody)
+	{{else}}err = json.Unmarshal(respBody, &res)
+	{{end}}return res, err{{else}}return nil{{end}}`

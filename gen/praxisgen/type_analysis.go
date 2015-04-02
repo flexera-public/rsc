@@ -87,6 +87,7 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		dataType = &b
 	case "DateTime":
 		t := gen.BasicDataType("*time.Time")
+		a.descriptor.NeedTime = true
 		dataType = &t
 	case "Collection", "Ids":
 		member, ok := typeDef["member_attribute"].(map[string]interface{})

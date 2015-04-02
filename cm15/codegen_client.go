@@ -325,7 +325,7 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, &res)
+	res = string(respBody)
 	return res, err
 }
 
@@ -679,7 +679,7 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 	if err != nil {
 		return res, err
 	}
-	err = json.Unmarshal(respBody, &res)
+	res = string(respBody)
 	return res, err
 }
 

@@ -23,20 +23,19 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 		return fmt.Errorf("Resource %s has no media type (missing key \"media_type\")", name)
 	}
 	t, ok := a.RawTypes[m]
-	if !ok {
-		return fmt.Errorf("Missing definition for Resource %s media type %s", name, prettify(m))
-	}
-	attrs, ok := t["attributes"].(map[string]interface{})
-	if !ok {
-		return fmt.Errorf("Missing attributes for media type %s", prettify(m))
-	}
-	attributes := make([]*gen.Attribute, len(attrs))
-	for idx, n := range sortedKeys(attrs) {
-		param, err := a.AnalyzeAttribute(n, n, attrs[n].(map[string]interface{}))
-		if err != nil {
-			return err
+	attributes := []*gen.Attribute{}
+	if ok {
+		attrs, ok := t["attributes"].(map[string]interface{})
+		if ok {
+			attributes = make([]*gen.Attribute, len(attrs))
+			for idx, n := range sortedKeys(attrs) {
+				param, err := a.AnalyzeAttribute(n, n, attrs[n].(map[string]interface{}))
+				if err != nil {
+					return err
+				}
+				attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.Signature()}
+			}
 		}
-		attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.Signature()}
 	}
 	resource.Attributes = attributes
 

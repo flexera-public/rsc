@@ -1,0 +1,24 @@
+{
+  "unversioned": {
+    "DebugCookbookPath": {
+      "controller": "Resources-DebugCookbookPath",
+      "name": "Resources::DebugCookbookPath",
+      "media_type": "Praxis-SimpleMediaType"
+    },
+    "Env": {
+      "controller": "Resources-Env",
+      "name": "Resources::Env",
+      "media_type": "Praxis-SimpleMediaType"
+    },
+    "Proc": {
+      "controller": "Resources-Proc",
+      "name": "Resources::Proc",
+      "media_type": "Praxis-SimpleMediaType"
+    },
+    "Rl10": {
+      "controller": "Resources-Rl10",
+      "name": "Resources::Rl10",
+      "media_type": "Praxis-SimpleMediaType"
+    }
+  }
+}

@@ -157,6 +157,10 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						m := media.(map[string]interface{})
 						if name, ok := m["name"]; ok {
 							returnTypeName = toGoTypeName(name.(string), true)
+							a.descriptor.NeedJson = true
+						} else {
+							// Default to string
+							returnTypeName = "string"
 						}
 					} else if mime, ok := resp["mime_type"]; ok {
 						// Resticle compat
@@ -168,6 +172,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 									} else {
 										returnTypeName = "*" + n
 									}
+									a.descriptor.NeedJson = true
 									break
 								}
 							}

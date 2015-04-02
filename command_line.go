@@ -8,6 +8,7 @@ import (
 	"github.com/rightscale/rsc/cm15"
 	"github.com/rightscale/rsc/cm16"
 	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/rl10"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
@@ -115,6 +116,9 @@ const (
 
 	// Command for SS client
 	SsCommand = "ss"
+
+	// Command for RL10 client
+	Rl10Command = "rl10"
 )
 
 // Instantiate client with given name from command line arguments
@@ -126,6 +130,8 @@ func ApiClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error)
 		return cm16.FromCommandLine(cmdLine)
 	case SsCommand:
 		return ss.FromCommandLine(cmdLine)
+	case Rl10Command:
+		return rl10.FromCommandLine(cmdLine)
 	default:
 		return nil, fmt.Errorf("No client for '%s'", name)
 	}
@@ -143,5 +149,9 @@ func RegisterClientCommands(app *kingpin.Application) {
 
 	ssCmd := app.Command(SsCommand, ss.ApiName)
 	registrar = rsapi.Registrar{ApiCmd: ssCmd}
+	ss.RegisterCommands(&registrar)
+
+	rl10Cmd := app.Command(Rl10Command, rl10.ApiName)
+	registrar = rsapi.Registrar{ApiCmd: rl10Cmd}
 	ss.RegisterCommands(&registrar)
 }

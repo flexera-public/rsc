@@ -1,0 +1,24 @@
+{
+  "info": {
+  },
+  "resources": {
+    "Resources-DebugCookbookPath": {
+      "name": "Resources::DebugCookbookPath",
+      "friendly_name": "DebugCookbookPath"
+    },
+    "Resources-Env": {
+      "name": "Resources::Env",
+      "friendly_name": "Env"
+    },
+    "Resources-Proc": {
+      "name": "Resources::Proc",
+      "friendly_name": "Proc"
+    },
+    "Resources-Rl10": {
+      "name": "Resources::Rl10",
+      "friendly_name": "Rl10"
+    }
+  },
+  "schemas": {
+  }
+}
