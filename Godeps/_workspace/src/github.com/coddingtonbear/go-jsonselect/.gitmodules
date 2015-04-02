@@ -1,3 +1,0 @@
-[submodule "conformance_tests"]
-	path = conformance_tests
-	url = https://github.com/lloyd/JSONSelectTests

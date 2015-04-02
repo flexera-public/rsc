@@ -5,9 +5,7 @@ gen/praxisgen/praxisgen
 *.exe
 *.coverprofile
 build
-Godeps/_workspace/src/github.com/jessevdk/
-Godeps/_workspace/src/github.com/rlmcpherson/
-Godeps/_workspace/src/golang.org/
+Godeps/_workspace
 recorder/recorder
 recorder/recording_new.json
 version.go
