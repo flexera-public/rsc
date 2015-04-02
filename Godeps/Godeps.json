@@ -1,0 +1,47 @@
+{
+	"ImportPath": "rs/rsc",
+	"GoVersion": "go1.4",
+	"Deps": [
+		{
+			"ImportPath": "bitbucket.org/pkg/inflect",
+			"Comment": "go.r60-12",
+			"Rev": "8961c3750a47b8c0b3e118d52513b97adf85a7e8"
+		},
+		{
+			"ImportPath": "github.com/alecthomas/units",
+			"Rev": "6b4e7dc5e3143b85ea77909c72caf89416fc2915"
+		},
+		{
+			"ImportPath": "github.com/coddingtonbear/go-simplejson",
+			"Comment": "v0.4.3-16-ga582018",
+			"Rev": "a582018feafb39c4884d1b03cad98b91e2804276"
+		},
+		{
+			"ImportPath": "github.com/mgutz/ansi",
+			"Rev": "376eb392d7d7e2ae025da0037c73cf8c20a428d8"
+		},
+		{
+			"ImportPath": "github.com/onsi/ginkgo",
+			"Comment": "v1.1.0-33-g17ea479",
+			"Rev": "17ea479729ee427265ac1e913443018350946ddf"
+		},
+		{
+			"ImportPath": "github.com/onsi/gomega",
+			"Comment": "v1.0-28-g8adf9e1",
+			"Rev": "8adf9e1730c55cdc590de7d49766cb2acc88d8f2"
+		},
+		{
+			"ImportPath": "github.com/rightscale/go-jsonselect",
+			"Rev": "99937931155dde6571d3e8cbab12447d208af785"
+		},
+		{
+			"ImportPath": "github.com/rightscale/rsc",
+			"Rev": "c6d43898f0414dfa6c26e76e8f366ca2899736b8"
+		},
+		{
+			"ImportPath": "gopkg.in/alecthomas/kingpin.v1",
+			"Comment": "v1.3.5",
+			"Rev": "a1508bd4f5b75aaa7ce97f411fcdc72138434bbb"
+		}
+	]
+}
