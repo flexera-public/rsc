@@ -61,7 +61,7 @@ func (a *ApiAnalyzer) AnalyzeAttribute(name, query string, attr map[string]inter
 func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) (gen.DataType, error) {
 	n, ok := typeDef["name"].(string)
 	if !ok {
-		return nil, fmt.Errorf("Missing type name in %s", prettify(typeDef))
+		n = "Struct" // Assume inline struct (e.g. payload types)
 	}
 	if n == "Tempfile" {
 		//TODO: support multipart file upload...
@@ -104,7 +104,7 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		if !ok {
 			return nil, fmt.Errorf("Failed to retrieve attributes of struct for %s", prettify(typeDef))
 		}
-		obj, err := a.CreateOrGetType(query, attrs)
+		obj, err := a.CreateType(query, attrs)
 		if err != nil {
 			return nil, err
 		}
@@ -114,7 +114,7 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		if !ok {
 			dataType = new(gen.EnumerableDataType)
 		} else {
-			obj, err := a.CreateOrGetType(query, keys)
+			obj, err := a.CreateType(query, keys)
 			if err != nil {
 				return nil, err
 			}
@@ -160,13 +160,19 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 }
 
 // Helper method that creates or retrieve a object data type given its attributes.
-func (a *ApiAnalyzer) CreateOrGetType(query string, attributes map[string]interface{}) (*gen.ObjectDataType, error) {
+func (a *ApiAnalyzer) CreateType(query string, attributes map[string]interface{}) (*gen.ObjectDataType, error) {
 	name := inflect.Camelize(bracketRegexp.ReplaceAllLiteralString(query, "_") + "_struct")
 	obj := a.Registry.CreateInlineType(name)
 	obj.Fields = make([]*gen.ActionParam, len(attributes))
 	for idx, an := range sortedKeys(attributes) {
 		at := attributes[an]
-		att, err := a.AnalyzeAttribute(an, fmt.Sprintf("%s[%s]", query, an), at.(map[string]interface{}))
+		var childQ string
+		if query == "payload" {
+			childQ = an
+		} else {
+			childQ = fmt.Sprintf("%s[%s]", query, an)
+		}
+		att, err := a.AnalyzeAttribute(an, childQ, at.(map[string]interface{}))
 		if err != nil {
 			return nil, fmt.Errorf("Failed to compute type of attribute %s: %s", an, err)
 		}

@@ -81,35 +81,56 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 				idx += 1
 			}
 		}
-
-		// Payload params analysis
 		paramNames := make([]string, len(queryParamNames))
 		for i, n := range queryParamNames {
 			paramNames[i] = n
 		}
+
+		// Payload params analysis
+		var payload gen.DataType
 		if p, ok := meth["payload"]; ok {
 			as, ok := p.(map[string]interface{})["type"]
 			if ok {
-				as, ok = as.(map[string]interface{})["attributes"]
-			}
-			if ok {
-				attrs := as.(map[string]interface{})
-				attrNames := sortedKeys(attrs)
-				for _, pn := range attrNames {
-					pt := attrs[pn]
-					queryName := gen.MakeUniq(pn, paramNames)
-					att, err := a.AnalyzeAttribute(pn, queryName, pt.(map[string]interface{}))
-					if err != nil {
-						return nil, fmt.Errorf("Failed to compute type of param %s: %s", pn, err.Error())
+				pd, err := a.AnalyzeType(as.(map[string]interface{}), "payload")
+				if err != nil {
+					return nil, err
+				}
+				if po, ok := pd.(*gen.ObjectDataType); ok {
+
+					// Remove the type since we are "flattening" the attributes
+					// as top level params.
+					// This is a bit hacky and should be refactored
+					// (it should be possible to get the type without having
+					// it be registered). Works for now(TM).
+					delete(a.Registry.InlineTypes, po.TypeName)
+
+					for _, att := range po.Fields {
+						payloadParamNames = append(payloadParamNames, att.Name)
+						att.Location = gen.PayloadParam
+						params = append(params, att)
+						extracted := extractLeafParams(att, make(map[string]*[]*gen.ActionParam))
+						for _, e := range extracted {
+							e.Location = gen.PayloadParam
+						}
+						leafParams = append(leafParams, extracted...)
 					}
-					payloadParamNames = append(payloadParamNames, pn)
-					att.Location = gen.PayloadParam
-					params = append(params, att)
-					extracted := extractLeafParams(att, make(map[string]*[]*gen.ActionParam))
-					for _, e := range extracted {
-						e.Location = gen.PayloadParam
+				} else {
+					// Raw payload (no attributes)
+					payload = pd
+					var required bool
+					if req, ok := p.(map[string]interface{})["required"]; ok {
+						required = req.(bool)
 					}
-					leafParams = append(leafParams, extracted...)
+					param := &gen.ActionParam{
+						Name:      "payload",
+						QueryName: "payload",
+						VarName:   "payload",
+						Type:      pd,
+						Location:  gen.PayloadParam,
+						Mandatory: required,
+					}
+					params = append(params, param)
+					leafParams = append(leafParams, param)
 				}
 			}
 		}
@@ -192,6 +213,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 			Description:       removeBlankLines(description),
 			ResourceName:      resourceName,
 			PathPatterns:      pathPatterns,
+			Payload:           payload,
 			Params:            params,
 			LeafParams:        leafParams,
 			Return:            returnTypeName,

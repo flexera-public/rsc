@@ -199,8 +199,11 @@ func (loc *EnvLocator) Show() (string, error) {
 
 // PUT /rll/env/:name
 // Set environment variable value
-func (loc *EnvLocator) Update() (string, error) {
+func (loc *EnvLocator) Update(payload string) (string, error) {
 	var res string
+	if payload == "" {
+		return res, fmt.Errorf("payload is required")
+	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Env", "update")

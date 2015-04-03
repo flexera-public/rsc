@@ -130,8 +130,27 @@ var GenMetadata = map[string]*metadata.Resource{
 						Regexp:     regexp.MustCompile(`/rll/env/([^/]+)`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "payload",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+				Payload: "string",
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "payload",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
 			},
 
 			&metadata.Action{

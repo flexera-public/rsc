@@ -120,7 +120,8 @@ const actionMetadataTmpl = `&metadata.Action {
 						Regexp: regexp.MustCompile("{{.Regexp}}"),{{end}}{{if .ValidValues}}
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
-				},
+				},{{if .Payload}}
+				Payload: "{{.Payload.Name}}",{{end}}
 				ApiParams: []*metadata.ActionParam{ {{range .Params}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",

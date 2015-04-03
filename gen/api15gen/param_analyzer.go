@@ -199,8 +199,8 @@ func (s ByReverseLength) Less(i, j int) bool {
 // Recursively record all type declarations
 func (p *ParamAnalyzer) recordTypes(root gen.DataType) {
 	if o, ok := root.(*gen.ObjectDataType); ok {
-		if _, found := p.ParamTypes[o.Name]; !found {
-			p.ParamTypes[o.Name] = o
+		if _, found := p.ParamTypes[o.TypeName]; !found {
+			p.ParamTypes[o.TypeName] = o
 			for _, f := range o.Fields {
 				p.recordTypes(f.Type)
 			}

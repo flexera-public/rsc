@@ -62,7 +62,7 @@ func (c *ClientWriter) WriteType(o *gen.ObjectDataType, w io.Writer) {
 		fields[i] = fmt.Sprintf("%s %s `json:\"%s,omitempty\"`", strings.Title(f.VarName),
 			f.Signature(), f.Name)
 	}
-	decl := fmt.Sprintf("type %s struct {\n%s\n}", o.Name,
+	decl := fmt.Sprintf("type %s struct {\n%s\n}", o.TypeName,
 		strings.Join(fields, "\n\t"))
 	fmt.Fprintf(w, "%s\n\n", decl)
 }

@@ -14,6 +14,7 @@ type Action struct {
 	PathPatterns      []*PathPattern // Action path patterns and
 	ApiParams         []*ActionParam // Actual API request parameters
 	CommandFlags      []*ActionParam // Parameters initialized via command lines, these correspond to the leaves of all ApiParams.
+	Payload           string         // Name of payload type, only set for basic types
 	QueryParamNames   []string       // Query string parameter names, e.g. "filter" in /clouds?filter[]=name==foo
 	PayloadParamNames []string       // Payload parameter names (top level keys of payload structure)
 }

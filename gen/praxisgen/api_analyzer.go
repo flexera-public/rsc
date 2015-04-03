@@ -95,7 +95,7 @@ func (reg *TypeRegistry) GetNamedType(name string) *gen.ObjectDataType {
 // Create named type
 func (reg *TypeRegistry) CreateNamedType(name string) *gen.ObjectDataType {
 	goName := toGoTypeName(name, false)
-	obj := gen.ObjectDataType{Name: goName}
+	obj := gen.ObjectDataType{TypeName: goName}
 	if _, ok := reg.NamedTypes[goName]; ok {
 		panic("BUG: Can't create two named types with same name....")
 	}
@@ -106,7 +106,7 @@ func (reg *TypeRegistry) CreateNamedType(name string) *gen.ObjectDataType {
 // Create inline type
 func (reg *TypeRegistry) CreateInlineType(name string) *gen.ObjectDataType {
 	goName := toGoTypeName(name, false)
-	obj := gen.ObjectDataType{Name: goName}
+	obj := gen.ObjectDataType{TypeName: goName}
 	reg.InlineTypes[goName] = append(reg.InlineTypes[goName], &obj)
 	return &obj
 }

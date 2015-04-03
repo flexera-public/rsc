@@ -41,7 +41,7 @@ func (d *ApiDescriptor) Merge(other *ApiDescriptor) error {
 				other.TypeNames = append(first, last...)
 				type_ := other.Types[name]
 				delete(other.Types, name)
-				type_.Name = newName
+				type_.TypeName = newName
 				other.Types[newName] = type_
 			}
 		}
@@ -79,7 +79,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 					tn = fmt.Sprintf("%sParam", tn)
 				}
 				for _, ty := range types {
-					ty.Name = tn
+					ty.TypeName = tn
 				}
 				rawTypes[tn] = types
 				delete(rawTypes, oldTn)
@@ -109,7 +109,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 				}
 				if !found {
 					newName := d.uniqueTypeName(tn)
-					ty.Name = newName
+					ty.TypeName = newName
 					d.Types[newName] = ty
 				}
 			}
@@ -188,6 +188,7 @@ type Action struct {
 	Description       string         // Action description
 	ResourceName      string         // Name of resource that contains this action
 	PathPatterns      []*PathPattern // Action path patterns
+	Payload           DataType       // Payload type if any
 	Params            []*ActionParam // Action method parameters
 	LeafParams        []*ActionParam // Action parameter leaves (for command line)
 	Return            string         // Type of method results, e.g. "*ServerArray"
@@ -261,7 +262,7 @@ func (p *ActionParam) Signature() (sig string) {
 		cs := t.ElemType.Signature()
 		sig = fmt.Sprintf("[]%s", cs)
 	case *ObjectDataType:
-		sig = fmt.Sprintf("*%s", t.Name)
+		sig = fmt.Sprintf("*%s", t.TypeName)
 	case *EnumerableDataType:
 		sig = "map[string]interface{}"
 	}
@@ -276,6 +277,7 @@ func (p *ActionParam) IsEquivalent(other *ActionParam) bool {
 // Data type interface
 type DataType interface {
 	IsEquivalent(other DataType) bool // true if datatype and other represent the same data structure
+	Name() string                     // Type name
 }
 
 // A basic data type only has a name, i.e. "int" or "string"
@@ -288,6 +290,11 @@ func (b *BasicDataType) IsEquivalent(other DataType) bool {
 		return false
 	}
 	return *t == *b
+}
+
+// Name is type itself
+func (b *BasicDataType) Name() string {
+	return string(*b)
 }
 
 // An array data type defines the type of its elements
@@ -304,10 +311,15 @@ func (a *ArrayDataType) IsEquivalent(other DataType) bool {
 	return a.ElemType.IsEquivalent(t.ElemType)
 }
 
+// Name is name of element appended with "[]"
+func (a *ArrayDataType) Name() string {
+	return a.ElemType.Type.Name() + "[]"
+}
+
 // An object data type has a name and fields
 type ObjectDataType struct {
-	Name   string
-	Fields []*ActionParam
+	TypeName string
+	Fields   []*ActionParam
 }
 
 // true if other is a object data type and each field is equivalent recursively
@@ -316,7 +328,7 @@ func (o *ObjectDataType) IsEquivalent(other DataType) bool {
 	if !ok {
 		return false
 	}
-	if o.Name != a.Name {
+	if o.TypeName != a.TypeName {
 		return false
 	}
 	if len(o.Fields) != len(a.Fields) {
@@ -330,6 +342,11 @@ func (o *ObjectDataType) IsEquivalent(other DataType) bool {
 	return true
 }
 
+// Implement DataType
+func (o *ObjectDataType) Name() string {
+	return o.TypeName
+}
+
 // An enumerable is just a map
 type EnumerableDataType int
 
@@ -337,6 +354,11 @@ type EnumerableDataType int
 func (e *EnumerableDataType) IsEquivalent(other DataType) bool {
 	_, ok := other.(*EnumerableDataType)
 	return ok
+}
+
+// Implement DataType
+func (e *EnumerableDataType) Name() string {
+	return "map[string]interface{}"
 }
 
 // Make it possible to sort action parameters by name
