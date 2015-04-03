@@ -44,6 +44,11 @@ func main() {
 		return // No results, just exit (e.g. printed help)
 	}
 
+	// Let user know if something went wrong before doing any other processing
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		fmt.Fprintf(os.Stderr, "%d: %s\n", resp.StatusCode, http.StatusText(resp.StatusCode))
+	}
+
 	// Handle command output (apply any extraction)
 	displayer, err := NewDisplayer(resp)
 	if err != nil {
@@ -71,10 +76,6 @@ func main() {
 	}
 
 	// We're done, print output and figure out correct exit code
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		// Let user know if something went wrong
-		fmt.Fprintf(os.Stderr, "%d: %s\n", resp.StatusCode, http.StatusText(resp.StatusCode))
-	}
 	fmt.Fprint(out, displayer.Output())
 	exitStatus := 0
 	switch {

@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 
-	"github.com/mgutz/ansi"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/rightscale/rsc"
@@ -14,8 +13,6 @@ import (
 
 var _ = Describe("Printer", func() {
 	var (
-		reset = ansi.ColorFunc("reset")
-
 		testOut *bytes.Buffer
 		testIn  io.Reader
 		format  string
@@ -23,11 +20,13 @@ var _ = Describe("Printer", func() {
 
 	JustBeforeEach(func() {
 		main.SetOutput(testOut)
+		main.SetErrorOutput(testOut)
 		main.SetInput(testIn)
 	})
 
 	AfterEach(func() {
 		main.SetOutput(os.Stdout)
+		main.SetErrorOutput(os.Stderr)
 		main.SetInput(os.Stdin)
 	})
 
@@ -41,35 +40,30 @@ var _ = Describe("Printer", func() {
 		It("prompts confirmation", func() {
 			y := main.PromptConfirmation(format)
 			Ω(y).Should(Equal("y"))
-			Ω(testOut.String()).Should(Equal(main.Warningize(format)))
+			Ω(testOut.String()).Should(Equal(format))
 		})
 
 		It("prints subtitles", func() {
 			main.PrintSubtitle(format)
-			Ω(testOut.String()).Should(Equal(main.SubTitleize(format) + "\n"))
+			Ω(testOut.String()).Should(ContainSubstring(format + "\n"))
 		})
 
 		It("prints titles", func() {
 			main.PrintTitle(format)
-			var rawOut = reset(testOut.String())
+			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(format))
 		})
 
 		It("prints success", func() {
 			main.PrintSuccess(format)
-			var rawOut = reset(testOut.String())
+			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(format))
 		})
 
 		It("prints errors", func() {
 			main.PrintError(format)
-			var rawOut = reset(testOut.String())
+			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(format))
-		})
-
-		It("formats names", func() {
-			var formatted = main.FormatName(format)
-			Ω(formatted).Should(Equal(ansi.Color(format, "green")))
 		})
 	})
 
@@ -90,29 +84,29 @@ var _ = Describe("Printer", func() {
 		It("prompts confirmation", func() {
 			var y = main.PromptConfirmation(format, suffix)
 			Ω(y).Should(Equal("y"))
-			Ω(testOut.String()).Should(Equal(main.Warningize(formatWithSuffix)))
+			Ω(testOut.String()).Should(Equal(formatWithSuffix))
 		})
 
 		It("prints subtitles", func() {
 			main.PrintSubtitle(format, suffix)
-			Ω(testOut.String()).Should(Equal(main.SubTitleize(formatWithSuffix) + "\n"))
+			Ω(testOut.String()).Should(ContainSubstring(formatWithSuffix + "\n"))
 		})
 
 		It("prints titles", func() {
 			main.PrintTitle(format, suffix)
-			var rawOut = reset(testOut.String())
+			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(formatWithSuffix))
 		})
 
 		It("prints success", func() {
 			main.PrintSuccess(format, suffix)
-			var rawOut = reset(testOut.String())
+			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(formatWithSuffix))
 		})
 
 		It("prints errors", func() {
 			main.PrintError(format, suffix)
-			var rawOut = reset(testOut.String())
+			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(formatWithSuffix))
 		})
 	})

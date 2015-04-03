@@ -73,12 +73,17 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			}
 		}
 		if param == nil {
-			supported := make([]string, len(action.CommandFlags))
-			for i, p := range action.CommandFlags {
-				supported[i] = p.Name
+			if len(action.CommandFlags) > 0 {
+				supported := make([]string, len(action.CommandFlags))
+				for i, p := range action.CommandFlags {
+					supported[i] = p.Name
+				}
+				return nil, fmt.Errorf("Unknown %s.%s flag '%s'. Supported flags are: %s",
+					resource.Name, action.Name, name, strings.Join(supported, ", "))
+			} else {
+				return nil, fmt.Errorf("Unknown %s.%s flag '%s'. %s.%s does not accept any flag",
+					resource.Name, action.Name, name, resource.Name, action.Name)
 			}
-			return nil, fmt.Errorf("Unknown %s.%s flag '%s'. Supported flags are: %s",
-				resource.Name, action.Name, name, strings.Join(supported, ", "))
 		}
 		if err := validateFlagValue(value, param); err != nil {
 			return nil, err
