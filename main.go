@@ -44,39 +44,42 @@ func main() {
 		return // No results, just exit (e.g. printed help)
 	}
 
-	// Let user know if something went wrong before doing any other processing
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		fmt.Fprintf(os.Stderr, "%d: %s\n", resp.StatusCode, http.StatusText(resp.StatusCode))
-	}
-
-	// Handle command output (apply any extraction)
+	var notExactlyOneError bool
 	displayer, err := NewDisplayer(resp)
 	if err != nil {
 		PrintFatal(err.Error())
 	}
-	notExactlyOneError := false
-	if cmdLine.ExtractOneSelect != "" {
-		err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)
-		if err != nil {
-			notExactlyOneError = strings.Contains(err.Error(),
-				"instead of one value") // Ugh, there has to be a better way
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		// Let user know if something went wrong
+		fmt.Fprintf(os.Stderr, "%s\n", resp.Status)
+		if len(displayer.body) > 0 {
+			fmt.Println(displayer.body)
 		}
-	} else if cmdLine.ExtractSelector != "" {
-		err = displayer.ApplyExtract(cmdLine.ExtractSelector, false)
-	} else if cmdLine.ExtractSelectorJson != "" {
-		err = displayer.ApplyExtract(cmdLine.ExtractSelectorJson, true)
-	} else if cmdLine.ExtractHeader != "" {
-		err = displayer.ApplyHeaderExtract(cmdLine.ExtractHeader)
-	}
-	if err != nil {
-		PrintFatal(err.Error())
-	}
-	if cmdLine.Pretty {
-		displayer.Pretty()
-	}
+	} else {
+		// Handle command output (apply any extraction)
+		if cmdLine.ExtractOneSelect != "" {
+			err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)
+			if err != nil {
+				notExactlyOneError = strings.Contains(err.Error(),
+					"instead of one value") // Ugh, there has to be a better way
+			}
+		} else if cmdLine.ExtractSelector != "" {
+			err = displayer.ApplyExtract(cmdLine.ExtractSelector, false)
+		} else if cmdLine.ExtractSelectorJson != "" {
+			err = displayer.ApplyExtract(cmdLine.ExtractSelectorJson, true)
+		} else if cmdLine.ExtractHeader != "" {
+			err = displayer.ApplyHeaderExtract(cmdLine.ExtractHeader)
+		}
+		if err != nil {
+			PrintFatal(err.Error())
+		}
+		if cmdLine.Pretty {
+			displayer.Pretty()
+		}
 
-	// We're done, print output and figure out correct exit code
-	fmt.Fprint(out, displayer.Output())
+		// We're done, print output and figure out correct exit code
+		fmt.Fprint(out, displayer.Output())
+	}
 	exitStatus := 0
 	switch {
 	case notExactlyOneError:
