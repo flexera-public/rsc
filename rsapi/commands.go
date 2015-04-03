@@ -101,6 +101,7 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 		case "[]string":
 			if v, ok := coerced[param.Name]; ok {
 				v = append(v.([]string), value)
+				coerced[param.Name] = v
 			} else {
 				coerced[param.Name] = []string{value}
 			}
@@ -122,6 +123,7 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			}
 			if v, ok := coerced[param.Name]; ok {
 				v = append(v.([]int), val)
+				coerced[param.Name] = v
 			} else {
 				coerced[param.Name] = []int{val}
 			}
@@ -143,6 +145,7 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			}
 			if v, ok := coerced[param.Name]; ok {
 				v = append(v.([]bool), val)
+				coerced[param.Name] = v
 			} else {
 				coerced[param.Name] = []bool{val}
 			}
