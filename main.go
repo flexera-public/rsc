@@ -51,9 +51,9 @@ func main() {
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		// Let user know if something went wrong
-		fmt.Fprintf(os.Stderr, "%s\n", resp.Status)
+		fmt.Fprintln(os.Stderr, resp.Status)
 		if len(displayer.body) > 0 {
-			fmt.Println(displayer.body)
+			fmt.Fprintln(os.Stderr, displayer.body)
 		}
 	} else {
 		// Handle command output (apply any extraction)
