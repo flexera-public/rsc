@@ -90,7 +90,7 @@ func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload
 		u.RawQuery = values.Encode()
 	}
 	var jsonBytes []byte
-	if payload != nil {
+	if payload != nil && len(payload) > 0 {
 		var err error
 		if jsonBytes, err = json.Marshal(payload); err != nil {
 			return nil, fmt.Errorf("Failed to serialize request body - %s", err)
