@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/mgutz/ansi"
 )
@@ -41,7 +42,7 @@ func PrintSuccess(format string, a ...interface{}) {
 
 func PrintError(format string, a ...interface{}) {
 	m := fmt.Sprintf("[ERROR] "+format, a...)
-	fmt.Fprintln(out, Errorize(m))
+	fmt.Fprintln(os.Stderr, Errorize(m))
 }
 
 func PrintFatal(format string, a ...interface{}) {

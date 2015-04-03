@@ -13,8 +13,6 @@ the RightScale Self-Service 1.0 APIs (latest version for this product).
 * As a command line tool, see [below](#usage) for usage.
 * As a way to make API requests to RightScale programmatically from go code.
 
-> *NOTE*: `rsc` is work in progress. The test coverage is currently very limited, use at your own risk.
-
 Please use [github issues](https://github.com/rightscale/rsc/issues) to report problems.
 
 Jump to:
@@ -50,7 +48,7 @@ rsc master - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
 
 - MacOS: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-darwin-amd64.tgz`
 - Windows: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-windows-amd64.zip`
-- RasPi: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-linux-arm.tgz`
+- ODroid/RasPi/armhf: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-linux-arm.tgz`
 See further down in the README for building from source.
 
 ### Command line

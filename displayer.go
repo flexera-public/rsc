@@ -41,9 +41,10 @@ func (d *Displayer) ApplySingleExtract(extract string) error {
 		return err
 	}
 	outputs := d.RawOutput.([]interface{})
-	if len(outputs) > 1 {
-		return fmt.Errorf("JSON selector '%s' returned more than one value, returned values are:\n%v\nOriginal JSON:\n%s",
-			extract, outputs, d.body)
+	if len(outputs) != 1 {
+		d.RawOutput = nil
+		return fmt.Errorf("JSON selector '%s' returned %d instead of one value",
+			extract, len(outputs))
 	}
 	if len(outputs) == 0 {
 		d.RawOutput = ""

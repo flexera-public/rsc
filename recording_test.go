@@ -46,10 +46,11 @@ var _ = Describe("Recorded request", func() {
 			defer server.Close()
 
 			// construct list of verifiers
-			uri := regexp.MustCompile(`https?://[^/]+`).
-				ReplaceAllString(testCase.RR.Uri, "")
+			url := regexp.MustCompile(`https?://[^/]+(/[^?]+)\??(.*)`).
+				FindStringSubmatch(testCase.RR.Uri)
+			//fmt.Fprintf(os.Stderr, "URL: %#v\n", url)
 			handlers := []http.HandlerFunc{
-				ghttp.VerifyRequest(testCase.RR.Verb, uri),
+				ghttp.VerifyRequest(testCase.RR.Verb, url[1], url[2]),
 			}
 			if len(testCase.RR.ReqBody) > 0 {
 				handlers = append(handlers,
@@ -59,13 +60,17 @@ var _ = Describe("Recorded request", func() {
 				handlers = append(handlers,
 					ghttp.VerifyHeaderKV(k, testCase.RR.ReqHeader.Get(k)))
 			}
+			respHeader := make(http.Header)
+			for k, v := range testCase.RR.RespHeader {
+				respHeader[k] = v
+			}
 			handlers = append(handlers,
 				ghttp.RespondWith(testCase.RR.Status, testCase.RR.RespBody,
-					http.Header{"Content-Type": []string{"application/json"}}))
+					respHeader))
 			server.AppendHandlers(ghttp.CombineHandlers(handlers...))
 
 			os.Args = append([]string{
-				"rsc", "--noAuth",
+				"rsc", "--noAuth", "--dump", "debug",
 				"--host", strings.TrimPrefix(server.URL(), "http://")},
 				testCase.CmdArgs...)
 			fmt.Fprintf(os.Stderr, "testing \"%s\"\n", strings.Join(os.Args, `" "`))
@@ -80,10 +85,10 @@ var _ = Describe("Recorded request", func() {
 
 			// Verify that stdout and the exit code are correct
 			//fmt.Fprintf(os.Stderr, "Exit %d %d\n", exitCode, testCase.ExitCode)
-			Ω(exitCode).Should(Equal(testCase.ExitCode))
-			//fmt.Fprintf(os.Stderr, "stdout got <<%s>> expected <<%s>>\n",
-			//stdoutBuf.String(), testCase.Stdout)
-			Ω(stdoutBuf.String()).Should(Equal(testCase.Stdout))
+			fmt.Fprintf(os.Stderr, "stdout got <<%q>>\n  expected <<%q>>\n",
+				stdoutBuf.String(), testCase.Stdout)
+			Ω(exitCode).Should(Equal(testCase.ExitCode), "Exit code doesn't match")
+			Ω(stdoutBuf.String()).Should(Equal(testCase.Stdout), "Stdout doesn't match")
 		})
 	}
 

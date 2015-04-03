@@ -35,10 +35,6 @@
 			"Rev": "99937931155dde6571d3e8cbab12447d208af785"
 		},
 		{
-			"ImportPath": "github.com/rightscale/rsc",
-			"Rev": "c6d43898f0414dfa6c26e76e8f366ca2899736b8"
-		},
-		{
 			"ImportPath": "gopkg.in/alecthomas/kingpin.v1",
 			"Comment": "v1.3.5",
 			"Rev": "a1508bd4f5b75aaa7ce97f411fcdc72138434bbb"

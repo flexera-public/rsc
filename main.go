@@ -49,11 +49,12 @@ func main() {
 	if err != nil {
 		PrintFatal(err.Error())
 	}
-	moreThanOneError := false
+	notExactlyOneError := false
 	if cmdLine.ExtractOneSelect != "" {
 		err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)
 		if err != nil {
-			moreThanOneError = strings.Contains(err.Error(), "returned more than one value") // Ugh, there has to be a better way
+			notExactlyOneError = strings.Contains(err.Error(),
+				"instead of one value") // Ugh, there has to be a better way
 		}
 	} else if cmdLine.ExtractSelector != "" {
 		err = displayer.ApplyExtract(cmdLine.ExtractSelector, false)
@@ -74,10 +75,10 @@ func main() {
 		// Let user know if something went wrong
 		fmt.Fprintf(os.Stderr, "%d: %s\n", resp.StatusCode, http.StatusText(resp.StatusCode))
 	}
-	fmt.Fprintf(out, displayer.Output())
+	fmt.Fprint(out, displayer.Output())
 	exitStatus := 0
 	switch {
-	case moreThanOneError:
+	case notExactlyOneError:
 		exitStatus = 6
 	case resp.StatusCode == 401:
 		exitStatus = 1
