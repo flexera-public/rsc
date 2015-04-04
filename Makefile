@@ -106,9 +106,9 @@ upload: depend
 # produce a version string that is embedded into the binary that captures the branch, the date
 # and the commit we're building
 version:
-	@echo "package main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
+	@echo "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
-	@echo "package rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
+	@echo "// +build make\n\npackage rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
 	  >rsapi/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 

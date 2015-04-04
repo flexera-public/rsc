@@ -8,3 +8,5 @@ build
 Godeps/_workspace
 recorder/recorder
 recorder/recording_new.json
+version.go
+rsapi/user_agent.go
