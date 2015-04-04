@@ -56,7 +56,6 @@ func main() {
 		}
 	}
 	raw, err := ioutil.ReadAll(r)
-	os.Remove("fd10")
 	if err != nil {
 		fail("read rsc dump: %s\n", err, outErr.String())
 	}
@@ -64,7 +63,7 @@ func main() {
 	var rr recording.RequestResponse
 	err = json.Unmarshal(raw, &rr)
 	if err != nil {
-		fail("load rsc dump: %s - dump was:\n%s\noutput was:\n%s\n", err, string(raw), out)
+		fail("load rsc dump: %s - dump was:\n%s\noutput was:\n%s\n", err, string(raw), out.String())
 	}
 	rr.ReqHeader.Del("Authorization")
 	rr.ReqHeader.Del("User-Agent")
