@@ -86,7 +86,14 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 		}
 		b, err := json.MarshalIndent(dumped, "", "    ")
 		if err == nil {
-			fmt.Fprintf(os.Stderr, "%s\n", string(b))
+			fd := os.Stderr
+			f := os.NewFile(10, "fd10")
+			_, err := f.Stat()
+			if err == nil {
+				// fd 10 is open, dump to it (used by recorder)
+				fd = f
+			}
+			fmt.Fprintf(fd, "%s\n", string(b))
 		} else {
 			fmt.Fprintf(os.Stderr, "Failed to dump request content - %s\n", err)
 		}

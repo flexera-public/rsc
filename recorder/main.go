@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
+	"syscall"
 
 	"github.com/rightscale/rsc/recording"
 )
@@ -28,7 +30,19 @@ func main() {
 	var outErr bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &outErr
-	err := cmd.Run()
+	r, w, err := os.Pipe()
+	if err != nil {
+		fail("can't create pipe: %s", err)
+	}
+	err = syscall.Dup2(int(w.Fd()), 10)
+	if err != nil {
+		fail("can't create fd 10: %s", err)
+	}
+	fd10 := os.NewFile(10, "fd10")
+	cmd.ExtraFiles = append(cmd.ExtraFiles, fd10)
+	err = cmd.Run()
+	fd10.Close()
+	w.Close()
 	exitCode := 0
 	if err != nil {
 		exCode := exitRegexp.FindStringSubmatch(err.Error())
@@ -38,13 +52,19 @@ func main() {
 				fail("Invalid exit code '%s': %s", exCode[1], err.Error())
 			}
 		} else {
-			fail("%s %s failed: %s\n%s\n", "rsc", strings.Join(args, " "), err, out.String())
+			fail("%s %s failed: %s\n%s\n%s\n", "rsc", strings.Join(args, " "), err, out.String(), outErr.String())
 		}
 	}
-	var rr recording.RequestResponse
-	err = json.Unmarshal(outErr.Bytes(), &rr)
+	raw, err := ioutil.ReadAll(r)
+	os.Remove("fd10")
 	if err != nil {
-		fail("load rsc output: %s - output was:\n%s\n", err, outErr.String())
+		fail("read rsc dump: %s\n", err, outErr.String())
+	}
+	r.Close()
+	var rr recording.RequestResponse
+	err = json.Unmarshal(raw, &rr)
+	if err != nil {
+		fail("load rsc dump: %s - dump was:\n%s\noutput was:\n%s\n", err, string(raw), out)
 	}
 	rr.ReqHeader.Del("Authorization")
 	rr.ReqHeader.Del("User-Agent")
