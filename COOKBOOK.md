@@ -2,39 +2,40 @@ Data Extraction Help and Cookbook
 =================================
 
 `rsc` supports the selection and extraction of data from an API response using a
-[JSON:select](http://jsonselect.org) expression. JSON:select is very powerful but
-it is also not the most intuitive language (unles you are intimately familiar with
+[JSON:select](http://jsonselect.org) expression. [JSON:select](http://jsonselect.org) is very powerful but
+it is also not the most intuitive language (unless you are intimately familiar with
 CSS selectors) and the current library used in `rsc` leaves room for improvement...
 Since API responses are all very similar to one another it is often easiest to create
 a new query by looking up other similar queries. This is where this help page comes in.
 
 Below are three sections:
- - A summary of JSON:select selectors
+ - A summary of [JSON:select](http://jsonselect.org) selectors
  - A definition for the `rsc` output formats
  - A cookbook with API 1.5 examples
 
 JSON:Select selector summary
 ----------------------------
 
-Pattern | Meaning
-T | A node of type T, where T is one of: string, number, object, array, boolean, or null
-T.key | The value of a property called <key> that is the child of an object T
-T."complex key" | Same as previous, but with property name specified as a JSON string
-T:root | A node of type T which is the root of the JSON document
-T:nth-child(n) | A node of type T which is the nth child of an array parent (not supported)
-T:nth-last-child(n) | A node of type T which is the nth child of an array parent counting from the end (not supported)
-T:first-child | A node of type T which is the first child of an array parent (equivalent to T:nth-child(1)
-T:last-child | A node of type T which is the last child of an array parent (equivalent to T:nth-last-child(1)
-T:only-child | A node of type T which is the only child of an array parent
-T:empty | A node of type T which is an array or object with no child
-T U | A node of type U with an ancestor of type T
-T > U | A node of type U with a parent of type T
-T ~ U | A node of type U with a sibling of type T
-S1, S2 | Any node which matches either selector S1 or S2
-T:has(S) | A node of type T which has a child node satisfying the selector S
-T:expr(E) | A node of type T with a value that satisfies the expression E
-T:val(V) | A node of type T with a value that is equal to V
-T:contains(S) | A node of type T with a string value contains the substring S
+| Pattern | Meaning
+| ------- | -------
+| T | A node of type T, where T is one of: string, number, object, array, boolean, or null
+| T.key | The value of a property called <key> that is the child of an object T
+| T."complex key" | Same as previous, but with property name specified as a JSON string
+| T:root | A node of type T which is the root of the JSON document
+| T:nth-child(n) | A node of type T which is the nth child of an array parent (not supported)
+| T:nth-last-child(n) | A node of type T which is the nth child of an array parent counting from the end (not supported)
+| T:first-child | A node of type T which is the first child of an array parent (equivalent to T:nth-child(1)
+| T:last-child | A node of type T which is the last child of an array parent (equivalent to T:nth-last-child(1)
+| T:only-child | A node of type T which is the only child of an array parent
+| T:empty | A node of type T which is an array or object with no child
+| T U | A node of type U with an ancestor of type T
+| T > U | A node of type U with a parent of type T
+| T ~ U | A node of type U with a sibling of type T
+| S1, S2 | Any node which matches either selector S1 or S2
+| T:has(S) | A node of type T which has a child node satisfying the selector S
+| T:expr(E) | A node of type T with a value that satisfies the expression E
+| T:val(V) | A node of type T with a value that is equal to V
+| T:contains(S) | A node of type T with a string value contains the substring S
 
 `rsc` Output Formats
 --------------------
@@ -56,7 +57,7 @@ Example:
 $ ./rsc --host us-3.rightscale.com --key $RS_KEY --account 60073 --x1 ".name" cm15 show /api/clouds/6
 EC2 us-west-2$
 ```
-Note that the `$` prompt is on the sme line as the response due to not having a newline.
+Note that the `$` prompt is on the same line as the response due to not having a newline.
 
 A typical example might be:
 ```
@@ -97,7 +98,7 @@ The above array parsing works well for results that are strings or numbers. For 
 are more complex JSON values an alternative is to parse the results into an array line-by-line
 as follows (beware, the quoting is essential):
 ```
-$ ll="`./rsc --host us-3.rightscale.com --key $RS_KEY --xm ".links" index clouds`"
+$ ll="`./rsc --host us-3.rightscale.com --key $RS_KEY --xm ".links" cm15 index clouds`"
 $ echo $ll | wc -l
 9
 $ readarray -t links <<<"$ll"
@@ -125,14 +126,14 @@ Cookbook
 - Find instance's public IP addresses
 ```
 $ ./rsc --host us-3.rightscale.com --key 1234567890 \
-           --x1 '.public_ip_addresses' show /api/clouds/1/instances/LAB4OFL7I82E
+           --x1 '.public_ip_addresses' cm15 show /api/clouds/1/instances/LAB4OFL7I82E
 ["54.147.25.88"]
 ```
 
 - Find an instance's resource_uid:
 ```
 ./rsc --host us-3.rightscale.com --key 1234567890 \
-           --x1 '.resource_uid' show /api/clouds/1/instances/LAB4OFL7I82E
+           --x1 '.resource_uid' cm15 show /api/clouds/1/instances/LAB4OFL7I82E
 "i-4e9a80b5"
 ```
 
@@ -140,22 +141,22 @@ $ ./rsc --host us-3.rightscale.com --key 1234567890 \
 ```
 $ ./rsc --host us-3.rightscale.com --key 1234567890 \
            --x1 'object:has(.rel:val("parent")).href' \
-           show /api/clouds/1/instances/LAB4OFL7I82E
+           cm15 show /api/clouds/1/instances/LAB4OFL7I82E
 "/api/servers/994838003"
 ```
 
 - Find an instance's cloud type:
 ```
 cloud=$(./rsc --host us-3.rightscale.com --key 1234567890 \
-        --x1 'object:has(.rel:val("cloud")).href' show /api/clouds/1/instances/LAB4OFL7I82E)
+        --x1 'object:has(.rel:val("cloud")).href' cm15 show /api/clouds/1/instances/LAB4OFL7I82E)
 ./rsc --host us-3.rightscale.com --key 1234567890 \
-         --x1 .cloud_type show $cloud
+         --x1 '.cloud_type' cm15 show $cloud
 ```
 
 - Find the hrefs of all clouds of type amazon:
 ```
 $ ./rsc --host us-3.rightscale.com --key 1234567890 \
-           --xm 'object:has(.rel:val("self")).href' index clouds 'filter[]=cloud_type==amazon'
+           --xm 'object:has(.rel:val("self")).href' cm15 index clouds 'filter[]=cloud_type==amazon'
 "/api/clouds/1"
 "/api/clouds/3"
 "/api/clouds/4"
@@ -167,16 +168,16 @@ $ ./rsc --host us-3.rightscale.com --key 1234567890 \
 "/api/clouds/9"
 ```
 Note: the match `object:has(.rel:val("self")).href` serves to extract the hrefs from the _self_
-links. The returned json for each cloud includes
+links. The returned JSON for each cloud includes
 `"links":[ {"href":"/api/clouds/7", "rel":"self"}, {"href":"/api/clouds/7/datacenters",
-"rel":"datacenters"}, ... ]` and the json:select expression says:
-find an _object_ (json hash) that has a _rel_ child/field whose value is _self_
+"rel":"datacenters"}, ... ]` and the [JSON:select](http://jsonselect.org) expression says:
+find an _object_ (JSON hash) that has a _rel_ child/field whose value is _self_
 and then extract the value of the _href_ child/field. The _object_ here matches the
 `{"href":"/api/clouds/7","rel":"self"}` hash.
 
 Illustrating the difference between `--x1`, `--xm`, and `--xj`:
 - `--x1` produces: `rsc: error: Multiple values selected, result was:
-  <<[{"cloud_type":"amazon","descr... >>` with a non-zero exit code (it prints the raw json
+  <<[{"cloud_type":"amazon","descr... >>` with a non-zero exit code (it prints the raw JSON
 	for troubleshooting purposes).
 - `--xm` produces: `"/api/clouds/1" "/api/clouds/3" "/api/clouds/4" "/api/clouds/5"
   "/api/clouds/6" "/api/clouds/7" "/api/clouds/2" "/api/clouds/8" "/api/clouds/9"` and can be used
@@ -184,10 +185,10 @@ Illustrating the difference between `--x1`, `--xm`, and `--xj`:
 - `--xj` produces: `["/api/clouds/1", "/api/clouds/3", "/api/clouds/4", "/api/clouds/5",
    "/api/clouds/6", "/api/clouds/7", "/api/clouds/2", "/api/clouds/8", "/api/clouds/9"]`
 
-- Find a running or stopped instance by public IP address in AWS us-east (cloud #1):
+Find a running or stopped instance by public IP address in AWS us-east (cloud #1):
 ```
 $ ./rsc --host us-3.rightscale.com --key 1234567890 \
-           --xm 'object:has(.rel:val("self")).href' index /api/clouds/1/instances \
+           --xm 'object:has(.rel:val("self")).href' cm15 index /api/clouds/1/instances \
            'filter[]=public_ip_address==54.147.25.88' 'filter[]=state<>terminated' \
            'filter[]=state<>decommissioning' 'filter[]=state<>terminating' \
            'filter[]=state<>stopping' 'filter[]=state<>provisioned' 'filter[]=state<>failed'
