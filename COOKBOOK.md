@@ -24,8 +24,8 @@ JSON:Select selector summary
 | T:root | A node of type T which is the root of the JSON document
 | T:nth-child(n) | A node of type T which is the nth child of an array parent (not supported)
 | T:nth-last-child(n) | A node of type T which is the nth child of an array parent counting from the end (not supported)
-| T:first-child | A node of type T which is the first child of an array parent (equivalent to T:nth-child(1)
-| T:last-child | A node of type T which is the last child of an array parent (equivalent to T:nth-last-child(1)
+| T:first-child | A node of type T which is the first child of an array parent (equivalent to T:nth-child(1))
+| T:last-child | A node of type T which is the last child of an array parent (equivalent to T:nth-last-child(1))
 | T:only-child | A node of type T which is the only child of an array parent
 | T:empty | A node of type T which is an array or object with no child
 | T U | A node of type U with an ancestor of type T
