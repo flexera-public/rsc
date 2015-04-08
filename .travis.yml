@@ -10,9 +10,9 @@ env:
     # RSBIN_KEY= to upload to rightscale-binaries bucket in q&b acct:
   - secure: "ijNb1OR2HyNxKXMPemlYit+QEyJDahpm0L5nTI4sevJ2+99+L/p/rBGOUfrCxnnAD3Swn9jzkqLjfwZiUqL5MRMzNHtTnCKgmVRZpH6xMeFpZlQqTGVpOeLr1jVbbXlopjro1dtPEFE1ytu0k0AQS2G/kljOwN4FB3pnDsPPKZ0="
     # GITHUB_TOKEN= to push code coverage comment to github
-  - secure: "HyJrsXL+WJkcL5TA4px0SZL6rY6Ft7IX8R7qq0K99bh9nX2Hl1my3nMY7OqcPE/Q0t0FUvOcq5U1c1wL1PBz9gu4n2Wpz4gU28drnUocFZir2osUOG0QCHrdeaXSKn2zekyCB5puxJleEIZqCh36rR2F8SwCh/88d6poUXFyvxI="
+  - secure: "UarvquG9ge5jXZn4gzfM4IhdYNsQYt3iM+EAlkiYiUMvor1d8nkpw5vSPhpdR7YE5fyCdZTzrqwdnEnACdDdZHLa1jR8PwTnWEWeRq+DBH5XFjcKbG3ODKmRzOYiU138K70I7e0y0eOFqEWsdNvyg/SdemmRgFbIAEZT7KYtEjg="
     # COV_KEY= code coverage upload keys
-  - secure: "QUrs0MYfT0DN+aDCIfe8WVDRHOlMjYCEZp5/qPk8P100AROijwz+hD1HT5QuO70pD5RvaoI+GIrCb0eiSX48hp/u5bs6PcgD+M+F2M/6HrGDb6Hdo8azi/M0x63f50ku5r+PyhMD/4Ohsjb24HwGl4CKcmzfYJ+w1Ipw1NygkNI="
+  - secure: "kcM2KYw0QC4BpAzUq1P7J1hTPVWDeJrmi6N42Ku5n8b1Bz3JtnFg6XxJcBBM6cPtCCCFhJhYDzXEQ/gX2Q7W7WMns/lcY3jev/1RSZg5Sdbf7y2CEQg/C/cWIlK+EQAOYAeY/B3ikIox+WwnC2P+Eoh7wn0ReTFpxTsmsvF5PDg="
 
 # sudo=false makes the build run using a container
 sudo: false
@@ -62,7 +62,6 @@ script:
   # Deploy code coverage result to S3
   - export AWS_ACCESS_KEY_ID=AKIAI4RIGBPD3NP2RQ3Q # code coverage bucket access
   - export AWS_SECRET_ACCESS_KEY=${COV_KEY}
-  - printenv
   - gof3r put -b rs-code-coverage -k ${NAME}/${FILENAME} --acl public-read < ${FILENAME}
   # Deploy code coverage badge to S3
   - export COVERAGE_INT=$(echo $COVERAGE | cut -d. -f1)
