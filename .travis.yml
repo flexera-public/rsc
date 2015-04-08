@@ -64,6 +64,9 @@ script:
   - export AWS_SECRET_ACCESS_KEY=${COV_KEY}
   - gof3r put -b rs-code-coverage -k ${NAME}/${FILENAME} --acl public-read < ${FILENAME}
   # Deploy code coverage badge to S3
+  # If you change this you *must* verify that the badge actually updates and isn't cached by
+  # github in perpetuity! The image must serve over https, must have a no-cache header, must
+  # have a proper content-type, and possbly more...
   - export COVERAGE_INT=$(echo $COVERAGE | cut -d. -f1)
   - export BADGE_FILENAME=cc_badge_${TRAVIS_BRANCH}.svg
   - export BADGE_COLOR=$( if [ ${COVERAGE_INT} -gt 80 ] ; then echo brightgreen ; elif [ ${COVERAGE_INT} -gt 40 ] ; then echo yellow ; else echo red ; fi )
