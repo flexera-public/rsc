@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -20,16 +21,21 @@ const output = "recording_new.json"
 var exitRegexp = regexp.MustCompile(`exit status (\d+)`)
 
 func main() {
+	// Massage the command line args
 	args := []string{"--dump=json"}
 	args = append(args, os.Args[1:]...)
-	cmd := exec.Command("rsc", args...)
+	cmd := exec.Command("../rsc", args...)
 	_, args = extractArg("--dump", args)
 	_, args = extractArg("--host", args)
 	_, args = extractArg("--key", args)
+
+	// Capture stdout/stderr into byte buffers
 	var out bytes.Buffer
 	var outErr bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &outErr
+
+	// Create a pipe for the recording JSON info
 	r, w, err := os.Pipe()
 	if err != nil {
 		fail("can't create pipe: %s", err)
@@ -40,9 +46,15 @@ func main() {
 	}
 	fd10 := os.NewFile(10, "fd10")
 	cmd.ExtraFiles = append(cmd.ExtraFiles, fd10)
+	bufPtr, done := readAllAsync(r)
+
+	// Run the command and wait for it to finish
 	err = cmd.Run()
 	fd10.Close()
 	w.Close()
+	<-done // wait for async read of pipe to complete
+
+	// Process error conditions
 	exitCode := 0
 	if err != nil {
 		exCode := exitRegexp.FindStringSubmatch(err.Error())
@@ -52,18 +64,18 @@ func main() {
 				fail("Invalid exit code '%s': %s", exCode[1], err.Error())
 			}
 		} else {
-			fail("%s %s failed: %s\n%s\n%s\n", "rsc", strings.Join(args, " "), err, out.String(), outErr.String())
+			fail("%s %s failed: %s\n%s\n%s\n", "rsc", strings.Join(args, " "),
+				err, out.String(), outErr.String())
 		}
 	}
-	raw, err := ioutil.ReadAll(r)
-	if err != nil {
-		fail("read rsc dump: %s\n", err, outErr.String())
-	}
-	r.Close()
+	fmt.Fprintf(os.Stderr, "Exit code: %#v\n", exitCode)
+
+	// Parse recording output
 	var rr recording.RequestResponse
-	err = json.Unmarshal(raw, &rr)
+	err = json.Unmarshal(*bufPtr, &rr)
 	if err != nil {
-		fail("load rsc dump: %s - dump was:\n%s\noutput was:\n%s\n", err, string(raw), out.String())
+		fail("load rsc dump: %s - dump was:\n%s\noutput was:\n%s\n",
+			err, string(*bufPtr), out.String())
 	}
 	rr.ReqHeader.Del("Authorization")
 	rr.ReqHeader.Del("User-Agent")
@@ -85,6 +97,23 @@ func main() {
 	write(js)
 	// Echo output of rsc so calling script can use it
 	fmt.Print(out.String())
+	os.Exit(exitCode)
+}
+
+// Read file asynchronously
+func readAllAsync(f io.ReadCloser) (*[]byte, chan struct{}) {
+	done := make(chan struct{}, 1) // signal that the read is done
+	buf := make([]byte, 0)         // placeholder buffer for the result
+	go func() {
+		var err error
+		buf, err = ioutil.ReadAll(f)
+		if err != nil {
+			buf = make([]byte, 0)
+		}
+		f.Close()
+		done <- struct{}{}
+	}()
+	return &buf, done
 }
 
 // Extract command line argument with given name and return remaining arguments
@@ -94,6 +123,7 @@ func extractArg(name string, args []string) (string, []string) {
 	var skip bool
 	for i, a := range args {
 		if skip {
+			skip = false
 			continue
 		}
 		if strings.Contains(a, "=") {

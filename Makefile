@@ -139,6 +139,7 @@ travis-test: lint generate
 # that if there are errors the output of gingko refers to incorrect line numbers
 # tip: if you don't like colors use gingkgo -r -noColor
 test: lint generate
+	@test "$PWD" != `/bin/pwd` && echo "*** Please cd `/bin/pwd` if compilation fails"
 	ginkgo -r
 	ginkgo -r -cover
 	go tool cover -func=`basename $$PWD`.coverprofile

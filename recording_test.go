@@ -84,7 +84,7 @@ var _ = Describe("Recorded request", func() {
 			main()
 
 			// Verify that stdout and the exit code are correct
-			//fmt.Fprintf(os.Stderr, "Exit %d %d\n", exitCode, testCase.ExitCode)
+			fmt.Fprintf(os.Stderr, "Exit %d %d\n", exitCode, testCase.ExitCode)
 			fmt.Fprintf(os.Stderr, "stdout got <<%q>>\n  expected <<%q>>\n",
 				stdoutBuf.String(), testCase.Stdout)
 			Ω(exitCode).Should(Equal(testCase.ExitCode), "Exit code doesn't match")

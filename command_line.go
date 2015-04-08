@@ -100,7 +100,7 @@ func validateCommandLine(cmdLine *cmd.CommandLine) {
 	if cmdLine.Command == "setup" || cmdLine.Command == "actions" || cmdLine.ShowHelp || cmdLine.RL10 {
 		return
 	}
-	if cmdLine.Account == 0 && cmdLine.Token == "" {
+	if cmdLine.Account == 0 && cmdLine.Token == "" && !cmdLine.NoAuth {
 		kingpin.Fatalf("missing --account option")
 	}
 	if cmdLine.Host == "" {

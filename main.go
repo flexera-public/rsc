@@ -55,15 +55,16 @@ func main() {
 		if len(displayer.body) > 0 {
 			fmt.Fprintln(os.Stderr, displayer.body)
 		}
+	} else if cmdLine.ExtractOneSelect != "" {
+		err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)
+		if err != nil {
+			notExactlyOneError = strings.Contains(err.Error(),
+				"instead of one value") // Ugh, there has to be a better way
+			PrintError(err.Error())
+		}
+		fmt.Fprint(out, displayer.Output())
 	} else {
-		// Handle command output (apply any extraction)
-		if cmdLine.ExtractOneSelect != "" {
-			err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)
-			if err != nil {
-				notExactlyOneError = strings.Contains(err.Error(),
-					"instead of one value") // Ugh, there has to be a better way
-			}
-		} else if cmdLine.ExtractSelector != "" {
+		if cmdLine.ExtractSelector != "" {
 			err = displayer.ApplyExtract(cmdLine.ExtractSelector, false)
 		} else if cmdLine.ExtractSelectorJson != "" {
 			err = displayer.ApplyExtract(cmdLine.ExtractSelectorJson, true)
@@ -72,14 +73,12 @@ func main() {
 		}
 		if err != nil {
 			PrintFatal(err.Error())
-		}
-		if cmdLine.Pretty {
+		} else if cmdLine.Pretty {
 			displayer.Pretty()
 		}
-
-		// We're done, print output and figure out correct exit code
 		fmt.Fprint(out, displayer.Output())
 	}
+	// Figure out exit code
 	exitStatus := 0
 	switch {
 	case notExactlyOneError:
@@ -95,6 +94,7 @@ func main() {
 	case resp.StatusCode > 499:
 		exitStatus = 5
 	}
+	//fmt.Fprintf(os.Stderr, "exitStatus=%d\n", exitStatus)
 	osExit(exitStatus)
 }
 
