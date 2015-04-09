@@ -1,12 +1,13 @@
-# rsc - A generic RightScale API client
+# rsc - A generic RightScale API client [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs as well as
 the RightScale Self-Service 1.0 APIs (latest version for this product).
 
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
+- Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](https://gocover.io/github.com/rightscale/rsc)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE)
+- 10.0.rc0: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=10.0.rc0)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_10.0.rc0.svg)](https://gocover.io/github.com/rightscale/rsc)
 
 `rsc` can be used in one of two ways:
 
@@ -39,16 +40,16 @@ Management API 1.6 and `rsc ss` to send requests to the RightScale Self-Service 
 
 Download a statically linked binary and run it as follows:
 ```
-$ curl https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-linux-amd64.tgz |\
+$ curl https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/10.0.rc0/rsc-linux-amd64.tgz |\
   tar -zxf - -O ./rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
 rsc master - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
 ```
 
-- MacOS: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-darwin-amd64.tgz`
-- Windows: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-windows-amd64.zip`
-- ODroid/RasPi/armhf: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/master/rsc-linux-arm.tgz`
+- MacOS: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/10.0.rc0/rsc-darwin-amd64.tgz`
+- Windows: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/10.0.rc0/rsc-windows-amd64.zip`
+- ODroid/RasPi/armhf: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/10.0.rc0/rsc-linux-arm.tgz`
 See further down in the README for building from source.
 
 ### Command line
