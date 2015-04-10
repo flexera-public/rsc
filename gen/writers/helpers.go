@@ -46,19 +46,7 @@ func parameters(a *gen.Action) string {
 // Produces code that initializes a ApiParams struct with the values of parameters for the given
 // action and location.
 func paramsInitializer(action *gen.Action, location int, varName string) string {
-	var names []string
-	switch location {
-	case gen.PathParam:
-		names = action.PathParamNames
-	case gen.QueryParam:
-		names = action.QueryParamNames
-	case gen.PayloadParam:
-		names = action.PayloadParamNames
-	}
-	if len(names) == 0 {
-		return ""
-	}
-	fields := []string{}
+	var fields []string
 	var optionals []*gen.ActionParam
 	for _, param := range action.Params {
 		if param.Location != location {
@@ -69,6 +57,9 @@ func paramsInitializer(action *gen.Action, location int, varName string) string 
 		} else {
 			optionals = append(optionals, param)
 		}
+	}
+	if len(fields) == 0 && len(optionals) == 0 {
+		return ""
 	}
 	var paramsDecl = fmt.Sprintf("rsapi.ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
 	if len(optionals) == 0 {

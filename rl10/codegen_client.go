@@ -206,6 +206,9 @@ func (loc *EnvLocator) Update(payload string) (string, error) {
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"payload": payload,
+	}
 	uri, err := loc.Url("Env", "update")
 	if err != nil {
 		return res, err

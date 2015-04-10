@@ -303,7 +303,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "arguments[*]",
+						Name:        "arguments",
 						Description: `Script argument values`,
 						Type:        "map",
 						Location:    metadata.QueryParam,
@@ -329,7 +329,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "arguments[*]",
+						Name:        "arguments",
 						Description: `Script argument values`,
 						Type:        "map[string]interface{}",
 						Location:    metadata.QueryParam,
