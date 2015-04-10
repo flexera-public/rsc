@@ -61,9 +61,21 @@ func (a *Api) buildHttpRequest(uri string, params rsapi.ApiParams) (*http.Reques
 			switch t := p.(type) {
 			case string:
 				values.Set(n, t)
+			case int:
+				values.Set(n, strconv.Itoa(t))
+			case bool:
+				values.Set(n, strconv.FormatBool(t))
 			case []string:
 				for _, e := range t {
 					values.Add(n, e)
+				}
+			case []int:
+				for _, e := range t {
+					values.Add(n, strconv.Itoa(e))
+				}
+			case []bool:
+				for _, e := range t {
+					values.Add(n, strconv.FormatBool(e))
 				}
 			case map[string]string:
 				for pn, e := range t {
