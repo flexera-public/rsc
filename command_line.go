@@ -23,6 +23,8 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 
 	// 2. Parse flags
 	cmdLine := cmd.CommandLine{}
+	jsonCmd := app.Command("json", "apply jsonselect expression to STDIN")
+	jsonCmd.Arg("expression", "jsonselect expression, see http://jsonselect.org/#docs").Required().StringVar(&cmdLine.JsonSelect)
 	app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).StringVar(&cmdLine.ConfigPath)
 	app.Flag("account", "RightScale account ID").Short('a').IntVar(&cmdLine.Account)
 	app.Flag("host", "RightScale login endpoint (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)
@@ -97,7 +99,11 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 
 // Make sure all the required information is there
 func validateCommandLine(cmdLine *cmd.CommandLine) {
-	if cmdLine.Command == "setup" || cmdLine.Command == "actions" || cmdLine.ShowHelp || cmdLine.RL10 {
+	if cmdLine.Command == "setup" ||
+		cmdLine.Command == "actions" ||
+		cmdLine.Command == "json" ||
+		cmdLine.ShowHelp ||
+		cmdLine.RL10 {
 		return
 	}
 	if cmdLine.Account == 0 && cmdLine.Token == "" && !cmdLine.NoAuth {

@@ -9,6 +9,7 @@ import "net/http"
 type CommandLine struct {
 	Command             string // Command to be run (e.g. "api15 index")
 	ConfigPath          string // Path to rsc config file, defaults to $HOME/.rsc
+	JsonSelect          string // jsonselect expression for json subcommand
 	Account             int    // RightScale account, optional
 	Host                string // API hostname, optional
 	Token               string // Auth token, alternative to Username+Password or RL10
