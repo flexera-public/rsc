@@ -2,6 +2,7 @@
 	"account_owner": "string",
 	"actions": "[]string",
 	"address": "string",
+	"admin_password": "string",
 	"array_type": "string",
 	"asset_counts": "int",
 	"asset_paths": "[]string",
