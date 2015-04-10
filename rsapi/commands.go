@@ -59,20 +59,12 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 	queryParams := ApiParams{}
 	payloadParams := ApiParams{}
 	for _, p := range params {
-		elems := strings.SplitN(p, "=", 2)
-		if len(elems) != 2 {
-			return nil, fmt.Errorf("Arguments must be of the form NAME=VALUE, value provided was '%s'", p)
-		}
-		name := elems[0]
-		value := elems[1]
-		var param *metadata.ActionParam
-		for _, ap := range action.CommandFlags {
-			if ap.Name == name {
-				param = ap
-				break
-			}
+		param, value, err := a.findParamAndValue(action, p)
+		if err != nil {
+			return nil, err
 		}
 		if param == nil {
+			name := strings.SplitN(p, "=", 2)[0]
 			if len(action.CommandFlags) > 0 {
 				supported := make([]string, len(action.CommandFlags))
 				for i, p := range action.CommandFlags {
@@ -85,6 +77,7 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 					resource.Name, action.Name, name, resource.Name, action.Name)
 			}
 		}
+		name := param.Name
 		if err := validateFlagValue(value, param); err != nil {
 			return nil, err
 		}
@@ -149,6 +142,12 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			} else {
 				coerced[param.Name] = []bool{val}
 			}
+		case "map":
+			if _, ok := coerced[param.Name]; !ok {
+				coerced[param.Name] = map[string]string{}
+			}
+			velems := strings.SplitN(value, "=", 2)
+			coerced[param.Name].(map[string]string)[velems[0]] = velems[1]
 		}
 	}
 	for _, p := range action.CommandFlags {
@@ -364,6 +363,43 @@ func (a *Api) parseResource(cmd, hrefPrefix string, commandValues ActionCommands
 	return resource, vars, nil
 }
 
+// Capture enumerable input key value
+var captureEnumRegex = regexp.MustCompile(`.*\[(.+)\]$`)
+
+// Extract parameter from metadata that correspond to given command line flag
+// The flag is of the form "NAME=VALUE", the one complication is for the "enumerable" case where
+// the flag is of the form "NAME[KEY]=VALUE" (e.g. inputs).
+// First check if there is a parameter with the given flag name, then check for the enumerable case
+// if not found.
+func (a *Api) findParamAndValue(action *metadata.Action, flag string) (*metadata.ActionParam, string, error) {
+	elems := strings.SplitN(flag, "=", 2)
+	if len(elems) != 2 {
+		return nil, "", fmt.Errorf("Arguments must be of the form NAME=VALUE, value provided was '%s'", flag)
+	}
+	name := elems[0]
+	value := elems[1]
+	var param *metadata.ActionParam
+	for _, ap := range action.CommandFlags {
+		if ap.Name == name {
+			param = ap
+			break
+		}
+	}
+	if param == nil && strings.Contains(name, "[") {
+		// Handle enumerable case
+		name = name[:strings.LastIndex(name, "[")]
+		for _, ap := range action.CommandFlags {
+			if ap.Name == name {
+				param = ap
+				es := captureEnumRegex.FindStringSubmatch(elems[0])
+				value = es[1] + "=" + value
+				break
+			}
+		}
+	}
+	return param, value, nil
+}
+
 // Validate flag value using validation criteria provided in metadata
 func validateFlagValue(value string, param *metadata.ActionParam) error {
 	if param.Regexp != nil {
@@ -395,7 +431,7 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 
 // Reconstruct payload map from flatten values
 func buildPayload(values ApiParams) (ApiParams, error) {
-	payload := map[string]interface{}{}
+	payload := ApiParams{}
 	for name, value := range values {
 		if _, err := normalize(payload, name, value); err != nil {
 			return nil, err
