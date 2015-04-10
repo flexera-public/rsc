@@ -302,10 +302,9 @@ func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
 // POST /api/alerts/:id/quench
 // Suppresses the Alert from being triggered for a given time period. Idempotent.
 // duration: The time period in seconds to suppress Alert from being triggered.
-func (loc *AlertLocator) Quench(duration string) (string, error) {
-	var res string
+func (loc *AlertLocator) Quench(duration string) error {
 	if duration == "" {
-		return res, fmt.Errorf("duration is required")
+		return fmt.Errorf("duration is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
@@ -314,19 +313,13 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	}
 	uri, err := loc.Url("Alert", "quench")
 	if err != nil {
-		return res, err
+		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return res, err
+		return err
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	res = string(respBody)
-	return res, err
+	return nil
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
@@ -2629,6 +2622,7 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]interface{}) error {
 // (or provisioned) virtual machine existing in the cloud.
 type Instance struct {
 	Actions                  []string            `json:"actions,omitempty"`
+	AdminPassword            string              `json:"admin_password,omitempty"`
 	AssociatePublicIpAddress bool                `json:"associate_public_ip_address,omitempty"`
 	CloudSpecificAttributes  map[string]string   `json:"cloud_specific_attributes,omitempty"`
 	CreatedAt                time.Time           `json:"created_at,omitempty"`
@@ -2673,7 +2667,9 @@ func (api *Api) InstanceLocator(href string) *InstanceLocator {
 
 // POST /api/clouds/:cloud_id/instances
 // Creates and launches a raw instance using the provided parameters.
-func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, error) {
+// -- Optional parameters:
+// api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+func (loc *InstanceLocator) Create(instance *InstanceParam, options rsapi.ApiParams) (*InstanceLocator, error) {
 	var res *InstanceLocator
 	if instance == nil {
 		return res, fmt.Errorf("instance is required")
@@ -2682,6 +2678,10 @@ func (loc *InstanceLocator) Create(instance *InstanceParam) (*InstanceLocator, e
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{
 		"instance": instance,
+	}
+	var apiBehaviorOpt = options["api_behavior"]
+	if apiBehaviorOpt != nil {
+		payloadParams["api_behavior"] = apiBehaviorOpt
 	}
 	uri, err := loc.Url("Instance", "create")
 	if err != nil {
@@ -2752,6 +2752,7 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) 
 // Note that this action can only be performed in "next" instances, and not on instances that are already running.
 // -- Optional parameters:
 // api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+// count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
 // inputs
 func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -2760,6 +2761,10 @@ func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
 	var apiBehaviorOpt = options["api_behavior"]
 	if apiBehaviorOpt != nil {
 		payloadParams["api_behavior"] = apiBehaviorOpt
+	}
+	var countOpt = options["count"]
+	if countOpt != nil {
+		payloadParams["count"] = countOpt
 	}
 	var inputsOpt = options["inputs"]
 	if inputsOpt != nil {
@@ -7167,6 +7172,23 @@ func (loc *ServerLocator) Terminate() error {
 	return nil
 }
 
+// POST /api/servers/:id/unwrap
+// POST /api/deployments/:deployment_id/servers/:id/unwrap
+// No description provided for unwrap.
+func (loc *ServerLocator) Unwrap() error {
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("Server", "unwrap")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // PUT /api/servers/:id
 // PUT /api/deployments/:deployment_id/servers/:id
 // Updates attributes of a single server.
@@ -8995,6 +9017,28 @@ func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 	return res, err
 }
 
+// PUT /api/clouds/:cloud_id/volumes/:id
+// No description provided for update.
+func (loc *VolumeLocator) Update(volume *VolumeParam2) error {
+	if volume == nil {
+		return fmt.Errorf("volume is required")
+	}
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"volume": volume,
+	}
+	uri, err := loc.Url("Volume", "update")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 /******  VolumeAttachment ******/
 
 // A VolumeAttachment represents a relationship between a volume and an instance.
@@ -9186,15 +9230,21 @@ func (api *Api) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // POST /api/clouds/:cloud_id/volume_snapshots
 // Creates a new volume_snapshot.
-func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*VolumeSnapshotLocator, error) {
+// -- Optional parameters:
+// volume_snapshot
+// volume_snapshot_copy
+func (loc *VolumeSnapshotLocator) Create(options rsapi.ApiParams) (*VolumeSnapshotLocator, error) {
 	var res *VolumeSnapshotLocator
-	if volumeSnapshot == nil {
-		return res, fmt.Errorf("volumeSnapshot is required")
-	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
-		"volume_snapshot": volumeSnapshot,
+	payloadParams = rsapi.ApiParams{}
+	var volumeSnapshotOpt = options["volume_snapshot"]
+	if volumeSnapshotOpt != nil {
+		payloadParams["volume_snapshot"] = volumeSnapshotOpt
+	}
+	var volumeSnapshotCopyOpt = options["volume_snapshot_copy"]
+	if volumeSnapshotCopyOpt != nil {
+		payloadParams["volume_snapshot_copy"] = volumeSnapshotCopyOpt
 	}
 	uri, err := loc.Url("VolumeSnapshot", "create")
 	if err != nil {
@@ -9697,9 +9747,11 @@ type QueueSpecificParams struct {
 }
 
 type RecurringVolumeAttachmentParam struct {
-	Device       string `json:"device,omitempty"`
-	RunnableHref string `json:"runnable_href,omitempty"`
-	StorageHref  string `json:"storage_href,omitempty"`
+	Device         string                 `json:"device,omitempty"`
+	RunnableHref   string                 `json:"runnable_href,omitempty"`
+	Settings       map[string]interface{} `json:"settings,omitempty"`
+	StorageHref    string                 `json:"storage_href,omitempty"`
+	VolumeTypeHref string                 `json:"volume_type_href,omitempty"`
 }
 
 type RepositoryParam struct {
@@ -9913,6 +9965,17 @@ type VolumeParam struct {
 	PlacementGroupHref       string `json:"placement_group_href,omitempty"`
 	Size                     string `json:"size,omitempty"`
 	VolumeTypeHref           string `json:"volume_type_href,omitempty"`
+}
+
+type VolumeParam2 struct {
+	Name string `json:"name,omitempty"`
+}
+
+type VolumeSnapshotCopy struct {
+	CloudHref          string `json:"cloud_href,omitempty"`
+	Description        string `json:"description,omitempty"`
+	Name               string `json:"name,omitempty"`
+	VolumeSnapshotHref string `json:"volume_snapshot_href,omitempty"`
 }
 
 type VolumeSnapshotParam struct {
