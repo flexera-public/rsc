@@ -26,9 +26,12 @@ func main() {
 	// Execute appropriate command
 	var resp *http.Response
 	topCommand := strings.Split(cmdLine.Command, " ")[0]
-	if topCommand == "setup" {
+	switch topCommand {
+	case "setup":
 		err = CreateConfig(cmdLine.ConfigPath)
-	} else {
+	case "json":
+		err = ApplyJsonselect(cmdLine.JsonSelect)
+	default:
 		var client cmd.CommandClient
 		client, err = ApiClient(topCommand, cmdLine)
 		if err == nil {
@@ -41,7 +44,7 @@ func main() {
 		PrintFatal(err.Error())
 	}
 	if resp == nil {
-		return // No results, just exit (e.g. printed help)
+		return // No results, just exit (e.g. setup, printed help...)
 	}
 
 	var notExactlyOneError bool

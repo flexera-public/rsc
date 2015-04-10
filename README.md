@@ -117,8 +117,12 @@ JSON select expression (see [http://jsonselect.org/](http://jsonselect.org/)). F
 ```
 $ rsc --xm .name cm15 index clouds
 ```
-extracts the names of each cloud from the response and prints the result as a space separated list which
-is convenient to consume from bash scripts.
+extracts the names of each cloud from the response and prints the result as a newline separated list
+which is convenient to consume from bash scripts:
+```
+$ declare -a "clouds=(`rsc --xm=.cloud_type cm15 index clouds`)"; set | egrep '^clouds'
+clouds=([0]="amazon" [1]="open_stack_v2" [2]="cloud_stack" [3]="rackspace_next_gen" [4]="google" [5]="azure" [6]="soft_layer" [7]="vscale")
+```
 
 For additional help on extracting values see the [Command Line Help and Cookbook](COOKBOOK.md).
 
