@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"path"
 
-	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/writers"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen/writers" // import "gopkg.in/rightscale/rsc.v1-unstable/gen/writers"
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 

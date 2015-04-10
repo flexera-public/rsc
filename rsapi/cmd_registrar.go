@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v1-unstable/metadata" // import "gopkg.in/rightscale/rsc.v1-unstable/metadata"
 	"gopkg.in/alecthomas/kingpin.v1"
 )
 

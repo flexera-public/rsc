@@ -5,7 +5,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
 )
 
 // MetadataWriter struct exposes methods to generate the go API client command line tool

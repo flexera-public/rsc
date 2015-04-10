@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rightscale/rsc/cmd"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
 	"gopkg.in/alecthomas/kingpin.v1"
 
 	// phoney reference to make Godep pull this in for the code generators

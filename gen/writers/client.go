@@ -6,7 +6,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
 )
 
 // ClientWriter struct exposes methods to generate the go API client code

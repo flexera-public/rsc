@@ -11,8 +11,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rightscale/rsc/cm15"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/cm15" // import "gopkg.in/rightscale/rsc.v1-unstable/cm15"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 
 func main() {

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v1-unstable/metadata" // import "gopkg.in/rightscale/rsc.v1-unstable/metadata"
 )
 
 // Result of parsing the command line (ParseCommand method).

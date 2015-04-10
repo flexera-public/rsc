@@ -13,7 +13,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/rightscale/rsc/recording"
+	"gopkg.in/rightscale/rsc.v1-unstable/recording" // import "gopkg.in/rightscale/rsc.v1-unstable/recording"
 )
 
 // Log request, dump its content if required then make request and log response and dump it.

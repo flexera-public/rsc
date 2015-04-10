@@ -6,7 +6,7 @@ import (
 
 	"bitbucket.org/pkg/inflect"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
 )
 
 // Regular expression used to capture brackets in query name

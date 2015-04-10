@@ -4,8 +4,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/api15gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen/api15gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen/api15gen"
 )
 
 var _ = Describe("ApiAnalyzer ParseRoute", func() {

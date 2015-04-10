@@ -46,6 +46,7 @@ TRAVIS_BRANCH?=dev
 DATE=$(shell date '+%F %T')
 SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
+GIT_BRANCH:=$(shell git symbolic-ref --short -q HEAD || echo "v1-unstable")
 # by manually adding the godep workspace to the path we don't need to run godep itself
 ifeq ($(OS),Windows_NT)
 	SHELL:=/bin/dash
@@ -58,7 +59,7 @@ PATH:=$(PWD)/Godeps/_workspace/bin:$(PATH)
 
 # the default target builds a binary in the top-level dir for whatever the local OS is
 default: $(NAME)
-$(NAME): *.go version depend generate
+$(NAME): *.go version generate govers
 	go build -o $(NAME) .
 
 install: $(NAME)
@@ -69,7 +70,7 @@ build: $(NAME) generate build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64
 
 # create a tgz with the binary and any artifacts that are necessary
 # note the hack to allow for various GOOS & GOARCH combos, sigh
-build/$(NAME)-%.tgz: *.go version depend
+build/$(NAME)-%.tgz: *.go version depend govers
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
 	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME) .
@@ -84,7 +85,7 @@ build/$(NAME)-%.tgz: *.go version depend
 
 # create a zip with the binary and any artifacts that are necessary
 # note the hack to allow for various GOOS & GOARCH combos, sigh
-build/$(NAME)-%.zip: *.go version depend
+build/$(NAME)-%.zip: *.go version depend govers
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
 	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME).exe .
@@ -111,6 +112,13 @@ version:
 	@echo "// +build make\n\npackage rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
 	  >rsapi/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
+
+govers:
+	govers gopkg.in/rightscale/rsc.$(GIT_BRANCH)
+	@echo "adding import comments"
+	@for f in `egrep -rl '\s+"gopkg.in/rightscale/rsc\.v' .`; do \
+	  sed -i -re '/^\s+"gopkg.in\/rightscale\/rsc/ s;"([^"]+)"(\s*//.*)?\s*$$;"\1" // import "\1";' $$f ;\
+	done
 
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
 # Travis doing this. The folllowing just relies on go get no reinstalling when it's already

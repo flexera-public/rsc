@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 
 // BuildRequest builds a HTTP request from a resource name and href and an action name and

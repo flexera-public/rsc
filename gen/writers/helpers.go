@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/writers/text"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen/writers/text" // import "gopkg.in/rightscale/rsc.v1-unstable/gen/writers/text"
 )
 
 // Produce line comments by concatenating given strings and producing 80 characters long lines

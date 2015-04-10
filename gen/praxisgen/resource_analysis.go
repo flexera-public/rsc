@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"bitbucket.org/pkg/inflect"
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
 )
 
 // Create API descriptor from raw resources and types
