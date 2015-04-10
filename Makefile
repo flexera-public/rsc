@@ -59,7 +59,7 @@ PATH:=$(PWD)/Godeps/_workspace/bin:$(PATH)
 
 # the default target builds a binary in the top-level dir for whatever the local OS is
 default: $(NAME)
-$(NAME): *.go version generate govers
+$(NAME): *.go version govers generate
 	go build -o $(NAME) .
 
 install: $(NAME)
@@ -113,15 +113,27 @@ version:
 	  >rsapi/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 
+# descend into go hell and fix import statements
+# runs govers to change imports of rsc packages to current branch
+# runs sed to add import comments to all package statements
+# runs sed to change import lines in godegen writers
 govers:
-	govers gopkg.in/rightscale/rsc.$(GIT_BRANCH)
+	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "adding import comments"
-	@for f in `egrep -rl '\s+"gopkg.in/rightscale/rsc\.v' .`; do \
-	  sed -i -re '/^\s+"gopkg.in\/rightscale\/rsc/ s;"([^"]+)"(\s*//.*)?\s*$$;"\1" // import "\1";' $$f ;\
+	@for f in `find . -mindepth 2 -name \*.go \! -name \*_test.go`; do \
+		dir=`dirname $${f#./}` ;\
+		sed -i -r \
+		  -e '1,10 s;^(package\s+\S+).*;\1  // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
+			$$f;\
 	done
+	@echo "fixing code gen templates"
+	@for f in gen/writers/*.go; do \
+	  sed -i -re 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/rsc.$(GIT_BRANCH);' $$f ;\
+	done
+	echo pray... ; sleep 2
 
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
-# Travis doing this. The folllowing just relies on go get no reinstalling when it's already
+# Travis doing this. The following just relies on go get no reinstalling when it's already
 # there, like your laptop.
 depend:
 	go get $(DEPEND)
@@ -164,6 +176,7 @@ api15gen:
 
 praxisgen:
 	cd gen/praxisgen && go test && go install
+	which praxisgen
 
 api15json:
 	curl -s -o rsapi15/api_data.json http://reference.rightscale.com/api1.5/api_data.json

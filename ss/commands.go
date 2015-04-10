@@ -1,4 +1,4 @@
-package ss
+package ss  // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
 
 import (
 	"net/http"

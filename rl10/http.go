@@ -1,4 +1,4 @@
-package rl10
+package rl10  // import "gopkg.in/rightscale/rsc.v1-unstable/rl10"
 
 import (
 	"bytes"

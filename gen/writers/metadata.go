@@ -1,4 +1,4 @@
-package writers
+package writers  // import "gopkg.in/rightscale/rsc.v1-unstable/gen/writers"
 
 import (
 	"io"
@@ -81,7 +81,7 @@ package {{.}}
 import (
 	"regexp"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v1-unstable/metadata"
 )
 
 `

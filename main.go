@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
 	"gopkg.in/alecthomas/kingpin.v1"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
 
 	// phoney reference to make Godep pull this in for the code generators
 	_ "bitbucket.org/pkg/inflect"

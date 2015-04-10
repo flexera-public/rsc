@@ -12,7 +12,7 @@ package ssd
 import (
 	"regexp"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/metadata" // import "gopkg.in/rightscale/rsc.v1-unstable/metadata"
+	"gopkg.in/rightscale/rsc.v1-unstable/metadata"
 )
 
 // Consists of a map of resource name to resource metadata.

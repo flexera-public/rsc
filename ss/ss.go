@@ -1,16 +1,16 @@
-package ss
+package ss  // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
 
 import (
 	"path"
 	"strings"
 	"time"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd"      // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
 	"gopkg.in/rightscale/rsc.v1-unstable/metadata" // import "gopkg.in/rightscale/rsc.v1-unstable/metadata"
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssc" // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssc"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssd" // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssm" // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"    // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssc"   // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssc"
+	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"   // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"
+	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"   // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"
 )
 
 // Metadata synthetized from all SS APIs metadata

@@ -1,7 +1,7 @@
 // This basic example illustrates how to setup a CM 1.5 client to make a simple
 // API call. The reference for the API can be found at
 // http://reference.rightscale.com/api1.5/index.html.
-package main
+package main  // import "gopkg.in/rightscale/rsc.v1-unstable/cm15/examples/basic"
 
 import (
 	"flag"
@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cm15" // import "gopkg.in/rightscale/rsc.v1-unstable/cm15"
+	"gopkg.in/rightscale/rsc.v1-unstable/cm15"  // import "gopkg.in/rightscale/rsc.v1-unstable/cm15"
 	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 

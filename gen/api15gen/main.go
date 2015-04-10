@@ -1,4 +1,4 @@
-package main
+package main  // import "gopkg.in/rightscale/rsc.v1-unstable/gen/api15gen"
 
 import (
 	"encoding/json"

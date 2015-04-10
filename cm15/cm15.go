@@ -1,9 +1,9 @@
-package cm15
+package cm15  // import "gopkg.in/rightscale/rsc.v1-unstable/cm15"
 
 import (
 	"log"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd"   // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
 	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 

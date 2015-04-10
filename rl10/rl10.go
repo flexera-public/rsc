@@ -1,9 +1,9 @@
-package rl10
+package rl10  // import "gopkg.in/rightscale/rsc.v1-unstable/rl10"
 
 import (
 	"log"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd"   // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
 	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 

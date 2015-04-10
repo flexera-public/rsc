@@ -6,13 +6,13 @@ import (
 	"path"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cm15" // import "gopkg.in/rightscale/rsc.v1-unstable/cm15"
-	"gopkg.in/rightscale/rsc.v1-unstable/cm16" // import "gopkg.in/rightscale/rsc.v1-unstable/cm16"
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
-	"gopkg.in/rightscale/rsc.v1-unstable/rl10" // import "gopkg.in/rightscale/rsc.v1-unstable/rl10"
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss" // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
 	"gopkg.in/alecthomas/kingpin.v1"
+	"gopkg.in/rightscale/rsc.v1-unstable/cm15"  // import "gopkg.in/rightscale/rsc.v1-unstable/cm15"
+	"gopkg.in/rightscale/rsc.v1-unstable/cm16"  // import "gopkg.in/rightscale/rsc.v1-unstable/cm16"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd"   // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
+	"gopkg.in/rightscale/rsc.v1-unstable/rl10"  // import "gopkg.in/rightscale/rsc.v1-unstable/rl10"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/ss"    // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
 )
 
 // Retrieve command and top level flag values

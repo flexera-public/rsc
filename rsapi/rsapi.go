@@ -1,4 +1,4 @@
-package rsapi
+package rsapi  // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 
 import (
 	"bufio"
@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd" // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd"      // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
 	"gopkg.in/rightscale/rsc.v1-unstable/metadata" // import "gopkg.in/rightscale/rsc.v1-unstable/metadata"
 )
 
