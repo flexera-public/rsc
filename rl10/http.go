@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
@@ -67,16 +68,28 @@ func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload
 			switch t := p.(type) {
 			case string:
 				values.Set(n, t)
+			case int:
+				values.Set(n, strconv.Itoa(t))
+			case bool:
+				values.Set(n, strconv.FormatBool(t))
 			case []string:
 				for _, e := range t {
 					values.Add(n, e)
+				}
+			case []int:
+				for _, e := range t {
+					values.Add(n, strconv.Itoa(e))
+				}
+			case []bool:
+				for _, e := range t {
+					values.Add(n, strconv.FormatBool(e))
 				}
 			case map[string]string:
 				for pn, e := range t {
 					values.Add(pn, e)
 				}
 			default:
-				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string or an array of strings", p)
+				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string, an integer, a bool, an array of these types of a map of strings", p)
 			}
 		}
 		u.RawQuery = values.Encode()
