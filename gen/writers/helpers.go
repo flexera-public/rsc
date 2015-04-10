@@ -53,7 +53,11 @@ func paramsInitializer(action *gen.Action, location int, varName string) string 
 			continue
 		}
 		if param.Mandatory {
-			fields = append(fields, fmt.Sprintf("\"%s\": %s,", param.Name, param.VarName))
+			name := param.Name
+			if location == 1 { // QueryParam
+				name = param.QueryName
+			}
+			fields = append(fields, fmt.Sprintf("\"%s\": %s,", name, param.VarName))
 		} else {
 			optionals = append(optionals, param)
 		}
@@ -67,8 +71,12 @@ func paramsInitializer(action *gen.Action, location int, varName string) string 
 	}
 	var inits = make([]string, len(optionals))
 	for i, opt := range optionals {
+		name := opt.Name
+		if location == 1 { // QueryParam
+			name = opt.QueryName
+		}
 		inits[i] = fmt.Sprintf("\tvar %sOpt = options[\"%s\"]\n\tif %sOpt != nil {\n\t\t%s[\"%s\"] = %sOpt\n\t}",
-			opt.VarName, opt.Name, opt.VarName, varName, opt.Name, opt.VarName)
+			opt.VarName, opt.Name, opt.VarName, varName, name, opt.VarName)
 	}
 	var paramsInits = strings.Join(inits, "\n\t")
 	return fmt.Sprintf("\n%s = %s\n%s", varName, paramsDecl, paramsInits)

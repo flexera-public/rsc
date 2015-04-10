@@ -134,7 +134,7 @@ func (loc *AccountGroupLocator) Index(options rsapi.ApiParams) ([]*AccountGroup,
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -271,7 +271,7 @@ func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -457,7 +457,7 @@ func (loc *AlertSpecLocator) Index(options rsapi.ApiParams) ([]*AlertSpec, error
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -703,7 +703,7 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -962,7 +962,7 @@ func (loc *BackupLocator) Index(lineage string, options rsapi.ApiParams) ([]*Bac
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{
@@ -1121,7 +1121,7 @@ func (loc *ChildAccountLocator) Index(options rsapi.ApiParams) ([]*Account, erro
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("ChildAccount", "index")
@@ -1202,7 +1202,7 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -1479,7 +1479,7 @@ func (loc *CookbookLocator) Index(options rsapi.ApiParams) ([]*Cookbook, error) 
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -1828,7 +1828,7 @@ func (loc *CredentialLocator) Index(options rsapi.ApiParams) ([]*Credential, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -1944,7 +1944,7 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) ([]*Datacenter, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -2107,7 +2107,7 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -2316,7 +2316,7 @@ func (loc *IdentityProviderLocator) Index(options rsapi.ApiParams) ([]*IdentityP
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -2414,7 +2414,7 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) ([]*Image, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -2721,7 +2721,7 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) 
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -2813,7 +2813,7 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.ApiParams) error {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
@@ -2856,7 +2856,7 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
@@ -3292,7 +3292,7 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) ([]*InstanceType,
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -3427,7 +3427,7 @@ func (loc *IpAddressLocator) Index(options rsapi.ApiParams) ([]*IpAddress, error
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("IpAddress", "index")
@@ -3583,7 +3583,7 @@ func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) ([]*IpAddress
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("IpAddressBinding", "index")
@@ -3706,7 +3706,7 @@ func (loc *MonitoringMetricLocator) Index(options rsapi.ApiParams) ([]*Monitorin
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
@@ -3919,7 +3919,7 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*MultiCloud
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("MultiCloudImage", "index")
@@ -4065,7 +4065,7 @@ func (loc *MultiCloudImageSettingLocator) Index(options rsapi.ApiParams) ([]*Mul
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("MultiCloudImageSetting", "index")
@@ -4213,7 +4213,7 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) ([]*Network, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Network", "index")
@@ -4362,7 +4362,7 @@ func (loc *NetworkGatewayLocator) Index(options rsapi.ApiParams) ([]*NetworkGate
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("NetworkGateway", "index")
@@ -4516,7 +4516,7 @@ func (loc *NetworkOptionGroupLocator) Index(options rsapi.ApiParams) ([]*Network
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("NetworkOptionGroup", "index")
@@ -4670,7 +4670,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options rsapi.ApiParams) (
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -4959,7 +4959,7 @@ func (loc *PermissionLocator) Index(options rsapi.ApiParams) ([]*Permission, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Permission", "index")
@@ -5085,7 +5085,7 @@ func (loc *PlacementGroupLocator) Index(options rsapi.ApiParams) ([]*PlacementGr
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -5191,7 +5191,7 @@ func (loc *PreferenceLocator) Index(options rsapi.ApiParams) ([]*Preference, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Preference", "index")
@@ -5319,7 +5319,7 @@ func (loc *PublicationLocator) Index(options rsapi.ApiParams) ([]*Publication, e
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -5528,7 +5528,7 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -5768,7 +5768,7 @@ func (loc *RepositoryLocator) Index(options rsapi.ApiParams) ([]*Repository, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -6073,7 +6073,7 @@ func (loc *RightScriptLocator) Index(options rsapi.ApiParams) ([]*RightScript, e
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -6267,7 +6267,7 @@ func (loc *RouteLocator) Index(options rsapi.ApiParams) ([]*Route, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Route", "index")
@@ -6418,7 +6418,7 @@ func (loc *RouteTableLocator) Index(options rsapi.ApiParams) ([]*RouteTable, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -6739,7 +6739,7 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) ([]*SecurityGrou
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -7083,7 +7083,7 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -7369,7 +7369,7 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, e
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -7669,7 +7669,7 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) ([]*ServerTempl
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -7941,7 +7941,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) 
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -8223,7 +8223,7 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) ([]*SshKey, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -8364,7 +8364,7 @@ func (loc *SubnetLocator) Index(options rsapi.ApiParams) ([]*Subnet, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Subnet", "index")
@@ -8753,7 +8753,7 @@ func (loc *UserLocator) Index(options rsapi.ApiParams) ([]*User, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("User", "index")
@@ -8963,7 +8963,7 @@ func (loc *VolumeLocator) Index(options rsapi.ApiParams) ([]*Volume, error) {
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -9137,7 +9137,7 @@ func (loc *VolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*VolumeAtt
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -9291,7 +9291,7 @@ func (loc *VolumeSnapshotLocator) Index(options rsapi.ApiParams) ([]*VolumeSnaps
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -9386,7 +9386,7 @@ func (loc *VolumeTypeLocator) Index(options rsapi.ApiParams) ([]*VolumeType, err
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
