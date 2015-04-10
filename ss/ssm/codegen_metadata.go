@@ -144,7 +144,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[conditions][*]",
+						Name:        "compiled_cat[conditions]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -152,7 +152,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[definitions][*]",
+						Name:        "compiled_cat[definitions]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -168,7 +168,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[mappings][*]",
+						Name:        "compiled_cat[mappings]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -200,7 +200,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers][*]",
+						Name:        "compiled_cat[namespaces][][service][headers]",
 						Description: `Optional additional request headers`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -224,7 +224,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[operations][*]",
+						Name:        "compiled_cat[operations]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -232,7 +232,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[outputs][*]",
+						Name:        "compiled_cat[outputs]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -240,7 +240,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[parameters][*]",
+						Name:        "compiled_cat[parameters]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -264,7 +264,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers][*]",
+						Name:        "compiled_cat[namespaces][][service][headers]",
 						Description: `Optional additional request headers`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -288,7 +288,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[resources][*]",
+						Name:        "compiled_cat[resources]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -513,7 +513,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "latest_notifications[][execution][launched_from_summary][*]",
+						Name:        "latest_notifications[][execution][launched_from_summary]",
 						Description: `How the CloudApp was launched, either from Application, Template, source, or compiled_cat`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -1211,7 +1211,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "latest_notifications[][execution][launched_from_summary][*]",
+						Name:        "latest_notifications[][execution][launched_from_summary]",
 						Description: `How the CloudApp was launched, either from Application, Template, source, or compiled_cat`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
