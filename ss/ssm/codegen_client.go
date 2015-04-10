@@ -112,11 +112,11 @@ func (loc *ExecutionLocator) Index(options rsapi.ApiParams) ([]*Execution, error
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
-		queryParams["ids"] = idsOpt
+		queryParams["ids[]"] = idsOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -256,7 +256,7 @@ func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.ApiParams) 
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var forceOpt = options["force"]
 	if forceOpt != nil {
@@ -368,7 +368,7 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Execution", "multi_launch")
@@ -390,7 +390,7 @@ func (loc *ExecutionLocator) MultiStart(ids []string) error {
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Execution", "multi_start")
@@ -412,7 +412,7 @@ func (loc *ExecutionLocator) MultiStop(ids []string) error {
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Execution", "multi_stop")
@@ -434,7 +434,7 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Execution", "multi_terminate")
@@ -488,11 +488,11 @@ func (loc *NotificationLocator) Index(options rsapi.ApiParams) ([]*Notification,
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
-		queryParams["ids"] = idsOpt
+		queryParams["ids[]"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Notification", "index")
@@ -577,11 +577,11 @@ func (loc *OperationLocator) Index(options rsapi.ApiParams) ([]*Operation, error
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
-		queryParams["ids"] = idsOpt
+		queryParams["ids[]"] = idsOpt
 	}
 	var limitOpt = options["limit"]
 	if limitOpt != nil {
@@ -719,7 +719,7 @@ func (loc *ScheduledActionLocator) Index(options rsapi.ApiParams) ([]*ScheduledA
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("ScheduledAction", "index")
@@ -933,7 +933,7 @@ func (loc *ScheduledOperationLocator) Index(options rsapi.ApiParams) ([]*Schedul
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("ScheduledOperation", "index")

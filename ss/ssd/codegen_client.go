@@ -224,7 +224,7 @@ func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Schedule", "multi_delete")
@@ -290,7 +290,7 @@ func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) 
 	queryParams = rsapi.ApiParams{}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
-		queryParams["ids"] = idsOpt
+		queryParams["ids[]"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Template", "index")
@@ -412,7 +412,7 @@ func (loc *TemplateLocator) MultiDelete(ids []string) error {
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Template", "multi_delete")

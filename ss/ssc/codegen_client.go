@@ -85,7 +85,7 @@ func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountP
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var groupOpt = options["group"]
 	if groupOpt != nil {
@@ -232,7 +232,7 @@ func (loc *ApplicationLocator) Index(options rsapi.ApiParams) ([]*Application, e
 	queryParams = rsapi.ApiParams{}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
-		queryParams["ids"] = idsOpt
+		queryParams["ids[]"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Application", "index")
@@ -451,7 +451,7 @@ func (loc *ApplicationLocator) MultiDelete(ids []string) error {
 	}
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
-		"ids": ids,
+		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Application", "multi_delete")
@@ -611,7 +611,7 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{
@@ -765,7 +765,7 @@ func (loc *UserPreferenceLocator) Index(options rsapi.ApiParams) ([]*UserPrefere
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
@@ -934,7 +934,7 @@ func (loc *UserPreferenceInfoLocator) Index(options rsapi.ApiParams) ([]*UserPre
 	queryParams = rsapi.ApiParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
-		queryParams["filter"] = filterOpt
+		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("UserPreferenceInfo", "index")
