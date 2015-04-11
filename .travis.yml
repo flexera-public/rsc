@@ -20,9 +20,8 @@ sudo: false
 before_install:
   - cd $HOME/gopath/src
   - mkdir -p gopkg.in/rightscale
-  - ln -s $HOME/gopath/src/github.com/rightscale/rsc gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
-    #- mv github.com/rightscale/rsc gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
-    #- export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
+  - mv github.com/rightscale/rsc gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
+  - export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
   - cd ${TRAVIS_BUILD_DIR}
   - pwd
 
