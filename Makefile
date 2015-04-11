@@ -118,7 +118,7 @@ version:
 # runs govers to change imports of rsc packages to current branch
 # runs sed to add import comments to all package statements
 # runs sed to change import lines in godegen writers
-govers:
+govers: depend
 	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "adding import comments"
 	@for f in `find . -mindepth 2 -name \*.go \! -name \*_test.go`; do \
