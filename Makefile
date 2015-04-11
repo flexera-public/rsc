@@ -53,6 +53,7 @@ ifeq ($(OS),Windows_NT)
 	SHELL:=/bin/dash
 	GOPATH:=$(shell cygpath --windows $(PWD))/Godeps/_workspace;$(GOPATH)
 else
+	SHELL:=/bin/bash
 	GOPATH:=$(PWD)/Godeps/_workspace:$(GOPATH)
 endif
 # because of the Godep path we build ginkgo into the godep workspace
@@ -102,6 +103,10 @@ upload: depend
 	    gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$(TRAVIS_COMMIT)/$$f <$$f; \
 	    if [ "$(TRAVIS_PULL_REQUEST)" = "false" ]; then \
 	      gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$(TRAVIS_BRANCH)/$$f <$$f; \
+	      re='^(v[0-9]+)\.[0-9]+\.[0-9]+$$' ;\
+	      if [[ "$(TRAVIS_BRANCH)" =~ $$re ]]; then \
+	        gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$${BASH_REMATCH[1]}/$$f <$$f; \
+	      fi; \
 	    fi; \
 	  done)
 
