@@ -17,6 +17,14 @@ env:
 # sudo=false makes the build run using a container
 sudo: false
 
+before_install:
+  - cd $HOME/gopath/src
+  - mkdir -p gopkg.in/rightscale
+  - mv github.com/rightscale/rsc gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
+  - export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
+  - cd ${TRAVIS_BUILD_DIR}
+  - pwd
+
 # I'm putting as many tasks as possible into the Makefile, hence the make depend...
 install:
   - export PATH=$PATH:$HOME/gopath/bin # travis' worker doesn't seem to do this consistently
