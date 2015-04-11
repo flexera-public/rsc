@@ -124,7 +124,7 @@ govers: depend
 	@for f in `find [a-z]* -mindepth 2 -name \*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
 		sed -i -r \
-		  -e '1,10 s;^(package\s+\S+).*;\1  // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
+		  -e '1,10 s;^(package\s+\S+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
 			$$f;\
 	done
 	@echo "fixing code gen templates"
@@ -147,7 +147,7 @@ clean:
 # and then pointlessly complains about bad formatting in imported packages, sigh
 lint:
 	@if gofmt -l *.go */*.go 2>&1 | grep .go; then \
-	  echo "^- Repo contains improperly formatted go files" && exit 1; \
+	  echo "^- Repo contains improperly formatted go files; run gofmt -w *.go */*.go" && exit 1; \
 	  else echo "All .go files formatted correctly"; fi
 	go tool vet -composites=false *.go
 	go tool vet -composites=false **/*.go

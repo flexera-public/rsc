@@ -1,4 +1,4 @@
-package main  // import "gopkg.in/rightscale/rsc.v1-unstable/recorder"
+package main // import "gopkg.in/rightscale/rsc.v1-unstable/recorder"
 
 import (
 	"bytes"

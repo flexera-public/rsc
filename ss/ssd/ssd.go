@@ -1,4 +1,4 @@
-package ssd  // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"
+package ssd // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"
 
 import (
 	"log"

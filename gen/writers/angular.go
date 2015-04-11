@@ -1,4 +1,4 @@
-package writers  // import "gopkg.in/rightscale/rsc.v1-unstable/gen/writers"
+package writers // import "gopkg.in/rightscale/rsc.v1-unstable/gen/writers"
 
 import (
 	"fmt"

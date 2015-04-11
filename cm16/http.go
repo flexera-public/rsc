@@ -1,4 +1,4 @@
-package cm16  // import "gopkg.in/rightscale/rsc.v1-unstable/cm16"
+package cm16 // import "gopkg.in/rightscale/rsc.v1-unstable/cm16"
 
 import (
 	"fmt"

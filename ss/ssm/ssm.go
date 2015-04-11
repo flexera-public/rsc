@@ -1,4 +1,4 @@
-package ssm  // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"
+package ssm // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"
 
 import (
 	"log"

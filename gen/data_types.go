@@ -1,4 +1,4 @@
-package gen  // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
+package gen // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
 
 import (
 	"fmt"

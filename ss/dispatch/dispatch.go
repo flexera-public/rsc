@@ -1,5 +1,5 @@
 // Common dispatcher to all ss clients
-package dispatch  // import "gopkg.in/rightscale/rsc.v1-unstable/ss/dispatch"
+package dispatch // import "gopkg.in/rightscale/rsc.v1-unstable/ss/dispatch"
 
 import (
 	"bytes"

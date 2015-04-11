@@ -1,4 +1,4 @@
-package rsapi  // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+package rsapi // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 
 // RightLink proxy secret file path for Windows
 const RllSecret = `C:\ProgramData\RightScale\RightLink\secret`

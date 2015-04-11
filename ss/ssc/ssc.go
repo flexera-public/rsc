@@ -1,4 +1,4 @@
-package ssc  // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssc"
+package ssc // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssc"
 
 import (
 	"log"
