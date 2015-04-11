@@ -13,9 +13,9 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"  // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss"     // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssm" // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/ss"
+	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"
 )
 
 func main() {

@@ -5,7 +5,7 @@ import (
 	"io"
 	"text/template"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/gen" // import "gopkg.in/rightscale/rsc.v1-unstable/gen"
+	"gopkg.in/rightscale/rsc.v1-unstable/gen"
 )
 
 // AngularWriter struct exposes methods to generate the angular JS services code

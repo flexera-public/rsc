@@ -9,7 +9,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"gopkg.in/rightscale/rsc.v1-unstable" // import "gopkg.in/rightscale/rsc.v1-unstable"
+	"gopkg.in/rightscale/rsc.v1-unstable"
 )
 
 var _ = Describe("Config", func() {

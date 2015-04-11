@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/dispatch" // import "gopkg.in/rightscale/rsc.v1-unstable/ss/dispatch"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/ss/dispatch"
 )
 
 // Self-Service manager client

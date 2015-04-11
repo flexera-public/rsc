@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 
 // Interface to API client

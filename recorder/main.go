@@ -13,7 +13,7 @@ import (
 	"strings"
 	"syscall"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/recording" // import "gopkg.in/rightscale/rsc.v1-unstable/recording"
+	"gopkg.in/rightscale/rsc.v1-unstable/recording"
 )
 
 const output = "recording_new.json"

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"gopkg.in/alecthomas/kingpin.v1"
-	"gopkg.in/rightscale/rsc.v1-unstable/metadata" // import "gopkg.in/rightscale/rsc.v1-unstable/metadata"
+	"gopkg.in/rightscale/rsc.v1-unstable/metadata"
 )
 
 // Interface implemented by registrar used by each API client to register its subcommands

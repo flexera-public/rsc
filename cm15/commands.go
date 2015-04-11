@@ -3,7 +3,7 @@ package cm15  // import "gopkg.in/rightscale/rsc.v1-unstable/cm15"
 import (
 	"net/http"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 
 const (

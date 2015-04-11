@@ -3,8 +3,8 @@ package cm16  // import "gopkg.in/rightscale/rsc.v1-unstable/cm16"
 import (
 	"log"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd"   // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi" // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"gopkg.in/rightscale/rsc.v1-unstable/cmd"
+	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
 )
 
 // Api 1.6 client
