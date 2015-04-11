@@ -121,7 +121,7 @@ version:
 govers: depend
 	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "adding import comments"
-	@for f in `find . -mindepth 2 -name \*.go \! -name \*_test.go`; do \
+	@for f in `find [a-z]* -mindepth 2 -name \*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
 		sed -i -r \
 		  -e '1,10 s;^(package\s+\S+).*;\1  // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
@@ -131,7 +131,6 @@ govers: depend
 	@for f in gen/writers/*.go; do \
 	  sed -i -re 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/rsc.$(GIT_BRANCH);' $$f ;\
 	done
-	echo pray... ; sleep 2
 
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
 # Travis doing this. The following just relies on go get no reinstalling when it's already
