@@ -17,6 +17,8 @@ env:
 # sudo=false makes the build run using a container
 sudo: false
 
+# travis checks rsc out into github.com/rightscale/rsc but we really need it in
+# gopkg.in/rightscale/rsc-<branch name> so we have to manually move it, sigh
 before_install:
   - cd $HOME/gopath/src
   - mkdir -p gopkg.in/rightscale
@@ -25,7 +27,7 @@ before_install:
   - cd ${TRAVIS_BUILD_DIR}
   - pwd
 
-# I'm putting as many tasks as possible into the Makefile, hence the make depend...
+# here all we're doing is making sure that we have a go compliler for every target architecture
 install:
   - export PATH=$PATH:$HOME/gopath/bin # travis' worker doesn't seem to do this consistently
   - echo Building mac/arm/windows versions of Go
