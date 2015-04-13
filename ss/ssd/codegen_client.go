@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssd // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"
+package ssd
 
 import (
 	"encoding/json"

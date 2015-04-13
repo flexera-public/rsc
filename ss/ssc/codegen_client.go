@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssc // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssc"
+package ssc
 
 import (
 	"encoding/json"

@@ -61,7 +61,7 @@ PATH:=$(PWD)/Godeps/_workspace/bin:$(PATH)
 
 # the default target builds a binary in the top-level dir for whatever the local OS is
 default: $(NAME)
-$(NAME): *.go version govers generate
+$(NAME): *.go version check-govers generate
 	go build -o $(NAME) .
 
 install: $(NAME)
@@ -72,7 +72,7 @@ build: $(NAME) generate build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64
 
 # create a tgz with the binary and any artifacts that are necessary
 # note the hack to allow for various GOOS & GOARCH combos, sigh
-build/$(NAME)-%.tgz: *.go version depend govers
+build/$(NAME)-%.tgz: *.go version depend
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
 	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME) .
@@ -87,7 +87,7 @@ build/$(NAME)-%.tgz: *.go version depend govers
 
 # create a zip with the binary and any artifacts that are necessary
 # note the hack to allow for various GOOS & GOARCH combos, sigh
-build/$(NAME)-%.zip: *.go version depend govers
+build/$(NAME)-%.zip: *.go version depend
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
 	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME).exe .
@@ -113,9 +113,9 @@ upload: depend
 # produce a version string that is embedded into the binary that captures the branch, the date
 # and the commit we're building
 version:
-	@echo "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
+	@echo -e "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
-	@echo "// +build make\n\npackage rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
+	@echo -e "// +build make\n\npackage rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
 	  >rsapi/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 
@@ -123,19 +123,32 @@ version:
 # runs govers to change imports of rsc packages to current branch
 # runs sed to add import comments to all package statements
 # runs sed to change import lines in godegen writers
-govers: depend
+govers:
 	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
-	@echo "adding import comments"
-	@for f in `find [a-z]* -mindepth 2 -name \*.go \! -name \*_test.go`; do \
+	@echo "adding package import comments"
+	set -x; for f in `find [a-z]* -mindepth 2 -name \*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
-		sed -i -r \
-		  -e '1,10 s;^(package\s+\S+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
+		sed -E -i \
+		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
 			$$f;\
 	done
 	@echo "fixing code gen templates"
 	@for f in gen/writers/*.go; do \
-	  sed -i -re 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/rsc.$(GIT_BRANCH);' $$f ;\
+	  sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/rsc.$(GIT_BRANCH);' $$f ;\
 	done
+
+check-govers:
+	which govers
+	govers -d -n gopkg.in/rightscale/rsc.$(GIT_BRANCH)
+	@echo "checking package statements"
+	@files=`find [a-z]* -mindepth 2 -name \*.go \! -name \*_test.go`; \
+	if egrep '^package\s+[a-z]' $$files | \
+	   egrep -v codegen_ | \
+		 egrep -v "import \"gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)"; then \
+		echo "   check failed, run 'make govers'"; exit 1; fi
+	@echo "checking code gen templates"
+	@if egrep 'rightscale/rsc' gen/writers/*.go | egrep -v "gopkg.in/rightscale/rsc.$(GIT_BRANCH)"; then \
+		echo "   check failed, run 'make govers'"; exit 1; fi
 
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
 # Travis doing this. The following just relies on go get no reinstalling when it's already
@@ -150,7 +163,7 @@ clean:
 
 # gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
 # and then pointlessly complains about bad formatting in imported packages, sigh
-lint:
+lint: check-govers
 	@if gofmt -l *.go */*.go 2>&1 | grep .go; then \
 	  echo "^- Repo contains improperly formatted go files; run gofmt -w *.go */*.go" && exit 1; \
 	  else echo "All .go files formatted correctly"; fi
