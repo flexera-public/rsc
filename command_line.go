@@ -19,12 +19,11 @@ import (
 func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	// 1. Register all commands
 	app.Command("setup", "create config file, defaults to $HOME/.rsc, use '--config' to override")
+	app.Command("json", "apply jsonselect expression to STDIN")
 	RegisterClientCommands(app)
 
 	// 2. Parse flags
 	cmdLine := cmd.CommandLine{}
-	jsonCmd := app.Command("json", "apply jsonselect expression to STDIN")
-	jsonCmd.Arg("expression", "jsonselect expression, see http://jsonselect.org/#docs").Required().StringVar(&cmdLine.JsonSelect)
 	app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).StringVar(&cmdLine.ConfigPath)
 	app.Flag("account", "RightScale account ID").Short('a').IntVar(&cmdLine.Account)
 	app.Flag("host", "RightScale login endpoint (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)

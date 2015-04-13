@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -30,7 +32,14 @@ func main() {
 	case "setup":
 		err = CreateConfig(cmdLine.ConfigPath)
 	case "json":
-		err = ApplyJsonselect(cmdLine.JsonSelect)
+		var b []byte
+		b, err = ioutil.ReadAll(os.Stdin)
+		if err == nil {
+			resp = &http.Response{
+				StatusCode: 200,
+				Body:       ioutil.NopCloser(bytes.NewBuffer(b)),
+			}
+		}
 	default:
 		var client cmd.CommandClient
 		client, err = ApiClient(topCommand, cmdLine)

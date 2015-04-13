@@ -124,23 +124,21 @@ $ rsc --host us-3.rightscale.com --key $RS_KEY --x1 ".name" cm15 show /api/cloud
 -----------------
 
 In some cases it may be necessary to extract multiple values from a single response in multiple
-passes. `rsc` exposes a `json` command for that purpose which accepts a jsonselect expression,
-reads the json from STDIN and outputs the result of applying the jsonselect expression to STDOUT:
+passes. `rsc` exposes a `json` command for that purpose which reads the json from STDIN and outputs
+the result of applying the jsonselect expression specified via the `--x1` or `--xm` flags to STDOUT:
 ```
-$ echo '{"foo":"bar"}' | rsc json .foo
-"bar"
-$ rsc cm15 index clouds | rsc json .name
-[
-    "EC2 us-east-1",
-    "Openstack Havana",
-    "OpenStack Grizzly",
-    "CS 4.2.1 - KVM",
-    "Rackspace Open Cloud - Chicago",
-    "Google",
-    "Azure West US",
-    "SoftLayer",
-    "VScale Engineering v5.5",
-]
+$ echo '{"foo":"bar"}' | rsc --x1=.foo json
+bar
+$ rsc cm15 index clouds | rsc --xm=.name json
+"EC2 us-east-1"
+"Openstack Havana"
+"OpenStack Grizzly"
+"CS 4.2.1 - KVM"
+"Rackspace Open Cloud - Chicago"
+"Google"
+"Azure West US"
+"SoftLayer"
+"VScale Engineering v5.5"
 ```
 
 Cookbook
