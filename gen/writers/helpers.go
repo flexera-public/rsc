@@ -155,7 +155,7 @@ func flagType(param *gen.ActionParam) string {
 	}
 	b, ok := param.Type.(*gen.BasicDataType)
 	if !ok {
-		panic("Wooaat? a object leaf???")
+		panic("Wooaat? a object leaf??? - " + path)
 	}
 	return string(*b)
 }

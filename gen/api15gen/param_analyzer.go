@@ -69,7 +69,7 @@ func (p *ParamAnalyzer) Analyze() {
 	for _, p := range paths {
 		hasLeaf := false
 		for _, r := range rawLeafParams {
-			if strings.HasPrefix(r, p) {
+			if strings.HasSuffix(r, "]") && strings.HasPrefix(r, p) {
 				hasLeaf = true
 				break
 			}
