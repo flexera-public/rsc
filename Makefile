@@ -126,7 +126,7 @@ version:
 govers:
 	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "adding package import comments"
-	set -x; for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
+	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
 		sed -E -i \
 		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
@@ -135,6 +135,16 @@ govers:
 	@echo "fixing code gen templates"
 	@for f in gen/writers/*.go; do \
 	  sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/rsc.$(GIT_BRANCH);' $$f ;\
+	done
+
+gounvers:
+	@echo "changing import statements"
+	@for f in `find . -path './[a-z]*' -name \*.go`; do \
+		sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;github.com/rightscale/rsc;' $$f ;\
+	done
+	@echo "removing package import comments"
+	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
+		sed -E -i -e '1,10 s;^(package +[a-z][^ /]*).*;\1;' $$f; \
 	done
 
 check-govers:
