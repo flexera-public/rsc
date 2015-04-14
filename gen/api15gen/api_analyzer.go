@@ -136,26 +136,32 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		var optional []string
 		for _, p := range paramAnalyzer.Params {
 			if p.Mandatory {
+				desc := p.Name
 				if p.Description != "" {
-					var desc = fmt.Sprintf("%s: %s", p.VarName, p.Description)
-					mandatory = append(mandatory, desc)
+					desc += ": " + strings.TrimSpace(p.Description)
 				}
+				mandatory = append(mandatory, desc)
 			} else {
-				var desc = p.Name
+				desc := p.Name
 				if p.Description != "" {
-					desc += ": " + p.Description
+					desc += ": " + strings.TrimSpace(p.Description)
 				}
 				optional = append(optional, desc)
 			}
 		}
 		if len(mandatory) > 0 {
 			sort.Strings(mandatory)
-			description += "\n\t" + strings.Join(mandatory, "\n\t")
+			if !strings.HasSuffix(description, "\n") {
+				description += "\n"
+			}
+			description += "Required parameters:\n\t" + strings.Join(mandatory, "\n\t")
 		}
 		if len(optional) > 0 {
 			sort.Strings(optional)
-			description += "\n-- Optional parameters:\n\t" +
-				strings.Join(optional, "\n\t")
+			if !strings.HasSuffix(description, "\n") {
+				description += "\n"
+			}
+			description += "Optional parameters:\n\t" + strings.Join(optional, "\n\t")
 		}
 
 		// Sort parameters by location
