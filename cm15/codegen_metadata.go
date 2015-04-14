@@ -9442,6 +9442,14 @@ Optional parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "recipe",
+						Description: `Chef recipe name, overridden by recipe_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "thread",
 						Description: `RunlistPolicy thread name`,
 						Type:        "string",
@@ -9562,6 +9570,14 @@ Optional parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script",
+						Description: `RightScript name, overridden by right_script_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "arguments",
