@@ -6,8 +6,10 @@ the RightScale Self-Service 1.0 APIs (latest version for this product).
 
 - Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](https://gocover.io/github.com/rightscale/rsc)
-- 1.0.rc0: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=1.0.rc0)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_1.0.rc0.svg)](https://gocover.io/github.com/rightscale/rsc)
+- v1.0.0: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.0)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.0.svg)](https://gocover.io/github.com/rightscale/rsc)
+- v1-unstable (aka _dev_): [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1-unstable)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1-unstable.svg)](https://gocover.io/github.com/rightscale/rsc)
 
 `rsc` can be used in one of two ways:
 
@@ -40,17 +42,26 @@ Management API 1.6 and `rsc ss` to send requests to the RightScale Self-Service 
 
 Download a statically linked binary and run it as follows:
 ```
-$ curl https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/1.0.rc0/rsc-linux-amd64.tgz |\
+$ curl https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |\
   tar -zxf - -O ./rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc master - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
+rsc v1.0.0 - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
 ```
 
-- MacOS: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/1.0.rc0/rsc-darwin-amd64.tgz`
-- Windows: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/1.0.rc0/rsc-windows-amd64.zip`
-- ODroid/RasPi/armhf: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/1.0.rc0/rsc-linux-arm.tgz`
+- MacOS: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
+- Windows: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-windows-amd64.zip`
+- ODroid/RasPi/armhf: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-linux-arm.tgz`
 See further down in the README for building from source.
+
+#### Versioning
+
+- To download the latest stable use the links with 'v1' in them.
+- To download a specific version, replace the 'v1' by the exact version, such as 'v1.0.1'.
+- All versions with the same major number (e.g. 'v1') are intended to be "upward" compatible.
+- The 'v1' links download a specific version, so `rsc --version` will print something like 'v1.0.3'
+  and not 'v1'
+- The latest dev version is 'v1-unstable'
 
 ### Command line
 
@@ -210,6 +221,25 @@ RightScale platform. Each API client code is encapsulated in a different
 sub-package: package `cm15` for CM API 1.5, package `cm16`for CM API
 1.6 and package `ss` for Self-service APIs.
 
+### Download
+
+`rsc` uses gopkg.in for versioning, this means that you need to import `rsc` packages
+as follows:
+```
+import "gopkg.in/rightscale/rsc.v1"
+```
+even though rsc is maintained on github. If you try to import from github the Go compiler
+will complain! To download `rsc` you can use
+```
+go get gopkg.in/rightscale/rsc.v1
+```
+To use a specific version, replace the 'v1' by the version, such as 'v1.0.3'. To use the latest
+dev version, use 'v1-unstable'.
+
+If you want to check the source out locally into your GOPATH then you must place it into
+`gopkg.in/rightscale/rsc.v1` or more generally `gopkg.in/rightscale/rsc.<branch name>`.
+Please see the [building](#building) section for more details.
+
 ### Client Creation
 
 Each API client package defines an `Api` struct that represents the API
@@ -326,11 +356,27 @@ the clients to parse the command line.
 
 ### Building
 
-To build `rsc` from source, first run `godep restore` to retrieve all its dependencies and once that's done
-run `make`.
+To build `rsc` from source you need to be beware of the fact that it forces the use of gopkg.in
+for versioning. When you check out `github.com/rightscale/rsc` you will get the v1-unstable
+branch and there is no master branch. You will need to check out the source into your GOPATH
+at `$GOPATH/src/gopkg.in/rightscale/rsc.v1-unstable`. Note that if you use symlinks and $PWD
+doesn't match /bin/pwd you are likely to run into problems.
+
+After checking out the `rsc` repo you should run `make depend` to ensure that all dependencies
+are fetched and installed.
+
+The binary for your local system can be built using `make` and binaries for OS-X, Linux, and
+Windows can be built using `make build`.
+
+TL;DR:
 ```
-godep restore && make
+mkdir -p $GOPATH/gopkg.in/rightscale
+cd $GOPATH/gopkg.in/rightscale
+git clone https://github.com/rightscale/rsc.git rsc.v1-unstable
+make depend
+make
 ```
+
 ### Code generation
 
 Part of the `rsc` source code (the vast majority in terms of lines of code) is automatically 

@@ -126,7 +126,7 @@ version:
 govers:
 	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "adding package import comments"
-	set -x; for f in `find [a-z]* -mindepth 2 -name \*.go \! -name \*_test.go`; do \
+	set -x; for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
 		sed -E -i \
 		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
@@ -141,7 +141,7 @@ check-govers:
 	which govers
 	govers -d -n gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "checking package statements"
-	@files=`find [a-z]* -mindepth 2 -name \*.go \! -name \*_test.go`; \
+	@files=`find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; \
 	if egrep '^package\s+[a-z]' $$files | \
 	   egrep -v codegen_ | \
 		 egrep -v "import \"gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)"; then \
