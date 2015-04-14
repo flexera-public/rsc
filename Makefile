@@ -75,13 +75,8 @@ build: depend generate $(NAME) build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwi
 build/$(NAME)-%.tgz: *.go version depend
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
-	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME) .
+	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -tags make -o build/$(NAME)/$(NAME) .
 	chmod +x build/$(NAME)/$(NAME)
-	for d in script init; do if [ -d $$d ]; then cp -r $$d build/$(NAME); fi; done
-	if [ "build/*/*.sh" != 'build/*/*.sh' ]; then \
-	  sed -i -e "s/BRANCH/$(TRAVIS_BRANCH)/" build/*/*.sh; \
-	  chmod +x build/*/*.sh; \
-	fi
 	tar -zcf $@ -C build $(NAME)
 	rm -r build/$(NAME)
 
@@ -90,7 +85,7 @@ build/$(NAME)-%.tgz: *.go version depend
 build/$(NAME)-%.zip: *.go version depend
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
-	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME).exe .
+	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -tags make -o build/$(NAME)/$(NAME).exe .
 	cd build; zip -r $(notdir $@) $(NAME)
 	rm -r build/$(NAME)
 

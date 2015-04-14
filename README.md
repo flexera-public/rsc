@@ -18,13 +18,13 @@ the RightScale Self-Service 1.0 APIs (latest version for this product).
 
 Please use [github issues](https://github.com/rightscale/rsc/issues) to report problems.
 
-Jump to:
+#### Jump to:
 * [Command line usage](#usage)
 * [Go package usage](#go)
 * [Development & Contributing](#contributing)
 * [Command Line Help and Cookbook](COOKBOOK.md)
 
-## <a name="reference"></a>API References
+#### <a name="reference"></a>Links to RightScale API References
 
 * [RightScale CM API 1.5](http://reference.rightscale.com/api1.5/index.html)
 * [RightScale CM API 1.6](http://dev-api-docs.rightscale.com/#/1.6/controller/V1_6::Accounts)
@@ -43,7 +43,7 @@ Management API 1.6 and `rsc ss` to send requests to the RightScale Self-Service 
 Download a statically linked binary and run it as follows:
 ```
 $ curl https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |\
-  tar -zxf - -O ./rsc/rsc > rsc
+  tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
 rsc v1.0.0 - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
