@@ -138,10 +138,9 @@ govers:
 	done
 
 check-govers:
-	which govers
 	govers -d -n gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "checking package statements"
-	@files=`find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; \
+	@files=`find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go \! -name user_agent.go`; \
 	if egrep '^package\s+[a-z]' $$files | \
 	   egrep -v codegen_ | \
 		 egrep -v "import \"gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)"; then \
