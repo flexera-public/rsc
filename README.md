@@ -42,7 +42,7 @@ Management API 1.6 and `rsc ss` to send requests to the RightScale Self-Service 
 
 Download a statically linked binary and run it as follows:
 ```
-$ curl https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |\
+$ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |\
   tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
