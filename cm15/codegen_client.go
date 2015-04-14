@@ -125,7 +125,7 @@ func (api *Api) AccountGroupLocator(href string) *AccountGroupLocator {
 
 // GET /api/account_groups
 // Lists the AccountGroups owned by this Account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *AccountGroupLocator) Index(options rsapi.ApiParams) ([]*AccountGroup, error) {
@@ -160,7 +160,7 @@ func (loc *AccountGroupLocator) Index(options rsapi.ApiParams) ([]*AccountGroup,
 
 // GET /api/account_groups/:id
 // Show information about a single AccountGroup.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *AccountGroupLocator) Show(options rsapi.ApiParams) (*AccountGroup, error) {
 	var res *AccountGroup
@@ -262,7 +262,7 @@ func (loc *AlertLocator) Enable() error {
 // GET /api/deployments/:deployment_id/alerts
 // GET /api/alerts
 // Lists all Alerts.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
@@ -301,6 +301,7 @@ func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
 // POST /api/deployments/:deployment_id/alerts/:id/quench
 // POST /api/alerts/:id/quench
 // Suppresses the Alert from being triggered for a given time period. Idempotent.
+// Required parameters:
 // duration: The time period in seconds to suppress Alert from being triggered.
 func (loc *AlertLocator) Quench(duration string) error {
 	if duration == "" {
@@ -328,7 +329,7 @@ func (loc *AlertLocator) Quench(duration string) error {
 // GET /api/deployments/:deployment_id/alerts/:id
 // GET /api/alerts/:id
 // Shows the attributes of a specified Alert.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *AlertLocator) Show(options rsapi.ApiParams) (*Alert, error) {
 	var res *Alert
@@ -397,6 +398,8 @@ func (api *Api) AlertSpecLocator(href string) *AlertSpecLocator {
 // POST /api/server_templates/:server_template_id/alert_specs
 // POST /api/alert_specs
 // Creates a new AlertSpec with the given parameters.
+// Required parameters:
+// alert_spec
 func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocator, error) {
 	var res *AlertSpecLocator
 	if alertSpec == nil {
@@ -447,7 +450,7 @@ func (loc *AlertSpecLocator) Destroy() error {
 // GET /api/server_templates/:server_template_id/alert_specs
 // GET /api/alert_specs
 // No description provided for index.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 // with_inherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.
@@ -491,7 +494,7 @@ func (loc *AlertSpecLocator) Index(options rsapi.ApiParams) ([]*AlertSpec, error
 // GET /api/server_templates/:server_template_id/alert_specs/:id
 // GET /api/alert_specs/:id
 // No description provided for show.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *AlertSpecLocator) Show(options rsapi.ApiParams) (*AlertSpec, error) {
 	var res *AlertSpec
@@ -524,6 +527,8 @@ func (loc *AlertSpecLocator) Show(options rsapi.ApiParams) (*AlertSpec, error) {
 // PUT /api/server_templates/:server_template_id/alert_specs/:id
 // PUT /api/alert_specs/:id
 // Updates an AlertSpec with the given parameters.
+// Required parameters:
+// alert_spec
 func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	if alertSpec == nil {
 		return fmt.Errorf("alertSpec is required")
@@ -577,7 +582,7 @@ func (api *Api) AuditEntryLocator(href string) *AuditEntryLocator {
 // For example, if you create an AuditEntry and append "DEF" at offset 10, and later append
 // "ABC" at offset 9, the overall audit entry details will be "ABCDEF". Use the \n character to
 // separate details by new lines.
-// -- Optional parameters:
+// Optional parameters:
 // detail: The details to be appended to the audit entry record.
 // notify: The event notification category. Defaults to 'None'.
 // offset: The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.
@@ -615,7 +620,9 @@ func (loc *AuditEntryLocator) Append(options rsapi.ApiParams) error {
 
 // POST /api/audit_entries
 // Creates a new AuditEntry with the given parameters.
-// -- Optional parameters:
+// Required parameters:
+// audit_entry
+// Optional parameters:
 // notify: The event notification category. Defaults to 'None'.
 // user_email: The email of the user (who created/triggered the audit entry). Only usable with instance role.
 func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options rsapi.ApiParams) (*AuditEntryLocator, error) {
@@ -682,10 +689,11 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 // 2011/07/11 00:00:00 +0000.
 // A maximum of 1000 records will be returned by each index call.
 // Using the available filters, one can select or group which audit entries to retrieve.
-// endDate: The end date for retrieving audit entries (the format must be the same as start date). The time period between start and end date must be less than 3 months (93 days).
+// Required parameters:
+// end_date: The end date for retrieving audit entries (the format must be the same as start date). The time period between start and end date must be less than 3 months (93 days).
 // limit: Limit the audit entries to this number. The limit should >= 1 and <= 1000
-// startDate: The start date for retrieving audit entries, the format must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g., 2011/06/25 00:00:00 +0000
-// -- Optional parameters:
+// start_date: The start date for retrieving audit entries, the format must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g., 2011/06/25 00:00:00 +0000
+// Optional parameters:
 // filter
 // view
 func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate string, options rsapi.ApiParams) ([]*AuditEntry, error) {
@@ -734,7 +742,7 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 
 // GET /api/audit_entries/:id
 // Lists the attributes of a given audit entry.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *AuditEntryLocator) Show(options rsapi.ApiParams) (*AuditEntry, error) {
 	var res *AuditEntry
@@ -764,7 +772,9 @@ func (loc *AuditEntryLocator) Show(options rsapi.ApiParams) (*AuditEntry, error)
 
 // PUT /api/audit_entries/:id
 // Updates the summary of a given AuditEntry.
-// -- Optional parameters:
+// Required parameters:
+// audit_entry
+// Optional parameters:
 // notify: The event notification category. Defaults to 'None'.
 func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options rsapi.ApiParams) error {
 	if auditEntry == nil {
@@ -845,9 +855,10 @@ func (api *Api) BackupLocator(href string) *BackupLocator {
 // The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
 // independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
 // Hence, it is important to "commit" a backup to make it eligible for cleanup.
-// keepLast: The number of backups that should be kept.
+// Required parameters:
+// keep_last: The number of backups that should be kept.
 // lineage: The lineage of the backups that are to be cleaned-up.
-// -- Optional parameters:
+// Optional parameters:
 // cloud_href: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
 // dailies: The number of daily backups(the latest one in each day) that should be kept.
 // monthlies: The number of monthly backups(the latest one in each month) that should be kept.
@@ -900,6 +911,8 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi
 // POST /api/backups
 // Takes in an array of volumeattachmenthrefs and takes a snapshot of each.
 // The volumeattachmenthrefs must belong to the same instance.
+// Required parameters:
+// backup
 func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 	var res *BackupLocator
 	if backup == nil {
@@ -950,8 +963,9 @@ func (loc *BackupLocator) Destroy() error {
 // 2011/07/11 00:00:00 +0000.
 // To get the latest completed backup just before, say 25 June 2009, then the 'completed' filter
 // should be set to 'true' and the 'latest_before' filter should be set to 2009/06/25 00:00:00 +0000.
+// Required parameters:
 // lineage: Backups belonging to this lineage.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *BackupLocator) Index(lineage string, options rsapi.ApiParams) ([]*Backup, error) {
 	var res []*Backup
@@ -991,8 +1005,9 @@ func (loc *BackupLocator) Index(lineage string, options rsapi.ApiParams) ([]*Bac
 // create the required number of Volumes from the volume_snapshots_hrefs in the given Backup,
 // attach them to the given Instance at the device specified in the Snapshot. If the devices are already being used
 // on the Instance, the Task will denote that the restore has failed.
-// instanceHref: The instance href that the backup will be restored to.
-// -- Optional parameters:
+// Required parameters:
+// instance_href: The instance href that the backup will be restored to.
+// Optional parameters:
 // backup
 func (loc *BackupLocator) Restore(instanceHref string, options rsapi.ApiParams) error {
 	if instanceHref == "" {
@@ -1043,6 +1058,8 @@ func (loc *BackupLocator) Show() (*Backup, error) {
 
 // PUT /api/backups/:id
 // Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.
+// Required parameters:
+// backup
 func (loc *BackupLocator) Update(backup *BackupParam2) error {
 	if backup == nil {
 		return fmt.Errorf("backup is required")
@@ -1085,6 +1102,8 @@ func (api *Api) ChildAccountLocator(href string) *ChildAccountLocator {
 // on the ChildAccount to enable him/her to add, delete Users and Permissions.
 // For more information on the valid values for 'cluster_href', refer to the following:
 // http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/ChildAccounts/Create
+// Required parameters:
+// child_account
 func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildAccountLocator, error) {
 	var res *ChildAccountLocator
 	if childAccount == nil {
@@ -1113,7 +1132,7 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 
 // GET /api/child_accounts
 // Lists the enterprise ChildAccounts available for this Account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *ChildAccountLocator) Index(options rsapi.ApiParams) ([]*Account, error) {
 	var res []*Account
@@ -1144,6 +1163,8 @@ func (loc *ChildAccountLocator) Index(options rsapi.ApiParams) ([]*Account, erro
 // PUT /api/accounts/:id
 // PUT /api/child_accounts/:id
 // Update an enterprise ChildAccount for this Account.
+// Required parameters:
+// child_account
 func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	if childAccount == nil {
 		return fmt.Errorf("childAccount is required")
@@ -1193,7 +1214,7 @@ func (api *Api) CloudLocator(href string) *CloudLocator {
 
 // GET /api/clouds
 // Lists the clouds available to this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error) {
@@ -1228,7 +1249,7 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error) {
 
 // GET /api/clouds/:id
 // Show information about a single cloud.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *CloudLocator) Show(options rsapi.ApiParams) (*Cloud, error) {
 	var res *Cloud
@@ -1284,6 +1305,8 @@ func (api *Api) CloudAccountLocator(href string) *CloudAccountLocator {
 // Create a CloudAccount by passing in the respective credentials for each cloud.
 // For more information on the specific parameters for each cloud, refer to the following:
 // http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
+// Required parameters:
+// cloud_account
 func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudAccountLocator, error) {
 	var res *CloudAccountLocator
 	if cloudAccount == nil {
@@ -1423,6 +1446,7 @@ func (loc *CookbookLocator) Destroy() error {
 
 // POST /api/cookbooks/:id/follow
 // Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.
+// Required parameters:
 // value: Indicates if this action should follow (true) or unfollow (false) a Cookbook.
 func (loc *CookbookLocator) Follow(value string) error {
 	if value == "" {
@@ -1446,6 +1470,7 @@ func (loc *CookbookLocator) Follow(value string) error {
 
 // POST /api/cookbooks/:id/freeze
 // Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.
+// Required parameters:
 // value: Indicates if this action should freeze (true) or unfreeze (false) a Cookbook.
 func (loc *CookbookLocator) Freeze(value string) error {
 	if value == "" {
@@ -1470,7 +1495,7 @@ func (loc *CookbookLocator) Freeze(value string) error {
 // GET /api/cookbooks
 // Lists the Cookbooks available to this account.
 // The extended_designer view is only available to accounts with the designer permission.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *CookbookLocator) Index(options rsapi.ApiParams) ([]*Cookbook, error) {
@@ -1505,6 +1530,7 @@ func (loc *CookbookLocator) Index(options rsapi.ApiParams) ([]*Cookbook, error) 
 
 // POST /api/cookbooks/:id/obsolete
 // Marks a Cookbook as obsolete (or un-obsolete).
+// Required parameters:
 // value: Indicates if this action should obsolete (true) or un-obsolete (false) a Cookbook.
 func (loc *CookbookLocator) Obsolete(value string) error {
 	if value == "" {
@@ -1529,7 +1555,7 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 // GET /api/cookbooks/:id
 // Show information about a single Cookbook.
 // The extended_designer view is only available to accounts with the designer permission.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *CookbookLocator) Show(options rsapi.ApiParams) (*Cookbook, error) {
 	var res *Cookbook
@@ -1586,7 +1612,7 @@ func (api *Api) CookbookAttachmentLocator(href string) *CookbookAttachmentLocato
 // POST /api/server_templates/:server_template_id/cookbook_attachments
 // POST /api/cookbook_attachments
 // Attach a cookbook to a given resource.
-// -- Optional parameters:
+// Optional parameters:
 // cookbook_attachment
 func (loc *CookbookAttachmentLocator) Create(options rsapi.ApiParams) (*CookbookAttachmentLocator, error) {
 	var res *CookbookAttachmentLocator
@@ -1635,7 +1661,7 @@ func (loc *CookbookAttachmentLocator) Destroy() error {
 // GET /api/server_templates/:server_template_id/cookbook_attachments
 // GET /api/cookbook_attachments
 // Lists Cookbook Attachments.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *CookbookAttachmentLocator) Index(options rsapi.ApiParams) ([]*CookbookAttachment, error) {
 	var res []*CookbookAttachment
@@ -1666,6 +1692,8 @@ func (loc *CookbookAttachmentLocator) Index(options rsapi.ApiParams) ([]*Cookboo
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_attach
 // POST /api/cookbook_attachments/multi_attach
 // Attach multiple cookbooks to a given resource.
+// Required parameters:
+// cookbook_attachments
 func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookAttachments) error {
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
@@ -1689,6 +1717,8 @@ func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookA
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_detach
 // POST /api/cookbook_attachments/multi_detach
 // Detach multiple cookbooks from a given resource.
+// Required parameters:
+// cookbook_attachments
 func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookAttachments2) error {
 	if cookbookAttachments == nil {
 		return fmt.Errorf("cookbookAttachments is required")
@@ -1713,7 +1743,7 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 // GET /api/server_templates/:server_template_id/cookbook_attachments/:id
 // GET /api/cookbook_attachments/:id
 // Displays information about a single cookbook attachment to a ServerTemplate.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *CookbookAttachmentLocator) Show(options rsapi.ApiParams) (*CookbookAttachment, error) {
 	var res *CookbookAttachment
@@ -1775,6 +1805,8 @@ func (api *Api) CredentialLocator(href string) *CredentialLocator {
 
 // POST /api/credentials
 // Creates a new Credential with the given parameters.
+// Required parameters:
+// credential
 func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLocator, error) {
 	var res *CredentialLocator
 	if credential == nil {
@@ -1819,7 +1851,7 @@ func (loc *CredentialLocator) Destroy() error {
 
 // GET /api/credentials
 // Lists the Credentials available to this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *CredentialLocator) Index(options rsapi.ApiParams) ([]*Credential, error) {
@@ -1854,7 +1886,7 @@ func (loc *CredentialLocator) Index(options rsapi.ApiParams) ([]*Credential, err
 
 // GET /api/credentials/:id
 // Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *CredentialLocator) Show(options rsapi.ApiParams) (*Credential, error) {
 	var res *Credential
@@ -1884,6 +1916,8 @@ func (loc *CredentialLocator) Show(options rsapi.ApiParams) (*Credential, error)
 
 // PUT /api/credentials/:id
 // Updates attributes of a Credential.
+// Required parameters:
+// credential
 func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	if credential == nil {
 		return fmt.Errorf("credential is required")
@@ -1935,7 +1969,7 @@ func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
 
 // GET /api/clouds/:cloud_id/datacenters
 // Lists all Datacenters for a particular cloud.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *DatacenterLocator) Index(options rsapi.ApiParams) ([]*Datacenter, error) {
@@ -1970,7 +2004,7 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) ([]*Datacenter, err
 
 // GET /api/clouds/:cloud_id/datacenters/:id
 // Displays information about a single Datacenter.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *DatacenterLocator) Show(options rsapi.ApiParams) (*Datacenter, error) {
 	var res *Datacenter
@@ -2028,7 +2062,7 @@ func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
 
 // POST /api/deployments/:id/clone
 // Clones a given deployment.
-// -- Optional parameters:
+// Optional parameters:
 // deployment
 func (loc *DeploymentLocator) Clone(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -2051,6 +2085,8 @@ func (loc *DeploymentLocator) Clone(options rsapi.ApiParams) error {
 
 // POST /api/deployments
 // Creates a new deployment with the given parameters.
+// Required parameters:
+// deployment
 func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLocator, error) {
 	var res *DeploymentLocator
 	if deployment == nil {
@@ -2098,7 +2134,7 @@ func (loc *DeploymentLocator) Destroy() error {
 // Using the available filters, one can select or group which deployments to retrieve.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, error) {
@@ -2170,7 +2206,7 @@ func (loc *DeploymentLocator) Servers() error {
 // Lists the attributes of a given deployment.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error) {
 	var res *Deployment
@@ -2216,6 +2252,8 @@ func (loc *DeploymentLocator) Unlock() error {
 
 // PUT /api/deployments/:id
 // Updates attributes of a given deployment.
+// Required parameters:
+// deployment
 func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 	if deployment == nil {
 		return fmt.Errorf("deployment is required")
@@ -2307,7 +2345,7 @@ func (api *Api) IdentityProviderLocator(href string) *IdentityProviderLocator {
 
 // GET /api/identity_providers
 // Lists the identity providers associated with this enterprise account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *IdentityProviderLocator) Index(options rsapi.ApiParams) ([]*IdentityProvider, error) {
@@ -2342,7 +2380,7 @@ func (loc *IdentityProviderLocator) Index(options rsapi.ApiParams) ([]*IdentityP
 
 // GET /api/identity_providers/:id
 // Show the specified identity provider, if associated with this enterprise account.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *IdentityProviderLocator) Show(options rsapi.ApiParams) (*IdentityProvider, error) {
 	var res *IdentityProvider
@@ -2405,7 +2443,7 @@ func (api *Api) ImageLocator(href string) *ImageLocator {
 
 // GET /api/clouds/:cloud_id/images
 // Lists all Images for the given Cloud.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *ImageLocator) Index(options rsapi.ApiParams) ([]*Image, error) {
@@ -2440,7 +2478,7 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) ([]*Image, error) {
 
 // GET /api/clouds/:cloud_id/images/:id
 // Shows information about a single Image.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *ImageLocator) Show(options rsapi.ApiParams) (*Image, error) {
 	var res *Image
@@ -2498,7 +2536,7 @@ func (api *Api) InputLocator(href string) *InputLocator {
 // GET /api/deployments/:deployment_id/inputs
 // GET /api/server_templates/:server_template_id/inputs
 // Retrieves the full list of existing inputs of the specified resource.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *InputLocator) Index(options rsapi.ApiParams) ([]*Input, error) {
 	var res []*Input
@@ -2592,6 +2630,8 @@ func (loc *InputLocator) Index(options rsapi.ApiParams) ([]*Input, error) {
 // (ex: -d inputs[MY_INPUT]="text:foobar").
 // If the old format is used, the input is parsed using 1.0 semantics.
 // If the new format is used, the input is parsed using the new 2.0 semantics.
+// Required parameters:
+// inputs
 func (loc *InputLocator) MultiUpdate(inputs map[string]interface{}) error {
 	if len(inputs) == 0 {
 		return fmt.Errorf("inputs is required")
@@ -2667,7 +2707,9 @@ func (api *Api) InstanceLocator(href string) *InstanceLocator {
 
 // POST /api/clouds/:cloud_id/instances
 // Creates and launches a raw instance using the provided parameters.
-// -- Optional parameters:
+// Required parameters:
+// instance
+// Optional parameters:
 // api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
 func (loc *InstanceLocator) Create(instance *InstanceParam, options rsapi.ApiParams) (*InstanceLocator, error) {
 	var res *InstanceLocator
@@ -2712,7 +2754,7 @@ func (loc *InstanceLocator) Create(instance *InstanceParam, options rsapi.ApiPar
 // instances of a server array, use the URL "/api/server_arrays/:server_array_id/current_instances"
 // The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) {
@@ -2750,7 +2792,7 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) 
 // POST /api/server_arrays/:server_array_id/launch
 // Launches an instance using the parameters that this instance has been configured with.
 // Note that this action can only be performed in "next" instances, and not on instances that are already running.
-// -- Optional parameters:
+// Optional parameters:
 // api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
 // count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
 // inputs
@@ -2802,7 +2844,7 @@ func (loc *InstanceLocator) Lock() error {
 // Runs a script or a recipe in the running instances.
 // This is an asynchronous function, which returns immediately after queuing the executable for execution.
 // Status of the execution can be tracked at the URL returned in the "Location" header.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // ignore_lock: Specifies the ability to ignore the lock(s) on the Instance(s).
 // inputs
@@ -2848,7 +2890,7 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.ApiParams) error {
 // POST /api/server_arrays/:server_array_id/multi_terminate
 // Terminates running instances.
 // Either a filter or the parameter 'terminate_all' must be provided.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // terminate_all: Specifies the ability to terminate all instances.
 func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
@@ -2898,7 +2940,7 @@ func (loc *InstanceLocator) Reboot() error {
 // This is an asynchronous function, which returns immediately after queuing the executable for execution.
 // Status of the execution can be tracked at the URL returned in the "Location" header.
 // Note that this can only be performed on running instances.
-// -- Optional parameters:
+// Optional parameters:
 // ignore_lock: Specifies the ability to ignore the lock on the Instance.
 // inputs
 // recipe_name: The name of the recipe to run.
@@ -2936,6 +2978,7 @@ func (loc *InstanceLocator) RunExecutable(options rsapi.ApiParams) error {
 
 // POST /api/clouds/:cloud_id/instances/:id/set_custom_lodgement
 // This method is deprecated.  Please use InstanceCustomLodgement.
+// Required parameters:
 // quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 // timeframe: The timeframe (either a month or a single day) for which the quantity value is valid (currently for the PDT timezone only).
 func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe string) error {
@@ -2966,7 +3009,7 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 // Shows attributes of a single instance.
 // The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 	var res *Instance
@@ -3069,6 +3112,8 @@ func (loc *InstanceLocator) Unlock() error {
 
 // PUT /api/clouds/:cloud_id/instances/:id
 // Updates attributes of a single instance.
+// Required parameters:
+// instance
 func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	if instance == nil {
 		return fmt.Errorf("instance is required")
@@ -3126,6 +3171,7 @@ func (api *Api) InstanceCustomLodgementLocator(href string) *InstanceCustomLodge
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements
 // Create a lodgement with the quantity and timeframe specified.
+// Required parameters:
 // quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 // timeframe: The time-frame (either a month "YYYY_MM" or a single day "YYYY_MM_DD") for which the quantity value is valid (currently for the PDT timezone only).
 func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timeframe string) (*InstanceCustomLodgementLocator, error) {
@@ -3176,7 +3222,7 @@ func (loc *InstanceCustomLodgementLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements
 // List InstanceCustomLodgements of a given cloud and instance.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *InstanceCustomLodgementLocator) Index(options rsapi.ApiParams) ([]*InstanceCustomLodgement, error) {
 	var res []*InstanceCustomLodgement
@@ -3229,6 +3275,7 @@ func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, err
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
 // Update a lodgement with the quantity specified.
+// Required parameters:
 // quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
 func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 	if len(quantity) == 0 {
@@ -3283,7 +3330,7 @@ func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
 
 // GET /api/clouds/:cloud_id/instance_types
 // Lists instance types.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) ([]*InstanceType, error) {
@@ -3318,7 +3365,7 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) ([]*InstanceType,
 
 // GET /api/clouds/:cloud_id/instance_types/:id
 // Displays information about a single Instance type.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) (*InstanceType, error) {
 	var res *InstanceType
@@ -3375,6 +3422,8 @@ func (api *Api) IpAddressLocator(href string) *IpAddressLocator {
 
 // POST /api/clouds/:cloud_id/ip_addresses
 // Creates a new IpAddress with the given parameters.
+// Required parameters:
+// ip_address
 func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocator, error) {
 	var res *IpAddressLocator
 	if ipAddress == nil {
@@ -3419,7 +3468,7 @@ func (loc *IpAddressLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/ip_addresses
 // Lists the IpAddresses available to this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *IpAddressLocator) Index(options rsapi.ApiParams) ([]*IpAddress, error) {
 	var res []*IpAddress
@@ -3472,6 +3521,8 @@ func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 
 // PUT /api/clouds/:cloud_id/ip_addresses/:id
 // Updates attributes of a given IpAddress.
+// Required parameters:
+// ip_address
 func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	if ipAddress == nil {
 		return fmt.Errorf("ipAddress is required")
@@ -3529,6 +3580,8 @@ func (api *Api) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
 // IpAddressBinding will be created. If the instance is a next instance, then
 // a recurring IpAddressBinding is created, which will cause the IpAddress to
 // be bound each time the incarnator boots.
+// Required parameters:
+// ip_address_binding
 func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingParam) (*IpAddressBindingLocator, error) {
 	var res *IpAddressBindingLocator
 	if ipAddressBinding == nil {
@@ -3575,7 +3628,7 @@ func (loc *IpAddressBindingLocator) Destroy() error {
 // GET /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings
 // GET /api/clouds/:cloud_id/ip_address_bindings
 // Lists the ip address bindings available to this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) ([]*IpAddressBinding, error) {
 	var res []*IpAddressBinding
@@ -3658,6 +3711,7 @@ func (api *Api) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
 // associated with that metric and the data points for each of those variables.
 // To get the data for a certain duration, for e.g. for the last 10 minutes(600 secs), provide the variables
 // start="-600" and end="0".
+// Required parameters:
 // end: An integer number of seconds from current time. e.g. -150 or 0
 // start: An integer number of seconds from current time. e.g. -300
 func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]string, error) {
@@ -3694,7 +3748,7 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics
 // Lists the monitoring metrics available for the instance and their corresponding graph hrefs.
 // Making a request to the graph_href will return a png image corresponding to that monitoring metric.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // period: The time scale for which the graph is generated. Default is 'day'
 // size: The size of the graph to be generated. Default is 'small'.
@@ -3746,7 +3800,7 @@ func (loc *MonitoringMetricLocator) Index(options rsapi.ApiParams) ([]*Monitorin
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id
 // Shows attributes of a single monitoring metric.
 // Making a request to the graph_href will return a png image corresponding to that monitoring metric.
-// -- Optional parameters:
+// Optional parameters:
 // period: The time scale for which the graph is generated. Default is 'day'.
 // size: The size of the graph to be generated. Default is 'small'.
 // title: The title of the graph.
@@ -3819,6 +3873,8 @@ func (api *Api) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 
 // POST /api/multi_cloud_images/:id/clone
 // Clones a given MultiCloudImage.
+// Required parameters:
+// multi_cloud_image
 func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) error {
 	if multiCloudImage == nil {
 		return fmt.Errorf("multiCloudImage is required")
@@ -3841,7 +3897,8 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 
 // POST /api/multi_cloud_images/:id/commit
 // Commits a given MultiCloudImage. Only HEAD revisions can be committed.
-// commitMessage: The message associated with the commit.
+// Required parameters:
+// commit_message: The message associated with the commit.
 func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	if commitMessage == "" {
 		return fmt.Errorf("commitMessage is required")
@@ -3865,6 +3922,8 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 // POST /api/server_templates/:server_template_id/multi_cloud_images
 // POST /api/multi_cloud_images
 // Creates a new MultiCloudImage with the given parameters.
+// Required parameters:
+// multi_cloud_image
 func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam) (*MultiCloudImageLocator, error) {
 	var res *MultiCloudImageLocator
 	if multiCloudImage == nil {
@@ -3911,7 +3970,7 @@ func (loc *MultiCloudImageLocator) Destroy() error {
 // GET /api/server_templates/:server_template_id/multi_cloud_images
 // GET /api/multi_cloud_images
 // Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*MultiCloudImage, error) {
 	var res []*MultiCloudImage
@@ -3967,6 +4026,8 @@ func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 // PUT /api/multi_cloud_images/:id
 // Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).
 // Currently, the attributes you can update are only the 'direct' attributes of a server template.
+// Required parameters:
+// multi_cloud_image
 func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam) error {
 	if multiCloudImage == nil {
 		return fmt.Errorf("multiCloudImage is required")
@@ -4013,6 +4074,8 @@ func (api *Api) MultiCloudImageSettingLocator(href string) *MultiCloudImageSetti
 
 // POST /api/multi_cloud_images/:multi_cloud_image_id/settings
 // Creates a new setting for an existing MultiCloudImage.
+// Required parameters:
+// multi_cloud_image_setting
 func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCloudImageSettingParam) (*MultiCloudImageSettingLocator, error) {
 	var res *MultiCloudImageSettingLocator
 	if multiCloudImageSetting == nil {
@@ -4057,7 +4120,7 @@ func (loc *MultiCloudImageSettingLocator) Destroy() error {
 
 // GET /api/multi_cloud_images/:multi_cloud_image_id/settings
 // Lists the MultiCloudImage settings.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *MultiCloudImageSettingLocator) Index(options rsapi.ApiParams) ([]*MultiCloudImageSetting, error) {
 	var res []*MultiCloudImageSetting
@@ -4110,6 +4173,8 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 
 // PUT /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
 // Updates a settings for a MultiCLoudImage.
+// Required parameters:
+// multi_cloud_image_setting
 func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCloudImageSettingParam) error {
 	if multiCloudImageSetting == nil {
 		return fmt.Errorf("multiCloudImageSetting is required")
@@ -4161,6 +4226,8 @@ func (api *Api) NetworkLocator(href string) *NetworkLocator {
 
 // POST /api/networks
 // Creates a new network.
+// Required parameters:
+// network
 func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error) {
 	var res *NetworkLocator
 	if network == nil {
@@ -4205,7 +4272,7 @@ func (loc *NetworkLocator) Destroy() error {
 
 // GET /api/networks
 // Lists networks in this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *NetworkLocator) Index(options rsapi.ApiParams) ([]*Network, error) {
 	var res []*Network
@@ -4258,6 +4325,8 @@ func (loc *NetworkLocator) Show() (*Network, error) {
 
 // PUT /api/networks/:id
 // Updates the given network.
+// Required parameters:
+// network
 func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	if network == nil {
 		return fmt.Errorf("network is required")
@@ -4310,6 +4379,8 @@ func (api *Api) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
 
 // POST /api/network_gateways
 // Create a new NetworkGateway.
+// Required parameters:
+// network_gateway
 func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*NetworkGatewayLocator, error) {
 	var res *NetworkGatewayLocator
 	if networkGateway == nil {
@@ -4354,7 +4425,7 @@ func (loc *NetworkGatewayLocator) Destroy() error {
 
 // GET /api/network_gateways
 // Lists the NetworkGateways available to this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *NetworkGatewayLocator) Index(options rsapi.ApiParams) ([]*NetworkGateway, error) {
 	var res []*NetworkGateway
@@ -4407,6 +4478,8 @@ func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 
 // PUT /api/network_gateways/:id
 // Update an existing NetworkGateway.
+// Required parameters:
+// network_gateway
 func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) error {
 	if networkGateway == nil {
 		return fmt.Errorf("networkGateway is required")
@@ -4464,6 +4537,8 @@ func (api *Api) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLocato
 
 // POST /api/network_option_groups
 // Create a new NetworkOptionGroup.
+// Required parameters:
+// network_option_group
 func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGroupParam) (*NetworkOptionGroupLocator, error) {
 	var res *NetworkOptionGroupLocator
 	if networkOptionGroup == nil {
@@ -4508,7 +4583,7 @@ func (loc *NetworkOptionGroupLocator) Destroy() error {
 
 // GET /api/network_option_groups
 // List NetworkOptionGroups available in this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *NetworkOptionGroupLocator) Index(options rsapi.ApiParams) ([]*NetworkOptionGroup, error) {
 	var res []*NetworkOptionGroup
@@ -4561,6 +4636,8 @@ func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 
 // PUT /api/network_option_groups/:id
 // Update an existing NetworkOptionGroup.
+// Required parameters:
+// network_option_group
 func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGroupParam2) error {
 	if networkOptionGroup == nil {
 		return fmt.Errorf("networkOptionGroup is required")
@@ -4617,6 +4694,8 @@ func (api *Api) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptionG
 
 // POST /api/network_option_group_attachments
 // Create a new NetworkOptionGroupAttachment.
+// Required parameters:
+// network_option_group_attachment
 func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam) (*NetworkOptionGroupAttachmentLocator, error) {
 	var res *NetworkOptionGroupAttachmentLocator
 	if networkOptionGroupAttachment == nil {
@@ -4661,7 +4740,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 
 // GET /api/network_option_group_attachments
 // List NetworkOptionGroupAttachments in this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *NetworkOptionGroupAttachmentLocator) Index(options rsapi.ApiParams) ([]*NetworkOptionGroupAttachment, error) {
@@ -4696,7 +4775,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options rsapi.ApiParams) (
 
 // GET /api/network_option_group_attachments/:id
 // Show information about a single NetworkOptionGroupAttachment.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *NetworkOptionGroupAttachmentLocator) Show(options rsapi.ApiParams) (*NetworkOptionGroupAttachment, error) {
 	var res *NetworkOptionGroupAttachment
@@ -4726,6 +4805,8 @@ func (loc *NetworkOptionGroupAttachmentLocator) Show(options rsapi.ApiParams) (*
 
 // PUT /api/network_option_group_attachments/:id
 // Update an existing NetworkOptionGroupAttachment.
+// Required parameters:
+// network_option_group_attachment
 func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachment *NetworkOptionGroupAttachmentParam2) error {
 	if networkOptionGroupAttachment == nil {
 		return fmt.Errorf("networkOptionGroupAttachment is required")
@@ -4807,8 +4888,9 @@ func (api *Api) Oauth2Locator(href string) *Oauth2Locator {
 // "expires_in":   3600,
 // "token_type":   "bearer"
 // }
-// grantType: Type of grant.
-// -- Optional parameters:
+// Required parameters:
+// grant_type: Type of grant.
+// Optional parameters:
 // account_id: The client's account ID (only needed for instance agent clients).
 // client_id: The client ID (only needed for confidential clients).
 // client_secret: The client secret (only needed for confidential clients).
@@ -4901,6 +4983,8 @@ func (api *Api) PermissionLocator(href string) *PermissionLocator {
 // they confer, please refer to the following page of the RightScale
 // support portal:
 // http://support.rightscale.com/15-References/Lists/ListofUser_Roles
+// Required parameters:
+// permission
 func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLocator, error) {
 	var res *PermissionLocator
 	if permission == nil {
@@ -4951,7 +5035,7 @@ func (loc *PermissionLocator) Destroy() error {
 
 // GET /api/permissions
 // List all permissions for all users of the current acount.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *PermissionLocator) Index(options rsapi.ApiParams) ([]*Permission, error) {
 	var res []*Permission
@@ -5032,6 +5116,8 @@ func (api *Api) PlacementGroupLocator(href string) *PlacementGroupLocator {
 
 // POST /api/placement_groups
 // Creates a PlacementGroup.
+// Required parameters:
+// placement_group
 func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*PlacementGroupLocator, error) {
 	var res *PlacementGroupLocator
 	if placementGroup == nil {
@@ -5076,7 +5162,7 @@ func (loc *PlacementGroupLocator) Destroy() error {
 
 // GET /api/placement_groups
 // Lists all PlacementGroups in an account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *PlacementGroupLocator) Index(options rsapi.ApiParams) ([]*PlacementGroup, error) {
@@ -5111,7 +5197,7 @@ func (loc *PlacementGroupLocator) Index(options rsapi.ApiParams) ([]*PlacementGr
 
 // GET /api/placement_groups/:id
 // Shows information about a single PlacementGroup.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *PlacementGroupLocator) Show(options rsapi.ApiParams) (*PlacementGroup, error) {
 	var res *PlacementGroup
@@ -5183,7 +5269,7 @@ func (loc *PreferenceLocator) Destroy() error {
 
 // GET /api/preferences
 // Lists all preferences.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *PreferenceLocator) Index(options rsapi.ApiParams) ([]*Preference, error) {
 	var res []*Preference
@@ -5238,6 +5324,8 @@ func (loc *PreferenceLocator) Show() (*Preference, error) {
 // If 'id' is known, updates preference with given contents.
 // Otherwise, creates new preference.
 // Note: If create, will return '201 Created' and the location of the new preference.
+// Required parameters:
+// preference
 func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	if preference == nil {
 		return fmt.Errorf("preference is required")
@@ -5310,7 +5398,7 @@ func (loc *PublicationLocator) Import() error {
 
 // GET /api/publications
 // Lists the publications available to this account. Only non-HEAD revisions are possible.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *PublicationLocator) Index(options rsapi.ApiParams) ([]*Publication, error) {
@@ -5345,7 +5433,7 @@ func (loc *PublicationLocator) Index(options rsapi.ApiParams) ([]*Publication, e
 
 // GET /api/publications/:id
 // Show information about a single publication. Only non-HEAD revisions are possible.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *PublicationLocator) Show(options rsapi.ApiParams) (*Publication, error) {
 	var res *Publication
@@ -5407,7 +5495,7 @@ func (api *Api) PublicationLineageLocator(href string) *PublicationLineageLocato
 
 // GET /api/publication_lineages/:id
 // Show information about a single publication lineage. Only non-HEAD revisions are possible.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *PublicationLineageLocator) Show(options rsapi.ApiParams) (*PublicationLineage, error) {
 	var res *PublicationLineage
@@ -5471,6 +5559,8 @@ func (api *Api) RecurringVolumeAttachmentLocator(href string) *RecurringVolumeAt
 // POST /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments
 // POST /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments
 // Creates a new recurring volume attachment.
+// Required parameters:
+// recurring_volume_attachment
 func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *RecurringVolumeAttachmentParam) (*RecurringVolumeAttachmentLocator, error) {
 	var res *RecurringVolumeAttachmentLocator
 	if recurringVolumeAttachment == nil {
@@ -5519,7 +5609,7 @@ func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 // GET /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments
 // GET /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments
 // Lists all recurring volume attachments.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *RecurringVolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*RecurringVolumeAttachment, error) {
@@ -5556,7 +5646,7 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*
 // GET /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments/:id
 // GET /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments/:id
 // Displays information about a single recurring volume attachment.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *RecurringVolumeAttachmentLocator) Show(options rsapi.ApiParams) (*RecurringVolumeAttachment, error) {
 	var res *RecurringVolumeAttachment
@@ -5623,8 +5713,9 @@ func (api *Api) RepositoryLocator(href string) *RepositoryLocator {
 
 // POST /api/repositories/:id/cookbook_import
 // Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.
-// assetHrefs: Hrefs of the assets that should be imported.
-// -- Optional parameters:
+// Required parameters:
+// asset_hrefs: Hrefs of the assets that should be imported.
+// Optional parameters:
 // follow: A flag indicating whether imported cookbooks should be followed.
 // namespace: The namespace to import into.
 // repository_commit_reference: Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.
@@ -5670,7 +5761,8 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options rsapi.
 // NOTE: This action is for RightScale internal use only. The response is
 // free-form JSON with no associated mediatype.
 // DO NOT USE, THIS ACTION IS SUBJECT TO CHANGE AT ANYTIME.
-// assetHrefs: Hrefs of the assets that should be imported.
+// Required parameters:
+// asset_hrefs: Hrefs of the assets that should be imported.
 // namespace: The namespace to import into.
 func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespace string) ([]*map[string]string, error) {
 	var res []*map[string]string
@@ -5715,6 +5807,8 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 // Credential value
 // cred:&lt;value&gt;
 // cred:my ssh keycred:svn_1_password
+// Required parameters:
+// repository
 func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLocator, error) {
 	var res *RepositoryLocator
 	if repository == nil {
@@ -5759,7 +5853,7 @@ func (loc *RepositoryLocator) Destroy() error {
 
 // GET /api/repositories
 // Lists all Repositories for this Account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *RepositoryLocator) Index(options rsapi.ApiParams) ([]*Repository, error) {
@@ -5796,7 +5890,7 @@ func (loc *RepositoryLocator) Index(options rsapi.ApiParams) ([]*Repository, err
 // Refetches all RepositoryAssets associated with the Repository.
 // Note that a refetch simply updates RightScale's view of the contents of the repository.
 // You must perform an import to use the assets in your design objects (or use the auto import parameter).
-// -- Optional parameters:
+// Optional parameters:
 // auto_import: Whether cookbooks should automatically be imported after repositories are fetched.
 func (loc *RepositoryLocator) Refetch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -5822,7 +5916,7 @@ func (loc *RepositoryLocator) Refetch(options rsapi.ApiParams) error {
 // This operation returns a list of repositories that would later satisfy a call
 // to the swap_repository
 // action on a ServerTemplate.
-// -- Optional parameters:
+// Optional parameters:
 // imported_cookbook_name: A list of cookbook names that were imported by the repository.
 func (loc *RepositoryLocator) Resolve(options rsapi.ApiParams) ([]*Repository, error) {
 	var res []*Repository
@@ -5852,7 +5946,7 @@ func (loc *RepositoryLocator) Resolve(options rsapi.ApiParams) ([]*Repository, e
 
 // GET /api/repositories/:id
 // Shows a specified Repository.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *RepositoryLocator) Show(options rsapi.ApiParams) (*Repository, error) {
 	var res *Repository
@@ -5892,6 +5986,8 @@ func (loc *RepositoryLocator) Show(options rsapi.ApiParams) (*Repository, error)
 // Credential value
 // cred:&lt;value&gt;
 // cred:my ssh keycred:svn_1_password
+// Required parameters:
+// repository
 func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	if repository == nil {
 		return fmt.Errorf("repository is required")
@@ -5944,7 +6040,7 @@ func (api *Api) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 // List a repository's current assets.
 // Repository assests are the cookbook details that were scraped from a
 // given repository.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *RepositoryAssetLocator) Index(options rsapi.ApiParams) ([]*RepositoryAsset, error) {
 	var res []*RepositoryAsset
@@ -5976,7 +6072,7 @@ func (loc *RepositoryAssetLocator) Index(options rsapi.ApiParams) ([]*Repository
 // Show information about a single asset.
 // A repository assest are the cookbook details that were scraped from a
 // repository.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *RepositoryAssetLocator) Show(options rsapi.ApiParams) (*RepositoryAsset, error) {
 	var res *RepositoryAsset
@@ -6041,6 +6137,8 @@ func (api *Api) RightScriptLocator(href string) *RightScriptLocator {
 
 // POST /api/right_scripts/:id/commit
 // Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
+// Required parameters:
+// right_script
 func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
@@ -6063,7 +6161,7 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 
 // GET /api/right_scripts
 // Lists RightScripts.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // latest_only: Whether or not to return only the latest version for each lineage.
 // view
@@ -6143,6 +6241,8 @@ func (loc *RightScriptLocator) ShowSource() error {
 
 // PUT /api/right_scripts/:id
 // Updates RightScript name/description
+// Required parameters:
+// right_script
 func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
@@ -6213,6 +6313,8 @@ func (api *Api) RouteLocator(href string) *RouteLocator {
 // POST /api/routes
 // POST /api/route_tables/:route_table_id/routes
 // Create a new Route.
+// Required parameters:
+// route
 func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 	var res *RouteLocator
 	if route == nil {
@@ -6259,7 +6361,7 @@ func (loc *RouteLocator) Destroy() error {
 // GET /api/routes
 // GET /api/route_tables/:route_table_id/routes
 // List Routes available in this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *RouteLocator) Index(options rsapi.ApiParams) ([]*Route, error) {
 	var res []*Route
@@ -6314,6 +6416,8 @@ func (loc *RouteLocator) Show() (*Route, error) {
 // PUT /api/routes/:id
 // PUT /api/route_tables/:route_table_id/routes/:id
 // Update an existing Route.
+// Required parameters:
+// route
 func (loc *RouteLocator) Update(route *RouteParam2) error {
 	if route == nil {
 		return fmt.Errorf("route is required")
@@ -6365,6 +6469,8 @@ func (api *Api) RouteTableLocator(href string) *RouteTableLocator {
 
 // POST /api/route_tables
 // Create a new RouteTable.
+// Required parameters:
+// route_table
 func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLocator, error) {
 	var res *RouteTableLocator
 	if routeTable == nil {
@@ -6409,7 +6515,7 @@ func (loc *RouteTableLocator) Destroy() error {
 
 // GET /api/route_tables
 // List RouteTables available in this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *RouteTableLocator) Index(options rsapi.ApiParams) ([]*RouteTable, error) {
@@ -6444,7 +6550,7 @@ func (loc *RouteTableLocator) Index(options rsapi.ApiParams) ([]*RouteTable, err
 
 // GET /api/route_tables/:id
 // Show information about a single RouteTable.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *RouteTableLocator) Show(options rsapi.ApiParams) (*RouteTable, error) {
 	var res *RouteTable
@@ -6474,6 +6580,8 @@ func (loc *RouteTableLocator) Show(options rsapi.ApiParams) (*RouteTable, error)
 
 // PUT /api/route_tables/:id
 // Update an existing RouteTable.
+// Required parameters:
+// route_table
 func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	if routeTable == nil {
 		return fmt.Errorf("routeTable is required")
@@ -6528,6 +6636,8 @@ func (api *Api) RunnableBindingLocator(href string) *RunnableBindingLocator {
 // Bind an executable to the given ServerTemplate.
 // An executable may be either a RightScript or Chef Recipe.
 // The resource must be editable.
+// Required parameters:
+// runnable_binding
 func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam) (*RunnableBindingLocator, error) {
 	var res *RunnableBindingLocator
 	if runnableBinding == nil {
@@ -6574,7 +6684,7 @@ func (loc *RunnableBindingLocator) Destroy() error {
 // GET /api/server_templates/:server_template_id/runnable_bindings
 // Lists the executables bound to the ServerTemplate.
 // An excutable may be either a RightScript or Chef Recipe.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *RunnableBindingLocator) Index(options rsapi.ApiParams) ([]*RunnableBinding, error) {
 	var res []*RunnableBinding
@@ -6605,6 +6715,8 @@ func (loc *RunnableBindingLocator) Index(options rsapi.ApiParams) ([]*RunnableBi
 // PUT /api/server_templates/:server_template_id/runnable_bindings/multi_update
 // Update attributes for multiple bound executables.
 // The resource must be editable.
+// Required parameters:
+// runnable_bindings
 func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindings) error {
 	if len(runnableBindings) == 0 {
 		return fmt.Errorf("runnableBindings is required")
@@ -6628,7 +6740,7 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 // GET /api/server_templates/:server_template_id/runnable_bindings/:id
 // Show information about a single executable binding.
 // An excutable may be either a RightScript or Chef Recipe.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *RunnableBindingLocator) Show(options rsapi.ApiParams) (*RunnableBinding, error) {
 	var res *RunnableBinding
@@ -6654,6 +6766,141 @@ func (loc *RunnableBindingLocator) Show(options rsapi.ApiParams) (*RunnableBindi
 	}
 	err = json.Unmarshal(respBody, &res)
 	return res, err
+}
+
+/******  Scheduler ******/
+
+// Provide RightLink with the ability to schedule script executions on instances
+
+//===== Locator
+
+// Scheduler resource locator, exposes resource actions.
+type SchedulerLocator struct {
+	UrlResolver
+	api *Api
+}
+
+// Scheduler resource locator factory
+func (api *Api) SchedulerLocator(href string) *SchedulerLocator {
+	return &SchedulerLocator{UrlResolver(href), api}
+}
+
+//===== Actions
+
+// POST /api/right_net/scheduler/schedule_recipe
+// Schedules a chef recipe for execution on the current instance
+// Optional parameters:
+// arguments: Serialized recipe execution arguments values keyed by name
+// audit_id: Optional, reuse audit if specified
+// audit_period: RunlistPolicy audit period
+// formal_values: Formal input parameter values
+// policy: RunlistPolicy policy name
+// recipe: Chef recipe name, overridden by recipe_id
+// recipe_id: ServerTemplateChefRecipe ID
+// thread: RunlistPolicy thread name
+func (loc *SchedulerLocator) ScheduleRecipe(options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var argumentsOpt = options["arguments"]
+	if argumentsOpt != nil {
+		payloadParams["arguments"] = argumentsOpt
+	}
+	var auditIdOpt = options["audit_id"]
+	if auditIdOpt != nil {
+		payloadParams["audit_id"] = auditIdOpt
+	}
+	var auditPeriodOpt = options["audit_period"]
+	if auditPeriodOpt != nil {
+		payloadParams["audit_period"] = auditPeriodOpt
+	}
+	var formalValuesOpt = options["formal_values"]
+	if formalValuesOpt != nil {
+		payloadParams["formal_values"] = formalValuesOpt
+	}
+	var policyOpt = options["policy"]
+	if policyOpt != nil {
+		payloadParams["policy"] = policyOpt
+	}
+	var recipeOpt = options["recipe"]
+	if recipeOpt != nil {
+		payloadParams["recipe"] = recipeOpt
+	}
+	var recipeIdOpt = options["recipe_id"]
+	if recipeIdOpt != nil {
+		payloadParams["recipe_id"] = recipeIdOpt
+	}
+	var threadOpt = options["thread"]
+	if threadOpt != nil {
+		payloadParams["thread"] = threadOpt
+	}
+	uri, err := loc.Url("Scheduler", "schedule_recipe")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// POST /api/right_net/scheduler/schedule_right_script
+// Schedules a RightScript for execution on the current instance
+// Optional parameters:
+// arguments: Serialized script execution arguments values keyed by name
+// audit_id: Optional, reuse audit if specified
+// audit_period: RunlistPolicy audit period
+// formal_values: Formal input parameter values
+// policy: RunlistPolicy policy name
+// right_script: RightScript name, overridden by right_script_id
+// right_script_id: RightScript ID
+// thread: RunlistPolicy thread name
+func (loc *SchedulerLocator) ScheduleRightScript(options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var argumentsOpt = options["arguments"]
+	if argumentsOpt != nil {
+		payloadParams["arguments"] = argumentsOpt
+	}
+	var auditIdOpt = options["audit_id"]
+	if auditIdOpt != nil {
+		payloadParams["audit_id"] = auditIdOpt
+	}
+	var auditPeriodOpt = options["audit_period"]
+	if auditPeriodOpt != nil {
+		payloadParams["audit_period"] = auditPeriodOpt
+	}
+	var formalValuesOpt = options["formal_values"]
+	if formalValuesOpt != nil {
+		payloadParams["formal_values"] = formalValuesOpt
+	}
+	var policyOpt = options["policy"]
+	if policyOpt != nil {
+		payloadParams["policy"] = policyOpt
+	}
+	var rightScriptOpt = options["right_script"]
+	if rightScriptOpt != nil {
+		payloadParams["right_script"] = rightScriptOpt
+	}
+	var rightScriptIdOpt = options["right_script_id"]
+	if rightScriptIdOpt != nil {
+		payloadParams["right_script_id"] = rightScriptIdOpt
+	}
+	var threadOpt = options["thread"]
+	if threadOpt != nil {
+		payloadParams["thread"] = threadOpt
+	}
+	uri, err := loc.Url("Scheduler", "schedule_right_script")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 /******  SecurityGroup ******/
@@ -6686,6 +6933,8 @@ func (api *Api) SecurityGroupLocator(href string) *SecurityGroupLocator {
 
 // POST /api/clouds/:cloud_id/security_groups
 // Create a security group.
+// Required parameters:
+// security_group
 func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*SecurityGroupLocator, error) {
 	var res *SecurityGroupLocator
 	if securityGroup == nil {
@@ -6730,7 +6979,7 @@ func (loc *SecurityGroupLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/security_groups
 // Lists Security Groups.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) ([]*SecurityGroup, error) {
@@ -6765,7 +7014,7 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) ([]*SecurityGrou
 
 // GET /api/clouds/:cloud_id/security_groups/:id
 // Displays information about a single Security Group.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) (*SecurityGroup, error) {
 	var res *SecurityGroup
@@ -6836,6 +7085,8 @@ func (api *Api) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator 
 // group-based ICMP
 // CIDR-based TCP/UDP
 // CIDR-based ICMP
+// Required parameters:
+// security_group_rule
 func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRuleParam) (*SecurityGroupRuleLocator, error) {
 	var res *SecurityGroupRuleLocator
 	if securityGroupRule == nil {
@@ -6882,7 +7133,7 @@ func (loc *SecurityGroupRuleLocator) Destroy() error {
 // GET /api/security_group_rules
 // GET /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules
 // Lists SecurityGroupRules.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *SecurityGroupRuleLocator) Index(options rsapi.ApiParams) ([]*SecurityGroupRule, error) {
 	var res []*SecurityGroupRule
@@ -6913,7 +7164,7 @@ func (loc *SecurityGroupRuleLocator) Index(options rsapi.ApiParams) ([]*Security
 // GET /api/security_group_rules/:id
 // GET /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
 // Displays information about a single SecurityGroupRule.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *SecurityGroupRuleLocator) Show(options rsapi.ApiParams) (*SecurityGroupRule, error) {
 	var res *SecurityGroupRule
@@ -6943,7 +7194,8 @@ func (loc *SecurityGroupRuleLocator) Show(options rsapi.ApiParams) (*SecurityGro
 
 // PUT /api/security_group_rules/:id
 // PUT /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
-
+// Required parameters:
+// security_group_rule
 func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRuleParam2) error {
 	if securityGroupRule == nil {
 		return fmt.Errorf("securityGroupRule is required")
@@ -7022,6 +7274,8 @@ func (loc *ServerLocator) Clone() error {
 // POST /api/servers
 // POST /api/deployments/:deployment_id/servers
 // Creates a new server, and configures its corresponding "next" instance with the received parameters.
+// Required parameters:
+// server
 func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 	var res *ServerLocator
 	if server == nil {
@@ -7074,7 +7328,7 @@ func (loc *ServerLocator) Destroy() error {
 // all servers of a given deployment
 // For more filters, please see the 'index' action on 'Instances' resource as most of the attributes belong to
 // a 'current_instance' than to a server.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
@@ -7127,7 +7381,7 @@ func (loc *ServerLocator) Launch() error {
 // GET /api/servers/:id
 // GET /api/deployments/:deployment_id/servers/:id
 // Shows the information of a single server.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 	var res *Server
@@ -7192,6 +7446,8 @@ func (loc *ServerLocator) Unwrap() error {
 // PUT /api/servers/:id
 // PUT /api/deployments/:deployment_id/servers/:id
 // Updates attributes of a single server.
+// Required parameters:
+// server
 func (loc *ServerLocator) Update(server *ServerParam2) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
@@ -7215,6 +7471,8 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 // POST /api/servers/wrap_instance
 // POST /api/deployments/:deployment_id/servers/wrap_instance
 // Wrap an existing instance and set current instance for new server
+// Required parameters:
+// server
 func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
@@ -7292,6 +7550,8 @@ func (loc *ServerArrayLocator) Clone() error {
 // POST /api/server_arrays
 // POST /api/deployments/:deployment_id/server_arrays
 // Creates a new server array, and configures its corresponding "next" instance with the received parameters.
+// Required parameters:
+// server_array
 func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArrayLocator, error) {
 	var res *ServerArrayLocator
 	if serverArray == nil {
@@ -7360,7 +7620,7 @@ func (loc *ServerArrayLocator) Destroy() error {
 // For example, one can list:
 // arrays that have names that contain "my_server_array"
 // all arrays of a given deployment
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, error) {
@@ -7449,7 +7709,7 @@ func (loc *ServerArrayLocator) MultiTerminate() error {
 // GET /api/server_arrays/:id
 // GET /api/deployments/:deployment_id/server_arrays/:id
 // Shows the information of a single server array.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) (*ServerArray, error) {
 	var res *ServerArray
@@ -7480,6 +7740,8 @@ func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) (*ServerArray, erro
 // PUT /api/server_arrays/:id
 // PUT /api/deployments/:deployment_id/server_arrays/:id
 // Updates attributes of a single server array.
+// Required parameters:
+// server_array
 func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	if serverArray == nil {
 		return fmt.Errorf("serverArray is required")
@@ -7534,6 +7796,8 @@ func (api *Api) ServerTemplateLocator(href string) *ServerTemplateLocator {
 
 // POST /api/server_templates/:id/clone
 // Clones a given ServerTemplate.
+// Required parameters:
+// server_template
 func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) error {
 	if serverTemplate == nil {
 		return fmt.Errorf("serverTemplate is required")
@@ -7556,9 +7820,10 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 
 // POST /api/server_templates/:id/commit
 // Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.
-// commitHeadDependencies: Commit all HEAD revisions (if any) of the associated MultiCloud Images, RightScripts and Chef repo sequences.
-// commitMessage: The message associated with the commit.
-// freezeRepositories: Freeze the repositories.
+// Required parameters:
+// commit_head_dependencies: Commit all HEAD revisions (if any) of the associated MultiCloud Images, RightScripts and Chef repo sequences.
+// commit_message: The message associated with the commit.
+// freeze_repositories: Freeze the repositories.
 func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMessage string, freezeRepositories string) error {
 	if commitHeadDependencies == "" {
 		return fmt.Errorf("commitHeadDependencies is required")
@@ -7589,6 +7854,8 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 
 // POST /api/server_templates
 // Creates a new ServerTemplate with the given parameters.
+// Required parameters:
+// server_template
 func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*ServerTemplateLocator, error) {
 	var res *ServerTemplateLocator
 	if serverTemplate == nil {
@@ -7660,7 +7927,7 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 // Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) ([]*ServerTemplate, error) {
@@ -7696,8 +7963,10 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) ([]*ServerTempl
 // POST /api/server_templates/:id/publish
 // Publishes a given ServerTemplate and its subordinates.
 // Only non-HEAD revisions that are owned by the account can be published.
-// accountGroupHrefs: List of hrefs of account groups to publish to.
-// -- Optional parameters:
+// Required parameters:
+// account_group_hrefs: List of hrefs of account groups to publish to.
+// descriptions
+// Optional parameters:
 // allow_comments: Allow users to leave comments on this ServerTemplate.
 // categories: List of Categories.
 // email_comments: Email me when a user comments on this ServerTemplate.
@@ -7767,7 +8036,7 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 // Show information about a single ServerTemplate. HEAD revisions have a revision of 0.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) (*ServerTemplate, error) {
 	var res *ServerTemplate
@@ -7809,8 +8078,9 @@ func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) (*ServerTemplate
 // Name Match / Alternate Namespace
 // If multiple cookbooks still have the same preference for the replacement, the operation is
 // indeterministic.
-// sourceRepositoryHref: The repository whose cookbook attachments are to be replaced.
-// targetRepositoryHref: The repository whose cookbook attachments are to be utilized.
+// Required parameters:
+// source_repository_href: The repository whose cookbook attachments are to be replaced.
+// target_repository_href: The repository whose cookbook attachments are to be utilized.
 func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, targetRepositoryHref string) error {
 	if sourceRepositoryHref == "" {
 		return fmt.Errorf("sourceRepositoryHref is required")
@@ -7839,6 +8109,8 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 // Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).
 // Currently, the attributes you can update are only the 'direct' attributes of a server template. To
 // manage multi cloud images of a ServerTemplate, please see the resource 'ServerTemplateMultiCloudImages'.
+// Required parameters:
+// server_template
 func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) error {
 	if serverTemplate == nil {
 		return fmt.Errorf("serverTemplate is required")
@@ -7888,6 +8160,8 @@ func (api *Api) ServerTemplateMultiCloudImageLocator(href string) *ServerTemplat
 
 // POST /api/server_template_multi_cloud_images
 // Creates a new ServerTemplateMultiCloudImage with the given parameters.
+// Required parameters:
+// server_template_multi_cloud_image
 func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloudImage *ServerTemplateMultiCloudImageParam) (*ServerTemplateMultiCloudImageLocator, error) {
 	var res *ServerTemplateMultiCloudImageLocator
 	if serverTemplateMultiCloudImage == nil {
@@ -7932,7 +8206,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 
 // GET /api/server_template_multi_cloud_images
 // Lists the ServerTemplateMultiCloudImages available to this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*ServerTemplateMultiCloudImage, error) {
@@ -7983,7 +8257,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 
 // GET /api/server_template_multi_cloud_images/:id
 // Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.ApiParams) (*ServerTemplateMultiCloudImage, error) {
 	var res *ServerTemplateMultiCloudImage
@@ -8051,7 +8325,7 @@ func (api *Api) SessionLocator(href string) *SessionLocator {
 // curl -i -H X_API_VERSION:1.5 -X GET -d email='email@me.com' -d password='mypassword' https://my.rightscale.com/api/sessions/accounts
 // Example Request using Curl (using an existing session):
 // curl -i -H X_API_VERSION:1.5 -X GET -b mycookies https://my.rightscale.com/api/sessions/accounts
-// -- Optional parameters:
+// Optional parameters:
 // email: The email to login with if not using existing session.
 // password: The corresponding password.
 // view: Extended view shows account permissions and products
@@ -8170,6 +8444,8 @@ func (api *Api) SshKeyLocator(href string) *SshKeyLocator {
 
 // POST /api/clouds/:cloud_id/ssh_keys
 // Creates a new ssh key.
+// Required parameters:
+// ssh_key
 func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 	var res *SshKeyLocator
 	if sshKey == nil {
@@ -8214,7 +8490,7 @@ func (loc *SshKeyLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/ssh_keys
 // Lists ssh keys.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *SshKeyLocator) Index(options rsapi.ApiParams) ([]*SshKey, error) {
@@ -8249,7 +8525,7 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) ([]*SshKey, error) {
 
 // GET /api/clouds/:cloud_id/ssh_keys/:id
 // Displays information about a single ssh key.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *SshKeyLocator) Show(options rsapi.ApiParams) (*SshKey, error) {
 	var res *SshKey
@@ -8310,6 +8586,8 @@ func (api *Api) SubnetLocator(href string) *SubnetLocator {
 // POST /api/clouds/:cloud_id/instances/:instance_id/subnets
 // POST /api/clouds/:cloud_id/subnets
 // Creates a new subnet.
+// Required parameters:
+// subnet
 func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 	var res *SubnetLocator
 	if subnet == nil {
@@ -8356,7 +8634,7 @@ func (loc *SubnetLocator) Destroy() error {
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets
 // GET /api/clouds/:cloud_id/subnets
 // Lists subnets of a given cloud.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *SubnetLocator) Index(options rsapi.ApiParams) ([]*Subnet, error) {
 	var res []*Subnet
@@ -8411,6 +8689,8 @@ func (loc *SubnetLocator) Show() (*Subnet, error) {
 // PUT /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
 // PUT /api/clouds/:cloud_id/subnets/:id
 // Updates name and description for the current subnet.
+// Required parameters:
+// subnet
 func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	if subnet == nil {
 		return fmt.Errorf("subnet is required")
@@ -8455,7 +8735,8 @@ func (api *Api) TagLocator(href string) *TagLocator {
 // POST /api/tags/by_resource
 // Get tags for a list of resource hrefs.
 // The hrefs can belong to various resource types and the tags for a non-existent href will be empty.
-// resourceHrefs: Hrefs of the resources for which tags are to be returned.
+// Required parameters:
+// resource_hrefs: Hrefs of the resources for which tags are to be returned.
 func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string, error) {
 	var res []*map[string]string
 	if len(resourceHrefs) == 0 {
@@ -8497,9 +8778,10 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 // For example, a search with tag[]="server:db=true" and include_tags_with_prefix="backup:"
 // will return resources that are tagged as a DB server, and also return all "backup" related tags
 // for every matching resource.
-// resourceType: Search among a single resource type.
+// Required parameters:
+// resource_type: Search among a single resource type.
 // tags: The tags which must be present on the resource.
-// -- Optional parameters:
+// Optional parameters:
 // include_tags_with_prefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
 // match_all: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
 // with_deleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
@@ -8552,7 +8834,8 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.A
 // error is returned and no tags are added for any resource.
 // No error will be raised if the resource already has the tag(s) you are trying to add.
 // Note: At this point, tags on 'next_instance' are not supported and one has to add tags to the 'server'.
-// resourceHrefs: Hrefs of the resources for which the tags are to be added.
+// Required parameters:
+// resource_hrefs: Hrefs of the resources for which the tags are to be added.
 // tags: Tags to be added.
 func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 	if len(resourceHrefs) == 0 {
@@ -8583,7 +8866,8 @@ func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 // The hrefs can belong to various resource types. If a resource for a href could not be found, an
 // error is returned and no tags are deleted for any resource.
 // Note that no error will be raised if the resource does not have the tag(s) you are trying to delete.
-// resourceHrefs: Hrefs of the resources for which tags are to be deleted.
+// Required parameters:
+// resource_hrefs: Hrefs of the resources for which tags are to be deleted.
 // tags: Tags to be deleted.
 func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error {
 	if len(resourceHrefs) == 0 {
@@ -8639,7 +8923,7 @@ func (api *Api) TaskLocator(href string) *TaskLocator {
 // GET /api/clouds/:cloud_id/instances/:instance_id/live/tasks/:id
 // GET /api/server_arrays/:server_array_id/live/tasks/:id
 // Displays information of a given task within the context of an instance.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *TaskLocator) Show(options rsapi.ApiParams) (*Task, error) {
 	var res *Task
@@ -8716,6 +9000,8 @@ func (api *Api) UserLocator(href string) *UserLocator {
 // the identity provider will assert for this user. Identity providers should be specified by
 // their API href; you can obtain a list of the identity providers available to your account by
 // invoking the 'index' action of the identity_providers API resource.
+// Required parameters:
+// user
 func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 	var res *UserLocator
 	if user == nil {
@@ -8745,7 +9031,7 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 // GET /api/users
 // List the users available to the account the user is logged in to. Therefore, to list the users of
 // a child account, the user has to login to the child account first.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 func (loc *UserLocator) Index(options rsapi.ApiParams) ([]*User, error) {
 	var res []*User
@@ -8816,6 +9102,8 @@ func (loc *UserLocator) Show() (*User, error) {
 // principal_uid (to switch identity providers as well as specify a new user identity).
 // In the context of SAML. principal_uid is equivalent to the SAML NameID or Subject claim;
 // RightScale cannot predict or influence the NameID value that your SAML IdP will send to us for
+// Required parameters:
+// user
 func (loc *UserLocator) Update(user *UserParam2) error {
 	if user == nil {
 		return fmt.Errorf("user is required")
@@ -8910,6 +9198,8 @@ func (api *Api) VolumeLocator(href string) *VolumeLocator {
 
 // POST /api/clouds/:cloud_id/volumes
 // Creates a new volume.
+// Required parameters:
+// volume
 func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 	var res *VolumeLocator
 	if volume == nil {
@@ -8954,7 +9244,7 @@ func (loc *VolumeLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/volumes
 // Lists volumes.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *VolumeLocator) Index(options rsapi.ApiParams) ([]*Volume, error) {
@@ -8989,7 +9279,7 @@ func (loc *VolumeLocator) Index(options rsapi.ApiParams) ([]*Volume, error) {
 
 // GET /api/clouds/:cloud_id/volumes/:id
 // Displays information about a single volume.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 	var res *Volume
@@ -9019,6 +9309,8 @@ func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 
 // PUT /api/clouds/:cloud_id/volumes/:id
 // No description provided for update.
+// Required parameters:
+// volume
 func (loc *VolumeLocator) Update(volume *VolumeParam2) error {
 	if volume == nil {
 		return fmt.Errorf("volume is required")
@@ -9073,6 +9365,8 @@ func (api *Api) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator {
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
 // Creates a new volume attachment.
+// Required parameters:
+// volume_attachment
 func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentParam) (*VolumeAttachmentLocator, error) {
 	var res *VolumeAttachmentLocator
 	if volumeAttachment == nil {
@@ -9104,7 +9398,7 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
 // Deletes a given volume attachment.
-// -- Optional parameters:
+// Optional parameters:
 // force: Specifies whether to force the detachment of a volume.
 func (loc *VolumeAttachmentLocator) Destroy(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -9128,7 +9422,7 @@ func (loc *VolumeAttachmentLocator) Destroy(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments
 // GET /api/clouds/:cloud_id/volume_attachments
 // Lists all volume attachments.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *VolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*VolumeAttachment, error) {
@@ -9166,7 +9460,7 @@ func (loc *VolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*VolumeAtt
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
 // Displays information about a single volume attachment.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *VolumeAttachmentLocator) Show(options rsapi.ApiParams) (*VolumeAttachment, error) {
 	var res *VolumeAttachment
@@ -9230,7 +9524,7 @@ func (api *Api) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // POST /api/clouds/:cloud_id/volume_snapshots
 // Creates a new volume_snapshot.
-// -- Optional parameters:
+// Optional parameters:
 // volume_snapshot
 // volume_snapshot_copy
 func (loc *VolumeSnapshotLocator) Create(options rsapi.ApiParams) (*VolumeSnapshotLocator, error) {
@@ -9282,7 +9576,7 @@ func (loc *VolumeSnapshotLocator) Destroy() error {
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // GET /api/clouds/:cloud_id/volume_snapshots
 // Lists all volume_snapshots.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *VolumeSnapshotLocator) Index(options rsapi.ApiParams) ([]*VolumeSnapshot, error) {
@@ -9318,7 +9612,7 @@ func (loc *VolumeSnapshotLocator) Index(options rsapi.ApiParams) ([]*VolumeSnaps
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
 // GET /api/clouds/:cloud_id/volume_snapshots/:id
 // Displays information about a single volume_snapshot.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *VolumeSnapshotLocator) Show(options rsapi.ApiParams) (*VolumeSnapshot, error) {
 	var res *VolumeSnapshot
@@ -9377,7 +9671,7 @@ func (api *Api) VolumeTypeLocator(href string) *VolumeTypeLocator {
 
 // GET /api/clouds/:cloud_id/volume_types
 // Lists Volume Types.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *VolumeTypeLocator) Index(options rsapi.ApiParams) ([]*VolumeType, error) {
@@ -9412,7 +9706,7 @@ func (loc *VolumeTypeLocator) Index(options rsapi.ApiParams) ([]*VolumeType, err
 
 // GET /api/clouds/:cloud_id/volume_types/:id
 // Displays information about a single Volume Type.
-// -- Optional parameters:
+// Optional parameters:
 // view
 func (loc *VolumeTypeLocator) Show(options rsapi.ApiParams) (*VolumeType, error) {
 	var res *VolumeType

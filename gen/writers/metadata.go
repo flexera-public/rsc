@@ -21,7 +21,6 @@ func NewMetadataWriter() (*MetadataWriter, error) {
 		"join":          strings.Join,
 		"commandLine":   commandLine,
 		"toStringArray": toStringArray,
-		"toHelp":        toHelp,
 		"flagType":      flagType,
 		"location":      location,
 	}
@@ -90,7 +89,7 @@ const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end
 var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
-		Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
+		Description: ` + "`" + `{{.Description}}` + "`" + `,
 		Actions: []*metadata.Action{ {{range .Actions}}
 		{{template "action" .}}{{end}}
 		},
@@ -100,7 +99,7 @@ var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 
 const actionMetadataTmpl = `&metadata.Action {
 				Name: "{{.Name}}",
-				Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
+				Description: ` + "`" + `{{.Description}}` + "`" + `,
 				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
 					&metadata.PathPattern{
 						HttpMethod: "{{.HttpMethod}}",
@@ -112,7 +111,7 @@ const actionMetadataTmpl = `&metadata.Action {
 				CommandFlags: []*metadata.ActionParam{ {{range .LeafParams}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
-						Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
+						Description: ` + "`" + `{{.Description}}` + "`" + `,
 						Type: "{{flagType .}}",
 						Location: {{location .}},
 						Mandatory: {{.Mandatory}},
@@ -125,7 +124,7 @@ const actionMetadataTmpl = `&metadata.Action {
 				ApiParams: []*metadata.ActionParam{ {{range .Params}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
-						Description: ` + "`" + `{{toHelp .Description}}` + "`" + `,
+						Description: ` + "`" + `{{.Description}}` + "`" + `,
 						Type: "{{.Signature}}",
 						Location: {{location .}},
 						Mandatory: {{.Mandatory}},

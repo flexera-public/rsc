@@ -18,8 +18,10 @@ import (
 // Consists of a map of resource name to resource metadata.
 var GenMetadata = map[string]*metadata.Resource{
 	"Account": &metadata.Resource{
-		Name:        "Account",
-		Description: `        Resources in RightScale generally belong to accounts`,
+		Name: "Account",
+		Description: `        Resources in RightScale generally belong to accounts. Users can have
+        any number of accounts, but when performing an action, a user is
+        operating under a particular account.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -93,8 +95,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Cloud": &metadata.Resource{
-		Name:        "Cloud",
-		Description: `        Clouds provide remote resources for things like storage and compute.`,
+		Name: "Cloud",
+		Description: `        Clouds provide remote resources for things like storage and compute.
+        You must have registered a cloud within your account in order to use
+        it.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -168,8 +172,11 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Datacenter": &metadata.Resource{
-		Name:        "Datacenter",
-		Description: `        Datacenters are cloud resources that give you the ability to place         resources in isolated locations...`,
+		Name: "Datacenter",
+		Description: `        Datacenters are cloud resources that give you the ability to place
+        resources in isolated locations. A carefully designed system placed in
+        multiple datacenters can provide fault tolerance when one datacenter
+        has a problem.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -255,8 +262,9 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Deployment": &metadata.Resource{
-		Name:        "Deployment",
-		Description: `        Deployments provide a way to group resources that logically belong         together...`,
+		Name: "Deployment",
+		Description: `        Deployments provide a way to group resources that logically belong
+        together.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -346,8 +354,9 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Image": &metadata.Resource{
-		Name:        "Image",
-		Description: `        Images define the initial Operating System and root disk contents         for new instances...`,
+		Name: "Image",
+		Description: `        Images define the initial Operating System and root disk contents
+        for new instances.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -362,12 +371,18 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
-						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "filter",
+						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.
+              <operator> can be either "=" or "!=". <value> can be comma-separated list of values to
+              express multiple possible values. For example, "image_type=machine,ramdisk" finds all
+              images that have "machine" and "ramdisk" types. Multiple filters must be concatenated with an
+              ampersand (&). For example, "image_type=machine&visibility=private" finds all images with
+              type "machine" and visibility "private". All special characters in the filter must be
+              URL encoded.`,
+						Type:      "string",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -381,12 +396,18 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
-						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "filter",
+						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.
+              <operator> can be either "=" or "!=". <value> can be comma-separated list of values to
+              express multiple possible values. For example, "image_type=machine,ramdisk" finds all
+              images that have "machine" and "ramdisk" types. Multiple filters must be concatenated with an
+              ampersand (&). For example, "image_type=machine&visibility=private" finds all images with
+              type "machine" and visibility "private". All special characters in the filter must be
+              URL encoded.`,
+						Type:      "string",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -443,8 +464,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Instance": &metadata.Resource{
-		Name:        "Instance",
-		Description: `        Instances represent an entity that is runnable in the cloud.`,
+		Name: "Instance",
+		Description: `        Instances represent an entity that is runnable in the cloud.
+        An instance of type "next" is a container of information that expresses
+        how to configure a future instance when we decide to launch or start
+        it. A "next" instance generally only exists in the RightScale realm,
+        and usually doesn't have any corresponding representation existing in
+        the cloud. However, if an instance is not of type "next", it will
+        generally represent an existing running (or provisioned) virtual
+        machine existing in the cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -465,12 +493,22 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
-						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "filter",
+						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.
+              <operator> can be either "=" or "!=". <value> can be comma-separated list of values to
+              express multiple possible values. For example, "state=booting,operational" finds all
+              instances that are in "booting" or "operational" state. Percentage (%) wildcard character
+              can be used to perform partial string match if supported by the filter. For example,
+              "name=%test%" finds all instances with name containing the word "test",
+              "name=test%" finds all instances with name beginning with "test", and "name=%test" finds
+              all instances with name ending with "test". Multiple filters must be concatenated with an
+              ampersand (&). For example, "name=test&state=operational" finds all instances with
+              name "test" and are in "operational" state. All special characters in the filter must be
+              URL encoded.`,
+						Type:      "string",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "ids",
@@ -500,12 +538,22 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
-						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "filter",
+						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.
+              <operator> can be either "=" or "!=". <value> can be comma-separated list of values to
+              express multiple possible values. For example, "state=booting,operational" finds all
+              instances that are in "booting" or "operational" state. Percentage (%) wildcard character
+              can be used to perform partial string match if supported by the filter. For example,
+              "name=%test%" finds all instances with name containing the word "test",
+              "name=test%" finds all instances with name beginning with "test", and "name=%test" finds
+              all instances with name ending with "test". Multiple filters must be concatenated with an
+              ampersand (&). For example, "name=test&state=operational" finds all instances with
+              name "test" and are in "operational" state. All special characters in the filter must be
+              URL encoded.`,
+						Type:      "string",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "ids",
@@ -578,8 +626,12 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"InstanceType": &metadata.Resource{
-		Name:        "InstanceType",
-		Description: `        An InstanceType represents a basic hardware configuration for an         Instance...`,
+		Name: "InstanceType",
+		Description: `        An InstanceType represents a basic hardware configuration for an
+        Instance.
+        Combining all possible configurations of hardware into a smaller,
+        well-known set of options makes instances easier to manage, and allows
+        better allocation efficiency into physical hosts.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -665,8 +717,9 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"IpAddress": &metadata.Resource{
-		Name:        "IpAddress",
-		Description: `        An IpAddress provides an abstraction for IPv4 addresses bindable to         Instance resources running in a Cloud...`,
+		Name: "IpAddress",
+		Description: `        An IpAddress provides an abstraction for IPv4 addresses bindable to
+        Instance resources running in a Cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -752,8 +805,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"IpAddressBinding": &metadata.Resource{
-		Name:        "IpAddressBinding",
-		Description: `        An IpAddressBinding represents an abstraction for binding an IpAddress         to an instance...`,
+		Name: "IpAddressBinding",
+		Description: `        An IpAddressBinding represents an abstraction for binding an IpAddress
+        to an instance. The IpAddress is bound immediately for a current
+        instance, or on launch for a next instance.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -839,8 +894,12 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"MultiCloudImage": &metadata.Resource{
-		Name:        "MultiCloudImage",
-		Description: `        A MultiCloudImage is a RightScale component that functions as a pointer         to machine images in specific clouds (e...`,
+		Name: "MultiCloudImage",
+		Description: `        A MultiCloudImage is a RightScale component that functions as a pointer
+        to machine images in specific clouds (e.g. AWS US-East, Rackspace).
+        Each ServerTemplate can reference many MultiCloudImages that define
+        which image should be used when a server is launched in a particular
+        cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -989,8 +1048,9 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"NetworkInterface": &metadata.Resource{
-		Name:        "NetworkInterface",
-		Description: `        Just like their physical counterparts, NetworkInterfaces join other         resources to a network...`,
+		Name: "NetworkInterface",
+		Description: `        Just like their physical counterparts, NetworkInterfaces join other
+        resources to a network.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1064,8 +1124,9 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"NetworkInterfaceAttachment": &metadata.Resource{
-		Name:        "NetworkInterfaceAttachment",
-		Description: `        NetworkInterfaceAttachments represent an attachment between a         NetworkInterface and another resource...`,
+		Name: "NetworkInterfaceAttachment",
+		Description: `        NetworkInterfaceAttachments represent an attachment between a
+        NetworkInterface and another resource.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1139,8 +1200,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"SecurityGroup": &metadata.Resource{
-		Name:        "SecurityGroup",
-		Description: `        Security Groups represent network security profiles that contain lists         of firewall rules for different ports and source IP addresses, as well         as trust relationships between security groups...`,
+		Name: "SecurityGroup",
+		Description: `        Security Groups represent network security profiles that contain lists
+        of firewall rules for different ports and source IP addresses, as well
+        as trust relationships between security groups.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1232,8 +1295,21 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Server": &metadata.Resource{
-		Name:        "Server",
-		Description: `        Servers represent the notion of a server/machine from RightScale's         perspective...`,
+		Name: "Server",
+		Description: `        Servers represent the notion of a server/machine from RightScale's
+        perspective. A Server, does not always have a corresponding VM running
+        or provisioned in a cloud. Some clouds use the word "servers" to refer
+        to created VMs. These allocated VMs are not called Servers in the
+        RightScale API, they are called Instances.
+        A Server always has a next_instance association, which will define the
+        configuration to apply to a new instance when the server is launched or
+        started (starting servers is not yet supported through this API). Once
+        a Server is launched/started, a current_instance relationship will
+        exist.  Accessing the current_instance of a server results in immediate
+        runtime modification of this running server. Changes to the
+        next_instance association prepares the configuration for the next
+        instance launch/start (therefore they have no effect until such
+        operation is performed).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1307,8 +1383,17 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"ServerArray": &metadata.Resource{
-		Name:        "ServerArray",
-		Description: `        A server array represents a logical group of instances and allows to         resize(grow/shrink) that group based on certain elasticity parameters...`,
+		Name: "ServerArray",
+		Description: `        A server array represents a logical group of instances and allows to
+        resize(grow/shrink) that group based on certain elasticity parameters.
+        A server array just like a server always has a next_instance
+        association, which will define the configuration to apply when a new
+        instance is launched. But unlike a server which has a current_instance
+        relationship, the server array has a current_instances relationship
+        that gives the information about all the running instances in the
+        array.  Changes to the next_instance association prepares the
+        configuration for the next instance that is to be launched in the array
+        and will therefore not affect any of the currently running instances.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1382,8 +1467,16 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"ServerTemplate": &metadata.Resource{
-		Name:        "ServerTemplate",
-		Description: `        ServerTemplates allow you to pre-configure servers by starting from a         base image and adding scripts that run during the boot, operational,         and shutdown phases...`,
+		Name: "ServerTemplate",
+		Description: `        ServerTemplates allow you to pre-configure servers by starting from a
+        base image and adding scripts that run during the boot, operational,
+        and shutdown phases. A ServerTemplate is a description of how a new
+        instance will be configured when it is provisioned by your cloud
+        provider.
+        All revisions of a ServerTemplate belong to a ServerTemplate lineage
+        that is exposed by the "lineage" attribute. (NOTE: This attribute is
+        merely a string to locate all revisions of a ServerTemplate and NOT a
+        working URL)`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1544,8 +1637,9 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Subnet": &metadata.Resource{
-		Name:        "Subnet",
-		Description: `        A Subnet is a logical grouping of network devices`,
+		Name: "Subnet",
+		Description: `        A Subnet is a logical grouping of network devices. An Instance can have
+        many Subnets.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

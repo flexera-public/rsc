@@ -132,23 +132,6 @@ func toStringArray(a []interface{}) []string {
 	return res
 }
 
-// Convert description into flag help message
-func toHelp(long string) string {
-	lines := strings.Split(long, "\n")
-	if len(lines) < 2 {
-		return long
-	}
-	if lines[0][len(lines[0])-1] == '.' {
-		return lines[0]
-	}
-	sentences := strings.Split(long, ".")
-	if strings.Count(sentences[0], "\n") > 0 {
-		sentence := strings.Split(sentences[0], "\n")
-		return strings.Join(sentence, " ") + "..."
-	}
-	return sentences[0]
-}
-
 // Type of flag, one of "string", "[]string", "int" or "map"
 func flagType(param *gen.ActionParam) string {
 	path := param.QueryName

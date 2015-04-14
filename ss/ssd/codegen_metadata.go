@@ -18,8 +18,9 @@ import (
 // Consists of a map of resource name to resource metadata.
 var GenMetadata = map[string]*metadata.Resource{
 	"Schedule": &metadata.Resource{
-		Name:        "Schedule",
-		Description: `A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).`,
+		Name: "Schedule",
+		Description: `A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
+Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -165,8 +166,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update one or more attributes of an existing Schedule.`,
+				Name: "update",
+				Description: `Update one or more attributes of an existing Schedule.
+Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PATCH",
@@ -278,8 +280,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "delete",
-				Description: `Delete a Schedule from the system.`,
+				Name: "delete",
+				Description: `Delete a Schedule from the system.
+Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "DELETE",
@@ -293,8 +296,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_delete",
-				Description: `Delete multiple Schedules from the system in bulk.`,
+				Name: "multi_delete",
+				Description: `Delete multiple Schedules from the system in bulk.
+Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "DELETE",
@@ -327,8 +331,16 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Template": &metadata.Resource{
-		Name:        "Template",
-		Description: `A Template represent a CloudApplication Template (CAT) that has been uploaded to this design collection.`,
+		Name: "Template",
+		Description: `A Template represent a CloudApplication Template (CAT) that has been uploaded to this design collection.
+For information on the syntax of a CAT file, please see the [CAT Designers Guide](http://support.rightscale.com/12-Guides/Self-Service/20_Cloud_Application_Template_%28CAT%29_Designers_Guide) on the RightScale Support
+site.
+A CAT file is compiled by Self-Service to make it ready for publication and subsequent launch by users. To
+test your CAT file syntax, you can call the compile action with the source content. In order to
+Publish your CAT to the Catalog where users can launch it, it must be uploaded to Designer first, and then
+published to the Catalog.
+CAT files are uniquely identified by the name of the CloudApplication, which is specified as the "name"
+attribute inside of a CAT file.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

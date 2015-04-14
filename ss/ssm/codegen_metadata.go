@@ -18,8 +18,18 @@ import (
 // Consists of a map of resource name to resource metadata.
 var GenMetadata = map[string]*metadata.Resource{
 	"Execution": &metadata.Resource{
-		Name:        "Execution",
-		Description: `An Execution is a launched instance of a CloudApp`,
+		Name: "Execution",
+		Description: `An Execution is a launched instance of a CloudApp. Executions can be created from the catalog
+by launching an Application, from Designer by launching a Template, or directly in Manager
+by using the API and sending the CAT source or CAT Compiled source.
+Executions are represented in RightScale Cloud Management by a deployment -- the resources
+defined in the CAT are all created in the Deployment. Any action on a running CloudApp should
+be made on its Execution resource.
+Making changes to any resource directly in the CM deployment
+may result in undesired behavior since the Execution only refreshes certain information as a
+result of running an Operation on an Execution. For example, if a Server is replaced in CM
+instead of through Self-Service, the new Server's information won' be available in
+Self-Service.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1975,22 +1985,24 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.`,
-						Type:        "bool",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "force",
+						Description: `Force delete execution, bypass state validation so that non term can deleted.
+Note: using this option may leave cloud resources running that must manually be destroyed.`,
+						Type:      "bool",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.`,
-						Type:        "bool",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "force",
+						Description: `Force delete execution, bypass state validation so that non term can deleted.
+Note: using this option may leave cloud resources running that must manually be destroyed.`,
+						Type:      "bool",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 				},
 			},
@@ -2008,12 +2020,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.`,
-						Type:        "bool",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "force",
+						Description: `Force delete execution, bypass state validation so that non term can deleted.
+                              Note:       using this option may leave cloud resources running that must manually be destroyed.`,
+						Type:      "bool",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
@@ -2026,12 +2039,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.`,
-						Type:        "bool",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "force",
+						Description: `Force delete execution, bypass state validation so that non term can deleted.
+                              Note:       using this option may leave cloud resources running that must manually be destroyed.`,
+						Type:      "bool",
+						Location:  metadata.QueryParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "ids[]",
@@ -2271,8 +2285,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Notification": &metadata.Resource{
-		Name:        "Notification",
-		Description: `The Notification resource represents a system notification that an action has occurred`,
+		Name: "Notification",
+		Description: `The Notification resource represents a system notification that an action has occurred. Generally
+these Notifications are the start and completion of Operations. Currently notifications are only
+available via the API/UI and are not distributed externally to users.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2340,8 +2356,11 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Operation": &metadata.Resource{
-		Name:        "Operation",
-		Description: `Operations represent actions that can be taken on an Execution.`,
+		Name: "Operation",
+		Description: `Operations represent actions that can be taken on an Execution.
+When a CloudApp is launched, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language) in the Operations section
+While a CloudApp is running, users may launch any custom Operations as defined in the CAT.
+Once a CAT is Terminated, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language#Operations) in the Operations section`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2545,8 +2564,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"ScheduledAction": &metadata.Resource{
-		Name:        "ScheduledAction",
-		Description: `ScheduledActions describe a set of timed occurrences for an action to be run (at most once per day).`,
+		Name: "ScheduledAction",
+		Description: `ScheduledActions describe a set of timed occurrences for an action to be run (at most once per day).
+Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
+All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2874,8 +2895,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"ScheduledOperation": &metadata.Resource{
-		Name:        "ScheduledOperation",
-		Description: `ScheduledOperations describe a set of timed occurrences for an operation to be run (at most once per day).`,
+		Name: "ScheduledOperation",
+		Description: `ScheduledOperations describe a set of timed occurrences for an operation to be run (at most once per day).
+Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
+All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

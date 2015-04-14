@@ -42,8 +42,11 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the AccountGroups owned by this Account.`,
+				Name: "index",
+				Description: `Lists the AccountGroups owned by this Account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -93,8 +96,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single AccountGroup.`,
+				Name: "show",
+				Description: `Show information about a single AccountGroup.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -211,8 +216,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all Alerts.`,
+				Name: "index",
+				Description: `Lists all Alerts.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -288,8 +296,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "quench",
-				Description: `Suppresses the Alert from being triggered for a given time period. Idempotent.`,
+				Name: "quench",
+				Description: `Suppresses the Alert from being triggered for a given time period. Idempotent.
+Required parameters:
+	duration: The time period in seconds to suppress Alert from being triggered.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -345,8 +355,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows the attributes of a specified Alert.`,
+				Name: "show",
+				Description: `Shows the attributes of a specified Alert.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -405,12 +417,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"AlertSpec": &metadata.Resource{
-		Name:        "AlertSpec",
-		Description: `An AlertSpec defines the conditions under which an Alert is triggered and escalated.`,
+		Name: "AlertSpec",
+		Description: `An AlertSpec defines the conditions under which an Alert is triggered and escalated.
+Condition sentence: if &lt;file&gt;.&lt;variable&gt; &lt;condition&gt; '&lt;threshold&gt;' for &lt;duration&gt; min then escalate to '&lt;escalation_name&gt;'.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new AlertSpec with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new AlertSpec with the given parameters.
+Required parameters:
+	alert_spec`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -575,8 +590,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `No description provided for index.`,
+				Name: "index",
+				Description: `No description provided for index.
+Optional parameters:
+	filter
+	view
+	with_inherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -664,8 +683,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `No description provided for show.`,
+				Name: "show",
+				Description: `No description provided for show.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -717,8 +738,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates an AlertSpec with the given parameters.`,
+				Name: "update",
+				Description: `Updates an AlertSpec with the given parameters.
+Required parameters:
+	alert_spec`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -847,8 +870,17 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `An Audit Entry can be used to track various activities of a resource.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "append",
-				Description: `Updates the summary and appends more details to a given AuditEntry`,
+				Name: "append",
+				Description: `Updates the summary and appends more details to a given AuditEntry. Each audit entry detail is stored
+as one chunk, the offset determines the location of that chunk within the overall audit entry details section.
+For example, if you create an AuditEntry and append "DEF" at offset 10, and later append
+"ABC" at offset 9, the overall audit entry details will be "ABCDEF". Use the \n character to
+separate details by new lines.
+Optional parameters:
+	detail: The details to be appended to the audit entry record.
+	notify: The event notification category. Defaults to 'None'.
+	offset: The offset where the new details should be appended to in the audit entry's existing details section. Also used in ordering of summary updates. Defaults to end.
+	summary: The updated summary for the audit entry, maximum length is 255 characters.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -928,8 +960,13 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new AuditEntry with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new AuditEntry with the given parameters.
+Required parameters:
+	audit_entry
+Optional parameters:
+	notify: The event notification category. Defaults to 'None'.
+	user_email: The email of the user (who created/triggered the audit entry). Only usable with instance role.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1009,8 +1046,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "detail",
-				Description: `shows the details of a given AuditEntry.`,
+				Name: "detail",
+				Description: `shows the details of a given AuditEntry.
+Note that the media type of the response is simply text.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1024,8 +1062,19 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists AuditEntries of the account`,
+				Name: "index",
+				Description: `Lists AuditEntries of the account. Due to the potentially large number of audit entries, a start and end date must
+be provided during an index call to limit the search. The format of the dates must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
+2011/07/11 00:00:00 +0000.
+A maximum of 1000 records will be returned by each index call.
+Using the available filters, one can select or group which audit entries to retrieve.
+Required parameters:
+	end_date: The end date for retrieving audit entries (the format must be the same as start date). The time period between start and end date must be less than 3 months (93 days).
+	limit: Limit the audit entries to this number. The limit should >= 1 and <= 1000
+	start_date: The start date for retrieving audit entries, the format must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g., 2011/06/25 00:00:00 +0000
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1125,8 +1174,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Lists the attributes of a given audit entry.`,
+				Name: "show",
+				Description: `Lists the attributes of a given audit entry.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1160,8 +1211,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates the summary of a given AuditEntry.`,
+				Name: "update",
+				Description: `Updates the summary of a given AuditEntry.
+Required parameters:
+	audit_entry
+Optional parameters:
+	notify: The event notification category. Defaults to 'None'.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -1222,8 +1277,39 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: ``,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "cleanup",
-				Description: `Deletes old backups that meet the given criteria`,
+				Name: "cleanup",
+				Description: `Deletes old backups that meet the given criteria. For example, if a user calls cleanup with keep monthlies set to 12,
+then the latest backup for each month, for 12 months, will be kept.
+All backups belong to a particular 'lineage'. Backups are not constrained to a specific cloud or a specific deployment.
+A lineage is account-specific. Hence, backups having the same lineage but belonging to different clouds are still considered
+for cleanup.
+If backups specific to a single cloud should be cleaned up, see the cloud_href parameter.
+Definitions:
+A snapshot is completed if its status is "available"
+A snapshot is committed if it has a tag "rs_backup:committed=true"
+A snapshot belongs to a backup "X" if it has a tag "rs_backup:backup_id=X"
+A snapshot is part of a backup with size "Y" if it has a tag "rs_backup:count=Y"
+A snapshot's position in a backup is "Z" if it has a tag "rs_backup:position=Z"
+Backups are of 3 types:
+Perfect backup: A backup which is completed (all the snapshots are completed) and committed (all the snapshots are committed) and the number of snapshots it found is equal to the number
+in the "rs_backup:count=" tag on each of the Snapshots.
+Imperfect backup: A backup which is not committed or if the number of snapshots it found is not equal to the number in the "rs_backup:count=" tag on each of the snapshots.
+Partial Perfect backup: A snapshot which is neither perfect nor imperfect
+An imperfect backup is picked up for cleanup only if there exists a perfect backup with a newer created_at timestamp.
+No constraints will be applied on such imperfect backups and all of them will be destroyed.
+For all the perfect backups, the constraints of keep_last and dailies etc. will be applied.
+The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
+independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
+Hence, it is important to "commit" a backup to make it eligible for cleanup.
+Required parameters:
+	keep_last: The number of backups that should be kept.
+	lineage: The lineage of the backups that are to be cleaned-up.
+Optional parameters:
+	cloud_href: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
+	dailies: The number of daily backups(the latest one in each day) that should be kept.
+	monthlies: The number of monthly backups(the latest one in each month) that should be kept.
+	weeklies: The number of weekly backups(the latest one in each week) that should be kept.
+	yearlies: The number of yearly backups(the latest one in each year) that should be kept.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1351,8 +1437,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.`,
+				Name: "create",
+				Description: `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.
+The volumeattachmenthrefs must belong to the same instance.
+Required parameters:
+	backup`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1388,12 +1477,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "backup[lineage]",
-						Description: `A unique value to create backups belonging to a particular system.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    true,
+						Name: "backup[lineage]",
+						Description: `A unique value to create backups belonging to a particular system.
+                                       This will be used to set the tag  e.g. 'rs_backup:lineage=prod_mysqldb'. `,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: true,
+						NonBlank:  true,
 					},
 					&metadata.ActionParam{
 						Name:        "backup[name]",
@@ -1432,8 +1522,18 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all of the backups with the given lineage tag`,
+				Name: "index",
+				Description: `Lists all of the backups with the given lineage tag. Filters can be used to search for a particular backup. If the
+'latest_before' filter is set, only one backup is returned (the latest backup before the given timestamp).
+To get the latest completed backup, the 'completed' filter should be set to 'true' and the 'latest_before' filter
+should be set to the current timestamp. The format of the timestamp must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
+2011/07/11 00:00:00 +0000.
+To get the latest completed backup just before, say 25 June 2009, then the 'completed' filter
+should be set to 'true' and the 'latest_before' filter should be set to 2009/06/25 00:00:00 +0000.
+Required parameters:
+	lineage: Backups belonging to this lineage.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1483,8 +1583,16 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "restore",
-				Description: `Restores the given Backup.`,
+				Name: "restore",
+				Description: `Restores the given Backup.
+This call will:
+create the required number of Volumes from the volume_snapshots_hrefs in the given Backup,
+attach them to the given Instance at the device specified in the Snapshot. If the devices are already being used
+   on the Instance, the Task will denote that the restore has failed.
+Required parameters:
+	instance_href: The instance href that the backup will be restored to.
+Optional parameters:
+	backup`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1579,8 +1687,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.`,
+				Name: "update",
+				Description: `Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.
+Required parameters:
+	backup`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -1618,8 +1728,13 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: ``,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create an enterprise ChildAccount for this Account`,
+				Name: "create",
+				Description: `Create an enterprise ChildAccount for this Account. The User will by default get an 'admin' role
+on the ChildAccount to enable him/her to add, delete Users and Permissions.
+For more information on the valid values for 'cluster_href', refer to the following:
+http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/ChildAccounts/Create
+Required parameters:
+	child_account`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1659,8 +1774,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the enterprise ChildAccounts available for this Account.`,
+				Name: "index",
+				Description: `Lists the enterprise ChildAccounts available for this Account.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1694,8 +1811,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update an enterprise ChildAccount for this Account.`,
+				Name: "update",
+				Description: `Update an enterprise ChildAccount for this Account.
+Required parameters:
+	child_account`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -1738,8 +1857,11 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Represents a Cloud (within the context of the account in the session).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the clouds available to this account.`,
+				Name: "index",
+				Description: `Lists the clouds available to this account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1791,8 +1913,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single cloud`,
+				Name: "show",
+				Description: `Show information about a single cloud. 
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1831,8 +1955,12 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Represents a Cloud Account (An association between the account and a cloud).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a CloudAccount by passing in the respective credentials for each cloud.`,
+				Name: "create",
+				Description: `Create a CloudAccount by passing in the respective credentials for each cloud.
+For more information on the specific parameters for each cloud, refer to the following:
+http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
+Required parameters:
+	cloud_account`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1945,8 +2073,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "follow",
-				Description: `Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.`,
+				Name: "follow",
+				Description: `Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.
+Required parameters:
+	value: Indicates if this action should follow (true) or unfollow (false) a Cookbook.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1980,8 +2110,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "freeze",
-				Description: `Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.`,
+				Name: "freeze",
+				Description: `Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.
+Required parameters:
+	value: Indicates if this action should freeze (true) or unfreeze (false) a Cookbook.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2015,8 +2147,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the Cookbooks available to this account.`,
+				Name: "index",
+				Description: `Lists the Cookbooks available to this account.
+The extended_designer view is only available to accounts with the designer permission.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2068,8 +2204,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "obsolete",
-				Description: `Marks a Cookbook as obsolete (or un-obsolete).`,
+				Name: "obsolete",
+				Description: `Marks a Cookbook as obsolete (or un-obsolete).
+Required parameters:
+	value: Indicates if this action should obsolete (true) or un-obsolete (false) a Cookbook.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2103,8 +2241,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single Cookbook.`,
+				Name: "show",
+				Description: `Show information about a single Cookbook.
+The extended_designer view is only available to accounts with the designer permission.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2143,8 +2284,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Cookbook Attachment is used to associate a particular cookbook with a ServerTemplate. A Cookbook Attachment must be in place before a recipe can be bound to a runlist using RunnableBinding.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Attach a cookbook to a given resource.`,
+				Name: "create",
+				Description: `Attach a cookbook to a given resource.
+Optional parameters:
+	cookbook_attachment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2223,8 +2366,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists Cookbook Attachments.`,
+				Name: "index",
+				Description: `Lists Cookbook Attachments.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2270,8 +2415,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_attach",
-				Description: `Attach multiple cookbooks to a given resource.`,
+				Name: "multi_attach",
+				Description: `Attach multiple cookbooks to a given resource.
+Required parameters:
+	cookbook_attachments`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2317,8 +2464,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_detach",
-				Description: `Detach multiple cookbooks from a given resource.`,
+				Name: "multi_detach",
+				Description: `Detach multiple cookbooks from a given resource.
+Required parameters:
+	cookbook_attachments`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2356,8 +2505,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single cookbook attachment to a ServerTemplate.`,
+				Name: "show",
+				Description: `Displays information about a single cookbook attachment to a ServerTemplate.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2404,12 +2555,19 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Credential": &metadata.Resource{
-		Name:        "Credential",
-		Description: `A Credential provides an abstraction for sensitive textual information, such as passphrases or cloud credentials, whose value should be encrypted when stored in the database and not generally shown in the UI or through the API...`,
+		Name: "Credential",
+		Description: `A Credential provides an abstraction for sensitive textual information,
+such as passphrases or cloud credentials, whose value should be encrypted
+when stored in the database and not generally shown in the UI or through the
+API. Credentials may then be used as inputs of type "Cred" in RightScripts
+or Chef recipes. NOTE: Credential values may be updated through the API, but
+values cannot be retrieved via the API.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new Credential with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new Credential with the given parameters.
+Required parameters:
+	credential`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2472,8 +2630,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the Credentials available to this account.`,
+				Name: "index",
+				Description: `Lists the Credentials available to this account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2525,8 +2686,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.`,
+				Name: "show",
+				Description: `Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2560,8 +2723,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a Credential.`,
+				Name: "update",
+				Description: `Updates attributes of a Credential.
+Required parameters:
+	credential`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -2610,12 +2775,18 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Datacenter": &metadata.Resource{
-		Name:        "Datacenter",
-		Description: `Datacenters represent isolated facilities within a cloud`,
+		Name: "Datacenter",
+		Description: `Datacenters represent isolated facilities within a cloud. The level and type of isolation is cloud dependent. 
+While Datacenters in large public clouds might correspond to different physical buildings, with different power, 
+internet links...etc., Datacenters within the context of a private cloud might simply correspond to having different network providers.
+Spreading servers across distinct Datacenters helps minimize outages.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all Datacenters for a particular cloud.`,
+				Name: "index",
+				Description: `Lists all Datacenters for a particular cloud.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2667,8 +2838,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single Datacenter.`,
+				Name: "show",
+				Description: `Displays information about a single Datacenter.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2707,8 +2880,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Deployments represent logical groupings of related assets such as servers, server arrays, default configuration settings...etc.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "clone",
-				Description: `Clones a given deployment.`,
+				Name: "clone",
+				Description: `Clones a given deployment.
+Optional parameters:
+	deployment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2757,8 +2932,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new deployment with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new deployment with the given parameters.
+Required parameters:
+	deployment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2822,8 +2999,14 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists deployments of the account.`,
+				Name: "index",
+				Description: `Lists deployments of the account.
+Using the available filters, one can select or group which deployments to retrieve.
+The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+details please see Inputs#index.)
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2875,8 +3058,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "lock",
-				Description: `Locks a given deployment. Idempotent.`,
+				Name: "lock",
+				Description: `Locks a given deployment. Idempotent.
+Locking prevents servers from being deleted or moved from the deployment.
+Other actions such as adding servers or renaming the deployment are still allowed.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -2890,8 +3075,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "servers",
-				Description: `Lists the servers belonging to this deployment`,
+				Name: "servers",
+				Description: `Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
+automatically be filtered by this deployment. See servers#index for details on other options and parameters.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2905,8 +3091,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Lists the attributes of a given deployment.`,
+				Name: "show",
+				Description: `Lists the attributes of a given deployment.
+The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+details please see Inputs#index.)
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -2955,8 +3145,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a given deployment.`,
+				Name: "update",
+				Description: `Updates attributes of a given deployment.
+Required parameters:
+	deployment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -3026,12 +3218,17 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"IdentityProvider": &metadata.Resource{
-		Name:        "IdentityProvider",
-		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account, and is trusted by the RightScale dashboard to authenticate your enterprise's end users...`,
+		Name: "IdentityProvider",
+		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,
+and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
+To register an Identity Provider, contact your account manager.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the identity providers associated with this enterprise account.`,
+				Name: "index",
+				Description: `Lists the identity providers associated with this enterprise account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -3083,8 +3280,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show the specified identity provider, if associated with this enterprise account.`,
+				Name: "show",
+				Description: `Show the specified identity provider, if associated with this enterprise account.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -3119,12 +3318,16 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Image": &metadata.Resource{
-		Name:        "Image",
-		Description: `Images represent base VM image existing in a cloud`,
+		Name: "Image",
+		Description: `Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents 
+for a new Instance to have, and therefore it represents the basic starting point for creating a new one.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all Images for the given Cloud.`,
+				Name: "index",
+				Description: `Lists all Images for the given Cloud.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -3176,8 +3379,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows information about a single Image.`,
+				Name: "show",
+				Description: `Shows information about a single Image.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -3212,12 +3417,17 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Input": &metadata.Resource{
-		Name:        "Input",
-		Description: `Inputs help extract dynamic information, usually specified at runtime, from repeatable configuration operations that can be codified.`,
+		Name: "Input",
+		Description: `Inputs help extract dynamic information, usually specified at runtime, from repeatable configuration operations that can be codified.
+Inputs are variables defined in and used by RightScripts/Recipes. The two main attributes of an input are 'name' and 'value'. The 'name'
+identifies the input and the 'value', although a string encodes what type it is. It could be a text encoded as 'text:myvalue' or a credential
+encoded as 'cred:MY_CRED' or a key etc. Please see support.rightscale.com for more info on input hierarchies and their different types.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Retrieves the full list of existing inputs of the specified resource.`,
+				Name: "index",
+				Description: `Retrieves the full list of existing inputs of the specified resource.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -3263,8 +3473,72 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_update",
-				Description: `Performs a bulk update of inputs on the specified resource.`,
+				Name: "multi_update",
+				Description: `Performs a bulk update of inputs on the specified resource.
+If an input exists with the same name, its value will be updated. If an input does not
+exist with a specified name, it will be ignored.
+Input values are represented as strings.
+There are two notations for inputs:
+1.0 notation - The deprecated notation used in API 1.0 and in 1.5
+    2.0 notation - The new notation that is partially supported in API 1.5, and will
+        be the only notation supported in 2.0
+Although the two notations are similar, they have a few important differences, in particular:
+  With 2.0 notation, values MUST begin with a prefix identifying their type, followed
+  by a colon (example: "text:foo"). With 1.0 notation, unprefixed values are generally
+  taken to be text-type.
+  With 2.0 notation, a sentinel value "inherit" is used to express that an input
+  should use an inherited value. With 1.0 notation the empty string was used to express
+  the same thing. (Due to requirement 1, empty string is no longer a valid input.)
+  With 2.0 notation, each element of an array is an entire input value; arrays can
+  contain cred, env, or even other arrays. With 1.0 notation, array elements are
+  implicitly text values and there is no way to specify anything else.Note that the UI
+  does not support complex-valued arrays; please use this feature with caution!
+The following types of inputs are supported:
+Type
+Format
+1.0 Example(s)
+2.0 Example(s)
+Text string
+&lt;value&gt; (1.0 only)text:&lt;value&gt;
+footext:footext:multi word value
+text:footext:multi word value
+Blank string(input is present but its value is empty-string)
+text:blank (2.0 only)
+text:
+blank
+Ignore (input is not present)
+ignore$ignore (1.0 only)ignore:$ignore (1.0 only)
+ignore$ignoreignore:$ignore
+ignore
+Dynamically-substituted environment value
+env:&lt;value&gt;env:&lt;component&gt;:&lt;value&gt;
+env:MY_ENV_VARenv:my_server:MY_ENV_VAR
+env:MY_ENV_VARenv:my_server:MY_ENV_VAR
+Credential value
+cred:&lt;value&gt;
+cred:abcd1234wxyz
+cred:abcd1234wxyz
+Private SSH key
+key:&lt;value&gt;key:&lt;value&gt;:&lt;cloud_id&gt;
+key:1234abcd5678key:1234abcd5678:1
+key:1234abcd5678key:1234abcd5678:1
+Array of values
+array:&lt;value&gt;,... (1.0 only)array:["&lt;type&gt;:&lt;value&gt;",...] (2.0 only)
+array:x,y(NOTE: 1.0 only supports text inputs for arrays)
+array:["text:v1","text:v2"]array:["text:x","env:server_x:MY_VAR"]
+Note that in the case of array inputs, the portion after the colon must be
+valid JSON. In particular, when enclosing the input within double-quotes
+(e.g. for use in cURL or Ruby), the double-quotes must be escaped.
+Single-quotes may not be used within the array input, since they are not
+valid for JSON strings.
+The legacy format for providing inputs is as an array of name-value pairs
+(ex: -d inputs[][name]="MY_INPUT" -d inputs[][value]="text:foobar"), however
+the new format is supported for inputs provided as a hash
+(ex: -d inputs[MY_INPUT]="text:foobar").
+If the old format is used, the input is parsed using 1.0 semantics.
+If the new format is used, the input is parsed using the new 2.0 semantics.
+Required parameters:
+	inputs`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -3325,12 +3599,21 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Instance": &metadata.Resource{
-		Name:        "Instance",
-		Description: `Instances represent an entity that is runnable in the cloud.`,
+		Name: "Instance",
+		Description: `Instances represent an entity that is runnable in the cloud.
+An instance of type "next" is a container of information that expresses how to configure a future instance when we decide
+to launch or start it.
+A "next" instance generally only exists in the RightScale realm, and usually doesn't have any corresponding representation
+existing in the cloud. However, if an instance is not of type "next", it will generally represent an existing running
+(or provisioned) virtual machine existing in the cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates and launches a raw instance using the provided parameters.`,
+				Name: "create",
+				Description: `Creates and launches a raw instance using the provided parameters.
+Required parameters:
+	instance
+Optional parameters:
+	api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -3527,8 +3810,20 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists instances of a given cloud, server array.`,
+				Name: "index",
+				Description: `Lists instances of a given cloud, server array.
+Using the available filters, it is possible to craft powerful queries about which instances to retrieve.
+For example, one can easily list:
+instances that have names that contain "app"
+all instances of a given deployment
+instances belonging to a given server array (i.e., have the same parent_url)
+To see the instances of a server array including the next_instance, use the URL "/api/clouds/:cloud_id/instances" with the filter "parent_href==/api/server_arrays/XX". To list only the running
+instances of a server array, use the URL "/api/server_arrays/:server_array_id/current_instances"
+The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+details please see Inputs#index.)
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -3592,8 +3887,13 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "launch",
-				Description: `Launches an instance using the parameters that this instance has been configured with.`,
+				Name: "launch",
+				Description: `Launches an instance using the parameters that this instance has been configured with.
+Note that this action can only be performed in "next" instances, and not on instances that are already running.
+Optional parameters:
+	api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+	count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
+	inputs`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -3702,8 +4002,16 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_run_executable",
-				Description: `Runs a script or a recipe in the running instances.`,
+				Name: "multi_run_executable",
+				Description: `Runs a script or a recipe in the running instances.
+This is an asynchronous function, which returns immediately after queuing the executable for execution.
+Status of the execution can be tracked at the URL returned in the "Location" header.
+Optional parameters:
+	filter
+	ignore_lock: Specifies the ability to ignore the lock(s) on the Instance(s).
+	inputs
+	recipe_name: The name of the recipe to be run.
+	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -3823,8 +4131,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_terminate",
-				Description: `Terminates running instances.`,
+				Name: "multi_terminate",
+				Description: `Terminates running instances.
+Either a filter or the parameter 'terminate_all' must be provided.
+Optional parameters:
+	filter
+	terminate_all: Specifies the ability to terminate all instances.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -3880,8 +4192,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "reboot",
-				Description: `Reboot a running instance.`,
+				Name: "reboot",
+				Description: `Reboot a running instance.
+Note that this action can only succeed if the instance is running. One cannot reboot instances of type "next".`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -3901,8 +4214,16 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "run_executable",
-				Description: `Runs a script or a recipe in the running instance.`,
+				Name: "run_executable",
+				Description: `Runs a script or a recipe in the running instance.
+This is an asynchronous function, which returns immediately after queuing the executable for execution.
+Status of the execution can be tracked at the URL returned in the "Location" header.
+Note that this can only be performed on running instances.
+Optional parameters:
+	ignore_lock: Specifies the ability to ignore the lock on the Instance.
+	inputs
+	recipe_name: The name of the recipe to run.
+	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4000,8 +4321,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "set_custom_lodgement",
-				Description: `This method is deprecated.  Please use InstanceCustomLodgement.`,
+				Name: "set_custom_lodgement",
+				Description: `This method is deprecated.  Please use InstanceCustomLodgement.
+Required parameters:
+	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
+	timeframe: The timeframe (either a month or a single day) for which the quantity value is valid (currently for the PDT timezone only).`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4057,8 +4381,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows attributes of a single instance.`,
+				Name: "show",
+				Description: `Shows attributes of a single instance.
+The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+details please see Inputs#index.)
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -4092,8 +4420,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "start",
-				Description: `Starts an instance that has been stopped, resuming it to its previously saved volume state.`,
+				Name: "start",
+				Description: `Starts an instance that has been stopped, resuming it to its previously saved volume state.
+After an instance is started, the reference to your instance will have a different id.
+The new id can be found by performing an index query with the appropriate filters on the
+Instances resource, performing a show action on the Server resource for Server Instances, or
+performing a current_instances action on the ServerArray resource for ServerArray Instances.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4107,8 +4439,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "stop",
-				Description: `Stores the instance's current volume state to resume later using the 'start' action.`,
+				Name: "stop",
+				Description: `Stores the instance's current volume state to resume later using the 'start' action.
+After an instance is stopped, the reference to your instance will have a different id.
+The new id can be found by performing an index query with the appropriate filters on the
+Instances resource, performing a show action on the Server resource for Server Instances, or performing a current_instances action on the ServerArray resource for ServerArray Instances.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4122,8 +4457,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "terminate",
-				Description: `Terminates a running instance.`,
+				Name: "terminate",
+				Description: `Terminates a running instance.
+Note that this action can succeed only if the instance is running. One cannot terminate instances of type "next".`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4158,8 +4494,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a single instance.`,
+				Name: "update",
+				Description: `Updates attributes of a single instance.
+Required parameters:
+	instance`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -4351,8 +4689,11 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#setcustomlodgement interface.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a lodgement with the quantity and timeframe specified.`,
+				Name: "create",
+				Description: `Create a lodgement with the quantity and timeframe specified.
+Required parameters:
+	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
+	timeframe: The time-frame (either a month "YYYY_MM" or a single day "YYYY_MM_DD") for which the quantity value is valid (currently for the PDT timezone only).`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4423,8 +4764,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `List InstanceCustomLodgements of a given cloud and instance.`,
+				Name: "index",
+				Description: `List InstanceCustomLodgements of a given cloud and instance.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -4473,8 +4816,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update a lodgement with the quantity specified.`,
+				Name: "update",
+				Description: `Update a lodgement with the quantity specified.
+Required parameters:
+	quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -4519,8 +4864,11 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: ``,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists instance types.`,
+				Name: "index",
+				Description: `Lists instance types.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -4572,8 +4920,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single Instance type.`,
+				Name: "show",
+				Description: `Displays information about a single Instance type.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -4612,8 +4962,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `An IpAddress provides an abstraction for IPv4 addresses bindable to Instance resources running in a Cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new IpAddress with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new IpAddress with the given parameters.
+Required parameters:
+	ip_address`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4685,8 +5037,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the IpAddresses available to this account.`,
+				Name: "index",
+				Description: `Lists the IpAddresses available to this account.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -4735,8 +5089,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a given IpAddress.`,
+				Name: "update",
+				Description: `Updates attributes of a given IpAddress.
+Required parameters:
+	ip_address`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -4777,12 +5133,21 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"IpAddressBinding": &metadata.Resource{
-		Name:        "IpAddressBinding",
-		Description: `An IpAddressBinding represents an abstraction for binding an IpAddress to an instance.`,
+		Name: "IpAddressBinding",
+		Description: `An IpAddressBinding represents an abstraction for binding an IpAddress to an instance.
+The IpAddress is bound immediately for a current instance, or on launch for a next instance.
+It also allows specifying port forwarding rules for that particular IpAddress and Instance pair.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates an ip address binding which attaches a specified IpAddress resource to a specified instance, and also allows for configuration of port forwarding rules...`,
+				Name: "create",
+				Description: `Creates an ip address binding which attaches a specified IpAddress resource
+to a specified instance, and also allows for configuration of port forwarding
+rules. If the instance specified is a current (running) instance, a one-time
+IpAddressBinding will be created. If the instance is a next instance, then
+a recurring IpAddressBinding is created, which will cause the IpAddress to
+be bound each time the incarnator boots.
+Required parameters:
+	ip_address_binding`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -4874,8 +5239,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the ip address bindings available to this account.`,
+				Name: "index",
+				Description: `Lists the ip address bindings available to this account.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -4941,8 +5308,14 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "data",
-				Description: `Gives the raw monitoring data for a particular metric`,
+				Name: "data",
+				Description: `Gives the raw monitoring data for a particular metric. The response will include different variables
+associated with that metric and the data points for each of those variables.
+To get the data for a certain duration, for e.g. for the last 10 minutes(600 secs), provide the variables
+start="-600" and end="0".
+Required parameters:
+	end: An integer number of seconds from current time. e.g. -150 or 0
+	start: An integer number of seconds from current time. e.g. -300`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -4990,8 +5363,15 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.`,
+				Name: "index",
+				Description: `Lists the monitoring metrics available for the instance and their corresponding graph hrefs.
+Making a request to the graph_href will return a png image corresponding to that monitoring metric.
+Optional parameters:
+	filter
+	period: The time scale for which the graph is generated. Default is 'day'
+	size: The size of the graph to be generated. Default is 'small'.
+	title: The title of the graph.
+	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -5093,8 +5473,14 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows attributes of a single monitoring metric.`,
+				Name: "show",
+				Description: `Shows attributes of a single monitoring metric.
+Making a request to the graph_href will return a png image corresponding to that monitoring metric.
+Optional parameters:
+	period: The time scale for which the graph is generated. Default is 'day'.
+	size: The size of the graph to be generated. Default is 'small'.
+	title: The title of the graph.
+	tz: The time zone in which the graph will be displayed. Default will be 'America/Los_Angeles'. For more zones, see User Settings -> Preferences.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -5179,12 +5565,16 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"MultiCloudImage": &metadata.Resource{
-		Name:        "MultiCloudImage",
-		Description: `A MultiCloudImage is a RightScale component that functions as a pointer to machine images in specific clouds (e...`,
+		Name: "MultiCloudImage",
+		Description: `A MultiCloudImage is a RightScale component that functions as a pointer to machine images in specific clouds
+(e.g. AWS US-East, Rackspace). Each ServerTemplate can reference many MultiCloudImages that defines which
+image should be used when a server is launched in a particular cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "clone",
-				Description: `Clones a given MultiCloudImage.`,
+				Name: "clone",
+				Description: `Clones a given MultiCloudImage.
+Required parameters:
+	multi_cloud_image`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -5224,8 +5614,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "commit",
-				Description: `Commits a given MultiCloudImage. Only HEAD revisions can be committed.`,
+				Name: "commit",
+				Description: `Commits a given MultiCloudImage. Only HEAD revisions can be committed.
+Required parameters:
+	commit_message: The message associated with the commit.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -5257,8 +5649,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new MultiCloudImage with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new MultiCloudImage with the given parameters.
+Required parameters:
+	multi_cloud_image`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -5325,8 +5719,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.`,
+				Name: "index",
+				Description: `Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -5387,8 +5783,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).`,
+				Name: "update",
+				Description: `Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).
+Currently, the attributes you can update are only the 'direct' attributes of a server template.
+Required parameters:
+	multi_cloud_image`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -5435,12 +5834,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"MultiCloudImageSetting": &metadata.Resource{
-		Name:        "MultiCloudImageSetting",
-		Description: `A MultiCloudImageSetting defines which settings should be used when a server is launched in a cloud...`,
+		Name: "MultiCloudImageSetting",
+		Description: `A MultiCloudImageSetting defines which
+settings should be used when a server is launched in a cloud.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new setting for an existing MultiCloudImage.`,
+				Name: "create",
+				Description: `Creates a new setting for an existing MultiCloudImage.
+Required parameters:
+	multi_cloud_image_setting`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -5527,8 +5929,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the MultiCloudImage settings.`,
+				Name: "index",
+				Description: `Lists the MultiCloudImage settings.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -5577,8 +5981,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates a settings for a MultiCLoudImage.`,
+				Name: "update",
+				Description: `Updates a settings for a MultiCLoudImage.
+Required parameters:
+	multi_cloud_image_setting`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -5655,8 +6061,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A Network is a logical grouping of network devices.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new network.`,
+				Name: "create",
+				Description: `Creates a new network.
+Required parameters:
+	network`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -5735,8 +6143,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists networks in this account.`,
+				Name: "index",
+				Description: `Lists networks in this account.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -5785,8 +6195,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates the given network.`,
+				Name: "update",
+				Description: `Updates the given network.
+Required parameters:
+	network`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -5839,8 +6251,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A NetworkGateway is an interface that allows traffic to be routed between networks.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a new NetworkGateway.`,
+				Name: "create",
+				Description: `Create a new NetworkGateway.
+Required parameters:
+	network_gateway`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -5912,8 +6326,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the NetworkGateways available to this account.`,
+				Name: "index",
+				Description: `Lists the NetworkGateways available to this account.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -5962,8 +6378,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update an existing NetworkGateway.`,
+				Name: "update",
+				Description: `Update an existing NetworkGateway.
+Required parameters:
+	network_gateway`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -6012,12 +6430,19 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"NetworkOptionGroup": &metadata.Resource{
-		Name:        "NetworkOptionGroup",
-		Description: `A key/value pair hash containing options for configuring a Network.`,
+		Name: "NetworkOptionGroup",
+		Description: `A key/value pair hash containing options for configuring a Network.
+The key/value pairs are stored in the "options" parameter.
+Keys correspond to the type of option to set, and values correspond
+to the value of the particular option being set.
+Option keys that are supported vary depending on cloud -- please consult
+your particular cloud's documentation for available option keys.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a new NetworkOptionGroup.`,
+				Name: "create",
+				Description: `Create a new NetworkOptionGroup.
+Required parameters:
+	network_option_group`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -6096,8 +6521,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `List NetworkOptionGroups available in this account.`,
+				Name: "index",
+				Description: `List NetworkOptionGroups available in this account.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6146,8 +6573,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update an existing NetworkOptionGroup.`,
+				Name: "update",
+				Description: `Update an existing NetworkOptionGroup.
+Required parameters:
+	network_option_group`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -6196,12 +6625,21 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"NetworkOptionGroupAttachment": &metadata.Resource{
-		Name:        "NetworkOptionGroupAttachment",
-		Description: `Resource for attaching NetworkOptionGroups to Networks.`,
+		Name: "NetworkOptionGroupAttachment",
+		Description: `Resource for attaching NetworkOptionGroups to Networks.
+A single NetworkOptionGroup can be attached to many Networks.
+A Network/Subnet can have many NetworkOptionGroups attached, as long as the
+NetworkOptionGroups each have different types.
+This resource describes the attachment details between a particular
+NetworkOptionGroup and Network.
+Amazon currently only supports attaching NetworkOptionGroups to Networks.
+Other clouds in the future may support attaching to Subnets.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a new NetworkOptionGroupAttachment.`,
+				Name: "create",
+				Description: `Create a new NetworkOptionGroupAttachment.
+Required parameters:
+	network_option_group_attachment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -6256,8 +6694,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `List NetworkOptionGroupAttachments in this account.`,
+				Name: "index",
+				Description: `List NetworkOptionGroupAttachments in this account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6309,8 +6750,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single NetworkOptionGroupAttachment.`,
+				Name: "show",
+				Description: `Show information about a single NetworkOptionGroupAttachment.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6344,8 +6787,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update an existing NetworkOptionGroupAttachment.`,
+				Name: "update",
+				Description: `Update an existing NetworkOptionGroupAttachment.
+Required parameters:
+	network_option_group_attachment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -6378,12 +6823,61 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Oauth2": &metadata.Resource{
-		Name:        "Oauth2",
-		Description: `Note that all API calls irrespective of the resource it is acting on, should pass a header "X-Api-Version" with the value "1...`,
+		Name: "Oauth2",
+		Description: `Note that all API calls irrespective of the resource it is acting on, should pass a header
+"X-Api-Version" with the value "1.5".
+This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
+a bearer access token, which can be used in lieu of a session cookie when interacting with API
+resources.
+This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
+to the conventions established by other RightScale API resources. However, an API-version header is
+still required when interacting with the OAuth endpoint.
+OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
+browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
+endpoint supports the following OAuth 2.0 operations:
+refresh_token - for end-user login using a previously-negotiated OAuth grant
+client_credentials - for instance login using API credentials transmitted via user-data
+RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
+clients MUST transmit an X-Api-Version header with every OAuth request
+clients MAY transmit an account_id parameter as part of their POST form data
+If you choose to post an account_id, then the API may respond with a 301 redirect if your account
+is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
+elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
+this cluster).
+For more information on how to use OAuth 2.0 with RightScale, refer to the following:
+http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
+http://tools.ietf.org/html/draft-ietf-oauth-v2-23`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Perform an OAuth 2`,
+				Name: "create",
+				Description: `Perform an OAuth 2.0 token_refresh operation to obtain an access token that
+can be used in lieu of an API session cookie. (In other words, creates a
+session using OAuth 2.0).
+Note that an API-Version header is required with your request, and that the server
+may respond with a 301 Moved Permanently if you include an account_id parameter and
+your account is hosted in another RightScale cluster.
+The request parameters and response format are all as per the OAuth 2.0
+Internet Draft standard v23. In brief:
+Successful responses include an access token, an expires-in timestamp, and a token type
+The token type is always "bearer"
+To use a bearer token, include header "Authorization: Bearer " with your API requests
+The client must refresh the access token before it expires
+# Example Request using Curl (with prettified response):
+curl -i -H X-API-Version:1.5 -x POST https://my.rightscale.com/api/oauth2 -d "grant_type=refresh_token" -d "refresh_token=abcd1234deadbeef"
+{
+  "access_token": "xyzzy",
+  "expires_in":   3600,
+  "token_type":   "bearer"
+}
+Required parameters:
+	grant_type: Type of grant.
+Optional parameters:
+	account_id: The client's account ID (only needed for instance agent clients).
+	client_id: The client ID (only needed for confidential clients).
+	client_secret: The client secret (only needed for confidential clients).
+	r_s_version: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
+	refresh_token: The refresh token obtained from OAuth grant.
+	right_link_version: The RightLink gem version the client conforms to (only needed for instance agent clients).`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -6518,8 +7012,19 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: ``,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a permission, thereby granting some user a particular role with respect to the current account...`,
+				Name: "create",
+				Description: `Create a permission, thereby granting some user a particular role
+with respect to the current account.
+The 'observer' role has a special status; it must be granted before
+a user is eligible for any other permission in a given account. 
+When provisioning users, always create the observer permission FIRST; 
+creating any other permission before it will result in an error.
+For more information about the roles available and the privileges
+they confer, please refer to the following page of the RightScale
+support portal:
+  http://support.rightscale.com/15-References/Lists/ListofUser_Roles
+Required parameters:
+	permission`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -6559,8 +7064,14 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "destroy",
-				Description: `Destroy a permission, thereby revoking a user's role with respect to the current account...`,
+				Name: "destroy",
+				Description: `Destroy a permission, thereby revoking a user's role with respect
+to the current account.
+The 'observer' role has a special status; it cannot be revoked if
+a user has any other roles, because other roles become useless without
+being able to read data pertaining to the account.
+When deprovisioning user, always destroy the observer permission LAST;
+destroying it while the user has other permissions will result in an error.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "DELETE",
@@ -6574,8 +7085,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `List all permissions for all users of the current acount.`,
+				Name: "index",
+				Description: `List all permissions for all users of the current acount.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6629,8 +7142,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: ``,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a PlacementGroup.`,
+				Name: "create",
+				Description: `Creates a PlacementGroup.
+Required parameters:
+	placement_group`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -6693,8 +7208,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all PlacementGroups in an account.`,
+				Name: "index",
+				Description: `Lists all PlacementGroups in an account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6746,8 +7264,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows information about a single PlacementGroup.`,
+				Name: "show",
+				Description: `Shows information about a single PlacementGroup.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6801,8 +7321,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all preferences.`,
+				Name: "index",
+				Description: `Lists all preferences.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6849,8 +7371,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `If 'id' is known, updates preference with given contents.`,
+				Name: "update",
+				Description: `If 'id' is known, updates preference with given contents.
+Otherwise, creates new preference.
+Note: If create, will return '201 Created' and the location of the new preference.
+Required parameters:
+	preference`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -6883,12 +7409,14 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Publication": &metadata.Resource{
-		Name:        "Publication",
-		Description: `A Publication is a revisioned component shared with a set of Account Groups.`,
+		Name: "Publication",
+		Description: `A Publication is a revisioned component shared with a set of Account Groups.
+If shared with your account, it can be imported in to your account.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "import",
-				Description: `Imports the given publication and its subordinates to this account.`,
+				Name: "import",
+				Description: `Imports the given publication and its subordinates to this account.
+Only non-HEAD revisions that are shared with the account can be imported.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -6902,8 +7430,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the publications available to this account. Only non-HEAD revisions are possible.`,
+				Name: "index",
+				Description: `Lists the publications available to this account. Only non-HEAD revisions are possible.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6955,8 +7486,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single publication. Only non-HEAD revisions are possible.`,
+				Name: "show",
+				Description: `Show information about a single publication. Only non-HEAD revisions are possible.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -6991,12 +7524,16 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"PublicationLineage": &metadata.Resource{
-		Name:        "PublicationLineage",
-		Description: `A Publication Lineage contains lineage information for a Publication in the MultiCloudMarketplace.`,
+		Name: "PublicationLineage",
+		Description: `A Publication Lineage contains lineage information for a Publication in the MultiCloudMarketplace.
+It is shared among all revisions of a Publication within the marketplace.
+Publication Lineages are different than lineages that exist within an account.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single publication lineage. Only non-HEAD revisions are possible.`,
+				Name: "show",
+				Description: `Show information about a single publication lineage. Only non-HEAD revisions are possible.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -7035,8 +7572,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new recurring volume attachment.`,
+				Name: "create",
+				Description: `Creates a new recurring volume attachment.
+Required parameters:
+	recurring_volume_attachment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -7139,8 +7678,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all recurring volume attachments.`,
+				Name: "index",
+				Description: `Lists all recurring volume attachments.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -7204,8 +7746,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single recurring volume attachment.`,
+				Name: "show",
+				Description: `Displays information about a single recurring volume attachment.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -7252,12 +7796,20 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Repository": &metadata.Resource{
-		Name:        "Repository",
-		Description: `A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.`,
+		Name: "Repository",
+		Description: `A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.
+RightScale currently supports the following types of repositores: git, svn, and URLs of compressed files (tar, tgz, gzip).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "cookbook_import",
-				Description: `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.`,
+				Name: "cookbook_import",
+				Description: `Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.
+Required parameters:
+	asset_hrefs: Hrefs of the assets that should be imported.
+Optional parameters:
+	follow: A flag indicating whether imported cookbooks should be followed.
+	namespace: The namespace to import into.
+	repository_commit_reference: Optional commit reference indicating last succeeded commit. Must match the Repository's fetch_status.succeeded_commit attribute or the import will not be performed.
+	with_dependencies: A flag indicating whether dependencies should automatically be imported.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -7359,8 +7911,14 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "cookbook_import_preview",
-				Description: `Retrieves a preview of the effects of a Cookbook import.`,
+				Name: "cookbook_import_preview",
+				Description: `Retrieves a preview of the effects of a Cookbook import.
+NOTE: This action is for RightScale internal use only. The response is
+free-form JSON with no associated mediatype.
+DO NOT USE, THIS ACTION IS SUBJECT TO CHANGE AT ANYTIME.
+Required parameters:
+	asset_hrefs: Hrefs of the assets that should be imported.
+	namespace: The namespace to import into.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -7410,8 +7968,20 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a Repository.`,
+				Name: "create",
+				Description: `Creates a Repository.
+The following types of inputs are supported for the credential fields:
+Type
+Format
+Example(s)
+Text string
+text:&lt;value&gt;
+text:-----BEGIN RSA PRIVATE KEY-----text:secret
+Credential value
+cred:&lt;value&gt;
+cred:my ssh keycred:svn_1_password
+Required parameters:
+	repository`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -7532,8 +8102,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all Repositories for this Account.`,
+				Name: "index",
+				Description: `Lists all Repositories for this Account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -7585,8 +8158,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "refetch",
-				Description: `Refetches all RepositoryAssets associated with the Repository.`,
+				Name: "refetch",
+				Description: `Refetches all RepositoryAssets associated with the Repository.
+Note that a refetch simply updates RightScale's view of the contents of the repository.
+You must perform an import to use the assets in your design objects (or use the auto import parameter).
+Optional parameters:
+	auto_import: Whether cookbooks should automatically be imported after repositories are fetched.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -7620,8 +8197,13 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "resolve",
-				Description: `Show a list of repositories that have imported cookbooks with the given names.`,
+				Name: "resolve",
+				Description: `Show a list of repositories that have imported cookbooks with the given names.
+This operation returns a list of repositories that would later satisfy a call
+to the swap_repository
+action on a ServerTemplate.
+Optional parameters:
+	imported_cookbook_name: A list of cookbook names that were imported by the repository.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -7653,8 +8235,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows a specified Repository.`,
+				Name: "show",
+				Description: `Shows a specified Repository.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -7688,8 +8272,20 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates a specified Repository.`,
+				Name: "update",
+				Description: `Updates a specified Repository.
+The following types of inputs are supported for the credential fields:
+Type
+Format
+Example(s)
+Text string
+text:&lt;value&gt;
+text:-----BEGIN RSA PRIVATE KEY-----text:secret
+Credential value
+cred:&lt;value&gt;
+cred:my ssh keycred:svn_1_password
+Required parameters:
+	repository`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -7787,12 +8383,17 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"RepositoryAsset": &metadata.Resource{
-		Name:        "RepositoryAsset",
-		Description: `A RepositoryAsset represents an item discovered in a Repository`,
+		Name: "RepositoryAsset",
+		Description: `A RepositoryAsset represents an item discovered in a Repository. These assets represent only a view of the Repository
+the last time it was scraped. In order to use these assets, you must import them into your account.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `List a repository's current assets.`,
+				Name: "index",
+				Description: `List a repository's current assets.
+Repository assests are the cookbook details that were scraped from a
+given repository.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -7826,8 +8427,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single asset.`,
+				Name: "show",
+				Description: `Show information about a single asset.
+A repository assest are the cookbook details that were scraped from a
+repository.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -7862,12 +8467,19 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"RightScript": &metadata.Resource{
-		Name:        "RightScript",
-		Description: `A RightScript is an executable piece of code that can be run on a server during the boot, operational, or decommission phases...`,
+		Name: "RightScript",
+		Description: `A RightScript is an executable piece of code that can be run on a server
+during the boot, operational, or decommission phases.
+All revisions of
+a RightScript belong to a RightScript lineage that is exposed by the
+"lineage" attribute (NOTE: This attribute is merely a string to locate
+all revisions of a RightScript and NOT a working URL).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "commit",
-				Description: `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.`,
+				Name: "commit",
+				Description: `Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
+Required parameters:
+	right_script`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -7899,8 +8511,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists RightScripts.`,
+				Name: "index",
+				Description: `Lists RightScripts.
+Optional parameters:
+	filter
+	latest_only: Whether or not to return only the latest version for each lineage.
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8000,8 +8616,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates RightScript name/description`,
+				Name: "update",
+				Description: `Updates RightScript name/description
+Required parameters:
+	right_script`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -8057,12 +8675,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Route": &metadata.Resource{
-		Name:        "Route",
-		Description: `A Route defines how networking traffic should be routed from one destination to another...`,
+		Name: "Route",
+		Description: `A Route defines how networking traffic should be routed from one
+destination to another. See nexthoptype for available endpoint targets.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a new Route.`,
+				Name: "create",
+				Description: `Create a new Route.
+Required parameters:
+	route`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -8095,12 +8716,14 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "route[next_hop_href]",
-						Description: `The href of the Route's next hop.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
+						Name: "route[next_hop_href]",
+						Description: `The href of the Route's next hop.
+                         Required if route[next_hop_type] is 'instance', 'network_interface', or 'network_gateway'.
+                         Not allowed otherwise.`,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: false,
+						NonBlank:  true,
 					},
 					&metadata.ActionParam{
 						Name:        "route[next_hop_type]",
@@ -8162,8 +8785,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `List Routes available in this account.`,
+				Name: "index",
+				Description: `List Routes available in this account.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8224,8 +8849,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update an existing Route.`,
+				Name: "update",
+				Description: `Update an existing Route.
+Required parameters:
+	route`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -8301,8 +8928,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Grouped listing of Routes`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a new RouteTable.`,
+				Name: "create",
+				Description: `Create a new RouteTable.
+Required parameters:
+	route_table`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -8373,8 +9002,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `List RouteTables available in this account.`,
+				Name: "index",
+				Description: `List RouteTables available in this account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8426,8 +9058,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single RouteTable.`,
+				Name: "show",
+				Description: `Show information about a single RouteTable.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8461,8 +9095,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update an existing RouteTable.`,
+				Name: "update",
+				Description: `Update an existing RouteTable.
+Required parameters:
+	route_table`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -8503,12 +9139,18 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"RunnableBinding": &metadata.Resource{
-		Name:        "RunnableBinding",
-		Description: `A RunnableBinding represents an item in a runlist of a ServerTemplate`,
+		Name: "RunnableBinding",
+		Description: `A RunnableBinding represents an item in a runlist of a ServerTemplate. These items could be
+RightScript or Chef recipes, and could be associated with any one of the three runlists of a 
+ServerTemplate (boot, operational, decommission).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Bind an executable to the given ServerTemplate.`,
+				Name: "create",
+				Description: `Bind an executable to the given ServerTemplate.
+An executable may be either a RightScript or Chef Recipe.
+The resource must be editable.
+Required parameters:
+	runnable_binding`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -8565,8 +9207,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "destroy",
-				Description: `Unbind an executable from the given resource.`,
+				Name: "destroy",
+				Description: `Unbind an executable from the given resource.
+The resource must be editable.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "DELETE",
@@ -8580,8 +9223,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the executables bound to the ServerTemplate.`,
+				Name: "index",
+				Description: `Lists the executables bound to the ServerTemplate.
+An excutable may be either a RightScript or Chef Recipe.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8615,8 +9261,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_update",
-				Description: `Update attributes for multiple bound executables.`,
+				Name: "multi_update",
+				Description: `Update attributes for multiple bound executables.
+The resource must be editable.
+Required parameters:
+	runnable_bindings`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -8681,8 +9330,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single executable binding.`,
+				Name: "show",
+				Description: `Show information about a single executable binding.
+An excutable may be either a RightScript or Chef Recipe.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8716,13 +9368,313 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"SecurityGroup": &metadata.Resource{
-		Name:        "SecurityGroup",
-		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as trust relationships amongst different security groups...`,
+	"Scheduler": &metadata.Resource{
+		Name:        "Scheduler",
+		Description: `Provide RightLink with the ability to schedule script executions on instances`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a security group.`,
+				Name: "schedule_recipe",
+				Description: `Schedules a chef recipe for execution on the current instance
+Optional parameters:
+	arguments: Serialized recipe execution arguments values keyed by name
+	audit_id: Optional, reuse audit if specified
+	audit_period: RunlistPolicy audit period
+	formal_values: Formal input parameter values
+	policy: RunlistPolicy policy name
+	recipe: Chef recipe name, overridden by recipe_id
+	recipe_id: ServerTemplateChefRecipe ID
+	thread: RunlistPolicy thread name`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HttpMethod: "POST",
+						Pattern:    "/api/right_net/scheduler/schedule_recipe",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_recipe$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe_id",
+						Description: `ServerTemplateChefRecipe ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized recipe execution arguments values keyed by name`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized recipe execution arguments values keyed by name`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe",
+						Description: `Chef recipe name, overridden by recipe_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe_id",
+						Description: `ServerTemplateChefRecipe ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name: "schedule_right_script",
+				Description: `Schedules a RightScript for execution on the current instance
+Optional parameters:
+	arguments: Serialized script execution arguments values keyed by name
+	audit_id: Optional, reuse audit if specified
+	audit_period: RunlistPolicy audit period
+	formal_values: Formal input parameter values
+	policy: RunlistPolicy policy name
+	right_script: RightScript name, overridden by right_script_id
+	right_script_id: RightScript ID
+	thread: RunlistPolicy thread name`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HttpMethod: "POST",
+						Pattern:    "/api/right_net/scheduler/schedule_right_script",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_right_script$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "right_script_id",
+						Description: `RightScript ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized script execution arguments values keyed by name`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized script execution arguments values keyed by name`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script",
+						Description: `RightScript name, overridden by right_script_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script_id",
+						Description: `RightScript ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+		},
+	},
+	"SecurityGroup": &metadata.Resource{
+		Name: "SecurityGroup",
+		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
+trust relationships amongst different security groups.`,
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "create",
+				Description: `Create a security group.
+Required parameters:
+	security_group`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -8785,8 +9737,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists Security Groups.`,
+				Name: "index",
+				Description: `Lists Security Groups.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8838,8 +9793,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single Security Group.`,
+				Name: "show",
+				Description: `Displays information about a single Security Group.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -8878,8 +9835,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: ``,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a security group rule for a security group.`,
+				Name: "create",
+				Description: `Create a security group rule for a security group.
+The following flavors are supported:
+group-based TCP/UDP
+group-based ICMP
+CIDR-based TCP/UDP
+CIDR-based ICMP
+Required parameters:
+	security_group_rule`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -9021,8 +9985,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists SecurityGroupRules.`,
+				Name: "index",
+				Description: `Lists SecurityGroupRules.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -9062,8 +10028,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single SecurityGroupRule.`,
+				Name: "show",
+				Description: `Displays information about a single SecurityGroupRule.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -9103,8 +10071,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: ``,
+				Name: "update",
+				Description: `Required parameters:
+	security_group_rule`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -9143,8 +10112,16 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Server": &metadata.Resource{
-		Name:        "Server",
-		Description: `Servers represent the notion of a server/machine from the RightScale's perspective`,
+		Name: "Server",
+		Description: `Servers represent the notion of a server/machine from the RightScale's perspective. A Server, does not always
+have a corresponding VM running or provisioned in a cloud. Some clouds use the word "servers" to refer to created VM's. These allocated VM's
+are not called Servers in the RightScale API, they are called Instances.
+A Server always has a next_instance association, which will define the configuration to apply to a new instance when
+the server is launched or started (starting servers is not yet supported through this API).
+Once a Server is launched/started a current_instance relationship will exist.
+Accessing the current_instance of a server results in immediate runtime modification of this running server.
+Changes to the next_instance association prepares the
+configuration for the next instance launch/start (therefore they have no effect until such operation is performed).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "clone",
@@ -9162,8 +10139,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new server, and configures its corresponding "next" instance with the received parameters.`,
+				Name: "create",
+				Description: `Creates a new server, and configures its corresponding "next" instance with the received parameters.
+Required parameters:
+	server`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -9434,8 +10413,17 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists servers.`,
+				Name: "index",
+				Description: `Lists servers.
+By using the available filters, it is possible to retrieve servers that have common characteristics.
+For example, one can list:
+servers that have names that contain "app_server"
+all servers of a given deployment
+For more filters, please see the 'index' action on 'Instances' resource as most of the attributes belong to
+a 'current_instance' than to a server.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -9493,8 +10481,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "launch",
-				Description: `Launches the "next" instance of this server`,
+				Name: "launch",
+				Description: `Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
+URL of this servers next_instance. See Instances#launch for details.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -9508,8 +10497,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows the information of a single server.`,
+				Name: "show",
+				Description: `Shows the information of a single server.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -9549,8 +10540,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "terminate",
-				Description: `Terminates the current instance of this server`,
+				Name: "terminate",
+				Description: `Terminates the current instance of this server. This function is equivalent to invoking the terminate action on the
+URL of this servers current_instance. See Instances#terminate for details.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -9585,8 +10577,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a single server.`,
+				Name: "update",
+				Description: `Updates attributes of a single server.
+Required parameters:
+	server`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -9658,8 +10652,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "wrap_instance",
-				Description: `Wrap an existing instance and set current instance for new server`,
+				Name: "wrap_instance",
+				Description: `Wrap an existing instance and set current instance for new server
+Required parameters:
+	server`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -9746,8 +10742,13 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"ServerArray": &metadata.Resource{
-		Name:        "ServerArray",
-		Description: `A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.`,
+		Name: "ServerArray",
+		Description: `A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.
+A server array just like a server always has a next_instance association, which will define the configuration to apply when a new instance is launched.
+But unlike a server which has a current_instance relationship, the server array has a
+current_instances relationship that gives the information about
+all the running instances in the array. Changes to the next_instance association prepares the configuration for the next instance that is to be launched
+in the array and will therefore not affect any of the currently running instances.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "clone",
@@ -9765,8 +10766,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new server array, and configures its corresponding "next" instance with the received parameters.`,
+				Name: "create",
+				Description: `Creates a new server array, and configures its corresponding "next" instance with the received parameters.
+Required parameters:
+	server_array`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10188,8 +11191,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "current_instances",
-				Description: `List the running instances belonging to the server array. See Instances#index for details.`,
+				Name: "current_instances",
+				Description: `List the running instances belonging to the server array. See Instances#index for details.
+This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
+latter will include 'next_instance' as well.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -10224,8 +11229,15 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists server arrays.`,
+				Name: "index",
+				Description: `Lists server arrays.
+By using the available filters, it is possible to retrieve server arrays that have common characteristics.
+For example, one can list:
+arrays that have names that contain "my_server_array"
+all arrays of a given deployment
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -10283,8 +11295,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "launch",
-				Description: `Launches a new instance in the server array with the configuration defined in the 'next_instance'`,
+				Name: "launch",
+				Description: `Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
+URL of this server_array's next_instance. See Instances#launch for details.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10298,8 +11311,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_run_executable",
-				Description: `Run an executable on all instances of this array`,
+				Name: "multi_run_executable",
+				Description: `Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
+(Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
+a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10313,8 +11328,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_terminate",
-				Description: `Terminate all instances of this array`,
+				Name: "multi_terminate",
+				Description: `Terminate all instances of this array. This function is equivalent to invoking the "multi_terminate" action on the instances resource ( Instances#multi_terminate with
+the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,
+invoke the action "terminate" directly on the instance (see Instances#terminate)`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10328,8 +11345,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Shows the information of a single server array.`,
+				Name: "show",
+				Description: `Shows the information of a single server array.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -10369,8 +11388,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a single server array.`,
+				Name: "update",
+				Description: `Updates attributes of a single server array.
+Required parameters:
+	server_array`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -10606,12 +11627,18 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"ServerTemplate": &metadata.Resource{
-		Name:        "ServerTemplate",
-		Description: `ServerTemplates allow you to pre-configure servers by starting from a base image and adding scripts that run during the boot, operational, and shutdown phases...`,
+		Name: "ServerTemplate",
+		Description: `ServerTemplates allow you to pre-configure servers by starting from a base image and adding scripts that run during the boot,
+operational, and shutdown phases. A ServerTemplate is a description of how a new instance will be configured when it is
+provisioned by your cloud provider.
+All revisions of a ServerTemplate belong to a ServerTemplate lineage that is exposed by the "lineage" attribute.
+(NOTE: This attribute is merely a string to locate all revisions of a ServerTemplate and NOT a working URL)`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "clone",
-				Description: `Clones a given ServerTemplate.`,
+				Name: "clone",
+				Description: `Clones a given ServerTemplate.
+Required parameters:
+	server_template`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10651,8 +11678,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "commit",
-				Description: `Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.`,
+				Name: "commit",
+				Description: `Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.
+Required parameters:
+	commit_head_dependencies: Commit all HEAD revisions (if any) of the associated MultiCloud Images, RightScripts and Chef repo sequences.
+	commit_message: The message associated with the commit.
+	freeze_repositories: Freeze the repositories.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10720,8 +11751,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new ServerTemplate with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new ServerTemplate with the given parameters.
+Required parameters:
+	server_template`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10776,8 +11809,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "detect_changes_in_head",
-				Description: `Identifies RightScripts attached to the resource that differ from their HEAD.`,
+				Name: "detect_changes_in_head",
+				Description: `Identifies RightScripts attached to the resource that differ from their HEAD.
+If the attached revision of the RightScript is the HEAD, then this will indicate
+a difference between it and the latest committed revision in the same lineage.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10791,8 +11826,13 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.`,
+				Name: "index",
+				Description: `Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.
+The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+details please see Inputs#index.)
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -10844,8 +11884,16 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "publish",
-				Description: `Publishes a given ServerTemplate and its subordinates.`,
+				Name: "publish",
+				Description: `Publishes a given ServerTemplate and its subordinates.
+Only non-HEAD revisions that are owned by the account can be published.
+Required parameters:
+	account_group_hrefs: List of hrefs of account groups to publish to.
+	descriptions
+Optional parameters:
+	allow_comments: Allow users to leave comments on this ServerTemplate.
+	categories: List of Categories.
+	email_comments: Email me when a user comments on this ServerTemplate.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10961,8 +12009,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "resolve",
-				Description: `Enumerates all attached cookbooks, missing dependencies and bound executables.`,
+				Name: "resolve",
+				Description: `Enumerates all attached cookbooks, missing dependencies and bound executables.
+Version constraints on missing dependencies and the state of the Chef Recipes;
+whether or not the cookbook or recipe itself could be found among the
+attachments, will also be reported.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -10976,8 +12027,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single ServerTemplate. HEAD revisions have a revision of 0.`,
+				Name: "show",
+				Description: `Show information about a single ServerTemplate. HEAD revisions have a revision of 0.
+The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
+details please see Inputs#index.)
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11011,8 +12066,23 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "swap_repository",
-				Description: `In-place replacement of attached cookbooks from a given repository.`,
+				Name: "swap_repository",
+				Description: `In-place replacement of attached cookbooks from a given repository.
+For each attached cookbook coming from the source repository, replace it by
+attaching a cookbook of identical name coming from the target repository.
+In order for the operation to be successful, all attachments that came from the
+source repository must exist in the target repository.
+If multiple cookbooks of a given name exist in the target repository, preference
+is given by the following order (top most being the highest preference):
+  Name & Version Match / Primary Namespace
+  Name & Version Match / Alternate Namespace
+  Name Match / Primary Namespace
+  Name Match / Alternate Namespace
+If multiple cookbooks still have the same preference for the replacement, the operation is
+indeterministic.
+Required parameters:
+	source_repository_href: The repository whose cookbook attachments are to be replaced.
+	target_repository_href: The repository whose cookbook attachments are to be utilized.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11060,8 +12130,12 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).`,
+				Name: "update",
+				Description: `Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).
+Currently, the attributes you can update are only the 'direct' attributes of a server template. To
+manage multi cloud images of a ServerTemplate, please see the resource 'ServerTemplateMultiCloudImages'.
+Required parameters:
+	server_template`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -11102,12 +12176,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"ServerTemplateMultiCloudImage": &metadata.Resource{
-		Name:        "ServerTemplateMultiCloudImage",
-		Description: `This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively add/delete MultiCloudImages to ServerTemplates and make them the default one...`,
+		Name: "ServerTemplateMultiCloudImage",
+		Description: `This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively
+add/delete MultiCloudImages to ServerTemplates and make them the default one.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new ServerTemplateMultiCloudImage with the given parameters.`,
+				Name: "create",
+				Description: `Creates a new ServerTemplateMultiCloudImage with the given parameters.
+Required parameters:
+	server_template_multi_cloud_image`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11162,8 +12239,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists the ServerTemplateMultiCloudImages available to this account.`,
+				Name: "index",
+				Description: `Lists the ServerTemplateMultiCloudImages available to this account.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11230,8 +12310,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.`,
+				Name: "show",
+				Description: `Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11266,12 +12348,30 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Session": &metadata.Resource{
-		Name:        "Session",
-		Description: `The sessions resource is in charge of creating API sessions that are bound to a given account`,
+		Name: "Session",
+		Description: `The sessions resource is in charge of creating API sessions that are bound to a given account. The sequence for login into the API is the following:
+Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
+If the targeted host is not appropriate for the specific account being accessed it will return a 302 http code with a URL with which the client must retry the same POST request.
+If the targeted host is the right one and the login is successful, it will return a 204 http code, along with two cookies that will need to be saved and passed in any subsequent API request.
+If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
+If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
+Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "accounts",
-				Description: `List all the accounts that a user has access to.`,
+				Name: "accounts",
+				Description: `List all the accounts that a user has access to.
+This call may be executed outside of an existing session. Doing so requires passing a username and password in the
+request body. The idea is that it should be possible to list accounts that can be used to create a session.
+Upon successfully authenticating the credentials, the system will return a 200 OK code and return the list of accounts.
+If an 302 redirect code is returned, the client is responsible of re-issuing the GET request against the content of the received Location header, passing the exact same parameters again.
+Example Request using Curl (not using an existing session):
+curl -i -H X_API_VERSION:1.5 -X GET -d email='email@me.com' -d password='mypassword' https://my.rightscale.com/api/sessions/accounts
+Example Request using Curl (using an existing session):
+curl -i -H X_API_VERSION:1.5 -X GET -b mycookies https://my.rightscale.com/api/sessions/accounts
+Optional parameters:
+	email: The email to login with if not using existing session.
+	password: The corresponding password.
+	view: Extended view shows account permissions and products`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11337,8 +12437,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what features are available within its privileges...`,
+				Name: "index",
+				Description: `Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what
+features are available within its privileges.
+Example Request using Curl:
+curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11352,8 +12455,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index_instance_session",
-				Description: `Shows the full attributes of the instance (that has the token used to log-in).`,
+				Name: "index_instance_session",
+				Description: `Shows the full attributes of the instance (that has the token used to log-in).
+This call can be used by an instance to get it's own details.
+Example Request using Curl:
+curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions/instance`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11368,12 +12474,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"SshKey": &metadata.Resource{
-		Name:        "SshKey",
-		Description: `Ssh Keys represent a created SSH Key that exists in the cloud.`,
+		Name: "SshKey",
+		Description: `Ssh Keys represent a created SSH Key that exists in the cloud.
+An ssh key might also contain the private part of the key, and can be used to login to instances launched with it.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new ssh key.`,
+				Name: "create",
+				Description: `Creates a new ssh key.
+Required parameters:
+	ssh_key`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11420,8 +12529,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists ssh keys.`,
+				Name: "index",
+				Description: `Lists ssh keys.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11473,8 +12585,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single ssh key.`,
+				Name: "show",
+				Description: `Displays information about a single ssh key.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11509,12 +12623,15 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Subnet": &metadata.Resource{
-		Name:        "Subnet",
-		Description: `A Subnet is a logical grouping of network devices`,
+		Name: "Subnet",
+		Description: `A Subnet is a logical grouping of network devices. An Instance can have many
+Subnets.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new subnet.`,
+				Name: "create",
+				Description: `Creates a new subnet.
+Required parameters:
+	subnet`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11605,8 +12722,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists subnets of a given cloud.`,
+				Name: "index",
+				Description: `Lists subnets of a given cloud.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -11667,8 +12786,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Updates name and description for the current subnet.`,
+				Name: "update",
+				Description: `Updates name and description for the current subnet.
+Required parameters:
+	subnet`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -11723,12 +12844,17 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Tag": &metadata.Resource{
-		Name:        "Tag",
-		Description: `A tag or machine tag is a useful way of attaching useful metadata to an object/resource.`,
+		Name: "Tag",
+		Description: `A tag or machine tag is a useful way of attaching useful metadata to an object/resource.
+Tags are commonly used as an extra label or identifier.
+For example, you might want to add a tag to an EBS Snapshot or AMI so that you can find it more quickly.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "by_resource",
-				Description: `Get tags for a list of resource hrefs.`,
+				Name: "by_resource",
+				Description: `Get tags for a list of resource hrefs.
+The hrefs can belong to various resource types and the tags for a non-existent href will be empty.
+Required parameters:
+	resource_hrefs: Hrefs of the resources for which tags are to be returned.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11760,8 +12886,27 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "by_tag",
-				Description: `Search for resources having a list of tags in a specific resource_type.`,
+				Name: "by_tag",
+				Description: `Search for resources having a list of tags in a specific resource_type.
+The search criteria can contain plain tags ("my_db_server"), machine tags ("server:db=true"), or
+namespace &amp; predicate wildcards ("server:db=*"). The result set includes links to the resources.
+If match_all is "true", then the search is an "AND" operation -- only resources having all the
+tags are returned. If match_all has any other value or is missing, the search is performed
+as an "OR" operation.
+PLEASE NOTE the behavior of the include_tags_with_prefix parameter: if it is absent,
+or blank, then you will find resources that match your query but receive no information about
+the tags that apply to those resources. (Your search will also complete much more quickly in
+this case.)
+For example, a search with tag[]="server:db=true" and include_tags_with_prefix="backup:"
+will return resources that are tagged as a DB server, and also return all "backup" related tags
+for every matching resource.
+Required parameters:
+	resource_type: Search among a single resource type.
+	tags: The tags which must be present on the resource.
+Optional parameters:
+	include_tags_with_prefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
+	match_all: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
+	with_deleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11863,8 +13008,15 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_add",
-				Description: `Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.`,
+				Name: "multi_add",
+				Description: `Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.
+The hrefs can belong to various resource types. If a resource for a href could not be found, an
+error is returned and no tags are added for any resource.
+No error will be raised if the resource already has the tag(s) you are trying to add.
+Note: At this point, tags on 'next_instance' are not supported and one has to add tags to the 'server'.
+Required parameters:
+	resource_hrefs: Hrefs of the resources for which the tags are to be added.
+	tags: Tags to be added.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11912,8 +13064,14 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "multi_delete",
-				Description: `Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.`,
+				Name: "multi_delete",
+				Description: `Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.
+The hrefs can belong to various resource types. If a resource for a href could not be found, an
+error is returned and no tags are deleted for any resource.
+Note that no error will be raised if the resource does not have the tag(s) you are trying to delete.
+Required parameters:
+	resource_hrefs: Hrefs of the resources for which tags are to be deleted.
+	tags: Tags to be deleted.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -11962,12 +13120,16 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Task": &metadata.Resource{
-		Name:        "Task",
-		Description: `Tasks represent processes that happen (or have happened) asynchronously within the context of an Instance.`,
+		Name: "Task",
+		Description: `Tasks represent processes that happen (or have happened) asynchronously within the context of an Instance.
+An example of a type of task is an operational script that runs in an instance.
+Task resources can be returned by certain API calls, such as Instances.run_executable, Backups.restore, and others.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information of a given task within the context of an instance.`,
+				Name: "show",
+				Description: `Displays information of a given task within the context of an instance.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -12008,12 +13170,29 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"User": &metadata.Resource{
-		Name:        "User",
-		Description: `A User represents an individual RightScale user`,
+		Name: "User",
+		Description: `A User represents an individual RightScale user. Users must be given access to RightScale accounts in order to 
+access RightScale resources.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a user. If a user already exists with the same email, that user will be returned.`,
+				Name: "create",
+				Description: `Create a user. If a user already exists with the same email, that user will be returned.
+Creating a user alone will not enable the user to access this account. You have to create
+'permissions' for that user before it can be used. Performing a 'show' on a new user
+will fail unless you immediately create an 'observer' permission on the current account.
+Note that information about users and their permissions must be propagated globally across all
+RightScale clusters, and this can take some time (less than 60 seconds under normal circumstances)
+so the users you create may not be able to login for a minute or two after you create them. However,
+you may create or destroy permissions for newly-created users with no delay.
+To create a user that will login using password authentication, include the 'password' parameter
+with your request.
+To create an SSO-enabled user, you must specify the identity_provider that will be vouching for
+this user's identity, as well as the principal_uid (SAML NameID or OpenID identity URL) that
+the identity provider will assert for this user. Identity providers should be specified by
+their API href; you can obtain a list of the identity providers available to your account by
+invoking the 'index' action of the identity_providers API resource.
+Required parameters:
+	user`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -12109,8 +13288,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `List the users available to the account the user is logged in to`,
+				Name: "index",
+				Description: `List the users available to the account the user is logged in to. Therefore, to list the users of
+a child account, the user has to login to the child account first.
+Optional parameters:
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -12159,8 +13341,28 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update a user's contact information, change her password, or update SSO her settings`,
+				Name: "update",
+				Description: `Update a user's contact information, change her password, or update SSO her settings. In order
+to update a user record, one of the following criteria must be met:
+You're logged in AS the user being modified and you provide a valid current_password.
+You're an admin and the user is linked to your enterprise SSO provider
+You're an admin and the user's email matches the email_domain of your enterprise SSO provider
+In other words: you can update yourself if you know your own password; you can update
+yourself or others if they're linked to your SSO providers, and you can update any user
+if her email address is known to belong to your organization.
+For information about enabling canonical email domain ownership for your enterprise, please
+talk to your RightScale account manager or contact our support team.
+To update a user's contact information, simply pass the desired values for email, first_name,
+and so forth.
+To update a user's password, provide a valid current_password and specify the desired
+new_password.
+To update a user's SSO information, you may provide a just a principal_uid (to maintain the
+user's existing identity provider) or you may provide an identity_provider_href and a
+principal_uid (to switch identity providers as well as specify a new user identity).
+In the context of SAML. principal_uid is equivalent to the SAML NameID or Subject claim;
+RightScale cannot predict or influence the NameID value that your SAML IdP will send to us for
+Required parameters:
+	user`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -12297,8 +13499,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new volume.`,
+				Name: "create",
+				Description: `Creates a new volume.
+Required parameters:
+	volume`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -12418,8 +13622,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists volumes.`,
+				Name: "index",
+				Description: `Lists volumes.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -12471,8 +13678,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single volume.`,
+				Name: "show",
+				Description: `Displays information about a single volume.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -12506,8 +13715,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `No description provided for update.`,
+				Name: "update",
+				Description: `No description provided for update.
+Required parameters:
+	volume`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PUT",
@@ -12544,8 +13755,10 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A VolumeAttachment represents a relationship between a volume and an instance.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new volume attachment.`,
+				Name: "create",
+				Description: `Creates a new volume attachment.
+Required parameters:
+	volume_attachment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -12611,8 +13824,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "destroy",
-				Description: `Deletes a given volume attachment.`,
+				Name: "destroy",
+				Description: `Deletes a given volume attachment.
+Optional parameters:
+	force: Specifies whether to force the detachment of a volume.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "DELETE",
@@ -12664,8 +13879,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all volume attachments.`,
+				Name: "index",
+				Description: `Lists all volume attachments.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -12723,8 +13941,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single volume attachment.`,
+				Name: "show",
+				Description: `Displays information about a single volume attachment.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -12777,12 +13997,17 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"VolumeSnapshot": &metadata.Resource{
-		Name:        "VolumeSnapshot",
-		Description: `A VolumeSnapshot represents a Cloud storage volume at a particular point in time`,
+		Name: "VolumeSnapshot",
+		Description: `A VolumeSnapshot represents a Cloud storage volume at a particular point in time. One can create a snapshot regardless of whether or not a volume is attached to an Instance. When a snapshot is created,
+various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
+Snapshots consist of a series of data blocks that are incrementally saved.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "create",
-				Description: `Creates a new volume_snapshot.`,
+				Name: "create",
+				Description: `Creates a new volume_snapshot.
+Optional parameters:
+	volume_snapshot
+	volume_snapshot_copy`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -12905,8 +14130,11 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists all volume_snapshots.`,
+				Name: "index",
+				Description: `Lists all volume_snapshots.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -12964,8 +14192,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single volume_snapshot.`,
+				Name: "show",
+				Description: `Displays information about a single volume_snapshot.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -13010,8 +14240,11 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A VolumeType describes the type of volume, particularly the size.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `Lists Volume Types.`,
+				Name: "index",
+				Description: `Lists Volume Types.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -13063,8 +14296,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single Volume Type.`,
+				Name: "show",
+				Description: `Displays information about a single Volume Type.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",

@@ -18,8 +18,10 @@ import (
 // Consists of a map of resource name to resource metadata.
 var GenMetadata = map[string]*metadata.Resource{
 	"AccountPreference": &metadata.Resource{
-		Name:        "AccountPreference",
-		Description: `The AccountPreference resource stores preferences that apply account-wide, such as UI customization settings and other settings.`,
+		Name: "AccountPreference",
+		Description: `The AccountPreference resource stores preferences that apply account-wide, such as UI customization settings and other settings.
+The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
+to use in your own integration.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -167,8 +169,13 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"Application": &metadata.Resource{
-		Name:        "Application",
-		Description: `An Application is an element in the Catalog that can be launched by users`,
+		Name: "Application",
+		Description: `An Application is an element in the Catalog that can be launched by users. Applications are generally created by uploading CAT
+files to the Designer and publishing them to the Catalog, though they can also be created via API calls to the Catalog directly without
+going through Designer. If an Application was created from Designer through the publish action, it contains a link back to the Template
+resource in Designer.
+In the Self-Service portal, an Application is equivalent to an item in the Catalog. Most users have access to these Application resources
+and can launch them to create Executions in the Manager application.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1534,8 +1541,14 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"NotificationRule": &metadata.Resource{
-		Name:        "NotificationRule",
-		Description: `A notification rule describes which notification should be created         when events occur in the system...`,
+		Name: "NotificationRule",
+		Description: `A notification rule describes which notification should be created
+        when events occur in the system. Events may be generated when an
+        execution status changes or when an operation fails for example.
+        A rule has a source which can be a specific resource or a group of
+        resources (described via a link-like syntax), a target which
+        corresponds to a user (for now) and a minimum severity used to filter
+        out events with lower severities.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1550,12 +1563,18 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "source",
-						Description: `List all notification rules where the target is the current user.`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   true,
-						NonBlank:    false,
+						Name: "source",
+						Description: `List all notification rules where the target is the current user.
+                          The list can be further filtered by notification source: either by
+                          source type or by specific source.
+                          * To retrieve all notification rules that apply to all executions use:
+                            GET nofication_rules?source==/api/projects/1234/executions
+                          * To retrieve all notification rules that apply to a specific execution use:
+                            GET notification_rules?source==/api/projects/1234/executions/5678`,
+						Type:      "string",
+						Location:  metadata.QueryParam,
+						Mandatory: true,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "targets",
@@ -1568,12 +1587,18 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "source",
-						Description: `List all notification rules where the target is the current user.`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   true,
-						NonBlank:    false,
+						Name: "source",
+						Description: `List all notification rules where the target is the current user.
+                          The list can be further filtered by notification source: either by
+                          source type or by specific source.
+                          * To retrieve all notification rules that apply to all executions use:
+                            GET nofication_rules?source==/api/projects/1234/executions
+                          * To retrieve all notification rules that apply to a specific execution use:
+                            GET notification_rules?source==/api/projects/1234/executions/5678`,
+						Type:      "string",
+						Location:  metadata.QueryParam,
+						Mandatory: true,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
 						Name:        "targets",
@@ -1587,8 +1612,9 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create one notification rule for a specific target and source.`,
+				Name: "create",
+				Description: `Create one notification rule for a specific target and source.
+          The source must be unique in the scope of target and account.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1607,8 +1633,11 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "min_severity",
-						Description: `The lowest level of notifications for the target to receive.`,
+						Name: "min_severity",
+						Description: `The lowest level of notifications for the target to receive.
+                    Setting this to "error" will result in only receiving error notifications,
+                    whereas setting it to "info" will result in receiving both info and error notifications,
+                    and setting it to "none" will result in not receiving any notifications.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
@@ -1616,20 +1645,26 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"error", "info", "none"},
 					},
 					&metadata.ActionParam{
-						Name:        "source",
-						Description: `The resource (or resource collection) that would trigger the notification.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    false,
+						Name: "source",
+						Description: `The resource (or resource collection) that would trigger the notification.
+                    "/api/manager/projects/1234/executions" refers to ALL executions in the project,
+                    "/api/manager/projects/1234/executions/5678" refers to just one execution, and
+                    "/api/manager/projects/1234/executions?filter[]=created_by==me" refers to executions
+                    created by the submitting user. The source must be unique in the scope of target and account.
+                    Note that at this time, "me" is the only supported target filter.`,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: true,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
-						Name:        "target",
-						Description: `The notification target (user) that the rule applies to.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    false,
+						Name: "target",
+						Description: `The notification target (user) that the rule applies to.
+                    Note that at this time, "me" is the only supported target.`,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: true,
+						NonBlank:  false,
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -1642,8 +1677,11 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "min_severity",
-						Description: `The lowest level of notifications for the target to receive.`,
+						Name: "min_severity",
+						Description: `The lowest level of notifications for the target to receive.
+                    Setting this to "error" will result in only receiving error notifications,
+                    whereas setting it to "info" will result in receiving both info and error notifications,
+                    and setting it to "none" will result in not receiving any notifications.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
@@ -1651,20 +1689,26 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"error", "info", "none"},
 					},
 					&metadata.ActionParam{
-						Name:        "source",
-						Description: `The resource (or resource collection) that would trigger the notification.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    false,
+						Name: "source",
+						Description: `The resource (or resource collection) that would trigger the notification.
+                    "/api/manager/projects/1234/executions" refers to ALL executions in the project,
+                    "/api/manager/projects/1234/executions/5678" refers to just one execution, and
+                    "/api/manager/projects/1234/executions?filter[]=created_by==me" refers to executions
+                    created by the submitting user. The source must be unique in the scope of target and account.
+                    Note that at this time, "me" is the only supported target filter.`,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: true,
+						NonBlank:  false,
 					},
 					&metadata.ActionParam{
-						Name:        "target",
-						Description: `The notification target (user) that the rule applies to.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    false,
+						Name: "target",
+						Description: `The notification target (user) that the rule applies to.
+                    Note that at this time, "me" is the only supported target.`,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: true,
+						NonBlank:  false,
 					},
 				},
 			},
@@ -1682,8 +1726,11 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "min_severity",
-						Description: `The lowest level of notifications for the target to receive.`,
+						Name: "min_severity",
+						Description: `The lowest level of notifications for the target to receive.
+                    Setting this to "error" will result in only receiving error notifications,
+                    whereas setting it to "info" will result in receiving both info and error notifications,
+                    and setting it to "none" will result in not receiving any notifications.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
@@ -1693,8 +1740,11 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				ApiParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "min_severity",
-						Description: `The lowest level of notifications for the target to receive.`,
+						Name: "min_severity",
+						Description: `The lowest level of notifications for the target to receive.
+                    Setting this to "error" will result in only receiving error notifications,
+                    whereas setting it to "info" will result in receiving both info and error notifications,
+                    and setting it to "none" will result in not receiving any notifications.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
@@ -1763,12 +1813,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "target",
-						Description: `The notification target (user) that the rule applies to.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "target",
+						Description: `The notification target (user) that the rule applies to.
+                    Note that at this time, "me" is the only supported target.`,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
@@ -1789,24 +1840,28 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "target",
-						Description: `The notification target (user) that the rule applies to.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
+						Name: "target",
+						Description: `The notification target (user) that the rule applies to.
+                    Note that at this time, "me" is the only supported target.`,
+						Type:      "string",
+						Location:  metadata.PayloadParam,
+						Mandatory: false,
+						NonBlank:  false,
 					},
 				},
 			},
 		},
 	},
 	"UserPreference": &metadata.Resource{
-		Name:        "UserPreference",
-		Description: `The UserPreference resource stores preferences on a per user basis, such as default notification preference.`,
+		Name: "UserPreference",
+		Description: `The UserPreference resource stores preferences on a per user basis, such as default notification preference.
+The Self-Service portal uses these preferences in the portal.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "index",
-				Description: `List the UserPreference for users in this account.`,
+				Name: "index",
+				Description: `List the UserPreference for users in this account.
+Only administrators and infrastructure users may request the preferences of other users.
+Users who are not members of the admin role need to specify a filter with their ID in order to retrieve their preferences.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
@@ -1891,8 +1946,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "create",
-				Description: `Create a new UserPreference.`,
+				Name: "create",
+				Description: `Create a new UserPreference.
+Multiple resources can be created at once with a multipart request.
+Values are validated with the corresponding UserPreferenceInfo.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "POST",
@@ -1956,8 +2013,10 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "update",
-				Description: `Update the value of a UserPreference.`,
+				Name: "update",
+				Description: `Update the value of a UserPreference.
+Multiple values may be updated using a multipart request.
+Values are validated with the corresponding UserPreferenceInfo.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "PATCH",
@@ -2021,8 +2080,9 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 	"UserPreferenceInfo": &metadata.Resource{
-		Name:        "UserPreferenceInfo",
-		Description: `The UserPreferenceInfo resource defines the available user preferences supported by the system.`,
+		Name: "UserPreferenceInfo",
+		Description: `The UserPreferenceInfo resource defines the available user preferences supported by the system.
+It is also used to validate values saved in UserPreference.`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
