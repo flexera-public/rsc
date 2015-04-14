@@ -42,16 +42,16 @@ Management API 1.6 and `rsc ss` to send requests to the RightScale Self-Service 
 
 Download a statically linked binary and run it as follows:
 ```
-$ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |\
+$ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |
   tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
 rsc v1.0.0 - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
 ```
 
-- MacOS: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
-- Windows: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-windows-amd64.zip`
-- ODroid/RasPi/armhf: `https://rightscale-binaries.s3.amazonaws.com/rsbin/rsc/v1/rsc-linux-arm.tgz`
+- MacOS: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
+- Windows: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-windows-amd64.zip`
+- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-arm.tgz`
 See further down in the README for building from source.
 
 #### Versioning
