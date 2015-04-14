@@ -198,6 +198,8 @@ api15gen:
 
 praxisgen:
 	cd gen/praxisgen && go test && go install
+	echo GOPATH=$$GOPATH
+	echo PATH=$$PATH
 	which praxisgen
 
 api15json:
