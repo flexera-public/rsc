@@ -198,8 +198,11 @@ api15gen:
 
 praxisgen:
 	cd gen/praxisgen && go test && go install
-	echo GOPATH=$$GOPATH
-	echo PATH=$$PATH
+	@if ! which praxisgen >/dev/null; then \
+	  echo '*** Praxisgen got installed in a location that is not in your PATH ***'; \
+	  echo GOPATH=$$GOPATH ;\
+	  echo PATH=$$PATH ;\
+	fi
 	which praxisgen
 
 api15json:
