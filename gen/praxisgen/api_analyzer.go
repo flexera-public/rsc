@@ -1,9 +1,9 @@
-package main // import "gopkg.in/rightscale/rsc.v1-unstable/gen/praxisgen"
+package main
 
 import (
 	"sort"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/gen"
+	"github.com/rightscale/rsc/gen"
 )
 
 // The analyzer struct holds the analysis results

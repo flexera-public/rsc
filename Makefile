@@ -36,6 +36,8 @@
 NAME=rsc
 BUCKET=rightscale-binaries
 ACL=public-read
+# version for gopkg.in, e.g. v1, v2, ...
+GOPKG_VERS=v1
 # Dependencies not handled by Godep, i.e. that are used to build/test/upload this puppy
 DEPEND=golang.org/x/tools/cmd/cover github.com/onsi/ginkgo/ginkgo \
 			 github.com/rlmcpherson/s3gof3r/gof3r github.com/tools/godep \
@@ -114,45 +116,54 @@ version:
 	  >rsapi/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 
-# descend into go hell and fix import statements
-# runs govers to change imports of rsc packages to current branch
-# runs sed to add import comments to all package statements
-# runs sed to change import lines in godegen writers
+# descend into go hell and change/add import statements to suit gopkg.in versioning
+# it forces import via gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)
+# - runs govers to change imports of rsc packages to rsc.v1
+# - runs sed to add import comments to all package statements to force gopkg.in
+# - runs sed to change import lines in codegen writers
 govers:
 	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
 	@echo "adding package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
-		dir=`dirname $${f#./}` ;\
 		sed -E -i \
-		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)/'"$${dir}"'";' \
+		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' \
 			$$f;\
 	done
 	@echo "fixing code gen templates"
 	@for f in gen/writers/*.go; do \
-	  sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/rsc.$(GIT_BRANCH);' $$f ;\
+	  sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
 	done
 
-gounvers:
+# revert govers, i.e. remove import constraints and use github.com/rightscale/$(NAME)
+unvers:
 	@echo "changing import statements"
 	@for f in `find . -path './[a-z]*' -name \*.go`; do \
-		sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;github.com/rightscale/rsc;' $$f ;\
+		sed -E -i -e 's;g[a-z.]+/rightscale/$(NAME)[-.a-z0-9]*;github.com/rightscale/$(NAME);' $$f ;\
 	done
 	@echo "removing package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		sed -E -i -e '1,10 s;^(package +[a-z][^ /]*).*;\1;' $$f; \
 	done
 
+# for release branches, i.e. having names like v1, v1.2, v1.2.3, check that gopkg.in import
+# constraints are in place, i.e. that 'make govers' has been run
+ifeq ($(patsubst .%,,$(TRAVIS_BRANCH)), $(GOPKG_VERS))
 check-govers:
-	govers -d -n gopkg.in/rightscale/rsc.$(GIT_BRANCH)
+	@if !govers -d -n gopkg.in/rightscale/$(NAME).$(GOPKG_VERS); then \
+		echo "   check failed, run 'make govers'"; exit 1; fi
 	@echo "checking package statements"
 	@files=`find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go \! -name user_agent.go`; \
 	if egrep '^package\s+[a-z]' $$files | \
 	   egrep -v codegen_ | \
-		 egrep -v "import \"gopkg.in/rightscale/$(NAME).$(GIT_BRANCH)"; then \
+		 egrep -v "import \"gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)"; then \
 		echo "   check failed, run 'make govers'"; exit 1; fi
 	@echo "checking code gen templates"
-	@if egrep 'rightscale/rsc' gen/writers/*.go | egrep -v "gopkg.in/rightscale/rsc.$(GIT_BRANCH)"; then \
+	@if egrep 'rightscale/rsc' gen/writers/*.go | egrep -v "gopkg.in/rightscale/rsc.$(GOPKG_VERS)"; then \
 		echo "   check failed, run 'make govers'"; exit 1; fi
+else
+check-govers:
+	@echo "not a release branch: not checking import constraints"
+endif
 
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
 # Travis doing this. The following just relies on go get no reinstalling when it's already

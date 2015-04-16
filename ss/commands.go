@@ -1,9 +1,9 @@
-package ss // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
+package ss
 
 import (
 	"net/http"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 const (

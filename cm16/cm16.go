@@ -1,10 +1,10 @@
-package cm16 // import "gopkg.in/rightscale/rsc.v1-unstable/cm16"
+package cm16
 
 import (
 	"log"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd"
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // Api 1.6 client

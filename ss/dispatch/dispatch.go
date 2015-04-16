@@ -1,5 +1,5 @@
 // Common dispatcher to all ss clients
-package dispatch // import "gopkg.in/rightscale/rsc.v1-unstable/ss/dispatch"
+package dispatch
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // Interface to API client

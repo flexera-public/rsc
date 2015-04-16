@@ -1,10 +1,10 @@
-package rl10 // import "gopkg.in/rightscale/rsc.v1-unstable/rl10"
+package rl10
 
 import (
 	"log"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd"
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // RightLink 10 client

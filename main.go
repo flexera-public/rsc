@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"gopkg.in/alecthomas/kingpin.v1"
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd"
+	"github.com/rightscale/rsc/cmd"
 
 	// phoney reference to make Godep pull this in for the code generators
 	_ "bitbucket.org/pkg/inflect"

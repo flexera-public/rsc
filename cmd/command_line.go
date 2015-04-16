@@ -1,4 +1,4 @@
-package cmd // import "gopkg.in/rightscale/rsc.v1-unstable/cmd"
+package cmd
 
 import "net/http"
 

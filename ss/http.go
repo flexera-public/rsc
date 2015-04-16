@@ -1,4 +1,4 @@
-package ss // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
+package ss
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // BuildRequest builds a HTTP request from a resource name and href and an action name and

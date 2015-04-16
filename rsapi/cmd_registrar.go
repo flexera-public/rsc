@@ -1,4 +1,4 @@
-package rsapi // import "gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+package rsapi
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"gopkg.in/alecthomas/kingpin.v1"
-	"gopkg.in/rightscale/rsc.v1-unstable/metadata"
+	"github.com/rightscale/rsc/metadata"
 )
 
 // Interface implemented by registrar used by each API client to register its subcommands
