@@ -21,10 +21,10 @@ sudo: false
 # in gopkg.in/rightscale/rsc-v1 so we have to manually move it, sigh
 before_install:
   - re='^v[0-9]'; if [[ ${TRAVIS_BRANCH} =~ $re ]]; then
-      cd $HOME/gopath/src
-      mkdir -p gopkg.in/rightscale
-      mv github.com/rightscale/rsc gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
-      export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${TRAVIS_BRANCH}
+      cd $HOME/gopath/src;
+      mkdir -p gopkg.in/rightscale;
+      mv github.com/rightscale/rsc gopkg.in/rightscale/rsc.${TRAVIS_BRANCH};
+      export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${TRAVIS_BRANCH};
     fi
   - cd ${TRAVIS_BUILD_DIR}
   - pwd
