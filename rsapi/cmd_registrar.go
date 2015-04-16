@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rightscale/rsc/metadata"
 	"gopkg.in/alecthomas/kingpin.v1"
+	"github.com/rightscale/rsc/metadata"
 )
 
 // Interface implemented by registrar used by each API client to register its subcommands

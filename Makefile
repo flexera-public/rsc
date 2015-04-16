@@ -36,9 +36,12 @@
 NAME=rsc
 BUCKET=rightscale-binaries
 ACL=public-read
+# version for gopkg.in, e.g. v1, v2, ...
+GOPKG_VERS=v1
 # Dependencies not handled by Godep, i.e. that are used to build/test/upload this puppy
 DEPEND=golang.org/x/tools/cmd/cover github.com/onsi/ginkgo/ginkgo \
-			 github.com/rlmcpherson/s3gof3r/gof3r github.com/tools/godep
+			 github.com/rlmcpherson/s3gof3r/gof3r github.com/tools/godep \
+			 github.com/rogpeppe/govers
 
 #=== below this line ideally remains unchanged, add new targets at the end  ===
 
@@ -51,6 +54,7 @@ ifeq ($(OS),Windows_NT)
 	SHELL:=/bin/dash
 	GOPATH:=$(shell cygpath --windows $(PWD))/Godeps/_workspace;$(GOPATH)
 else
+	SHELL:=/bin/bash
 	GOPATH:=$(PWD)/Godeps/_workspace:$(GOPATH)
 endif
 # because of the Godep path we build ginkgo into the godep workspace
@@ -58,27 +62,22 @@ PATH:=$(PWD)/Godeps/_workspace/bin:$(PATH)
 
 # the default target builds a binary in the top-level dir for whatever the local OS is
 default: $(NAME)
-$(NAME): *.go version depend generate
+$(NAME): *.go version generate
 	go build -o $(NAME) .
 
 install: $(NAME)
 	go install
 
 # the standard build produces a "local" executable, a linux tgz, and a darwin (macos) tgz
-build: $(NAME) generate build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64.tgz build/$(NAME)-linux-arm.tgz build/$(NAME)-windows-amd64.zip
+build: depend generate $(NAME) build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64.tgz build/$(NAME)-linux-arm.tgz build/$(NAME)-windows-amd64.zip
 
 # create a tgz with the binary and any artifacts that are necessary
 # note the hack to allow for various GOOS & GOARCH combos, sigh
 build/$(NAME)-%.tgz: *.go version depend
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
-	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME) .
+	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -tags make -o build/$(NAME)/$(NAME) .
 	chmod +x build/$(NAME)/$(NAME)
-	for d in script init; do if [ -d $$d ]; then cp -r $$d build/$(NAME); fi; done
-	if [ "build/*/*.sh" != 'build/*/*.sh' ]; then \
-	  sed -i -e "s/BRANCH/$(TRAVIS_BRANCH)/" build/*/*.sh; \
-	  chmod +x build/*/*.sh; \
-	fi
 	tar -zcf $@ -C build $(NAME)
 	rm -r build/$(NAME)
 
@@ -87,7 +86,7 @@ build/$(NAME)-%.tgz: *.go version depend
 build/$(NAME)-%.zip: *.go version depend
 	rm -rf build/$(NAME)
 	mkdir -p build/$(NAME)
-	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -o build/$(NAME)/$(NAME).exe .
+	tgt=$*; GOOS=$${tgt%-*} GOARCH=$${tgt#*-} go build -tags make -o build/$(NAME)/$(NAME).exe .
 	cd build; zip -r $(notdir $@) $(NAME)
 	rm -r build/$(NAME)
 
@@ -100,20 +99,73 @@ upload: depend
 	    gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$(TRAVIS_COMMIT)/$$f <$$f; \
 	    if [ "$(TRAVIS_PULL_REQUEST)" = "false" ]; then \
 	      gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$(TRAVIS_BRANCH)/$$f <$$f; \
+	      re='^(v[0-9]+)\.[0-9]+\.[0-9]+$$' ;\
+	      if [[ "$(TRAVIS_BRANCH)" =~ $$re ]]; then \
+	        gof3r put --no-md5 --acl=$(ACL) -b ${BUCKET} -k rsbin/$(NAME)/$${BASH_REMATCH[1]}/$$f <$$f; \
+	      fi; \
 	    fi; \
 	  done)
 
 # produce a version string that is embedded into the binary that captures the branch, the date
 # and the commit we're building
 version:
-	@echo "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
+	@echo -e "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
-	@echo "// +build make\n\npackage rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
+	@echo -e "// +build make\n\npackage rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
 	  >rsapi/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 
+# descend into go hell and change/add import statements to suit gopkg.in versioning
+# it forces import via gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)
+# - runs govers to change imports of rsc packages to rsc.v1
+# - runs sed to add import comments to all package statements to force gopkg.in
+# - runs sed to change import lines in codegen writers
+govers:
+	govers -d gopkg.in/rightscale/rsc.$(GOPKG_VERS)
+	@echo "adding package import comments"
+	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
+		sed -E -i \
+		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' \
+			$$f;\
+	done
+	@echo "fixing code gen templates"
+	@for f in gen/writers/*.go; do \
+	  sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
+	done
+
+# revert govers, i.e. remove import constraints and use github.com/rightscale/$(NAME)
+unvers:
+	@echo "changing import statements"
+	@for f in `find . -path './[a-z]*' -name \*.go`; do \
+		sed -E -i -e 's;g[a-z.]+/rightscale/$(NAME)[-.a-z0-9]*;github.com/rightscale/$(NAME);' $$f ;\
+	done
+	@echo "removing package import comments"
+	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
+		sed -E -i -e '1,10 s;^(package +[a-z][^ /]*).*;\1;' $$f; \
+	done
+
+# for release branches, i.e. having names like v1, v1.2, v1.2.3, check that gopkg.in import
+# constraints are in place, i.e. that 'make govers' has been run
+ifeq ($(patsubst .%,,$(TRAVIS_BRANCH)), $(GOPKG_VERS))
+check-govers:
+	@if !govers -d -n gopkg.in/rightscale/$(NAME).$(GOPKG_VERS); then \
+		echo "   check failed, run 'make govers'"; exit 1; fi
+	@echo "checking package statements"
+	@files=`find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go \! -name user_agent.go`; \
+	if egrep '^package\s+[a-z]' $$files | \
+	   egrep -v codegen_ | \
+		 egrep -v "import \"gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)"; then \
+		echo "   check failed, run 'make govers'"; exit 1; fi
+	@echo "checking code gen templates"
+	@if egrep 'rightscale/rsc' gen/writers/*.go | egrep -v "gopkg.in/rightscale/rsc.$(GOPKG_VERS)"; then \
+		echo "   check failed, run 'make govers'"; exit 1; fi
+else
+check-govers:
+	@echo "not a release branch: not checking import constraints"
+endif
+
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
-# Travis doing this. The folllowing just relies on go get no reinstalling when it's already
+# Travis doing this. The following just relies on go get no reinstalling when it's already
 # there, like your laptop.
 depend:
 	go get $(DEPEND)
@@ -125,9 +177,9 @@ clean:
 
 # gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
 # and then pointlessly complains about bad formatting in imported packages, sigh
-lint:
+lint: check-govers
 	@if gofmt -l *.go */*.go 2>&1 | grep .go; then \
-	  echo "^- Repo contains improperly formatted go files" && exit 1; \
+	  echo "^- Repo contains improperly formatted go files; run gofmt -w *.go */*.go" && exit 1; \
 	  else echo "All .go files formatted correctly"; fi
 	go tool vet -composites=false *.go
 	go tool vet -composites=false **/*.go
@@ -156,6 +208,12 @@ api15gen:
 
 praxisgen:
 	cd gen/praxisgen && go test && go install
+	@if ! which praxisgen >/dev/null; then \
+	  echo '*** Praxisgen got installed in a location that is not in your PATH ***'; \
+	  echo GOPATH=$$GOPATH ;\
+	  echo PATH=$$PATH ;\
+	fi
+	which praxisgen
 
 api15json:
 	curl -s -o rsapi15/api_data.json http://reference.rightscale.com/api1.5/api_data.json
