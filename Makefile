@@ -125,13 +125,16 @@ govers:
 	govers -d gopkg.in/rightscale/rsc.$(GOPKG_VERS)
 	@echo "adding package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
+		dir=`dirname $${f#./}` ;\
 		sed -E -i \
 		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' \
 			$$f;\
 	done
 	@echo "fixing code gen templates"
 	@for f in gen/writers/*.go; do \
-	  sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
+		dir=`dirname $${f#./}` ;\
+	  sed -E -i \
+		  -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' $$f ;\
 	done
 	gofmt -w *.go */*.go
 
