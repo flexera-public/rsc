@@ -8,8 +8,6 @@ the RightScale Self-Service 1.0 APIs (latest version for this product).
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](https://gocover.io/github.com/rightscale/rsc)
 - v1.0.0: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.0)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.0.svg)](https://gocover.io/github.com/rightscale/rsc)
-- v1-unstable (aka _dev_): [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1-unstable)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1-unstable.svg)](https://gocover.io/github.com/rightscale/rsc)
 
 `rsc` can be used in one of two ways:
 
@@ -61,7 +59,7 @@ See further down in the README for building from source.
 - All versions with the same major number (e.g. 'v1') are intended to be "upward" compatible.
 - The 'v1' links download a specific version, so `rsc --version` will print something like 'v1.0.3'
   and not 'v1'
-- The latest dev version is 'v1-unstable'
+- The latest dev version is 'master'
 
 ### Command line
 
@@ -237,12 +235,8 @@ will complain! To download `rsc` you can use
 ```
 go get gopkg.in/rightscale/rsc.v1
 ```
-To use a specific version, replace the 'v1' by the version, such as 'v1.0.3'. To use the latest
-dev version, use 'v1-unstable'.
-
 If you want to check the source out locally into your GOPATH then you must place it into
-`gopkg.in/rightscale/rsc.v1` or more generally `gopkg.in/rightscale/rsc.<branch name>`.
-Please see the [building](#building) section for more details.
+`gopkg.in/rightscale/rsc.v1`.  Please see the [building](#building) section for more details.
 
 ### Client Creation
 
@@ -360,17 +354,74 @@ the clients to parse the command line.
 
 ### Building
 
-To build `rsc` from source you need to be beware of the fact that it forces the use of gopkg.in
-for versioning. When you check out `github.com/rightscale/rsc` you will get the v1-unstable
-branch and there is no master branch. You will need to check out the source into your GOPATH
-at `$GOPATH/src/gopkg.in/rightscale/rsc.v1-unstable`. Note that if you use symlinks and $PWD
-doesn't match /bin/pwd you are likely to run into problems.
+*Warning:* this section is still being debugged...
 
-After checking out the `rsc` repo you should run `make depend` to ensure that all dependencies
-are fetched and installed.
+To build `rsc` from source you need to be beware of the fact that releases use gopkg.in
+for versioning.
 
-The binary for your local system can be built using `make` and binaries for OS-X, Linux, and
-Windows can be built using `make build`.
+The following make targets are useful:
+- `make depend` installs required tools
+- `make` builds a binary for your local OS
+- `make build` builds binaries for Linux, OS-X and Windows
+- `make test` runs the test suite
+
+#### Your own build of the latest release version
+
+The simple option is `go get gopkg.in/rightscale/rsc.v1`, this will use the checked-in
+code-generated files.
+
+The more involved option is:
+```
+mkdir -p $GOPATH/src/gopkg.in/rightscale
+cd $GOPATH/src/gopkg.in/rightscale
+git clone https://github.com/rightscale/rsc.git rsc.v1
+cd rsc
+git checkout v1
+make depend
+make
+```
+
+#### Your own build of an older release version
+
+You can get v1.2.3, for example, by following the same "more involved" commands as above but
+do `git checkout v1.2.3`. (The directory must be called rsc.v1 and not rsc.v1.2.3.)
+
+#### Build and hack a dev branch
+
+The recommended steps are:
+```
+mkdir -p $GOPATH/src/github.com/rightscale
+cd $GOPATH/src/github.com/rightscale
+git clone https://github.com/rightscale/rsc.git
+cd rsc
+make depend
+make
+```
+
+Note that if you start with `go get github.com/rightscale/rsc` you will get the 'go1' branch,
+which does not build. You could manually checkout master if you wanted but then you would also
+need to change the origin if you wanted to push back to github.
+
+#### Convert a release branch to a dev branch
+
+Suppose you want to branch 'v1.2.3' into 'my-branch':
+```
+git checkout -b my-branch
+make depend
+make unvers # removes pesky import constraints
+make
+```
+
+### Make a release branch
+
+In order to cut a release branch from master, the steps are:
+```
+git checkout -b v1.2.3
+make govers
+git commit -a -m 'add import constraints for release'
+git push
+```
+
 
 #### TL;DR:
 ```
@@ -465,9 +516,10 @@ code).
 
 Goals in using gopkg.in:
 - Someone blindly doing `go get github.com/rightscale.com/rsc` should either get the latest
-  stable version or should get build errors
-- Getting a version through `gopkg.in/rightscale/rsc.vXXX` should work as expected, and should
-  have the version in the code (e.g. user_agent.go)
+  stable version or should get build errors, the way this now happens is that they get the
+  'go1' branch and that fails to compile due to import constraints.
+- Getting `gopkg.in/rightscale/rsc.v1` should work as expected, and should have the actual
+  version in the code (e.g. user_agent.go)
 - Imports of rsc packages should raise errors if not using gopkg.in
 
 ## License
