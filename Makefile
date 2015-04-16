@@ -49,6 +49,7 @@ TRAVIS_BRANCH?=dev
 DATE=$(shell date '+%F %T')
 SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
+GIT_BRANCH:=$(shell git symbolic-ref --short -q HEAD || echo "master")
 # by manually adding the godep workspace to the path we don't need to run godep itself
 ifeq ($(OS),Windows_NT)
 	SHELL:=/bin/dash
@@ -122,7 +123,7 @@ version:
 # - runs sed to change import lines in codegen writers
 # - runs gofmt because the order of imports changes in some files (sigh)
 govers:
-	govers -d gopkg.in/rightscale/rsc.$(GOPKG_VERS)
+	govers -d -m 'g[^/]*/rightscale/rsc.*' gopkg.in/rightscale/rsc.$(GOPKG_VERS)
 	@echo "adding package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
@@ -134,7 +135,7 @@ govers:
 	@for f in gen/writers/*.go; do \
 		dir=`dirname $${f#./}` ;\
 	  sed -E -i \
-		  -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' $$f ;\
+		  -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
 	done
 	gofmt -w *.go */*.go
 
@@ -152,9 +153,9 @@ unvers:
 
 # for release branches, i.e. having names like v1, v1.2, v1.2.3, check that gopkg.in import
 # constraints are in place, i.e. that 'make govers' has been run
-ifeq ($(patsubst .%,,$(TRAVIS_BRANCH)), $(GOPKG_VERS))
+ifneq ($(findstring $(GOPKG_VERS),$(GIT_BRANCH)),)
 check-govers:
-	@if !govers -d -n gopkg.in/rightscale/$(NAME).$(GOPKG_VERS); then \
+	@if ! govers -d -n gopkg.in/rightscale/$(NAME).$(GOPKG_VERS); then \
 		echo "   check failed, run 'make govers'"; exit 1; fi
 	@echo "checking package statements"
 	@files=`find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go \! -name user_agent.go`; \
