@@ -8,8 +8,9 @@ type RubyTime struct {
 }
 
 // Implement unmarshaller interface
-func (r *RubyTime) Unmarshal(data []byte, v interface{}) error {
-	t, err := time.Parse("2006/01/02 15:04:05 -0700", string(data))
+func (r *RubyTime) UnmarshalJSON(b []byte) (err error) {
+	s := string(b)
+	t, err := time.Parse("2006/01/02 15:04:05 -0700", s[1:len(s)-1])
 	if err != nil {
 		return err
 	}
