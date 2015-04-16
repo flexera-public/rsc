@@ -1,10 +1,10 @@
-package main // import "gopkg.in/rightscale/rsc.v1-unstable/gen/praxisgen"
+package main
 
 import (
 	"fmt"
 
 	"bitbucket.org/pkg/inflect"
-	"gopkg.in/rightscale/rsc.v1-unstable/gen"
+	"github.com/rightscale/rsc/gen"
 )
 
 // Create API descriptor from raw resources and types

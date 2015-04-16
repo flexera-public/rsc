@@ -1,16 +1,16 @@
-package ss // import "gopkg.in/rightscale/rsc.v1-unstable/ss"
+package ss
 
 import (
 	"path"
 	"strings"
 	"time"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd"
-	"gopkg.in/rightscale/rsc.v1-unstable/metadata"
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssc"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/ssm"
+	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/metadata"
+	"github.com/rightscale/rsc/rsapi"
+	"github.com/rightscale/rsc/ss/ssc"
+	"github.com/rightscale/rsc/ss/ssd"
+	"github.com/rightscale/rsc/ss/ssm"
 )
 
 // Metadata synthetized from all SS APIs metadata

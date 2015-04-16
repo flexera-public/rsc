@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"gopkg.in/alecthomas/kingpin.v1"
-	"gopkg.in/rightscale/rsc.v1-unstable/cm15"
-	"gopkg.in/rightscale/rsc.v1-unstable/cm16"
-	"gopkg.in/rightscale/rsc.v1-unstable/cmd"
-	"gopkg.in/rightscale/rsc.v1-unstable/rl10"
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss"
+	"github.com/rightscale/rsc/cm15"
+	"github.com/rightscale/rsc/cm16"
+	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/rl10"
+	"github.com/rightscale/rsc/rsapi"
+	"github.com/rightscale/rsc/ss"
 )
 
 // Retrieve command and top level flag values

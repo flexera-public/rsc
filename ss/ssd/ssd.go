@@ -1,12 +1,12 @@
-package ssd // import "gopkg.in/rightscale/rsc.v1-unstable/ss/ssd"
+package ssd
 
 import (
 	"log"
 	"net/http"
 	"time"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
-	"gopkg.in/rightscale/rsc.v1-unstable/ss/dispatch"
+	"github.com/rightscale/rsc/rsapi"
+	"github.com/rightscale/rsc/ss/dispatch"
 )
 
 // Self-Service designer client

@@ -1,11 +1,11 @@
-package cm16 // import "gopkg.in/rightscale/rsc.v1-unstable/cm16"
+package cm16
 
 import (
 	"net/http"
 	"path"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v1-unstable/rsapi"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 const (
