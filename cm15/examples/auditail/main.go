@@ -21,6 +21,7 @@ func main() {
 	pwd := flag.String("p", "", "Login password")
 	account := flag.Int("a", 0, "Account id")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
+	userEmail := flag.String("u", "", "Audit user email for filtering audit entries")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -44,7 +45,7 @@ func main() {
 	ticker := time.NewTicker(time.Second)
 
 	// 3. Make an initial API call and retrieve the audit entries
-	entries, err := fetchAuditEntries(client)
+	entries, err := fetchAuditEntries(client, *userEmail)
 	oldEntries := entries
 	if err != nil {
 		fail("Failed to retrieve audit entries: %v\n", err.Error())
@@ -55,7 +56,7 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
-			entries, err := fetchAuditEntries(client)
+			entries, err := fetchAuditEntries(client, *userEmail)
 			if err != nil {
 				fail("Failed to retrieve audit entries: %v\n", err.Error())
 			}
@@ -66,13 +67,19 @@ func main() {
 }
 
 // Make an API call and fetch the audit entries matching specified criteria
-func fetchAuditEntries(client *cm15.Api) ([]*cm15.AuditEntry, error) {
+func fetchAuditEntries(client *cm15.Api, userEmail string) ([]*cm15.AuditEntry, error) {
 	auditLocator := client.AuditEntryLocator("/api/audit_entries")
+	var apiParams rsapi.ApiParams
+	if userEmail == "" {
+		apiParams = rsapi.ApiParams{}
+	} else {
+		apiParams = rsapi.ApiParams{"filter": []string{"user_email==" + userEmail}}
+	}
 	auditEntries, err := auditLocator.Index(
 		tomorrow(),  // End date
 		"100",       // Limit
 		yesterday(), // Start date
-		rsapi.ApiParams{"filter": []string{"user_email==kannan@rightscale.com"}},
+		apiParams,
 	)
 	if err != nil {
 		return auditEntries, err
