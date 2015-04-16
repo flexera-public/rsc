@@ -84,8 +84,17 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		b := gen.BasicDataType("interface{}")
 		dataType = &b
 	case "DateTime":
-		t := gen.BasicDataType("*time.Time")
-		a.descriptor.NeedTime = true
+		// FIXME: the timestamps returned by our APIs don't play nice with the golang
+		// json unmarshaler resulting in partially unmarshal structs (other fieds get
+		// skipped - not just the time.Time fields :( ).
+		// So for now use strings and clients need to use time.Parse.
+		// In the future we could introduce our own time struct with its own Unmarshal
+		// method and then a conversion to time.Time.
+
+		//t := gen.BasicDataType("time.Time")
+		//a.descriptor.NeedTime = true
+		t := gen.BasicDataType("string")
+
 		dataType = &t
 	case "Collection", "Ids":
 		member, ok := typeDef["member_attribute"].(map[string]interface{})

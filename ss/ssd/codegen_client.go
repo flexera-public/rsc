@@ -13,7 +13,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"time"
 
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
@@ -583,14 +582,14 @@ type Recurrence struct {
 }
 
 type TimestampsStruct struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	CreatedAt string `json:"created_at,omitempty"`
+	UpdatedAt string `json:"updated_at,omitempty"`
 }
 
 type TimestampsStruct2 struct {
-	CreatedAt   *time.Time `json:"created_at,omitempty"`
-	PublishedAt *time.Time `json:"published_at,omitempty"`
-	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	CreatedAt   string `json:"created_at,omitempty"`
+	PublishedAt string `json:"published_at,omitempty"`
+	UpdatedAt   string `json:"updated_at,omitempty"`
 }
 
 type User struct {

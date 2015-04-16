@@ -78,7 +78,17 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	kingpin.FatalIfError(c.WriteHeader("cm15", true, true, f), "")
+
+	// FIXME: the timestamps returned by our APIs don't play nice with the golang
+	// json unmarshaler resulting in partially unmarshal structs (other fieds get
+	// skipped - not just the time.Time fields :( ).
+	// So for now use strings and clients need to use time.Parse.
+	// In the future we could introduce our own time struct with its own Unmarshal
+	// method and then a conversion to time.Time.
+
+	//kingpin.FatalIfError(c.WriteHeader("cm15", true /*needTime*/, true /*needJson*/, f), "")
+	kingpin.FatalIfError(c.WriteHeader("cm15", false /*needTime*/, true /*needJson*/, f), "")
+
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)

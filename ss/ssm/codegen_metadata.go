@@ -2648,7 +2648,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the action will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2706,7 +2706,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the action will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2769,7 +2769,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2795,7 +2795,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2971,7 +2971,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the operation will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3054,7 +3054,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "first_occurrence",
 						Description: `The time and day of the first occurrence when the operation will be ran, similar to the "DTSTART" property specified by iCal. Used (in conjunction with timezone) to determine the time of day for the "next_occurrence". Can be set to the future or past. DateTimes should be passed as ISO-8601 formatted time strings.  All DateTimes are converted to UTC when returned.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3125,7 +3125,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -3151,7 +3151,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
-						Type:        "*time.Time",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
