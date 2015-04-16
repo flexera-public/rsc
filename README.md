@@ -419,19 +419,7 @@ In order to cut a release branch from master, the steps are:
 git checkout -b v1.2.3
 make govers
 git commit -a -m 'add import constraints for release'
-git push
-```
-
-
-#### TL;DR:
-```
-mkdir -p $GOPATH/src/gopkg.in/rightscale
-cd $GOPATH/src/gopkg.in/rightscale
-git clone https://github.com/rightscale/rsc.git rsc.v1-unstable
-cd rsc.v1-unstable
-git checkout v1-unstable
-make depend
-make
+git push --set-upstream origin v1.2.3
 ```
 
 #### Alternative
