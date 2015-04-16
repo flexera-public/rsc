@@ -1,6 +1,6 @@
 {
 	"account_owner": "string",
-	"actions": "[]string",
+	"actions": "[]map[string]string",
 	"address": "string",
 	"admin_password": "string",
 	"array_type": "string",

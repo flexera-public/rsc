@@ -99,7 +99,7 @@ func (loc *AccountLocator) Show() (*Account, error) {
 
 // An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.
 type AccountGroup struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -191,7 +191,7 @@ func (loc *AccountGroupLocator) Show(options rsapi.ApiParams) (*AccountGroup, er
 
 // An Alert represents an AlertSpec bound to a running Instance.
 type Alert struct {
-	Actions       []string            `json:"actions,omitempty"`
+	Actions       []map[string]string `json:"actions,omitempty"`
 	CreatedAt     string              `json:"created_at,omitempty"`
 	Links         []map[string]string `json:"links,omitempty"`
 	QuenchedUntil string              `json:"quenched_until,omitempty"`
@@ -361,7 +361,7 @@ func (loc *AlertLocator) Show(options rsapi.ApiParams) (*Alert, error) {
 // An AlertSpec defines the conditions under which an Alert is triggered and escalated.
 // Condition sentence: if &lt;file&gt;.&lt;variable&gt; &lt;condition&gt; '&lt;threshold&gt;' for &lt;duration&gt; min then escalate to '&lt;escalation_name&gt;'.
 type AlertSpec struct {
-	Actions        []string            `json:"actions,omitempty"`
+	Actions        []map[string]string `json:"actions,omitempty"`
 	Condition      string              `json:"condition,omitempty"`
 	CreatedAt      string              `json:"created_at,omitempty"`
 	Description    string              `json:"description,omitempty"`
@@ -552,7 +552,7 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 
 // An Audit Entry can be used to track various activities of a resource.
 type AuditEntry struct {
-	Actions    []string            `json:"actions,omitempty"`
+	Actions    []map[string]string `json:"actions,omitempty"`
 	DetailSize int                 `json:"detail_size,omitempty"`
 	Links      []map[string]string `json:"links,omitempty"`
 	Summary    string              `json:"summary,omitempty"`
@@ -802,7 +802,7 @@ func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options rsapi
 /******  Backup ******/
 
 type Backup struct {
-	Actions             []string            `json:"actions,omitempty"`
+	Actions             []map[string]string `json:"actions,omitempty"`
 	Committed           bool                `json:"committed,omitempty"`
 	Completed           bool                `json:"completed,omitempty"`
 	CreatedAt           string              `json:"created_at,omitempty"`
@@ -1398,7 +1398,7 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 
 // Represents a given instance of a single cookbook.
 type Cookbook struct {
-	Actions           []string            `json:"actions,omitempty"`
+	Actions           []map[string]string `json:"actions,omitempty"`
 	CreatedAt         string              `json:"created_at,omitempty"`
 	DownloadUrl       string              `json:"download_url,omitempty"`
 	Id                string              `json:"id,omitempty"`
@@ -1586,7 +1586,7 @@ func (loc *CookbookLocator) Show(options rsapi.ApiParams) (*Cookbook, error) {
 
 // Cookbook Attachment is used to associate a particular cookbook with a ServerTemplate. A Cookbook Attachment must be in place before a recipe can be bound to a runlist using RunnableBinding.
 type CookbookAttachment struct {
-	Actions    []string            `json:"actions,omitempty"`
+	Actions    []map[string]string `json:"actions,omitempty"`
 	Dependency bool                `json:"dependency,omitempty"`
 	Id         string              `json:"id,omitempty"`
 	Links      []map[string]string `json:"links,omitempty"`
@@ -1944,7 +1944,7 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 // internet links...etc., Datacenters within the context of a private cloud might simply correspond to having different network providers.
 // Spreading servers across distinct Datacenters helps minimize outages.
 type Datacenter struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
@@ -2035,7 +2035,7 @@ func (loc *DatacenterLocator) Show(options rsapi.ApiParams) (*Datacenter, error)
 
 // Deployments represent logical groupings of related assets such as servers, server arrays, default configuration settings...etc.
 type Deployment struct {
-	Actions        []string            `json:"actions,omitempty"`
+	Actions        []map[string]string `json:"actions,omitempty"`
 	Description    string              `json:"description,omitempty"`
 	Inputs         []map[string]string `json:"inputs,omitempty"`
 	Links          []map[string]string `json:"links,omitempty"`
@@ -2319,7 +2319,7 @@ func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
 // and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
 // To register an Identity Provider, contact your account manager.
 type IdentityProvider struct {
-	Actions       []string            `json:"actions,omitempty"`
+	Actions       []map[string]string `json:"actions,omitempty"`
 	CreatedAt     string              `json:"created_at,omitempty"`
 	DiscoveryHint string              `json:"discovery_hint,omitempty"`
 	Links         []map[string]string `json:"links,omitempty"`
@@ -2412,7 +2412,7 @@ func (loc *IdentityProviderLocator) Show(options rsapi.ApiParams) (*IdentityProv
 // Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents
 // for a new Instance to have, and therefore it represents the basic starting point for creating a new one.
 type Image struct {
-	Actions            []string            `json:"actions,omitempty"`
+	Actions            []map[string]string `json:"actions,omitempty"`
 	CpuArchitecture    string              `json:"cpu_architecture,omitempty"`
 	Description        string              `json:"description,omitempty"`
 	ImageType          string              `json:"image_type,omitempty"`
@@ -2660,7 +2660,7 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]interface{}) error {
 // existing in the cloud. However, if an instance is not of type "next", it will generally represent an existing running
 // (or provisioned) virtual machine existing in the cloud.
 type Instance struct {
-	Actions                  []string            `json:"actions,omitempty"`
+	Actions                  []map[string]string `json:"actions,omitempty"`
 	AdminPassword            string              `json:"admin_password,omitempty"`
 	AssociatePublicIpAddress bool                `json:"associate_public_ip_address,omitempty"`
 	CloudSpecificAttributes  map[string]string   `json:"cloud_specific_attributes,omitempty"`
@@ -3138,7 +3138,7 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 // An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#setcustomlodgement interface.
 type InstanceCustomLodgement struct {
 	AccountOwner                         string                   `json:"account_owner,omitempty"`
-	Actions                              []string                 `json:"actions,omitempty"`
+	Actions                              []map[string]string      `json:"actions,omitempty"`
 	EndAt                                string                   `json:"end_at,omitempty"`
 	Links                                []map[string]string      `json:"links,omitempty"`
 	Quantity                             []map[string]interface{} `json:"quantity,omitempty"`
@@ -3299,7 +3299,7 @@ func (loc *InstanceCustomLodgementLocator) Update(quantity []*Quantity) error {
 /******  InstanceType ******/
 
 type InstanceType struct {
-	Actions         []string            `json:"actions,omitempty"`
+	Actions         []map[string]string `json:"actions,omitempty"`
 	CpuArchitecture string              `json:"cpu_architecture,omitempty"`
 	CpuCount        int                 `json:"cpu_count,omitempty"`
 	CpuSpeed        string              `json:"cpu_speed,omitempty"`
@@ -3683,7 +3683,7 @@ func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 
 // A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.
 type MonitoringMetric struct {
-	Actions   []string            `json:"actions,omitempty"`
+	Actions   []map[string]string `json:"actions,omitempty"`
 	GraphHref string              `json:"graph_href,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	Plugin    string              `json:"plugin,omitempty"`
@@ -3848,7 +3848,7 @@ func (loc *MonitoringMetricLocator) Show(options rsapi.ApiParams) (*MonitoringMe
 // (e.g. AWS US-East, Rackspace). Each ServerTemplate can reference many MultiCloudImages that defines which
 // image should be used when a server is launched in a particular cloud.
 type MultiCloudImage struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
@@ -4052,7 +4052,7 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 // A MultiCloudImageSetting defines which
 // settings should be used when a server is launched in a cloud.
 type MultiCloudImageSetting struct {
-	Actions []string            `json:"actions,omitempty"`
+	Actions []map[string]string `json:"actions,omitempty"`
 	Links   []map[string]string `json:"links,omitempty"`
 }
 
@@ -4198,7 +4198,7 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 
 // A Network is a logical grouping of network devices.
 type Network struct {
-	Actions         []string            `json:"actions,omitempty"`
+	Actions         []map[string]string `json:"actions,omitempty"`
 	CidrBlock       string              `json:"cidr_block,omitempty"`
 	Description     string              `json:"description,omitempty"`
 	InstanceTenancy string              `json:"instance_tenancy,omitempty"`
@@ -4350,7 +4350,7 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 
 // A NetworkGateway is an interface that allows traffic to be routed between networks.
 type NetworkGateway struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -4508,7 +4508,7 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 // Option keys that are supported vary depending on cloud -- please consult
 // your particular cloud's documentation for available option keys.
 type NetworkOptionGroup struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -4668,7 +4668,7 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 // Amazon currently only supports attaching NetworkOptionGroups to Networks.
 // Other clouds in the future may support attaching to Subnets.
 type NetworkOptionGroupAttachment struct {
-	Actions            []string            `json:"actions,omitempty"`
+	Actions            []map[string]string `json:"actions,omitempty"`
 	CreatedAt          string              `json:"created_at,omitempty"`
 	Links              []map[string]string `json:"links,omitempty"`
 	NetworkOptionGroup string              `json:"network_option_group,omitempty"`
@@ -4950,7 +4950,7 @@ func (loc *Oauth2Locator) Create(grantType string, options rsapi.ApiParams) (map
 /******  Permission ******/
 
 type Permission struct {
-	Actions   []string            `json:"actions,omitempty"`
+	Actions   []map[string]string `json:"actions,omitempty"`
 	CreatedAt string              `json:"created_at,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	RoleTitle string              `json:"role_title,omitempty"`
@@ -5088,7 +5088,7 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 /******  PlacementGroup ******/
 
 type PlacementGroup struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -5228,7 +5228,7 @@ func (loc *PlacementGroupLocator) Show(options rsapi.ApiParams) (*PlacementGroup
 
 // A Preference is a user and account-specific setting. Preferences are used in many part of the RightScale platform and can be used for custom purposes if desired.
 type Preference struct {
-	Actions   []string            `json:"actions,omitempty"`
+	Actions   []map[string]string `json:"actions,omitempty"`
 	Contents  string              `json:"contents,omitempty"`
 	CreatedAt string              `json:"created_at,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
@@ -5350,7 +5350,7 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 // A Publication is a revisioned component shared with a set of Account Groups.
 // If shared with your account, it can be imported in to your account.
 type Publication struct {
-	Actions       []string            `json:"actions,omitempty"`
+	Actions       []map[string]string `json:"actions,omitempty"`
 	CommitMessage string              `json:"commit_message,omitempty"`
 	ContentType   string              `json:"content_type,omitempty"`
 	CreatedAt     string              `json:"created_at,omitempty"`
@@ -5466,7 +5466,7 @@ func (loc *PublicationLocator) Show(options rsapi.ApiParams) (*Publication, erro
 // It is shared among all revisions of a Publication within the marketplace.
 // Publication Lineages are different than lineages that exist within an account.
 type PublicationLineage struct {
-	Actions          []string            `json:"actions,omitempty"`
+	Actions          []map[string]string `json:"actions,omitempty"`
 	CommentsEmailed  bool                `json:"comments_emailed,omitempty"`
 	CommentsEnabled  bool                `json:"comments_enabled,omitempty"`
 	CreatedAt        string              `json:"created_at,omitempty"`
@@ -5526,7 +5526,7 @@ func (loc *PublicationLineageLocator) Show(options rsapi.ApiParams) (*Publicatio
 
 // A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.
 type RecurringVolumeAttachment struct {
-	Actions      []string            `json:"actions,omitempty"`
+	Actions      []map[string]string `json:"actions,omitempty"`
 	CreatedAt    string              `json:"created_at,omitempty"`
 	Device       string              `json:"device,omitempty"`
 	DeviceId     string              `json:"device_id,omitempty"`
@@ -5678,7 +5678,7 @@ func (loc *RecurringVolumeAttachmentLocator) Show(options rsapi.ApiParams) (*Rec
 // A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.
 // RightScale currently supports the following types of repositores: git, svn, and URLs of compressed files (tar, tgz, gzip).
 type Repository struct {
-	Actions         []string            `json:"actions,omitempty"`
+	Actions         []map[string]string `json:"actions,omitempty"`
 	AssetCounts     int                 `json:"asset_counts,omitempty"`
 	AssetPaths      []string            `json:"asset_paths,omitempty"`
 	CommitReference string              `json:"commit_reference,omitempty"`
@@ -6012,7 +6012,7 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 // A RepositoryAsset represents an item discovered in a Repository. These assets represent only a view of the Repository
 // the last time it was scraped. In order to use these assets, you must import them into your account.
 type RepositoryAsset struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Id          string              `json:"id,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -6441,7 +6441,7 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 
 // Grouped listing of Routes
 type RouteTable struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -6607,7 +6607,7 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 // RightScript or Chef recipes, and could be associated with any one of the three runlists of a
 // ServerTemplate (boot, operational, decommission).
 type RunnableBinding struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	Id          string              `json:"id,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Position    int                 `json:"position,omitempty"`
@@ -6907,7 +6907,7 @@ func (loc *SchedulerLocator) ScheduleRightScript(options rsapi.ApiParams) error 
 // Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
 // trust relationships amongst different security groups.
 type SecurityGroup struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Href        string              `json:"href,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -7044,7 +7044,7 @@ func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) (*SecurityGroup, 
 /******  SecurityGroupRule ******/
 
 type SecurityGroupRule struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CidrIps     []string            `json:"cidr_ips,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Direction   string              `json:"direction,omitempty"`
@@ -7227,7 +7227,7 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 // Changes to the next_instance association prepares the
 // configuration for the next instance launch/start (therefore they have no effect until such operation is performed).
 type Server struct {
-	Actions         []string            `json:"actions,omitempty"`
+	Actions         []map[string]string `json:"actions,omitempty"`
 	CreatedAt       string              `json:"created_at,omitempty"`
 	CurrentInstance Instance            `json:"current_instance,omitempty"`
 	Description     string              `json:"description,omitempty"`
@@ -7501,7 +7501,7 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
 // all the running instances in the array. Changes to the next_instance association prepares the configuration for the next instance that is to be launched
 // in the array and will therefore not affect any of the currently running instances.
 type ServerArray struct {
-	Actions          []string               `json:"actions,omitempty"`
+	Actions          []map[string]string    `json:"actions,omitempty"`
 	ArrayType        string                 `json:"array_type,omitempty"`
 	CurrentInstances []Instance             `json:"current_instances,omitempty"`
 	DatacenterPolicy string                 `json:"datacenter_policy,omitempty"`
@@ -7769,7 +7769,7 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 // All revisions of a ServerTemplate belong to a ServerTemplate lineage that is exposed by the "lineage" attribute.
 // (NOTE: This attribute is merely a string to locate all revisions of a ServerTemplate and NOT a working URL)
 type ServerTemplate struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Inputs      []map[string]string `json:"inputs,omitempty"`
 	Lineage     string              `json:"lineage,omitempty"`
@@ -8135,7 +8135,7 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 // This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively
 // add/delete MultiCloudImages to ServerTemplates and make them the default one.
 type ServerTemplateMultiCloudImage struct {
-	Actions   []string            `json:"actions,omitempty"`
+	Actions   []map[string]string `json:"actions,omitempty"`
 	CreatedAt string              `json:"created_at,omitempty"`
 	IsDefault bool                `json:"is_default,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
@@ -8294,7 +8294,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.ApiParams) (
 // If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
 // Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".
 type Session struct {
-	Actions []string            `json:"actions,omitempty"`
+	Actions []map[string]string `json:"actions,omitempty"`
 	Links   []map[string]string `json:"links,omitempty"`
 	Message string              `json:"message,omitempty"`
 }
@@ -8420,7 +8420,7 @@ func (loc *SessionLocator) IndexInstanceSession() (Instance, error) {
 // Ssh Keys represent a created SSH Key that exists in the cloud.
 // An ssh key might also contain the private part of the key, and can be used to login to instances launched with it.
 type SshKey struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Material    string              `json:"material,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
@@ -8898,7 +8898,7 @@ func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error 
 // An example of a type of task is an operational script that runs in an instance.
 // Task resources can be returned by certain API calls, such as Instances.run_executable, Backups.restore, and others.
 type Task struct {
-	Actions []string            `json:"actions,omitempty"`
+	Actions []map[string]string `json:"actions,omitempty"`
 	Detail  string              `json:"detail,omitempty"`
 	Links   []map[string]string `json:"links,omitempty"`
 	Summary string              `json:"summary,omitempty"`
@@ -8955,7 +8955,7 @@ func (loc *TaskLocator) Show(options rsapi.ApiParams) (*Task, error) {
 // A User represents an individual RightScale user. Users must be given access to RightScale accounts in order to
 // access RightScale resources.
 type User struct {
-	Actions      []string            `json:"actions,omitempty"`
+	Actions      []map[string]string `json:"actions,omitempty"`
 	Company      string              `json:"company,omitempty"`
 	CreatedAt    string              `json:"created_at,omitempty"`
 	Email        string              `json:"email,omitempty"`
@@ -9167,7 +9167,7 @@ func (loc *UserDataLocator) Show() (*map[string]string, error) {
 
 // A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).
 type Volume struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Iops        string              `json:"iops,omitempty"`
@@ -9334,7 +9334,7 @@ func (loc *VolumeLocator) Update(volume *VolumeParam2) error {
 
 // A VolumeAttachment represents a relationship between a volume and an instance.
 type VolumeAttachment struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Device      string              `json:"device,omitempty"`
 	DeviceId    string              `json:"device_id,omitempty"`
@@ -9493,7 +9493,7 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.ApiParams) (*VolumeAttach
 // various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
 // Snapshots consist of a series of data blocks that are incrementally saved.
 type VolumeSnapshot struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -9643,7 +9643,7 @@ func (loc *VolumeSnapshotLocator) Show(options rsapi.ApiParams) (*VolumeSnapshot
 
 // A VolumeType describes the type of volume, particularly the size.
 type VolumeType struct {
-	Actions     []string            `json:"actions,omitempty"`
+	Actions     []map[string]string `json:"actions,omitempty"`
 	CreatedAt   string              `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
