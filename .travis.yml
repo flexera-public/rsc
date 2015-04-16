@@ -43,7 +43,7 @@ before_script: make build
 # Everything else in here, we don't put the uploads into an after_success section because
 # that can cause the build to succeed even if the artifacts are not actually uploaded
 script:
-  - export NAME=`basename $TRAVIS_BUILD_DIR`
+  - export NAME=`basename $TRAVIS_REPO_SLUG`
   - make travis-test
   - export PATH=./Godeps/_workspace/bin:$PATH
   - ls Godeps/_workspace/bin
@@ -54,7 +54,7 @@ script:
   - export AWS_SECRET_ACCESS_KEY=${RSBIN_KEY}
   - make upload
   # Compute code coverage
-  - go tool cover -func=$NAME.coverprofile > coverage.txt
+  - go tool cover -func=`basename $TRAVIS_BUILD_DIR`.coverprofile > coverage.txt
   - export COVERAGE=$(grep "^total:" coverage.txt | grep -o "[0-9\.]*")
   - echo "Code Coverage is ${COVERAGE}%"
   - export BUILD=${TRAVIS_BUILD_NUMBER}
