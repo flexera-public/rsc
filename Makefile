@@ -49,7 +49,6 @@ TRAVIS_BRANCH?=dev
 DATE=$(shell date '+%F %T')
 SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
-GIT_BRANCH:=$(shell git symbolic-ref --short -q HEAD || echo "v1-unstable")
 # by manually adding the godep workspace to the path we don't need to run godep itself
 ifeq ($(OS),Windows_NT)
 	SHELL:=/bin/dash
@@ -122,7 +121,7 @@ version:
 # - runs sed to add import comments to all package statements to force gopkg.in
 # - runs sed to change import lines in codegen writers
 govers:
-	govers -d gopkg.in/rightscale/rsc.$(GIT_BRANCH)
+	govers -d gopkg.in/rightscale/rsc.$(GOPKG_VERS)
 	@echo "adding package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		sed -E -i \
