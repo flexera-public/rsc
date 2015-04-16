@@ -123,12 +123,12 @@ version:
 # - runs sed to change import lines in codegen writers
 # - runs gofmt because the order of imports changes in some files (sigh)
 govers:
-	govers -d -m 'g[^/]*/rightscale/rsc.*' gopkg.in/rightscale/rsc.$(GOPKG_VERS)
+	govers -d -m 'g[^/]*/rightscale/rsc[^/]*' gopkg.in/rightscale/rsc.$(GOPKG_VERS)
 	@echo "adding package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
 		sed -E -i \
-		  -e '1,10 s;^(package +[a-z]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' \
+		  -e '1,10 s;^(package +[_a-z0-9]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' \
 			$$f;\
 	done
 	@echo "fixing code gen templates"
