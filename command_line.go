@@ -6,13 +6,13 @@ import (
 	"path"
 	"strings"
 
-	"gopkg.in/alecthomas/kingpin.v1"
 	"github.com/rightscale/rsc/cm15"
 	"github.com/rightscale/rsc/cm16"
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/rl10"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
+	"gopkg.in/alecthomas/kingpin.v1"
 )
 
 // Retrieve command and top level flag values

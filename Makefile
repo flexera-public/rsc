@@ -120,6 +120,7 @@ version:
 # - runs govers to change imports of rsc packages to rsc.v1
 # - runs sed to add import comments to all package statements to force gopkg.in
 # - runs sed to change import lines in codegen writers
+# - runs gofmt because the order of imports changes in some files (sigh)
 govers:
 	govers -d gopkg.in/rightscale/rsc.$(GOPKG_VERS)
 	@echo "adding package import comments"
@@ -132,6 +133,7 @@ govers:
 	@for f in gen/writers/*.go; do \
 	  sed -E -i -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
 	done
+	gofmt -w *.go */*.go
 
 # revert govers, i.e. remove import constraints and use github.com/rightscale/$(NAME)
 unvers:
@@ -143,6 +145,7 @@ unvers:
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		sed -E -i -e '1,10 s;^(package +[a-z][^ /]*).*;\1;' $$f; \
 	done
+	gofmt -w *.go */*.go
 
 # for release branches, i.e. having names like v1, v1.2, v1.2.3, check that gopkg.in import
 # constraints are in place, i.e. that 'make govers' has been run
