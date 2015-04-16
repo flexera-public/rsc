@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
@@ -69,7 +70,7 @@ type Execution struct {
 	Deployment           string                 `json:"deployment,omitempty"`
 	DeploymentUrl        string                 `json:"deployment_url,omitempty"`
 	Description          string                 `json:"description,omitempty"`
-	EndsAt               string                 `json:"ends_at,omitempty"`
+	EndsAt               time.Time              `json:"ends_at,omitempty"`
 	Href                 string                 `json:"href,omitempty"`
 	Id                   string                 `json:"id,omitempty"`
 	Kind                 string                 `json:"kind,omitempty"`
@@ -681,14 +682,14 @@ type ScheduledAction struct {
 	Action                string                `json:"action,omitempty"`
 	CreatedBy             *User                 `json:"created_by,omitempty"`
 	Execution             *Execution            `json:"execution,omitempty"`
-	FirstOccurrence       string                `json:"first_occurrence,omitempty"`
+	FirstOccurrence       time.Time             `json:"first_occurrence,omitempty"`
 	Href                  string                `json:"href,omitempty"`
 	Id                    string                `json:"id,omitempty"`
 	Kind                  string                `json:"kind,omitempty"`
 	Links                 *ScheduledActionLinks `json:"links,omitempty"`
 	Mandatory             bool                  `json:"mandatory,omitempty"`
 	Name                  string                `json:"name,omitempty"`
-	NextOccurrence        string                `json:"next_occurrence,omitempty"`
+	NextOccurrence        time.Time             `json:"next_occurrence,omitempty"`
 	Recurrence            string                `json:"recurrence,omitempty"`
 	RecurrenceDescription string                `json:"recurrence_description,omitempty"`
 	Timestamps            *TimestampsStruct     `json:"timestamps,omitempty"`
@@ -763,16 +764,13 @@ func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
 
 // POST /projects/:project_id/scheduled_actions
 // Create a new ScheduledAction resource.
-func (loc *ScheduledActionLocator) Create(action string, executionId string, firstOccurrence string, options rsapi.ApiParams) (*ScheduledActionLocator, error) {
+func (loc *ScheduledActionLocator) Create(action string, executionId string, firstOccurrence time.Time, options rsapi.ApiParams) (*ScheduledActionLocator, error) {
 	var res *ScheduledActionLocator
 	if action == "" {
 		return res, fmt.Errorf("action is required")
 	}
 	if executionId == "" {
 		return res, fmt.Errorf("executionId is required")
-	}
-	if firstOccurrence == "" {
-		return res, fmt.Errorf("firstOccurrence is required")
 	}
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
@@ -896,7 +894,7 @@ func (loc *ScheduledActionLocator) Skip(options rsapi.ApiParams) error {
 type ScheduledOperation struct {
 	CreatedBy             *User                    `json:"created_by,omitempty"`
 	Execution             *Execution               `json:"execution,omitempty"`
-	FirstOccurrence       string                   `json:"first_occurrence,omitempty"`
+	FirstOccurrence       time.Time                `json:"first_occurrence,omitempty"`
 	Href                  string                   `json:"href,omitempty"`
 	Id                    string                   `json:"id,omitempty"`
 	Kind                  string                   `json:"kind,omitempty"`
@@ -904,7 +902,7 @@ type ScheduledOperation struct {
 	Links                 *ScheduledOperationLinks `json:"links,omitempty"`
 	Mandatory             bool                     `json:"mandatory,omitempty"`
 	Name                  string                   `json:"name,omitempty"`
-	NextOccurrence        string                   `json:"next_occurrence,omitempty"`
+	NextOccurrence        time.Time                `json:"next_occurrence,omitempty"`
 	Operation             *OperationStruct         `json:"operation,omitempty"`
 	Recurrence            string                   `json:"recurrence,omitempty"`
 	RecurrenceDescription string                   `json:"recurrence_description,omitempty"`
@@ -980,13 +978,10 @@ func (loc *ScheduledOperationLocator) Show() (*ScheduledOperation, error) {
 
 // POST /projects/:project_id/scheduled_operations
 // Create a new ScheduledOperation resource.
-func (loc *ScheduledOperationLocator) Create(executionId string, firstOccurrence string, operation *OperationStruct, options rsapi.ApiParams) (*ScheduledOperationLocator, error) {
+func (loc *ScheduledOperationLocator) Create(executionId string, firstOccurrence time.Time, operation *OperationStruct, options rsapi.ApiParams) (*ScheduledOperationLocator, error) {
 	var res *ScheduledOperationLocator
 	if executionId == "" {
 		return res, fmt.Errorf("executionId is required")
-	}
-	if firstOccurrence == "" {
-		return res, fmt.Errorf("firstOccurrence is required")
 	}
 	if operation == nil {
 		return res, fmt.Errorf("operation is required")
@@ -1153,9 +1148,9 @@ type ConfigurationOption struct {
 }
 
 type CostStruct struct {
-	Unit      string `json:"unit,omitempty"`
-	UpdatedAt string `json:"updated_at,omitempty"`
-	Value     string `json:"value,omitempty"`
+	Unit      string    `json:"unit,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	Value     string    `json:"value,omitempty"`
 }
 
 type ExecutionLink struct {
@@ -1179,7 +1174,7 @@ type ExecutionParam struct {
 	Deployment           string                                        `json:"deployment,omitempty"`
 	DeploymentUrl        string                                        `json:"deployment_url,omitempty"`
 	Description          string                                        `json:"description,omitempty"`
-	EndsAt               string                                        `json:"ends_at,omitempty"`
+	EndsAt               time.Time                                     `json:"ends_at,omitempty"`
 	Href                 string                                        `json:"href,omitempty"`
 	Id                   string                                        `json:"id,omitempty"`
 	Kind                 string                                        `json:"kind,omitempty"`
@@ -1199,14 +1194,14 @@ type ExecutionParam struct {
 }
 
 type LatestNotificationsExecutionCostStruct struct {
-	Unit      string `json:"unit,omitempty"`
-	UpdatedAt string `json:"updated_at,omitempty"`
-	Value     string `json:"value,omitempty"`
+	Unit      string    `json:"unit,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	Value     string    `json:"value,omitempty"`
 }
 
 type LatestNotificationsExecutionNextActionTimestampsStruct struct {
-	CreatedAt string `json:"created_at,omitempty"`
-	UpdatedAt string `json:"updated_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
 
 type LatestNotificationsExecutionNextOperationLastRunStatusStruct struct {
@@ -1221,8 +1216,8 @@ type LatestNotificationsExecutionNextOperationLastRunStatusTasksStatusStruct str
 }
 
 type LatestNotificationsExecutionNextOperationLastRunTimestampsStruct struct {
-	CreatedAt  string `json:"created_at,omitempty"`
-	FinishedAt string `json:"finished_at,omitempty"`
+	CreatedAt  time.Time `json:"created_at,omitempty"`
+	FinishedAt time.Time `json:"finished_at,omitempty"`
 }
 
 type LatestNotificationsExecutionNextOperationOperationStruct struct {
@@ -1231,18 +1226,18 @@ type LatestNotificationsExecutionNextOperationOperationStruct struct {
 }
 
 type LatestNotificationsExecutionNextOperationTimestampsStruct struct {
-	CreatedAt string `json:"created_at,omitempty"`
-	UpdatedAt string `json:"updated_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
 
 type LatestNotificationsExecutionTimestampsStruct struct {
-	CreatedAt    string `json:"created_at,omitempty"`
-	LaunchedAt   string `json:"launched_at,omitempty"`
-	TerminatedAt string `json:"terminated_at,omitempty"`
+	CreatedAt    time.Time `json:"created_at,omitempty"`
+	LaunchedAt   time.Time `json:"launched_at,omitempty"`
+	TerminatedAt time.Time `json:"terminated_at,omitempty"`
 }
 
 type LatestNotificationsTimestampsStruct struct {
-	CreatedAt string `json:"created_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
 }
 
 type LaunchedFrom struct {
@@ -1362,14 +1357,14 @@ type ScheduledActionParam struct {
 	Action                string                                                  `json:"action,omitempty"`
 	CreatedBy             *User                                                   `json:"created_by,omitempty"`
 	Execution             *ExecutionParam                                         `json:"execution,omitempty"`
-	FirstOccurrence       string                                                  `json:"first_occurrence,omitempty"`
+	FirstOccurrence       time.Time                                               `json:"first_occurrence,omitempty"`
 	Href                  string                                                  `json:"href,omitempty"`
 	Id                    string                                                  `json:"id,omitempty"`
 	Kind                  string                                                  `json:"kind,omitempty"`
 	Links                 *ScheduledActionLinks                                   `json:"links,omitempty"`
 	Mandatory             bool                                                    `json:"mandatory,omitempty"`
 	Name                  string                                                  `json:"name,omitempty"`
-	NextOccurrence        string                                                  `json:"next_occurrence,omitempty"`
+	NextOccurrence        time.Time                                               `json:"next_occurrence,omitempty"`
 	Recurrence            string                                                  `json:"recurrence,omitempty"`
 	RecurrenceDescription string                                                  `json:"recurrence_description,omitempty"`
 	Timestamps            *LatestNotificationsExecutionNextActionTimestampsStruct `json:"timestamps,omitempty"`
@@ -1384,7 +1379,7 @@ type ScheduledOperationLinks struct {
 type ScheduledOperationParam struct {
 	CreatedBy             *User                                                      `json:"created_by,omitempty"`
 	Execution             *ExecutionParam                                            `json:"execution,omitempty"`
-	FirstOccurrence       string                                                     `json:"first_occurrence,omitempty"`
+	FirstOccurrence       time.Time                                                  `json:"first_occurrence,omitempty"`
 	Href                  string                                                     `json:"href,omitempty"`
 	Id                    string                                                     `json:"id,omitempty"`
 	Kind                  string                                                     `json:"kind,omitempty"`
@@ -1392,7 +1387,7 @@ type ScheduledOperationParam struct {
 	Links                 *ScheduledOperationLinks                                   `json:"links,omitempty"`
 	Mandatory             bool                                                       `json:"mandatory,omitempty"`
 	Name                  string                                                     `json:"name,omitempty"`
-	NextOccurrence        string                                                     `json:"next_occurrence,omitempty"`
+	NextOccurrence        time.Time                                                  `json:"next_occurrence,omitempty"`
 	Operation             *LatestNotificationsExecutionNextOperationOperationStruct  `json:"operation,omitempty"`
 	Recurrence            string                                                     `json:"recurrence,omitempty"`
 	RecurrenceDescription string                                                     `json:"recurrence_description,omitempty"`
@@ -1413,14 +1408,14 @@ type Task struct {
 }
 
 type TimestampsStruct struct {
-	CreatedAt    string `json:"created_at,omitempty"`
-	LaunchedAt   string `json:"launched_at,omitempty"`
-	TerminatedAt string `json:"terminated_at,omitempty"`
+	CreatedAt    time.Time `json:"created_at,omitempty"`
+	LaunchedAt   time.Time `json:"launched_at,omitempty"`
+	TerminatedAt time.Time `json:"terminated_at,omitempty"`
 }
 
 type TimestampsStruct2 struct {
-	CreatedAt string `json:"created_at,omitempty"`
-	UpdatedAt string `json:"updated_at,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	UpdatedAt time.Time `json:"updated_at,omitempty"`
 }
 
 type User struct {

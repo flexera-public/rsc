@@ -49,12 +49,12 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 /******  Account ******/
 
 type Account struct {
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	Permissions []Permission        `json:"permissions,omitempty"`
 	Products    []string            `json:"products,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -100,11 +100,11 @@ func (loc *AccountLocator) Show() (*Account, error) {
 // An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.
 type AccountGroup struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -192,12 +192,12 @@ func (loc *AccountGroupLocator) Show(options rsapi.ApiParams) (*AccountGroup, er
 // An Alert represents an AlertSpec bound to a running Instance.
 type Alert struct {
 	Actions       []map[string]string `json:"actions,omitempty"`
-	CreatedAt     string              `json:"created_at,omitempty"`
+	CreatedAt     RubyTime            `json:"created_at,omitempty"`
 	Links         []map[string]string `json:"links,omitempty"`
-	QuenchedUntil string              `json:"quenched_until,omitempty"`
+	QuenchedUntil RubyTime            `json:"quenched_until,omitempty"`
 	Status        string              `json:"status,omitempty"`
-	TriggeredAt   string              `json:"triggered_at,omitempty"`
-	UpdatedAt     string              `json:"updated_at,omitempty"`
+	TriggeredAt   RubyTime            `json:"triggered_at,omitempty"`
+	UpdatedAt     RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -363,7 +363,7 @@ func (loc *AlertLocator) Show(options rsapi.ApiParams) (*Alert, error) {
 type AlertSpec struct {
 	Actions        []map[string]string `json:"actions,omitempty"`
 	Condition      string              `json:"condition,omitempty"`
-	CreatedAt      string              `json:"created_at,omitempty"`
+	CreatedAt      RubyTime            `json:"created_at,omitempty"`
 	Description    string              `json:"description,omitempty"`
 	Duration       int                 `json:"duration,omitempty"`
 	EscalationName string              `json:"escalation_name,omitempty"`
@@ -371,7 +371,7 @@ type AlertSpec struct {
 	Links          []map[string]string `json:"links,omitempty"`
 	Name           string              `json:"name,omitempty"`
 	Threshold      string              `json:"threshold,omitempty"`
-	UpdatedAt      string              `json:"updated_at,omitempty"`
+	UpdatedAt      RubyTime            `json:"updated_at,omitempty"`
 	Variable       string              `json:"variable,omitempty"`
 	VoteTag        string              `json:"vote_tag,omitempty"`
 	VoteType       string              `json:"vote_type,omitempty"`
@@ -556,7 +556,7 @@ type AuditEntry struct {
 	DetailSize int                 `json:"detail_size,omitempty"`
 	Links      []map[string]string `json:"links,omitempty"`
 	Summary    string              `json:"summary,omitempty"`
-	UpdatedAt  string              `json:"updated_at,omitempty"`
+	UpdatedAt  RubyTime            `json:"updated_at,omitempty"`
 	UserEmail  string              `json:"user_email,omitempty"`
 }
 
@@ -805,7 +805,7 @@ type Backup struct {
 	Actions             []map[string]string `json:"actions,omitempty"`
 	Committed           bool                `json:"committed,omitempty"`
 	Completed           bool                `json:"completed,omitempty"`
-	CreatedAt           string              `json:"created_at,omitempty"`
+	CreatedAt           RubyTime            `json:"created_at,omitempty"`
 	Description         string              `json:"description,omitempty"`
 	FromMaster          bool                `json:"from_master,omitempty"`
 	Lineage             string              `json:"lineage,omitempty"`
@@ -1280,9 +1280,9 @@ func (loc *CloudLocator) Show(options rsapi.ApiParams) (*Cloud, error) {
 
 // Represents a Cloud Account (An association between the account and a cloud).
 type CloudAccount struct {
-	CreatedAt string              `json:"created_at,omitempty"`
+	CreatedAt RubyTime            `json:"created_at,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
-	UpdatedAt string              `json:"updated_at,omitempty"`
+	UpdatedAt RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -1399,7 +1399,7 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 // Represents a given instance of a single cookbook.
 type Cookbook struct {
 	Actions           []map[string]string `json:"actions,omitempty"`
-	CreatedAt         string              `json:"created_at,omitempty"`
+	CreatedAt         RubyTime            `json:"created_at,omitempty"`
 	DownloadUrl       string              `json:"download_url,omitempty"`
 	Id                string              `json:"id,omitempty"`
 	Links             []map[string]string `json:"links,omitempty"`
@@ -1408,7 +1408,7 @@ type Cookbook struct {
 	Namespace         string              `json:"namespace,omitempty"`
 	SourceInfoSummary string              `json:"source_info_summary,omitempty"`
 	State             string              `json:"state,omitempty"`
-	UpdatedAt         string              `json:"updated_at,omitempty"`
+	UpdatedAt         RubyTime            `json:"updated_at,omitempty"`
 	Version           string              `json:"version,omitempty"`
 }
 
@@ -1779,11 +1779,11 @@ func (loc *CookbookAttachmentLocator) Show(options rsapi.ApiParams) (*CookbookAt
 // or Chef recipes. NOTE: Credential values may be updated through the API, but
 // values cannot be retrieved via the API.
 type Credential struct {
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 	Value       string              `json:"value,omitempty"`
 }
 
@@ -2320,11 +2320,11 @@ func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
 // To register an Identity Provider, contact your account manager.
 type IdentityProvider struct {
 	Actions       []map[string]string `json:"actions,omitempty"`
-	CreatedAt     string              `json:"created_at,omitempty"`
+	CreatedAt     RubyTime            `json:"created_at,omitempty"`
 	DiscoveryHint string              `json:"discovery_hint,omitempty"`
 	Links         []map[string]string `json:"links,omitempty"`
 	Name          string              `json:"name,omitempty"`
-	UpdatedAt     string              `json:"updated_at,omitempty"`
+	UpdatedAt     RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -2664,7 +2664,7 @@ type Instance struct {
 	AdminPassword            string              `json:"admin_password,omitempty"`
 	AssociatePublicIpAddress bool                `json:"associate_public_ip_address,omitempty"`
 	CloudSpecificAttributes  map[string]string   `json:"cloud_specific_attributes,omitempty"`
-	CreatedAt                string              `json:"created_at,omitempty"`
+	CreatedAt                RubyTime            `json:"created_at,omitempty"`
 	Description              string              `json:"description,omitempty"`
 	InheritedSources         []string            `json:"inherited_sources,omitempty"`
 	Inputs                   []map[string]string `json:"inputs,omitempty"`
@@ -2684,8 +2684,8 @@ type Instance struct {
 	SecurityGroups           []SecurityGroup     `json:"security_groups,omitempty"`
 	State                    string              `json:"state,omitempty"`
 	Subnets                  []Subnet            `json:"subnets,omitempty"`
-	TerminatedAt             string              `json:"terminated_at,omitempty"`
-	UpdatedAt                string              `json:"updated_at,omitempty"`
+	TerminatedAt             RubyTime            `json:"terminated_at,omitempty"`
+	UpdatedAt                RubyTime            `json:"updated_at,omitempty"`
 	UserData                 string              `json:"user_data,omitempty"`
 }
 
@@ -3139,18 +3139,18 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 type InstanceCustomLodgement struct {
 	AccountOwner                         string                   `json:"account_owner,omitempty"`
 	Actions                              []map[string]string      `json:"actions,omitempty"`
-	EndAt                                string                   `json:"end_at,omitempty"`
+	EndAt                                RubyTime                 `json:"end_at,omitempty"`
 	Links                                []map[string]string      `json:"links,omitempty"`
 	Quantity                             []map[string]interface{} `json:"quantity,omitempty"`
-	ResourceBillingEndAt                 string                   `json:"resource_billing_end_at,omitempty"`
-	ResourceBillingStartAt               string                   `json:"resource_billing_start_at,omitempty"`
+	ResourceBillingEndAt                 RubyTime                 `json:"resource_billing_end_at,omitempty"`
+	ResourceBillingStartAt               RubyTime                 `json:"resource_billing_start_at,omitempty"`
 	ResourceInstanceType                 string                   `json:"resource_instance_type,omitempty"`
 	ResourceLaunchedBy                   string                   `json:"resource_launched_by,omitempty"`
 	ResourceTemplateLibraryHref          string                   `json:"resource_template_library_href,omitempty"`
 	ResourceTemplateName                 string                   `json:"resource_template_name,omitempty"`
 	ResourceTemplatePublishedByAccountId string                   `json:"resource_template_published_by_account_id,omitempty"`
 	ResourceUid                          string                   `json:"resource_uid,omitempty"`
-	StartAt                              string                   `json:"start_at,omitempty"`
+	StartAt                              RubyTime                 `json:"start_at,omitempty"`
 }
 
 //===== Locator
@@ -3397,11 +3397,11 @@ func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) (*InstanceType, er
 // An IpAddress provides an abstraction for IPv4 addresses bindable to Instance resources running in a Cloud.
 type IpAddress struct {
 	Address   string              `json:"address,omitempty"`
-	CreatedAt string              `json:"created_at,omitempty"`
+	CreatedAt RubyTime            `json:"created_at,omitempty"`
 	Domain    string              `json:"domain,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	Name      string              `json:"name,omitempty"`
-	UpdatedAt string              `json:"updated_at,omitempty"`
+	UpdatedAt RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -3548,7 +3548,7 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 // The IpAddress is bound immediately for a current instance, or on launch for a next instance.
 // It also allows specifying port forwarding rules for that particular IpAddress and Instance pair.
 type IpAddressBinding struct {
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	PrivatePort string              `json:"private_port,omitempty"`
 	Protocol    string              `json:"protocol,omitempty"`
@@ -4351,14 +4351,14 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 // A NetworkGateway is an interface that allows traffic to be routed between networks.
 type NetworkGateway struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	State       string              `json:"state,omitempty"`
 	Type        string              `json:"type,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -4509,14 +4509,14 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 // your particular cloud's documentation for available option keys.
 type NetworkOptionGroup struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	Options     map[string]string   `json:"options,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Type        string              `json:"type,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -4669,11 +4669,11 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 // Other clouds in the future may support attaching to Subnets.
 type NetworkOptionGroupAttachment struct {
 	Actions            []map[string]string `json:"actions,omitempty"`
-	CreatedAt          string              `json:"created_at,omitempty"`
+	CreatedAt          RubyTime            `json:"created_at,omitempty"`
 	Links              []map[string]string `json:"links,omitempty"`
 	NetworkOptionGroup string              `json:"network_option_group,omitempty"`
 	ResourceUid        string              `json:"resource_uid,omitempty"`
-	UpdatedAt          string              `json:"updated_at,omitempty"`
+	UpdatedAt          RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -4951,7 +4951,7 @@ func (loc *Oauth2Locator) Create(grantType string, options rsapi.ApiParams) (map
 
 type Permission struct {
 	Actions   []map[string]string `json:"actions,omitempty"`
-	CreatedAt string              `json:"created_at,omitempty"`
+	CreatedAt RubyTime            `json:"created_at,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	RoleTitle string              `json:"role_title,omitempty"`
 }
@@ -5089,13 +5089,13 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 
 type PlacementGroup struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	State       string              `json:"state,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -5230,9 +5230,9 @@ func (loc *PlacementGroupLocator) Show(options rsapi.ApiParams) (*PlacementGroup
 type Preference struct {
 	Actions   []map[string]string `json:"actions,omitempty"`
 	Contents  string              `json:"contents,omitempty"`
-	CreatedAt string              `json:"created_at,omitempty"`
+	CreatedAt RubyTime            `json:"created_at,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
-	UpdatedAt string              `json:"updated_at,omitempty"`
+	UpdatedAt RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -5353,14 +5353,14 @@ type Publication struct {
 	Actions       []map[string]string `json:"actions,omitempty"`
 	CommitMessage string              `json:"commit_message,omitempty"`
 	ContentType   string              `json:"content_type,omitempty"`
-	CreatedAt     string              `json:"created_at,omitempty"`
+	CreatedAt     RubyTime            `json:"created_at,omitempty"`
 	Description   string              `json:"description,omitempty"`
 	Links         []map[string]string `json:"links,omitempty"`
 	Name          string              `json:"name,omitempty"`
 	Publisher     string              `json:"publisher,omitempty"`
 	Revision      string              `json:"revision,omitempty"`
 	RevisionNotes string              `json:"revision_notes,omitempty"`
-	UpdatedAt     string              `json:"updated_at,omitempty"`
+	UpdatedAt     RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -5469,12 +5469,12 @@ type PublicationLineage struct {
 	Actions          []map[string]string `json:"actions,omitempty"`
 	CommentsEmailed  bool                `json:"comments_emailed,omitempty"`
 	CommentsEnabled  bool                `json:"comments_enabled,omitempty"`
-	CreatedAt        string              `json:"created_at,omitempty"`
+	CreatedAt        RubyTime            `json:"created_at,omitempty"`
 	Links            []map[string]string `json:"links,omitempty"`
 	LongDescription  string              `json:"long_description,omitempty"`
 	Name             string              `json:"name,omitempty"`
 	ShortDescription string              `json:"short_description,omitempty"`
-	UpdatedAt        string              `json:"updated_at,omitempty"`
+	UpdatedAt        RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -5527,7 +5527,7 @@ func (loc *PublicationLineageLocator) Show(options rsapi.ApiParams) (*Publicatio
 // A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.
 type RecurringVolumeAttachment struct {
 	Actions      []map[string]string `json:"actions,omitempty"`
-	CreatedAt    string              `json:"created_at,omitempty"`
+	CreatedAt    RubyTime            `json:"created_at,omitempty"`
 	Device       string              `json:"device,omitempty"`
 	DeviceId     string              `json:"device_id,omitempty"`
 	Links        []map[string]string `json:"links,omitempty"`
@@ -5536,7 +5536,7 @@ type RecurringVolumeAttachment struct {
 	Size         string              `json:"size,omitempty"`
 	Status       string              `json:"status,omitempty"`
 	StorageType  string              `json:"storage_type,omitempty"`
-	UpdatedAt    string              `json:"updated_at,omitempty"`
+	UpdatedAt    RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -5682,7 +5682,7 @@ type Repository struct {
 	AssetCounts     int                 `json:"asset_counts,omitempty"`
 	AssetPaths      []string            `json:"asset_paths,omitempty"`
 	CommitReference string              `json:"commit_reference,omitempty"`
-	CreatedAt       string              `json:"created_at,omitempty"`
+	CreatedAt       RubyTime            `json:"created_at,omitempty"`
 	Credentials     map[string]string   `json:"credentials,omitempty"`
 	Description     string              `json:"description,omitempty"`
 	FetchStatus     string              `json:"fetch_status,omitempty"`
@@ -5692,7 +5692,7 @@ type Repository struct {
 	ReadOnly        bool                `json:"read_only,omitempty"`
 	Source          string              `json:"source,omitempty"`
 	SourceType      string              `json:"source_type,omitempty"`
-	UpdatedAt       string              `json:"updated_at,omitempty"`
+	UpdatedAt       RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -6108,7 +6108,7 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.ApiParams) (*RepositoryAss
 // "lineage" attribute (NOTE: This attribute is merely a string to locate
 // all revisions of a RightScript and NOT a working URL).
 type RightScript struct {
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Id          string              `json:"id,omitempty"`
 	Lineage     string              `json:"lineage,omitempty"`
@@ -6116,7 +6116,7 @@ type RightScript struct {
 	Name        string              `json:"name,omitempty"`
 	Revision    string              `json:"revision,omitempty"`
 	Source      string              `json:"source,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -6283,7 +6283,7 @@ func (loc *RightScriptLocator) UpdateSource() error {
 // A Route defines how networking traffic should be routed from one
 // destination to another. See nexthoptype for available endpoint targets.
 type Route struct {
-	CreatedAt            string              `json:"created_at,omitempty"`
+	CreatedAt            RubyTime            `json:"created_at,omitempty"`
 	Description          string              `json:"description,omitempty"`
 	DestinationCidrBlock string              `json:"destination_cidr_block,omitempty"`
 	Links                []map[string]string `json:"links,omitempty"`
@@ -6291,7 +6291,7 @@ type Route struct {
 	NextHopType          string              `json:"next_hop_type,omitempty"`
 	ResourceUid          string              `json:"resource_uid,omitempty"`
 	State                string              `json:"state,omitempty"`
-	UpdatedAt            string              `json:"updated_at,omitempty"`
+	UpdatedAt            RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -6442,13 +6442,13 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 // Grouped listing of Routes
 type RouteTable struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Routes      []Route             `json:"routes,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -7228,7 +7228,7 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 // configuration for the next instance launch/start (therefore they have no effect until such operation is performed).
 type Server struct {
 	Actions         []map[string]string `json:"actions,omitempty"`
-	CreatedAt       string              `json:"created_at,omitempty"`
+	CreatedAt       RubyTime            `json:"created_at,omitempty"`
 	CurrentInstance Instance            `json:"current_instance,omitempty"`
 	Description     string              `json:"description,omitempty"`
 	Links           []map[string]string `json:"links,omitempty"`
@@ -7236,7 +7236,7 @@ type Server struct {
 	NextInstance    *Instance           `json:"next_instance,omitempty"`
 	Optimized       bool                `json:"optimized,omitempty"`
 	State           string              `json:"state,omitempty"`
-	UpdatedAt       string              `json:"updated_at,omitempty"`
+	UpdatedAt       RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -8136,10 +8136,10 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 // add/delete MultiCloudImages to ServerTemplates and make them the default one.
 type ServerTemplateMultiCloudImage struct {
 	Actions   []map[string]string `json:"actions,omitempty"`
-	CreatedAt string              `json:"created_at,omitempty"`
+	CreatedAt RubyTime            `json:"created_at,omitempty"`
 	IsDefault bool                `json:"is_default,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
-	UpdatedAt string              `json:"updated_at,omitempty"`
+	UpdatedAt RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -8957,7 +8957,7 @@ func (loc *TaskLocator) Show(options rsapi.ApiParams) (*Task, error) {
 type User struct {
 	Actions      []map[string]string `json:"actions,omitempty"`
 	Company      string              `json:"company,omitempty"`
-	CreatedAt    string              `json:"created_at,omitempty"`
+	CreatedAt    RubyTime            `json:"created_at,omitempty"`
 	Email        string              `json:"email,omitempty"`
 	FirstName    string              `json:"first_name,omitempty"`
 	LastName     string              `json:"last_name,omitempty"`
@@ -8965,7 +8965,7 @@ type User struct {
 	Phone        string              `json:"phone,omitempty"`
 	PrincipalUid string              `json:"principal_uid,omitempty"`
 	TimezoneName string              `json:"timezone_name,omitempty"`
-	UpdatedAt    string              `json:"updated_at,omitempty"`
+	UpdatedAt    RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -9168,7 +9168,7 @@ func (loc *UserDataLocator) Show() (*map[string]string, error) {
 // A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).
 type Volume struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Iops        string              `json:"iops,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
@@ -9176,7 +9176,7 @@ type Volume struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Size        string              `json:"size,omitempty"`
 	Status      string              `json:"status,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 	VolumeType  string              `json:"volume_type,omitempty"`
 }
 
@@ -9335,13 +9335,13 @@ func (loc *VolumeLocator) Update(volume *VolumeParam2) error {
 // A VolumeAttachment represents a relationship between a volume and an instance.
 type VolumeAttachment struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Device      string              `json:"device,omitempty"`
 	DeviceId    string              `json:"device_id,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	State       string              `json:"state,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -9494,7 +9494,7 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.ApiParams) (*VolumeAttach
 // Snapshots consist of a series of data blocks that are incrementally saved.
 type VolumeSnapshot struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
@@ -9502,7 +9502,7 @@ type VolumeSnapshot struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Size        string              `json:"size,omitempty"`
 	State       string              `json:"state,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -9644,13 +9644,13 @@ func (loc *VolumeSnapshotLocator) Show(options rsapi.ApiParams) (*VolumeSnapshot
 // A VolumeType describes the type of volume, particularly the size.
 type VolumeType struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   string              `json:"created_at,omitempty"`
+	CreatedAt   RubyTime            `json:"created_at,omitempty"`
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Size        string              `json:"size,omitempty"`
-	UpdatedAt   string              `json:"updated_at,omitempty"`
+	UpdatedAt   RubyTime            `json:"updated_at,omitempty"`
 }
 
 //===== Locator

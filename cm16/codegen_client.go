@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
@@ -1698,13 +1699,13 @@ type InstancesLinksDeploymentServerArraysInstanceSummaryStruct struct {
 }
 
 type InstancesTimestampsStruct struct {
-	BootedAt      string `json:"booted_at,omitempty"`
-	CreatedAt     string `json:"created_at,omitempty"`
-	OperationalAt string `json:"operational_at,omitempty"`
-	PendingAt     string `json:"pending_at,omitempty"`
-	StrandedAt    string `json:"stranded_at,omitempty"`
-	TerminatedAt  string `json:"terminated_at,omitempty"`
-	UpdatedAt     string `json:"updated_at,omitempty"`
+	BootedAt      time.Time `json:"booted_at,omitempty"`
+	CreatedAt     time.Time `json:"created_at,omitempty"`
+	OperationalAt time.Time `json:"operational_at,omitempty"`
+	PendingAt     time.Time `json:"pending_at,omitempty"`
+	StrandedAt    time.Time `json:"stranded_at,omitempty"`
+	TerminatedAt  time.Time `json:"terminated_at,omitempty"`
+	UpdatedAt     time.Time `json:"updated_at,omitempty"`
 }
 
 type IpAddressBindingLinks struct {
@@ -1838,11 +1839,11 @@ type SubnetLinks struct {
 }
 
 type TimestampsStruct struct {
-	BootedAt      string `json:"booted_at,omitempty"`
-	CreatedAt     string `json:"created_at,omitempty"`
-	OperationalAt string `json:"operational_at,omitempty"`
-	PendingAt     string `json:"pending_at,omitempty"`
-	StrandedAt    string `json:"stranded_at,omitempty"`
-	TerminatedAt  string `json:"terminated_at,omitempty"`
-	UpdatedAt     string `json:"updated_at,omitempty"`
+	BootedAt      time.Time `json:"booted_at,omitempty"`
+	CreatedAt     time.Time `json:"created_at,omitempty"`
+	OperationalAt time.Time `json:"operational_at,omitempty"`
+	PendingAt     time.Time `json:"pending_at,omitempty"`
+	StrandedAt    time.Time `json:"stranded_at,omitempty"`
+	TerminatedAt  time.Time `json:"terminated_at,omitempty"`
+	UpdatedAt     time.Time `json:"updated_at,omitempty"`
 }
