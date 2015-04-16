@@ -21,7 +21,7 @@ func main() {
 	pwd := flag.String("p", "", "Login password")
 	account := flag.Int("a", 0, "Account id")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
-	userEmail := flag.String("u", "", "Audit user email for filtering audit entries")
+	filterEmail := flag.String("f", "", "Audit user email for filtering audit entries")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -35,6 +35,9 @@ func main() {
 	if *host == "" {
 		fail("Host required")
 	}
+	if *filterEmail == "" {
+		*filterEmail = *email
+	}
 
 	// 2. Setup client using basic auth
 	auth := rsapi.LoginAuthenticator{Username: *email, Password: *pwd, Client: http.DefaultClient}
@@ -45,7 +48,7 @@ func main() {
 	ticker := time.NewTicker(time.Second)
 
 	// 3. Make an initial API call and retrieve the audit entries
-	entries, err := fetchAuditEntries(client, *userEmail)
+	entries, err := fetchAuditEntries(client, *filterEmail)
 	oldEntries := entries
 	if err != nil {
 		fail("Failed to retrieve audit entries: %v\n", err.Error())
@@ -56,7 +59,7 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
-			entries, err := fetchAuditEntries(client, *userEmail)
+			entries, err := fetchAuditEntries(client, *filterEmail)
 			if err != nil {
 				fail("Failed to retrieve audit entries: %v\n", err.Error())
 			}
@@ -67,14 +70,9 @@ func main() {
 }
 
 // Make an API call and fetch the audit entries matching specified criteria
-func fetchAuditEntries(client *cm15.Api, userEmail string) ([]*cm15.AuditEntry, error) {
+func fetchAuditEntries(client *cm15.Api, filterEmail string) ([]*cm15.AuditEntry, error) {
 	auditLocator := client.AuditEntryLocator("/api/audit_entries")
-	var apiParams rsapi.ApiParams
-	if userEmail == "" {
-		apiParams = rsapi.ApiParams{}
-	} else {
-		apiParams = rsapi.ApiParams{"filter": []string{"user_email==" + userEmail}}
-	}
+	var apiParams = rsapi.ApiParams{"filter": []string{"user_email==" + filterEmail}}
 	auditEntries, err := auditLocator.Index(
 		tomorrow(),  // End date
 		"100",       // Limit
