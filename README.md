@@ -1,13 +1,14 @@
 # rsc - A generic RightScale API client [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
-The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs as well as
-the RightScale Self-Service 1.0 APIs (latest version for this product).
+The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
+RightScale Self-Service 1.0 APIs (latest version for this product) and the RightLink10 APIs exposed
+by the RightLink10 agent.
 
 - Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](https://gocover.io/github.com/rightscale/rsc)
-- v1.0.0: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.0)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.0.svg)](https://gocover.io/github.com/rightscale/rsc)
+- v1.0.1: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.1)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.1.svg)](https://gocover.io/github.com/rightscale/rsc)
 
 `rsc` can be used in one of two ways:
 
@@ -29,12 +30,14 @@ Please use [github issues](https://github.com/rightscale/rsc/issues) to report p
 * [RightScale SS 1.0 Designer](https://s3.amazonaws.com/rs_api_docs/selfservice/designer/index.html#/1.0/controller/V1::Controller::Schedule)
 * [RightScale SS 1.0 Catalog](https://s3.amazonaws.com/rs_api_docs/selfservice/catalog/index.html#/1.0/controller/V1::Controller::AccountPreference)
 * [RightScale SS 1.0 Manager](https://s3.amazonaws.com/rs_api_docs/selfservice/manager/index.html#/1.0/controller/V1::Controller::ScheduledAction)
+* [RightLink10 HTTP Requests](https://support.rightscale.com/12-Guides/RightLink10/RightLink10_Local_and_Proxied_HTTP_Requests)
 
 ## <a name="usage"></a>Command Line Tool
 
 The command line tool uses subcommands to interact with each API. Use `rsc cm15` to send requests
 to the RightScale Cloud Management API 1.5, `rsc cm16` to send requests to the RightScale Cloud
-Management API 1.6 and `rsc ss` to send requests to the RightScale Self-Service API 1.0.
+Management API 1.6, `rsc ss` to send requests to the RightScale Self-Service API 1.0 and `rsc rl10`
+to send requests to RightLink10.
 
 ### Download & Install
 
@@ -44,7 +47,7 @@ $ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |
   tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v1.0.0 - 2015-03-07 10:50:29 - 5c43698e47d615c0e9ecac8757430a8ad4c34c75
+rsc v1.0.1 - 2015-04-17 21:18:40 - c6185d58424d17f6f4e80e1762ae45d7db798eb6
 ```
 
 - MacOS: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
@@ -70,14 +73,14 @@ $ rsc [GLOBAL] [API] ACTION HREF [PARAM=VALUE]
 ```
 where:
 - `GLOBAL` is an optional list of global flags,
-- `API` is `cm15`, `cm16` or `ss`,
+- `API` is `cm15`, `cm16`, `ss` or `rl10`
 - `ACTION` is the API action to perform (i.e `index`, `show`, `update`, etc.),
 - `HREF` is the resource or resource collection href (i.e. `/api/servers`, `/api/servers/1` etc.), and
 - `PARAM` and `VALUE` are the names and values of the action parameters (e.g. `view=extended`).
 
 For example:
 ```
-$ rsc --rl10 cm15 show /api/servers 'filter[]=name==LB'
+$ rsc cm15 show /api/servers 'filter[]=name==LB'
 ```
 
 The sections below cover each option in order.
@@ -96,9 +99,10 @@ The list of global flags is:
   --email=EMAIL     Login email, use --email and --password or use --key or --rl10
   --pwd=PWD         Login password, use --email and --password or use --key or --rl10
   -k, --key=KEY     OAuth access token or API key, use --email and --password or use --key or --rl10
-  --rl10            Proxy requests through RL 10 agent, use --email and --password or use --key or --rl10
+  --rl10            Proxy requests through RightLink 10 agent, use --email and --password or use --key or --rl10
+  --noAuth          Make unauthenticated requests, used for testing
   --x1=X1           Extract single value using JSON:select
-  --xm=XM           Extract zero, one or more values using JSON:select and return space separated list
+  --xm=XM           Extract zero, one or more values using JSON:select and return newline separated list
   --xj=XJ           Extract zero, one or more values using JSON:select and return JSON
   --xh=XH           Extract header with given name
   -n, --noRedirect  Do not follow redirect responses
@@ -124,7 +128,7 @@ Authentication can be done in one of the following ways:
 The `--x1`, `--xm` and `--xj` flags make it possible to extract values from the response using a
 JSON select expression (see [http://jsonselect.org/](http://jsonselect.org/)). For example:
 ```
-$ rsc --xm .name cm15 index clouds
+$ rsc --xm .name cm15 index /api/clouds
 ```
 extracts the names of each cloud from the response and prints the result as a newline separated list
 which is convenient to consume from bash scripts:
@@ -143,6 +147,7 @@ special `actions` action:
 $ rsc cm15 actions
 ```
 (output of example above not shown for brevity)
+
 To get the actions available on a resource specify the resource href as in:
 ```
 $ rsc cm15 actions /api/clouds/1/volumes
@@ -156,7 +161,7 @@ index   /api/clouds/:cloud_id             Volume
 ------- --------------------------------- --------
 show    /api/clouds/:cloud_id/volumes/:id Volume
 ```
-Parameters use url form encoding to represent nested data structures used in request bodies. For example
+Parameters use URL form encoding to represent nested data structures used in request bodies. For example
 using the RightScale CM API 1.5 the command line to create a volume is:
 ```
 $ rsc --pp --fetch cm15 create /api/clouds/1/volumes \
@@ -173,7 +178,7 @@ $ rsc cm16 index /api/deployments 'filter[]=description==awesome deployment' \
   'filter[]=name==app servers'
 ```
 The `/api/` prefix for CM API 1.5 and CM API 1.6 hrefs is optional so the following lists all
-deployments in the account using the default view:
+deployments:
 ```
 $ rsc cm16 index deployments
 ```
@@ -221,22 +226,29 @@ The help lists the valid values for views and filters for example. It also indic
 The other use case for `rsc` is making programmatic API requests to the
 RightScale platform. Each API client code is encapsulated in a different
 sub-package: package `cm15` for CM API 1.5, package `cm16`for CM API
-1.6 and package `ss` for Self-service APIs.
+1.6, package `ss` for Self-service APIs and package `rl10` for RightLink10 requests.
 
 ### Download
 
-`rsc` uses gopkg.in for versioning, this means that you need to import `rsc` packages
+`rsc` uses gopkg.in for versioning, this means that you can download the released `rsc` packages
 as follows:
-```
-import "gopkg.in/rightscale/rsc.v1"
-```
-even though rsc is maintained on github. If you try to import from github the Go compiler
-will complain! To download `rsc` you can use
 ```
 go get gopkg.in/rightscale/rsc.v1
 ```
-If you want to check the source out locally into your GOPATH then you must place it into
-`gopkg.in/rightscale/rsc.v1`.  Please see the [building](#building) section for more details.
+and import then in your code with:
+```go
+import "gopkg.in/rightscale/rsc.v1"
+```
+If you intend on contributing, just want to play around with the code or feel adventurous you can
+download and use the beelding edge version from github which corresponds to the master branch:
+```
+$ go get github.com/rightscale/rsc
+```
+```go
+import "github.com/rightscale/rsc
+```
+
+Please see the [building](#building) section for more details.
 
 ### Client Creation
 
@@ -254,9 +266,9 @@ CM API 1.5 client that connects to `us-3.rightscale.com` using a OAuth
 refresh token for authentication, no logger and the default HTTP client:
 
 ```go
-refreshToken := ... // Retrieve refresh token
+refreshToken := ... // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
 auth := rsapi.OAuthAuthenticator{RefreshToken: refreshToken}
-accountId := 123 // Retrieve account ID
+accountId := 123
 client, err := cm15.New(accountId, "us-3.rightscale.com", &auth, nil, nil)
 ```
 
@@ -291,7 +303,7 @@ and the `Index()` method is defined as:
 ```go
 // GET /api/clouds
 // Lists the clouds available to this account.
-// -- Optional parameters:
+// Optional parameters:
 // filter
 // view
 func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error)
@@ -317,18 +329,21 @@ So far we've seen how you can interact with the APIs using strongly
 typed methods which are handy if you need to make specific API calls
 from your code. However these methods don't work well if you need to
 write a generic client that may need to make any arbitrary API call
-given a resource, an action and generic parameters.
+given the names of a resource and an action and generic parameters.
 
-For this use case each API client package also contains a generic `Do`
+For this use case each API client package also contains a generic `BuildRequest`
 method which accepts the name of a resource, the name of an action,
 the href of the resource and a map of generic parameters (in the form of
 `map[string]interface{}`):
 ```go
-func (a *Api) Do(resource, action, href string, params rsapi.ApiParams) (*http.Response, error)
+func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams) (*http.Request, error)
 ```
-The `ss` package `Do` method additionally requires the name of the SS service to send requests to (i.e.
-`designer`, `catalog` or `manager`). This is because there is not one RightScale Self-Service API but
-three as noted in the [API reference](#reference) section above.
+The client also exposes a `PerformRequest` method that makes the request and optionally
+dumps the request body and response to STDERR for debugging:
+```go
+func (a *Api) PerformRequest(req *http.Request) (*http.Response, error)
+```
+Set the client `DumpRequestResponse` field to true to enable debugging.
 
 ### Common code
 
@@ -354,11 +369,6 @@ the clients to parse the command line.
 
 ### Building
 
-*Warning:* this section is still being debugged...
-
-To build `rsc` from source you need to be beware of the fact that releases use gopkg.in
-for versioning.
-
 The following make targets are useful:
 - `make depend` installs required tools
 - `make` builds a binary for your local OS
@@ -376,19 +386,23 @@ mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
 git clone https://github.com/rightscale/rsc.git rsc.v1
 cd rsc
-git checkout v1
+git checkout v1.0.1
 make depend
 make
 ```
 
 #### Your own build of an older release version
 
-You can get v1.2.3, for example, by following the same "more involved" commands as above but
-do `git checkout v1.2.3`. (The directory must be called rsc.v1 and not rsc.v1.2.3.)
+You can get v1.0.0, for example, by following the same "more involved" commands as above but
+do `git checkout v1.0.0`. (The directory must be called rsc.v1 and not rsc.v1.0.0.)
 
 #### Build and hack a dev branch
 
-The recommended steps are:
+The simplest way is:
+```
+go get github.com/rightscale/rsc
+```
+This also works:
 ```
 mkdir -p $GOPATH/src/github.com/rightscale
 cd $GOPATH/src/github.com/rightscale
@@ -397,10 +411,6 @@ cd rsc
 make depend
 make
 ```
-
-Note that if you start with `go get github.com/rightscale/rsc` you will get the 'go1' branch,
-which does not build. You could manually checkout master if you wanted but then you would also
-need to change the origin if you wanted to push back to github.
 
 #### Convert a release branch to a dev branch
 
@@ -423,21 +433,19 @@ git push --set-upstream origin v1.2.3
 ```
 Don't forget to update CHANGELOG.md!
 
-#### Alternative
+### Test a release
 
-An alternative is to remove the gopkg.in constraints so you can play freely (naaah, can't do that,
-right?). `make gounvers` is your friend and removes all the cruft. However, if you git push without
-runing `make govers` on a branch starting with a v[0-9] travis will fail your build. The short for
-this approach is:
+Once the release branch has been pushed and the CI job completes:
+* Download the binary, run `rsc --version` and make sure the correct version is displayed.
+* Create a temporary go workspace and make sure go get retrieves the correct version:
 ```
-mkdir -p $GOPATH/src/github.com/rightscale
-cd $GOPATH/src/github.com/rightscale
-git clone https://github.com/rightscale/rsc.git
-cd rsc
-git checkout v1-unstable
-make gounvers
-make depend
-make
+$ mkdir tmp
+$ export SAVED_GOPATH=$GOTPATH
+$ export GOPATH=`pwd`/tmp
+$ go get gopkg.in/rightscale/rsc.v1
+$ cd tmp/src/gopkg.in/rightscale/rsc.v1
+$ git log -1
+$ export GOPATH=$SAVED_GOPATH
 ```
 
 ### Code generation
@@ -452,35 +460,12 @@ The source code for the code generator tools lives under the `gen` directory.
 Once the tools are compiled and installed they can be invoked using `go generate`,
 see [http://blog.golang.org/generate](http://blog.golang.org/generate)
 for information on how `go generate` works. The `go generate` comments live in the top level file
-`generate.go`:
-```go
-//go:generate api15gen -metadata=cm15 -output=cm15
-//go:generate praxisgen -metadata=cm16/api_docs -output=cm16 -pkg=cm16 -target=1.6 -client=Api
-//go:generate praxisgen -metadata=ss/ssd/restful_doc -output=ss/ssd -pkg=ssd -target=1.0 -client=Api
-//go:generate praxisgen -metadata=ss/ssc/restful_doc -output=ss/ssc -pkg=ssc -target=1.0 -client=Api
-//go:generate praxisgen -metadata=ss/ssm/restful_doc -output=ss/ssm -pkg=ssm -target=1.0 -client=Api
-```
+`generate.go`.
+
 When invoked the `api15gen` and `praxisgen` tools generate the `codegen_client.go` and `codegen_metadata.go`
 for each API client in their directory.
 
-The Makefile included in the source code contains a `rsc` target (the default target) that can be
-invoked to generate the code and build the command line tool.
-
-### Other Directories
-
-The `ss` package consists of 3 sub-packages, one per self-service API: The `ssd` sub-package
-contains the code for making requests to the RightScale Self-Service designer API, the `ssc` to the
-RightScale Self-Service catalog API and finally `ssm` to the RightScale Self-Service manager API.
-These are sub-packages instead of top-level packages so that they can be wrapped and exposed through
-a single entry point (both for the command line and the go client methods).
-
-The `metadata` directory defines the data types generated by `api15gen` and `praxisgen`. These
-include data types that describe resources, actions and action parameters. These data structures
-are used by the generated code and by the command line parsing code to provide contextual help
-for example.
-
-Finally, the `cmd` package contains common code used by `rsc` and each API command line processing
-code to access command line flags.
+The Makefile takes care of running `go generate` prior to building `rsc`.
 
 ### Contributing
 
@@ -500,16 +485,6 @@ The JSON metadata for praxis apps is the JSON generated by the `rake praxis:api_
 Updating a client to the latest version of an API thus consists of updating the corresponding JSON
 and rebuilding the client (the `go generate` directives will take care of updating the generated
 code).
-
-### Gopkg.in
-
-Goals in using gopkg.in:
-- Someone blindly doing `go get github.com/rightscale.com/rsc` should either get the latest
-  stable version or should get build errors, the way this now happens is that they get the
-  'go1' branch and that fails to compile due to import constraints.
-- Getting `gopkg.in/rightscale/rsc.v1` should work as expected, and should have the actual
-  version in the code (e.g. user_agent.go)
-- Imports of rsc packages should raise errors if not using gopkg.in
 
 ## License
 
