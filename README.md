@@ -421,6 +421,7 @@ make govers
 git commit -a -m 'add import constraints for release'
 git push --set-upstream origin v1.2.3
 ```
+Don't forget to update CHANGELOG.md!
 
 #### Alternative
 
