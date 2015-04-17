@@ -32,7 +32,7 @@
 		},
 		{
 			"ImportPath": "github.com/rightscale/go-jsonselect",
-			"Rev": "99937931155dde6571d3e8cbab12447d208af785"
+			"Rev": "da366aa83cdb67ae8ee6fadde9109f86d673c9b0"
 		},
 		{
 			"ImportPath": "gopkg.in/alecthomas/kingpin.v1",
