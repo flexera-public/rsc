@@ -10,7 +10,7 @@
 	"capabilities": "[]map[string]interface{}",
 	"cidr_block": "string",
 	"cidr_ips": "[]string",
-	"cloud_specific_attributes": "map[string]string",
+	"cloud_specific_attributes": "map[string]interface{}",
 	"cloud_type": "string",
 	"comments_emailed": "bool",
 	"comments_enabled": "bool",
