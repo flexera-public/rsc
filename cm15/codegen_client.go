@@ -7504,7 +7504,7 @@ type ServerArray struct {
 	Actions          []map[string]string    `json:"actions,omitempty"`
 	ArrayType        string                 `json:"array_type,omitempty"`
 	CurrentInstances []Instance             `json:"current_instances,omitempty"`
-	DatacenterPolicy string                 `json:"datacenter_policy,omitempty"`
+	DatacenterPolicy []DatacenterPolicy     `json:"datacenter_policy,omitempty"`
 	Description      string                 `json:"description,omitempty"`
 	ElasticityParams map[string]interface{} `json:"elasticity_params,omitempty"`
 	InstancesCount   int                    `json:"instances_count,omitempty"`

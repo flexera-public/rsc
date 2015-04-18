@@ -29,7 +29,7 @@
 	"credentials": "map[string]string",
 	"current_instance": "Instance",
 	"current_instances": "[]Instance",
-	"datacenter_policy": "string",
+	"datacenter_policy": "[]DatacenterPolicy",
 	"dependency": "bool",
 	"description": "string",
 	"destination_cidr_block": "string",
