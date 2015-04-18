@@ -2660,33 +2660,33 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]interface{}) error {
 // existing in the cloud. However, if an instance is not of type "next", it will generally represent an existing running
 // (or provisioned) virtual machine existing in the cloud.
 type Instance struct {
-	Actions                  []map[string]string `json:"actions,omitempty"`
-	AdminPassword            string              `json:"admin_password,omitempty"`
-	AssociatePublicIpAddress bool                `json:"associate_public_ip_address,omitempty"`
-	CloudSpecificAttributes  map[string]string   `json:"cloud_specific_attributes,omitempty"`
-	CreatedAt                RubyTime            `json:"created_at,omitempty"`
-	Description              string              `json:"description,omitempty"`
-	InheritedSources         []string            `json:"inherited_sources,omitempty"`
-	Inputs                   []map[string]string `json:"inputs,omitempty"`
-	IpForwardingEnabled      bool                `json:"ip_forwarding_enabled,omitempty"`
-	Links                    []map[string]string `json:"links,omitempty"`
-	Locked                   bool                `json:"locked,omitempty"`
-	MonitoringId             string              `json:"monitoring_id,omitempty"`
-	MonitoringServer         string              `json:"monitoring_server,omitempty"`
-	Name                     string              `json:"name,omitempty"`
-	OsPlatform               string              `json:"os_platform,omitempty"`
-	PricingType              string              `json:"pricing_type,omitempty"`
-	PrivateDnsNames          []string            `json:"private_dns_names,omitempty"`
-	PrivateIpAddresses       []string            `json:"private_ip_addresses,omitempty"`
-	PublicDnsNames           []string            `json:"public_dns_names,omitempty"`
-	PublicIpAddresses        []string            `json:"public_ip_addresses,omitempty"`
-	ResourceUid              string              `json:"resource_uid,omitempty"`
-	SecurityGroups           []SecurityGroup     `json:"security_groups,omitempty"`
-	State                    string              `json:"state,omitempty"`
-	Subnets                  []Subnet            `json:"subnets,omitempty"`
-	TerminatedAt             RubyTime            `json:"terminated_at,omitempty"`
-	UpdatedAt                RubyTime            `json:"updated_at,omitempty"`
-	UserData                 string              `json:"user_data,omitempty"`
+	Actions                  []map[string]string    `json:"actions,omitempty"`
+	AdminPassword            string                 `json:"admin_password,omitempty"`
+	AssociatePublicIpAddress bool                   `json:"associate_public_ip_address,omitempty"`
+	CloudSpecificAttributes  map[string]interface{} `json:"cloud_specific_attributes,omitempty"`
+	CreatedAt                RubyTime               `json:"created_at,omitempty"`
+	Description              string                 `json:"description,omitempty"`
+	InheritedSources         []string               `json:"inherited_sources,omitempty"`
+	Inputs                   []map[string]string    `json:"inputs,omitempty"`
+	IpForwardingEnabled      bool                   `json:"ip_forwarding_enabled,omitempty"`
+	Links                    []map[string]string    `json:"links,omitempty"`
+	Locked                   bool                   `json:"locked,omitempty"`
+	MonitoringId             string                 `json:"monitoring_id,omitempty"`
+	MonitoringServer         string                 `json:"monitoring_server,omitempty"`
+	Name                     string                 `json:"name,omitempty"`
+	OsPlatform               string                 `json:"os_platform,omitempty"`
+	PricingType              string                 `json:"pricing_type,omitempty"`
+	PrivateDnsNames          []string               `json:"private_dns_names,omitempty"`
+	PrivateIpAddresses       []string               `json:"private_ip_addresses,omitempty"`
+	PublicDnsNames           []string               `json:"public_dns_names,omitempty"`
+	PublicIpAddresses        []string               `json:"public_ip_addresses,omitempty"`
+	ResourceUid              string                 `json:"resource_uid,omitempty"`
+	SecurityGroups           []SecurityGroup        `json:"security_groups,omitempty"`
+	State                    string                 `json:"state,omitempty"`
+	Subnets                  []Subnet               `json:"subnets,omitempty"`
+	TerminatedAt             RubyTime               `json:"terminated_at,omitempty"`
+	UpdatedAt                RubyTime               `json:"updated_at,omitempty"`
+	UserData                 string                 `json:"user_data,omitempty"`
 }
 
 //===== Locator
