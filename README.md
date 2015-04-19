@@ -253,7 +253,7 @@ Please see the [building](#building) section for more details.
 ### Examples
 
 * [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/basic)
-* [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
+* [Cloud Management 1.5 Auditail Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
 * [Self-Service Basic Example](https://github.com/rightscale/rsc/tree/master/ss/examples/basic)
 
 ### References
