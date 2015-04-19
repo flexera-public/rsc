@@ -7,12 +7,12 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssd
+package ssd // import "gopkg.in/rightscale/rsc.v1/ss/ssd"
 
 import (
 	"regexp"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v1/metadata"
 )
 
 // Consists of a map of resource name to resource metadata.
