@@ -250,6 +250,21 @@ import "github.com/rightscale/rsc
 
 Please see the [building](#building) section for more details.
 
+### Examples
+
+* [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/basic)
+* [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
+* [Self-Service Basic Example](https://github.com/rightscale/rsc/tree/master/ss/examples/basic)
+
+### References
+
+* [Cloud Management 1.5](http://godoc.org/github.com/rightscale/rsc/cm15)
+* [Cloud Management 1.6](http://godoc.org/github.com/rightscale/rsc/cm16)
+* [Self-Service Designer](http://godoc.org/github.com/rightscale/rsc/ss/ssd)
+* [Self-Service Catalog](http://godoc.org/github.com/rightscale/rsc/ss/ssc)
+* [Self-Service Manager](http://godoc.org/github.com/rightscale/rsc/ss/ssm)
+* [RightLink10](http://godoc.org/github.com/rightscale/rsc/rl10)
+
 ### Client Creation
 
 Each API client package defines an `Api` struct that represents the API
@@ -466,10 +481,6 @@ When invoked the `api15gen` and `praxisgen` tools generate the `codegen_client.g
 for each API client in their directory.
 
 The Makefile takes care of running `go generate` prior to building `rsc`.
-
-### Contributing
-
-PRs are always welcome, use github issues to report problems.
 
 #### Adding Support to a New RightScale API - or any Praxis application
 
