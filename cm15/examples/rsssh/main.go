@@ -169,7 +169,7 @@ func serverArray(client *cm15.Api, name string) []*cm15.Instance {
 }
 
 // Makes a GET call on the given server and returns the current instance of the server.
-func server(client *cm15.Api, name string) cm15.Instance {
+func server(client *cm15.Api, name string) *cm15.Instance {
 	serverLocator := client.ServerLocator("/api/servers")
 	servers, err := serverLocator.Index(rsapi.ApiParams{"view": "instance_detail", "filter": []string{"name==" + name}})
 	if err != nil {
