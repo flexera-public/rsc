@@ -7,8 +7,8 @@ by the RightLink10 agent.
 
 - Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](https://gocover.io/github.com/rightscale/rsc)
-- v1.0.1: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.1)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.1.svg)](https://gocover.io/github.com/rightscale/rsc)
+- v1.0.2: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.2)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.2.svg)](https://gocover.io/github.com/rightscale/rsc)
 
 `rsc` can be used in one of two ways:
 
@@ -47,7 +47,7 @@ $ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |
   tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v1.0.1 - 2015-04-17 21:18:40 - c6185d58424d17f6f4e80e1762ae45d7db798eb6
+rsc v1.0.2 - 2015-04-19 00:12:22 - b62f8d3991e569f7d8519f4d8864666a3143ecd4
 ```
 
 - MacOS: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
@@ -60,7 +60,7 @@ See further down in the README for building from source.
 - To download the latest stable use the links with 'v1' in them.
 - To download a specific version, replace the 'v1' by the exact version, such as 'v1.0.1'.
 - All versions with the same major number (e.g. 'v1') are intended to be "upward" compatible.
-- The 'v1' links download a specific version, so `rsc --version` will print something like 'v1.0.3'
+- The 'v1' links download a specific version, so `rsc --version` will print something like 'v1.0.2'
   and not 'v1'
 - The latest dev version is 'master'
 
@@ -401,7 +401,7 @@ mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
 git clone https://github.com/rightscale/rsc.git rsc.v1
 cd rsc
-git checkout v1.0.1
+git checkout v1.0.2
 make depend
 make
 ```
