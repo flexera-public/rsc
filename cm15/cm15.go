@@ -1,10 +1,10 @@
-package cm15
+package cm15 // import "gopkg.in/rightscale/rsc.v1/cm15"
 
 import (
 	"log"
 
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v1/cmd"
+	"gopkg.in/rightscale/rsc.v1/rsapi"
 )
 
 // Api 1.5 client
