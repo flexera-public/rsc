@@ -28,6 +28,19 @@ type Registrar struct {
 func (r *Registrar) RegisterActionCommands(apiName string, res map[string]*metadata.Resource,
 	cmds ActionCommands) {
 
+	// Add special "actions" action
+	_, ok := cmds[fmt.Sprintf("%s %s", r.ApiCmd.FullCommand(), "actions")]
+	if !ok {
+		pattern := "List all %s actions and associated hrefs. If a resource href is provided only list actions for that resource."
+		description := fmt.Sprintf(pattern, apiName)
+		actionsCmd := r.ApiCmd.Command("actions", description)
+		actionsCmdValue := ActionCommand{}
+		hrefMsg := "Href of resource to show actions for."
+		actionsCmd.Arg("href", hrefMsg).StringVar(&actionsCmdValue.Href)
+		cmds[actionsCmd.FullCommand()] = &actionsCmdValue
+	}
+
+	// Add resource actions
 	var actionNames []string
 	for _, r := range res {
 		for _, a := range r.Actions {
@@ -89,16 +102,5 @@ func (r *Registrar) RegisterActionCommands(apiName string, res map[string]*metad
 		actionCmd.Arg("href", hrefMsg).Required().StringVar(&actionCmdValue.Href)
 		actionCmd.Arg("params", paramsMsg).StringsVar(&actionCmdValue.Params)
 		cmds[actionCmd.FullCommand()] = &actionCmdValue
-	}
-	// Add special "actions" action
-	_, ok := cmds[fmt.Sprintf("%s %s", r.ApiCmd.FullCommand(), "actions")]
-	if !ok {
-		pattern := "List all %s actions and associated hrefs. If a resource href is provided only list actions for that resource."
-		description := fmt.Sprintf(pattern, apiName)
-		actionsCmd := r.ApiCmd.Command("actions", description)
-		actionsCmdValue := ActionCommand{}
-		hrefMsg := "Href of resource to show actions for."
-		actionsCmd.Arg("href", hrefMsg).StringVar(&actionsCmdValue.Href)
-		cmds[actionsCmd.FullCommand()] = &actionsCmdValue
 	}
 }
