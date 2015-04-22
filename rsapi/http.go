@@ -32,6 +32,7 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 		id = base64.StdEncoding.EncodeToString(b)
 		a.Logger.Printf("[%s] %s %s", id, req.Method, req.URL.String())
 	}
+	req.Header.Set("User-Agent", UA)
 	if a.DumpRequestResponse == Debug {
 		b, err := httputil.DumpRequestOut(req, true)
 		if err == nil {
@@ -54,7 +55,6 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 			return nil, err
 		}
 	}
-	req.Header.Set("User-Agent", UA)
 	resp, err := a.Client.Do(req)
 	if err != nil {
 		return nil, err
