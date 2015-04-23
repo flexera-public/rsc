@@ -12,7 +12,7 @@ package ssm
 import (
 	"regexp"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v1/metadata"
 )
 
 // Consists of a map of resource name to resource metadata.
