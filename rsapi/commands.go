@@ -460,18 +460,10 @@ func normalize(payload ApiParams, name string, value interface{}) (ApiParams, er
 		return nil, nil
 	}
 	after := matches[2]
-	if after == "" {
+	if after == "" || after == "[]" {
 		payload[k] = value
 	} else if after == "[" {
 		payload[name] = value
-	} else if after == "[]" {
-		if _, ok := payload[k]; !ok {
-			payload[k] = []interface{}{}
-		}
-		if _, ok := payload[k].([]interface{}); !ok {
-			return nil, fmt.Errorf("expected array for param '%s'", k)
-		}
-		payload[k] = append(payload[k].([]interface{}), value)
 	} else {
 		matches = childRegexp.FindStringSubmatch(after)
 		if len(matches) == 0 {
