@@ -451,16 +451,23 @@ Don't forget to update CHANGELOG.md!
 ### Test a release
 
 Once the release branch has been pushed and the CI job completes:
-* Download the binary, run `rsc --version` and make sure the correct version is displayed.
+* Download the binary, run `rsc --version` and make sure the correct version is displayed, on a Mac:
+```
+curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
+chmod +x ./rsc
+./rsc --version
+```
 * Create a temporary go workspace and make sure go get retrieves the correct version:
 ```
-$ mkdir tmp
-$ export SAVED_GOPATH=$GOTPATH
-$ export GOPATH=`pwd`/tmp
-$ go get gopkg.in/rightscale/rsc.v1
-$ cd tmp/src/gopkg.in/rightscale/rsc.v1
-$ git log -1
-$ export GOPATH=$SAVED_GOPATH
+mkdir tmp
+export SAVED_GOPATH=$GOTPATH
+export GOPATH=`pwd`/tmp
+go get gopkg.in/rightscale/rsc.v1
+cd tmp/src/gopkg.in/rightscale/rsc.v1
+git log -2
+export GOPATH=$SAVED_GOPATH
+cd ../../../../..
+rm -rf tmp
 ```
 
 ### Code generation
