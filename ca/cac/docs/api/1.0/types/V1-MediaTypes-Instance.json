@@ -1,0 +1,520 @@
+{
+  "name": "V1::MediaTypes::Instance",
+  "id": "V1-MediaTypes-Instance",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#instance"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_key": {
+      "description": "Unique identifier for the instance across accounts, clouds and cloud vendors.",
+      "example_definition": {},
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_uid": {
+      "description": "Cloud vendor indentifier for instance.",
+      "example_definition": "i-1a23bcd4",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_rsid": {
+      "description": "RightScale identifier for instance.",
+      "example_definition": "ABC1234D567E8",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "account_id": {
+      "description": "The RightScale account ID.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "account_name": {
+      "description": "The RightScale account name.",
+      "example_definition": "Example account",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_start_at": {
+      "description": "The time that the instance went operational, in the user's current timezone.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "instance_end_at": {
+      "description": "The time the instance was wither terminated or stopped, in the user's current timezone.\n                        This can be null if the instance is still operational.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "cloud_vendor_name": {
+      "description": "The name of the cloud vendor.",
+      "values": [
+        "Amazon Web Services",
+        "CloudStack",
+        "Datapipe",
+        "Eucalyptus",
+        "Google",
+        "HP",
+        "IDC Frontier",
+        "Logicworks",
+        "Microsoft Azure",
+        "OpenStack",
+        "Rackspace",
+        "SoftLayer",
+        "VMware"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "cloud_id": {
+      "description": "The RightScale ID of the cloud.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "cloud_name": {
+      "description": "The name of the cloud.",
+      "example_definition": "EC2 us-east-1",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "datacenter_key": {
+      "description": "A unique identifier for the datacenter across cloud vendors.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "datacenter_name": {
+      "description": "The name of the datacenter.",
+      "example_definition": "us-east-1a",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "deployment_id": {
+      "description": "The RightScale ID of the deployment.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "deployment_name": {
+      "description": "The name of the deployment. If null the instance does not belong to a deployment.",
+      "example_definition": "Example deployment",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_type_key": {
+      "description": "Unique identifier for the instance type across cloud vendors.",
+      "example_definition": "1::m1.small",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_type_name": {
+      "description": "The name of the instance type.",
+      "example_definition": "m1.small",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_name": {
+      "description": "The name given to the instance by the user.",
+      "example_definition": "Example instance",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "server_template_id": {
+      "description": "The RightScale ID of the ServerTemplate.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "server_template_name": {
+      "description": "The name of the ServerTemplate. If null the instance does not have a ServerTemplate.",
+      "example_definition": "Example ServerTemplate",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "platform": {
+      "description": "The platform of the instance.",
+      "values": [
+        "Linux/UNIX",
+        "Windows"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "provisioned_by_user_id": {
+      "description": "The ID of the RightScale user that provisioned the instance. User ID 0 means that the instance was automatically launched from by the RightScale platform.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "provisioned_by_user_email": {
+      "description": "The email address of the RightScale user that provisioned the instance. If null the instance was not provisioned by a RightScale user.",
+      "example_definition": [
+        "user@example.com"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "incarnator_id": {
+      "description": "The ID of the Server or ServerType that launched the instance.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "incarnator_type": {
+      "description": "Whether the instance was launched by a Server or ServerArray. If null the instance is not managed by RightScale.",
+      "values": [
+        "Server",
+        "ServerArray"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "state": {
+      "description": "The current state of the instance.",
+      "example_definition": "operational",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "tags": {
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::Tag"
+          },
+          "type": {
+            "name": "V1::MediaTypes::Tag",
+            "id": "V1-MediaTypes-Tag",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "total_usage_hours": {
+      "description": "The total number of hours that the instance was operational for.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "estimated_cost_for_period": {
+      "description": "The total estimated cost (USD) of the instance during the period defined by the start and end time parameters.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "estimated_managed_rcu_count_for_period": {
+      "description": "The total estimated managed RCU count of the instance during the period defined by the start and end time parameters.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "instance_key": {
+        },
+        "instance_uid": {
+        },
+        "instance_rsid": {
+        },
+        "account_id": {
+        },
+        "account_name": {
+        },
+        "instance_start_at": {
+        },
+        "instance_end_at": {
+        },
+        "cloud_vendor_name": {
+        },
+        "cloud_id": {
+        },
+        "cloud_name": {
+        },
+        "datacenter_key": {
+        },
+        "datacenter_name": {
+        },
+        "deployment_id": {
+        },
+        "deployment_name": {
+        },
+        "instance_type_key": {
+        },
+        "instance_type_name": {
+        },
+        "instance_name": {
+        },
+        "server_template_id": {
+        },
+        "server_template_name": {
+        },
+        "platform": {
+        },
+        "provisioned_by_user_id": {
+        },
+        "provisioned_by_user_email": {
+        },
+        "incarnator_id": {
+        },
+        "incarnator_type": {
+        },
+        "state": {
+        },
+        "total_usage_hours": {
+        },
+        "estimated_cost_for_period": {
+        },
+        "estimated_managed_rcu_count_for_period": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#instance",
+        "instance_key": "530::626::i-1a23bcd4",
+        "instance_uid": "i-1a23bcd4",
+        "instance_rsid": "ABC1234D567E8",
+        "account_id": 530,
+        "account_name": "Example account",
+        "instance_start_at": "2014-07-13T00:00:00+00:00",
+        "instance_end_at": "2013-12-03T00:00:00+00:00",
+        "cloud_vendor_name": "Google",
+        "cloud_id": 626,
+        "cloud_name": "EC2 us-east-1",
+        "datacenter_key": "unhopefully",
+        "datacenter_name": "us-east-1a",
+        "deployment_id": 394,
+        "deployment_name": "Example deployment",
+        "instance_type_key": "1::m1.small",
+        "instance_type_name": "m1.small",
+        "instance_name": "Example instance",
+        "server_template_id": 582,
+        "server_template_name": "Example ServerTemplate",
+        "platform": "Windows",
+        "provisioned_by_user_id": 260,
+        "provisioned_by_user_email": "user@example.com",
+        "incarnator_id": 888,
+        "incarnator_type": "ServerArray",
+        "state": "operational",
+        "total_usage_hours": 0.0,
+        "estimated_cost_for_period": 0.0,
+        "estimated_managed_rcu_count_for_period": 0.0
+      }
+    },
+    "include_tags": {
+      "attributes": {
+        "kind": {
+        },
+        "instance_key": {
+        },
+        "instance_uid": {
+        },
+        "instance_rsid": {
+        },
+        "account_id": {
+        },
+        "account_name": {
+        },
+        "instance_start_at": {
+        },
+        "instance_end_at": {
+        },
+        "cloud_vendor_name": {
+        },
+        "cloud_id": {
+        },
+        "cloud_name": {
+        },
+        "datacenter_key": {
+        },
+        "datacenter_name": {
+        },
+        "deployment_id": {
+        },
+        "deployment_name": {
+        },
+        "instance_type_key": {
+        },
+        "instance_type_name": {
+        },
+        "instance_name": {
+        },
+        "server_template_id": {
+        },
+        "server_template_name": {
+        },
+        "platform": {
+        },
+        "provisioned_by_user_id": {
+        },
+        "provisioned_by_user_email": {
+        },
+        "incarnator_id": {
+        },
+        "incarnator_type": {
+        },
+        "state": {
+        },
+        "tags": {
+        },
+        "total_usage_hours": {
+        },
+        "estimated_cost_for_period": {
+        },
+        "estimated_managed_rcu_count_for_period": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#instance",
+        "instance_key": "530::626::i-1a23bcd4",
+        "instance_uid": "i-1a23bcd4",
+        "instance_rsid": "ABC1234D567E8",
+        "account_id": 530,
+        "account_name": "Example account",
+        "instance_start_at": "2014-07-13T00:00:00+00:00",
+        "instance_end_at": "2013-12-03T00:00:00+00:00",
+        "cloud_vendor_name": "Google",
+        "cloud_id": 626,
+        "cloud_name": "EC2 us-east-1",
+        "datacenter_key": "unhopefully",
+        "datacenter_name": "us-east-1a",
+        "deployment_id": 394,
+        "deployment_name": "Example deployment",
+        "instance_type_key": "1::m1.small",
+        "instance_type_name": "m1.small",
+        "instance_name": "Example instance",
+        "server_template_id": 582,
+        "server_template_name": "Example ServerTemplate",
+        "platform": "Windows",
+        "provisioned_by_user_id": 260,
+        "provisioned_by_user_email": "user@example.com",
+        "incarnator_id": 888,
+        "incarnator_type": "ServerArray",
+        "state": "operational",
+        "tags": [
+          {
+            "kind": "ca#tag",
+            "resource_type": "deployments",
+            "key": "ec2:name",
+            "value": "Rauwolfia"
+          }
+        ],
+        "total_usage_hours": 0.0,
+        "estimated_cost_for_period": 0.0,
+        "estimated_managed_rcu_count_for_period": 0.0
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#instance",
+    "instance_key": "530::626::i-1a23bcd4",
+    "instance_uid": "i-1a23bcd4",
+    "instance_rsid": "ABC1234D567E8",
+    "account_id": 530,
+    "account_name": "Example account",
+    "instance_start_at": "2014-07-13T00:00:00+00:00",
+    "instance_end_at": "2013-12-03T00:00:00+00:00",
+    "cloud_vendor_name": "Google",
+    "cloud_id": 626,
+    "cloud_name": "EC2 us-east-1",
+    "datacenter_key": "unhopefully",
+    "datacenter_name": "us-east-1a",
+    "deployment_id": 394,
+    "deployment_name": "Example deployment",
+    "instance_type_key": "1::m1.small",
+    "instance_type_name": "m1.small",
+    "instance_name": "Example instance",
+    "server_template_id": 582,
+    "server_template_name": "Example ServerTemplate",
+    "platform": "Windows",
+    "provisioned_by_user_id": 260,
+    "provisioned_by_user_email": "user@example.com",
+    "incarnator_id": 888,
+    "incarnator_type": "ServerArray",
+    "state": "operational",
+    "tags": [
+      {
+        "kind": "ca#tag",
+        "resource_type": "deployments",
+        "key": "ec2:name",
+        "value": "Rauwolfia"
+      }
+    ],
+    "total_usage_hours": 0.0,
+    "estimated_cost_for_period": 0.0,
+    "estimated_managed_rcu_count_for_period": 0.0
+  }
+}

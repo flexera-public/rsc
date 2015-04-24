@@ -1,0 +1,673 @@
+{
+  "description": "Patterns describe operations in usage, and can be applied to InstanceCombinations in Scenarios to model changes in the cost.\n        A pattern can only be applied to an InstanceCombination once.",
+  "media_type": "V1-MediaTypes-Pattern",
+  "actions": [
+    {
+      "description": "Create a new Pattern.",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/patterns",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "posteroinferior"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "description": "Name of the pattern.",
+              "required": true,
+              "example_definition": [
+                "Growth pattern"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "summary": {
+              "description": "Summary of the pattern.",
+              "example_definition": [
+                "Increase by 10% every months"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "type": {
+              "description": "Pattern type reflects whether the change that the pattern applies continues after the pattern has ended.\n          Changes made by permanent patterns persist past the chosen end date, e.g. general growth.\n          Changes made by temporary patterns only apply during the selected dates, e.g. holiday increase.",
+              "values": [
+                "permanent",
+                "temporary"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "value": {
+              "description": "Amount of change that the pattern will apply. The increase and decrease operations are based on percentages,\n            so for example, use the value 10 to increase/decrease by 10%.",
+              "required": true,
+              "type": {
+                "name": "Float",
+                "id": "Attributor-Float"
+              }
+            },
+            "operation": {
+              "description": "Type of change, the increase and decrease operations are based on percentages.",
+              "values": [
+                "add",
+                "subtract",
+                "increase",
+                "decrease",
+                "set_to"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "years": {
+              "description": "The years that the pattern will apply to. This can be \"all\" to apply the pattern in all years;\n          a range such as \"1-3\" to apply the pattern from years 1 to years 3; or individual years in a comma-separated list such as \"1,3\".",
+              "required": true,
+              "example_definition": [
+                "all",
+                "1-3",
+                "1, 3"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "months": {
+              "description": "The months that the pattern apply to. This can be \"all\" to apply the pattern in all months;\n          a range such as \"1-3\" meaning the pattern will be applied from the start of January to the end of March; or\n          individual months in a comma-separated list such as \"5, 7, 9\" meaning the pattern will be applied in May, July and September.",
+              "required": true,
+              "example_definition": [
+                "all",
+                "1-3",
+                "5, 7, 9"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "Growth pattern",
+          "summary": "Increase by 10% every months",
+          "type": "temporary",
+          "value": 0.0,
+          "operation": "set_to",
+          "years": "1, 3",
+          "months": "5, 7, 9"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Pattern",
+            "id": "V1-MediaTypes-Pattern",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "List all Patterns.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/patterns",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "posteroinferior"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Pattern",
+            "id": "V1-MediaTypes-Pattern",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a specific Pattern.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/patterns/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 593,
+          "view": "posteroinferior"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Pattern",
+            "id": "V1-MediaTypes-Pattern",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Update the provided attributes of a Pattern.",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/patterns/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 593,
+          "view": "posteroinferior"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "description": "Name of the pattern.",
+              "example_definition": [
+                "Growth pattern"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "summary": {
+              "description": "Summary of the pattern.",
+              "example_definition": [
+                "Increase by 10% every months"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "type": {
+              "description": "Pattern type reflects whether the change that the pattern applies continues after the pattern has ended.\n          Changes made by permanent patterns persist past the chosen end date, e.g. general growth.\n          Changes made by temporary patterns only apply during the selected dates, e.g. holiday increase.",
+              "values": [
+                "permanent",
+                "temporary"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "value": {
+              "description": "Amount of change that the pattern will apply. The increase and decrease operations are based on percentages,\n            so for example, use the value 10 to increase/decrease by 10%.",
+              "type": {
+                "name": "Float",
+                "id": "Attributor-Float"
+              }
+            },
+            "operation": {
+              "description": "Type of change, the increase and decrease operations are based on percentages.",
+              "values": [
+                "add",
+                "subtract",
+                "increase",
+                "decrease",
+                "set_to"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "years": {
+              "description": "The years that the pattern will apply to. This can be \"all\" to apply the pattern in all years;\n          a range such as \"1-3\" to apply the pattern from years 1 to years 3; or individual years in a comma-separated list such as \"1,3\".",
+              "example_definition": [
+                "all",
+                "1-3",
+                "1, 3"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "months": {
+              "description": "The months that the pattern apply to. This can be \"all\" to apply the pattern in all months;\n          a range such as \"1-3\" meaning the pattern will be applied from the start of January to the end of March; or\n          individual months in a comma-separated list such as \"5, 7, 9\" meaning the pattern will be applied in May, July and September.",
+              "example_definition": [
+                "all",
+                "1-3",
+                "5, 7, 9"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "Growth pattern",
+          "summary": "Increase by 10% every months",
+          "type": "temporary",
+          "value": 0.0,
+          "operation": "set_to",
+          "years": "1, 3",
+          "months": "5, 7, 9"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Pattern",
+            "id": "V1-MediaTypes-Pattern",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete a Pattern.",
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/patterns/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 593
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Create the following commonly used default Patterns: Increase by 2% every month,\n          Increase by 5% every month, Increase by 10% every month, Increase by 15% every month,\n          Increase by 500% during Nov - Dec, Increase by 200% during Jan - Feb, Decrease by 2% every month,\n          Decrease by 5% every month, Decrease by 10% every month, Decrease by 15% every month, Add 1 every month.",
+      "name": "create_defaults",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/patterns/actions/create_defaults",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Pattern"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "posteroinferior"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Pattern",
+            "id": "V1-MediaTypes-Pattern",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::Patterns",
+  "metadata": {
+  }
+}

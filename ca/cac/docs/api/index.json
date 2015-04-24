@@ -1,0 +1,140 @@
+{
+  "unversioned": {
+    "DevSession": {
+      "controller": "V0-Controllers-DevSession",
+      "name": "V0::Controllers::DevSession"
+    },
+    "HealthCheck": {
+      "controller": "V0-HealthCheck",
+      "name": "V0::HealthCheck",
+      "media_type": "Praxis-SimpleMediaType"
+    },
+    "Session": {
+      "controller": "V0-Controllers-Session",
+      "name": "V0::Controllers::Session"
+    },
+    "App": {
+      "controller": "V0-Controllers-App",
+      "name": "V0::Controllers::App"
+    }
+  },
+  "1.0": {
+    "Accounts": {
+      "controller": "V1-ApiResources-Accounts",
+      "name": "V1::ApiResources::Accounts",
+      "media_type": "V1-MediaTypes-Account"
+    },
+    "AnalysisSnapshots": {
+      "controller": "V1-Controllers-AnalysisSnapshots",
+      "name": "V1::Controllers::AnalysisSnapshots",
+      "media_type": "V1-MediaTypes-AnalysisSnapshot"
+    },
+    "BudgetAlerts": {
+      "controller": "V1-Controllers-BudgetAlerts",
+      "name": "V1::Controllers::BudgetAlerts",
+      "media_type": "V1-MediaTypes-BudgetAlert"
+    },
+    "CloudBillMetrics": {
+      "controller": "V1-Controllers-CloudBillMetrics",
+      "name": "V1::Controllers::CloudBillMetrics"
+    },
+    "CloudBills": {
+      "controller": "V1-Controllers-CloudBills",
+      "name": "V1::Controllers::CloudBills"
+    },
+    "CurrentUser": {
+      "controller": "V1-ApiResources-CurrentUser",
+      "name": "V1::ApiResources::CurrentUser",
+      "media_type": "V1-MediaTypes-CurrentUser"
+    },
+    "Scenarios": {
+      "controller": "V1-Controllers-Scenarios",
+      "name": "V1::Controllers::Scenarios",
+      "media_type": "V1-MediaTypes-Scenario"
+    },
+    "InstanceCombinations": {
+      "controller": "V1-Controllers-InstanceCombinations",
+      "name": "V1::Controllers::InstanceCombinations",
+      "media_type": "V1-MediaTypes-InstanceCombination"
+    },
+    "InstanceMetrics": {
+      "controller": "V1-Controllers-InstanceMetrics",
+      "name": "V1::Controllers::InstanceMetrics"
+    },
+    "InstanceUsagePeriods": {
+      "controller": "V1-Controllers-InstanceUsagePeriods",
+      "name": "V1::Controllers::InstanceUsagePeriods",
+      "media_type": "V1-MediaTypes-InstanceUsagePeriod"
+    },
+    "Instances": {
+      "controller": "V1-Controllers-Instances",
+      "name": "V1::Controllers::Instances",
+      "media_type": "V1-MediaTypes-Instance"
+    },
+    "Patterns": {
+      "controller": "V1-Controllers-Patterns",
+      "name": "V1::Controllers::Patterns",
+      "media_type": "V1-MediaTypes-Pattern"
+    },
+    "ReservedInstancePurchases": {
+      "controller": "V1-Controllers-ReservedInstancePurchases",
+      "name": "V1::Controllers::ReservedInstancePurchases",
+      "media_type": "V1-MediaTypes-ReservedInstancePurchase"
+    },
+    "ReservedInstances": {
+      "controller": "V1-Controllers-ReservedInstances",
+      "name": "V1::Controllers::ReservedInstances",
+      "media_type": "V1-MediaTypes-ReservedInstance"
+    },
+    "ScheduledReports": {
+      "controller": "V1-Controllers-ScheduledReports",
+      "name": "V1::Controllers::ScheduledReports",
+      "media_type": "V1-MediaTypes-ScheduledReport"
+    },
+    "TempInstancePrices": {
+      "controller": "V1-Controllers-TempInstancePrices",
+      "name": "V1::Controllers::TempInstancePrices",
+      "media_type": "Praxis-SimpleMediaType"
+    },
+    "UserSettings": {
+      "controller": "V1-Controllers-UserSettings",
+      "name": "V1::Controllers::UserSettings",
+      "media_type": "V1-MediaTypes-UserSetting"
+    },
+    "Users": {
+      "controller": "V1-ApiResources-Users",
+      "name": "V1::ApiResources::Users",
+      "media_type": "V1-MediaTypes-User"
+    },
+    "CloudAccount (*)": {
+      "media_type": "V1-MediaTypes-CloudAccount"
+    },
+    "Filter (*)": {
+      "media_type": "V1-MediaTypes-Filter"
+    },
+    "ModuleState (*)": {
+      "media_type": "V1-MediaTypes-ModuleState"
+    },
+    "TimeSeriesMetricsResult (*)": {
+      "media_type": "V1-MediaTypes-TimeSeriesMetricsResult"
+    },
+    "MetricsResult (*)": {
+      "media_type": "V1-MediaTypes-MetricsResult"
+    },
+    "Metrics (*)": {
+      "media_type": "V1-MediaTypes-Metrics"
+    },
+    "UserOnboardingStatus (*)": {
+      "media_type": "V1-MediaTypes-UserOnboardingStatus"
+    },
+    "UserEnvironment (*)": {
+      "media_type": "V1-MediaTypes-UserEnvironment"
+    },
+    "Tag (*)": {
+      "media_type": "V1-MediaTypes-Tag"
+    },
+    "UserAccounts (*)": {
+      "media_type": "V1-MediaTypes-UserAccounts"
+    }
+  }
+}

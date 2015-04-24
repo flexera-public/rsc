@@ -1,0 +1,352 @@
+{
+  "name": "V1::MediaTypes::Account",
+  "id": "V1-MediaTypes-Account",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "values": [
+        "ca#account"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "name": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "is_cloud_analytics_blocked_by_billing_admin_only": {
+      "description": "Is Cloud Analytics blocked on this account due to the `billing_admin_only` setting\n            being enabled and the user not having the `billing` or `admin` permissions?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "cloud_analytics_enabled": {
+      "description": "Does the user have the required settings and permissions for this account to be enabled\n            for them in Cloud Analytics?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "enterprise_id": {
+      "description": "The RightScale enterprise ID for the account, only applicable for enterprise accounts.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "enterprise_name": {
+      "description": "The RightScale enterprise name for the account, only applicable for enterprise accounts.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "is_enterprise_parent": {
+      "description": "Is the account an enterprise parent account? i.e. does it have the `enterprise_master` account setting?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "parent_account_id": {
+      "description": "The ID of the RightScale enterprise parent account. Only applicable for enterprise accounts.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "parent_account_name": {
+      "description": "The name of the RightScale enterprise parent account. Only applicable for enterprise accounts.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "plan_code": {
+      "description": "The internal plan code for the account.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "shard_id": {
+      "description": "The shard ID for the account.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "owner_id": {
+      "description": "The user ID of the account owner.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "expires_in": {
+      "description": "The number of days until the account expires. Only applicable for certain accounts (e.g. Free edition).",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "user_has_admin": {
+      "description": "Does the currently logged-in user have the admin permission in the account?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "user_has_actor": {
+      "description": "Does the currently logged-in user have the actor permission in the account?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "user_has_enterprise_manager": {
+      "description": "Does the currently logged-in user have the enterprise_manager permission in the account?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "uses_ip_whitelisting": {
+      "description": "Does the account use IP whitelisting to restrict access?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "cloud_accounts": {
+      "description": "The account's cloud accounts.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::CloudAccount"
+          },
+          "type": {
+            "name": "V1::MediaTypes::CloudAccount",
+            "id": "V1-MediaTypes-CloudAccount",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "name": {
+        },
+        "is_cloud_analytics_blocked_by_billing_admin_only": {
+        },
+        "cloud_analytics_enabled": {
+        },
+        "enterprise_id": {
+        },
+        "enterprise_name": {
+        },
+        "is_enterprise_parent": {
+        },
+        "parent_account_id": {
+        },
+        "parent_account_name": {
+        },
+        "plan_code": {
+        },
+        "shard_id": {
+        },
+        "owner_id": {
+        },
+        "expires_in": {
+        },
+        "user_has_admin": {
+        },
+        "user_has_actor": {
+        },
+        "user_has_enterprise_manager": {
+        },
+        "uses_ip_whitelisting": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 715,
+        "href": "hubbly",
+        "kind": "ca#account",
+        "name": "untasteful",
+        "is_cloud_analytics_blocked_by_billing_admin_only": true,
+        "cloud_analytics_enabled": true,
+        "enterprise_id": 413,
+        "enterprise_name": "acrosporous",
+        "is_enterprise_parent": false,
+        "parent_account_id": 125,
+        "parent_account_name": "recast",
+        "plan_code": "oligarchist",
+        "shard_id": 249,
+        "owner_id": 471,
+        "expires_in": 711,
+        "user_has_admin": true,
+        "user_has_actor": true,
+        "user_has_enterprise_manager": true,
+        "uses_ip_whitelisting": false
+      }
+    },
+    "full": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "name": {
+        },
+        "is_cloud_analytics_blocked_by_billing_admin_only": {
+        },
+        "cloud_analytics_enabled": {
+        },
+        "enterprise_id": {
+        },
+        "enterprise_name": {
+        },
+        "is_enterprise_parent": {
+        },
+        "parent_account_id": {
+        },
+        "parent_account_name": {
+        },
+        "plan_code": {
+        },
+        "shard_id": {
+        },
+        "owner_id": {
+        },
+        "expires_in": {
+        },
+        "user_has_admin": {
+        },
+        "user_has_actor": {
+        },
+        "user_has_enterprise_manager": {
+        },
+        "uses_ip_whitelisting": {
+        },
+        "cloud_accounts": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 715,
+        "href": "hubbly",
+        "kind": "ca#account",
+        "name": "untasteful",
+        "is_cloud_analytics_blocked_by_billing_admin_only": true,
+        "cloud_analytics_enabled": true,
+        "enterprise_id": 413,
+        "enterprise_name": "acrosporous",
+        "is_enterprise_parent": false,
+        "parent_account_id": 125,
+        "parent_account_name": "recast",
+        "plan_code": "oligarchist",
+        "shard_id": 249,
+        "owner_id": 471,
+        "expires_in": 711,
+        "user_has_admin": true,
+        "user_has_actor": true,
+        "user_has_enterprise_manager": true,
+        "uses_ip_whitelisting": false,
+        "cloud_accounts": [
+          {
+            "kind": "ca#cloud_account",
+            "cloud_id": 706,
+            "cloud_name": "EC2 eu-central-1",
+            "cloud_type": "amazon"
+          },
+          {
+            "kind": "ca#cloud_account",
+            "cloud_id": 162,
+            "cloud_name": "EC2 eu-central-1",
+            "cloud_type": "azure"
+          }
+        ]
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "id": 715,
+    "href": "hubbly",
+    "kind": "ca#account",
+    "name": "untasteful",
+    "is_cloud_analytics_blocked_by_billing_admin_only": true,
+    "cloud_analytics_enabled": true,
+    "enterprise_id": 413,
+    "enterprise_name": "acrosporous",
+    "is_enterprise_parent": false,
+    "parent_account_id": 125,
+    "parent_account_name": "recast",
+    "plan_code": "oligarchist",
+    "shard_id": 249,
+    "owner_id": 471,
+    "expires_in": 711,
+    "user_has_admin": true,
+    "user_has_actor": true,
+    "user_has_enterprise_manager": true,
+    "uses_ip_whitelisting": false,
+    "cloud_accounts": [
+      {
+        "kind": "ca#cloud_account",
+        "cloud_id": 706,
+        "cloud_name": "EC2 eu-central-1",
+        "cloud_type": "amazon"
+      },
+      {
+        "kind": "ca#cloud_account",
+        "cloud_id": 162,
+        "cloud_name": "EC2 eu-central-1",
+        "cloud_type": "azure"
+      }
+    ]
+  }
+}

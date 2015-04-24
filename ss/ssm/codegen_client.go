@@ -412,7 +412,7 @@ func (loc *ExecutionLocator) Terminate() error {
 
 // POST /projects/:project_id/executions/actions/launch
 //
-// Launch several Executions.
+// Launch several executions.
 func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -435,7 +435,7 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 
 // POST /projects/:project_id/executions/actions/start
 //
-// Start several Executions.
+// Start several executions.
 func (loc *ExecutionLocator) MultiStart(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -458,7 +458,7 @@ func (loc *ExecutionLocator) MultiStart(ids []string) error {
 
 // POST /projects/:project_id/executions/actions/stop
 //
-// Stop several Executions.
+// Stop several executions.
 func (loc *ExecutionLocator) MultiStop(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -481,7 +481,7 @@ func (loc *ExecutionLocator) MultiStop(ids []string) error {
 
 // POST /projects/:project_id/executions/actions/terminate
 //
-// Terminate several Executions.
+// Terminate several executions.
 func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -936,7 +936,7 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 
 // PATCH /projects/:project_id/scheduled_actions/:id
 //
-// Updates the 'next_occurrence' property of a ScheduledAction.
+// Update one or more ScheduledAction properties. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledActions created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
 func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
@@ -958,8 +958,8 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 
 // DELETE /projects/:project_id/scheduled_actions/:id
 //
-// Delete a ScheduledAction.
-func (loc *ScheduledActionLocator) Delete() error {
+// Delete a ScheduledAction. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
+func (loc *ScheduledActionLocator) Delete(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("ScheduledAction", "delete")
@@ -985,6 +985,226 @@ func (loc *ScheduledActionLocator) Skip(options rsapi.ApiParams) error {
 		payloadParams["count"] = countOpt
 	}
 	uri, err := loc.Url("ScheduledAction", "skip")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/******  ScheduledOperation ******/
+
+// ScheduledOperations describe a set of timed occurrences for an operation to be run (at most once per day).
+// Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
+// All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)
+type ScheduledOperation struct {
+	CreatedBy             *User                    `json:"created_by,omitempty"`
+	Execution             *Execution               `json:"execution,omitempty"`
+	FirstOccurrence       time.Time                `json:"first_occurrence,omitempty"`
+	Href                  string                   `json:"href,omitempty"`
+	Id                    string                   `json:"id,omitempty"`
+	Kind                  string                   `json:"kind,omitempty"`
+	LastRun               *Operation               `json:"last_run,omitempty"`
+	Links                 *ScheduledOperationLinks `json:"links,omitempty"`
+	Mandatory             bool                     `json:"mandatory,omitempty"`
+	Name                  string                   `json:"name,omitempty"`
+	NextOccurrence        time.Time                `json:"next_occurrence,omitempty"`
+	Operation             *OperationStruct         `json:"operation,omitempty"`
+	Recurrence            string                   `json:"recurrence,omitempty"`
+	RecurrenceDescription string                   `json:"recurrence_description,omitempty"`
+	Timestamps            *TimestampsStruct        `json:"timestamps,omitempty"`
+	Timezone              string                   `json:"timezone,omitempty"`
+}
+
+//===== Locator
+
+// ScheduledOperation resource locator, exposes resource actions.
+type ScheduledOperationLocator struct {
+	UrlResolver
+	api *Api
+}
+
+// ScheduledOperation resource locator factory
+func (api *Api) ScheduledOperationLocator(href string) *ScheduledOperationLocator {
+	return &ScheduledOperationLocator{UrlResolver(href), api}
+}
+
+//===== Actions
+
+// GET /projects/:project_id/scheduled_operations
+//
+// List ScheduledOperation resources in the project. The list can be filtered to a given execution.
+func (loc *ScheduledOperationLocator) Index(options rsapi.ApiParams) ([]*ScheduledOperation, error) {
+	var res []*ScheduledOperation
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		queryParams["filter[]"] = filterOpt
+	}
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("ScheduledOperation", "index")
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /projects/:project_id/scheduled_operations/:id
+//
+// Retrieve given ScheduledOperation resource.
+func (loc *ScheduledOperationLocator) Show() (*ScheduledOperation, error) {
+	var res *ScheduledOperation
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("ScheduledOperation", "show")
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// POST /projects/:project_id/scheduled_operations
+//
+// Create a new ScheduledOperation resource.
+func (loc *ScheduledOperationLocator) Create(executionId string, firstOccurrence time.Time, operation *OperationStruct, options rsapi.ApiParams) (*ScheduledOperationLocator, error) {
+	var res *ScheduledOperationLocator
+	if executionId == "" {
+		return res, fmt.Errorf("executionId is required")
+	}
+	if operation == nil {
+		return res, fmt.Errorf("operation is required")
+	}
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"execution_id":     executionId,
+		"first_occurrence": firstOccurrence,
+		"operation":        operation,
+	}
+	var mandatoryOpt = options["mandatory"]
+	if mandatoryOpt != nil {
+		payloadParams["mandatory"] = mandatoryOpt
+	}
+	var nameOpt = options["name"]
+	if nameOpt != nil {
+		payloadParams["name"] = nameOpt
+	}
+	var recurrenceOpt = options["recurrence"]
+	if recurrenceOpt != nil {
+		payloadParams["recurrence"] = recurrenceOpt
+	}
+	var timezoneOpt = options["timezone"]
+	if timezoneOpt != nil {
+		payloadParams["timezone"] = timezoneOpt
+	}
+	uri, err := loc.Url("ScheduledOperation", "create")
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
+	}
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ScheduledOperationLocator{UrlResolver(location), loc.api}, nil
+	}
+}
+
+// PATCH /projects/:project_id/scheduled_operations/:id
+//
+// Update one or more ScheduledOperation properties. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledOperations created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
+func (loc *ScheduledOperationLocator) Patch(options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
+	var nextOccurrenceOpt = options["next_occurrence"]
+	if nextOccurrenceOpt != nil {
+		payloadParams["next_occurrence"] = nextOccurrenceOpt
+	}
+	var recurrenceOpt = options["recurrence"]
+	if recurrenceOpt != nil {
+		payloadParams["recurrence"] = recurrenceOpt
+	}
+	uri, err := loc.Url("ScheduledOperation", "patch")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DELETE /projects/:project_id/scheduled_operations/:id
+//
+// Delete a ScheduledOperation. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
+func (loc *ScheduledOperationLocator) Delete(options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
+	uri, err := loc.Url("ScheduledOperation", "delete")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// POST /projects/:project_id/scheduled_operations/:id/actions/skip
+//
+// Skips the requested number of ScheduledOperation occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledOperation is returned.
+func (loc *ScheduledOperationLocator) Skip(options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var countOpt = options["count"]
+	if countOpt != nil {
+		payloadParams["count"] = countOpt
+	}
+	var forceOpt = options["force"]
+	if forceOpt != nil {
+		payloadParams["force"] = forceOpt
+	}
+	uri, err := loc.Url("ScheduledOperation", "skip")
 	if err != nil {
 		return err
 	}

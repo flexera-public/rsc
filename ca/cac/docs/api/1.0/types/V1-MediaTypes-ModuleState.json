@@ -1,0 +1,102 @@
+{
+  "name": "V1::MediaTypes::ModuleState",
+  "id": "V1-MediaTypes-ModuleState",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#module_state"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "type": {
+      "description": "Module name.",
+      "values": [
+        "instance:account_id",
+        "instance:cloud_vendor_name",
+        "instance:cloud_id",
+        "instance:datacenter_key",
+        "instance:instance_type_key",
+        "instance:platform",
+        "instance:state",
+        "instance:deployment_key",
+        "instance:provisioned_by_user_id",
+        "instance:pricing_type",
+        "instance:server_template_uid",
+        "instance:ss_app",
+        "instance:tag",
+        "instance_usage_period:instance_key"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "active": {
+      "description": "Whether this module is displayed on the page or not.",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "expanded": {
+      "description": "Whether this module is expanded on the page or not, only applicable for active modules.",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "sort_key": {
+      "description": "The metric used to sort the values in the module.",
+      "values": [
+        "average_instance_count",
+        "total_cost"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "type": {
+        },
+        "active": {
+        },
+        "expanded": {
+        },
+        "sort_key": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#module_state",
+        "type": "instance:instance_type_key",
+        "active": false,
+        "expanded": true,
+        "sort_key": "average_instance_count"
+      }
+    }
+  },
+  "identifier": null,
+  "description": "Used by the Cloud Analytics UI to store the state of UI modules.",
+  "example": {
+    "kind": "ca#module_state",
+    "type": "instance:instance_type_key",
+    "active": false,
+    "expanded": true,
+    "sort_key": "average_instance_count"
+  }
+}

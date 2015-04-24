@@ -1,0 +1,637 @@
+{
+  "description": "ReservedInstancePurchases can be applied to InstanceCombinations in Scenarios to model changes in the cost. These are not actually purchased in the cloud and are only used for cost simulation purposes.",
+  "media_type": "V1-MediaTypes-ReservedInstancePurchase",
+  "actions": [
+    {
+      "description": "Create a new ReservedInstancePurchase. This is not actually purchased in the cloud and is only used for cost simulation purposes.",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ReservedInstancePurchase"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "instance_combination_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "scenario_id": 10,
+          "instance_combination_id": 458,
+          "view": "anthropomorphist"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::ReservedInstancePurchase"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "offering_type": {
+              "description": "The ReservedInstance offering type. Support for the newer types are coming soon!",
+              "values": [
+                "Light Utilization",
+                "Medium Utilization",
+                "Heavy Utilization"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "duration": {
+              "description": "The duration of the ReservedInstance in seconds, 94608000 is 3 years, 31536000 is 1 year.",
+              "values": [
+                31536000,
+                94608000
+              ],
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "quantity": {
+              "description": "Number of instances to include in the reservation.",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "start_date": {
+              "description": "Date at which the ReservedInstance purchase should start from, this can be a future date.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              }
+            },
+            "auto_renew": {
+              "description": "Whether the ReservedInstance should be renewed every year or not; only applicable for 1 year ReservedInstances.",
+              "required": true,
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "offering_type": "Medium Utilization",
+          "duration": 31536000,
+          "quantity": 172,
+          "start_date": "2015-01-01T00:00:00+00:00",
+          "auto_renew": false
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "id": "V1-MediaTypes-ReservedInstancePurchase",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "List all ReservedInstancePurchases for the InstanceCombination.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ReservedInstancePurchase"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "instance_combination_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "scenario_id": 10,
+          "instance_combination_id": 458,
+          "view": "anthropomorphist"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "id": "V1-MediaTypes-ReservedInstancePurchase",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a specific ReservedInstancePurchase.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ReservedInstancePurchase"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "instance_combination_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "scenario_id": 10,
+          "instance_combination_id": 458,
+          "id": 294,
+          "view": "anthropomorphist"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "id": "V1-MediaTypes-ReservedInstancePurchase",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Update the provided attributes of a ReservedInstancePurchase.",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ReservedInstancePurchase"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "instance_combination_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "scenario_id": 10,
+          "instance_combination_id": 458,
+          "id": 294,
+          "view": "anthropomorphist"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::ReservedInstancePurchase"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "offering_type": {
+              "description": "The ReservedInstance offering type. Support for the newer types are coming soon!",
+              "values": [
+                "Light Utilization",
+                "Medium Utilization",
+                "Heavy Utilization"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "duration": {
+              "description": "The duration of the ReservedInstance in seconds, 94608000 is 3 years, 31536000 is 1 year.",
+              "values": [
+                31536000,
+                94608000
+              ],
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "quantity": {
+              "description": "Number of instances to include in the reservation.",
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "start_date": {
+              "description": "Date at which the ReservedInstance purchase should start from, this can be a future date.",
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              }
+            },
+            "auto_renew": {
+              "description": "Whether the ReservedInstance should be renewed every year or not; only applicable for 1 year ReservedInstances.",
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "offering_type": "Medium Utilization",
+          "duration": 31536000,
+          "quantity": 172,
+          "start_date": "2015-01-01T00:00:00+00:00",
+          "auto_renew": false
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "id": "V1-MediaTypes-ReservedInstancePurchase",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete a ReservedInstancePurchase. This is not actually deleted in the cloud and is only used for cost simulation purposes.",
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ReservedInstancePurchase"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "instance_combination_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 294,
+          "instance_combination_id": 458,
+          "scenario_id": 10
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::ReservedInstancePurchases",
+  "metadata": {
+  }
+}

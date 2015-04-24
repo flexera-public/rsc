@@ -1,0 +1,45 @@
+{
+  "description": "This is a temporary API call that can be used by the Cloud Analytics UI until the\n        Pricing Service is live, at which point this API call will be deleted. This is not included in the public docs.",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Returns a JSON blob with all prices for Scenario Builder.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/temp_instance_prices",
+          "version": "1.0"
+        }
+      ],
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "application/json"
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::TempInstancePrices",
+  "metadata": {
+  }
+}

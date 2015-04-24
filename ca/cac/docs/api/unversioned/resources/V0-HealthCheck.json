@@ -1,0 +1,42 @@
+{
+  "description": null,
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": null,
+      "name": "health_check",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/health-check",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "internal_server_error": {
+          "description": "A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.",
+          "status": 500,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "application/json"
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    }
+  ],
+  "name": "V0::ApiResources::Healthcheck",
+  "metadata": {
+  }
+}

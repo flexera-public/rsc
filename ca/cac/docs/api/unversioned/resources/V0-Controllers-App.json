@@ -1,0 +1,44 @@
+{
+  "description": null,
+  "actions": [
+    {
+      "description": null,
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/*",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/html"
+          }
+        },
+        "login_redirect": {
+          "description": null,
+          "status": 302,
+          "headers": {
+          }
+        },
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V0::ApiResources::App",
+  "metadata": {
+  }
+}

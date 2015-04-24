@@ -1,0 +1,228 @@
+{
+  "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+  "id": "V1-MediaTypes-TimeSeriesMetricsResult",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#time_series_metrics_result"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "timestamp": {
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "results": {
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::MetricsResult"
+          },
+          "type": {
+            "name": "V1::MediaTypes::MetricsResult",
+            "id": "V1-MediaTypes-MetricsResult",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "timestamp": {
+        },
+        "results": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#time_series_metrics_result",
+        "timestamp": "2012-11-27T00:00:00+00:00",
+        "results": [
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "mesocratic": "tetradrachmal"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "uncodded": "cotingoid",
+                  "flutelike": "multigap",
+                  "bobtail": "radicicolous"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "heckler": "Gaultheria",
+              "cognitum": "anthotropism",
+              "instructiveness": "poditic"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#time_series_metrics_result",
+    "timestamp": "2012-11-27T00:00:00+00:00",
+    "results": [
+      {
+        "kind": "ca#metrics_result",
+        "group": {
+          "mesocratic": "tetradrachmal"
+        },
+        "metrics": {
+          "kind": "ca#metrics",
+          "average_instance_count": 0.0,
+          "lowest_instance_count": 0.0,
+          "highest_instance_count": 0.0,
+          "total_cost": 0.0,
+          "wasted_reserved_instance_cost": 0.0,
+          "managed_instance_rcu_count": 0.0,
+          "unmanaged_instance_rcu_count": 0.0,
+          "managed_instance_hours": 0.0,
+          "unmanaged_instance_hours": 0.0,
+          "instance_usage_cost": 0.0,
+          "reserved_instance_upfront_cost": 0.0,
+          "reserved_instance_recurring_cost": 0.0
+        },
+        "breakdown_metrics_results": [
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "uncodded": "cotingoid",
+              "flutelike": "multigap",
+              "bobtail": "radicicolous"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ca#metrics_result",
+        "group": {
+          "heckler": "Gaultheria",
+          "cognitum": "anthotropism",
+          "instructiveness": "poditic"
+        },
+        "metrics": {
+          "kind": "ca#metrics",
+          "average_instance_count": 0.0,
+          "lowest_instance_count": 0.0,
+          "highest_instance_count": 0.0,
+          "total_cost": 0.0,
+          "wasted_reserved_instance_cost": 0.0,
+          "managed_instance_rcu_count": 0.0,
+          "unmanaged_instance_rcu_count": 0.0,
+          "managed_instance_hours": 0.0,
+          "unmanaged_instance_hours": 0.0,
+          "instance_usage_cost": 0.0,
+          "reserved_instance_upfront_cost": 0.0,
+          "reserved_instance_recurring_cost": 0.0
+        },
+        "breakdown_metrics_results": [
+
+        ]
+      }
+    ]
+  }
+}

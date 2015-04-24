@@ -1,0 +1,307 @@
+{
+  "name": "V1::MediaTypes::ReservedInstance",
+  "id": "V1-MediaTypes-ReservedInstance",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#reserved_instance"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "reservation_uid": {
+      "description": "The AWS identifier of the Reserved Instance.",
+      "example_definition": {},
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "account_id": {
+      "description": "The Rightscale account ID.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "account_name": {
+      "description": "The RightScale account name.",
+      "example_definition": "Example Account",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "cloud_vendor_name": {
+      "description": "The name of the cloud vendor. Only Amazon Web Services offer Reserved Instances.",
+      "values": [
+        "Amazon Web Services"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "cloud_id": {
+      "description": "The RightScale ID of the cloud.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "cloud_name": {
+      "description": "The name of the cloud.",
+      "example_definition": "EC2 us-east-1",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "datacenter_key": {
+      "description": "A unique identifier for the datacenter across cloud vendors.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "datacenter_name": {
+      "description": "The name of the datacenter.",
+      "example_definition": "us-east-1a",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_type_key": {
+      "description": "Unique identifier for the instance type across cloud vendors.",
+      "example_definition": "1::m1.small",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_type_name": {
+      "description": "The name of the instance type.",
+      "example_definition": "m1.small",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "duration": {
+      "description": "The duration in seconds of the Reserved Instance.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "platform": {
+      "description": "The operating system of the instance.",
+      "values": [
+        "Linux/UNIX",
+        "Windows",
+        "Windows with SQL Server Standard",
+        "Windows with SQL Server Web",
+        "Red Hat Enterprise Linux",
+        "SUSE Linux",
+        "Linux/UNIX (Amazon VPC)",
+        "Windows (Amazon VPC)",
+        "Windows with SQL Server Standard (Amazon VPC)",
+        "Windows with SQL Server Web (Amazon VPC)",
+        "Red Hat Enterprise Linux (Amazon VPC)",
+        "SUSE Linux (Amazon VPC)"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "tenancy": {
+      "description": "Whether the instance runs on shared hardware (default) or single-tenant hardware (dedicated).",
+      "values": [
+        "default",
+        "dedicated"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "offering_type": {
+      "description": "The offering type of the Reserved Instance.",
+      "values": [
+        "Light Utilization",
+        "Medium Utilization",
+        "Heavy Utilization"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "start_time": {
+      "description": "The start date of the Reserved Instance.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "end_time": {
+      "description": "The end date of the Reserved Instance.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "instance_count": {
+      "description": "The number of instances applicable for the Reserved Instance.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "state": {
+      "description": "The payment state of the Reserved Instance.",
+      "values": [
+        "retired",
+        "active",
+        "payment-pending",
+        "payment-failed"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "unused_recurring_cost": {
+      "description": "Total cost (USD) for any periods when the Reserved Instance was not being fully utilized during the period defined by the start and end time parameter.\n                        This only applies to Heavy, No Upfront and Partial Upfront Reserved Instances.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "utilization_percentage": {
+      "description": "Utilization percentage for the Reserved Instance during the period defined by the start and end time parameters.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "cost_saved": {
+      "description": "The amount (USD) saved by using Reserved Instances. This does not take into account the upfront cost.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "reservation_uid": {
+        },
+        "account_id": {
+        },
+        "account_name": {
+        },
+        "cloud_vendor_name": {
+        },
+        "cloud_id": {
+        },
+        "cloud_name": {
+        },
+        "datacenter_key": {
+        },
+        "datacenter_name": {
+        },
+        "instance_type_key": {
+        },
+        "instance_type_name": {
+        },
+        "duration": {
+        },
+        "platform": {
+        },
+        "tenancy": {
+        },
+        "offering_type": {
+        },
+        "start_time": {
+        },
+        "end_time": {
+        },
+        "instance_count": {
+        },
+        "state": {
+        },
+        "unused_recurring_cost": {
+        },
+        "utilization_percentage": {
+        },
+        "cost_saved": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#reserved_instance",
+        "reservation_uid": "51ad74dc-46dc-419e-9787-60100eb44d37",
+        "account_id": 708,
+        "account_name": "Example Account",
+        "cloud_vendor_name": "Amazon Web Services",
+        "cloud_id": 531,
+        "cloud_name": "EC2 us-east-1",
+        "datacenter_key": "paralogist",
+        "datacenter_name": "us-east-1a",
+        "instance_type_key": "1::m1.small",
+        "instance_type_name": "m1.small",
+        "duration": 411,
+        "platform": "Red Hat Enterprise Linux",
+        "tenancy": "dedicated",
+        "offering_type": "Medium Utilization",
+        "start_time": "2013-08-13T00:00:00+00:00",
+        "end_time": "2012-11-10T00:00:00+00:00",
+        "instance_count": 327,
+        "state": "retired",
+        "unused_recurring_cost": 0.0,
+        "utilization_percentage": 0.0,
+        "cost_saved": 0.0
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#reserved_instance",
+    "reservation_uid": "51ad74dc-46dc-419e-9787-60100eb44d37",
+    "account_id": 708,
+    "account_name": "Example Account",
+    "cloud_vendor_name": "Amazon Web Services",
+    "cloud_id": 531,
+    "cloud_name": "EC2 us-east-1",
+    "datacenter_key": "paralogist",
+    "datacenter_name": "us-east-1a",
+    "instance_type_key": "1::m1.small",
+    "instance_type_name": "m1.small",
+    "duration": 411,
+    "platform": "Red Hat Enterprise Linux",
+    "tenancy": "dedicated",
+    "offering_type": "Medium Utilization",
+    "start_time": "2013-08-13T00:00:00+00:00",
+    "end_time": "2012-11-10T00:00:00+00:00",
+    "instance_count": 327,
+    "state": "retired",
+    "unused_recurring_cost": 0.0,
+    "utilization_percentage": 0.0,
+    "cost_saved": 0.0
+  }
+}

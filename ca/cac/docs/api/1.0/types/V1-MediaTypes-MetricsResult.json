@@ -1,0 +1,153 @@
+{
+  "name": "V1::MediaTypes::MetricsResult",
+  "id": "V1-MediaTypes-MetricsResult",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#metrics_result"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "group": {
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        },
+        "value": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "options": {
+        "reference": "V1::MediaTypes::Metrics"
+      },
+      "type": {
+        "name": "V1::MediaTypes::Metrics",
+        "id": "V1-MediaTypes-Metrics",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": null
+      }
+    },
+    "breakdown_metrics_results": {
+      "description": "The nested metric results requested by the `group` parameter.",
+      "example_definition": {},
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::MetricsResult"
+          },
+          "type": {
+            "name": "V1::MediaTypes::MetricsResult",
+            "id": "V1-MediaTypes-MetricsResult",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "group": {
+        },
+        "metrics": {
+        },
+        "breakdown_metrics_results": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#metrics_result",
+        "group": {
+          "immuration": "pacifistically",
+          "undirected": "considerer",
+          "extratropical": "bichir"
+        },
+        "metrics": {
+          "kind": "ca#metrics",
+          "average_instance_count": 0.0,
+          "lowest_instance_count": 0.0,
+          "highest_instance_count": 0.0,
+          "total_cost": 0.0,
+          "wasted_reserved_instance_cost": 0.0,
+          "managed_instance_rcu_count": 0.0,
+          "unmanaged_instance_rcu_count": 0.0,
+          "managed_instance_hours": 0.0,
+          "unmanaged_instance_hours": 0.0,
+          "instance_usage_cost": 0.0,
+          "reserved_instance_upfront_cost": 0.0,
+          "reserved_instance_recurring_cost": 0.0
+        },
+        "breakdown_metrics_results": [
+
+        ]
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#metrics_result",
+    "group": {
+      "immuration": "pacifistically",
+      "undirected": "considerer",
+      "extratropical": "bichir"
+    },
+    "metrics": {
+      "kind": "ca#metrics",
+      "average_instance_count": 0.0,
+      "lowest_instance_count": 0.0,
+      "highest_instance_count": 0.0,
+      "total_cost": 0.0,
+      "wasted_reserved_instance_cost": 0.0,
+      "managed_instance_rcu_count": 0.0,
+      "unmanaged_instance_rcu_count": 0.0,
+      "managed_instance_hours": 0.0,
+      "unmanaged_instance_hours": 0.0,
+      "instance_usage_cost": 0.0,
+      "reserved_instance_upfront_cost": 0.0,
+      "reserved_instance_recurring_cost": 0.0
+    },
+    "breakdown_metrics_results": [
+
+    ]
+  }
+}
