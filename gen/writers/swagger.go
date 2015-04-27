@@ -9,7 +9,6 @@ import (
   "fmt"
 
 	"github.com/rightscale/rsc/gen"
-	"github.com/ryanoleary/go-restful/swagger"
 )
 
 // SwaggerWriter struct exposes methods to generate the angular JS services code
@@ -65,6 +64,7 @@ type ApiDescriptorPlus struct {
 // Write code for a resource
 func (c *SwaggerWriter) WriteApi(api *gen.ApiDescriptor, w io.Writer, apiHost string, apiRoot string) error {
 
+	
 	td := ApiDescriptorPlus{api, apiHost, apiRoot}
 
 	err := c.swaggerHeaderTmpl.Execute(w, td)
