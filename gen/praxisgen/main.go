@@ -32,7 +32,9 @@ func main() {
 	targetVersion := flag.String("target", "",
 		"Target version, only generate code for this version.\nIf this option is specified then the generated code lives directly under package <pkg>, otherwise it lives under <pkg>.<version>.")
 	clientName := flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
-	tool := flag.String("tool", "rsc", "Tool or library for which to generate code, supported values are 'rsc' or 'angular'")
+	tool := flag.String("tool", "rsc", "Tool or library for which to generate code, supported values are 'rsc', 'angular', or 'swagger'")
+	apiHost := flag.String("host", "", "API hostname for Swagger doc generation")
+	apiRoot := flag.String("root", "", "API root path for Swagger doc generation (e.g. '/api/catalog', '/api/manager'")
 	flag.Parse()
 
 	metadataDirs := strings.Split(*metadataDirVal, ",")
@@ -54,6 +56,10 @@ func main() {
 
 		if *clientName == "" {
 			kingpin.Fatalf("-client option is required.")
+		}
+	} else if *tool == "swagger" {
+		if *apiHost == "" || *apiRoot == "" {
+			kingpin.Fatalf("-apiHost and -apiRoot options are mandatory when -tool='swagger'.")
 		}
 	}
 
@@ -144,8 +150,13 @@ func main() {
 			files, err := generateAngular(descriptor, pkgPath)
 			kingpin.FatalIfError(err, "")
 			generated = append(generated, files...)
+		case "swagger":
+			pkgPath := path.Join(destDir, pkg)
+			files, err := generateSwagger(descriptor, pkgPath, *apiHost, *apiRoot)
+			kingpin.FatalIfError(err, "")
+			generated = append(generated, files...)			
 		default:
-			kingpin.Fatalf("Invalid tool '%s', supported clients are 'rsc' and 'angular'", *tool)
+			kingpin.Fatalf("Invalid tool '%s', supported clients are 'rsc', 'angular', and 'swagger'", *tool)
 		}
 	}
 
@@ -252,6 +263,26 @@ func generateAngular(descriptor *gen.ApiDescriptor, pkgDir string) ([]string, er
 		f.Close()
 		files = append(files, codegen)
 	}
+	return files, nil
+}
+
+// Generate API metadata, drives the metadata writer.
+func generateSwagger(descriptor *gen.ApiDescriptor, pkgDir string, apiHost string, apiRoot string) ([]string, error) {
+	var files []string
+
+	codegen := path.Join(pkgDir, inflect.Underscore(descriptor.Version)+".js")
+	f, err := os.Create(codegen)
+	if err != nil {
+		return files, err
+	}
+	c, err := writers.NewSwaggerWriter()
+	if err != nil {
+		return files, err
+	}
+	kingpin.FatalIfError(c.WriteApi(descriptor, f, apiHost, apiRoot), "")
+	f.Close()
+	files = append(files, codegen)
+	// }
 	return files, nil
 }
 
