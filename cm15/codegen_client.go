@@ -73,6 +73,7 @@ func (api *Api) AccountLocator(href string) *AccountLocator {
 //===== Actions
 
 // GET /api/accounts/:id
+//
 // Show information about a single Account.
 func (loc *AccountLocator) Show() (*Account, error) {
 	var res *Account
@@ -123,6 +124,7 @@ func (api *Api) AccountGroupLocator(href string) *AccountGroupLocator {
 //===== Actions
 
 // GET /api/account_groups
+//
 // Lists the AccountGroups owned by this Account.
 // Optional parameters:
 // filter
@@ -158,6 +160,7 @@ func (loc *AccountGroupLocator) Index(options rsapi.ApiParams) ([]*AccountGroup,
 }
 
 // GET /api/account_groups/:id
+//
 // Show information about a single AccountGroup.
 // Optional parameters:
 // view
@@ -220,6 +223,7 @@ func (api *Api) AlertLocator(href string) *AlertLocator {
 // POST /api/server_arrays/:server_array_id/alerts/:id/disable
 // POST /api/deployments/:deployment_id/alerts/:id/disable
 // POST /api/alerts/:id/disable
+//
 // Disables the Alert indefinitely. Idempotent.
 func (loc *AlertLocator) Disable() error {
 	var queryParams rsapi.ApiParams
@@ -240,6 +244,7 @@ func (loc *AlertLocator) Disable() error {
 // POST /api/server_arrays/:server_array_id/alerts/:id/enable
 // POST /api/deployments/:deployment_id/alerts/:id/enable
 // POST /api/alerts/:id/enable
+//
 // Enables the Alert indefinitely. Idempotent.
 func (loc *AlertLocator) Enable() error {
 	var queryParams rsapi.ApiParams
@@ -260,6 +265,7 @@ func (loc *AlertLocator) Enable() error {
 // GET /api/server_arrays/:server_array_id/alerts
 // GET /api/deployments/:deployment_id/alerts
 // GET /api/alerts
+//
 // Lists all Alerts.
 // Optional parameters:
 // filter
@@ -299,6 +305,7 @@ func (loc *AlertLocator) Index(options rsapi.ApiParams) ([]*Alert, error) {
 // POST /api/server_arrays/:server_array_id/alerts/:id/quench
 // POST /api/deployments/:deployment_id/alerts/:id/quench
 // POST /api/alerts/:id/quench
+//
 // Suppresses the Alert from being triggered for a given time period. Idempotent.
 // Required parameters:
 // duration: The time period in seconds to suppress Alert from being triggered.
@@ -327,6 +334,7 @@ func (loc *AlertLocator) Quench(duration string) error {
 // GET /api/server_arrays/:server_array_id/alerts/:id
 // GET /api/deployments/:deployment_id/alerts/:id
 // GET /api/alerts/:id
+//
 // Shows the attributes of a specified Alert.
 // Optional parameters:
 // view
@@ -396,6 +404,7 @@ func (api *Api) AlertSpecLocator(href string) *AlertSpecLocator {
 // POST /api/server_arrays/:server_array_id/alert_specs
 // POST /api/server_templates/:server_template_id/alert_specs
 // POST /api/alert_specs
+//
 // Creates a new AlertSpec with the given parameters.
 // Required parameters:
 // alert_spec
@@ -429,6 +438,7 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 // DELETE /api/server_arrays/:server_array_id/alert_specs/:id
 // DELETE /api/server_templates/:server_template_id/alert_specs/:id
 // DELETE /api/alert_specs/:id
+//
 // Deletes a given AlertSpec.
 func (loc *AlertSpecLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -448,6 +458,7 @@ func (loc *AlertSpecLocator) Destroy() error {
 // GET /api/server_arrays/:server_array_id/alert_specs
 // GET /api/server_templates/:server_template_id/alert_specs
 // GET /api/alert_specs
+//
 // No description provided for index.
 // Optional parameters:
 // filter
@@ -492,6 +503,7 @@ func (loc *AlertSpecLocator) Index(options rsapi.ApiParams) ([]*AlertSpec, error
 // GET /api/server_arrays/:server_array_id/alert_specs/:id
 // GET /api/server_templates/:server_template_id/alert_specs/:id
 // GET /api/alert_specs/:id
+//
 // No description provided for show.
 // Optional parameters:
 // view
@@ -525,6 +537,7 @@ func (loc *AlertSpecLocator) Show(options rsapi.ApiParams) (*AlertSpec, error) {
 // PUT /api/server_arrays/:server_array_id/alert_specs/:id
 // PUT /api/server_templates/:server_template_id/alert_specs/:id
 // PUT /api/alert_specs/:id
+//
 // Updates an AlertSpec with the given parameters.
 // Required parameters:
 // alert_spec
@@ -576,6 +589,7 @@ func (api *Api) AuditEntryLocator(href string) *AuditEntryLocator {
 //===== Actions
 
 // POST /api/audit_entries/:id/append
+//
 // Updates the summary and appends more details to a given AuditEntry. Each audit entry detail is stored
 // as one chunk, the offset determines the location of that chunk within the overall audit entry details section.
 // For example, if you create an AuditEntry and append "DEF" at offset 10, and later append
@@ -618,6 +632,7 @@ func (loc *AuditEntryLocator) Append(options rsapi.ApiParams) error {
 }
 
 // POST /api/audit_entries
+//
 // Creates a new AuditEntry with the given parameters.
 // Required parameters:
 // audit_entry
@@ -659,6 +674,7 @@ func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options rsapi.
 }
 
 // GET /api/audit_entries/:id/detail
+//
 // shows the details of a given AuditEntry.
 // Note that the media type of the response is simply text.
 func (loc *AuditEntryLocator) Detail() (string, error) {
@@ -683,6 +699,7 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 }
 
 // GET /api/audit_entries
+//
 // Lists AuditEntries of the account. Due to the potentially large number of audit entries, a start and end date must
 // be provided during an index call to limit the search. The format of the dates must be YYYY/MM/DD HH:MM:SS [+/-]ZZZZ e.g.
 // 2011/07/11 00:00:00 +0000.
@@ -740,6 +757,7 @@ func (loc *AuditEntryLocator) Index(endDate string, limit string, startDate stri
 }
 
 // GET /api/audit_entries/:id
+//
 // Lists the attributes of a given audit entry.
 // Optional parameters:
 // view
@@ -770,6 +788,7 @@ func (loc *AuditEntryLocator) Show(options rsapi.ApiParams) (*AuditEntry, error)
 }
 
 // PUT /api/audit_entries/:id
+//
 // Updates the summary of a given AuditEntry.
 // Required parameters:
 // audit_entry
@@ -831,6 +850,7 @@ func (api *Api) BackupLocator(href string) *BackupLocator {
 //===== Actions
 
 // POST /api/backups/cleanup
+//
 // Deletes old backups that meet the given criteria. For example, if a user calls cleanup with keep monthlies set to 12,
 // then the latest backup for each month, for 12 months, will be kept.
 // All backups belong to a particular 'lineage'. Backups are not constrained to a specific cloud or a specific deployment.
@@ -908,6 +928,7 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi
 }
 
 // POST /api/backups
+//
 // Takes in an array of volumeattachmenthrefs and takes a snapshot of each.
 // The volumeattachmenthrefs must belong to the same instance.
 // Required parameters:
@@ -939,6 +960,7 @@ func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
 }
 
 // DELETE /api/backups/:id
+//
 // Deletes a given backup by deleting all of its snapshots, this call will succeed even if the backup has not completed.
 func (loc *BackupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -955,6 +977,7 @@ func (loc *BackupLocator) Destroy() error {
 }
 
 // GET /api/backups
+//
 // Lists all of the backups with the given lineage tag. Filters can be used to search for a particular backup. If the
 // 'latest_before' filter is set, only one backup is returned (the latest backup before the given timestamp).
 // To get the latest completed backup, the 'completed' filter should be set to 'true' and the 'latest_before' filter
@@ -999,6 +1022,7 @@ func (loc *BackupLocator) Index(lineage string, options rsapi.ApiParams) ([]*Bac
 }
 
 // POST /api/backups/:id/restore
+//
 // Restores the given Backup.
 // This call will:
 // create the required number of Volumes from the volume_snapshots_hrefs in the given Backup,
@@ -1033,6 +1057,7 @@ func (loc *BackupLocator) Restore(instanceHref string, options rsapi.ApiParams) 
 }
 
 // GET /api/backups/:id
+//
 // Lists the attributes of a given backup
 func (loc *BackupLocator) Show() (*Backup, error) {
 	var res *Backup
@@ -1056,6 +1081,7 @@ func (loc *BackupLocator) Show() (*Backup, error) {
 }
 
 // PUT /api/backups/:id
+//
 // Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.
 // Required parameters:
 // backup
@@ -1081,6 +1107,9 @@ func (loc *BackupLocator) Update(backup *BackupParam2) error {
 
 /******  ChildAccount ******/
 
+type ChildAccount struct {
+}
+
 //===== Locator
 
 // ChildAccount resource locator, exposes resource actions.
@@ -1097,6 +1126,7 @@ func (api *Api) ChildAccountLocator(href string) *ChildAccountLocator {
 //===== Actions
 
 // POST /api/child_accounts
+//
 // Create an enterprise ChildAccount for this Account. The User will by default get an 'admin' role
 // on the ChildAccount to enable him/her to add, delete Users and Permissions.
 // For more information on the valid values for 'cluster_href', refer to the following:
@@ -1130,6 +1160,7 @@ func (loc *ChildAccountLocator) Create(childAccount *ChildAccountParam) (*ChildA
 }
 
 // GET /api/child_accounts
+//
 // Lists the enterprise ChildAccounts available for this Account.
 // Optional parameters:
 // filter
@@ -1161,6 +1192,7 @@ func (loc *ChildAccountLocator) Index(options rsapi.ApiParams) ([]*Account, erro
 
 // PUT /api/accounts/:id
 // PUT /api/child_accounts/:id
+//
 // Update an enterprise ChildAccount for this Account.
 // Required parameters:
 // child_account
@@ -1212,6 +1244,7 @@ func (api *Api) CloudLocator(href string) *CloudLocator {
 //===== Actions
 
 // GET /api/clouds
+//
 // Lists the clouds available to this account.
 // Optional parameters:
 // filter
@@ -1247,6 +1280,7 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error) {
 }
 
 // GET /api/clouds/:id
+//
 // Show information about a single cloud.
 // Optional parameters:
 // view
@@ -1301,6 +1335,7 @@ func (api *Api) CloudAccountLocator(href string) *CloudAccountLocator {
 //===== Actions
 
 // POST /api/cloud_accounts
+//
 // Create a CloudAccount by passing in the respective credentials for each cloud.
 // For more information on the specific parameters for each cloud, refer to the following:
 // http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
@@ -1333,6 +1368,7 @@ func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudA
 }
 
 // DELETE /api/cloud_accounts/:id
+//
 // Delete a CloudAccount.
 func (loc *CloudAccountLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -1349,6 +1385,7 @@ func (loc *CloudAccountLocator) Destroy() error {
 }
 
 // GET /api/cloud_accounts
+//
 // Lists the CloudAccounts (non-aws) available to this Account.
 func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 	var res []*CloudAccount
@@ -1372,6 +1409,7 @@ func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 }
 
 // GET /api/cloud_accounts/:id
+//
 
 func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	var res *CloudAccount
@@ -1428,6 +1466,7 @@ func (api *Api) CookbookLocator(href string) *CookbookLocator {
 //===== Actions
 
 // DELETE /api/cookbooks/:id
+//
 // Destroys a Cookbook. Only available for cookbooks that have no Cookbook Attachments.
 func (loc *CookbookLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -1444,6 +1483,7 @@ func (loc *CookbookLocator) Destroy() error {
 }
 
 // POST /api/cookbooks/:id/follow
+//
 // Follows (or unfollows) a Cookbook. Only available for cookbooks that are in the Alternate namespace.
 // Required parameters:
 // value: Indicates if this action should follow (true) or unfollow (false) a Cookbook.
@@ -1468,6 +1508,7 @@ func (loc *CookbookLocator) Follow(value string) error {
 }
 
 // POST /api/cookbooks/:id/freeze
+//
 // Freezes (or unfreezes) a Cookbook. Only available for cookbooks that are in the Primary namespace.
 // Required parameters:
 // value: Indicates if this action should freeze (true) or unfreeze (false) a Cookbook.
@@ -1492,6 +1533,7 @@ func (loc *CookbookLocator) Freeze(value string) error {
 }
 
 // GET /api/cookbooks
+//
 // Lists the Cookbooks available to this account.
 // The extended_designer view is only available to accounts with the designer permission.
 // Optional parameters:
@@ -1528,6 +1570,7 @@ func (loc *CookbookLocator) Index(options rsapi.ApiParams) ([]*Cookbook, error) 
 }
 
 // POST /api/cookbooks/:id/obsolete
+//
 // Marks a Cookbook as obsolete (or un-obsolete).
 // Required parameters:
 // value: Indicates if this action should obsolete (true) or un-obsolete (false) a Cookbook.
@@ -1552,6 +1595,7 @@ func (loc *CookbookLocator) Obsolete(value string) error {
 }
 
 // GET /api/cookbooks/:id
+//
 // Show information about a single Cookbook.
 // The extended_designer view is only available to accounts with the designer permission.
 // Optional parameters:
@@ -1610,6 +1654,7 @@ func (api *Api) CookbookAttachmentLocator(href string) *CookbookAttachmentLocato
 // POST /api/cookbooks/:cookbook_id/cookbook_attachments
 // POST /api/server_templates/:server_template_id/cookbook_attachments
 // POST /api/cookbook_attachments
+//
 // Attach a cookbook to a given resource.
 // Optional parameters:
 // cookbook_attachment
@@ -1641,6 +1686,7 @@ func (loc *CookbookAttachmentLocator) Create(options rsapi.ApiParams) (*Cookbook
 // DELETE /api/cookbooks/:cookbook_id/cookbook_attachments/:id
 // DELETE /api/server_templates/:server_template_id/cookbook_attachments/:id
 // DELETE /api/cookbook_attachments/:id
+//
 // Detach a cookbook from a given resource.
 func (loc *CookbookAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -1659,6 +1705,7 @@ func (loc *CookbookAttachmentLocator) Destroy() error {
 // GET /api/cookbooks/:cookbook_id/cookbook_attachments
 // GET /api/server_templates/:server_template_id/cookbook_attachments
 // GET /api/cookbook_attachments
+//
 // Lists Cookbook Attachments.
 // Optional parameters:
 // view
@@ -1690,6 +1737,7 @@ func (loc *CookbookAttachmentLocator) Index(options rsapi.ApiParams) ([]*Cookboo
 
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_attach
 // POST /api/cookbook_attachments/multi_attach
+//
 // Attach multiple cookbooks to a given resource.
 // Required parameters:
 // cookbook_attachments
@@ -1715,6 +1763,7 @@ func (loc *CookbookAttachmentLocator) MultiAttach(cookbookAttachments *CookbookA
 
 // POST /api/server_templates/:server_template_id/cookbook_attachments/multi_detach
 // POST /api/cookbook_attachments/multi_detach
+//
 // Detach multiple cookbooks from a given resource.
 // Required parameters:
 // cookbook_attachments
@@ -1741,6 +1790,7 @@ func (loc *CookbookAttachmentLocator) MultiDetach(cookbookAttachments *CookbookA
 // GET /api/cookbooks/:cookbook_id/cookbook_attachments/:id
 // GET /api/server_templates/:server_template_id/cookbook_attachments/:id
 // GET /api/cookbook_attachments/:id
+//
 // Displays information about a single cookbook attachment to a ServerTemplate.
 // Optional parameters:
 // view
@@ -1803,6 +1853,7 @@ func (api *Api) CredentialLocator(href string) *CredentialLocator {
 //===== Actions
 
 // POST /api/credentials
+//
 // Creates a new Credential with the given parameters.
 // Required parameters:
 // credential
@@ -1833,6 +1884,7 @@ func (loc *CredentialLocator) Create(credential *CredentialParam) (*CredentialLo
 }
 
 // DELETE /api/credentials/:id
+//
 // Deletes a Credential.
 func (loc *CredentialLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -1849,6 +1901,7 @@ func (loc *CredentialLocator) Destroy() error {
 }
 
 // GET /api/credentials
+//
 // Lists the Credentials available to this account.
 // Optional parameters:
 // filter
@@ -1884,6 +1937,7 @@ func (loc *CredentialLocator) Index(options rsapi.ApiParams) ([]*Credential, err
 }
 
 // GET /api/credentials/:id
+//
 // Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.
 // Optional parameters:
 // view
@@ -1914,6 +1968,7 @@ func (loc *CredentialLocator) Show(options rsapi.ApiParams) (*Credential, error)
 }
 
 // PUT /api/credentials/:id
+//
 // Updates attributes of a Credential.
 // Required parameters:
 // credential
@@ -1967,6 +2022,7 @@ func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
 //===== Actions
 
 // GET /api/clouds/:cloud_id/datacenters
+//
 // Lists all Datacenters for a particular cloud.
 // Optional parameters:
 // filter
@@ -2002,6 +2058,7 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) ([]*Datacenter, err
 }
 
 // GET /api/clouds/:cloud_id/datacenters/:id
+//
 // Displays information about a single Datacenter.
 // Optional parameters:
 // view
@@ -2060,6 +2117,7 @@ func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
 //===== Actions
 
 // POST /api/deployments/:id/clone
+//
 // Clones a given deployment.
 // Optional parameters:
 // deployment
@@ -2083,6 +2141,7 @@ func (loc *DeploymentLocator) Clone(options rsapi.ApiParams) error {
 }
 
 // POST /api/deployments
+//
 // Creates a new deployment with the given parameters.
 // Required parameters:
 // deployment
@@ -2113,6 +2172,7 @@ func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLo
 }
 
 // DELETE /api/deployments/:id
+//
 // Deletes a given deployment.
 func (loc *DeploymentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -2129,6 +2189,7 @@ func (loc *DeploymentLocator) Destroy() error {
 }
 
 // GET /api/deployments
+//
 // Lists deployments of the account.
 // Using the available filters, one can select or group which deployments to retrieve.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
@@ -2167,6 +2228,7 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) ([]*Deployment, err
 }
 
 // POST /api/deployments/:id/lock
+//
 // Locks a given deployment. Idempotent.
 // Locking prevents servers from being deleted or moved from the deployment.
 // Other actions such as adding servers or renaming the deployment are still allowed.
@@ -2185,6 +2247,7 @@ func (loc *DeploymentLocator) Lock() error {
 }
 
 // GET /api/deployments/:id/servers
+//
 // Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
 // automatically be filtered by this deployment. See servers#index for details on other options and parameters.
 func (loc *DeploymentLocator) Servers() error {
@@ -2202,6 +2265,7 @@ func (loc *DeploymentLocator) Servers() error {
 }
 
 // GET /api/deployments/:id
+//
 // Lists the attributes of a given deployment.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
@@ -2234,6 +2298,7 @@ func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error)
 }
 
 // POST /api/deployments/:id/unlock
+//
 // Unlocks a given deployment. Idempotent.
 func (loc *DeploymentLocator) Unlock() error {
 	var queryParams rsapi.ApiParams
@@ -2250,6 +2315,7 @@ func (loc *DeploymentLocator) Unlock() error {
 }
 
 // PUT /api/deployments/:id
+//
 // Updates attributes of a given deployment.
 // Required parameters:
 // deployment
@@ -2275,6 +2341,9 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
 
 /******  HealthCheck ******/
 
+type HealthCheck struct {
+}
+
 //===== Locator
 
 // HealthCheck resource locator, exposes resource actions.
@@ -2291,6 +2360,7 @@ func (api *Api) HealthCheckLocator(href string) *HealthCheckLocator {
 //===== Actions
 
 // GET /api/health-check/
+//
 // Check health of RightApi controllers
 func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
 	var res []*map[string]string
@@ -2343,6 +2413,7 @@ func (api *Api) IdentityProviderLocator(href string) *IdentityProviderLocator {
 //===== Actions
 
 // GET /api/identity_providers
+//
 // Lists the identity providers associated with this enterprise account.
 // Optional parameters:
 // filter
@@ -2378,6 +2449,7 @@ func (loc *IdentityProviderLocator) Index(options rsapi.ApiParams) ([]*IdentityP
 }
 
 // GET /api/identity_providers/:id
+//
 // Show the specified identity provider, if associated with this enterprise account.
 // Optional parameters:
 // view
@@ -2441,6 +2513,7 @@ func (api *Api) ImageLocator(href string) *ImageLocator {
 //===== Actions
 
 // GET /api/clouds/:cloud_id/images
+//
 // Lists all Images for the given Cloud.
 // Optional parameters:
 // filter
@@ -2476,6 +2549,7 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) ([]*Image, error) {
 }
 
 // GET /api/clouds/:cloud_id/images/:id
+//
 // Shows information about a single Image.
 // Optional parameters:
 // view
@@ -2534,6 +2608,7 @@ func (api *Api) InputLocator(href string) *InputLocator {
 // GET /api/clouds/:cloud_id/instances/:instance_id/inputs
 // GET /api/deployments/:deployment_id/inputs
 // GET /api/server_templates/:server_template_id/inputs
+//
 // Retrieves the full list of existing inputs of the specified resource.
 // Optional parameters:
 // view
@@ -2566,6 +2641,7 @@ func (loc *InputLocator) Index(options rsapi.ApiParams) ([]*Input, error) {
 // PUT /api/clouds/:cloud_id/instances/:instance_id/inputs/multi_update
 // PUT /api/deployments/:deployment_id/inputs/multi_update
 // PUT /api/server_templates/:server_template_id/inputs/multi_update
+//
 // Performs a bulk update of inputs on the specified resource.
 // If an input exists with the same name, its value will be updated. If an input does not
 // exist with a specified name, it will be ignored.
@@ -2705,6 +2781,7 @@ func (api *Api) InstanceLocator(href string) *InstanceLocator {
 //===== Actions
 
 // POST /api/clouds/:cloud_id/instances
+//
 // Creates and launches a raw instance using the provided parameters.
 // Required parameters:
 // instance
@@ -2743,6 +2820,7 @@ func (loc *InstanceLocator) Create(instance *InstanceParam, options rsapi.ApiPar
 // GET /api/clouds/:cloud_id/instances
 // GET /api/clouds/:cloud_id/instances
 // GET /api/server_arrays/:server_array_id/current_instances
+//
 // Lists instances of a given cloud, server array.
 // Using the available filters, it is possible to craft powerful queries about which instances to retrieve.
 // For example, one can easily list:
@@ -2789,6 +2867,7 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) ([]*Instance, error) 
 // POST /api/clouds/:cloud_id/instances/:id/launch
 // POST /api/servers/:server_id/launch
 // POST /api/server_arrays/:server_array_id/launch
+//
 // Launches an instance using the parameters that this instance has been configured with.
 // Note that this action can only be performed in "next" instances, and not on instances that are already running.
 // Optional parameters:
@@ -2823,6 +2902,7 @@ func (loc *InstanceLocator) Launch(options rsapi.ApiParams) error {
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/lock
+//
 
 func (loc *InstanceLocator) Lock() error {
 	var queryParams rsapi.ApiParams
@@ -2840,6 +2920,7 @@ func (loc *InstanceLocator) Lock() error {
 
 // POST /api/clouds/:cloud_id/instances/multi_run_executable
 // POST /api/server_arrays/:server_array_id/multi_run_executable
+//
 // Runs a script or a recipe in the running instances.
 // This is an asynchronous function, which returns immediately after queuing the executable for execution.
 // Status of the execution can be tracked at the URL returned in the "Location" header.
@@ -2887,6 +2968,7 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.ApiParams) error {
 
 // POST /api/clouds/:cloud_id/instances/multi_terminate
 // POST /api/server_arrays/:server_array_id/multi_terminate
+//
 // Terminates running instances.
 // Either a filter or the parameter 'terminate_all' must be provided.
 // Optional parameters:
@@ -2918,6 +3000,7 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.ApiParams) error {
 
 // POST /api/clouds/:cloud_id/instances/:id/reboot
 // POST /api/servers/:server_id/reboot
+//
 // Reboot a running instance.
 // Note that this action can only succeed if the instance is running. One cannot reboot instances of type "next".
 func (loc *InstanceLocator) Reboot() error {
@@ -2935,6 +3018,7 @@ func (loc *InstanceLocator) Reboot() error {
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/run_executable
+//
 // Runs a script or a recipe in the running instance.
 // This is an asynchronous function, which returns immediately after queuing the executable for execution.
 // Status of the execution can be tracked at the URL returned in the "Location" header.
@@ -2976,6 +3060,7 @@ func (loc *InstanceLocator) RunExecutable(options rsapi.ApiParams) error {
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/set_custom_lodgement
+//
 // This method is deprecated.  Please use InstanceCustomLodgement.
 // Required parameters:
 // quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
@@ -3005,6 +3090,7 @@ func (loc *InstanceLocator) SetCustomLodgement(quantity []*Quantity, timeframe s
 }
 
 // GET /api/clouds/:cloud_id/instances/:id
+//
 // Shows attributes of a single instance.
 // The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
@@ -3037,6 +3123,7 @@ func (loc *InstanceLocator) Show(options rsapi.ApiParams) (*Instance, error) {
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/start
+//
 // Starts an instance that has been stopped, resuming it to its previously saved volume state.
 // After an instance is started, the reference to your instance will have a different id.
 // The new id can be found by performing an index query with the appropriate filters on the
@@ -3057,6 +3144,7 @@ func (loc *InstanceLocator) Start() error {
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/stop
+//
 // Stores the instance's current volume state to resume later using the 'start' action.
 // After an instance is stopped, the reference to your instance will have a different id.
 // The new id can be found by performing an index query with the appropriate filters on the
@@ -3077,6 +3165,7 @@ func (loc *InstanceLocator) Stop() error {
 
 // POST /api/clouds/:cloud_id/instances/:id/terminate
 // POST /api/servers/:server_id/terminate
+//
 // Terminates a running instance.
 // Note that this action can succeed only if the instance is running. One cannot terminate instances of type "next".
 func (loc *InstanceLocator) Terminate() error {
@@ -3094,6 +3183,7 @@ func (loc *InstanceLocator) Terminate() error {
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/unlock
+//
 
 func (loc *InstanceLocator) Unlock() error {
 	var queryParams rsapi.ApiParams
@@ -3110,6 +3200,7 @@ func (loc *InstanceLocator) Unlock() error {
 }
 
 // PUT /api/clouds/:cloud_id/instances/:id
+//
 // Updates attributes of a single instance.
 // Required parameters:
 // instance
@@ -3169,6 +3260,7 @@ func (api *Api) InstanceCustomLodgementLocator(href string) *InstanceCustomLodge
 //===== Actions
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements
+//
 // Create a lodgement with the quantity and timeframe specified.
 // Required parameters:
 // quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
@@ -3204,6 +3296,7 @@ func (loc *InstanceCustomLodgementLocator) Create(quantity []*Quantity, timefram
 }
 
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
+//
 // Destroy the specified lodgement.
 func (loc *InstanceCustomLodgementLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -3220,6 +3313,7 @@ func (loc *InstanceCustomLodgementLocator) Destroy() error {
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements
+//
 // List InstanceCustomLodgements of a given cloud and instance.
 // Optional parameters:
 // view
@@ -3250,6 +3344,7 @@ func (loc *InstanceCustomLodgementLocator) Index(options rsapi.ApiParams) ([]*In
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
+//
 // Show the specified lodgement.
 func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, error) {
 	var res *InstanceCustomLodgement
@@ -3273,6 +3368,7 @@ func (loc *InstanceCustomLodgementLocator) Show() (*InstanceCustomLodgement, err
 }
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id
+//
 // Update a lodgement with the quantity specified.
 // Required parameters:
 // quantity: At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.
@@ -3328,6 +3424,7 @@ func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
 //===== Actions
 
 // GET /api/clouds/:cloud_id/instance_types
+//
 // Lists instance types.
 // Optional parameters:
 // filter
@@ -3363,6 +3460,7 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) ([]*InstanceType,
 }
 
 // GET /api/clouds/:cloud_id/instance_types/:id
+//
 // Displays information about a single Instance type.
 // Optional parameters:
 // view
@@ -3420,6 +3518,7 @@ func (api *Api) IpAddressLocator(href string) *IpAddressLocator {
 //===== Actions
 
 // POST /api/clouds/:cloud_id/ip_addresses
+//
 // Creates a new IpAddress with the given parameters.
 // Required parameters:
 // ip_address
@@ -3450,6 +3549,7 @@ func (loc *IpAddressLocator) Create(ipAddress *IpAddressParam) (*IpAddressLocato
 }
 
 // DELETE /api/clouds/:cloud_id/ip_addresses/:id
+//
 // Deletes a given IpAddress.
 func (loc *IpAddressLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -3466,6 +3566,7 @@ func (loc *IpAddressLocator) Destroy() error {
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses
+//
 // Lists the IpAddresses available to this account.
 // Optional parameters:
 // filter
@@ -3496,6 +3597,7 @@ func (loc *IpAddressLocator) Index(options rsapi.ApiParams) ([]*IpAddress, error
 }
 
 // GET /api/clouds/:cloud_id/ip_addresses/:id
+//
 // Show information about a single IpAddress.
 func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 	var res *IpAddress
@@ -3519,6 +3621,7 @@ func (loc *IpAddressLocator) Show() (*IpAddress, error) {
 }
 
 // PUT /api/clouds/:cloud_id/ip_addresses/:id
+//
 // Updates attributes of a given IpAddress.
 // Required parameters:
 // ip_address
@@ -3573,6 +3676,7 @@ func (api *Api) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
 
 // POST /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings
 // POST /api/clouds/:cloud_id/ip_address_bindings
+//
 // Creates an ip address binding which attaches a specified IpAddress resource
 // to a specified instance, and also allows for configuration of port forwarding
 // rules. If the instance specified is a current (running) instance, a one-time
@@ -3609,6 +3713,7 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 
 // DELETE /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
 // DELETE /api/clouds/:cloud_id/ip_address_bindings/:id
+//
 // No description provided for destroy.
 func (loc *IpAddressBindingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -3626,6 +3731,7 @@ func (loc *IpAddressBindingLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings
 // GET /api/clouds/:cloud_id/ip_address_bindings
+//
 // Lists the ip address bindings available to this account.
 // Optional parameters:
 // filter
@@ -3657,6 +3763,7 @@ func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) ([]*IpAddress
 
 // GET /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
 // GET /api/clouds/:cloud_id/ip_address_bindings/:id
+//
 // Show information about a single ip address binding.
 func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	var res *IpAddressBinding
@@ -3706,6 +3813,7 @@ func (api *Api) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
 //===== Actions
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id/data
+//
 // Gives the raw monitoring data for a particular metric. The response will include different variables
 // associated with that metric and the data points for each of those variables.
 // To get the data for a certain duration, for e.g. for the last 10 minutes(600 secs), provide the variables
@@ -3745,6 +3853,7 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]s
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics
+//
 // Lists the monitoring metrics available for the instance and their corresponding graph hrefs.
 // Making a request to the graph_href will return a png image corresponding to that monitoring metric.
 // Optional parameters:
@@ -3797,6 +3906,7 @@ func (loc *MonitoringMetricLocator) Index(options rsapi.ApiParams) ([]*Monitorin
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics/:id
+//
 // Shows attributes of a single monitoring metric.
 // Making a request to the graph_href will return a png image corresponding to that monitoring metric.
 // Optional parameters:
@@ -3871,6 +3981,7 @@ func (api *Api) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 //===== Actions
 
 // POST /api/multi_cloud_images/:id/clone
+//
 // Clones a given MultiCloudImage.
 // Required parameters:
 // multi_cloud_image
@@ -3895,6 +4006,7 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 }
 
 // POST /api/multi_cloud_images/:id/commit
+//
 // Commits a given MultiCloudImage. Only HEAD revisions can be committed.
 // Required parameters:
 // commit_message: The message associated with the commit.
@@ -3920,6 +4032,7 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 
 // POST /api/server_templates/:server_template_id/multi_cloud_images
 // POST /api/multi_cloud_images
+//
 // Creates a new MultiCloudImage with the given parameters.
 // Required parameters:
 // multi_cloud_image
@@ -3951,6 +4064,7 @@ func (loc *MultiCloudImageLocator) Create(multiCloudImage *MultiCloudImageParam)
 
 // DELETE /api/server_templates/:server_template_id/multi_cloud_images/:id
 // DELETE /api/multi_cloud_images/:id
+//
 // Deletes a given MultiCloudImage.
 func (loc *MultiCloudImageLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -3968,6 +4082,7 @@ func (loc *MultiCloudImageLocator) Destroy() error {
 
 // GET /api/server_templates/:server_template_id/multi_cloud_images
 // GET /api/multi_cloud_images
+//
 // Lists the MultiCloudImages available to this account. HEAD revisions have a revision of 0.
 // Optional parameters:
 // filter
@@ -3999,6 +4114,7 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) ([]*MultiCloud
 
 // GET /api/server_templates/:server_template_id/multi_cloud_images/:id
 // GET /api/multi_cloud_images/:id
+//
 // Show information about a single MultiCloudImage. HEAD revisions have a revision of 0.
 func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 	var res *MultiCloudImage
@@ -4023,6 +4139,7 @@ func (loc *MultiCloudImageLocator) Show() (*MultiCloudImage, error) {
 
 // PUT /api/server_templates/:server_template_id/multi_cloud_images/:id
 // PUT /api/multi_cloud_images/:id
+//
 // Updates attributes of a given MultiCloudImage. Only HEAD revisions can be updated (revision 0).
 // Currently, the attributes you can update are only the 'direct' attributes of a server template.
 // Required parameters:
@@ -4072,6 +4189,7 @@ func (api *Api) MultiCloudImageSettingLocator(href string) *MultiCloudImageSetti
 //===== Actions
 
 // POST /api/multi_cloud_images/:multi_cloud_image_id/settings
+//
 // Creates a new setting for an existing MultiCloudImage.
 // Required parameters:
 // multi_cloud_image_setting
@@ -4102,6 +4220,7 @@ func (loc *MultiCloudImageSettingLocator) Create(multiCloudImageSetting *MultiCl
 }
 
 // DELETE /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
+//
 // Deletes a MultiCloudImage setting.
 func (loc *MultiCloudImageSettingLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -4118,6 +4237,7 @@ func (loc *MultiCloudImageSettingLocator) Destroy() error {
 }
 
 // GET /api/multi_cloud_images/:multi_cloud_image_id/settings
+//
 // Lists the MultiCloudImage settings.
 // Optional parameters:
 // filter
@@ -4148,6 +4268,7 @@ func (loc *MultiCloudImageSettingLocator) Index(options rsapi.ApiParams) ([]*Mul
 }
 
 // GET /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
+//
 // Show information about a single MultiCloudImage setting.
 func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error) {
 	var res *MultiCloudImageSetting
@@ -4171,6 +4292,7 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 }
 
 // PUT /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
+//
 // Updates a settings for a MultiCLoudImage.
 // Required parameters:
 // multi_cloud_image_setting
@@ -4224,6 +4346,7 @@ func (api *Api) NetworkLocator(href string) *NetworkLocator {
 //===== Actions
 
 // POST /api/networks
+//
 // Creates a new network.
 // Required parameters:
 // network
@@ -4254,6 +4377,7 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 }
 
 // DELETE /api/networks/:id
+//
 // Deletes the given network(s).
 func (loc *NetworkLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -4270,6 +4394,7 @@ func (loc *NetworkLocator) Destroy() error {
 }
 
 // GET /api/networks
+//
 // Lists networks in this account.
 // Optional parameters:
 // filter
@@ -4300,6 +4425,7 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) ([]*Network, error) {
 }
 
 // GET /api/networks/:id
+//
 // Shows attributes of a single network.
 func (loc *NetworkLocator) Show() (*Network, error) {
 	var res *Network
@@ -4323,6 +4449,7 @@ func (loc *NetworkLocator) Show() (*Network, error) {
 }
 
 // PUT /api/networks/:id
+//
 // Updates the given network.
 // Required parameters:
 // network
@@ -4377,6 +4504,7 @@ func (api *Api) NetworkGatewayLocator(href string) *NetworkGatewayLocator {
 //===== Actions
 
 // POST /api/network_gateways
+//
 // Create a new NetworkGateway.
 // Required parameters:
 // network_gateway
@@ -4407,6 +4535,7 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 }
 
 // DELETE /api/network_gateways/:id
+//
 // Delete an existing NetworkGateway.
 func (loc *NetworkGatewayLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -4423,6 +4552,7 @@ func (loc *NetworkGatewayLocator) Destroy() error {
 }
 
 // GET /api/network_gateways
+//
 // Lists the NetworkGateways available to this account.
 // Optional parameters:
 // filter
@@ -4453,6 +4583,7 @@ func (loc *NetworkGatewayLocator) Index(options rsapi.ApiParams) ([]*NetworkGate
 }
 
 // GET /api/network_gateways/:id
+//
 // Show information about a single NetworkGateway.
 func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 	var res *NetworkGateway
@@ -4476,6 +4607,7 @@ func (loc *NetworkGatewayLocator) Show() (*NetworkGateway, error) {
 }
 
 // PUT /api/network_gateways/:id
+//
 // Update an existing NetworkGateway.
 // Required parameters:
 // network_gateway
@@ -4535,6 +4667,7 @@ func (api *Api) NetworkOptionGroupLocator(href string) *NetworkOptionGroupLocato
 //===== Actions
 
 // POST /api/network_option_groups
+//
 // Create a new NetworkOptionGroup.
 // Required parameters:
 // network_option_group
@@ -4565,6 +4698,7 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 }
 
 // DELETE /api/network_option_groups/:id
+//
 // Delete an existing NetworkOptionGroup.
 func (loc *NetworkOptionGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -4581,6 +4715,7 @@ func (loc *NetworkOptionGroupLocator) Destroy() error {
 }
 
 // GET /api/network_option_groups
+//
 // List NetworkOptionGroups available in this account.
 // Optional parameters:
 // filter
@@ -4611,6 +4746,7 @@ func (loc *NetworkOptionGroupLocator) Index(options rsapi.ApiParams) ([]*Network
 }
 
 // GET /api/network_option_groups/:id
+//
 // Show information about a single NetworkOptionGroup.
 func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 	var res *NetworkOptionGroup
@@ -4634,6 +4770,7 @@ func (loc *NetworkOptionGroupLocator) Show() (*NetworkOptionGroup, error) {
 }
 
 // PUT /api/network_option_groups/:id
+//
 // Update an existing NetworkOptionGroup.
 // Required parameters:
 // network_option_group
@@ -4692,6 +4829,7 @@ func (api *Api) NetworkOptionGroupAttachmentLocator(href string) *NetworkOptionG
 //===== Actions
 
 // POST /api/network_option_group_attachments
+//
 // Create a new NetworkOptionGroupAttachment.
 // Required parameters:
 // network_option_group_attachment
@@ -4722,6 +4860,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 }
 
 // DELETE /api/network_option_group_attachments/:id
+//
 // Delete an existing NetworkOptionGroupAttachment.
 func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -4738,6 +4877,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Destroy() error {
 }
 
 // GET /api/network_option_group_attachments
+//
 // List NetworkOptionGroupAttachments in this account.
 // Optional parameters:
 // filter
@@ -4773,6 +4913,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Index(options rsapi.ApiParams) (
 }
 
 // GET /api/network_option_group_attachments/:id
+//
 // Show information about a single NetworkOptionGroupAttachment.
 // Optional parameters:
 // view
@@ -4803,6 +4944,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Show(options rsapi.ApiParams) (*
 }
 
 // PUT /api/network_option_group_attachments/:id
+//
 // Update an existing NetworkOptionGroupAttachment.
 // Required parameters:
 // network_option_group_attachment
@@ -4851,6 +4993,8 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 // For more information on how to use OAuth 2.0 with RightScale, refer to the following:
 // http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
 // http://tools.ietf.org/html/draft-ietf-oauth-v2-23
+type Oauth2 struct {
+}
 
 //===== Locator
 
@@ -4868,6 +5012,7 @@ func (api *Api) Oauth2Locator(href string) *Oauth2Locator {
 //===== Actions
 
 // POST /api/oauth2/
+//
 // Perform an OAuth 2.0 token_refresh operation to obtain an access token that
 // can be used in lieu of an API session cookie. (In other words, creates a
 // session using OAuth 2.0).
@@ -4972,6 +5117,7 @@ func (api *Api) PermissionLocator(href string) *PermissionLocator {
 //===== Actions
 
 // POST /api/permissions
+//
 // Create a permission, thereby granting some user a particular role
 // with respect to the current account.
 // The 'observer' role has a special status; it must be granted before
@@ -5011,6 +5157,7 @@ func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLo
 }
 
 // DELETE /api/permissions/:id
+//
 // Destroy a permission, thereby revoking a user's role with respect
 // to the current account.
 // The 'observer' role has a special status; it cannot be revoked if
@@ -5033,6 +5180,7 @@ func (loc *PermissionLocator) Destroy() error {
 }
 
 // GET /api/permissions
+//
 // List all permissions for all users of the current acount.
 // Optional parameters:
 // filter
@@ -5063,6 +5211,7 @@ func (loc *PermissionLocator) Index(options rsapi.ApiParams) ([]*Permission, err
 }
 
 // GET /api/permissions/:id
+//
 // Show information about a single permission.
 func (loc *PermissionLocator) Show() (*Permission, error) {
 	var res *Permission
@@ -5114,6 +5263,7 @@ func (api *Api) PlacementGroupLocator(href string) *PlacementGroupLocator {
 //===== Actions
 
 // POST /api/placement_groups
+//
 // Creates a PlacementGroup.
 // Required parameters:
 // placement_group
@@ -5144,6 +5294,7 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 }
 
 // DELETE /api/placement_groups/:id
+//
 // Destroys a PlacementGroup.
 func (loc *PlacementGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -5160,6 +5311,7 @@ func (loc *PlacementGroupLocator) Destroy() error {
 }
 
 // GET /api/placement_groups
+//
 // Lists all PlacementGroups in an account.
 // Optional parameters:
 // filter
@@ -5195,6 +5347,7 @@ func (loc *PlacementGroupLocator) Index(options rsapi.ApiParams) ([]*PlacementGr
 }
 
 // GET /api/placement_groups/:id
+//
 // Shows information about a single PlacementGroup.
 // Optional parameters:
 // view
@@ -5251,6 +5404,7 @@ func (api *Api) PreferenceLocator(href string) *PreferenceLocator {
 //===== Actions
 
 // DELETE /api/preferences/:id
+//
 // Deletes the given preference.
 func (loc *PreferenceLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -5267,6 +5421,7 @@ func (loc *PreferenceLocator) Destroy() error {
 }
 
 // GET /api/preferences
+//
 // Lists all preferences.
 // Optional parameters:
 // filter
@@ -5297,6 +5452,7 @@ func (loc *PreferenceLocator) Index(options rsapi.ApiParams) ([]*Preference, err
 }
 
 // GET /api/preferences/:id
+//
 // Shows a single preference.
 func (loc *PreferenceLocator) Show() (*Preference, error) {
 	var res *Preference
@@ -5320,6 +5476,7 @@ func (loc *PreferenceLocator) Show() (*Preference, error) {
 }
 
 // PUT /api/preferences/:id
+//
 // If 'id' is known, updates preference with given contents.
 // Otherwise, creates new preference.
 // Note: If create, will return '201 Created' and the location of the new preference.
@@ -5379,6 +5536,7 @@ func (api *Api) PublicationLocator(href string) *PublicationLocator {
 //===== Actions
 
 // POST /api/publications/:id/import
+//
 // Imports the given publication and its subordinates to this account.
 // Only non-HEAD revisions that are shared with the account can be imported.
 func (loc *PublicationLocator) Import() error {
@@ -5396,6 +5554,7 @@ func (loc *PublicationLocator) Import() error {
 }
 
 // GET /api/publications
+//
 // Lists the publications available to this account. Only non-HEAD revisions are possible.
 // Optional parameters:
 // filter
@@ -5431,6 +5590,7 @@ func (loc *PublicationLocator) Index(options rsapi.ApiParams) ([]*Publication, e
 }
 
 // GET /api/publications/:id
+//
 // Show information about a single publication. Only non-HEAD revisions are possible.
 // Optional parameters:
 // view
@@ -5493,6 +5653,7 @@ func (api *Api) PublicationLineageLocator(href string) *PublicationLineageLocato
 //===== Actions
 
 // GET /api/publication_lineages/:id
+//
 // Show information about a single publication lineage. Only non-HEAD revisions are possible.
 // Optional parameters:
 // view
@@ -5557,6 +5718,7 @@ func (api *Api) RecurringVolumeAttachmentLocator(href string) *RecurringVolumeAt
 // POST /api/clouds/:cloud_id/recurring_volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments
 // POST /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments
+//
 // Creates a new recurring volume attachment.
 // Required parameters:
 // recurring_volume_attachment
@@ -5589,6 +5751,7 @@ func (loc *RecurringVolumeAttachmentLocator) Create(recurringVolumeAttachment *R
 // DELETE /api/clouds/:cloud_id/recurring_volume_attachments/:id
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments/:id
 // DELETE /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments/:id
+//
 // Deletes a given recurring volume attachment.
 func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -5607,6 +5770,7 @@ func (loc *RecurringVolumeAttachmentLocator) Destroy() error {
 // GET /api/clouds/:cloud_id/recurring_volume_attachments
 // GET /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments
 // GET /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments
+//
 // Lists all recurring volume attachments.
 // Optional parameters:
 // filter
@@ -5644,6 +5808,7 @@ func (loc *RecurringVolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*
 // GET /api/clouds/:cloud_id/recurring_volume_attachments/:id
 // GET /api/clouds/:cloud_id/volumes/:volume_id/recurring_volume_attachments/:id
 // GET /api/clouds/:cloud_id/volume_snapshots/:volume_snapshot_id/recurring_volume_attachments/:id
+//
 // Displays information about a single recurring volume attachment.
 // Optional parameters:
 // view
@@ -5711,6 +5876,7 @@ func (api *Api) RepositoryLocator(href string) *RepositoryLocator {
 //===== Actions
 
 // POST /api/repositories/:id/cookbook_import
+//
 // Performs a Cookbook import, which allows you to use the specified cookbooks in your design objects.
 // Required parameters:
 // asset_hrefs: Hrefs of the assets that should be imported.
@@ -5756,6 +5922,7 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options rsapi.
 }
 
 // POST /api/repositories/:id/cookbook_import_preview
+//
 // Retrieves a preview of the effects of a Cookbook import.
 // NOTE: This action is for RightScale internal use only. The response is
 // free-form JSON with no associated mediatype.
@@ -5795,6 +5962,7 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 }
 
 // POST /api/repositories
+//
 // Creates a Repository.
 // The following types of inputs are supported for the credential fields:
 // Type
@@ -5835,6 +6003,7 @@ func (loc *RepositoryLocator) Create(repository *RepositoryParam) (*RepositoryLo
 }
 
 // DELETE /api/repositories/:id
+//
 // Deletes the specified Repositories.
 func (loc *RepositoryLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -5851,6 +6020,7 @@ func (loc *RepositoryLocator) Destroy() error {
 }
 
 // GET /api/repositories
+//
 // Lists all Repositories for this Account.
 // Optional parameters:
 // filter
@@ -5886,6 +6056,7 @@ func (loc *RepositoryLocator) Index(options rsapi.ApiParams) ([]*Repository, err
 }
 
 // POST /api/repositories/:id/refetch
+//
 // Refetches all RepositoryAssets associated with the Repository.
 // Note that a refetch simply updates RightScale's view of the contents of the repository.
 // You must perform an import to use the assets in your design objects (or use the auto import parameter).
@@ -5911,6 +6082,7 @@ func (loc *RepositoryLocator) Refetch(options rsapi.ApiParams) error {
 }
 
 // POST /api/repositories/resolve
+//
 // Show a list of repositories that have imported cookbooks with the given names.
 // This operation returns a list of repositories that would later satisfy a call
 // to the swap_repository
@@ -5944,6 +6116,7 @@ func (loc *RepositoryLocator) Resolve(options rsapi.ApiParams) ([]*Repository, e
 }
 
 // GET /api/repositories/:id
+//
 // Shows a specified Repository.
 // Optional parameters:
 // view
@@ -5974,6 +6147,7 @@ func (loc *RepositoryLocator) Show(options rsapi.ApiParams) (*Repository, error)
 }
 
 // PUT /api/repositories/:id
+//
 // Updates a specified Repository.
 // The following types of inputs are supported for the credential fields:
 // Type
@@ -6036,6 +6210,7 @@ func (api *Api) RepositoryAssetLocator(href string) *RepositoryAssetLocator {
 //===== Actions
 
 // GET /api/repositories/:repository_id/repository_assets
+//
 // List a repository's current assets.
 // Repository assests are the cookbook details that were scraped from a
 // given repository.
@@ -6068,6 +6243,7 @@ func (loc *RepositoryAssetLocator) Index(options rsapi.ApiParams) ([]*Repository
 }
 
 // GET /api/repositories/:repository_id/repository_assets/:id
+//
 // Show information about a single asset.
 // A repository assest are the cookbook details that were scraped from a
 // repository.
@@ -6135,6 +6311,7 @@ func (api *Api) RightScriptLocator(href string) *RightScriptLocator {
 //===== Actions
 
 // POST /api/right_scripts/:id/commit
+//
 // Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
 // Required parameters:
 // right_script
@@ -6159,6 +6336,7 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 }
 
 // GET /api/right_scripts
+//
 // Lists RightScripts.
 // Optional parameters:
 // filter
@@ -6200,6 +6378,7 @@ func (loc *RightScriptLocator) Index(options rsapi.ApiParams) ([]*RightScript, e
 }
 
 // GET /api/right_scripts/:id
+//
 // Displays information about a single RightScript.
 func (loc *RightScriptLocator) Show() (*RightScript, error) {
 	var res *RightScript
@@ -6223,6 +6402,7 @@ func (loc *RightScriptLocator) Show() (*RightScript, error) {
 }
 
 // GET /api/right_scripts/:id/source
+//
 // Returns the script source for a RightScript
 func (loc *RightScriptLocator) ShowSource() error {
 	var queryParams rsapi.ApiParams
@@ -6239,6 +6419,7 @@ func (loc *RightScriptLocator) ShowSource() error {
 }
 
 // PUT /api/right_scripts/:id
+//
 // Updates RightScript name/description
 // Required parameters:
 // right_script
@@ -6263,6 +6444,7 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 }
 
 // PUT /api/right_scripts/:id/source
+//
 // Updates the source of the given RightScript
 func (loc *RightScriptLocator) UpdateSource() error {
 	var queryParams rsapi.ApiParams
@@ -6311,6 +6493,7 @@ func (api *Api) RouteLocator(href string) *RouteLocator {
 
 // POST /api/routes
 // POST /api/route_tables/:route_table_id/routes
+//
 // Create a new Route.
 // Required parameters:
 // route
@@ -6342,6 +6525,7 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 
 // DELETE /api/routes/:id
 // DELETE /api/route_tables/:route_table_id/routes/:id
+//
 // Delete an existing Route.
 func (loc *RouteLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -6359,6 +6543,7 @@ func (loc *RouteLocator) Destroy() error {
 
 // GET /api/routes
 // GET /api/route_tables/:route_table_id/routes
+//
 // List Routes available in this account.
 // Optional parameters:
 // filter
@@ -6390,6 +6575,7 @@ func (loc *RouteLocator) Index(options rsapi.ApiParams) ([]*Route, error) {
 
 // GET /api/routes/:id
 // GET /api/route_tables/:route_table_id/routes/:id
+//
 // Show information about a single Route.
 func (loc *RouteLocator) Show() (*Route, error) {
 	var res *Route
@@ -6414,6 +6600,7 @@ func (loc *RouteLocator) Show() (*Route, error) {
 
 // PUT /api/routes/:id
 // PUT /api/route_tables/:route_table_id/routes/:id
+//
 // Update an existing Route.
 // Required parameters:
 // route
@@ -6467,6 +6654,7 @@ func (api *Api) RouteTableLocator(href string) *RouteTableLocator {
 //===== Actions
 
 // POST /api/route_tables
+//
 // Create a new RouteTable.
 // Required parameters:
 // route_table
@@ -6497,6 +6685,7 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 }
 
 // DELETE /api/route_tables/:id
+//
 // Delete an existing RouteTable.
 func (loc *RouteTableLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -6513,6 +6702,7 @@ func (loc *RouteTableLocator) Destroy() error {
 }
 
 // GET /api/route_tables
+//
 // List RouteTables available in this account.
 // Optional parameters:
 // filter
@@ -6548,6 +6738,7 @@ func (loc *RouteTableLocator) Index(options rsapi.ApiParams) ([]*RouteTable, err
 }
 
 // GET /api/route_tables/:id
+//
 // Show information about a single RouteTable.
 // Optional parameters:
 // view
@@ -6578,6 +6769,7 @@ func (loc *RouteTableLocator) Show(options rsapi.ApiParams) (*RouteTable, error)
 }
 
 // PUT /api/route_tables/:id
+//
 // Update an existing RouteTable.
 // Required parameters:
 // route_table
@@ -6632,6 +6824,7 @@ func (api *Api) RunnableBindingLocator(href string) *RunnableBindingLocator {
 //===== Actions
 
 // POST /api/server_templates/:server_template_id/runnable_bindings
+//
 // Bind an executable to the given ServerTemplate.
 // An executable may be either a RightScript or Chef Recipe.
 // The resource must be editable.
@@ -6664,6 +6857,7 @@ func (loc *RunnableBindingLocator) Create(runnableBinding *RunnableBindingParam)
 }
 
 // DELETE /api/server_templates/:server_template_id/runnable_bindings/:id
+//
 // Unbind an executable from the given resource.
 // The resource must be editable.
 func (loc *RunnableBindingLocator) Destroy() error {
@@ -6681,6 +6875,7 @@ func (loc *RunnableBindingLocator) Destroy() error {
 }
 
 // GET /api/server_templates/:server_template_id/runnable_bindings
+//
 // Lists the executables bound to the ServerTemplate.
 // An excutable may be either a RightScript or Chef Recipe.
 // Optional parameters:
@@ -6712,6 +6907,7 @@ func (loc *RunnableBindingLocator) Index(options rsapi.ApiParams) ([]*RunnableBi
 }
 
 // PUT /api/server_templates/:server_template_id/runnable_bindings/multi_update
+//
 // Update attributes for multiple bound executables.
 // The resource must be editable.
 // Required parameters:
@@ -6737,6 +6933,7 @@ func (loc *RunnableBindingLocator) MultiUpdate(runnableBindings []*RunnableBindi
 }
 
 // GET /api/server_templates/:server_template_id/runnable_bindings/:id
+//
 // Show information about a single executable binding.
 // An excutable may be either a RightScript or Chef Recipe.
 // Optional parameters:
@@ -6770,6 +6967,8 @@ func (loc *RunnableBindingLocator) Show(options rsapi.ApiParams) (*RunnableBindi
 /******  Scheduler ******/
 
 // Provide RightLink with the ability to schedule script executions on instances
+type Scheduler struct {
+}
 
 //===== Locator
 
@@ -6787,6 +6986,7 @@ func (api *Api) SchedulerLocator(href string) *SchedulerLocator {
 //===== Actions
 
 // POST /api/right_net/scheduler/schedule_recipe
+//
 // Schedules a chef recipe for execution on the current instance
 // Optional parameters:
 // arguments: Serialized recipe execution arguments values keyed by name
@@ -6845,6 +7045,7 @@ func (loc *SchedulerLocator) ScheduleRecipe(options rsapi.ApiParams) error {
 }
 
 // POST /api/right_net/scheduler/schedule_right_script
+//
 // Schedules a RightScript for execution on the current instance
 // Optional parameters:
 // arguments: Serialized script execution arguments values keyed by name
@@ -6931,6 +7132,7 @@ func (api *Api) SecurityGroupLocator(href string) *SecurityGroupLocator {
 //===== Actions
 
 // POST /api/clouds/:cloud_id/security_groups
+//
 // Create a security group.
 // Required parameters:
 // security_group
@@ -6961,6 +7163,7 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 }
 
 // DELETE /api/clouds/:cloud_id/security_groups/:id
+//
 // Delete security group(s)
 func (loc *SecurityGroupLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -6977,6 +7180,7 @@ func (loc *SecurityGroupLocator) Destroy() error {
 }
 
 // GET /api/clouds/:cloud_id/security_groups
+//
 // Lists Security Groups.
 // Optional parameters:
 // filter
@@ -7012,6 +7216,7 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) ([]*SecurityGrou
 }
 
 // GET /api/clouds/:cloud_id/security_groups/:id
+//
 // Displays information about a single Security Group.
 // Optional parameters:
 // view
@@ -7078,6 +7283,7 @@ func (api *Api) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator 
 
 // POST /api/security_group_rules
 // POST /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules
+//
 // Create a security group rule for a security group.
 // The following flavors are supported:
 // group-based TCP/UDP
@@ -7114,6 +7320,7 @@ func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRule
 
 // DELETE /api/security_group_rules/:id
 // DELETE /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
+//
 // Delete security group rule(s)
 func (loc *SecurityGroupRuleLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -7131,6 +7338,7 @@ func (loc *SecurityGroupRuleLocator) Destroy() error {
 
 // GET /api/security_group_rules
 // GET /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules
+//
 // Lists SecurityGroupRules.
 // Optional parameters:
 // view
@@ -7162,6 +7370,7 @@ func (loc *SecurityGroupRuleLocator) Index(options rsapi.ApiParams) ([]*Security
 
 // GET /api/security_group_rules/:id
 // GET /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
+//
 // Displays information about a single SecurityGroupRule.
 // Optional parameters:
 // view
@@ -7193,6 +7402,7 @@ func (loc *SecurityGroupRuleLocator) Show(options rsapi.ApiParams) (*SecurityGro
 
 // PUT /api/security_group_rules/:id
 // PUT /api/clouds/:cloud_id/security_groups/:security_group_id/security_group_rules/:id
+//
 // Required parameters:
 // security_group_rule
 func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRuleParam2) error {
@@ -7255,6 +7465,7 @@ func (api *Api) ServerLocator(href string) *ServerLocator {
 //===== Actions
 
 // POST /api/servers/:id/clone
+//
 // Clones a given server.
 func (loc *ServerLocator) Clone() error {
 	var queryParams rsapi.ApiParams
@@ -7272,6 +7483,7 @@ func (loc *ServerLocator) Clone() error {
 
 // POST /api/servers
 // POST /api/deployments/:deployment_id/servers
+//
 // Creates a new server, and configures its corresponding "next" instance with the received parameters.
 // Required parameters:
 // server
@@ -7303,6 +7515,7 @@ func (loc *ServerLocator) Create(server *ServerParam) (*ServerLocator, error) {
 
 // DELETE /api/servers/:id
 // DELETE /api/deployments/:deployment_id/servers/:id
+//
 // Deletes a given server.
 func (loc *ServerLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -7320,6 +7533,7 @@ func (loc *ServerLocator) Destroy() error {
 
 // GET /api/servers
 // GET /api/deployments/:deployment_id/servers
+//
 // Lists servers.
 // By using the available filters, it is possible to retrieve servers that have common characteristics.
 // For example, one can list:
@@ -7361,6 +7575,7 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) ([]*Server, error) {
 }
 
 // POST /api/servers/:id/launch
+//
 // Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
 // URL of this servers next_instance. See Instances#launch for details.
 func (loc *ServerLocator) Launch() error {
@@ -7379,6 +7594,7 @@ func (loc *ServerLocator) Launch() error {
 
 // GET /api/servers/:id
 // GET /api/deployments/:deployment_id/servers/:id
+//
 // Shows the information of a single server.
 // Optional parameters:
 // view
@@ -7409,6 +7625,7 @@ func (loc *ServerLocator) Show(options rsapi.ApiParams) (*Server, error) {
 }
 
 // POST /api/servers/:id/teminate
+//
 // Terminates the current instance of this server. This function is equivalent to invoking the terminate action on the
 // URL of this servers current_instance. See Instances#terminate for details.
 func (loc *ServerLocator) Terminate() error {
@@ -7427,6 +7644,7 @@ func (loc *ServerLocator) Terminate() error {
 
 // POST /api/servers/:id/unwrap
 // POST /api/deployments/:deployment_id/servers/:id/unwrap
+//
 // No description provided for unwrap.
 func (loc *ServerLocator) Unwrap() error {
 	var queryParams rsapi.ApiParams
@@ -7444,6 +7662,7 @@ func (loc *ServerLocator) Unwrap() error {
 
 // PUT /api/servers/:id
 // PUT /api/deployments/:deployment_id/servers/:id
+//
 // Updates attributes of a single server.
 // Required parameters:
 // server
@@ -7469,6 +7688,7 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 
 // POST /api/servers/wrap_instance
 // POST /api/deployments/:deployment_id/servers/wrap_instance
+//
 // Wrap an existing instance and set current instance for new server
 // Required parameters:
 // server
@@ -7531,6 +7751,7 @@ func (api *Api) ServerArrayLocator(href string) *ServerArrayLocator {
 //===== Actions
 
 // POST /api/server_arrays/:id/clone
+//
 // Clones a given server array.
 func (loc *ServerArrayLocator) Clone() error {
 	var queryParams rsapi.ApiParams
@@ -7548,6 +7769,7 @@ func (loc *ServerArrayLocator) Clone() error {
 
 // POST /api/server_arrays
 // POST /api/deployments/:deployment_id/server_arrays
+//
 // Creates a new server array, and configures its corresponding "next" instance with the received parameters.
 // Required parameters:
 // server_array
@@ -7578,6 +7800,7 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 }
 
 // GET /api/server_arrays/:id/current_instances
+//
 // List the running instances belonging to the server array. See Instances#index for details.
 // This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
 // latter will include 'next_instance' as well.
@@ -7597,6 +7820,7 @@ func (loc *ServerArrayLocator) CurrentInstances() error {
 
 // DELETE /api/server_arrays/:id
 // DELETE /api/deployments/:deployment_id/server_arrays/:id
+//
 // Deletes a given server array.
 func (loc *ServerArrayLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -7614,6 +7838,7 @@ func (loc *ServerArrayLocator) Destroy() error {
 
 // GET /api/server_arrays
 // GET /api/deployments/:deployment_id/server_arrays
+//
 // Lists server arrays.
 // By using the available filters, it is possible to retrieve server arrays that have common characteristics.
 // For example, one can list:
@@ -7653,6 +7878,7 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) ([]*ServerArray, e
 }
 
 // POST /api/server_arrays/:id/launch
+//
 // Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
 // URL of this server_array's next_instance. See Instances#launch for details.
 func (loc *ServerArrayLocator) Launch() error {
@@ -7670,6 +7896,7 @@ func (loc *ServerArrayLocator) Launch() error {
 }
 
 // POST /api/server_arrays/:id/multi_run_executable
+//
 // Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
 // (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
 // a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)
@@ -7688,6 +7915,7 @@ func (loc *ServerArrayLocator) MultiRunExecutable() error {
 }
 
 // POST /api/server_arrays/:id/multi_terminate
+//
 // Terminate all instances of this array. This function is equivalent to invoking the "multi_terminate" action on the instances resource ( Instances#multi_terminate with
 // the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,
 // invoke the action "terminate" directly on the instance (see Instances#terminate)
@@ -7707,6 +7935,7 @@ func (loc *ServerArrayLocator) MultiTerminate() error {
 
 // GET /api/server_arrays/:id
 // GET /api/deployments/:deployment_id/server_arrays/:id
+//
 // Shows the information of a single server array.
 // Optional parameters:
 // view
@@ -7738,6 +7967,7 @@ func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) (*ServerArray, erro
 
 // PUT /api/server_arrays/:id
 // PUT /api/deployments/:deployment_id/server_arrays/:id
+//
 // Updates attributes of a single server array.
 // Required parameters:
 // server_array
@@ -7794,6 +8024,7 @@ func (api *Api) ServerTemplateLocator(href string) *ServerTemplateLocator {
 //===== Actions
 
 // POST /api/server_templates/:id/clone
+//
 // Clones a given ServerTemplate.
 // Required parameters:
 // server_template
@@ -7818,6 +8049,7 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 }
 
 // POST /api/server_templates/:id/commit
+//
 // Commits a given ServerTemplate. Only HEAD revisions (revision 0) that are owned by the account can be committed.
 // Required parameters:
 // commit_head_dependencies: Commit all HEAD revisions (if any) of the associated MultiCloud Images, RightScripts and Chef repo sequences.
@@ -7852,6 +8084,7 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 }
 
 // POST /api/server_templates
+//
 // Creates a new ServerTemplate with the given parameters.
 // Required parameters:
 // server_template
@@ -7882,6 +8115,7 @@ func (loc *ServerTemplateLocator) Create(serverTemplate *ServerTemplateParam) (*
 }
 
 // DELETE /api/server_templates/:id
+//
 // Deletes a given ServerTemplate.
 func (loc *ServerTemplateLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -7898,6 +8132,7 @@ func (loc *ServerTemplateLocator) Destroy() error {
 }
 
 // POST /api/server_templates/:id/detect_changes_in_head
+//
 // Identifies RightScripts attached to the resource that differ from their HEAD.
 // If the attached revision of the RightScript is the HEAD, then this will indicate
 // a difference between it and the latest committed revision in the same lineage.
@@ -7923,6 +8158,7 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, e
 }
 
 // GET /api/server_templates
+//
 // Lists the ServerTemplates available to this account. HEAD revisions have a revision of 0.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
@@ -7960,6 +8196,7 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) ([]*ServerTempl
 }
 
 // POST /api/server_templates/:id/publish
+//
 // Publishes a given ServerTemplate and its subordinates.
 // Only non-HEAD revisions that are owned by the account can be published.
 // Required parameters:
@@ -8006,6 +8243,7 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 }
 
 // POST /api/server_templates/:id/resolve
+//
 // Enumerates all attached cookbooks, missing dependencies and bound executables.
 // Version constraints on missing dependencies and the state of the Chef Recipes;
 // whether or not the cookbook or recipe itself could be found among the
@@ -8032,6 +8270,7 @@ func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
 }
 
 // GET /api/server_templates/:id
+//
 // Show information about a single ServerTemplate. HEAD revisions have a revision of 0.
 // The 'inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
 // details please see Inputs#index.)
@@ -8064,6 +8303,7 @@ func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) (*ServerTemplate
 }
 
 // POST /api/server_templates/:id/swap_repository
+//
 // In-place replacement of attached cookbooks from a given repository.
 // For each attached cookbook coming from the source repository, replace it by
 // attaching a cookbook of identical name coming from the target repository.
@@ -8105,6 +8345,7 @@ func (loc *ServerTemplateLocator) SwapRepository(sourceRepositoryHref string, ta
 }
 
 // PUT /api/server_templates/:id
+//
 // Updates attributes of a given ServerTemplate. Only HEAD revisions can be updated (revision 0).
 // Currently, the attributes you can update are only the 'direct' attributes of a server template. To
 // manage multi cloud images of a ServerTemplate, please see the resource 'ServerTemplateMultiCloudImages'.
@@ -8158,6 +8399,7 @@ func (api *Api) ServerTemplateMultiCloudImageLocator(href string) *ServerTemplat
 //===== Actions
 
 // POST /api/server_template_multi_cloud_images
+//
 // Creates a new ServerTemplateMultiCloudImage with the given parameters.
 // Required parameters:
 // server_template_multi_cloud_image
@@ -8188,6 +8430,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Create(serverTemplateMultiCloud
 }
 
 // DELETE /api/server_template_multi_cloud_images/:id
+//
 // Deletes a given ServerTemplateMultiCloudImage.
 func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -8204,6 +8447,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Destroy() error {
 }
 
 // GET /api/server_template_multi_cloud_images
+//
 // Lists the ServerTemplateMultiCloudImages available to this account.
 // Optional parameters:
 // filter
@@ -8239,6 +8483,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Index(options rsapi.ApiParams) 
 }
 
 // POST /api/server_template_multi_cloud_images/:id/make_default
+//
 // Makes a given ServerTemplateMultiCloudImage the default for the ServerTemplate.
 func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 	var queryParams rsapi.ApiParams
@@ -8255,6 +8500,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) MakeDefault() error {
 }
 
 // GET /api/server_template_multi_cloud_images/:id
+//
 // Show information about a single ServerTemplateMultiCloudImage which represents an association between a ServerTemplate and a MultiCloudImage.
 // Optional parameters:
 // view
@@ -8315,6 +8561,7 @@ func (api *Api) SessionLocator(href string) *SessionLocator {
 //===== Actions
 
 // GET /api/sessions/accounts
+//
 // List all the accounts that a user has access to.
 // This call may be executed outside of an existing session. Doing so requires passing a username and password in the
 // request body. The idea is that it should be possible to list accounts that can be used to create a session.
@@ -8364,6 +8611,7 @@ func (loc *SessionLocator) Accounts(options rsapi.ApiParams) ([]*Account, error)
 }
 
 // GET /api/sessions
+//
 // Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what
 // features are available within its privileges.
 // Example Request using Curl:
@@ -8390,6 +8638,7 @@ func (loc *SessionLocator) Index() ([]*Session, error) {
 }
 
 // GET /api/sessions/instance
+//
 // Shows the full attributes of the instance (that has the token used to log-in).
 // This call can be used by an instance to get it's own details.
 // Example Request using Curl:
@@ -8442,6 +8691,7 @@ func (api *Api) SshKeyLocator(href string) *SshKeyLocator {
 //===== Actions
 
 // POST /api/clouds/:cloud_id/ssh_keys
+//
 // Creates a new ssh key.
 // Required parameters:
 // ssh_key
@@ -8472,6 +8722,7 @@ func (loc *SshKeyLocator) Create(sshKey *SshKeyParam) (*SshKeyLocator, error) {
 }
 
 // DELETE /api/clouds/:cloud_id/ssh_keys/:id
+//
 // Deletes a given ssh key.
 func (loc *SshKeyLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -8488,6 +8739,7 @@ func (loc *SshKeyLocator) Destroy() error {
 }
 
 // GET /api/clouds/:cloud_id/ssh_keys
+//
 // Lists ssh keys.
 // Optional parameters:
 // filter
@@ -8523,6 +8775,7 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) ([]*SshKey, error) {
 }
 
 // GET /api/clouds/:cloud_id/ssh_keys/:id
+//
 // Displays information about a single ssh key.
 // Optional parameters:
 // view
@@ -8584,6 +8837,7 @@ func (api *Api) SubnetLocator(href string) *SubnetLocator {
 
 // POST /api/clouds/:cloud_id/instances/:instance_id/subnets
 // POST /api/clouds/:cloud_id/subnets
+//
 // Creates a new subnet.
 // Required parameters:
 // subnet
@@ -8615,6 +8869,7 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
 // DELETE /api/clouds/:cloud_id/subnets/:id
+//
 // Deletes the given subnet(s).
 func (loc *SubnetLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -8632,6 +8887,7 @@ func (loc *SubnetLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets
 // GET /api/clouds/:cloud_id/subnets
+//
 // Lists subnets of a given cloud.
 // Optional parameters:
 // filter
@@ -8663,6 +8919,7 @@ func (loc *SubnetLocator) Index(options rsapi.ApiParams) ([]*Subnet, error) {
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
 // GET /api/clouds/:cloud_id/subnets/:id
+//
 // Shows attributes of a single subnet.
 func (loc *SubnetLocator) Show() (*Subnet, error) {
 	var res *Subnet
@@ -8687,6 +8944,7 @@ func (loc *SubnetLocator) Show() (*Subnet, error) {
 
 // PUT /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
 // PUT /api/clouds/:cloud_id/subnets/:id
+//
 // Updates name and description for the current subnet.
 // Required parameters:
 // subnet
@@ -8715,6 +8973,8 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 // A tag or machine tag is a useful way of attaching useful metadata to an object/resource.
 // Tags are commonly used as an extra label or identifier.
 // For example, you might want to add a tag to an EBS Snapshot or AMI so that you can find it more quickly.
+type Tag struct {
+}
 
 //===== Locator
 
@@ -8732,6 +8992,7 @@ func (api *Api) TagLocator(href string) *TagLocator {
 //===== Actions
 
 // POST /api/tags/by_resource
+//
 // Get tags for a list of resource hrefs.
 // The hrefs can belong to various resource types and the tags for a non-existent href will be empty.
 // Required parameters:
@@ -8764,6 +9025,7 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 }
 
 // POST /api/tags/by_tag
+//
 // Search for resources having a list of tags in a specific resource_type.
 // The search criteria can contain plain tags ("my_db_server"), machine tags ("server:db=true"), or
 // namespace &amp; predicate wildcards ("server:db=*"). The result set includes links to the resources.
@@ -8828,6 +9090,7 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.A
 }
 
 // POST /api/tags/multi_add
+//
 // Add a list of tags to a list of hrefs. The tags must be either plain_tags or machine_tags.
 // The hrefs can belong to various resource types. If a resource for a href could not be found, an
 // error is returned and no tags are added for any resource.
@@ -8861,6 +9124,7 @@ func (loc *TagLocator) MultiAdd(resourceHrefs []string, tags []string) error {
 }
 
 // POST /api/tags/multi_delete
+//
 // Delete a list of tags on a list of hrefs. The tags must be either plain_tags or machine_tags.
 // The hrefs can belong to various resource types. If a resource for a href could not be found, an
 // error is returned and no tags are deleted for any resource.
@@ -8921,6 +9185,7 @@ func (api *Api) TaskLocator(href string) *TaskLocator {
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/live/tasks/:id
 // GET /api/server_arrays/:server_array_id/live/tasks/:id
+//
 // Displays information of a given task within the context of an instance.
 // Optional parameters:
 // view
@@ -8984,6 +9249,7 @@ func (api *Api) UserLocator(href string) *UserLocator {
 //===== Actions
 
 // POST /api/users
+//
 // Create a user. If a user already exists with the same email, that user will be returned.
 // Creating a user alone will not enable the user to access this account. You have to create
 // 'permissions' for that user before it can be used. Performing a 'show' on a new user
@@ -9028,6 +9294,7 @@ func (loc *UserLocator) Create(user *UserParam) (*UserLocator, error) {
 }
 
 // GET /api/users
+//
 // List the users available to the account the user is logged in to. Therefore, to list the users of
 // a child account, the user has to login to the child account first.
 // Optional parameters:
@@ -9059,6 +9326,7 @@ func (loc *UserLocator) Index(options rsapi.ApiParams) ([]*User, error) {
 }
 
 // GET /api/users/:id
+//
 // Show information about a single user.
 func (loc *UserLocator) Show() (*User, error) {
 	var res *User
@@ -9082,6 +9350,7 @@ func (loc *UserLocator) Show() (*User, error) {
 }
 
 // PUT /api/users/:id
+//
 // Update a user's contact information, change her password, or update SSO her settings. In order
 // to update a user record, one of the following criteria must be met:
 // You're logged in AS the user being modified and you provide a valid current_password.
@@ -9125,6 +9394,9 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 
 /******  UserData ******/
 
+type UserData struct {
+}
+
 //===== Locator
 
 // UserData resource locator, exposes resource actions.
@@ -9141,6 +9413,7 @@ func (api *Api) UserDataLocator(href string) *UserDataLocator {
 //===== Actions
 
 // GET /api/user_data/
+//
 // No description provided for show.
 func (loc *UserDataLocator) Show() (*map[string]string, error) {
 	var res *map[string]string
@@ -9196,6 +9469,7 @@ func (api *Api) VolumeLocator(href string) *VolumeLocator {
 //===== Actions
 
 // POST /api/clouds/:cloud_id/volumes
+//
 // Creates a new volume.
 // Required parameters:
 // volume
@@ -9226,6 +9500,7 @@ func (loc *VolumeLocator) Create(volume *VolumeParam) (*VolumeLocator, error) {
 }
 
 // DELETE /api/clouds/:cloud_id/volumes/:id
+//
 // Deletes a given volume.
 func (loc *VolumeLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -9242,6 +9517,7 @@ func (loc *VolumeLocator) Destroy() error {
 }
 
 // GET /api/clouds/:cloud_id/volumes
+//
 // Lists volumes.
 // Optional parameters:
 // filter
@@ -9277,6 +9553,7 @@ func (loc *VolumeLocator) Index(options rsapi.ApiParams) ([]*Volume, error) {
 }
 
 // GET /api/clouds/:cloud_id/volumes/:id
+//
 // Displays information about a single volume.
 // Optional parameters:
 // view
@@ -9307,6 +9584,7 @@ func (loc *VolumeLocator) Show(options rsapi.ApiParams) (*Volume, error) {
 }
 
 // PUT /api/clouds/:cloud_id/volumes/:id
+//
 // No description provided for update.
 // Required parameters:
 // volume
@@ -9363,6 +9641,7 @@ func (api *Api) VolumeAttachmentLocator(href string) *VolumeAttachmentLocator {
 // POST /api/clouds/:cloud_id/volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
+//
 // Creates a new volume attachment.
 // Required parameters:
 // volume_attachment
@@ -9396,6 +9675,7 @@ func (loc *VolumeAttachmentLocator) Create(volumeAttachment *VolumeAttachmentPar
 // DELETE /api/clouds/:cloud_id/volume_attachments/:id
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
+//
 // Deletes a given volume attachment.
 // Optional parameters:
 // force: Specifies whether to force the detachment of a volume.
@@ -9420,6 +9700,7 @@ func (loc *VolumeAttachmentLocator) Destroy(options rsapi.ApiParams) error {
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/volume_attachments
 // GET /api/clouds/:cloud_id/volume_attachments
+//
 // Lists all volume attachments.
 // Optional parameters:
 // filter
@@ -9458,6 +9739,7 @@ func (loc *VolumeAttachmentLocator) Index(options rsapi.ApiParams) ([]*VolumeAtt
 // GET /api/clouds/:cloud_id/volume_attachments/:id
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_attachments
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_attachment
+//
 // Displays information about a single volume attachment.
 // Optional parameters:
 // view
@@ -9522,6 +9804,7 @@ func (api *Api) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // POST /api/clouds/:cloud_id/volume_snapshots
+//
 // Creates a new volume_snapshot.
 // Optional parameters:
 // volume_snapshot
@@ -9557,6 +9840,7 @@ func (loc *VolumeSnapshotLocator) Create(options rsapi.ApiParams) (*VolumeSnapsh
 
 // DELETE /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
 // DELETE /api/clouds/:cloud_id/volume_snapshots/:id
+//
 // Deletes a given volume_snapshot.
 func (loc *VolumeSnapshotLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
@@ -9574,6 +9858,7 @@ func (loc *VolumeSnapshotLocator) Destroy() error {
 
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // GET /api/clouds/:cloud_id/volume_snapshots
+//
 // Lists all volume_snapshots.
 // Optional parameters:
 // filter
@@ -9610,6 +9895,7 @@ func (loc *VolumeSnapshotLocator) Index(options rsapi.ApiParams) ([]*VolumeSnaps
 
 // GET /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id
 // GET /api/clouds/:cloud_id/volume_snapshots/:id
+//
 // Displays information about a single volume_snapshot.
 // Optional parameters:
 // view
@@ -9669,6 +9955,7 @@ func (api *Api) VolumeTypeLocator(href string) *VolumeTypeLocator {
 //===== Actions
 
 // GET /api/clouds/:cloud_id/volume_types
+//
 // Lists Volume Types.
 // Optional parameters:
 // filter
@@ -9704,6 +9991,7 @@ func (loc *VolumeTypeLocator) Index(options rsapi.ApiParams) ([]*VolumeType, err
 }
 
 // GET /api/clouds/:cloud_id/volume_types/:id
+//
 // Displays information about a single Volume Type.
 // Optional parameters:
 // view

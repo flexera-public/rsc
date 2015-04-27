@@ -132,6 +132,12 @@ func toStringArray(a []interface{}) []string {
 	return res
 }
 
+// Escape ` in string to be wrapped in them
+func escapeBackticks(d string) string {
+	elems := strings.Split(d, "`")
+	return strings.Join(elems, "` + `")
+}
+
 // Type of flag, one of "string", "[]string", "int" or "map"
 func flagType(param *gen.ActionParam) string {
 	path := param.QueryName

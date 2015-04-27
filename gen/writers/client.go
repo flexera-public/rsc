@@ -127,11 +127,11 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 `
 
 const resourceTmpl = `{{$resource := .}}{{define "ActionBody"}}` + actionBodyTmpl + `{{end}}
-{{comment .Description}}{{if .Attributes}}
+{{comment .Description}}
 type {{.Name}} struct { {{range .Attributes}}
 {{.FieldName}} {{.FieldType}} ` + "`" + `json:"{{.Name}},omitempty"` + "`" + `{{end}}
 }
-{{end}}
+
 {{if .Actions}}
 //===== Locator
 
@@ -148,6 +148,7 @@ func (api *{{.ClientName}}) {{.Name}}Locator(href string) *{{.Name}}Locator {
 //===== Actions
 {{end}}{{range .Actions}}{{range .PathPatterns}}
 // {{.HttpMethod}} {{.Path}}{{end}}
+//
 {{comment .Description}}
 func (loc *{{$resource.Name}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
 	{{template "ActionBody" . }}

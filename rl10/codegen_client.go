@@ -48,6 +48,8 @@ func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
 /******  DebugCookbookPath ******/
 
 // Manipulate debug cookbook directory location
+type DebugCookbookPath struct {
+}
 
 //===== Locator
 
@@ -65,6 +67,7 @@ func (api *Api) DebugCookbookPathLocator(href string) *DebugCookbookPathLocator 
 //===== Actions
 
 // GET /rll/debug/cookbook
+//
 // Retrieve debug cookbook directory location
 func (loc *DebugCookbookPathLocator) Show() (string, error) {
 	var res string
@@ -88,6 +91,7 @@ func (loc *DebugCookbookPathLocator) Show() (string, error) {
 }
 
 // PUT /rll/debug/cookbook
+//
 // Set debug cookbook directory location
 func (loc *DebugCookbookPathLocator) Update(path string) (string, error) {
 	var res string
@@ -117,6 +121,7 @@ func (loc *DebugCookbookPathLocator) Update(path string) (string, error) {
 }
 
 // DELETE /rll/debug/cookbook
+//
 // Remove debug cookbook directory location
 func (loc *DebugCookbookPathLocator) Delete() error {
 	var queryParams rsapi.ApiParams
@@ -135,6 +140,8 @@ func (loc *DebugCookbookPathLocator) Delete() error {
 /******  Env ******/
 
 // Manipulate global script environment variables
+type Env struct {
+}
 
 //===== Locator
 
@@ -152,6 +159,7 @@ func (api *Api) EnvLocator(href string) *EnvLocator {
 //===== Actions
 
 // GET /rll/env
+//
 // Retrieve all environment variables
 func (loc *EnvLocator) Index() (string, error) {
 	var res string
@@ -175,6 +183,7 @@ func (loc *EnvLocator) Index() (string, error) {
 }
 
 // GET /rll/env/:name
+//
 // Retrieve environment variable value
 func (loc *EnvLocator) Show() (string, error) {
 	var res string
@@ -198,6 +207,7 @@ func (loc *EnvLocator) Show() (string, error) {
 }
 
 // PUT /rll/env/:name
+//
 // Set environment variable value
 func (loc *EnvLocator) Update(payload string) (string, error) {
 	var res string
@@ -227,6 +237,7 @@ func (loc *EnvLocator) Update(payload string) (string, error) {
 }
 
 // DELETE /rll/env/:name
+//
 // Delete environment variable
 func (loc *EnvLocator) Delete() error {
 	var queryParams rsapi.ApiParams
@@ -245,6 +256,8 @@ func (loc *EnvLocator) Delete() error {
 /******  Proc ******/
 
 // List of process variables, such as version, identity, and protocol_version
+type Proc struct {
+}
 
 //===== Locator
 
@@ -262,6 +275,7 @@ func (api *Api) ProcLocator(href string) *ProcLocator {
 //===== Actions
 
 // GET /rll/proc
+//
 // List all process variables
 func (loc *ProcLocator) Index() (string, error) {
 	var res string
@@ -285,6 +299,7 @@ func (loc *ProcLocator) Index() (string, error) {
 }
 
 // GET /rll/proc/:name
+//
 // Retrieve process variable value
 func (loc *ProcLocator) Show() (string, error) {
 	var res string
@@ -310,6 +325,8 @@ func (loc *ProcLocator) Show() (string, error) {
 /******  Rl10 ******/
 
 // Miscellaneous RightLink 10 local requests
+type Rl10 struct {
+}
 
 //===== Locator
 
@@ -327,6 +344,7 @@ func (api *Api) Rl10Locator(href string) *Rl10Locator {
 //===== Actions
 
 // POST /rll/upgrade
+//
 // Relaunch the RightLink process using a specified binary
 func (loc *Rl10Locator) Upgrade(exec string) (string, error) {
 	var res string
@@ -356,6 +374,7 @@ func (loc *Rl10Locator) Upgrade(exec string) (string, error) {
 }
 
 // POST /rll/run/recipe
+//
 // Run git-based scripts (as recipes) synchronously
 func (loc *Rl10Locator) RunRecipe(recipe string, options rsapi.ApiParams) (string, error) {
 	var res string
@@ -389,6 +408,7 @@ func (loc *Rl10Locator) RunRecipe(recipe string, options rsapi.ApiParams) (strin
 }
 
 // POST /rll/run/right_script
+//
 // Run RightScripts synchronously
 func (loc *Rl10Locator) RunRightScript(options rsapi.ApiParams) (string, error) {
 	var res string

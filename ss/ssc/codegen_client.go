@@ -78,6 +78,7 @@ func (api *Api) AccountPreferenceLocator(href string) *AccountPreferenceLocator 
 //===== Actions
 
 // GET /accounts/:account_id/account_preferences
+//
 // List the AccountPreferences for this account.
 func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountPreference, error) {
 	var res []*AccountPreference
@@ -110,6 +111,7 @@ func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountP
 }
 
 // GET /accounts/:account_id/account_preferences/:name
+//
 // Get details for a particular AccountPreference
 func (loc *AccountPreferenceLocator) Show() (*AccountPreference, error) {
 	var res *AccountPreference
@@ -133,6 +135,7 @@ func (loc *AccountPreferenceLocator) Show() (*AccountPreference, error) {
 }
 
 // POST /accounts/:account_id/account_preferences
+//
 // Create a new AccountPreference or update an existing AccountPreference with the new value
 func (loc *AccountPreferenceLocator) Create(groupName string, name string, value string) (*AccountPreferenceLocator, error) {
 	var res *AccountPreferenceLocator
@@ -169,6 +172,7 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 }
 
 // DELETE /accounts/:account_id/account_preferences/:name
+//
 // Delete an AccountPreference
 func (loc *AccountPreferenceLocator) Delete() error {
 	var queryParams rsapi.ApiParams
@@ -225,6 +229,7 @@ func (api *Api) ApplicationLocator(href string) *ApplicationLocator {
 //===== Actions
 
 // GET /catalogs/:catalog_id/applications
+//
 // List the Applications available in the specified Catalog.
 func (loc *ApplicationLocator) Index(options rsapi.ApiParams) ([]*Application, error) {
 	var res []*Application
@@ -253,6 +258,7 @@ func (loc *ApplicationLocator) Index(options rsapi.ApiParams) ([]*Application, e
 }
 
 // GET /catalogs/:catalog_id/applications/:id
+//
 // Show detailed information about a given Application.
 func (loc *ApplicationLocator) Show(options rsapi.ApiParams) (*Application, error) {
 	var res *Application
@@ -281,6 +287,7 @@ func (loc *ApplicationLocator) Show(options rsapi.ApiParams) (*Application, erro
 }
 
 // POST /catalogs/:catalog_id/applications
+//
 // Create a new Application in the Catalog.
 func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, shortDescription string, options rsapi.ApiParams) (*ApplicationLocator, error) {
 	var res *ApplicationLocator
@@ -333,6 +340,7 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 }
 
 // PUT /catalogs/:catalog_id/applications/:id
+//
 // Update the content of an existing Application.
 func (loc *ApplicationLocator) Update(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -378,6 +386,7 @@ func (loc *ApplicationLocator) Update(options rsapi.ApiParams) error {
 }
 
 // PUT /catalogs/:catalog_id/applications
+//
 // Update the content of multiple Applications.
 func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) error {
 	if id == "" {
@@ -428,6 +437,7 @@ func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) e
 }
 
 // DELETE /catalogs/:catalog_id/applications/:id
+//
 // Delete an Application from the Catalog
 func (loc *ApplicationLocator) Delete() error {
 	var queryParams rsapi.ApiParams
@@ -444,6 +454,7 @@ func (loc *ApplicationLocator) Delete() error {
 }
 
 // DELETE /catalogs/:catalog_id/applications
+//
 // Delete multiple Applications from the Catalog
 func (loc *ApplicationLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
@@ -466,6 +477,7 @@ func (loc *ApplicationLocator) MultiDelete(ids []string) error {
 }
 
 // GET /catalogs/:catalog_id/applications/:id/download
+//
 // Download the underlying CAT source of an Application.
 func (loc *ApplicationLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
@@ -488,6 +500,7 @@ func (loc *ApplicationLocator) Download(apiVersion string) error {
 }
 
 // POST /catalogs/:catalog_id/applications/:id/actions/launch
+//
 // Launches an Application by creating an Execution with ScheduledActions as needed to match the optional Schedule provided.
 func (loc *ApplicationLocator) Launch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -561,6 +574,7 @@ func (api *Api) NotificationRuleLocator(href string) *NotificationRuleLocator {
 //===== Actions
 
 // GET /accounts/:account_id/notification_rules
+//
 // List all notification rules, potentially filtering by a collection of resources.
 func (loc *NotificationRuleLocator) Index(source string, options rsapi.ApiParams) ([]*NotificationRule, error) {
 	var res []*NotificationRule
@@ -594,6 +608,7 @@ func (loc *NotificationRuleLocator) Index(source string, options rsapi.ApiParams
 }
 
 // POST /accounts/:account_id/notification_rules
+//
 // Create one notification rule for a specific target and source.
 // The source must be unique in the scope of target and account.
 func (loc *NotificationRuleLocator) Create(minSeverity string, source string, target string, options rsapi.ApiParams) (*NotificationRuleLocator, error) {
@@ -636,6 +651,7 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 }
 
 // PATCH /accounts/:account_id/notification_rules/:id
+//
 // Change min severity of existing rule
 func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
 	if minSeverity == "" {
@@ -658,6 +674,7 @@ func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
 }
 
 // GET /accounts/:account_id/notification_rules/:id
+//
 // Show one notification rule.
 func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 	var res *NotificationRule
@@ -681,6 +698,7 @@ func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 }
 
 // DELETE /accounts/:account_id/notification_rules/:id
+//
 // Delete one notification rule.
 func (loc *NotificationRuleLocator) Delete() error {
 	var queryParams rsapi.ApiParams
@@ -697,6 +715,7 @@ func (loc *NotificationRuleLocator) Delete() error {
 }
 
 // DELETE /accounts/:account_id/notification_rules
+//
 // Delete one or more notification rules by id or source and target.
 func (loc *NotificationRuleLocator) MultiDelete(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -756,6 +775,7 @@ func (api *Api) UserPreferenceLocator(href string) *UserPreferenceLocator {
 //===== Actions
 
 // GET /accounts/:account_id/user_preferences
+//
 // List the UserPreference for users in this account.
 // Only administrators and infrastructure users may request the preferences of other users.
 // Users who are not members of the admin role need to specify a filter with their ID in order to retrieve their preferences.
@@ -790,6 +810,7 @@ func (loc *UserPreferenceLocator) Index(options rsapi.ApiParams) ([]*UserPrefere
 }
 
 // GET /accounts/:account_id/user_preferences/:id
+//
 // Get details for a particular UserPreference
 func (loc *UserPreferenceLocator) Show(options rsapi.ApiParams) (*UserPreference, error) {
 	var res *UserPreference
@@ -818,6 +839,7 @@ func (loc *UserPreferenceLocator) Show(options rsapi.ApiParams) (*UserPreference
 }
 
 // POST /accounts/:account_id/user_preferences
+//
 // Create a new UserPreference.
 // Multiple resources can be created at once with a multipart request.
 // Values are validated with the corresponding UserPreferenceInfo.
@@ -853,6 +875,7 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 }
 
 // PATCH /accounts/:account_id/user_preferences/:id
+//
 // Update the value of a UserPreference.
 // Multiple values may be updated using a multipart request.
 // Values are validated with the corresponding UserPreferenceInfo.
@@ -878,6 +901,7 @@ func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.ApiPar
 }
 
 // DELETE /accounts/:account_id/user_preferences/:id
+//
 // Delete a UserPreference
 func (loc *UserPreferenceLocator) Delete() error {
 	var queryParams rsapi.ApiParams
@@ -927,6 +951,7 @@ func (api *Api) UserPreferenceInfoLocator(href string) *UserPreferenceInfoLocato
 //===== Actions
 
 // GET /accounts/:account_id/user_preference_infos
+//
 // List the UserPreferenceInfo.
 func (loc *UserPreferenceInfoLocator) Index(options rsapi.ApiParams) ([]*UserPreferenceInfo, error) {
 	var res []*UserPreferenceInfo
@@ -955,6 +980,7 @@ func (loc *UserPreferenceInfoLocator) Index(options rsapi.ApiParams) ([]*UserPre
 }
 
 // GET /accounts/:account_id/user_preference_infos/:id
+//
 // Get details for a particular UserPreferenceInfo
 func (loc *UserPreferenceInfoLocator) Show() (*UserPreferenceInfo, error) {
 	var res *UserPreferenceInfo

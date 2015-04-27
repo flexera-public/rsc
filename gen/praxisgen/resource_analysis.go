@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"bitbucket.org/pkg/inflect"
 	"github.com/rightscale/rsc/gen"
 )
@@ -18,22 +16,21 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	}
 
 	// Attributes
-	m, ok := res["media_type"].(string)
-	if !ok {
-		return fmt.Errorf("Resource %s has no media type (missing key \"media_type\")", name)
-	}
-	t, ok := a.RawTypes[m]
 	attributes := []*gen.Attribute{}
+	m, ok := res["media_type"].(string)
 	if ok {
-		attrs, ok := t["attributes"].(map[string]interface{})
+		t, ok := a.RawTypes[m]
 		if ok {
-			attributes = make([]*gen.Attribute, len(attrs))
-			for idx, n := range sortedKeys(attrs) {
-				param, err := a.AnalyzeAttribute(n, n, attrs[n].(map[string]interface{}))
-				if err != nil {
-					return err
+			attrs, ok := t["attributes"].(map[string]interface{})
+			if ok {
+				attributes = make([]*gen.Attribute, len(attrs))
+				for idx, n := range sortedKeys(attrs) {
+					param, err := a.AnalyzeAttribute(n, n, attrs[n].(map[string]interface{}))
+					if err != nil {
+						return err
+					}
+					attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.Signature()}
 				}
-				attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.Signature()}
 			}
 		}
 	}

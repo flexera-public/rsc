@@ -26,6 +26,7 @@ type RequestDetails struct {
 	Payload               rsapi.ApiParams
 	AccountId             int
 	FetchLocationResource bool
+	ApiVersion            string
 }
 
 // Dispatch request to appropriate low-level method
@@ -38,16 +39,28 @@ func Dispatch(details *RequestDetails, client ApiClient) (*http.Response, error)
 			switch t := p.(type) {
 			case string:
 				values.Set(n, t)
+			case int:
+				values.Set(n, strconv.Itoa(t))
+			case bool:
+				values.Set(n, strconv.FormatBool(t))
 			case []string:
 				for _, e := range t {
 					values.Add(n, e)
 				}
+			case []int:
+				for _, e := range t {
+					values.Add(n, strconv.Itoa(e))
+				}
+			case []bool:
+				for _, e := range t {
+					values.Add(n, strconv.FormatBool(e))
+				}
 			case map[string]string:
 				for pn, e := range t {
-					values.Add(pn, e)
+					values.Add(fmt.Sprintf("%s[%s]", n, pn), e)
 				}
 			default:
-				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string or an array of strings", p)
+				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string, an integer, a bool, an array of these types of a map of strings", p)
 			}
 		}
 		u.RawQuery = values.Encode()
@@ -64,7 +77,7 @@ func Dispatch(details *RequestDetails, client ApiClient) (*http.Response, error)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("X-API-Version", "1.0")
+	req.Header.Set("X-API-Version", details.ApiVersion)
 	req.Header.Set("Content-Type", "application/json")
 	if details.AccountId > 0 {
 		req.Header.Set("X-Account", strconv.Itoa(details.AccountId))

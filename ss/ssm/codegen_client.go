@@ -105,6 +105,7 @@ func (api *Api) ExecutionLocator(href string) *ExecutionLocator {
 //===== Actions
 
 // GET /projects/:project_id/executions
+//
 // List information about the Executions, or use a filter to only return certain Executions. A view can be used for various levels of detail.
 func (loc *ExecutionLocator) Index(options rsapi.ApiParams) ([]*Execution, error) {
 	var res []*Execution
@@ -141,6 +142,7 @@ func (loc *ExecutionLocator) Index(options rsapi.ApiParams) ([]*Execution, error
 }
 
 // GET /projects/:project_id/executions/:id
+//
 // Show details for a given Execution. A view can be used for various levels of detail.
 func (loc *ExecutionLocator) Show(options rsapi.ApiParams) (*Execution, error) {
 	var res *Execution
@@ -169,6 +171,7 @@ func (loc *ExecutionLocator) Show(options rsapi.ApiParams) (*Execution, error) {
 }
 
 // POST /projects/:project_id/executions
+//
 // Create a new execution from a CAT, a compiled CAT, an Application in the Catalog, or a Template in Designer
 func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator, error) {
 	var res *ExecutionLocator
@@ -228,6 +231,7 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 }
 
 // DELETE /projects/:project_id/executions/:id
+//
 // No description provided for delete.
 func (loc *ExecutionLocator) Delete(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -249,6 +253,7 @@ func (loc *ExecutionLocator) Delete(options rsapi.ApiParams) error {
 }
 
 // DELETE /projects/:project_id/executions
+//
 // Delete several executions from the database. Note: if an execution has not successfully been terminated, there may still be associated cloud resources running.
 func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.ApiParams) error {
 	if len(ids) == 0 {
@@ -275,6 +280,7 @@ func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.ApiParams) 
 }
 
 // GET /projects/:project_id/executions/:id/download
+//
 // Download the CAT source for the execution.
 func (loc *ExecutionLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
@@ -297,6 +303,7 @@ func (loc *ExecutionLocator) Download(apiVersion string) error {
 }
 
 // POST /projects/:project_id/executions/:id/actions/launch
+//
 // Launch an Execution.
 func (loc *ExecutionLocator) Launch() error {
 	var queryParams rsapi.ApiParams
@@ -313,6 +320,7 @@ func (loc *ExecutionLocator) Launch() error {
 }
 
 // POST /projects/:project_id/executions/:id/actions/start
+//
 // Start an Execution.
 func (loc *ExecutionLocator) Start() error {
 	var queryParams rsapi.ApiParams
@@ -329,6 +337,7 @@ func (loc *ExecutionLocator) Start() error {
 }
 
 // POST /projects/:project_id/executions/:id/actions/stop
+//
 // Stop an Execution.
 func (loc *ExecutionLocator) Stop() error {
 	var queryParams rsapi.ApiParams
@@ -345,6 +354,7 @@ func (loc *ExecutionLocator) Stop() error {
 }
 
 // POST /projects/:project_id/executions/:id/actions/terminate
+//
 // Terminate an Execution.
 func (loc *ExecutionLocator) Terminate() error {
 	var queryParams rsapi.ApiParams
@@ -361,6 +371,7 @@ func (loc *ExecutionLocator) Terminate() error {
 }
 
 // POST /projects/:project_id/executions/actions/launch
+//
 // Launch several executions.
 func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 	if len(ids) == 0 {
@@ -383,6 +394,7 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 }
 
 // POST /projects/:project_id/executions/actions/start
+//
 // Start several executions.
 func (loc *ExecutionLocator) MultiStart(ids []string) error {
 	if len(ids) == 0 {
@@ -405,6 +417,7 @@ func (loc *ExecutionLocator) MultiStart(ids []string) error {
 }
 
 // POST /projects/:project_id/executions/actions/stop
+//
 // Stop several executions.
 func (loc *ExecutionLocator) MultiStop(ids []string) error {
 	if len(ids) == 0 {
@@ -427,6 +440,7 @@ func (loc *ExecutionLocator) MultiStop(ids []string) error {
 }
 
 // POST /projects/:project_id/executions/actions/terminate
+//
 // Terminate several executions.
 func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 	if len(ids) == 0 {
@@ -481,6 +495,7 @@ func (api *Api) NotificationLocator(href string) *NotificationLocator {
 //===== Actions
 
 // GET /projects/:project_id/notifications
+//
 // List the most recent 50 Notifications. Use the filter parameter to specify specify Executions.
 func (loc *NotificationLocator) Index(options rsapi.ApiParams) ([]*Notification, error) {
 	var res []*Notification
@@ -513,6 +528,7 @@ func (loc *NotificationLocator) Index(options rsapi.ApiParams) ([]*Notification,
 }
 
 // GET /projects/:project_id/notifications/:id
+//
 // Get details for a specific Notification
 func (loc *NotificationLocator) Show() (*Notification, error) {
 	var res *Notification
@@ -570,6 +586,7 @@ func (api *Api) OperationLocator(href string) *OperationLocator {
 //===== Actions
 
 // GET /projects/:project_id/operations
+//
 // Get the list of 50 most recent Operations (usually filtered by Execution).
 func (loc *OperationLocator) Index(options rsapi.ApiParams) ([]*Operation, error) {
 	var res []*Operation
@@ -610,6 +627,7 @@ func (loc *OperationLocator) Index(options rsapi.ApiParams) ([]*Operation, error
 }
 
 // GET /projects/:project_id/operations/:id
+//
 // Get the details for a specific Operation
 func (loc *OperationLocator) Show(options rsapi.ApiParams) (*Operation, error) {
 	var res *Operation
@@ -638,6 +656,7 @@ func (loc *OperationLocator) Show(options rsapi.ApiParams) (*Operation, error) {
 }
 
 // POST /projects/:project_id/operations
+//
 // Trigger an Operation to run by specifying the Execution ID and the name of the Operation.
 func (loc *OperationLocator) Create(executionId string, name string, options rsapi.ApiParams) (*OperationLocator, error) {
 	var res *OperationLocator
@@ -712,6 +731,7 @@ func (api *Api) ScheduledActionLocator(href string) *ScheduledActionLocator {
 //===== Actions
 
 // GET /projects/:project_id/scheduled_actions
+//
 // List ScheduledAction resources in the project. The list can be filtered to a given execution.
 func (loc *ScheduledActionLocator) Index(options rsapi.ApiParams) ([]*ScheduledAction, error) {
 	var res []*ScheduledAction
@@ -740,6 +760,7 @@ func (loc *ScheduledActionLocator) Index(options rsapi.ApiParams) ([]*ScheduledA
 }
 
 // GET /projects/:project_id/scheduled_actions/:id
+//
 // Retrieve given ScheduledAction resource.
 func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
 	var res *ScheduledAction
@@ -763,6 +784,7 @@ func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
 }
 
 // POST /projects/:project_id/scheduled_actions
+//
 // Create a new ScheduledAction resource.
 func (loc *ScheduledActionLocator) Create(action string, executionId string, firstOccurrence time.Time, options rsapi.ApiParams) (*ScheduledActionLocator, error) {
 	var res *ScheduledActionLocator
@@ -812,6 +834,7 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 }
 
 // PATCH /projects/:project_id/scheduled_actions/:id
+//
 // Update one or more ScheduledAction properties. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledActions created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
 func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -841,6 +864,7 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 }
 
 // DELETE /projects/:project_id/scheduled_actions/:id
+//
 // Delete a ScheduledAction. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
 func (loc *ScheduledActionLocator) Delete(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -862,6 +886,7 @@ func (loc *ScheduledActionLocator) Delete(options rsapi.ApiParams) error {
 }
 
 // POST /projects/:project_id/scheduled_actions/:id/actions/skip
+//
 // Skips the requested number of ScheduledAction occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledAction is returned.
 func (loc *ScheduledActionLocator) Skip(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -926,6 +951,7 @@ func (api *Api) ScheduledOperationLocator(href string) *ScheduledOperationLocato
 //===== Actions
 
 // GET /projects/:project_id/scheduled_operations
+//
 // List ScheduledOperation resources in the project. The list can be filtered to a given execution.
 func (loc *ScheduledOperationLocator) Index(options rsapi.ApiParams) ([]*ScheduledOperation, error) {
 	var res []*ScheduledOperation
@@ -954,6 +980,7 @@ func (loc *ScheduledOperationLocator) Index(options rsapi.ApiParams) ([]*Schedul
 }
 
 // GET /projects/:project_id/scheduled_operations/:id
+//
 // Retrieve given ScheduledOperation resource.
 func (loc *ScheduledOperationLocator) Show() (*ScheduledOperation, error) {
 	var res *ScheduledOperation
@@ -977,6 +1004,7 @@ func (loc *ScheduledOperationLocator) Show() (*ScheduledOperation, error) {
 }
 
 // POST /projects/:project_id/scheduled_operations
+//
 // Create a new ScheduledOperation resource.
 func (loc *ScheduledOperationLocator) Create(executionId string, firstOccurrence time.Time, operation *OperationStruct, options rsapi.ApiParams) (*ScheduledOperationLocator, error) {
 	var res *ScheduledOperationLocator
@@ -1026,6 +1054,7 @@ func (loc *ScheduledOperationLocator) Create(executionId string, firstOccurrence
 }
 
 // PATCH /projects/:project_id/scheduled_operations/:id
+//
 // Update one or more ScheduledOperation properties. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledOperations created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
 func (loc *ScheduledOperationLocator) Patch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1055,6 +1084,7 @@ func (loc *ScheduledOperationLocator) Patch(options rsapi.ApiParams) error {
 }
 
 // DELETE /projects/:project_id/scheduled_operations/:id
+//
 // Delete a ScheduledOperation. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
 func (loc *ScheduledOperationLocator) Delete(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1076,6 +1106,7 @@ func (loc *ScheduledOperationLocator) Delete(options rsapi.ApiParams) error {
 }
 
 // POST /projects/:project_id/scheduled_operations/:id/actions/skip
+//
 // Skips the requested number of ScheduledOperation occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledOperation is returned.
 func (loc *ScheduledOperationLocator) Skip(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams

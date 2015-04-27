@@ -39,7 +39,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 			param := p.(map[string]interface{})
 			t, ok := param["type"]
 			if !ok {
-				return nil, fmt.Errorf("Misins type declaration in %s", prettify(p))
+				return nil, fmt.Errorf("Missing type declaration in %s", prettify(p))
 			}
 			attrs := t.(map[string]interface{})["attributes"].(map[string]interface{})
 			attrNames := sortedKeys(attrs)
@@ -179,6 +179,11 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						if name, ok := m["name"]; ok {
 							returnTypeName = toGoTypeName(name.(string), true)
 							a.descriptor.NeedJson = true
+							// Analyze return type to make sure it gets recorded
+							_, err := a.AnalyzeType(a.RawTypes[name.(string)], "return")
+							if err != nil {
+								return nil, err
+							}
 						} else {
 							// Default to string
 							returnTypeName = "string"

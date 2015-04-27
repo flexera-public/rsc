@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/rightscale/rsc/dispatch"
 	"github.com/rightscale/rsc/rsapi"
-	"github.com/rightscale/rsc/ss/dispatch"
 )
 
 // Self-Service designer client

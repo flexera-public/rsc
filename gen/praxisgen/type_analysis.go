@@ -74,6 +74,9 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 	case "Integer":
 		i := gen.BasicDataType("int")
 		dataType = &i
+	case "Float":
+		f := gen.BasicDataType("float64")
+		dataType = &f
 	case "String":
 		s := gen.BasicDataType("string")
 		dataType = &s
@@ -81,8 +84,8 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		b := gen.BasicDataType("bool")
 		dataType = &b
 	case "Object":
-		b := gen.BasicDataType("interface{}")
-		dataType = &b
+		o := gen.BasicDataType("interface{}")
+		dataType = &o
 	case "DateTime":
 		t := gen.BasicDataType("time.Time")
 		a.descriptor.NeedTime = true

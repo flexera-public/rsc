@@ -17,12 +17,13 @@ type MetadataWriter struct {
 // Commands writer factory
 func NewMetadataWriter() (*MetadataWriter, error) {
 	funcMap := template.FuncMap{
-		"comment":       comment,
-		"join":          strings.Join,
-		"commandLine":   commandLine,
-		"toStringArray": toStringArray,
-		"flagType":      flagType,
-		"location":      location,
+		"comment":         comment,
+		"join":            strings.Join,
+		"commandLine":     commandLine,
+		"toStringArray":   toStringArray,
+		"flagType":        flagType,
+		"location":        location,
+		"escapeBackticks": escapeBackticks,
 	}
 	headerT, err := template.New("header-metadata").Funcs(funcMap).Parse(headerMetadataTmpl)
 	if err != nil {
@@ -89,7 +90,7 @@ const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end
 var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
-		Description: ` + "`" + `{{.Description}}` + "`" + `,
+		Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 		Actions: []*metadata.Action{ {{range .Actions}}
 		{{template "action" .}}{{end}}
 		},
@@ -99,7 +100,7 @@ var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 
 const actionMetadataTmpl = `&metadata.Action {
 				Name: "{{.Name}}",
-				Description: ` + "`" + `{{.Description}}` + "`" + `,
+				Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
 					&metadata.PathPattern{
 						HttpMethod: "{{.HttpMethod}}",
@@ -111,7 +112,7 @@ const actionMetadataTmpl = `&metadata.Action {
 				CommandFlags: []*metadata.ActionParam{ {{range .LeafParams}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
-						Description: ` + "`" + `{{.Description}}` + "`" + `,
+						Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 						Type: "{{flagType .}}",
 						Location: {{location .}},
 						Mandatory: {{.Mandatory}},
@@ -124,7 +125,7 @@ const actionMetadataTmpl = `&metadata.Action {
 				ApiParams: []*metadata.ActionParam{ {{range .Params}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
-						Description: ` + "`" + `{{.Description}}` + "`" + `,
+						Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 						Type: "{{.Signature}}",
 						Location: {{location .}},
 						Mandatory: {{.Mandatory}},

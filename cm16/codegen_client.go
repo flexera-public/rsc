@@ -75,6 +75,7 @@ func (api *Api) AccountLocator(href string) *AccountLocator {
 //===== Actions
 
 // GET /api/accounts
+//
 // Currently not implemented.
 func (loc *AccountLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -96,6 +97,7 @@ func (loc *AccountLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/accounts/:id
+//
 // Currently not implemented.
 func (loc *AccountLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -146,6 +148,7 @@ func (api *Api) CloudLocator(href string) *CloudLocator {
 //===== Actions
 
 // GET /api/clouds
+//
 // Currently not implemented.
 func (loc *CloudLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -167,6 +170,7 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/clouds/:id
+//
 // Currently not implemented.
 func (loc *CloudLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -220,6 +224,7 @@ func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
 
 // GET /api/datacenters
 // GET /api/clouds/:cloud_id/datacenters
+//
 // Currently not implemented.
 func (loc *DatacenterLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -242,6 +247,7 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/datacenters/:id
 // GET /api/clouds/:cloud_id/datacenters/:id
+//
 // Currently not implemented.
 func (loc *DatacenterLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -296,6 +302,7 @@ func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
 //===== Actions
 
 // GET /api/deployments
+//
 // List all Deployments in an Account.
 func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error) {
 	var res *Deployment
@@ -328,6 +335,7 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error
 }
 
 // GET /api/deployments/:id
+//
 // Show a single Deployment
 func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error) {
 	var res *Deployment
@@ -393,6 +401,7 @@ func (api *Api) ImageLocator(href string) *ImageLocator {
 //===== Actions
 
 // GET /api/clouds/:cloud_id/images
+//
 // Lists all Images for the given Cloud.
 func (loc *ImageLocator) Index(options rsapi.ApiParams) (*Image, error) {
 	var res *Image
@@ -426,6 +435,7 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) (*Image, error) {
 
 // GET /api/images/:id
 // GET /api/clouds/:cloud_id/images/:id
+//
 // Currently not implemented.
 func (loc *ImageLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -504,6 +514,7 @@ func (api *Api) InstanceLocator(href string) *InstanceLocator {
 
 // GET /api/instances
 // GET /api/clouds/:cloud_id/instances
+//
 // List all Instances in an account.
 func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
 	var res *Instance
@@ -545,6 +556,7 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
 
 // GET /api/instances/:id
 // GET /api/clouds/:cloud_id/instances/:id
+//
 // Currently not implemented.
 func (loc *InstanceLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -602,6 +614,7 @@ func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
 
 // GET /api/instance_types
 // GET /api/clouds/:cloud_id/instance_types
+//
 // Currently not implemented.
 func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -624,6 +637,7 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/instance_types/:id
 // GET /api/clouds/:cloud_id/instance_types/:id
+//
 // Currently not implemented.
 func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -675,6 +689,7 @@ func (api *Api) IpAddressLocator(href string) *IpAddressLocator {
 
 // GET /api/ip_addresses
 // GET /api/clouds/:cloud_id/ip_addresses
+//
 // Currently not implemented.
 func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -697,6 +712,7 @@ func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/ip_addresses/:id
 // GET /api/clouds/:cloud_id/ip_addresses/:id
+//
 // Currently not implemented.
 func (loc *IpAddressLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -750,6 +766,7 @@ func (api *Api) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
 
 // GET /api/ip_address_bindings
 // GET /api/clouds/:cloud_id/ip_address_bindings
+//
 // Currently not implemented.
 func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -772,6 +789,7 @@ func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/ip_address_bindings/:id
 // GET /api/clouds/:cloud_id/ip_address_bindings/:id
+//
 // Currently not implemented.
 func (loc *IpAddressBindingLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -825,6 +843,7 @@ func (api *Api) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 //===== Actions
 
 // GET /api/multi_cloud_images
+//
 // Currently not implemented.
 func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -846,6 +865,7 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/multi_cloud_images/:id
+//
 // Currently not implemented.
 func (loc *MultiCloudImageLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -895,6 +915,7 @@ func (api *Api) NetworkLocator(href string) *NetworkLocator {
 //===== Actions
 
 // GET /api/networks
+//
 // Currently not implemented.
 func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -916,6 +937,7 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/networks/:id
+//
 // Currently not implemented.
 func (loc *NetworkLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -964,6 +986,7 @@ func (api *Api) NetworkInterfaceLocator(href string) *NetworkInterfaceLocator {
 //===== Actions
 
 // GET /api/network_interfaces
+//
 // Currently not implemented.
 func (loc *NetworkInterfaceLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -985,6 +1008,7 @@ func (loc *NetworkInterfaceLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/network_interfaces/:id
+//
 // Currently not implemented.
 func (loc *NetworkInterfaceLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1032,6 +1056,7 @@ func (api *Api) NetworkInterfaceAttachmentLocator(href string) *NetworkInterface
 //===== Actions
 
 // GET /api/network_interface_attachments
+//
 // Currently not implemented.
 func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1053,6 +1078,7 @@ func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) err
 }
 
 // GET /api/network_interface_attachments/:id
+//
 // Currently not implemented.
 func (loc *NetworkInterfaceAttachmentLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1106,6 +1132,7 @@ func (api *Api) SecurityGroupLocator(href string) *SecurityGroupLocator {
 // GET /api/security_groups
 // GET /api/clouds/:cloud_id/security_groups
 // GET /api/clouds/:cloud_id/instances/:instance_id/security_groups
+//
 // Currently not implemented.
 func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1128,6 +1155,7 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/security_groups/:id
 // GET /api/clouds/:cloud_id/security_groups/:id
+//
 // Currently not implemented.
 func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1194,6 +1222,7 @@ func (api *Api) ServerLocator(href string) *ServerLocator {
 //===== Actions
 
 // GET /api/servers
+//
 // Currently not implemented.
 func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1215,6 +1244,7 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/servers/:id
+//
 // Currently not implemented.
 func (loc *ServerLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1277,6 +1307,7 @@ func (api *Api) ServerArrayLocator(href string) *ServerArrayLocator {
 //===== Actions
 
 // GET /api/server_arrays
+//
 // Currently not implemented.
 func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1298,6 +1329,7 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/server_arrays/:id
+//
 // Currently not implemented.
 func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1354,6 +1386,7 @@ func (api *Api) ServerTemplateLocator(href string) *ServerTemplateLocator {
 //===== Actions
 
 // GET /api/server_templates
+//
 // Currently not implemented.
 func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1375,6 +1408,7 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) error {
 }
 
 // GET /api/server_templates/:id
+//
 // Currently not implemented.
 func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1424,6 +1458,7 @@ func (api *Api) SshKeyLocator(href string) *SshKeyLocator {
 
 // GET /api/ssh_keys
 // GET /api/clouds/:cloud_id/ssh_keys
+//
 // Currently not implemented.
 func (loc *SshKeyLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1446,6 +1481,7 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/ssh_keys/:id
 // GET /api/clouds/:cloud_id/ssh_keys/:id
+//
 // Currently not implemented.
 func (loc *SshKeyLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1498,6 +1534,7 @@ func (api *Api) SubnetLocator(href string) *SubnetLocator {
 // GET /api/subnets
 // GET /api/clouds/:cloud_id/subnets
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets
+//
 // Currently not implemented.
 func (loc *SubnetLocator) Index(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
@@ -1520,6 +1557,7 @@ func (loc *SubnetLocator) Index(options rsapi.ApiParams) error {
 
 // GET /api/subnets/:id
 // GET /api/clouds/:cloud_id/subnets/:id
+//
 // Currently not implemented.
 func (loc *SubnetLocator) Show(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams

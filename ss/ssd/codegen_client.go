@@ -79,6 +79,7 @@ func (api *Api) ScheduleLocator(href string) *ScheduleLocator {
 //===== Actions
 
 // GET /collections/:collection_id/schedules
+//
 // List the schedules available in Designer.
 func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 	var res []*Schedule
@@ -102,6 +103,7 @@ func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 }
 
 // GET /collections/:collection_id/schedules/:id
+//
 // Show detailed information about a given Schedule.
 func (loc *ScheduleLocator) Show() (*Schedule, error) {
 	var res *Schedule
@@ -125,6 +127,7 @@ func (loc *ScheduleLocator) Show() (*Schedule, error) {
 }
 
 // POST /collections/:collection_id/schedules
+//
 // Create a new Schedule.
 func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, stopRecurrence *Recurrence, options rsapi.ApiParams) (*ScheduleLocator, error) {
 	var res *ScheduleLocator
@@ -165,6 +168,7 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 }
 
 // PATCH /collections/:collection_id/schedules/:id
+//
 // Update one or more attributes of an existing Schedule.
 // Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
 func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
@@ -199,6 +203,7 @@ func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
 }
 
 // DELETE /collections/:collection_id/schedules/:id
+//
 // Delete a Schedule from the system.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
 func (loc *ScheduleLocator) Delete() error {
@@ -216,6 +221,7 @@ func (loc *ScheduleLocator) Delete() error {
 }
 
 // DELETE /collections/:collection_id/schedules
+//
 // Delete multiple Schedules from the system in bulk.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
 func (loc *ScheduleLocator) MultiDelete(ids []string) error {
@@ -283,6 +289,7 @@ func (api *Api) TemplateLocator(href string) *TemplateLocator {
 //===== Actions
 
 // GET /collections/:collection_id/templates
+//
 // List the templates available in Designer along with some general details.
 func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) {
 	var res []*Template
@@ -311,6 +318,7 @@ func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) 
 }
 
 // GET /collections/:collection_id/templates/:id
+//
 // Show detailed information about a given Template. Use the views specified below for more information.
 func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
 	var res *Template
@@ -339,6 +347,7 @@ func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
 }
 
 // POST /collections/:collection_id/templates
+//
 // Create a new Template by uploading its content to Designer.
 func (loc *TemplateLocator) Create(source *FileUpload) (*TemplateLocator, error) {
 	var res *TemplateLocator
@@ -367,6 +376,7 @@ func (loc *TemplateLocator) Create(source *FileUpload) (*TemplateLocator, error)
 }
 
 // PUT /collections/:collection_id/templates/:id
+//
 // Update the content of an existing Template (a Template with the same "name" value in the CAT).
 func (loc *TemplateLocator) Update(source *FileUpload) error {
 	if source == nil {
@@ -389,6 +399,7 @@ func (loc *TemplateLocator) Update(source *FileUpload) error {
 }
 
 // DELETE /collections/:collection_id/templates/:id
+//
 // Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
 func (loc *TemplateLocator) Delete() error {
 	var queryParams rsapi.ApiParams
@@ -405,6 +416,7 @@ func (loc *TemplateLocator) Delete() error {
 }
 
 // DELETE /collections/:collection_id/templates
+//
 // Delete multiple Templates from the system in bulk. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
 func (loc *TemplateLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
@@ -427,6 +439,7 @@ func (loc *TemplateLocator) MultiDelete(ids []string) error {
 }
 
 // GET /collections/:collection_id/templates/:id/download
+//
 // Download the source of a Template.
 func (loc *TemplateLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
@@ -449,6 +462,7 @@ func (loc *TemplateLocator) Download(apiVersion string) error {
 }
 
 // POST /collections/:collection_id/templates/actions/compile
+//
 // Compile the Template, but don't save it to Designer. Useful for debugging a CAT file while you are still authoring it.
 func (loc *TemplateLocator) Compile(source string) error {
 	if source == "" {
@@ -471,6 +485,7 @@ func (loc *TemplateLocator) Compile(source string) error {
 }
 
 // POST /collections/:collection_id/templates/actions/publish
+//
 // Publish the given Template to the Catalog so that users can launch it.
 func (loc *TemplateLocator) Publish(id string, options rsapi.ApiParams) error {
 	if id == "" {
@@ -513,6 +528,7 @@ func (loc *TemplateLocator) Publish(id string, options rsapi.ApiParams) error {
 }
 
 // POST /collections/:collection_id/templates/actions/unpublish
+//
 // Remove a publication from the Catalog by specifying its associated Template.
 func (loc *TemplateLocator) Unpublish(id string) error {
 	if id == "" {
