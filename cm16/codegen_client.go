@@ -1737,13 +1737,13 @@ type InstancesLinksDeploymentServerArraysInstanceSummaryStruct struct {
 }
 
 type InstancesTimestampsStruct struct {
-	BootedAt      time.Time `json:"booted_at,omitempty"`
-	CreatedAt     time.Time `json:"created_at,omitempty"`
-	OperationalAt time.Time `json:"operational_at,omitempty"`
-	PendingAt     time.Time `json:"pending_at,omitempty"`
-	StrandedAt    time.Time `json:"stranded_at,omitempty"`
-	TerminatedAt  time.Time `json:"terminated_at,omitempty"`
-	UpdatedAt     time.Time `json:"updated_at,omitempty"`
+	BootedAt      *time.Time `json:"booted_at,omitempty"`
+	CreatedAt     *time.Time `json:"created_at,omitempty"`
+	OperationalAt *time.Time `json:"operational_at,omitempty"`
+	PendingAt     *time.Time `json:"pending_at,omitempty"`
+	StrandedAt    *time.Time `json:"stranded_at,omitempty"`
+	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
+	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 }
 
 type IpAddressBindingLinks struct {
@@ -1877,11 +1877,11 @@ type SubnetLinks struct {
 }
 
 type TimestampsStruct struct {
-	BootedAt      time.Time `json:"booted_at,omitempty"`
-	CreatedAt     time.Time `json:"created_at,omitempty"`
-	OperationalAt time.Time `json:"operational_at,omitempty"`
-	PendingAt     time.Time `json:"pending_at,omitempty"`
-	StrandedAt    time.Time `json:"stranded_at,omitempty"`
-	TerminatedAt  time.Time `json:"terminated_at,omitempty"`
-	UpdatedAt     time.Time `json:"updated_at,omitempty"`
+	BootedAt      *time.Time `json:"booted_at,omitempty"`
+	CreatedAt     *time.Time `json:"created_at,omitempty"`
+	OperationalAt *time.Time `json:"operational_at,omitempty"`
+	PendingAt     *time.Time `json:"pending_at,omitempty"`
+	StrandedAt    *time.Time `json:"stranded_at,omitempty"`
+	TerminatedAt  *time.Time `json:"terminated_at,omitempty"`
+	UpdatedAt     *time.Time `json:"updated_at,omitempty"`
 }

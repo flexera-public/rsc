@@ -87,7 +87,7 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		o := gen.BasicDataType("interface{}")
 		dataType = &o
 	case "DateTime":
-		t := gen.BasicDataType("time.Time")
+		t := gen.BasicDataType("*time.Time") // Need pointer for case where value is null
 		a.descriptor.NeedTime = true
 		dataType = &t
 	case "Collection", "Ids":

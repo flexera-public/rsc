@@ -599,14 +599,14 @@ type Recurrence struct {
 }
 
 type TimestampsStruct struct {
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type TimestampsStruct2 struct {
-	CreatedAt   time.Time `json:"created_at,omitempty"`
-	PublishedAt time.Time `json:"published_at,omitempty"`
-	UpdatedAt   time.Time `json:"updated_at,omitempty"`
+	CreatedAt   *time.Time `json:"created_at,omitempty"`
+	PublishedAt *time.Time `json:"published_at,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }
 
 type User struct {
