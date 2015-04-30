@@ -6,7 +6,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -40,8 +39,8 @@ func main() {
 	}
 
 	// 2. Setup client using basic auth
-	auth := rsapi.LoginAuthenticator{Username: *email, Password: *pwd, Client: http.DefaultClient}
-	client, err := cm15.New(*account, *host, &auth, nil, nil)
+	auth := rsapi.NewBasicAuthenticator(*email, *pwd)
+	client, err := cm15.New(*account, *host, auth, nil, nil)
 	if err != nil {
 		fail("failed to create client: %s", err)
 	}

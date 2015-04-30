@@ -27,10 +27,11 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).StringVar(&cmdLine.ConfigPath)
 	app.Flag("account", "RightScale account ID").Short('a').IntVar(&cmdLine.Account)
 	app.Flag("host", "RightScale login endpoint (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)
-	app.Flag("email", "Login email, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Username)
-	app.Flag("pwd", "Login password, use --email and --password or use --key or --rl10").StringVar(&cmdLine.Password)
-	app.Flag("key", "OAuth access token or API key, use --email and --password or use --key or --rl10").Short('k').StringVar(&cmdLine.Token)
-	app.Flag("rl10", "Proxy requests through RightLink 10 agent, use --email and --password or use --key or --rl10").BoolVar(&cmdLine.RL10)
+	app.Flag("email", "Login email, use --email and --password or use --key, --apiToken or --rl10").StringVar(&cmdLine.Username)
+	app.Flag("pwd", "Login password, use --email and --password or use --key, --apiToken or --rl10").StringVar(&cmdLine.Password)
+	app.Flag("key", "OAuth access token, use --email and --password or use --key, --apiToken or --rl10").Short('k').StringVar(&cmdLine.OAuthToken)
+	app.Flag("apiToken", "Instance API token, use --email and --password or use --key, --apiToken or --rl10").Short('k').StringVar(&cmdLine.APIToken)
+	app.Flag("rl10", "Proxy requests through RightLink 10 agent, use --email and --password or use --key, --apiToken or --rl10").BoolVar(&cmdLine.RL10)
 	app.Flag("noAuth", "Make unauthenticated requests, used for testing").BoolVar(&cmdLine.NoAuth)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
 	app.Flag("xm", "Extract zero, one or more values using JSON:select and return newline separated list").StringVar(&cmdLine.ExtractSelector)
@@ -105,14 +106,14 @@ func validateCommandLine(cmdLine *cmd.CommandLine) {
 		cmdLine.RL10 {
 		return
 	}
-	if cmdLine.Account == 0 && cmdLine.Token == "" && !cmdLine.NoAuth {
+	if cmdLine.Account == 0 && cmdLine.OAuthToken == "" && cmdLine.APIToken == "" && !cmdLine.NoAuth {
 		kingpin.Fatalf("missing --account option")
 	}
 	if cmdLine.Host == "" {
 		kingpin.Fatalf("missing --host option")
 	}
-	if cmdLine.Password == "" && cmdLine.Token == "" && !cmdLine.NoAuth {
-		kingpin.Fatalf("missing login info, use --email and --password or use --key or --rl10")
+	if cmdLine.Password == "" && cmdLine.OAuthToken == "" && cmdLine.APIToken == "" && !cmdLine.NoAuth {
+		kingpin.Fatalf("missing login info, use --email and --password or use --key, --apiToken or --rl10")
 	}
 }
 

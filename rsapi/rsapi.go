@@ -8,7 +8,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
@@ -103,10 +102,10 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 	if err := scanner.Err(); err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
-	auth := RL10Authenticator{secret}
+	auth := NewRL10Authenticator(secret)
 	host := "localhost:" + port
 	return &Api{
-		Auth:     &auth,
+		Auth:     auth,
 		Logger:   logger,
 		Host:     host,
 		Client:   client,
@@ -130,22 +129,15 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	var err error
 	if cmdLine.RL10 {
 		client, err = NewRL10(nil, httpClient)
-	} else if cmdLine.Token != "" {
-		auth := OAuthAuthenticator{
-			RefreshToken: cmdLine.Token,
-			AccessToken:  "",
-			RefreshAt:    time.Now().Add(-time.Duration(5) * time.Minute),
-			Client:       httpClient,
-		}
-		client, err = New(cmdLine.Account, cmdLine.Host, &auth, nil, httpClient)
+	} else if cmdLine.OAuthToken != "" {
+		auth := NewOAuthAuthenticator(cmdLine.OAuthToken)
+		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
+	} else if cmdLine.APIToken != "" {
+		auth := NewInstanceAuthenticator(cmdLine.APIToken)
+		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.Username != "" && cmdLine.Password != "" {
-		auth := LoginAuthenticator{
-			Username:  cmdLine.Username,
-			Password:  cmdLine.Password,
-			RefreshAt: time.Now().Add(-time.Duration(5) * time.Minute),
-			Client:    httpClient,
-		}
-		client, err = New(cmdLine.Account, cmdLine.Host, &auth, nil, httpClient)
+		auth := NewBasicAuthenticator(cmdLine.Username, cmdLine.Password)
+		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
 	} else {
 		// No auth, used by tests
 		client, err = New(cmdLine.Account, cmdLine.Host, nil, nil, httpClient)
@@ -155,7 +147,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		return nil, fmt.Errorf("Failed to create API session: %v", err)
 	}
 	if !cmdLine.ShowHelp && !cmdLine.NoAuth {
-		if cmdLine.Token == "" && cmdLine.Username == "" && !cmdLine.RL10 {
+		if cmdLine.OAuthToken == "" && cmdLine.APIToken == "" && cmdLine.Username == "" && !cmdLine.RL10 {
 			return nil, fmt.Errorf("Missing authentication information, use '--email EMAIL --password PWD', '--token TOKEN' or 'setup'")
 		}
 		client.DumpRequestResponse = NoDump

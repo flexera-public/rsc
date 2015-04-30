@@ -3,7 +3,6 @@ package ssd
 import (
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/rightscale/rsc/dispatch"
 	"github.com/rightscale/rsc/rsapi"
@@ -25,8 +24,7 @@ func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logge
 		return nil, err
 	}
 	api.Metadata = GenMetadata
-	fiveMnAgo := time.Now().Add(-time.Duration(5) * time.Minute)
-	api.Auth = &rsapi.SSAuthenticator{api.Auth, api.AccountId, fiveMnAgo, api.Client}
+	api.Auth = rsapi.NewSSAuthenticator(api.Auth)
 	return &Api{api}, nil
 }
 

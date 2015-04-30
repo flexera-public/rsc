@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"strings"
 
@@ -37,8 +36,8 @@ func main() {
 
 	// 2. Setup client using basic auth
 	logger := log.New(os.Stdout, "", 0)
-	auth := rsapi.LoginAuthenticator{Username: *email, Password: *pwd, Client: http.DefaultClient}
-	client, err := cm15.New(*account, *host, &auth, logger, nil)
+	auth := rsapi.NewBasicAuthenticator(*email, *pwd)
+	client, err := cm15.New(*account, *host, auth, logger, nil)
 	if err != nil {
 		fail("failed to create client: %s", err)
 	}

@@ -12,9 +12,10 @@ type CommandLine struct {
 	JsonSelect          string // jsonselect expression for json subcommand
 	Account             int    // RightScale account, optional
 	Host                string // API hostname, optional
-	Token               string // Auth token, alternative to Username+Password or RL10
-	Username            string // Login username, alternative to Token or RL10
-	Password            string // Login pasword, alternative to Token or RL10
+	OAuthToken          string // Auth token, alternative to Username+Password, APIToken or RL10
+	APIToken            string // Instance API token, alternative to Username+Password, OAuthToken or RL10
+	Username            string // Login username, alternative to OAuthToken, APIToken or RL10
+	Password            string // Login pasword, alternative to OAuthToken, APIToken or RL10
 	RL10                bool   // Whether to send requests using the RL10 proxy
 	NoAuth              bool   // Whether to send requests unauthenticated
 	NoRedirect          bool   // Whether to disable auto-redirects

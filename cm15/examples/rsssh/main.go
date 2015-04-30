@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"os/user"
 	"regexp"
@@ -85,8 +84,8 @@ func main() {
 			fail("No account specified for environment: %v\n", envName)
 		}
 		// Create a new client for every environment because they can be in different accounts.
-		auth := rsapi.LoginAuthenticator{Username: *email, Password: *pwd, Client: http.DefaultClient}
-		client, err := cm15.New(envDetail.Account, *host, &auth, logger, nil)
+		auth := rsapi.NewBasicAuthenticator(*email, *pwd)
+		client, err := cm15.New(envDetail.Account, *host, auth, logger, nil)
 		if err != nil {
 			fail("failed to create client: %s", err)
 		}

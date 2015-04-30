@@ -3,7 +3,6 @@ package ss
 import (
 	"path"
 	"strings"
-	"time"
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
@@ -29,8 +28,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	}
 	setupMetadata()
 	api.Metadata = GenMetadata
-	fiveMnAgo := time.Now().Add(-time.Duration(5) * time.Minute)
-	api.Auth = &rsapi.SSAuthenticator{api.Auth, api.AccountId, fiveMnAgo, api.Client}
+	api.Auth = rsapi.NewSSAuthenticator(api.Auth)
 	return &Api{api}, nil
 }
 

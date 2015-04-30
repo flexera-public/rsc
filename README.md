@@ -282,7 +282,7 @@ refresh token for authentication, no logger and the default HTTP client:
 
 ```go
 refreshToken := ... // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
-auth := rsapi.OAuthAuthenticator{RefreshToken: refreshToken}
+auth := rsapi.NewOAuthAuthenticator(refreshToken)
 accountId := 123
 client, err := cm15.New(accountId, "us-3.rightscale.com", &auth, nil, nil)
 ```

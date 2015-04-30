@@ -12,35 +12,81 @@ import (
 
 // Authenticator interface
 type Authenticator interface {
-	Sign(req *http.Request, host string, accountId int) error // Sign http Request (add auth headers)
-	ResolveHost(host string, accountId int) (string, error)
+	// Sign signs the given http Request (adds the auth headers).
+	Sign(req *http.Request, host string, accountID int) error
+	// ResolveHost returns the RightScale API endpoint for the given account.
+	ResolveHost(host string, accountID int) (string, error)
 }
 
-var omitHeaders map[string]bool = map[string]bool{
-	"Content-Type":   true,
-	"Content-Length": true,
+// NewBasicAuthenticator returns a authenticator that uses email and password to create sessions
+func NewBasicAuthenticator(username, password string) Authenticator {
+	builder := basicLoginRequestBuilder{username: username, password: password}
+	return newSessionManager(newCookieSigner(&builder))
 }
 
-func resolveHost(authReq *http.Request, host string, accountId int) (string, error) {
+// NewOAuthAuthenticator returns a authenticator that uses oauth tokens as provided by the RS dashboard
+func NewOAuthAuthenticator(token string) Authenticator {
+	return newSessionManager(newOAuthSigner(token))
+}
+
+// NewInstanceAuthenticator returns an authenticator that uses the instance facing API token to
+// create sessions. This is the token found on RightLink instances under the RS_API_TOKEN
+// environment variable.
+// Note: Use of rsc made from RightLink10 instances can use the RL10 authenticator instead.
+func NewInstanceAuthenticator(token string) Authenticator {
+	builder := instanceLoginRequestBuilder{token: token}
+	return newSessionManager(newCookieSigner(&builder))
+}
+
+// NewSSAuthenticator returns an authenticator that wraps another one and adds the logic needed to
+// create sessions in Self-Service.
+func NewSSAuthenticator(auther Authenticator) Authenticator {
+	return &ssAuthenticator{
+		auther:    auther,
+		refreshAt: time.Now().Add(-2 * time.Minute),
+		client:    http.DefaultClient,
+	}
+}
+
+// NewRL10Authenticator returns an authenticator that proxies all requests through the RightLink 10
+// agent.
+func NewRL10Authenticator(secret string) Authenticator {
+	return &rl10Authenticator{secret: secret}
+}
+
+// newSessionManager returns a session manager that takes care of creating and refreshing sessions
+// as needed. It implements the Authenticator interface.
+// The signer does the actual work of creating sessions and checking session freshness.
+// Different signers may be plugged in for different types of sessions.
+func newSessionManager(signer sessionSigner) *sessionManager {
+	return &sessionManager{signer: signer}
+}
+
+// sessionManager contains the logic to create a session and maintain it.
+type sessionManager struct {
+	signer sessionSigner // Session creator / signer
+}
+
+// Sign signs the given http Request (adds the auth headers).
+func (m *sessionManager) Sign(r *http.Request, host string, accountID int) error {
+	return m.signer.Sign(r, host, accountID)
+}
+
+// ResolveHost returns the RightScale API endpoint for the given account.
+// It does that by catching any redirect returned by the API when attempting to use the provided
+// host.
+func (m *sessionManager) ResolveHost(host string, accountID int) (string, error) {
+	authReq, authErr := m.signer.BuildLoginRequest(host, accountID)
+	if authErr != nil {
+		return host, authErr
+	}
 	redirectHost := host
 	client := http.Client{
-		// Pretty much a direct copy/paste from;
-		// https://github.com/rightscale/go-lib/blob/42736168b5205993699ecc52391c84fa3f8520d2/net/clients/httpClient.go#L345-L375
 		CheckRedirect: func(nextRequest *http.Request, via []*http.Request) error {
 			viaCount := len(via)
-			// Just go with the standard redirect count
-			maxRedirects := 10
-			if viaCount > maxRedirects {
-				return fmt.Errorf("Stopped after %d redirects.", maxRedirects)
+			if viaCount > 10 {
+				return fmt.Errorf("Too many redirects.")
 			}
-
-			// ensure next request has same headers as last request. the net/http default
-			// behavior is to pass the empty header to the redirected URL, which does not
-			// work for RS APIs because they require X-Api-Version, etc.
-			//
-			// note that a redirected POST or PUT is changed to a GET and the original
-			// body is discarded per 302 logic. we should therefore also omit body-related
-			// headers from the next request. we will use a configurable header whitelist.
 			lastRequest := via[viaCount-1]
 			if nextRequest.Header == nil {
 				nextRequest.Header = make(http.Header)
@@ -60,98 +106,85 @@ func resolveHost(authReq *http.Request, host string, accountId int) (string, err
 	return redirectHost, err
 }
 
-// Login authenticator uses username/password
-type LoginAuthenticator struct {
-	Username  string
-	Password  string
-	Cookies   map[int][]*http.Cookie
-	RefreshAt time.Time
-	Client    HttpClient
+// sessionSigner contains the logic to create and refresh sessions.
+type sessionSigner interface {
+	BuildLoginRequest(host string, accountID int) (*http.Request, error)
+	Sign(req *http.Request, host string, accountID int) error
 }
 
-// Add username/password authorization cookies to the *http.Request
-func (a *LoginAuthenticator) Sign(r *http.Request, host string, accountId int) error {
-	if err := a.Refresh(host, accountId); err != nil {
-		return err
-	}
-	for _, c := range a.Cookies[accountId] {
-		r.AddCookie(c)
-	}
-	return nil
+// cookieSigner signs requests using adding a global session cookie.
+// Used by both the basic and instance session managers.
+type cookieSigner struct {
+	builder   loginRequestBuilder
+	cookies   map[int][]*http.Cookie // cookied indexed by account id
+	refreshAt time.Time
+	client    HttpClient
 }
 
-// Make sure global session cookie is up-to-date
-func (a *LoginAuthenticator) Refresh(host string, accountId int) error {
-	if time.Now().After(a.RefreshAt) {
-		authReq, authErr := a.newLoginRequest(host, accountId)
+// newCookieSigner returns a new cookie signer
+func newCookieSigner(builder loginRequestBuilder) sessionSigner {
+	return &cookieSigner{
+		builder:   builder,
+		cookies:   make(map[int][]*http.Cookie),
+		refreshAt: time.Now().Add(-2 * time.Minute),
+		client:    http.DefaultClient,
+	}
+}
+
+// BuildLoginRequest returns a http.Request that creates a new session
+func (r *cookieSigner) BuildLoginRequest(host string, accountID int) (*http.Request, error) {
+	return r.builder.BuildLoginRequest(host, accountID)
+}
+
+// Sign adds the username and password authorization cookies to the *http.Request
+// Checks the freshness of the session and creates a new one if needed.
+func (r *cookieSigner) Sign(req *http.Request, host string, accountID int) error {
+	if time.Now().After(r.refreshAt) {
+		authReq, authErr := r.builder.BuildLoginRequest(host, accountID)
 		if authErr != nil {
 			return authErr
 		}
-		resp, err := a.Client.Do(authReq)
+		resp, err := r.client.Do(authReq)
 		if err != nil {
-			return fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
+			return fmt.Errorf("Authentication failed: %s", err)
 		}
 		if resp.StatusCode != 204 {
 			return fmt.Errorf("Authentication failed: %s", resp.Status)
 		}
-		if a.Cookies == nil {
-			a.Cookies = make(map[int][]*http.Cookie)
-		}
-		a.Cookies[accountId] = resp.Cookies()
-		a.RefreshAt = time.Now().Add(time.Duration(2) * time.Hour)
+		r.cookies[accountID] = resp.Cookies()
+		r.refreshAt = time.Now().Add(time.Duration(2) * time.Hour)
+	}
+	for _, c := range r.cookies[accountID] {
+		req.AddCookie(c)
 	}
 	return nil
 }
 
-// To be called from rsapi.Api to verify credentials, and (re)set host if redirected
-func (a *LoginAuthenticator) ResolveHost(host string, accountId int) (string, error) {
-	authReq, authErr := a.newLoginRequest(host, accountId)
-	if authErr != nil {
-		return host, authErr
+// oAuthSigner contains the logic to create new session using OAuth tokens
+type oAuthSigner struct {
+	refreshToken string
+	accessToken  string
+	refreshAt    time.Time
+	client       HttpClient
+}
+
+// newOAuthSigner returns a new oauth signer
+func newOAuthSigner(token string) sessionSigner {
+	return &oAuthSigner{
+		refreshToken: token,
+		refreshAt:    time.Now().Add(-2 * time.Minute),
+		client:       http.DefaultClient,
 	}
-	return resolveHost(authReq, host, accountId)
 }
 
-// Return a new *http.Request with the specified host, and username/password
-func (a *LoginAuthenticator) newLoginRequest(host string, accountId int) (*http.Request, error) {
-	jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
-		a.Username, a.Password, accountId)
-	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/sessions", host),
-		bytes.NewBufferString(jsonStr))
-	if err != nil {
-		return authReq, fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
-	}
-	authReq.Header.Set("X-API-Version", "1.5")
-	authReq.Header.Set("Content-Type", "application/json")
-	return authReq, nil
-}
-
-// OAuth authenticator uses the user oauth refresh token
-type OAuthAuthenticator struct {
-	RefreshToken string
-	AccessToken  string
-	RefreshAt    time.Time
-	Client       HttpClient
-}
-
-// Add OAuth bearer header to the *http.Request
-func (a *OAuthAuthenticator) Sign(r *http.Request, host string, accountId int) error {
-	if err := a.Refresh(host); err != nil {
-		return err
-	}
-	r.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken))
-
-	return nil
-}
-
-// Make sure access token is up-to-date
-func (a *OAuthAuthenticator) Refresh(host string) error {
-	if time.Now().After(a.RefreshAt) {
-		authReq, authErr := a.newLoginRequest(host)
+// Sign adds the OAuth bearer header to the *http.Request
+func (r *oAuthSigner) Sign(req *http.Request, host string, accountID int) error {
+	if time.Now().After(r.refreshAt) {
+		authReq, authErr := r.BuildLoginRequest(host, accountID)
 		if authErr != nil {
 			return fmt.Errorf("Authentication failed: %s", authErr)
 		}
-		resp, err := a.Client.Do(authReq)
+		resp, err := r.client.Do(authReq)
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
 		}
@@ -172,34 +205,20 @@ func (a *OAuthAuthenticator) Refresh(host string) error {
 		if !ok {
 			return fmt.Errorf("Unexpected auth response: %s", jsonBytes)
 		}
-		a.AccessToken = accessToken
+		r.accessToken = accessToken
 		d, err := time.ParseDuration(fmt.Sprintf("%vs", session["expires_in"]))
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to parse token duration): %s", err)
 		}
-		a.RefreshAt = time.Now().Add(d / 2)
+		r.refreshAt = time.Now().Add(d / 2)
 	}
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", r.accessToken))
 	return nil
 }
 
-// To be called from rsapi.Api to verify credentials, and (re)set host if redirected
-//
-// Note: As of 3-19-2015, the login request will never be redirected. Instead a
-// 422 will be returned by the API since the oauth token does not exist in all
-// shards, but only in the shard where the account lives. Still implementing
-// redirect handling in anticipation that oauth may be more cross shard friendly
-// in the future.
-func (a *OAuthAuthenticator) ResolveHost(host string, accountId int) (string, error) {
-	authReq, authErr := a.newLoginRequest(host)
-	if authErr != nil {
-		return host, authErr
-	}
-	return resolveHost(authReq, host, accountId)
-}
-
-// Return a new *http.Request with the specified host, and oauth refresh token
-func (a *OAuthAuthenticator) newLoginRequest(host string) (*http.Request, error) {
-	jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, a.RefreshToken)
+// BuildLoginRequest returns a new *http.Request that can refresh the access token
+func (r *oAuthSigner) BuildLoginRequest(host string, _ int) (*http.Request, error) {
+	jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, r.refreshToken)
 	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", host), bytes.NewBufferString(jsonStr))
 	if err != nil {
 		return nil, fmt.Errorf("Authentication failed (failed to build request): %s", err)
@@ -210,50 +229,48 @@ func (a *OAuthAuthenticator) newLoginRequest(host string) (*http.Request, error)
 }
 
 // RightLink 10 authenticator
-type RL10Authenticator struct {
-	Secret string
+type rl10Authenticator struct {
+	secret string
 }
 
 // RL10 authenticator uses special header
-func (a *RL10Authenticator) Sign(r *http.Request, host string, accountId int) error {
-	r.Header.Set("X-RLL-Secret", a.Secret)
-
+func (s *rl10Authenticator) Sign(r *http.Request, host string, accountID int) error {
+	r.Header.Set("X-RLL-Secret", s.secret)
 	return nil
 }
 
 // A stub to satisfy the interface. RL10 will always use host "localhost" and
 // will not be redirected
-func (a *RL10Authenticator) ResolveHost(host string, accountId int) (string, error) {
+func (a *rl10Authenticator) ResolveHost(host string, accountID int) (string, error) {
 	return host, nil
 }
 
 // SS authenticator
-type SSAuthenticator struct {
-	CoreAuth  Authenticator // Authentication against core
-	AccountId int
-	RefreshAt time.Time
-	Client    HttpClient
+type ssAuthenticator struct {
+	auther    Authenticator // Authentication against core
+	refreshAt time.Time
+	client    HttpClient
 }
 
 // Account authenticator uses RS oauth
-func (a *SSAuthenticator) Sign(r *http.Request, host string, accountId int) error {
-	refreshAt := a.RefreshAt
-	if time.Now().After(refreshAt) {
+func (a *ssAuthenticator) Sign(r *http.Request, host string, accountID int) error {
+	if time.Now().After(a.refreshAt) {
 		authReq, err := http.NewRequest("GET",
 			fmt.Sprintf("https://%s/api/catalog/new_session?account_id=%d",
-				SSHostFromLogin(host), accountId), nil)
+				ssHostFromLogin(host), accountID), nil)
 		if err != nil {
 			return err
 		}
-		a.CoreAuth.Sign(authReq, host, accountId)
+		a.auther.Sign(authReq, host, accountID)
 		authReq.Header.Set("Content-Type", "application/json")
-		_, err = a.Client.Do(authReq)
+		_, err = a.client.Do(authReq)
 		if err != nil {
-			return fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
+			return fmt.Errorf("Authentication failed: %s", err)
 		}
 	}
-	a.CoreAuth.Sign(r, host, accountId)
-	r.Host = SSHostFromLogin(host)
+	a.auther.Sign(r, host, accountID)
+	r.Header.Set("X-Api-Version", "1.0")
+	r.Host = ssHostFromLogin(host)
 
 	return nil
 }
@@ -261,17 +278,70 @@ func (a *SSAuthenticator) Sign(r *http.Request, host string, accountId int) erro
 // Determine the correct SS host based on the CM/Core host. Shard redirection
 // will already have occurred since the rsapi.Api for the core has already been
 // initialized and (if necessary) redirected.
-func (a *SSAuthenticator) ResolveHost(host string, accountId int) (string, error) {
-	return SSHostFromLogin(host), nil
+func (a *ssAuthenticator) ResolveHost(host string, accountID int) (string, error) {
+	core, err := a.auther.ResolveHost(host, accountID)
+	if err != nil {
+		return "", err
+	}
+	return ssHostFromLogin(core), nil
 }
 
 // Return Self-service endpoint from login endpoint
 // The following isn't great but seems better than having to enter by hand
-func SSHostFromLogin(host string) string {
+func ssHostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")
 	hostPrefix := urlElems[0]
 	elems := strings.Split(hostPrefix, "-")
 	elems[len(elems)-2] = "selfservice"
 	ssLoginHostPrefix := strings.Join(elems, "-")
 	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
+}
+
+// loginRequestBuilder is a generic login request factory.
+type loginRequestBuilder interface {
+	BuildLoginRequest(host string, accountID int) (*http.Request, error)
+}
+
+// basicLoginRequestBuilder builds login requests from users email and password.
+type basicLoginRequestBuilder struct {
+	username string
+	password string
+}
+
+// BuildLoginRequest builds session create requests from users email and password.
+func (b *basicLoginRequestBuilder) BuildLoginRequest(host string, accountID int) (*http.Request, error) {
+	jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
+		b.username, b.password, accountID)
+	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/sessions", host),
+		bytes.NewBufferString(jsonStr))
+	if err != nil {
+		return authReq, fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
+	}
+	authReq.Header.Set("X-API-Version", "1.5")
+	authReq.Header.Set("Content-Type", "application/json")
+	return authReq, nil
+}
+
+// instanceLoginRequestBuilder builds session create requests from instance API tokens.
+type instanceLoginRequestBuilder struct {
+	token string
+}
+
+// BuildLoginRequest builds session create requests from users email and password.
+func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string, accountID int) (*http.Request, error) {
+	accountHref := fmt.Sprintf("/api/accounts/%d", accountID)
+	jsonStr := fmt.Sprintf(`{"instance_token":"%s","account_href":"%s"}`, b.token, accountHref)
+	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/session/instance", host), bytes.NewBufferString(jsonStr))
+	if err != nil {
+		return nil, fmt.Errorf("Authentication failed (failed to build request): %s", err)
+	}
+	authReq.Header.Set("X-API-Version", "1.5")
+	authReq.Header.Set("Content-Type", "application/json")
+	return authReq, nil
+}
+
+// Headers that should be copied when creating the redirect request
+var omitHeaders map[string]bool = map[string]bool{
+	"Content-Type":   true,
+	"Content-Length": true,
 }
