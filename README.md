@@ -6,9 +6,9 @@ RightScale Self-Service 1.0 APIs (latest version for this product) and the Right
 by the RightLink10 agent.
 
 - Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](https://gocover.io/github.com/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](http://gocover.io/github.com/rightscale/rsc)
 - v1.0.4: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.4)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.4.svg)](https://gocover.io/github.com/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.4.svg)](http://gocover.io/github.com/rightscale/rsc)
 
 `rsc` can be used in one of two ways:
 
