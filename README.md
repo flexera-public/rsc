@@ -7,8 +7,8 @@ by the RightLink10 agent.
 
 - Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](http://gocover.io/github.com/rightscale/rsc)
-- v1.0.4: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.4)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.4.svg)](http://gocover.io/github.com/rightscale/rsc)
+- v1.0.5: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.5)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.5.svg)](http://gocover.io/github.com/rightscale/rsc)
 
 `rsc` can be used in one of two ways:
 
@@ -47,7 +47,7 @@ $ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |
   tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v1.0.4 - 2015-04-23 18:12:44 - b8c41b906c62ffd6182cda7ad8cb4dfb536900ea
+rsc v1.0.5 - 2015-05-01 01:33:13 - eac602a499ffdf9796d719b621e42156e3801e68
 ```
 
 - MacOS: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
@@ -60,7 +60,7 @@ See further down in the README for building from source.
 - To download the latest stable use the links with 'v1' in them.
 - To download a specific version, replace the 'v1' by the exact version, such as 'v1.0.1'.
 - All versions with the same major number (e.g. 'v1') are intended to be "upward" compatible.
-- The 'v1' links download a specific version, so `rsc --version` will print something like 'v1.0.4'
+- The 'v1' links download a specific version, so `rsc --version` will print something like 'v1.0.5'
   and not 'v1'
 - The latest dev version is 'master'
 
@@ -401,7 +401,7 @@ mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
 git clone https://github.com/rightscale/rsc.git rsc.v1
 cd rsc
-git checkout v1.0.4
+git checkout v1.0.5
 make depend
 make
 ```
