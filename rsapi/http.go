@@ -1,4 +1,4 @@
-package rsapi
+package rsapi // import "gopkg.in/rightscale/rsc.v1/rsapi"
 
 import (
 	"bytes"
@@ -13,7 +13,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/rightscale/rsc/recording"
+	"gopkg.in/rightscale/rsc.v1/recording"
 )
 
 // Log request, dump its content if required then make request and log response and dump it.
