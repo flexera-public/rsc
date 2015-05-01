@@ -16,3 +16,14 @@ v1.0.3 / 2015-04-20
 * Add rsssh example
 * Change datetime attributes of cm15 package resources to use `*RubyTime` instead of `RubyTime`
 * Change `CurrentInstance` attribute type in cm15 package to use `*Instance` instead of `Instance`
+
+v1.0.4 / 2015-04-23
+-------------------
+* Fix handling of array arguments on the command line
+
+v1.0.5 / 2015-04-30
+-------------------
+* Add new instance API token authenticator and corresponding "--apiToken" flag
+* Fix cm15 package ServerArrayLocator.CurrentInstances()
+* Fix crashes in go-jsonselect
+* Add tests to package examples
