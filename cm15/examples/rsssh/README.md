@@ -9,7 +9,7 @@ The input configuration looks like this:
 {
   "SshUser": "rightscale",
   "SshOptions": "-i ~/.id_rsa_rightscale -o StrictHostKeyChecking=no",
-  "OutputFile": "/Users/arangamani/.rightscale_aliases"
+  "OutputFile": "/Users/arangamani/.rightscale_aliases",
   "Environments": {
     "dev": {
       "Account": 12345,

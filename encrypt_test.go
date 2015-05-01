@@ -1,9 +1,8 @@
-package main_test
+package main
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc"
 )
 
 var _ = Describe("Encrypt", func() {
@@ -13,14 +12,14 @@ var _ = Describe("Encrypt", func() {
 		)
 
 		It("encrypts", func() {
-			var _, err = main.Encrypt(seekret)
+			var _, err = Encrypt(seekret)
 			Ω(err).ShouldNot(HaveOccurred())
 		})
 
 		It("decrypts", func() {
-			var encrypted, err = main.Encrypt(seekret)
+			var encrypted, err = Encrypt(seekret)
 			Ω(err).ShouldNot(HaveOccurred())
-			decrypted, err := main.Decrypt(encrypted)
+			decrypted, err := Decrypt(encrypted)
 			Ω(err).ShouldNot(HaveOccurred())
 			Ω(decrypted).Should(Equal(seekret))
 		})

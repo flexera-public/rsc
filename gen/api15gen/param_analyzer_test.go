@@ -1,22 +1,21 @@
-package main_test
+package main
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
 	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/api15gen"
 )
 
 var _ = Describe("ParamAnalyzer", func() {
 	var (
 		path     string
 		params   map[string]interface{}
-		analyzer *main.ParamAnalyzer
+		analyzer *ParamAnalyzer
 	)
 
 	JustBeforeEach(func() {
-		analyzer = main.NewAnalyzer(params)
+		analyzer = NewAnalyzer(params)
 	})
 
 	Context("with an empty path and a simple param", func() {

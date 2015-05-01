@@ -45,6 +45,7 @@ func main() {
 	pwd := flag.String("p", "", "Login password")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
 	conf := flag.String("c", "", "Configuration file")
+	unsecure := flag.Bool("unsecure", false, "Use HTTP instead of HTTPS - used for testing")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -89,11 +90,18 @@ func main() {
 		if err != nil {
 			fail("failed to create client: %s", err)
 		}
+		client.Unsecure = *unsecure
 		fetchDetails(client, envName, envDetail, &sshConfig)
 	}
 
 	aliases := buildAliases(sshConfig, config.SshOptions, config.SshUser)
-	ioutil.WriteFile(config.OutputFile, []byte(aliases), 0644)
+	writeFile(config.OutputFile, []byte(aliases), 0644)
+}
+
+// writeFile writes the script contents to file
+// implemented as a variable so test can override
+var writeFile = func(outputFile string, bytes []byte, perm os.FileMode) {
+	ioutil.WriteFile(outputFile, bytes, perm)
 }
 
 // Fetch details about all servers and server arrays in an environment
@@ -183,7 +191,7 @@ func server(client *cm15.Api, name string) *cm15.Instance {
 }
 
 // Print error message and exit with code 1
-func fail(format string, v ...interface{}) {
+var fail = func(format string, v ...interface{}) {
 	if !strings.HasSuffix(format, "\n") {
 		format += "\n"
 	}

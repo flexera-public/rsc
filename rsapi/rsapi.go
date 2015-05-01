@@ -47,7 +47,7 @@ type HttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-// New returns a API client that uses User oauth authentication.
+// New returns a API client that uses the given authenticator.
 // logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
@@ -55,7 +55,11 @@ func New(accountId int, host string, auth Authenticator, logger *log.Logger, cli
 	if client == nil {
 		client = http.DefaultClient
 	}
-	if auth != nil {
+	if auth != nil &&
+		// Be nice to tests
+		!strings.HasPrefix(host, "localhost") &&
+		!strings.HasPrefix(host, "127.0.0.1") {
+
 		var err error
 		host, err = auth.ResolveHost(host, accountId)
 		if err != nil {

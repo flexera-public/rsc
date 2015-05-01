@@ -6,6 +6,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"sort"
@@ -17,12 +18,16 @@ import (
 	"github.com/rightscale/rsc/ss/ssm"
 )
 
+// For testing
+var osStdout io.Writer = os.Stdout
+
 func main() {
 	// 1. Retrieve login and endpoint information
 	email := flag.String("e", "", "Login email")
 	pwd := flag.String("p", "", "Login password")
 	account := flag.Int("a", 0, "Account id")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
+	unsecure := flag.Bool("unsecure", false, "Use HTTP instead of HTTPS - used for testing")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -44,6 +49,7 @@ func main() {
 	if err != nil {
 		fail("failed to create client: %s", err)
 	}
+	client.Unsecure = *unsecure
 
 	// 3. Make execution index call using expanded view
 	l := client.ExecutionLocator(fmt.Sprintf("/projects/%d/executions", *account))
@@ -55,7 +61,7 @@ func main() {
 
 	// 4. Print executions launch from
 	w := new(tabwriter.Writer)
-	w.Init(os.Stdout, 5, 0, 1, ' ', 0)
+	w.Init(osStdout, 5, 0, 1, ' ', 0)
 	fmt.Fprintln(w, "Name\tState\tBy\tLink")
 	fmt.Fprintln(w, "-----\t-----\t-----\t-----")
 	for _, e := range execs {
@@ -73,7 +79,8 @@ func (b ByName) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 func (b ByName) Less(i, j int) bool { return b[i].Name < b[j].Name }
 
 // Print error message and exit with code 1
-func fail(format string, v ...interface{}) {
+// Make it overridable for testing
+var fail = func(format string, v ...interface{}) {
 	if !strings.HasSuffix(format, "\n") {
 		format += "\n"
 	}

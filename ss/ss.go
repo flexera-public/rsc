@@ -38,6 +38,9 @@ func HostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")
 	hostPrefix := urlElems[0]
 	elems := strings.Split(hostPrefix, "-")
+	if len(elems) < 2 {
+		return host
+	}
 	elems[len(elems)-2] = "selfservice"
 	ssLoginHostPrefix := strings.Join(elems, "-")
 	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")

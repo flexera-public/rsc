@@ -1,4 +1,4 @@
-package main_test
+package main
 
 import (
 	"bytes"
@@ -8,7 +8,6 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc"
 )
 
 // Helper that creates test responses
@@ -23,12 +22,12 @@ func makeResponse(body string, headers map[string][]string) *http.Response {
 var _ = Describe("Displayer", func() {
 	var (
 		resp      *http.Response
-		displayer *main.Displayer
+		displayer *Displayer
 		err       error
 	)
 
 	JustBeforeEach(func() {
-		displayer, err = main.NewDisplayer(resp)
+		displayer, err = NewDisplayer(resp)
 	})
 
 	Context("with a response containing invalid JSON", func() {

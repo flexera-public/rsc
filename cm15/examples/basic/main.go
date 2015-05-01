@@ -6,6 +6,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -14,12 +15,16 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
+// For testing
+var osStdout io.Writer = os.Stdout
+
 func main() {
 	// 1. Retrieve login and endpoint information
 	email := flag.String("e", "", "Login email")
 	pwd := flag.String("p", "", "Login password")
 	account := flag.Int("a", 0, "Account id")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
+	unsecure := flag.Bool("unsecure", false, "Use HTTP instead of HTTPS - used for testing")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -41,6 +46,7 @@ func main() {
 	if err != nil {
 		fail("failed to create client: %s", err)
 	}
+	client.Unsecure = *unsecure
 
 	// 3. Make cloud index call using extended view
 	l := client.CloudLocator("/api/clouds")
@@ -51,16 +57,16 @@ func main() {
 
 	// 4. Print cloud capabilities
 	for i, c := range clouds {
-		fmt.Println("")
-		fmt.Printf("%d. %s\n", i+1, c.Name)
+		fmt.Fprintln(osStdout, "")
+		fmt.Fprintf(osStdout, "%d. %s\n", i+1, c.Name)
 		for _, ca := range c.Capabilities {
-			fmt.Printf("%s: %v\n", ca["name"], ca["value"])
+			fmt.Fprintf(osStdout, "%s: %v\n", ca["name"], ca["value"])
 		}
 	}
 }
 
 // Print error message and exit with code 1
-func fail(format string, v ...interface{}) {
+var fail = func(format string, v ...interface{}) {
 	if !strings.HasSuffix(format, "\n") {
 		format += "\n"
 	}

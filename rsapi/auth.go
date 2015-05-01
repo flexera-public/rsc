@@ -219,7 +219,7 @@ func (r *oAuthSigner) Sign(req *http.Request, host string, accountID int) error 
 // BuildLoginRequest returns a new *http.Request that can refresh the access token
 func (r *oAuthSigner) BuildLoginRequest(host string, _ int) (*http.Request, error) {
 	jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, r.refreshToken)
-	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/oauth2", host), bytes.NewBufferString(jsonStr))
+	authReq, err := http.NewRequest("POST", endpoint(host, "api/oauth2"), bytes.NewBufferString(jsonStr))
 	if err != nil {
 		return nil, fmt.Errorf("Authentication failed (failed to build request): %s", err)
 	}
@@ -256,8 +256,9 @@ type ssAuthenticator struct {
 func (a *ssAuthenticator) Sign(r *http.Request, host string, accountID int) error {
 	if time.Now().After(a.refreshAt) {
 		authReq, err := http.NewRequest("GET",
-			fmt.Sprintf("https://%s/api/catalog/new_session?account_id=%d",
-				ssHostFromLogin(host), accountID), nil)
+			endpoint(ssHostFromLogin(host),
+				fmt.Sprintf("api/catalog/new_session?account_id=%d", accountID)),
+			nil)
 		if err != nil {
 			return err
 		}
@@ -292,6 +293,9 @@ func ssHostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")
 	hostPrefix := urlElems[0]
 	elems := strings.Split(hostPrefix, "-")
+	if len(elems) < 2 {
+		return host
+	}
 	elems[len(elems)-2] = "selfservice"
 	ssLoginHostPrefix := strings.Join(elems, "-")
 	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
@@ -312,7 +316,7 @@ type basicLoginRequestBuilder struct {
 func (b *basicLoginRequestBuilder) BuildLoginRequest(host string, accountID int) (*http.Request, error) {
 	jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
 		b.username, b.password, accountID)
-	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/sessions", host),
+	authReq, err := http.NewRequest("POST", endpoint(host, "api/sessions"),
 		bytes.NewBufferString(jsonStr))
 	if err != nil {
 		return authReq, fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
@@ -331,13 +335,29 @@ type instanceLoginRequestBuilder struct {
 func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string, accountID int) (*http.Request, error) {
 	accountHref := fmt.Sprintf("/api/accounts/%d", accountID)
 	jsonStr := fmt.Sprintf(`{"instance_token":"%s","account_href":"%s"}`, b.token, accountHref)
-	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/session/instance", host), bytes.NewBufferString(jsonStr))
+	authReq, err := http.NewRequest("POST", endpoint(host, "api/session/instance"), bytes.NewBufferString(jsonStr))
 	if err != nil {
 		return nil, fmt.Errorf("Authentication failed (failed to build request): %s", err)
 	}
 	authReq.Header.Set("X-API-Version", "1.5")
 	authReq.Header.Set("Content-Type", "application/json")
 	return authReq, nil
+}
+
+// Compute API endpoint given a hostname and a path
+func endpoint(host, suffix string) string {
+	if !strings.HasPrefix(host, "http") {
+		// Be nice to tests
+		if !strings.HasPrefix(host, "localhost") && !strings.HasPrefix(host, "127.0.0.1") {
+			host = "https://" + host
+		} else {
+			host = "http://" + host
+		}
+	}
+	if !strings.HasSuffix(host, "/") {
+		host += "/"
+	}
+	return host + suffix
 }
 
 // Headers that should be copied when creating the redirect request

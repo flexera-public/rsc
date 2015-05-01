@@ -1,4 +1,4 @@
-package main_test
+package main
 
 import (
 	"bytes"
@@ -9,19 +9,18 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc"
 )
 
 var _ = Describe("Config", func() {
 	Context("loading a config", func() {
 		var (
 			path   string
-			config *main.ClientConfig
+			config *ClientConfig
 			err    error
 		)
 
 		JustBeforeEach(func() {
-			config, err = main.LoadConfig(path)
+			config, err = LoadConfig(path)
 		})
 
 		Context("with an incorrect path", func() {
@@ -87,7 +86,7 @@ var _ = Describe("Config", func() {
 					var cfg = fmt.Sprintf(`{"Account":%d,"Email":"%s","LoginHost":"%s","Password":"%s"}`,
 						account, email, host, password)
 					tempFile.WriteString(cfg)
-					config, err = main.LoadConfig(path)
+					config, err = LoadConfig(path)
 				})
 
 				Context("which is valid", func() {
@@ -99,7 +98,7 @@ var _ = Describe("Config", func() {
 						account = 42
 						email = "test@test.com"
 						host = "LoginHost"
-						password, _ = main.Encrypt(tok)
+						password, _ = Encrypt(tok)
 					})
 
 					It("loads", func() {
@@ -139,14 +138,14 @@ var _ = Describe("Config", func() {
 		)
 
 		JustBeforeEach(func() {
-			main.SetOutput(testOut)
-			main.SetInput(testIn)
-			err = main.CreateConfig(path)
+			SetOutput(testOut)
+			SetInput(testIn)
+			err = CreateConfig(path)
 		})
 
 		AfterEach(func() {
-			main.SetOutput(os.Stdout)
-			main.SetInput(os.Stdin)
+			SetOutput(os.Stdout)
+			SetInput(os.Stdin)
 		})
 
 		Context("with valid input values", func() {
@@ -251,7 +250,7 @@ var _ = Describe("Config", func() {
 
 							It("saves the config", func() {
 								Ω(err).ShouldNot(HaveOccurred())
-								config, err := main.LoadConfig(tempFile.Name())
+								config, err := LoadConfig(tempFile.Name())
 								Ω(err).ShouldNot(HaveOccurred())
 								Ω(config.Account).Should(Equal(71))
 								Ω(config.Email).Should(Equal(email))

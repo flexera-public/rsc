@@ -1,11 +1,10 @@
-package main_test
+package main
 
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
 	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/api15gen"
 )
 
 var _ = Describe("ApiAnalyzer ParseRoute", func() {
@@ -16,7 +15,7 @@ var _ = Describe("ApiAnalyzer ParseRoute", func() {
 	)
 
 	JustBeforeEach(func() {
-		pathPatterns = main.ParseRoute(moniker, route)
+		pathPatterns = ParseRoute(moniker, route)
 	})
 
 	Context("given a simple route", func() {

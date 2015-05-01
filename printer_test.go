@@ -1,4 +1,4 @@
-package main_test
+package main
 
 import (
 	"bytes"
@@ -8,7 +8,6 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc"
 )
 
 var _ = Describe("Printer", func() {
@@ -19,15 +18,15 @@ var _ = Describe("Printer", func() {
 	)
 
 	JustBeforeEach(func() {
-		main.SetOutput(testOut)
-		main.SetErrorOutput(testOut)
-		main.SetInput(testIn)
+		SetOutput(testOut)
+		SetErrorOutput(testOut)
+		SetInput(testIn)
 	})
 
 	AfterEach(func() {
-		main.SetOutput(os.Stdout)
-		main.SetErrorOutput(os.Stderr)
-		main.SetInput(os.Stdin)
+		SetOutput(os.Stdout)
+		SetErrorOutput(os.Stderr)
+		SetInput(os.Stdin)
 	})
 
 	Context("when given a single argument", func() {
@@ -38,32 +37,41 @@ var _ = Describe("Printer", func() {
 		})
 
 		It("prompts confirmation", func() {
-			y := main.PromptConfirmation(format)
+			y := PromptConfirmation(format)
 			Ω(y).Should(Equal("y"))
 			Ω(testOut.String()).Should(Equal(format))
 		})
 
 		It("prints subtitles", func() {
-			main.PrintSubtitle(format)
+			PrintSubtitle(format)
 			Ω(testOut.String()).Should(ContainSubstring(format + "\n"))
 		})
 
 		It("prints titles", func() {
-			main.PrintTitle(format)
+			PrintTitle(format)
 			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(format))
 		})
 
 		It("prints success", func() {
-			main.PrintSuccess(format)
+			PrintSuccess(format)
 			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(format))
 		})
 
 		It("prints errors", func() {
-			main.PrintError(format)
+			PrintError(format)
 			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(format))
+		})
+
+		It("prints fatals", func() {
+			var exitCode int
+			osExit = func(code int) { exitCode = code }
+			PrintFatal(format)
+			var rawOut = testOut.String()
+			Ω(rawOut).Should(ContainSubstring(format))
+			Ω(exitCode).Should(Equal(1))
 		})
 	})
 
@@ -82,32 +90,41 @@ var _ = Describe("Printer", func() {
 		})
 
 		It("prompts confirmation", func() {
-			var y = main.PromptConfirmation(format, suffix)
+			var y = PromptConfirmation(format, suffix)
 			Ω(y).Should(Equal("y"))
 			Ω(testOut.String()).Should(Equal(formatWithSuffix))
 		})
 
 		It("prints subtitles", func() {
-			main.PrintSubtitle(format, suffix)
+			PrintSubtitle(format, suffix)
 			Ω(testOut.String()).Should(ContainSubstring(formatWithSuffix + "\n"))
 		})
 
 		It("prints titles", func() {
-			main.PrintTitle(format, suffix)
+			PrintTitle(format, suffix)
 			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(formatWithSuffix))
 		})
 
 		It("prints success", func() {
-			main.PrintSuccess(format, suffix)
+			PrintSuccess(format, suffix)
 			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(formatWithSuffix))
 		})
 
 		It("prints errors", func() {
-			main.PrintError(format, suffix)
+			PrintError(format, suffix)
 			var rawOut = testOut.String()
 			Ω(rawOut).Should(ContainSubstring(formatWithSuffix))
+		})
+
+		It("prints fatals", func() {
+			var exitCode int
+			osExit = func(code int) { exitCode = code }
+			PrintFatal(format, suffix)
+			var rawOut = testOut.String()
+			Ω(rawOut).Should(ContainSubstring(formatWithSuffix))
+			Ω(exitCode).Should(Equal(1))
 		})
 	})
 
