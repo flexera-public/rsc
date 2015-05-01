@@ -381,6 +381,8 @@ func parseReturn(kind, resName, contentType string) string {
 		}
 	case "update", "destroy":
 		return ""
+	case "current_instances":
+		return "[]*Instance"
 	default:
 		switch {
 		case len(contentType) == 0:

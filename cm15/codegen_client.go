@@ -7804,18 +7804,25 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 // List the running instances belonging to the server array. See Instances#index for details.
 // This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
 // latter will include 'next_instance' as well.
-func (loc *ServerArrayLocator) CurrentInstances() error {
+func (loc *ServerArrayLocator) CurrentInstances() ([]*Instance, error) {
+	var res []*Instance
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("ServerArray", "current_instances")
 	if err != nil {
-		return err
+		return res, err
 	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
-		return err
+		return res, err
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/server_arrays/:id
