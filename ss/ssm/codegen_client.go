@@ -67,6 +67,7 @@ type Execution struct {
 	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
 	Cost                 *CostStruct            `json:"cost,omitempty"`
 	CreatedBy            *User                  `json:"created_by,omitempty"`
+	CurrentSchedule      string                 `json:"current_schedule,omitempty"`
 	Deployment           string                 `json:"deployment,omitempty"`
 	DeploymentUrl        string                 `json:"deployment_url,omitempty"`
 	Description          string                 `json:"description,omitempty"`
@@ -80,10 +81,11 @@ type Execution struct {
 	Links                *ExecutionLinks        `json:"links,omitempty"`
 	Name                 string                 `json:"name,omitempty"`
 	NextAction           *ScheduledAction       `json:"next_action,omitempty"`
-	NextOperation        *ScheduledOperation    `json:"next_operation,omitempty"`
 	Outputs              []*Output              `json:"outputs,omitempty"`
 	RunningOperations    []*Operation           `json:"running_operations,omitempty"`
+	ScheduleRequired     bool                   `json:"schedule_required,omitempty"`
 	Scheduled            bool                   `json:"scheduled,omitempty"`
+	Schedules            []*Schedule            `json:"schedules,omitempty"`
 	Source               string                 `json:"source,omitempty"`
 	Status               string                 `json:"status,omitempty"`
 	Timestamps           *TimestampsStruct      `json:"timestamps,omitempty"`
@@ -186,9 +188,17 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 	if compiledCatOpt != nil {
 		payloadParams["compiled_cat"] = compiledCatOpt
 	}
+	var currentScheduleOpt = options["current_schedule"]
+	if currentScheduleOpt != nil {
+		payloadParams["current_schedule"] = currentScheduleOpt
+	}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
 		payloadParams["description"] = descriptionOpt
+	}
+	var endsAtOpt = options["ends_at"]
+	if endsAtOpt != nil {
+		payloadParams["ends_at"] = endsAtOpt
 	}
 	var nameOpt = options["name"]
 	if nameOpt != nil {
@@ -198,13 +208,17 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 	if options_Opt != nil {
 		payloadParams["options"] = options_Opt
 	}
+	var scheduleRequiredOpt = options["schedule_required"]
+	if scheduleRequiredOpt != nil {
+		payloadParams["schedule_required"] = scheduleRequiredOpt
+	}
 	var scheduledActionsOpt = options["scheduled_actions"]
 	if scheduledActionsOpt != nil {
 		payloadParams["scheduled_actions"] = scheduledActionsOpt
 	}
-	var scheduledOperationsOpt = options["scheduled_operations"]
-	if scheduledOperationsOpt != nil {
-		payloadParams["scheduled_operations"] = scheduledOperationsOpt
+	var schedulesOpt = options["schedules"]
+	if schedulesOpt != nil {
+		payloadParams["schedules"] = schedulesOpt
 	}
 	var sourceOpt = options["source"]
 	if sourceOpt != nil {
@@ -228,6 +242,32 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 	} else {
 		return &ExecutionLocator{UrlResolver(location), loc.api}, nil
 	}
+}
+
+// PATCH /projects/:project_id/executions/:id
+//
+// Updates an execution end date or selected schedule.
+func (loc *ExecutionLocator) Patch(options rsapi.ApiParams) error {
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{}
+	var currentScheduleOpt = options["current_schedule"]
+	if currentScheduleOpt != nil {
+		payloadParams["current_schedule"] = currentScheduleOpt
+	}
+	var endsAtOpt = options["ends_at"]
+	if endsAtOpt != nil {
+		payloadParams["ends_at"] = endsAtOpt
+	}
+	uri, err := loc.Url("Execution", "patch")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // DELETE /projects/:project_id/executions/:id
@@ -372,7 +412,7 @@ func (loc *ExecutionLocator) Terminate() error {
 
 // POST /projects/:project_id/executions/actions/launch
 //
-// Launch several executions.
+// Launch several Executions.
 func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -395,7 +435,7 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 
 // POST /projects/:project_id/executions/actions/start
 //
-// Start several executions.
+// Start several Executions.
 func (loc *ExecutionLocator) MultiStart(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -418,7 +458,7 @@ func (loc *ExecutionLocator) MultiStart(ids []string) error {
 
 // POST /projects/:project_id/executions/actions/stop
 //
-// Stop several executions.
+// Stop several Executions.
 func (loc *ExecutionLocator) MultiStop(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -441,7 +481,7 @@ func (loc *ExecutionLocator) MultiStop(ids []string) error {
 
 // POST /projects/:project_id/executions/actions/terminate
 //
-// Terminate several executions.
+// Terminate several Executions.
 func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
@@ -452,6 +492,66 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 	}
 	var payloadParams rsapi.ApiParams
 	uri, err := loc.Url("Execution", "multi_terminate")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// POST /projects/:project_id/executions/:id/actions/run
+//
+// Runs an Operation on an Execution.
+func (loc *ExecutionLocator) Run(name string, options rsapi.ApiParams) error {
+	if name == "" {
+		return fmt.Errorf("name is required")
+	}
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"name": name,
+	}
+	var configurationOptionsOpt = options["configuration_options"]
+	if configurationOptionsOpt != nil {
+		payloadParams["configuration_options"] = configurationOptionsOpt
+	}
+	uri, err := loc.Url("Execution", "run")
+	if err != nil {
+		return err
+	}
+	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// POST /projects/:project_id/executions/actions/run
+//
+// Runs an Operation on several Executions.
+func (loc *ExecutionLocator) MultiRun(ids []string, name string, options rsapi.ApiParams) error {
+	if len(ids) == 0 {
+		return fmt.Errorf("ids is required")
+	}
+	if name == "" {
+		return fmt.Errorf("name is required")
+	}
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{
+		"ids[]": ids,
+	}
+	var payloadParams rsapi.ApiParams
+	payloadParams = rsapi.ApiParams{
+		"name": name,
+	}
+	var configurationOptionsOpt = options["configuration_options"]
+	if configurationOptionsOpt != nil {
+		payloadParams["configuration_options"] = configurationOptionsOpt
+	}
+	uri, err := loc.Url("Execution", "multi_run")
 	if err != nil {
 		return err
 	}
@@ -701,14 +801,15 @@ type ScheduledAction struct {
 	Action                string                `json:"action,omitempty"`
 	CreatedBy             *User                 `json:"created_by,omitempty"`
 	Execution             *Execution            `json:"execution,omitempty"`
+	ExecutionSchedule     bool                  `json:"execution_schedule,omitempty"`
 	FirstOccurrence       *time.Time            `json:"first_occurrence,omitempty"`
 	Href                  string                `json:"href,omitempty"`
 	Id                    string                `json:"id,omitempty"`
 	Kind                  string                `json:"kind,omitempty"`
 	Links                 *ScheduledActionLinks `json:"links,omitempty"`
-	Mandatory             bool                  `json:"mandatory,omitempty"`
 	Name                  string                `json:"name,omitempty"`
 	NextOccurrence        *time.Time            `json:"next_occurrence,omitempty"`
+	Operation             *OperationStruct      `json:"operation,omitempty"`
 	Recurrence            string                `json:"recurrence,omitempty"`
 	RecurrenceDescription string                `json:"recurrence_description,omitempty"`
 	Timestamps            *TimestampsStruct     `json:"timestamps,omitempty"`
@@ -801,13 +902,13 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 		"execution_id":     executionId,
 		"first_occurrence": firstOccurrence,
 	}
-	var mandatoryOpt = options["mandatory"]
-	if mandatoryOpt != nil {
-		payloadParams["mandatory"] = mandatoryOpt
-	}
 	var nameOpt = options["name"]
 	if nameOpt != nil {
 		payloadParams["name"] = nameOpt
+	}
+	var operationOpt = options["operation"]
+	if operationOpt != nil {
+		payloadParams["operation"] = operationOpt
 	}
 	var recurrenceOpt = options["recurrence"]
 	if recurrenceOpt != nil {
@@ -835,22 +936,14 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 
 // PATCH /projects/:project_id/scheduled_actions/:id
 //
-// Update one or more ScheduledAction properties. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledActions created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
+// Updates the 'next_occurrence' property of a ScheduledAction.
 func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
 	payloadParams = rsapi.ApiParams{}
-	var forceOpt = options["force"]
-	if forceOpt != nil {
-		payloadParams["force"] = forceOpt
-	}
 	var nextOccurrenceOpt = options["next_occurrence"]
 	if nextOccurrenceOpt != nil {
 		payloadParams["next_occurrence"] = nextOccurrenceOpt
-	}
-	var recurrenceOpt = options["recurrence"]
-	if recurrenceOpt != nil {
-		payloadParams["recurrence"] = recurrenceOpt
 	}
 	uri, err := loc.Url("ScheduledAction", "patch")
 	if err != nil {
@@ -865,15 +958,10 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 
 // DELETE /projects/:project_id/scheduled_actions/:id
 //
-// Delete a ScheduledAction. If the ScheduledAction has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
-func (loc *ScheduledActionLocator) Delete(options rsapi.ApiParams) error {
+// Delete a ScheduledAction.
+func (loc *ScheduledActionLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{}
-	var forceOpt = options["force"]
-	if forceOpt != nil {
-		payloadParams["force"] = forceOpt
-	}
 	uri, err := loc.Url("ScheduledAction", "delete")
 	if err != nil {
 		return err
@@ -896,231 +984,7 @@ func (loc *ScheduledActionLocator) Skip(options rsapi.ApiParams) error {
 	if countOpt != nil {
 		payloadParams["count"] = countOpt
 	}
-	var forceOpt = options["force"]
-	if forceOpt != nil {
-		payloadParams["force"] = forceOpt
-	}
 	uri, err := loc.Url("ScheduledAction", "skip")
-	if err != nil {
-		return err
-	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-/******  ScheduledOperation ******/
-
-// ScheduledOperations describe a set of timed occurrences for an operation to be run (at most once per day).
-// Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
-// All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)
-type ScheduledOperation struct {
-	CreatedBy             *User                    `json:"created_by,omitempty"`
-	Execution             *Execution               `json:"execution,omitempty"`
-	FirstOccurrence       *time.Time               `json:"first_occurrence,omitempty"`
-	Href                  string                   `json:"href,omitempty"`
-	Id                    string                   `json:"id,omitempty"`
-	Kind                  string                   `json:"kind,omitempty"`
-	LastRun               *Operation               `json:"last_run,omitempty"`
-	Links                 *ScheduledOperationLinks `json:"links,omitempty"`
-	Mandatory             bool                     `json:"mandatory,omitempty"`
-	Name                  string                   `json:"name,omitempty"`
-	NextOccurrence        *time.Time               `json:"next_occurrence,omitempty"`
-	Operation             *OperationStruct         `json:"operation,omitempty"`
-	Recurrence            string                   `json:"recurrence,omitempty"`
-	RecurrenceDescription string                   `json:"recurrence_description,omitempty"`
-	Timestamps            *TimestampsStruct        `json:"timestamps,omitempty"`
-	Timezone              string                   `json:"timezone,omitempty"`
-}
-
-//===== Locator
-
-// ScheduledOperation resource locator, exposes resource actions.
-type ScheduledOperationLocator struct {
-	UrlResolver
-	api *Api
-}
-
-// ScheduledOperation resource locator factory
-func (api *Api) ScheduledOperationLocator(href string) *ScheduledOperationLocator {
-	return &ScheduledOperationLocator{UrlResolver(href), api}
-}
-
-//===== Actions
-
-// GET /projects/:project_id/scheduled_operations
-//
-// List ScheduledOperation resources in the project. The list can be filtered to a given execution.
-func (loc *ScheduledOperationLocator) Index(options rsapi.ApiParams) ([]*ScheduledOperation, error) {
-	var res []*ScheduledOperation
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
-	var filterOpt = options["filter"]
-	if filterOpt != nil {
-		queryParams["filter[]"] = filterOpt
-	}
-	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledOperation", "index")
-	if err != nil {
-		return res, err
-	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
-}
-
-// GET /projects/:project_id/scheduled_operations/:id
-//
-// Retrieve given ScheduledOperation resource.
-func (loc *ScheduledOperationLocator) Show() (*ScheduledOperation, error) {
-	var res *ScheduledOperation
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledOperation", "show")
-	if err != nil {
-		return res, err
-	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
-}
-
-// POST /projects/:project_id/scheduled_operations
-//
-// Create a new ScheduledOperation resource.
-func (loc *ScheduledOperationLocator) Create(executionId string, firstOccurrence *time.Time, operation *OperationStruct, options rsapi.ApiParams) (*ScheduledOperationLocator, error) {
-	var res *ScheduledOperationLocator
-	if executionId == "" {
-		return res, fmt.Errorf("executionId is required")
-	}
-	if operation == nil {
-		return res, fmt.Errorf("operation is required")
-	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
-		"execution_id":     executionId,
-		"first_occurrence": firstOccurrence,
-		"operation":        operation,
-	}
-	var mandatoryOpt = options["mandatory"]
-	if mandatoryOpt != nil {
-		payloadParams["mandatory"] = mandatoryOpt
-	}
-	var nameOpt = options["name"]
-	if nameOpt != nil {
-		payloadParams["name"] = nameOpt
-	}
-	var recurrenceOpt = options["recurrence"]
-	if recurrenceOpt != nil {
-		payloadParams["recurrence"] = recurrenceOpt
-	}
-	var timezoneOpt = options["timezone"]
-	if timezoneOpt != nil {
-		payloadParams["timezone"] = timezoneOpt
-	}
-	uri, err := loc.Url("ScheduledOperation", "create")
-	if err != nil {
-		return res, err
-	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return res, err
-	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &ScheduledOperationLocator{UrlResolver(location), loc.api}, nil
-	}
-}
-
-// PATCH /projects/:project_id/scheduled_operations/:id
-//
-// Update one or more ScheduledOperation properties. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to modify it. All ScheduledOperations created through the UI are set to 'mandatory' by default. When the 'recurrence' is updated, the 'next_occurrence' will be modified accordingly unless it's also specified.
-func (loc *ScheduledOperationLocator) Patch(options rsapi.ApiParams) error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{}
-	var forceOpt = options["force"]
-	if forceOpt != nil {
-		payloadParams["force"] = forceOpt
-	}
-	var nextOccurrenceOpt = options["next_occurrence"]
-	if nextOccurrenceOpt != nil {
-		payloadParams["next_occurrence"] = nextOccurrenceOpt
-	}
-	var recurrenceOpt = options["recurrence"]
-	if recurrenceOpt != nil {
-		payloadParams["recurrence"] = recurrenceOpt
-	}
-	uri, err := loc.Url("ScheduledOperation", "patch")
-	if err != nil {
-		return err
-	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// DELETE /projects/:project_id/scheduled_operations/:id
-//
-// Delete a ScheduledOperation. If the ScheduledOperation has the mandatory attribute set to true, the 'force' flag must be set in order to delete it.
-func (loc *ScheduledOperationLocator) Delete(options rsapi.ApiParams) error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{}
-	var forceOpt = options["force"]
-	if forceOpt != nil {
-		payloadParams["force"] = forceOpt
-	}
-	uri, err := loc.Url("ScheduledOperation", "delete")
-	if err != nil {
-		return err
-	}
-	_, err = loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// POST /projects/:project_id/scheduled_operations/:id/actions/skip
-//
-// Skips the requested number of ScheduledOperation occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledOperation is returned.
-func (loc *ScheduledOperationLocator) Skip(options rsapi.ApiParams) error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{}
-	var countOpt = options["count"]
-	if countOpt != nil {
-		payloadParams["count"] = countOpt
-	}
-	var forceOpt = options["force"]
-	if forceOpt != nil {
-		payloadParams["force"] = forceOpt
-	}
-	uri, err := loc.Url("ScheduledOperation", "skip")
 	if err != nil {
 		return err
 	}
@@ -1165,6 +1029,7 @@ type CompiledCAT struct {
 	Operations         map[string]interface{} `json:"operations,omitempty"`
 	Outputs            map[string]interface{} `json:"outputs,omitempty"`
 	Parameters         map[string]interface{} `json:"parameters,omitempty"`
+	Permissions        map[string]interface{} `json:"permissions,omitempty"`
 	RequiredParameters []string               `json:"required_parameters,omitempty"`
 	Resources          map[string]interface{} `json:"resources,omitempty"`
 	RsCaVer            int                    `json:"rs_ca_ver,omitempty"`
@@ -1202,6 +1067,7 @@ type ExecutionParam struct {
 	ConfigurationOptions []*ConfigurationOption                        `json:"configuration_options,omitempty"`
 	Cost                 *LatestNotificationsExecutionCostStruct       `json:"cost,omitempty"`
 	CreatedBy            *User                                         `json:"created_by,omitempty"`
+	CurrentSchedule      string                                        `json:"current_schedule,omitempty"`
 	Deployment           string                                        `json:"deployment,omitempty"`
 	DeploymentUrl        string                                        `json:"deployment_url,omitempty"`
 	Description          string                                        `json:"description,omitempty"`
@@ -1215,10 +1081,11 @@ type ExecutionParam struct {
 	Links                *ExecutionLinks                               `json:"links,omitempty"`
 	Name                 string                                        `json:"name,omitempty"`
 	NextAction           *ScheduledActionParam                         `json:"next_action,omitempty"`
-	NextOperation        *ScheduledOperationParam                      `json:"next_operation,omitempty"`
 	Outputs              []*Output                                     `json:"outputs,omitempty"`
 	RunningOperations    []*OperationParam                             `json:"running_operations,omitempty"`
+	ScheduleRequired     bool                                          `json:"schedule_required,omitempty"`
 	Scheduled            bool                                          `json:"scheduled,omitempty"`
+	Schedules            []*Schedule                                   `json:"schedules,omitempty"`
 	Source               string                                        `json:"source,omitempty"`
 	Status               string                                        `json:"status,omitempty"`
 	Timestamps           *LatestNotificationsExecutionTimestampsStruct `json:"timestamps,omitempty"`
@@ -1230,35 +1097,30 @@ type LatestNotificationsExecutionCostStruct struct {
 	Value     string     `json:"value,omitempty"`
 }
 
+type LatestNotificationsExecutionNextActionOperationStruct struct {
+	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
+	Name                 string                 `json:"name,omitempty"`
+}
+
 type LatestNotificationsExecutionNextActionTimestampsStruct struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
-type LatestNotificationsExecutionNextOperationLastRunStatusStruct struct {
+type LatestNotificationsExecutionRunningOperationsStatusStruct struct {
 	Percent int     `json:"percent,omitempty"`
 	Summary string  `json:"summary,omitempty"`
 	Tasks   []*Task `json:"tasks,omitempty"`
 }
 
-type LatestNotificationsExecutionNextOperationLastRunStatusTasksStatusStruct struct {
+type LatestNotificationsExecutionRunningOperationsStatusTasksStatusStruct struct {
 	Percent int    `json:"percent,omitempty"`
 	Summary string `json:"summary,omitempty"`
 }
 
-type LatestNotificationsExecutionNextOperationLastRunTimestampsStruct struct {
+type LatestNotificationsExecutionRunningOperationsTimestampsStruct struct {
 	CreatedAt  *time.Time `json:"created_at,omitempty"`
 	FinishedAt *time.Time `json:"finished_at,omitempty"`
-}
-
-type LatestNotificationsExecutionNextOperationOperationStruct struct {
-	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
-	Name                 string                 `json:"name,omitempty"`
-}
-
-type LatestNotificationsExecutionNextOperationTimestampsStruct struct {
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type LatestNotificationsExecutionTimestampsStruct struct {
@@ -1323,27 +1185,21 @@ type OperationDefinition struct {
 	Parameters  []*Parameter `json:"parameters,omitempty"`
 }
 
-type OperationLink struct {
-	Href string `json:"href,omitempty"`
-	Id   string `json:"id,omitempty"`
-	Name string `json:"name,omitempty"`
-}
-
 type OperationLinks struct {
 	Execution *ExecutionLink `json:"execution,omitempty"`
 }
 
 type OperationParam struct {
-	ConfigurationOptions []*ConfigurationOption                                            `json:"configuration_options,omitempty"`
-	CreatedBy            *User                                                             `json:"created_by,omitempty"`
-	Execution            *ExecutionParam                                                   `json:"execution,omitempty"`
-	Href                 string                                                            `json:"href,omitempty"`
-	Id                   string                                                            `json:"id,omitempty"`
-	Kind                 string                                                            `json:"kind,omitempty"`
-	Links                *OperationLinks                                                   `json:"links,omitempty"`
-	Name                 string                                                            `json:"name,omitempty"`
-	Status               *LatestNotificationsExecutionNextOperationLastRunStatusStruct     `json:"status,omitempty"`
-	Timestamps           *LatestNotificationsExecutionNextOperationLastRunTimestampsStruct `json:"timestamps,omitempty"`
+	ConfigurationOptions []*ConfigurationOption                                         `json:"configuration_options,omitempty"`
+	CreatedBy            *User                                                          `json:"created_by,omitempty"`
+	Execution            *ExecutionParam                                                `json:"execution,omitempty"`
+	Href                 string                                                         `json:"href,omitempty"`
+	Id                   string                                                         `json:"id,omitempty"`
+	Kind                 string                                                         `json:"kind,omitempty"`
+	Links                *OperationLinks                                                `json:"links,omitempty"`
+	Name                 string                                                         `json:"name,omitempty"`
+	Status               *LatestNotificationsExecutionRunningOperationsStatusStruct     `json:"status,omitempty"`
+	Timestamps           *LatestNotificationsExecutionRunningOperationsTimestampsStruct `json:"timestamps,omitempty"`
 }
 
 type OperationRunningOperationsLink struct {
@@ -1374,10 +1230,24 @@ type Parameter struct {
 	Validation  *AvailableOperationsParametersValidationStruct `json:"validation,omitempty"`
 }
 
+type Recurrence struct {
+	Hour   int    `json:"hour,omitempty"`
+	Minute int    `json:"minute,omitempty"`
+	Rule   string `json:"rule,omitempty"`
+}
+
 type Resource struct {
 	Name  string                   `json:"name,omitempty"`
 	Type_ string                   `json:"type,omitempty"`
 	Value *ApiResourcesValueStruct `json:"value,omitempty"`
+}
+
+type Schedule struct {
+	CreatedFrom     string      `json:"created_from,omitempty"`
+	Description     string      `json:"description,omitempty"`
+	Name            string      `json:"name,omitempty"`
+	StartRecurrence *Recurrence `json:"start_recurrence,omitempty"`
+	StopRecurrence  *Recurrence `json:"stop_recurrence,omitempty"`
 }
 
 type ScheduledActionLinks struct {
@@ -1388,42 +1258,19 @@ type ScheduledActionParam struct {
 	Action                string                                                  `json:"action,omitempty"`
 	CreatedBy             *User                                                   `json:"created_by,omitempty"`
 	Execution             *ExecutionParam                                         `json:"execution,omitempty"`
+	ExecutionSchedule     bool                                                    `json:"execution_schedule,omitempty"`
 	FirstOccurrence       *time.Time                                              `json:"first_occurrence,omitempty"`
 	Href                  string                                                  `json:"href,omitempty"`
 	Id                    string                                                  `json:"id,omitempty"`
 	Kind                  string                                                  `json:"kind,omitempty"`
 	Links                 *ScheduledActionLinks                                   `json:"links,omitempty"`
-	Mandatory             bool                                                    `json:"mandatory,omitempty"`
 	Name                  string                                                  `json:"name,omitempty"`
 	NextOccurrence        *time.Time                                              `json:"next_occurrence,omitempty"`
+	Operation             *LatestNotificationsExecutionNextActionOperationStruct  `json:"operation,omitempty"`
 	Recurrence            string                                                  `json:"recurrence,omitempty"`
 	RecurrenceDescription string                                                  `json:"recurrence_description,omitempty"`
 	Timestamps            *LatestNotificationsExecutionNextActionTimestampsStruct `json:"timestamps,omitempty"`
 	Timezone              string                                                  `json:"timezone,omitempty"`
-}
-
-type ScheduledOperationLinks struct {
-	Execution *ExecutionLink `json:"execution,omitempty"`
-	LastRun   *OperationLink `json:"last_run,omitempty"`
-}
-
-type ScheduledOperationParam struct {
-	CreatedBy             *User                                                      `json:"created_by,omitempty"`
-	Execution             *ExecutionParam                                            `json:"execution,omitempty"`
-	FirstOccurrence       *time.Time                                                 `json:"first_occurrence,omitempty"`
-	Href                  string                                                     `json:"href,omitempty"`
-	Id                    string                                                     `json:"id,omitempty"`
-	Kind                  string                                                     `json:"kind,omitempty"`
-	LastRun               *OperationParam                                            `json:"last_run,omitempty"`
-	Links                 *ScheduledOperationLinks                                   `json:"links,omitempty"`
-	Mandatory             bool                                                       `json:"mandatory,omitempty"`
-	Name                  string                                                     `json:"name,omitempty"`
-	NextOccurrence        *time.Time                                                 `json:"next_occurrence,omitempty"`
-	Operation             *LatestNotificationsExecutionNextOperationOperationStruct  `json:"operation,omitempty"`
-	Recurrence            string                                                     `json:"recurrence,omitempty"`
-	RecurrenceDescription string                                                     `json:"recurrence_description,omitempty"`
-	Timestamps            *LatestNotificationsExecutionNextOperationTimestampsStruct `json:"timestamps,omitempty"`
-	Timezone              string                                                     `json:"timezone,omitempty"`
 }
 
 type StatusStruct struct {
@@ -1433,9 +1280,9 @@ type StatusStruct struct {
 }
 
 type Task struct {
-	Label  string                                                                   `json:"label,omitempty"`
-	Name   string                                                                   `json:"name,omitempty"`
-	Status *LatestNotificationsExecutionNextOperationLastRunStatusTasksStatusStruct `json:"status,omitempty"`
+	Label  string                                                                `json:"label,omitempty"`
+	Name   string                                                                `json:"name,omitempty"`
+	Status *LatestNotificationsExecutionRunningOperationsStatusTasksStatusStruct `json:"status,omitempty"`
 }
 
 type TimestampsStruct struct {
