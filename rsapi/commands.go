@@ -55,9 +55,10 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 	}
 	resource, action, path := target.Resource, target.Action, target.Path
 
-	// 2. Coerce and validate given flag values
-	queryParams := ApiParams{}
-	payloadParams := ApiParams{}
+	// 2. Coerce and validate given flag values, use array for payload as order is meaningful
+	//    when building the data structure (e.g. in the case of array of hashes)
+	var queryParams, payloadParams []ApiParams
+	var seen []string
 	for _, p := range params {
 		param, value, err := a.findParamAndValue(action, p)
 		if err != nil {
@@ -77,75 +78,44 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 					resource.Name, action.Name, name, resource.Name, action.Name)
 			}
 		}
+		name := param.Name
+		seen = append(seen, name)
 		if err := validateFlagValue(value, param); err != nil {
 			return nil, err
 		}
-		coerced := queryParams
+		coerced := &queryParams
 		if param.Location == metadata.PayloadParam {
-			coerced = payloadParams
+			coerced = &payloadParams
 		}
 		switch param.Type {
-		case "string":
-			coerced[param.Name] = value
-		case "[]string":
-			if v, ok := coerced[param.Name]; ok {
-				v = append(v.([]string), value)
-				coerced[param.Name] = v
-			} else {
-				coerced[param.Name] = []string{value}
-			}
-		case "int":
+		case "string", "[]string", "interface{}":
+			*coerced = append(*coerced, ApiParams{name: value})
+		case "int", "[]int":
 			val, err := strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
-					param.Name, value)
+					name, value)
 			}
-			coerced[param.Name] = val
-		case "[]int":
-			val, err := strconv.Atoi(value)
-			if err != nil {
-				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
-					param.Name, value)
-			}
-			if v, ok := coerced[param.Name]; ok {
-				v = append(v.([]int), val)
-				coerced[param.Name] = v
-			} else {
-				coerced[param.Name] = []int{val}
-			}
-		case "bool":
+			*coerced = append(*coerced, ApiParams{name: val})
+		case "bool", "[]bool":
 			val, err := strconv.ParseBool(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
-					param.Name, value)
+					name, value)
 			}
-			coerced[param.Name] = val
-		case "[]bool":
-			val, err := strconv.ParseBool(value)
-			if err != nil {
-				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
-					param.Name, value)
-			}
-			if v, ok := coerced[param.Name]; ok {
-				v = append(v.([]bool), val)
-				coerced[param.Name] = v
-			} else {
-				coerced[param.Name] = []bool{val}
-			}
+			*coerced = append(*coerced, ApiParams{name: val})
 		case "map":
-			if _, ok := coerced[param.Name]; !ok {
-				coerced[param.Name] = map[string]string{}
-			}
 			velems := strings.SplitN(value, "=", 2)
-			coerced[param.Name].(map[string]string)[velems[0]] = velems[1]
-		case "interface{}":
-			coerced[param.Name] = value
+			*coerced = append(*coerced, ApiParams{velems[0]: velems[1]})
 		}
 	}
 	for _, p := range action.CommandFlags {
-		_, ok := queryParams[p.Name]
-		if !ok {
-			_, ok = payloadParams[p.Name]
+		var ok bool
+		for _, s := range seen {
+			if s == p.Name {
+				ok = true
+				break
+			}
 		}
 		if p.Mandatory && !ok {
 			return nil, fmt.Errorf("Missing required flag '%s'", p.Name)
@@ -153,11 +123,16 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 	}
 
 	// Reconstruct data structure from flat values
-	if payloadParams, err = buildPayload(payloadParams); err != nil {
+	qParams, err := buildQuery(queryParams)
+	if err != nil {
+		return nil, err
+	}
+	pParams, err := buildPayload(payloadParams)
+	if err != nil {
 		return nil, err
 	}
 
-	return &ParsedCommand{path.HttpMethod, path.Path, queryParams, payloadParams}, nil
+	return &ParsedCommand{path.HttpMethod, path.Path, qParams, pParams}, nil
 }
 
 // Show help for given command and flags
@@ -421,12 +396,35 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 	return nil
 }
 
+// Reconstruct query from flatten values
+func buildQuery(values []ApiParams) (ApiParams, error) {
+	query := ApiParams{}
+	for _, value := range values {
+		// Only one iteration below, flatten params only have one element each
+		for name, param := range value {
+			if q, ok := query[name]; ok {
+				if a, ok := q.([]interface{}); ok {
+					query[name] = append(a, param)
+				} else {
+					query[name] = []interface{}{q, param}
+				}
+			} else {
+				query[name] = param
+			}
+		}
+	}
+	return query, nil
+}
+
 // Reconstruct payload map from flatten values
-func buildPayload(values ApiParams) (ApiParams, error) {
+func buildPayload(values []ApiParams) (ApiParams, error) {
 	payload := ApiParams{}
-	for name, value := range values {
-		if _, err := Normalize(payload, name, value); err != nil {
-			return nil, err
+	for _, value := range values {
+		// Only one iteration below, flatten params only have one element each
+		for name, param := range value {
+			if _, err := Normalize(payload, name, param); err != nil {
+				return nil, err
+			}
 		}
 	}
 	return payload, nil
@@ -442,62 +440,60 @@ var (
 // Recursively travers a query string encoded name and build up the corresponding structure.
 // "a[b]" produces a map[string]interface{} with key "b"
 // "a[]" produces a []interface{}
-func Normalize(payload ApiParams, name string, value interface{}) (ApiParams, error) {
-	matches := nameRegex.FindStringSubmatch(name)
+func Normalize(payload ApiParams, name string, v interface{}) (ApiParams, error) {
+	var matches = nameRegex.FindStringSubmatch(name)
 	if len(matches) == 0 {
 		return nil, nil
 	}
-	k := matches[1]
+	var k = matches[1]
 	if len(k) == 0 {
 		return nil, nil
 	}
-	after := matches[2]
-	if after == "" || after == "[]" {
-		payload[k] = value
+	var after = matches[2]
+	if after == "" {
+		payload[k] = v
 	} else if after == "[" {
-		payload[name] = value
+		payload[name] = v
+	} else if after == "[]" {
+		if _, ok := payload[k]; !ok {
+			payload[k] = []interface{}{}
+		}
+		if a, ok := payload[k].([]interface{}); !ok {
+			return nil, fmt.Errorf("expected array for param '%s'", k)
+		} else {
+			payload[k] = append(a, v)
+		}
 	} else {
 		matches = childRegexp.FindStringSubmatch(after)
 		if len(matches) == 0 {
 			matches = childRegexp2.FindStringSubmatch(after)
 		}
 		if len(matches) > 0 {
-			childKey := matches[1]
+			var childKey = matches[1]
 			if _, ok := payload[k]; !ok {
 				payload[k] = []interface{}{}
 			}
-			if _, ok := payload[k].([]interface{}); !ok {
+			var array []interface{}
+			if a, ok := payload[k].([]interface{}); ok {
+				array = a
+			} else {
 				return nil, fmt.Errorf("expected array for param '%s'", k)
 			}
-			array := payload[k].([]interface{})
-			if len(array) == 0 {
-				p, err := Normalize(ApiParams{}, childKey, value)
+			var handled bool
+			if len(array) > 0 {
+				if last, ok := array[len(array)-1].(ApiParams); ok {
+					if _, ok := last[childKey]; !ok {
+						handled = true
+						Normalize(last, childKey, v)
+					}
+				}
+			}
+			if !handled {
+				var p, err = Normalize(ApiParams{}, childKey, v)
 				if err != nil {
 					return nil, err
 				}
 				payload[k] = append(array, p)
-			} else {
-				last, update := array[len(array)-1].(ApiParams)
-				if update {
-					// Array of maps, check whether last element already
-					// has the key. If yes create new array element, if not
-					// update existing last element.
-					_, ok := last[childKey]
-					update = !ok
-				}
-				if update {
-					p, err := Normalize(last, childKey, value)
-					if err != nil {
-						return nil, err
-					}
-					array[len(array)-1] = p
-				} else {
-					p, err := Normalize(ApiParams{}, childKey, value)
-					if err != nil {
-						return nil, err
-					}
-					payload[k] = append(array, p)
-				}
 			}
 		} else {
 			if payload[k] == nil {
@@ -506,7 +502,7 @@ func Normalize(payload ApiParams, name string, value interface{}) (ApiParams, er
 			if _, ok := payload[k].(ApiParams); !ok {
 				return nil, fmt.Errorf("expected map for param '%s'", k)
 			}
-			p, err := Normalize(payload[k].(ApiParams), after, value)
+			var p, err = Normalize(payload[k].(ApiParams), after, v)
 			if err != nil {
 				return nil, err
 			}

@@ -70,11 +70,11 @@ var _ = Describe("normalize", func() {
 	Describe("with a simple array", func() {
 		BeforeEach(func() {
 			name = "val[]"
-			value = []string{"foo"}
+			value = "foo"
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			Ω(res).Should(Equal(rsapi.ApiParams{"val": []string{"foo"}}))
+			Ω(res).Should(Equal(rsapi.ApiParams{"val": []interface{}{"foo"}}))
 		})
 	})
 
@@ -92,7 +92,7 @@ var _ = Describe("normalize", func() {
 	Describe("with a map of arrays", func() {
 		BeforeEach(func() {
 			name = "val[a][]"
-			value = []interface{}{"foo"}
+			value = "foo"
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
@@ -108,13 +108,23 @@ var _ = Describe("normalize", func() {
 	Describe("with a map of arrays with existing values", func() {
 		BeforeEach(func() {
 			name = "val[a][]"
-			value = []string{"foo", "bar"}
+			value = "foo"
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
 			expected := rsapi.ApiParams{
 				"val": rsapi.ApiParams{
-					"a": []string{"foo", "bar"},
+					"a": []interface{}{"foo"},
+				},
+			}
+			Ω(res).Should(Equal(expected))
+			name = "val[a][]"
+			value = "bar"
+			res, resErr = rsapi.Normalize(res, name, value)
+			Ω(resErr).ShouldNot(HaveOccurred())
+			expected = rsapi.ApiParams{
+				"val": rsapi.ApiParams{
+					"a": []interface{}{"foo", "bar"},
 				},
 			}
 			Ω(res).Should(Equal(expected))
@@ -138,7 +148,7 @@ var _ = Describe("normalize", func() {
 	Describe("with an array of maps of arrays", func() {
 		BeforeEach(func() {
 			name = "val[][a][]"
-			value = []interface{}{"foo"}
+			value = "foo"
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
@@ -151,15 +161,20 @@ var _ = Describe("normalize", func() {
 
 	Describe("with an array of maps with existing keys", func() {
 		BeforeEach(func() {
-			name = "val[][b]"
-			value = "bar"
-			payload = rsapi.ApiParams{
-				"val": []interface{}{rsapi.ApiParams{"a": "foo"}},
-			}
+			name = "val[][a]"
+			value = "foo"
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
 			expected := rsapi.ApiParams{
+				"val": []interface{}{rsapi.ApiParams{"a": "foo"}},
+			}
+			Ω(res).Should(Equal(expected))
+			name = "val[][b]"
+			value = "bar"
+			res, resErr = rsapi.Normalize(res, name, value)
+			Ω(resErr).ShouldNot(HaveOccurred())
+			expected = rsapi.ApiParams{
 				"val": []interface{}{rsapi.ApiParams{"a": "foo", "b": "bar"}},
 			}
 			Ω(res).Should(Equal(expected))
@@ -206,7 +221,7 @@ var _ = Describe("ParseCommand", func() {
 		parsed, parseErr = api.ParseCommand(cmd, hrefPrefix, values)
 	})
 
-	Describe("Run command line", func() {
+	Describe("with array of maps with one element", func() {
 		BeforeEach(func() {
 			cmd = "run"
 			runCmd := rsapi.ActionCommand{
@@ -236,6 +251,79 @@ var _ = Describe("ParseCommand", func() {
 				Uri:           "/projects/42/executions/54/actions/run",
 				QueryParams:   rsapi.ApiParams{},
 				PayloadParams: payload,
+			}
+			Ω(*parsed).Should(Equal(expected))
+		})
+	})
+
+	Describe("with array of maps with two elements", func() {
+		BeforeEach(func() {
+			cmd = "run"
+			runCmd := rsapi.ActionCommand{
+				Href: "/api/manager/projects/42/executions/54",
+				Params: []string{
+					"name=Tip CWF2",
+					"configuration_options[][name]=environment_name",
+					"configuration_options[][type]=string",
+					"configuration_options[][value]=ss2",
+					"configuration_options[][name]=environment_name2",
+					"configuration_options[][type]=string",
+					"configuration_options[][value]=ss2",
+				},
+			}
+			values = rsapi.ActionCommands{"run": &runCmd}
+		})
+		It("parses", func() {
+			Ω(parseErr).ShouldNot(HaveOccurred())
+			Ω(parsed).ShouldNot(BeNil())
+			payload := rsapi.ApiParams{
+				"name": "Tip CWF2",
+				"configuration_options": []interface{}{
+					rsapi.ApiParams{
+						"name":  "environment_name",
+						"type":  "string",
+						"value": "ss2",
+					},
+					rsapi.ApiParams{
+						"name":  "environment_name2",
+						"type":  "string",
+						"value": "ss2",
+					},
+				},
+			}
+			expected := rsapi.ParsedCommand{
+				HttpMethod:    "POST",
+				Uri:           "/projects/42/executions/54/actions/run",
+				QueryParams:   rsapi.ApiParams{},
+				PayloadParams: payload,
+			}
+			Ω(*parsed).Should(Equal(expected))
+		})
+	})
+
+	Describe("with an array of query parameters", func() {
+		BeforeEach(func() {
+			cmd = "index"
+			indexCmd := rsapi.ActionCommand{
+				Href: "/api/manager/projects/42/executions",
+				Params: []string{
+					"filter[]=status==running",
+					"filter[]=status==stopped",
+				},
+			}
+			values = rsapi.ActionCommands{"index": &indexCmd}
+		})
+		It("parses", func() {
+			Ω(parseErr).ShouldNot(HaveOccurred())
+			Ω(parsed).ShouldNot(BeNil())
+			query := rsapi.ApiParams{
+				"filter[]": []interface{}{"status==running", "status==stopped"},
+			}
+			expected := rsapi.ParsedCommand{
+				HttpMethod:    "GET",
+				Uri:           "/projects/42/executions",
+				QueryParams:   query,
+				PayloadParams: rsapi.ApiParams{},
 			}
 			Ω(*parsed).Should(Equal(expected))
 		})

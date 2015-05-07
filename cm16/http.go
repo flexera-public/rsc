@@ -77,6 +77,10 @@ func (a *Api) buildHttpRequest(uri string, params rsapi.ApiParams) (*http.Reques
 				for _, e := range t {
 					values.Add(n, strconv.FormatBool(e))
 				}
+			case []interface{}:
+				for _, e := range t {
+					values.Add(n, fmt.Sprintf("%v", e))
+				}
 			case map[string]string:
 				for pn, e := range t {
 					values.Add(fmt.Sprintf("%s[%s]", n, pn), e)
