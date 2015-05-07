@@ -433,7 +433,7 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 func buildPayload(values ApiParams) (ApiParams, error) {
 	payload := ApiParams{}
 	for name, value := range values {
-		if _, err := normalize(payload, name, value); err != nil {
+		if _, err := Normalize(payload, name, value); err != nil {
 			return nil, err
 		}
 	}
@@ -450,7 +450,7 @@ var (
 // Recursively travers a query string encoded name and build up the corresponding structure.
 // "a[b]" produces a map[string]interface{} with key "b"
 // "a[]" produces a []interface{}
-func normalize(payload ApiParams, name string, value interface{}) (ApiParams, error) {
+func Normalize(payload ApiParams, name string, value interface{}) (ApiParams, error) {
 	matches := nameRegex.FindStringSubmatch(name)
 	if len(matches) == 0 {
 		return nil, nil
@@ -479,20 +479,28 @@ func normalize(payload ApiParams, name string, value interface{}) (ApiParams, er
 			}
 			array := payload[k].([]interface{})
 			if len(array) == 0 {
-				p, err := normalize(ApiParams{}, childKey, value)
+				p, err := Normalize(ApiParams{}, childKey, value)
 				if err != nil {
 					return nil, err
 				}
 				payload[k] = append(array, p)
 			} else {
-				last, ok := array[len(array)-1].(ApiParams)
-				if ok {
-					_, ok = last[childKey]
+				last, update := array[len(array)-1].(ApiParams)
+				if update {
+					// Array of maps, check whether last element already
+					// has the key. If yes create new array element, if not
+					// update existing last element.
+					_, ok := last[childKey]
+					update = !ok
 				}
-				if ok {
-					normalize(last, childKey, value)
+				if update {
+					p, err := Normalize(last, childKey, value)
+					if err != nil {
+						return nil, err
+					}
+					array[len(array)-1] = p
 				} else {
-					p, err := normalize(ApiParams{}, childKey, value)
+					p, err := Normalize(ApiParams{}, childKey, value)
 					if err != nil {
 						return nil, err
 					}
@@ -506,7 +514,7 @@ func normalize(payload ApiParams, name string, value interface{}) (ApiParams, er
 			if _, ok := payload[k].(ApiParams); !ok {
 				return nil, fmt.Errorf("expected map for param '%s'", k)
 			}
-			p, err := normalize(payload[k].(ApiParams), after, value)
+			p, err := Normalize(payload[k].(ApiParams), after, value)
 			if err != nil {
 				return nil, err
 			}

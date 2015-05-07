@@ -1,4 +1,4 @@
-package main
+package rsapi_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -8,8 +8,8 @@ import (
 	"testing"
 )
 
-func TestRsc(t *testing.T) {
+func TestRsapi(t *testing.T) {
 	RegisterFailHandler(Fail)
 	config.DefaultReporterConfig.NoColor = true
-	RunSpecs(t, "Rsc Suite")
+	RunSpecs(t, "Rsapi Suite")
 }
