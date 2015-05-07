@@ -77,7 +77,6 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 					resource.Name, action.Name, name, resource.Name, action.Name)
 			}
 		}
-		name := param.Name
 		if err := validateFlagValue(value, param); err != nil {
 			return nil, err
 		}
@@ -87,9 +86,6 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 		}
 		switch param.Type {
 		case "string":
-			if _, ok := coerced[name]; ok {
-				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
-			}
 			coerced[param.Name] = value
 		case "[]string":
 			if v, ok := coerced[param.Name]; ok {
@@ -99,9 +95,6 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 				coerced[param.Name] = []string{value}
 			}
 		case "int":
-			if _, ok := coerced[name]; ok {
-				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
-			}
 			val, err := strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
@@ -121,9 +114,6 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 				coerced[param.Name] = []int{val}
 			}
 		case "bool":
-			if _, ok := coerced[name]; ok {
-				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
-			}
 			val, err := strconv.ParseBool(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
@@ -149,9 +139,6 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			velems := strings.SplitN(value, "=", 2)
 			coerced[param.Name].(map[string]string)[velems[0]] = velems[1]
 		case "interface{}":
-			if _, ok := coerced[name]; ok {
-				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
-			}
 			coerced[param.Name] = value
 		}
 	}

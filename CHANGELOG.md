@@ -1,3 +1,7 @@
+v1.0.7 / ?
+----------
+* Allow specifying multiple array elements on command line
+
 v1.0.6 / 2015-05-06
 -------------------
 * Update Self-Service client to match latest release
