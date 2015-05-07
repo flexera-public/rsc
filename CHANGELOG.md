@@ -1,6 +1,6 @@
-v1.0.7 / ?
-----------
-* Allow specifying multiple array elements on command line
+v1.0.7 / 2015-05-7
+------------------
+* Fix bug when specifying multiple array elements on command line
 
 v1.0.6 / 2015-05-06
 -------------------
