@@ -701,7 +701,7 @@ attribute inside of a CAT file.`,
 					&metadata.ActionParam{
 						Name:        "schedules[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,

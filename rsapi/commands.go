@@ -148,6 +148,11 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			}
 			velems := strings.SplitN(value, "=", 2)
 			coerced[param.Name].(map[string]string)[velems[0]] = velems[1]
+		case "interface{}":
+			if _, ok := coerced[name]; ok {
+				return nil, fmt.Errorf("Multiple values specified for '%s'", param.Name)
+			}
+			coerced[param.Name] = value
 		}
 	}
 	for _, p := range action.CommandFlags {

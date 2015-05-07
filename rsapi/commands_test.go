@@ -4,6 +4,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/rightscale/rsc/rsapi"
+	"github.com/rightscale/rsc/ss/ssm"
 )
 
 var _ = Describe("normalize", func() {
@@ -184,4 +185,60 @@ var _ = Describe("normalize", func() {
 			Ω(res).Should(Equal(expected))
 		})
 	})
+})
+
+var _ = Describe("ParseCommand", func() {
+	var cmd, hrefPrefix string
+	var values rsapi.ActionCommands
+	var api *rsapi.Api
+
+	var parsed *rsapi.ParsedCommand
+	var parseErr error
+
+	BeforeEach(func() {
+		values = nil
+		ssm, err := ssm.New(42, "", nil, nil, nil)
+		Ω(err).ShouldNot(HaveOccurred())
+		api = ssm.Api
+	})
+
+	JustBeforeEach(func() {
+		parsed, parseErr = api.ParseCommand(cmd, hrefPrefix, values)
+	})
+
+	Describe("Run command line", func() {
+		BeforeEach(func() {
+			cmd = "run"
+			runCmd := rsapi.ActionCommand{
+				Href: "/api/manager/projects/42/executions/54",
+				Params: []string{
+					"name=Tip CWF",
+					"configuration_options[][name]=environment_name",
+					"configuration_options[][type]=string",
+					"configuration_options[][value]=ss2",
+				},
+			}
+			values = rsapi.ActionCommands{"run": &runCmd}
+		})
+		It("parses", func() {
+			Ω(parseErr).ShouldNot(HaveOccurred())
+			Ω(parsed).ShouldNot(BeNil())
+			payload := rsapi.ApiParams{
+				"name": "Tip CWF",
+				"configuration_options": []interface{}{rsapi.ApiParams{
+					"name":  "environment_name",
+					"type":  "string",
+					"value": "ss2",
+				}},
+			}
+			expected := rsapi.ParsedCommand{
+				HttpMethod:    "POST",
+				Uri:           "/projects/42/executions/54/actions/run",
+				QueryParams:   rsapi.ApiParams{},
+				PayloadParams: payload,
+			}
+			Ω(*parsed).Should(Equal(expected))
+		})
+	})
+
 })

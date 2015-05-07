@@ -141,19 +141,6 @@ func escapeBackticks(d string) string {
 // Type of flag, one of "string", "[]string", "int" or "map"
 func flagType(param *gen.ActionParam) string {
 	path := param.QueryName
-	if strings.HasSuffix(path, "[]") {
-		return "[]string"
-	}
-	if strings.Contains(path, "[]") {
-		_, ok := param.Type.(*gen.BasicDataType)
-		if !ok {
-			if _, ok := param.Type.(*gen.EnumerableDataType); ok {
-				return "[]string"
-			}
-			panic(fmt.Sprintf("Wooaat? an array with a non basic leaf??? - %#v", param.Type))
-		}
-		return "[]string"
-	}
 	if _, ok := param.Type.(*gen.ArrayDataType); ok {
 		return "[]string"
 	} else if _, ok := param.Type.(*gen.EnumerableDataType); ok {

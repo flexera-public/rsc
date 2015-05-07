@@ -3563,7 +3563,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][value]",
 						Description: `The value to be updated with. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3579,7 +3579,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][name]",
 						Description: `The name of the input to be updated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3918,7 +3918,7 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][value]",
 						Description: `The value of that input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -3934,7 +3934,7 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][name]",
 						Description: `The input name. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4038,7 +4038,7 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][value]",
 						Description: `The value of these inputs. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4054,7 +4054,7 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][name]",
 						Description: `The name of inputs needed. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4244,7 +4244,7 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][value]",
 						Description: `The value of these inputs. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4260,7 +4260,7 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "inputs[][name]",
 						Description: `The name of inputs needed. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4338,7 +4338,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "quantity[][value]",
 						Description: `The value of the quantity. Should be a positive integer.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4346,7 +4346,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "quantity[][name]",
 						Description: `The name of the quantity. A customer-specific string, e.g. "MB/s" or "GB/Month".`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4706,7 +4706,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "quantity[][value]",
 						Description: `The value of the quantity. Should be a positive integer.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4714,7 +4714,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "quantity[][name]",
 						Description: `The name of the quantity. A customer-specific string, e.g. "MB/s" or "GB/Month".`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4832,7 +4832,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "quantity[][value]",
 						Description: `The value of the quantity. Should be a positive integer.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4840,7 +4840,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "quantity[][name]",
 						Description: `The name of the quantity. A customer-specific string, e.g. "MB/s" or "GB/Month".`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9278,7 +9278,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "runnable_bindings[][right_script_href]",
 						Description: `The updated RightScript href. Note: recipe cannot be specified when this param is given.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9286,7 +9286,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "runnable_bindings[][position]",
 						Description: `The updated position of the RunnableBinding in the execution order. If specified, will be inserted in that location and cause all others to move down.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9294,7 +9294,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "runnable_bindings[][sequence]",
 						Description: `The sequence at which this executable should be run.  Default is 'operational'.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9303,7 +9303,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "runnable_bindings[][recipe]",
 						Description: `The updated Chef recipe name. Note: right_script_href cannot be specified when this param is given.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9311,7 +9311,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "runnable_bindings[][id]",
 						Description: `The ID of the RunnableBinding to update.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -10300,7 +10300,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[instance][inputs][][value]",
 						Description: `The value of that Input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10316,7 +10316,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[instance][inputs][][name]",
 						Description: `The Input name. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10918,7 +10918,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][max_count]",
 						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -10926,7 +10926,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][min_count]",
 						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -10967,7 +10967,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][datacenter_href]",
 						Description: `The href of the Datacenter / Zone.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -10975,7 +10975,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][time]",
 						Description: `Specifies the time when an alert-based array resizes.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -10983,7 +10983,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][day]",
 						Description: `Specifies the day when an alert-based array resizes.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11049,7 +11049,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][weight]",
 						Description: `Instance allocation (should total 100%).`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11065,7 +11065,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[instance][inputs][][value]",
 						Description: `The value of that Input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11089,7 +11089,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][max]",
 						Description: `Max instances (0 for unlimited).`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11097,7 +11097,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[instance][inputs][][name]",
 						Description: `The Input name.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -11499,7 +11499,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][min_count]",
 						Description: `The updated minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11507,7 +11507,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][max_count]",
 						Description: `The updated maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11539,7 +11539,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][datacenter_href]",
 						Description: `The href of the Datacenter / Zone.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11547,7 +11547,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][time]",
 						Description: `The updated time when an alert-based array resizes.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11555,7 +11555,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][schedule][][day]",
 						Description: `The updated day when an alert-based array resizes.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11564,7 +11564,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][weight]",
 						Description: `Instance allocation (should total 100%).`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -11572,7 +11572,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][max]",
 						Description: `Max instances (0 for unlimited).`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
