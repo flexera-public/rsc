@@ -91,23 +91,38 @@ The list of global flags is:
 ```
   --help            Show help.
   --version         Show application version.
-  -c, --config="/Users/raphael/.rsc"
+  -c, --config="/home/raphael/.rsc"  
                     path to rsc config file
-  -a, --account=ACCOUNT
+  -a, --account=ACCOUNT  
                     RightScale account ID
   -h, --host=HOST   RightScale login endpoint (e.g. 'us-3.rightscale.com')
-  --email=EMAIL     Login email, use --email and --password or use --key or --rl10
-  --pwd=PWD         Login password, use --email and --password or use --key or --rl10
-  -k, --key=KEY     OAuth access token or API key, use --email and --password or use --key or --rl10
-  --rl10            Proxy requests through RightLink 10 agent, use --email and --password or use --key or --rl10
+  --email=EMAIL     Login email, use --email and --password or use
+                    --refreshToken, --accessToken, --apiToken or --rl10
+  --pwd=PWD         Login password, use --email and --password or use
+                    --refreshToken, --accessToken, --apiToken or --rl10
+  -r, --refreshToken=REFRESHTOKEN  
+                    OAuth refresh token, use --email and --password or use
+                    --refreshToken, --accessToken, --apiToken or --rl10
+  -s, --accessToken=ACCESSTOKEN  
+                    OAuth access token, use --email and --password or use
+                    --refreshToken, --accessToken, --apiToken or --rl10
+  -p, --apiToken=APITOKEN  
+                    Instance API token, use --email and --password or use
+                    --refreshToken, --accessToken, --apiToken or --rl10
+  --rl10            Proxy requests through RightLink 10 agent, use --email and
+                    --password or use --refreshToken, --accessToken, --apiToken
+                    or --rl10
   --noAuth          Make unauthenticated requests, used for testing
   --x1=X1           Extract single value using JSON:select
-  --xm=XM           Extract zero, one or more values using JSON:select and return newline separated list
-  --xj=XJ           Extract zero, one or more values using JSON:select and return JSON
+  --xm=XM           Extract zero, one or more values using JSON:select and
+                    return newline separated list
+  --xj=XJ           Extract zero, one or more values using JSON:select and
+                    return JSON
   --xh=XH           Extract header with given name
   -n, --noRedirect  Do not follow redirect responses
   --fetch           Fetch resource with href present in 'Location' header
-  --dump=DUMP       Dump HTTP request and response. Possible values are 'debug' or 'json'.
+  --dump=DUMP       Dump HTTP request and response. Possible values are 'debug'
+                    or 'json'.
   --pp              Pretty print response body
 ```
 
