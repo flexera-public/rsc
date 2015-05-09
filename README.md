@@ -64,7 +64,7 @@ See further down in the README for building from source.
   and not 'v1'
 - The latest dev version is 'master'
 
-### Command line
+### Command Line
 
 The general shape of a command line is:
 
@@ -145,12 +145,18 @@ the same client. The package also takes care of refreshing the cookie before the
 Below is an example listing all clouds available in a given account using the `rsc` command line
 tool with basic authentication:
 ```
-rsc --account $ACCOUNT --email $EMAIL --password $PASSWORD cm15 index clouds
+rsc --account $ACCOUNT --email $EMAIL --pwd $PASSWORD --host $HOST cm15 index clouds
 ```
-The example assumes that the ACCOUNT, EMAIL and PASSWORD environment variables contain the account
-id, user email and password respectively.
+The example assumes that the ACCOUNT, EMAIL, PASSWORD and HOST environment variables contain the
+account id, user email, password and RightScale API host respectively.
 
-#### OAuth authentication
+At the time of writing there are two possible values for the RightScale API host:
+`us-3.rightscale.com` or `us-4.rightscale.com`. When using basic authentication it is also
+possible to use `my.rightscale.com` in which case the server will redirect to the appropriate
+host. The correct value for the host can be retrieved by logging in into the RightScale Cloud
+Management dashboard: the URL contains the appropriate host for the account being logged into.
+
+#### OAuth Authentication
 
 RightScale supports the [OAuth 2.0 Authorization Framework](http://tools.ietf.org/html/rfc6749)
 where a refresh token can be exchanged with a temporary access token to make authenticated requests.
@@ -171,7 +177,7 @@ resource.
 Below is an example listing all clouds available in the account using the refresh token retrieved
 from the RightScale Cloud Management dashboard:
 ```
-rsc --refreshToken $REFRESH cm15 index clouds
+rsc --refreshToken $REFRESH --host $HOST cm15 index clouds
 ```
 Note that in this case the account doesn't need to be specified on the command line, it is
 inferred from the token.
@@ -180,12 +186,12 @@ Here is another example that first creates an access token explicitly then uses 
 all clouds:
 ```
 export ACCESS=`rsc --x1 .access_token --refreshToken $REFRESH cm15 create oauth2`
-rsc --accessToken $ACCESS cm15 index clouds
+rsc --accessToken $ACCESS --host $HOST cm15 index clouds
 ```
 The example above uses the `--x1` flag to extract the access token from the response. Extracting
 data from responses is described in the [Extracting values from responses](#extract) section below.
 
-#### Instance facing APIs
+#### Instance Facing APIs
 
 The final mechanism for authenticating against the RightScale APIs consists of using an instance
 specific token to make API requests from a RightScale managed instance. This token is written to
@@ -199,14 +205,40 @@ scripts running on RightScale managed instances can authenticate:
 
 Here is an example using the instance API token to list all clouds:
 ```
-rsc --apiToken $TOKEN cm15 index clouds
+rsc --apiToken $TOKEN --host $HOST cm15 index clouds
 ```
 And here is another example running on a RightLink 10 enabled instance:
 ```
 rsc --rl10 cm15 index clouds
 ```
 
-### <a name=extract></a>Extracting values from responses
+#### Storing Client Credentials
+
+The `setup` command can be used to create a configuration file that contains the host, account id,
+user email and password so that these don't need to be specified each time. All these settings or
+a subset may be stored (i.e. the password doesn't have to be stored if that's not desirable). 
+
+By default the config file is created in `$HOME/.rsc`, the location can be overridden using the
+`--config` global flag. Multiple configs may be created to allow for different environments or
+users. Use the `--config` flag when invoking the tool to specify the location of the config file if it's
+not the default.
+
+The configuration file is a simple JSON file that lists the fields defined during setup. The
+password is encrypted before being stored although it is a two way encryption scheme so not meant
+to be a truly secure mechanism but rather a way to avoid having the password written in plain text.
+```
+rsc setup
+Account id: 12345
+Login email: myemail@mycompany.com
+Login password: 12345abc
+API Login host: us-3.rightscale.com
+```
+The values stored in the configuration can be overridden using command line flags so that for
+example a different account can be specified:
+```
+rsc --account 234 cm15 index clouds
+```
+### <a name=extract></a>Extracting Values From Responses
 
 The `--x1`, `--xm` and `--xj` flags make it possible to extract values from the response using a
 JSON select expression (see [http://jsonselect.org/](http://jsonselect.org/)). For example:
@@ -265,17 +297,6 @@ deployments:
 ```
 $ rsc cm16 index deployments
 ```
-
-### <a name="config"></a>Command Line Tool Setup and Config
-`rsc` has a top level `setup` command which creates a rsc config file. The config file contains the
-RightScale account ID, API host, user email and (encrypted) password so that these flags don't have
-to be provided each time the tool is invoked.
-
-By default the config file is created in `$HOME/.rsc`, the location can be overridden using the
-`--config` global flag. Multiple configs may be created to allow for different environments or
-users. Use the `--config` flag when invoking the tool to specify the location of the config file if it's
-not the default. The file itself is a simple JSON file that can be edited manually (apart from the
-password value that needs to be encrypted by `rsc`).
 
 ### Built-in Help
 The `--help` flag is available on all commands. It displays contextual help, for example:
