@@ -206,7 +206,7 @@ And here is another example running on a RightLink 10 enabled instance:
 rsc --rl10 cm15 index clouds
 ```
 
-<a name=extract></a>### Extracting values from responses
+### <a name=extract></a>Extracting values from responses
 
 The `--x1`, `--xm` and `--xj` flags make it possible to extract values from the response using a
 JSON select expression (see [http://jsonselect.org/](http://jsonselect.org/)). For example:
