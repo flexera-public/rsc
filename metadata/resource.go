@@ -18,7 +18,7 @@ type Resource struct {
 // and finding the longest one that matches.
 func (r *Resource) ExtractVariables(href string) ([]*PathVariable, error) {
 	matches := r.findMatches(href)
-	if len(matches) == 0 && !strings.HasPrefix("/", href) {
+	if len(matches) == 0 && !strings.HasPrefix(href, "/") {
 		href = "/" + href
 		matches = r.findMatches(href)
 	}
@@ -60,7 +60,7 @@ func (r *Resource) findMatches(href string) []*PathPattern {
 	var matches []*PathPattern
 	for _, action := range r.Actions {
 		for _, pattern := range action.PathPatterns {
-			if pattern.Regexp.MatchString(href) {
+			if pattern.Regexp.MatchString(href) || pattern.Regexp.MatchString(href+"/") {
 				matches = append(matches, pattern)
 			}
 		}

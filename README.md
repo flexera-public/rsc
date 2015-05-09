@@ -185,7 +185,7 @@ inferred from the token.
 Here is another example that first creates an access token explicitly then uses that token to list
 all clouds:
 ```
-export ACCESS=`rsc --x1 .access_token --refreshToken $REFRESH cm15 create oauth2`
+export ACCESS=`rsc --x1 .access_token --refreshToken $REFRESH cm15 create oauth2 grant_type=refresh_token refresh_token=$REFRESH`
 rsc --accessToken $ACCESS --host $HOST cm15 index clouds
 ```
 The example above uses the `--x1` flag to extract the access token from the response. Extracting

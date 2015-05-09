@@ -73,14 +73,16 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	// 3. Complement with defaults from config at given path
 	if !cmdLine.NoAuth {
 		if config, err := LoadConfig(cmdLine.ConfigPath); err == nil {
-			if cmdLine.Account == 0 {
-				cmdLine.Account = config.Account
-			}
-			if cmdLine.Username == "" {
-				cmdLine.Username = config.Email
-			}
-			if cmdLine.Password == "" {
-				cmdLine.Password = config.Password
+			if cmdLine.OAuthAccessToken == "" && cmdLine.OAuthToken == "" {
+				if cmdLine.Account == 0 {
+					cmdLine.Account = config.Account
+				}
+				if cmdLine.Username == "" {
+					cmdLine.Username = config.Email
+				}
+				if cmdLine.Password == "" {
+					cmdLine.Password = config.Password
+				}
 			}
 			if cmdLine.Host == "" {
 				cmdLine.Host = config.LoginHost
