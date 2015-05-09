@@ -113,17 +113,85 @@ The list of global flags is:
 
 ### Authentication
 
-`rsc` can read the API host, account and authentication information from a config file instead of the
-command line. See [Setup and Config](#config) below.
+There are 3 different mechanisms for authenticating with the RightScale platform.all described below.
 
-Authentication can be done in one of the following ways: 
-* Using a RightScale user email and password (`--email` and `--password`)
-* Using a OAuth token retrieved from the _API Credentials_ entry of the _Settings_ menu (`--key`)
-* Using an API instance token to make API calls from a RightScale instance (`--key`)
-* Using the RightLink10 proxy to make API calls from a RightScale instance running
-  RightLink10 (`--rl10`)
+#### Basic Authentication
 
-### Extracting values from responses
+Basic authentication uses an email and password to create a session against the Cloud Management
+APIs (a.k.a. API 1.5). Creating a session returns a cookie. The session cookie can be used to make
+authenticated requests againsts all accounts the authenticated user has access to. While the session
+is created by making an API request to the CM 1.5 APIs the resulting cookie can be used to make API
+calls against all the RightScale APIs enabled for the user.
+
+`rsc` supports basic authentication via the `--email` and `--password` flags. When using `rsc` as a
+go package authentication is done once and the same cookie is used for all API requests made with 
+the same client. The package also takes care of refreshing the cookie before the session expires.
+
+Below is an example listing all clouds available in a given account using the `rsc` command line
+tool with basic authentication:
+```
+rsc --account $ACCOUNT --email $EMAIL --password $PASSWORD cm15 index clouds
+```
+The example assumes that the ACCOUNT, EMAIL and PASSWORD environment variables contain the account
+id, user email and password respectively.
+
+#### OAuth authentication
+
+RightScale supports the [OAuth 2.0 Authorization Framework](http://tools.ietf.org/html/rfc6749)
+where a refresh token can be exchanged with a temporary access token to make authenticated requests.
+The refresh token is created using the RightScale Cloud Management dashboard from the *Settings >
+Account Settings > API Credentials* menu. Access tokens are then created using the
+[`OAuth2`](http://reference.rightscale.com/api1.5/resources/ResourceOauth2.html#create) resource
+exposed by the Cloud Management 1.5 APIs. Note that refresh and access tokens are
+*account specific*. This has two consequences: refresh tokens must be retrieved for each account and
+it is not necessary to specify the account when making an API request with an access token.
+
+`rsc` supports OAuth authentication via the `--refreshToken` and `--accessToken` flags. If the
+refresh token is used then `rsc` takes care of creating an access token and uses the access token
+to make the final API request. This results in two API requests which may not be optimal in certain
+scenarios (e.g. scripts calling `rsc` to make multiple API requests). For these scenarios `rsc` can
+also use a pre-existing access token directly. That access token can be created using the OAuth2
+resource.
+
+Below is an example listing all clouds available in the account using the refresh token retrieved
+from the RightScale Cloud Management dashboard:
+```
+rsc --refreshToken $REFRESH cm15 index clouds
+```
+Note that in this case the account doesn't need to be specified on the command line, it is
+inferred from the token.
+
+Here is another example that first creates an access token explicitly then uses that token to list
+all clouds:
+```
+export ACCESS=`rsc --x1 .access_token --refreshToken $REFRESH cm15 create oauth2`
+rsc --accessToken $ACCESS cm15 index clouds
+```
+The example above uses the `--x1` flag to extract the access token from the response. Extracting
+data from responses is described in the [Extracting values from responses](#extract) section below.
+
+#### Instance facing APIs
+
+The final mechanism for authenticating against the RightScale APIs consists of using an instance
+specific token to make API requests from a RightScale managed instance. This token is written to
+the instance user data on launch by the RightScale platform. There are actually two different ways
+scripts running on RightScale managed instances can authenticate:
+
+* The instance API token can be used to create a session which returns a cookie. This method is
+  similar to basic authentication except that a token is used instead of email and password.
+* [RightLink 10](http://docs.rightscale.com/rl/about.html) also runs a HTTP proxy that can be used
+  to make authenticated requests without requiring any credentials from the client.
+
+Here is an example using the instance API token to list all clouds:
+```
+rsc --apiToken $TOKEN cm15 index clouds
+```
+And here is another example running on a RightLink 10 enabled instance:
+```
+rsc --rl10 cm15 index clouds
+```
+
+<a name=extract></a>### Extracting values from responses
 
 The `--x1`, `--xm` and `--xj` flags make it possible to extract values from the response using a
 JSON select expression (see [http://jsonselect.org/](http://jsonselect.org/)). For example:

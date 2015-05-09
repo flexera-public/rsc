@@ -136,6 +136,9 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	} else if cmdLine.OAuthToken != "" {
 		auth := NewOAuthAuthenticator(cmdLine.OAuthToken)
 		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
+	} else if cmdLine.OAuthAccessToken != "" {
+		auth := NewTokenAuthenticator(cmdLine.OAuthAccessToken)
+		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.APIToken != "" {
 		auth := NewInstanceAuthenticator(cmdLine.APIToken)
 		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
@@ -151,7 +154,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		return nil, fmt.Errorf("Failed to create API session: %v", err)
 	}
 	if !cmdLine.ShowHelp && !cmdLine.NoAuth {
-		if cmdLine.OAuthToken == "" && cmdLine.APIToken == "" && cmdLine.Username == "" && !cmdLine.RL10 {
+		if cmdLine.OAuthToken == "" && cmdLine.OAuthAccessToken == "" && cmdLine.APIToken == "" && cmdLine.Username == "" && !cmdLine.RL10 {
 			return nil, fmt.Errorf("Missing authentication information, use '--email EMAIL --password PWD', '--token TOKEN' or 'setup'")
 		}
 		client.DumpRequestResponse = NoDump

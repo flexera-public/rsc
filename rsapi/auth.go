@@ -24,9 +24,18 @@ func NewBasicAuthenticator(username, password string) Authenticator {
 	return newSessionManager(newCookieSigner(&builder))
 }
 
-// NewOAuthAuthenticator returns a authenticator that uses oauth tokens as provided by the RS dashboard
+// NewOAuthAuthenticator returns a authenticator that uses a oauth refresh token to create access
+// tokens.
+// The refresh token can be found in the CM dashboard under Settings > Account Settings > API Credentials.
 func NewOAuthAuthenticator(token string) Authenticator {
 	return newSessionManager(newOAuthSigner(token))
+}
+
+// NewTokenAuthenticator returns a authenticator that use a oauth access token to do authentication
+// This is useful if the oauth handshake has already happened. Use the OAuthAuthenticator to use
+// a refresh token and have the authenticator do the handshake.
+func NewTokenAuthenticator(token string) Authenticator {
+	return &tokenAuthenticator{token: token}
 }
 
 // NewInstanceAuthenticator returns an authenticator that uses the instance facing API token to
@@ -226,6 +235,22 @@ func (r *oAuthSigner) BuildLoginRequest(host string, _ int) (*http.Request, erro
 	authReq.Header.Set("X-API-Version", "1.5")
 	authReq.Header.Set("Content-Type", "application/json")
 	return authReq, nil
+}
+
+// OAuth access token authenticator
+type tokenAuthenticator struct {
+	token string
+}
+
+// Sign sets the OAuth authorization header
+func (t *tokenAuthenticator) Sign(r *http.Request, host string, accountID int) error {
+	r.Header.Set("Authorization", "Bearer "+t.token)
+	return nil
+}
+
+// Can't resolve host using an access token, host must be correct
+func (t *tokenAuthenticator) ResolveHost(host string, accountID int) (string, error) {
+	return host, nil
 }
 
 // RightLink 10 authenticator

@@ -12,7 +12,8 @@ type CommandLine struct {
 	JsonSelect          string // jsonselect expression for json subcommand
 	Account             int    // RightScale account, optional
 	Host                string // API hostname, optional
-	OAuthToken          string // Auth token, alternative to Username+Password, APIToken or RL10
+	OAuthToken          string // Auth refresh token, alternative to Username+Password, OAuthAccessToken, APIToken or RL10
+	OAuthAccessToken    string // Auth access token, alternative to Username+Password, OAuthToken, APIToken or RL10
 	APIToken            string // Instance API token, alternative to Username+Password, OAuthToken or RL10
 	Username            string // Login username, alternative to OAuthToken, APIToken or RL10
 	Password            string // Login pasword, alternative to OAuthToken, APIToken or RL10

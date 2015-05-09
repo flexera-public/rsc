@@ -1,3 +1,8 @@
+v1.0.8 / ?
+----------
+* Add `--accessToken` flag
+* Rename `--key` flag into `--refreshToken` (`--key` still works)
+
 v1.0.7 / 2015-05-7
 ------------------
 * Fix bug when specifying multiple array elements on command line
