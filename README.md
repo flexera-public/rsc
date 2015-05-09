@@ -47,7 +47,7 @@ $ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |
   tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v1.0.8 - 2015-05-07 23:04:20 - ecc6db6011f33f943936df5a421ff29ee5b1338a
+rsc v1.0.8 - 2015-05-09 23:14:16 - 876d71d329a10abfa5e9f17db9bf7935202e14fa
 ```
 
 - MacOS: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
