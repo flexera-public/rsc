@@ -54,7 +54,7 @@ func (a *Api) Dispatch(verb, uri string, params, payload rsapi.ApiParams) (*http
 		return nil, err
 	}
 	resp, err := a.PerformRequest(req)
-	if a.FetchLocationResource {
+	if a.FetchLocationResource && resp != nil {
 		loc := resp.Header.Get("Location")
 		if loc != "" {
 			resp, err = a.Dispatch("GET", loc, rsapi.ApiParams{}, rsapi.ApiParams{})
