@@ -106,7 +106,7 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			*coerced = append(*coerced, ApiParams{name: val})
 		case "map":
 			velems := strings.SplitN(value, "=", 2)
-			*coerced = append(*coerced, ApiParams{velems[0]: velems[1]})
+			*coerced = append(*coerced, ApiParams{fmt.Sprintf("%s[%s]", name, velems[0]): velems[1]})
 		}
 	}
 	for _, p := range action.CommandFlags {
