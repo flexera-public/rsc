@@ -19,6 +19,11 @@
       "controller": "Resources-Rl10",
       "name": "Resources::Rl10",
       "media_type": "Praxis-SimpleMediaType"
+    },
+    "TSS": {
+      "controller": "Resources-TSS",
+      "name": "Resources::TSS",
+      "media_type": "Praxis-SimpleMediaType"
     }
   }
 }
