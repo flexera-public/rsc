@@ -179,7 +179,7 @@ depend:
 
 clean:
 	rm -rf build
-	git checkout -f version.go rsapi/user_agent.go
+	rm -f version.go rsapi/user_agent.go
 
 # gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
 # and then pointlessly complains about bad formatting in imported packages, sigh
