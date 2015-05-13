@@ -356,4 +356,57 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
+	"TSS": &metadata.Resource{
+		Name:        "TSS",
+		Description: `Manipulate the TSS proxy`,
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "get_hostname",
+				Description: `Set the TSS hostname to proxy`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HttpMethod: "GET",
+						Pattern:    "/rll/tss/hostname",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/hostname`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				ApiParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "put_hostname",
+				Description: `Set the TSS hostname to proxy`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HttpMethod: "PUT",
+						Pattern:    "/rll/tss/hostname",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/hostname`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "hostname",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "hostname",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
+		},
+	},
 }
