@@ -50,11 +50,11 @@ DATE=$(shell date '+%F %T')
 SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
 GIT_BRANCH:=$(shell git symbolic-ref --short -q HEAD || echo "master")
+SHELL:=/bin/bash
 # by manually adding the godep workspace to the path we don't need to run godep itself
 ifeq ($(OS),Windows_NT)
 	GOPATH:=$(shell cygpath --windows $(PWD))/Godeps/_workspace;$(GOPATH)
 else
-	SHELL:=/bin/bash
 	GOPATH:=$(PWD)/Godeps/_workspace:$(GOPATH)
 endif
 # because of the Godep path we build ginkgo into the godep workspace
