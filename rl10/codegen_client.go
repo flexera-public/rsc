@@ -444,4 +444,79 @@ func (loc *Rl10Locator) RunRightScript(options rsapi.ApiParams) (string, error) 
 	return res, err
 }
 
+/******  TSS ******/
+
+// Manipulate the TSS proxy
+type TSS struct {
+}
+
+//===== Locator
+
+// TSS resource locator, exposes resource actions.
+type TSSLocator struct {
+	UrlResolver
+	api *Api
+}
+
+// TSS resource locator factory
+func (api *Api) TSSLocator(href string) *TSSLocator {
+	return &TSSLocator{UrlResolver(href), api}
+}
+
+//===== Actions
+
+// GET /rll/tss/hostname
+//
+// Get the TSS hostname to proxy
+func (loc *TSSLocator) GetHostname() (string, error) {
+	var res string
+	var queryParams rsapi.ApiParams
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("TSS", "get_hostname")
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/tss/hostname
+//
+// Set the TSS hostname to proxy
+func (loc *TSSLocator) PutHostname(hostname string) (string, error) {
+	var res string
+	if hostname == "" {
+		return res, fmt.Errorf("hostname is required")
+	}
+	var queryParams rsapi.ApiParams
+	queryParams = rsapi.ApiParams{
+		"hostname": hostname,
+	}
+	var payloadParams rsapi.ApiParams
+	uri, err := loc.Url("TSS", "put_hostname")
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
 /****** Parameter Data Types ******/

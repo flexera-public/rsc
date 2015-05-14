@@ -17,6 +17,10 @@
     "Resources-Rl10": {
       "name": "Resources::Rl10",
       "friendly_name": "Rl10"
+    },
+    "Resources-TSS": {
+      "name": "Resources::TSS",
+      "friendly_name": "TSS"
     }
   },
   "schemas": {
