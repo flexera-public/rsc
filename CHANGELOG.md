@@ -1,3 +1,8 @@
+v1.0.9 / 2015-05-13
+-------------------
+* Fix passing of inputs on command line
+* Add support for RL10 tss get and set hostname APIs
+
 v1.0.8 / 2015-05-09
 -------------------
 * Add `--accessToken` flag
