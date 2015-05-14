@@ -9,14 +9,35 @@ import (
 
 // Resource action
 type Action struct {
-	Name              string
-	Description       string
-	PathPatterns      []*PathPattern // Action path patterns and
-	ApiParams         []*ActionParam // Actual API request parameters
-	CommandFlags      []*ActionParam // Parameters initialized via command lines, these correspond to the leaves of all ApiParams.
-	Payload           string         // Name of payload type, only set for basic types
-	QueryParamNames   []string       // Query string parameter names, e.g. "filter" in /clouds?filter[]=name==foo
-	PayloadParamNames []string       // Payload parameter names (top level keys of payload structure)
+	Name         string
+	Description  string
+	PathPatterns []*PathPattern // Action path patterns and
+	ApiParams    []*ActionParam // Actual API request parameters
+	CommandFlags []*ActionParam // Parameters initialized via command lines, these correspond to the leaves of all ApiParams.
+	Payload      string         // Name of payload type, only set for basic types
+}
+
+func (a *Action) PathParamNames() []string {
+	return a.paramsByLocation(PathParam)
+}
+
+func (a *Action) QueryParamNames() []string {
+	return a.paramsByLocation(QueryParam)
+}
+
+func (a *Action) PayloadParamNames() []string {
+	return a.paramsByLocation(PayloadParam)
+}
+
+func (a *Action) paramsByLocation(loc Location) []string {
+	var res []string
+	for _, p := range a.ApiParams {
+		if p.Location == loc {
+			res = append(res, p.Name)
+		}
+	}
+	sort.Strings(res)
+	return res
 }
 
 // Indicates a parameter location (i.e. URL path, query string or request body)

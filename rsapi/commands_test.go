@@ -3,6 +3,7 @@ package rsapi_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/rightscale/rsc/cm15"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss/ssm"
 )
@@ -324,6 +325,69 @@ var _ = Describe("ParseCommand", func() {
 				Uri:           "/projects/42/executions",
 				QueryParams:   query,
 				PayloadParams: rsapi.ApiParams{},
+			}
+			Ω(*parsed).Should(Equal(expected))
+		})
+	})
+})
+
+var _ = Describe("ParseCommand with cm15", func() {
+	var cmd, hrefPrefix string
+	var values rsapi.ActionCommands
+	var api *rsapi.Api
+
+	var parsed *rsapi.ParsedCommand
+	var parseErr error
+
+	BeforeEach(func() {
+		values = nil
+		cm, err := cm15.New(42, "", nil, nil, nil)
+		Ω(err).ShouldNot(HaveOccurred())
+		api = cm.Api
+	})
+
+	JustBeforeEach(func() {
+		parsed, parseErr = api.ParseCommand(cmd, hrefPrefix, values)
+	})
+
+	Describe("with a deep map of inputs", func() {
+		BeforeEach(func() {
+			cmd = "wrap_instance"
+			wrapCmd := rsapi.ActionCommand{
+				Href: "/api/servers",
+				Params: []string{
+					"server[name]=server name",
+					"server[deployment_href]=/api/deployments/1",
+					"server[instance][href]=/api/clouds/1/instances/42",
+					"server[instance][server_template_href]=/api/server_templates/123",
+					"server[instance][inputs][STRING_INPUT_1]=text:testing123",
+					"server[instance][inputs][STRING_INPUT_2]=text:testing124",
+				},
+			}
+			values = rsapi.ActionCommands{"wrap_instance": &wrapCmd}
+		})
+		It("parses", func() {
+			Ω(parseErr).ShouldNot(HaveOccurred())
+			Ω(parsed).ShouldNot(BeNil())
+			payload := rsapi.ApiParams{
+				"server": rsapi.ApiParams{
+					"name":            "server name",
+					"deployment_href": "/api/deployments/1",
+					"instance": rsapi.ApiParams{
+						"href":                 "/api/clouds/1/instances/42",
+						"server_template_href": "/api/server_templates/123",
+						"inputs": rsapi.ApiParams{
+							"STRING_INPUT_1": "text:testing123",
+							"STRING_INPUT_2": "text:testing124",
+						},
+					},
+				},
+			}
+			expected := rsapi.ParsedCommand{
+				HttpMethod:    "POST",
+				Uri:           "/api/servers/wrap_instance",
+				QueryParams:   rsapi.ApiParams{},
+				PayloadParams: payload,
 			}
 			Ω(*parsed).Should(Equal(expected))
 		})

@@ -33,8 +33,9 @@ func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams
 	if err != nil {
 		return nil, err
 	}
-	queryParams := make(rsapi.ApiParams, len(act.QueryParamNames))
-	for _, n := range act.QueryParamNames {
+	queryParamNames := act.QueryParamNames()
+	queryParams := make(rsapi.ApiParams, len(queryParamNames))
+	for _, n := range queryParamNames {
 		queryParams[n] = params[n]
 	}
 	return a.buildHttpRequest(actionUrl.Path, queryParams)
