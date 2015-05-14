@@ -17,18 +17,23 @@ type Action struct {
 	Payload      string         // Name of payload type, only set for basic types
 }
 
+// PathParamNames returns the names of the action path parameters sorted alphabetically.
 func (a *Action) PathParamNames() []string {
 	return a.paramsByLocation(PathParam)
 }
 
+// QueryParamNames returns the names of the action query parameters sorted alphabetically.
 func (a *Action) QueryParamNames() []string {
 	return a.paramsByLocation(QueryParam)
 }
 
+// PayloadParamNames returns the names of the action payload parameters sorted alphabetically.
 func (a *Action) PayloadParamNames() []string {
 	return a.paramsByLocation(PayloadParam)
 }
 
+// paramsByLocation is a helper method that returns the names of the parameters at the given
+// location (path, query string or payload).
 func (a *Action) paramsByLocation(loc Location) []string {
 	var res []string
 	for _, p := range a.ApiParams {

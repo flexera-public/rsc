@@ -13,6 +13,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/recording"
 )
 
@@ -100,6 +101,25 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, err
+}
+
+// IdentifyParams organizes the given params in two groups: the payload params and the query params.
+func IdentifyParams(a *metadata.Action, params ApiParams) (payloadParams ApiParams, queryParams ApiParams) {
+	payloadParamNames := a.PayloadParamNames()
+	payloadParams = make(ApiParams)
+	for _, n := range payloadParamNames {
+		if p, ok := params[n]; ok {
+			payloadParams[n] = p
+		}
+	}
+	queryParamNames := a.QueryParamNames()
+	queryParams = make(ApiParams)
+	for _, n := range queryParamNames {
+		if p, ok := params[n]; ok {
+			queryParams[n] = p
+		}
+	}
+	return payloadParams, queryParams
 }
 
 // Deserialize JSON response into generic object.
