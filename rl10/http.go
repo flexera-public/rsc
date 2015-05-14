@@ -96,7 +96,7 @@ func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload
 					values.Add(fmt.Sprintf("%s[%s]", n, pn), e)
 				}
 			default:
-				return nil, fmt.Errorf("Invalid param value <%+v>, value must be a string, an integer, a bool, an array of these types of a map of strings", p)
+				return nil, fmt.Errorf("Invalid param value <%+v> for %s, value must be a string, an integer, a bool, an array of these types of a map of strings", p, n)
 			}
 		}
 		u.RawQuery = values.Encode()
