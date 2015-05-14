@@ -3,7 +3,7 @@
   "media_type": "Praxis-SimpleMediaType",
   "actions": [
     {
-      "description": "Set the TSS hostname to proxy",
+      "description": "Get the TSS hostname to proxy",
       "name": "get_hostname",
       "metadata": {
       },

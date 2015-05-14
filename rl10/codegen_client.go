@@ -467,7 +467,7 @@ func (api *Api) TSSLocator(href string) *TSSLocator {
 
 // GET /rll/tss/hostname
 //
-// Set the TSS hostname to proxy
+// Get the TSS hostname to proxy
 func (loc *TSSLocator) GetHostname() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams

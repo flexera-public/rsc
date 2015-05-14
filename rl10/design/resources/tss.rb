@@ -1,16 +1,16 @@
 module Resources
   class TSS
     include Praxis::ResourceDefinition
-    
+
     description 'Manipulate the TSS proxy'
     media_type 'text/plain'
-    
+
     routing do
       prefix '/rll/tss'
     end
 
     action :get_hostname do
-      description 'Set the TSS hostname to proxy'
+      description 'Get the TSS hostname to proxy'
       routing { get '/hostname' }
       response :ok
     end

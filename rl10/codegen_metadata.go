@@ -362,7 +362,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "get_hostname",
-				Description: `Set the TSS hostname to proxy`,
+				Description: `Get the TSS hostname to proxy`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HttpMethod: "GET",
