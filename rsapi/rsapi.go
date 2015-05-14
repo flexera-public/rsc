@@ -1,4 +1,4 @@
-package rsapi
+package rsapi // import "gopkg.in/rightscale/rsc.v1/rsapi"
 
 import (
 	"bufio"
@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v1/cmd"
+	"gopkg.in/rightscale/rsc.v1/metadata"
 )
 
 // RightScale client
