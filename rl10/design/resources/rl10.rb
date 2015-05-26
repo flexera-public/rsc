@@ -24,6 +24,8 @@ module Resources
       params do
         attribute :recipe, String, required: true, description: 'Name of recipe'
         attribute :json, String, description: 'JSON hash of "name": "value" pairs'
+        attribute :arguments, Attributor::Hash.of(key: String, value: String), description: 'Script argument values'
+        attribute :formal_values, Attributor::Hash.of(key: String, value: String), description: 'Formal input parameter values'
       end
       response :ok
     end
@@ -35,6 +37,7 @@ module Resources
         attribute :right_script, String, description: 'Name of script'
         attribute :right_script_id, Integer, description: 'Id of script'
         attribute :arguments, Attributor::Hash.of(key: String, value: String), description: 'Script argument values'
+        attribute :formal_values, Attributor::Hash.of(key: String, value: String), description: 'Formal input parameter values'
       end
       response :ok
     end
