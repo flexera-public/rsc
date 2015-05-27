@@ -52,7 +52,7 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	}
 	// Sign last so auth headers don't get printed or logged
 	if a.Auth != nil {
-		if err := a.Auth.Sign(req, a.Host, a.AccountId); err != nil {
+		if err := a.Auth.Sign(req); err != nil {
 			return nil, err
 		}
 	}

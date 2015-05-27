@@ -24,7 +24,6 @@ type RequestDetails struct {
 	Url                   string
 	Params                rsapi.ApiParams
 	Payload               rsapi.ApiParams
-	AccountId             int
 	FetchLocationResource bool
 	ApiVersion            string
 }
@@ -83,9 +82,6 @@ func Dispatch(details *RequestDetails, client ApiClient) (*http.Response, error)
 	}
 	req.Header.Set("X-API-Version", details.ApiVersion)
 	req.Header.Set("Content-Type", "application/json")
-	if details.AccountId > 0 {
-		req.Header.Set("X-Account", strconv.Itoa(details.AccountId))
-	}
 	resp, err := client.PerformRequest(req)
 	if details.FetchLocationResource {
 		var loc = resp.Header.Get("Location")

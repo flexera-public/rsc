@@ -18,14 +18,10 @@ type Api struct {
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
 func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logger,
-	client rsapi.HttpClient) (*Api, error) {
-	api, err := rsapi.New(accountId, host, auth, logger, client)
-	if err != nil {
-		return nil, err
-	}
+	client rsapi.HttpClient) *Api {
+	api := rsapi.New(host, auth, logger, client)
 	api.Metadata = GenMetadata
-	api.Auth = rsapi.NewSSAuthenticator(api.Auth)
-	return &Api{api}, nil
+	return &Api{api}
 }
 
 // Dispatch request to appropriate low-level method
@@ -36,7 +32,6 @@ func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams
 		Url:                   "/catalog" + actionUrl,
 		Params:                params,
 		Payload:               payload,
-		AccountId:             a.AccountId,
 		FetchLocationResource: a.FetchLocationResource,
 	}
 	return dispatch.Dispatch(&details, a)

@@ -16,7 +16,6 @@ import (
 // RightScale client
 // Instances of this struct should be created through `New`, `NewRL10` or `FromCommandLine`.
 type Api struct {
-	AccountId             int           // Account in which client is currently operating
 	Auth                  Authenticator // Authenticator, signs requests for auth
 	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
 	Host                  string        // API host, e.g. "us-3.rightscale.com"
@@ -51,28 +50,16 @@ type HttpClient interface {
 // logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, host string, auth Authenticator, logger *log.Logger, client HttpClient) (*Api, error) {
+func New(host string, auth Authenticator, logger *log.Logger, client HttpClient) *Api {
 	if client == nil {
 		client = http.DefaultClient
 	}
-	if auth != nil &&
-		// Be nice to tests
-		!strings.HasPrefix(host, "localhost") &&
-		!strings.HasPrefix(host, "127.0.0.1") {
-
-		var err error
-		host, err = auth.ResolveHost(host, accountId)
-		if err != nil {
-			return nil, err
-		}
-	}
 	return &Api{
-		AccountId: accountId,
-		Auth:      auth,
-		Logger:    logger,
-		Host:      host,
-		Client:    client,
-	}, nil
+		Auth:   auth,
+		Logger: logger,
+		Host:   host,
+		Client: client,
+	}
 }
 
 // NewRL10 returns a API client that uses the information stored in /var/run/rightlink/secret to do
@@ -106,7 +93,10 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 	if err := scanner.Err(); err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
-	auth := NewRL10Authenticator(secret)
+	auth, err := NewRL10Authenticator(secret)
+	if err != nil {
+		return nil, err
+	}
 	host := "localhost:" + port
 	return &Api{
 		Auth:     auth,
@@ -131,23 +121,32 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		httpClient = http.DefaultClient
 	}
 	var err error
+	var auth Authenticator
 	if cmdLine.RL10 {
 		client, err = NewRL10(nil, httpClient)
 	} else if cmdLine.OAuthToken != "" {
-		auth := NewOAuthAuthenticator(cmdLine.OAuthToken)
-		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
+		auth, err = NewOAuthAuthenticator(cmdLine.OAuthToken, cmdLine.Host)
+		if err == nil {
+			client = New(cmdLine.Host, auth, nil, httpClient)
+		}
 	} else if cmdLine.OAuthAccessToken != "" {
-		auth := NewTokenAuthenticator(cmdLine.OAuthAccessToken)
-		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
+		auth, err = NewTokenAuthenticator(cmdLine.OAuthAccessToken)
+		if err == nil {
+			client = New(cmdLine.Host, auth, nil, httpClient)
+		}
 	} else if cmdLine.APIToken != "" {
-		auth := NewInstanceAuthenticator(cmdLine.APIToken)
-		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
+		auth, err = NewInstanceAuthenticator(cmdLine.APIToken, cmdLine.Host, cmdLine.Account)
+		if err == nil {
+			client = New(cmdLine.Host, auth, nil, httpClient)
+		}
 	} else if cmdLine.Username != "" && cmdLine.Password != "" {
-		auth := NewBasicAuthenticator(cmdLine.Username, cmdLine.Password)
-		client, err = New(cmdLine.Account, cmdLine.Host, auth, nil, httpClient)
+		auth, err = NewBasicAuthenticator(cmdLine.Username, cmdLine.Password, cmdLine.Host, cmdLine.Account)
+		if err == nil {
+			client = New(cmdLine.Host, auth, nil, httpClient)
+		}
 	} else {
 		// No auth, used by tests
-		client, err = New(cmdLine.Account, cmdLine.Host, nil, nil, httpClient)
+		client = New(cmdLine.Host, nil, nil, httpClient)
 		client.Unsecure = true
 	}
 	if err != nil {

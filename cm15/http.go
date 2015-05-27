@@ -111,8 +111,5 @@ func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload
 	}
 	req.Header.Set("X-API-Version", "1.5")
 	req.Header.Set("Content-Type", "application/json")
-	if a.AccountId > 0 {
-		req.Header.Set("X-Account", strconv.Itoa(a.AccountId))
-	}
 	return req, nil
 }
