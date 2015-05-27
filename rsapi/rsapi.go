@@ -94,10 +94,7 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
 	host := "localhost:" + port
-	auth, err := NewRL10Authenticator(secret, host)
-	if err != nil {
-		return nil, err
-	}
+	auth := NewRL10Authenticator(secret, host)
 	return &Api{
 		Auth:     auth,
 		Logger:   logger,
@@ -130,10 +127,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 			client = New(cmdLine.Host, auth, nil, httpClient)
 		}
 	} else if cmdLine.OAuthAccessToken != "" {
-		auth, err = NewTokenAuthenticator(cmdLine.OAuthAccessToken, cmdLine.Host)
-		if err == nil {
-			client = New(cmdLine.Host, auth, nil, httpClient)
-		}
+		auth = NewTokenAuthenticator(cmdLine.OAuthAccessToken, cmdLine.Host)
 	} else if cmdLine.APIToken != "" {
 		auth, err = NewInstanceAuthenticator(cmdLine.APIToken, cmdLine.Host, cmdLine.Account)
 		if err == nil {

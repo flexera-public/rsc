@@ -64,12 +64,8 @@ func NewOAuthAuthenticator(token, host string) (Authenticator, error) {
 // NewTokenAuthenticator returns a authenticator that use a oauth access token to do authentication.
 // This is useful if the oauth handshake has already happened.
 // Use the OAuthAuthenticator to use a refresh token and have the authenticator do the handshake.
-func NewTokenAuthenticator(token, host string) (Authenticator, error) {
-	t := &tokenAuthenticator{token: token}
-	if err := testCM15Auth(t, host); err != nil {
-		return nil, err
-	}
-	return t, nil
+func NewTokenAuthenticator(token, host string) Authenticator {
+	return &tokenAuthenticator{token: token}
 }
 
 // NewInstanceAuthenticator returns an authenticator that uses the instance facing API token to
@@ -125,12 +121,8 @@ func NewSSAuthenticator(auther Authenticator, accountID int) (Authenticator, err
 // NewRL10Authenticator returns an authenticator that proxies all requests through the RightLink 10
 // agent.
 // It returns an error if Validate() does.
-func NewRL10Authenticator(secret, host string) (Authenticator, error) {
-	t := &rl10Authenticator{secret: secret}
-	if err := testCM15Auth(t, host); err != nil {
-		return nil, err
-	}
-	return t, nil
+func NewRL10Authenticator(secret, host string) Authenticator {
+	return &rl10Authenticator{secret: secret}
 }
 
 // loginRequestBuilder is a generic login request factory.
@@ -386,10 +378,6 @@ func resolveHost(accountID int, b loginRequestBuilder) (string, *http.Response, 
 	}
 	redirectHost = authReq.Host
 	resp, err := client.Do(authReq)
-	byt, _ := httputil.DumpRequest(authReq, true)
-	fmt.Printf(string(byt))
-	byt, _ = httputil.DumpResponse(resp, true)
-	fmt.Printf(string(byt))
 	if err == nil && resp.StatusCode > 299 {
 		err = fmt.Errorf(resp.Status)
 	}
