@@ -114,29 +114,6 @@
                 }
               },
               "source": "query"
-            },
-            "formal_values": {
-              "description": "Formal input parameter values",
-              "options": {
-                "allow_extra": false
-              },
-              "type": {
-                "name": "Hash",
-                "id": null,
-                "key": {
-                  "type": {
-                    "name": "String",
-                    "id": "Attributor-String"
-                  }
-                },
-                "value": {
-                  "type": {
-                    "name": "String",
-                    "id": "Attributor-String"
-                  }
-                }
-              },
-              "source": "query"
             }
           }
         },
@@ -145,10 +122,6 @@
           "json": "occasion",
           "arguments": {
             "tiger": "misexpression"
-          },
-          "formal_values": {
-            "contain": "metritis",
-            "stratochamber": "average"
           }
         }
       },
@@ -225,29 +198,6 @@
                 }
               },
               "source": "query"
-            },
-            "formal_values": {
-              "description": "Formal input parameter values",
-              "options": {
-                "allow_extra": false
-              },
-              "type": {
-                "name": "Hash",
-                "id": null,
-                "key": {
-                  "type": {
-                    "name": "String",
-                    "id": "Attributor-String"
-                  }
-                },
-                "value": {
-                  "type": {
-                    "name": "String",
-                    "id": "Attributor-String"
-                  }
-                }
-              },
-              "source": "query"
             }
           }
         },
@@ -256,10 +206,6 @@
           "right_script_id": 142,
           "arguments": {
             "tiger": "misexpression"
-          },
-          "formal_values": {
-            "contain": "metritis",
-            "stratochamber": "average"
           }
         }
       },
