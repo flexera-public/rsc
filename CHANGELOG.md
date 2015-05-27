@@ -1,3 +1,8 @@
+vnext / ?
+---------
+* Remove the need to pass account ID to token based authenticators
+* Add consistent credentials testing across all authenticators upon creation
+
 v1.0.9 / 2015-05-13
 -------------------
 * Fix passing of inputs on command line

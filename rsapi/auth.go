@@ -55,7 +55,7 @@ func NewOAuthAuthenticator(token, host string) (Authenticator, error) {
 		refreshAt:    time.Now().Add(-2 * time.Minute),
 		client:       http.DefaultClient,
 	}
-	if err := testCM15Auth(&s); err != nil {
+	if err := testCM15Auth(&s, host); err != nil {
 		return nil, err
 	}
 	return &s, nil
@@ -64,9 +64,9 @@ func NewOAuthAuthenticator(token, host string) (Authenticator, error) {
 // NewTokenAuthenticator returns a authenticator that use a oauth access token to do authentication.
 // This is useful if the oauth handshake has already happened.
 // Use the OAuthAuthenticator to use a refresh token and have the authenticator do the handshake.
-func NewTokenAuthenticator(token string) (Authenticator, error) {
+func NewTokenAuthenticator(token, host string) (Authenticator, error) {
 	t := &tokenAuthenticator{token: token}
-	if err := testCM15Auth(t); err != nil {
+	if err := testCM15Auth(t, host); err != nil {
 		return nil, err
 	}
 	return t, nil
@@ -125,9 +125,9 @@ func NewSSAuthenticator(auther Authenticator, accountID int) (Authenticator, err
 // NewRL10Authenticator returns an authenticator that proxies all requests through the RightLink 10
 // agent.
 // It returns an error if Validate() does.
-func NewRL10Authenticator(secret string) (Authenticator, error) {
+func NewRL10Authenticator(secret, host string) (Authenticator, error) {
 	t := &rl10Authenticator{secret: secret}
-	if err := testCM15Auth(t); err != nil {
+	if err := testCM15Auth(t, host); err != nil {
 		return nil, err
 	}
 	return t, nil
@@ -414,8 +414,9 @@ func endpoint(host, suffix string) string {
 
 // testCM15Auth makes a GET /api/sessions CM 1.5 request using the given authenticator and returns
 // an error if it failed, nil otherwise.
-func testCM15Auth(auth Authenticator) error {
-	req, err := http.NewRequest("GET", "/api/sessions", nil)
+func testCM15Auth(auth Authenticator, host string) error {
+	req, err := http.NewRequest("GET", endpoint(host, "api/sessions"), nil)
+	req.Header.Set("X-Api-Version", "1.5")
 	if err != nil {
 		return err
 	}
