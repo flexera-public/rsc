@@ -1,7 +1,8 @@
-vnext / ?
----------
+v2.0.0 / 2015-05-28
+-------------------
 * Remove the need to pass account ID to token based authenticators
 * Add consistent credentials testing across all authenticators upon creation
+* Add ability to pass arguments when running recipes through RL10
 
 v1.0.9 / 2015-05-13
 -------------------

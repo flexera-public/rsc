@@ -28,15 +28,16 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	}
 	setupMetadata()
 	api.Metadata = GenMetadata
-	api.Auth, err = rsapi.NewSSAuthenticator(api.Auth, cmdLine.Account)
-	if err != nil {
+	api.Auth = rsapi.NewSSAuthenticator(api.Auth, cmdLine.Account)
+	api.Auth.SetHost(cmdLine.Host)
+	if err = api.Auth.CanAuthenticate(); err != nil {
 		return nil, err
 	}
 	return &Api{api}, nil
 }
 
-// Return Self-service endpoint from login endpoint
-// The following isn't great but seems better than having to enter by hand
+// Return Self-service endpoint from login endpoint.
+// The following isn't great but seems better than having to enter by hand.
 func HostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")
 	hostPrefix := urlElems[0]

@@ -254,6 +254,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Script argument values`,
+						Type:        "map",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "json",
 						Description: `JSON hash of "name": "value" pairs`,
 						Type:        "string",
@@ -271,6 +279,14 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Script argument values`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "json",
 						Description: `JSON hash of "name": "value" pairs`,

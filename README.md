@@ -1,36 +1,23 @@
 # rsc - A generic RightScale API client [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE)
 
+Master
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](http://gocover.io/github.com/rightscale/rsc)
+
+v1.0.9
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.9)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.9.svg)](http://gocover.io/github.com/rightscale/rsc)
+
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
 RightScale Self-Service 1.0 APIs (latest version for this product) and the RightLink10 APIs exposed
-by the RightLink10 agent.
-
-- Master: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](http://gocover.io/github.com/rightscale/rsc)
-- v1.0.9: [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.9)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.9.svg)](http://gocover.io/github.com/rightscale/rsc)
+by the RightLink10 agent. The RightScale APIs reference can be found on the
+[RightScale docs](http://docs.rightscale.com/api/) site.
 
 `rsc` can be used in one of two ways:
 
 * As a command line tool, see [below](#usage) for usage.
-* As a way to make API requests to RightScale programmatically from go code.
-
-Please use [github issues](https://github.com/rightscale/rsc/issues) to report problems.
-
-#### Jump to:
-* [Command line usage](#usage)
-* [Go package usage](#go)
-* [Development & Contributing](#contributing)
-* [Command Line Help and Cookbook](COOKBOOK.md)
-
-#### <a name="reference"></a>Links to RightScale API References
-
-* [RightScale CM API 1.5](http://reference.rightscale.com/api1.5/index.html)
-* [RightScale CM API 1.6](http://dev-api-docs.rightscale.com/#/1.6/controller/V1_6::Accounts)
-* [RightScale SS 1.0 Designer](https://s3.amazonaws.com/rs_api_docs/selfservice/designer/index.html#/1.0/controller/V1::Controller::Schedule)
-* [RightScale SS 1.0 Catalog](https://s3.amazonaws.com/rs_api_docs/selfservice/catalog/index.html#/1.0/controller/V1::Controller::AccountPreference)
-* [RightScale SS 1.0 Manager](https://s3.amazonaws.com/rs_api_docs/selfservice/manager/index.html#/1.0/controller/V1::Controller::ScheduledAction)
-* [RightLink10 HTTP Requests](https://support.rightscale.com/12-Guides/RightLink10/RightLink10_Local_and_Proxied_HTTP_Requests)
+* As a way to make API requests to RightScale programmatically from Go code.
 
 ## <a name="usage"></a>Command Line Tool
 
@@ -39,30 +26,34 @@ to the RightScale Cloud Management API 1.5, `rsc cm16` to send requests to the R
 Management API 1.6, `rsc ss` to send requests to the RightScale Self-Service API 1.0 and `rsc rl10`
 to send requests to RightLink10.
 
-### Download & Install
+### Installation
 
-Download a statically linked binary and run it as follows:
+The `rsc` command line tool is a statically linked binary making installation a breeze. There is
+no dependency on any runtime library. Just download the correct version for your OS and
+architecture and you're good to go.
+
+The latest stable versions can be download from:
+- MacOS X: `https://binaries.rightscale.com/rsbin/rsc/v2/rsc-darwin-amd64.tgz`
+- Windows: `https://binaries.rightscale.com/rsbin/rsc/v2/rsc-windows-amd64.zip`
+- Linux: `https://binaries.rightscale.com/rsbin/rsc/v2/rsc-linux-amd64.tgz`
+- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v2/rsc-linux-arm.tgz`
+
+As an example the following downloads and runs the MacOS X version:
 ```
-$ curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz |
-  tar -zxf - -O rsc/rsc > rsc
+$ curl https://binaries.rightscale.com/rsbin/rsc/v2/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v1.0.9 - 2015-05-14 01:31:47 - bc26f00c5f03b05266e8fb036008ade41c4de5e9
+rsc v2.0.0 - 2015-05-28 01:31:47 - bc26f00c5f03b05266e8fb036008ade41c4de5e9
 ```
-
-- MacOS: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz`
-- Windows: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-windows-amd64.zip`
-- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-arm.tgz`
-See further down in the README for building from source.
 
 #### Versioning
 
-- To download the latest stable use the links with 'v1' in them.
-- To download a specific version, replace the 'v1' by the exact version, such as 'v1.0.1'.
-- All versions with the same major number (e.g. 'v1') are intended to be "upward" compatible.
-- The 'v1' links download a specific version, so `rsc --version` will print something like 'v1.0.9'
-  and not 'v1'
-- The latest dev version is 'master'
+- To download the latest stable use the links with 'v2' in them.
+- To download a specific version, replace the 'v2' by the exact version, such as 'v2.0.0'.
+- All versions with the same major number (e.g. 'v2') are intended to be "upward" compatible.
+- The 'v2' links download a specific version, so `rsc --version` will print something like 'v2.0.0'
+  and not 'v2'.
+- The latest dev version is 'master'.
 
 ### Command Line
 
@@ -82,7 +73,6 @@ For example:
 ```
 $ rsc cm15 show /api/servers 'filter[]=name==LB'
 ```
-
 The sections below cover each option in order.
 
 ### Global Flags
@@ -128,7 +118,7 @@ The list of global flags is:
 
 ### Authentication
 
-There are 3 different mechanisms for authenticating with the RightScale platform.all described below.
+There are 3 different mechanisms for authenticating with the RightScale platform.
 
 #### Basic Authentication
 
@@ -139,7 +129,7 @@ is created by making an API request to the CM 1.5 APIs the resulting cookie can 
 calls against all the RightScale APIs enabled for the user.
 
 `rsc` supports basic authentication via the `--email` and `--password` flags. When using `rsc` as a
-go package authentication is done once and the same cookie is used for all API requests made with 
+Go package authentication is done once and the same cookie is used for all API requests made with 
 the same client. The package also takes care of refreshing the cookie before the session expires.
 
 Below is an example listing all clouds available in a given account using the `rsc` command line
@@ -224,8 +214,9 @@ users. Use the `--config` flag when invoking the tool to specify the location of
 not the default.
 
 The configuration file is a simple JSON file that lists the fields defined during setup. The
-password is encrypted before being stored although it is a two way encryption scheme so not meant
-to be a truly secure mechanism but rather a way to avoid having the password written in plain text.
+password is encrypted before being stored although it is a two way encryption scheme and so is not
+meant to be a truly secure mechanism but rather a way to avoid having the password stored in plain
+text on disk.
 ```
 rsc setup
 Account id: 12345
@@ -299,6 +290,7 @@ $ rsc cm16 index deployments
 ```
 
 ### Built-in Help
+
 The `--help` flag is available on all commands. It displays contextual help, for example:
 ```
 $ rsc index --help
@@ -322,7 +314,8 @@ filter[]=[]string
 view=string
     <optional, [default|extended]>
 ```
-The help lists the valid values for views and filters for example. It also indicates which flags are mandatory.
+The help lists the valid values for views and filters for example.
+It also indicates which flags are mandatory.
 
 -----
 ## <a name="go"></a>Go Package
@@ -332,16 +325,16 @@ RightScale platform. Each API client code is encapsulated in a different
 sub-package: package `cm15` for CM API 1.5, package `cm16`for CM API
 1.6, package `ss` for Self-service APIs and package `rl10` for RightLink10 requests.
 
-### Download
+### Installation
 
 `rsc` uses gopkg.in for versioning, this means that you can download the released `rsc` packages
 as follows:
 ```
-go get gopkg.in/rightscale/rsc.v1
+go get gopkg.in/rightscale/rsc.v2
 ```
 and import then in your code with:
 ```go
-import "gopkg.in/rightscale/rsc.v1"
+import "gopkg.in/rightscale/rsc.v2"
 ```
 If you intend on contributing, just want to play around with the code or feel adventurous you can
 download and use the beelding edge version from github which corresponds to the master branch:
@@ -360,7 +353,9 @@ Please see the [building](#building) section for more details.
 * [Cloud Management 1.5 Auditail Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
 * [Self-Service Basic Example](https://github.com/rightscale/rsc/tree/master/ss/examples/basic)
 
-### References
+### Documentation
+
+The documentation for each package is hosted on godoc.org:
 
 * [Cloud Management 1.5](http://godoc.org/github.com/rightscale/rsc/cm15)
 * [Cloud Management 1.6](http://godoc.org/github.com/rightscale/rsc/cm16)
@@ -383,14 +378,12 @@ a RightScale account ID, authentication information and an optional
 logger and low-level HTTP client. As an example the following creates a
 CM API 1.5 client that connects to `us-3.rightscale.com` using a OAuth
 refresh token for authentication, no logger and the default HTTP client:
-
 ```go
 refreshToken := ... // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
 auth := rsapi.NewOAuthAuthenticator(refreshToken)
 accountId := 123
-client, err := cm15.New(accountId, "us-3.rightscale.com", &auth, nil, nil)
+client, err := cm15.New("us-3.rightscale.com", accountId, &auth, nil, nil)
 ```
-
 ### Locators
 
 Once a client has been created resources can be retrieved using resource locators. The code defines one
@@ -496,84 +489,19 @@ The following make targets are useful:
 
 #### Your own build of the latest release version
 
-The simple option is `go get gopkg.in/rightscale/rsc.v1`, this will use the checked-in
+The simple option is `go get gopkg.in/rightscale/rsc.v2`, this will use the checked-in
 code-generated files.
 
 The more involved option is:
 ```
 mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
-git clone https://github.com/rightscale/rsc.git rsc.v1
-cd rsc
-git checkout v1.0.9
+git clone https://github.com/rightscale/rsc.git rsc.v2
+cd rsc.v2
+git checkout v2.0.0
 make depend
 make
 ```
-
-#### Your own build of an older release version
-
-You can get v1.0.0, for example, by following the same "more involved" commands as above but
-do `git checkout v1.0.0`. (The directory must be called rsc.v1 and not rsc.v1.0.0.)
-
-#### Build and hack a dev branch
-
-The simplest way is:
-```
-go get github.com/rightscale/rsc
-```
-This also works:
-```
-mkdir -p $GOPATH/src/github.com/rightscale
-cd $GOPATH/src/github.com/rightscale
-git clone https://github.com/rightscale/rsc.git
-cd rsc
-make depend
-make
-```
-
-#### Convert a release branch to a dev branch
-
-Suppose you want to branch 'v1.2.3' into 'my-branch':
-```
-git checkout -b my-branch
-make depend
-make unvers # removes pesky import constraints
-make
-```
-
-### Make a release branch
-
-In order to cut a release branch from master, the steps are:
-```
-git checkout -b v1.2.3
-make govers
-git commit -a -m 'add import constraints for release'
-git push --set-upstream origin v1.2.3
-```
-Don't forget to update CHANGELOG.md!
-
-### Test a release
-
-Once the release branch has been pushed and the CI job completes:
-* Download the binary, run `rsc --version` and make sure the correct version is displayed, on a Mac:
-```
-curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
-chmod +x ./rsc
-./rsc --version
-```
-* Create a temporary go workspace and make sure go get retrieves the correct version:
-```
-mkdir tmp
-export SAVED_GOPATH=$GOTPATH
-export GOPATH=`pwd`/tmp
-go get gopkg.in/rightscale/rsc.v1
-cd tmp/src/gopkg.in/rightscale/rsc.v1
-git log -2
-export GOPATH=$SAVED_GOPATH
-cd ../../../../..
-rm -rf tmp
-```
-
 ### Code generation
 
 Part of the `rsc` source code (the vast majority in terms of lines of code) is automatically 
@@ -595,7 +523,9 @@ The Makefile takes care of running `go generate` prior to building `rsc`.
 
 #### Adding Support to a New RightScale API - or any Praxis application
 
-To add support for a new API:
+As noted above `praxisgen` can be used to generate client code for any Praxis API. The steps
+involved are:
+
   1. Create a subdirectory whose name matches the name of the go package (`cm15`, `ss`, etc.).
   2. Put the JSON metadata describing the API in that directory (`api_docs` directory).
   3. Add a `go generate` directive that invokes the generator against the JSON to `generate.go`.

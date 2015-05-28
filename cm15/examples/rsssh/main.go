@@ -85,11 +85,11 @@ func main() {
 			fail("No account specified for environment: %v\n", envName)
 		}
 		// Create a new client for every environment because they can be in different accounts.
-		auth, err := rsapi.NewBasicAuthenticator(*email, *pwd, *host, envDetail.Account)
+		auth := rsapi.NewBasicAuthenticator(*email, *pwd, envDetail.Account)
+		client, err := cm15.New(*host, auth, logger, nil)
 		if err != nil {
 			fail("login failed: %s", err)
 		}
-		client := cm15.New(*host, auth, logger, nil)
 		client.Unsecure = *unsecure
 		fetchDetails(client, envName, envDetail, &sshConfig)
 	}

@@ -94,7 +94,7 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
 	host := "localhost:" + port
-	auth := NewRL10Authenticator(secret, host)
+	auth := NewRL10Authenticator(host, secret)
 	return &Api{
 		Auth:     auth,
 		Logger:   logger,
@@ -117,34 +117,27 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	} else {
 		httpClient = http.DefaultClient
 	}
-	var err error
-	var auth Authenticator
 	if cmdLine.RL10 {
-		client, err = NewRL10(nil, httpClient)
+		var err error
+		if client, err = NewRL10(nil, httpClient); err != nil {
+			return nil, err
+		}
 	} else if cmdLine.OAuthToken != "" {
-		auth, err = NewOAuthAuthenticator(cmdLine.OAuthToken, cmdLine.Host)
-		if err == nil {
-			client = New(cmdLine.Host, auth, nil, httpClient)
-		}
+		auth := NewOAuthAuthenticator(cmdLine.OAuthToken)
+		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.OAuthAccessToken != "" {
-		auth = NewTokenAuthenticator(cmdLine.OAuthAccessToken, cmdLine.Host)
+		auth := NewTokenAuthenticator(cmdLine.OAuthAccessToken)
+		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.APIToken != "" {
-		auth, err = NewInstanceAuthenticator(cmdLine.APIToken, cmdLine.Host, cmdLine.Account)
-		if err == nil {
-			client = New(cmdLine.Host, auth, nil, httpClient)
-		}
+		auth := NewInstanceAuthenticator(cmdLine.APIToken, cmdLine.Account)
+		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.Username != "" && cmdLine.Password != "" {
-		auth, err = NewBasicAuthenticator(cmdLine.Username, cmdLine.Password, cmdLine.Host, cmdLine.Account)
-		if err == nil {
-			client = New(cmdLine.Host, auth, nil, httpClient)
-		}
+		auth := NewBasicAuthenticator(cmdLine.Username, cmdLine.Password, cmdLine.Account)
+		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else {
 		// No auth, used by tests
 		client = New(cmdLine.Host, nil, nil, httpClient)
 		client.Unsecure = true
-	}
-	if err != nil {
-		return nil, fmt.Errorf("Failed to create API session: %v", err)
 	}
 	if !cmdLine.ShowHelp && !cmdLine.NoAuth {
 		if cmdLine.OAuthToken == "" && cmdLine.OAuthAccessToken == "" && cmdLine.APIToken == "" && cmdLine.Username == "" && !cmdLine.RL10 {

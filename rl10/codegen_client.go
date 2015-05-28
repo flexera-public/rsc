@@ -385,6 +385,10 @@ func (loc *Rl10Locator) RunRecipe(recipe string, options rsapi.ApiParams) (strin
 	queryParams = rsapi.ApiParams{
 		"recipe": recipe,
 	}
+	var argumentsOpt = options["arguments"]
+	if argumentsOpt != nil {
+		queryParams["arguments"] = argumentsOpt
+	}
 	var jsonOpt = options["json"]
 	if jsonOpt != nil {
 		queryParams["json"] = jsonOpt

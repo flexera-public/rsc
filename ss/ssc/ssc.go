@@ -13,15 +13,21 @@ type Api struct {
 	*rsapi.Api
 }
 
-// New returns a client that uses User oauth authentication.
-// logger and client are optional.
-// host may be blank in which case client attempts to resolve it using auth.
+// New returns a Self-Service catalog API client.
+// It makes a test API request and returns an error if authentication fails.
+// logger is optional.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logger,
-	client rsapi.HttpClient) *Api {
-	api := rsapi.New(host, auth, logger, client)
+func New(h string, a rsapi.Authenticator, l *log.Logger, c rsapi.HttpClient) (*Api, error) {
+	if a != nil {
+		a.SetHost(h)
+		if err := a.CanAuthenticate(); err != nil {
+			return nil, err
+		}
+	}
+	api := rsapi.New(h, a, l, c)
 	api.Metadata = GenMetadata
-	return &Api{api}
+	ssApi := Api{Api: api}
+	return &ssApi, nil
 }
 
 // Dispatch request to appropriate low-level method

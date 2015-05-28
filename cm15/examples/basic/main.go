@@ -41,11 +41,11 @@ func main() {
 
 	// 2. Setup client using basic auth
 	logger := log.New(os.Stdout, "", 0)
-	auth, err := rsapi.NewBasicAuthenticator(*email, *pwd, *host, *account)
+	auth := rsapi.NewBasicAuthenticator(*email, *pwd, *account)
+	client, err := cm15.New(*host, auth, logger, nil)
 	if err != nil {
 		fail("failed to create client: %s", err)
 	}
-	client := cm15.New(*host, auth, logger, nil)
 	client.Unsecure = *unsecure
 
 	// 3. Make cloud index call using extended view

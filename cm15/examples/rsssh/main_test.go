@@ -57,6 +57,10 @@ var _ = Describe("RSSSH Example", func() {
 				ghttp.RespondWith(204, ""),
 			),
 			ghttp.CombineHandlers(
+				ghttp.VerifyRequest("GET", "/api/sessions"),
+				ghttp.RespondWith(200, ""),
+			),
+			ghttp.CombineHandlers(
 				ghttp.VerifyRequest("GET", "/api/server_arrays"),
 				ghttp.RespondWith(200, serverArraysResponseBody),
 			),

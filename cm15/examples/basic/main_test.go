@@ -42,7 +42,16 @@ var _ = Describe("Basic Example", func() {
 		server.AppendHandlers(
 			ghttp.CombineHandlers(
 				ghttp.VerifyRequest("POST", "/api/sessions"),
+				ghttp.VerifyJSONRepresenting(map[string]interface{}{
+					"email":        "dummy",
+					"password":     "dummy",
+					"account_href": "/api/accounts/42",
+				}),
 				ghttp.RespondWith(204, ""),
+			),
+			ghttp.CombineHandlers(
+				ghttp.VerifyRequest("GET", "/api/sessions"),
+				ghttp.RespondWith(200, ""),
 			),
 			ghttp.CombineHandlers(
 				ghttp.VerifyRequest("GET", "/api/clouds"),

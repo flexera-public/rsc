@@ -18,32 +18,32 @@ type Api struct {
 // accountId, host and auth arguments are not used.
 // If no HTTP client is specified then the default client is used.
 func New(host string, auth rsapi.Authenticator, logger *log.Logger,
-	client rsapi.HttpClient) *Api {
-	return fromApi(rsapi.New(host, auth, logger, client))
+	client rsapi.HttpClient) (*Api, error) {
+	return fromApi(rsapi.New(host, auth, logger, client), nil)
 }
 
-// NewRL10 returns a API 1.6 client that uses the information stored in /var/run/rightlink/secret to do
-// auth and configure the host. The client behaves identically to the new returned by New in
-// all other regards.
+// NewRL10 returns a RL10 client that uses the information stored in /var/run/rightlink/secret to do
+// auth and configure the host. The client behaves identically to the one returned by New in
+// all other aspects.
 func NewRL10(logger *log.Logger, client rsapi.HttpClient) (*Api, error) {
-	api, err := rsapi.NewRL10(logger, client)
-	if err != nil {
-		return nil, err
-	}
-	return fromApi(api), nil
+	return fromApi(rsapi.NewRL10(logger, client))
 }
 
 // Build client from command line
 func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
-	api, err := rsapi.FromCommandLine(cmdLine)
+	return fromApi(rsapi.FromCommandLine(cmdLine))
+}
+
+// Wrap generic client into RL10 client
+func fromApi(api *rsapi.Api, err error) (*Api, error) {
 	if err != nil {
 		return nil, err
 	}
-	return fromApi(api), nil
-}
-
-// Wrap generic client into API 1.6 client
-func fromApi(api *rsapi.Api) *Api {
 	api.Metadata = GenMetadata
-	return &Api{api}
+	rl10Api := Api{api}
+	rl10Api.Auth.SetHost(rl10Api.Host)
+	if err := rl10Api.Auth.CanAuthenticate(); err != nil {
+		return nil, err
+	}
+	return &rl10Api, nil
 }
