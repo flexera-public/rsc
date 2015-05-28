@@ -76,7 +76,7 @@ func NewSSAuthenticator(auther Authenticator, accountID int) Authenticator {
 
 // NewRL10Authenticator returns an authenticator that proxies all requests through the RightLink 10
 // agent.
-func NewRL10Authenticator(host, secret string) Authenticator {
+func NewRL10Authenticator(secret string) Authenticator {
 	return &rl10Authenticator{secret: secret}
 }
 

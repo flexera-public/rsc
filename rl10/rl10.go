@@ -19,7 +19,12 @@ type Api struct {
 // If no HTTP client is specified then the default client is used.
 func New(host string, auth rsapi.Authenticator, logger *log.Logger,
 	client rsapi.HttpClient) (*Api, error) {
-	return fromApi(rsapi.New(host, auth, logger, client), nil)
+	var err error
+	if auth != nil {
+		auth.SetHost(host)
+		err = auth.CanAuthenticate()
+	}
+	return fromApi(rsapi.New(host, auth, logger, client), err)
 }
 
 // NewRL10 returns a RL10 client that uses the information stored in /var/run/rightlink/secret to do
@@ -40,10 +45,5 @@ func fromApi(api *rsapi.Api, err error) (*Api, error) {
 		return nil, err
 	}
 	api.Metadata = GenMetadata
-	rl10Api := Api{api}
-	rl10Api.Auth.SetHost(rl10Api.Host)
-	if err := rl10Api.Auth.CanAuthenticate(); err != nil {
-		return nil, err
-	}
-	return &rl10Api, nil
+	return &Api{api}, nil
 }

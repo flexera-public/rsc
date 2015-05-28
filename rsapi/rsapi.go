@@ -51,6 +51,9 @@ type HttpClient interface {
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
 func New(host string, auth Authenticator, logger *log.Logger, client HttpClient) *Api {
+	if auth != nil {
+		auth.SetHost(host)
+	}
 	if client == nil {
 		client = http.DefaultClient
 	}
@@ -94,7 +97,8 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
 	}
 	host := "localhost:" + port
-	auth := NewRL10Authenticator(host, secret)
+	auth := NewRL10Authenticator(secret)
+	auth.SetHost(host)
 	return &Api{
 		Auth:     auth,
 		Logger:   logger,
