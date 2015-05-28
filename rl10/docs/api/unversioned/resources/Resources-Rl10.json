@@ -91,12 +91,38 @@
                 "id": "Attributor-String"
               },
               "source": "query"
+            },
+            "arguments": {
+              "description": "Script argument values",
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
             }
           }
         },
         "example": {
           "recipe": "kerat",
-          "json": "occasion"
+          "json": "occasion",
+          "arguments": {
+            "tiger": "misexpression"
+          }
         }
       },
       "responses": {

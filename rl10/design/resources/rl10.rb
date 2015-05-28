@@ -24,6 +24,7 @@ module Resources
       params do
         attribute :recipe, String, required: true, description: 'Name of recipe'
         attribute :json, String, description: 'JSON hash of "name": "value" pairs'
+        attribute :arguments, Attributor::Hash.of(key: String, value: String), description: 'Script argument values'
       end
       response :ok
     end
