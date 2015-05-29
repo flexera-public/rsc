@@ -21,7 +21,7 @@ branch means that `gopkg.in` will get the newly released code for the major vers
 Once the release branch has been pushed and the CI job completes:
 * Download the binary, run `rsc --version` and make sure the correct version is displayed, on Linux:
 ```
-curl https://binaries.rightscale.com/rsbin/rsc/v1/rsc-linux-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
+curl https://binaries.rightscale.com/rsbin/rsc/v2/rsc-linux-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 chmod +x ./rsc
 ./rsc --version
 ```

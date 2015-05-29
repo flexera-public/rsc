@@ -4,9 +4,9 @@ Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](http://gocover.io/github.com/rightscale/rsc)
 
-v1.0.9
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v1.0.9)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v1.0.9.svg)](http://gocover.io/github.com/rightscale/rsc)
+v2.0.0
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v2.0.0)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v2.0.0.svg)](http://gocover.io/github.com/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
