@@ -16,8 +16,8 @@ by the RightLink10 agent. The RightScale APIs reference can be found on the
 
 `rsc` can be used in one of two ways:
 
-* As a command line tool, see [below](#usage) for usage.
-* As a way to make API requests to RightScale programmatically from Go code.
+* as a command line tool
+* as a way to make API requests to RightScale programmatically from Go code
 
 ## <a name="usage"></a>Command Line Tool
 
@@ -345,24 +345,6 @@ $ go get github.com/rightscale/rsc
 import "github.com/rightscale/rsc
 ```
 
-Please see the [building](#building) section for more details.
-
-### Examples
-
-* [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/basic)
-* [Cloud Management 1.5 Auditail Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
-* [Self-Service Basic Example](https://github.com/rightscale/rsc/tree/master/ss/examples/basic)
-
-### Documentation
-
-The documentation for each package is hosted on godoc.org:
-
-* [Cloud Management 1.5](http://godoc.org/github.com/rightscale/rsc/cm15)
-* [Cloud Management 1.6](http://godoc.org/github.com/rightscale/rsc/cm16)
-* [Self-Service Designer](http://godoc.org/github.com/rightscale/rsc/ss/ssd)
-* [Self-Service Catalog](http://godoc.org/github.com/rightscale/rsc/ss/ssc)
-* [Self-Service Manager](http://godoc.org/github.com/rightscale/rsc/ss/ssm)
-* [RightLink10](http://godoc.org/github.com/rightscale/rsc/rl10)
 
 ### Client Creation
 
@@ -475,6 +457,26 @@ by adding the required auth headers (cookie in the case of email/password
 authentication, OAuth header in the case of OAuth and custom header in
 the case of RightLink10). Finally it contains common code used by all
 the clients to parse the command line.
+
+### Examples
+
+The repository includes the following Go examples:
+
+* [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/basic)
+* [Cloud Management 1.5 Auditail Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
+* [Cloud Management 1.5 RS SSH Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/rsssh)
+* [Self-Service Basic Example](https://github.com/rightscale/rsc/tree/master/ss/examples/basic)
+
+### Reference Documentation
+
+The documentation for each package is hosted on godoc.org:
+
+* [Cloud Management 1.5](http://godoc.org/github.com/rightscale/rsc/cm15)
+* [Cloud Management 1.6](http://godoc.org/github.com/rightscale/rsc/cm16)
+* [Self-Service Designer](http://godoc.org/github.com/rightscale/rsc/ss/ssd)
+* [Self-Service Catalog](http://godoc.org/github.com/rightscale/rsc/ss/ssc)
+* [Self-Service Manager](http://godoc.org/github.com/rightscale/rsc/ss/ssm)
+* [RightLink10](http://godoc.org/github.com/rightscale/rsc/rl10)
 
 -----
 ## <a name="contributing"></a>Development & Contributing
