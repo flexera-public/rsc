@@ -30,10 +30,26 @@ type Api struct {
 type Format int
 
 const (
-	NoDump Format = iota
-	Debug
-	Json
+	NoDump  Format = 1 << iota // No dump
+	Debug                      // Dump in human readable format, exclusive with JSON
+	JSON                       // Dump in JSON format, exclusive with Debug
+	Verbose                    // Dump auth requests and headers as well
 )
+
+// IsDebug is a convenience wrapper that returns true if the Debug bit is set on the flag.
+func (f Format) IsDebug() bool {
+	return f&Debug != 0
+}
+
+// IsJSON is a convenience wrapper that returns true if the JSON bit is set on the flag.
+func (f Format) IsJSON() bool {
+	return f&JSON != 0
+}
+
+// IsVerbose is a convenience wrapper that returns true if the Verbose bit is set on the flag.
+func (f Format) IsVerbose() bool {
+	return f&Verbose != 0
+}
 
 // Api metadata consists of resource metadata indexed by resource name
 type ApiMetadata map[string]*metadata.Resource
@@ -147,13 +163,24 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		if cmdLine.OAuthToken == "" && cmdLine.OAuthAccessToken == "" && cmdLine.APIToken == "" && cmdLine.Username == "" && !cmdLine.RL10 {
 			return nil, fmt.Errorf("Missing authentication information, use '--email EMAIL --password PWD', '--token TOKEN' or 'setup'")
 		}
-		client.DumpRequestResponse = NoDump
-		if cmdLine.Dump == "json" {
-			client.DumpRequestResponse = Json
-		} else if cmdLine.Dump == "debug" {
-			client.DumpRequestResponse = Debug
+		format := NoDump
+		if cmdLine.Verbose || cmdLine.Dump == "debug" {
+			format = Debug
 		}
+		if cmdLine.Dump == "json" {
+			format = JSON
+		}
+		if cmdLine.Verbose {
+			format |= Verbose
+		}
+		client.EnableDump(format)
 		client.FetchLocationResource = cmdLine.FetchResource
 	}
 	return client, nil
+}
+
+// EnableDump sets the dump format for all API requests made by the client.
+func (a *Api) EnableDump(format Format) {
+	a.DumpRequestResponse = format
+	a.Auth.EnableDump(format)
 }

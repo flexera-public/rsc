@@ -364,7 +364,7 @@ refresh token for authentication, no logger and the default HTTP client:
 refreshToken := ... // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
 auth := rsapi.NewOAuthAuthenticator(refreshToken)
 accountId := 123
-client, err := cm15.New("us-3.rightscale.com", accountId, &auth, nil, nil)
+client, err := cm15.New("us-3.rightscale.com", &auth, nil, nil)
 ```
 ### Locators
 

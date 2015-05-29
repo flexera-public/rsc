@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
 	"strconv"
 	"strings"
 	"time"
@@ -23,6 +22,9 @@ type Authenticator interface {
 	// or an error with additional information otherwise.
 	// It makes a test request to CM 1.5 to validate the provided credentials.
 	CanAuthenticate() error
+	// EnableDump sets the format used by the authenticator to dump requests.
+	// The format flag must have the Verbose bit enabled to have any effect.
+	EnableDump(format Format)
 }
 
 // NewBasicAuthenticator returns a authenticator that uses email and password to create sessions.
@@ -49,7 +51,7 @@ func NewOAuthAuthenticator(token string) Authenticator {
 	return &oAuthSigner{
 		refreshToken: token,
 		refreshAt:    time.Now().Add(-2 * time.Minute),
-		client:       http.DefaultClient,
+		client:       NewHttpClient(NoDump),
 	}
 }
 
@@ -57,7 +59,7 @@ func NewOAuthAuthenticator(token string) Authenticator {
 // This is useful if the oauth handshake has already happened.
 // Use the OAuthAuthenticator to use a refresh token and have the authenticator do the handshake.
 func NewTokenAuthenticator(token string) Authenticator {
-	return &tokenAuthenticator{token: token}
+	return &tokenAuthenticator{token: token, dump: NoDump}
 }
 
 // NewSSAuthenticator returns an authenticator that wraps another one and adds the logic needed to
@@ -71,7 +73,7 @@ func NewSSAuthenticator(auther Authenticator, accountID int) Authenticator {
 		auther:    auther,
 		accountID: accountID,
 		refreshAt: time.Now().Add(-2 * time.Minute),
-		client:    http.DefaultClient,
+		client:    NewHttpClient(NoDump),
 	}
 }
 
@@ -79,6 +81,37 @@ func NewSSAuthenticator(auther Authenticator, accountID int) Authenticator {
 // agent.
 func NewRL10Authenticator(secret string) Authenticator {
 	return &rl10Authenticator{secret: secret}
+}
+
+// NewHttpClient returns a http client that handles redirect in a way that's compatible with the
+// RightScale APIs, namely: it copies over the headers that need to be copied over (e.g.
+// X-Api-Version).
+func NewHttpClient(dumpFormat Format) HttpClient {
+	res := dumpClient{format: dumpFormat}
+	c := &http.Client{
+		CheckRedirect: func(nextRequest *http.Request, via []*http.Request) error {
+			viaCount := len(via)
+			if viaCount > 10 {
+				return fmt.Errorf("Too many redirects.")
+			}
+			lastRequest := via[viaCount-1]
+			if nextRequest.Header == nil {
+				nextRequest.Header = make(http.Header)
+			}
+			for k, v := range lastRequest.Header {
+				k = http.CanonicalHeaderKey(k)
+				if !omitHeaders[k] {
+					nextRequest.Header[k] = v
+				}
+			}
+			dumpRequest(res.format, nextRequest)
+
+			return nil
+		},
+	}
+	res.Client = c
+	res.Client = http.DefaultClient
+	return &res
 }
 
 // loginRequestBuilder is a generic login request factory.
@@ -95,6 +128,7 @@ type cookieSigner struct {
 	host      string
 	refreshAt time.Time
 	client    HttpClient
+	dump      Format
 }
 
 // newCookieSigner returns a cookie signer that uses the given builder to build login requests.
@@ -103,7 +137,7 @@ func newCookieSigner(builder loginRequestBuilder, accountID int) Authenticator {
 		builder:   builder,
 		accountID: accountID,
 		refreshAt: time.Now().Add(-2 * time.Minute),
-		client:    http.DefaultClient,
+		client:    NewHttpClient(NoDump),
 	}
 }
 
@@ -141,7 +175,7 @@ func (s *cookieSigner) CanAuthenticate() error {
 	// levaraging the redirect response sent by the API when creating a new session.
 	// So first resolve the host if the signer doesn't have one already.
 	if s.host == "" {
-		h, r, err := resolveHost(s.accountID, s.builder)
+		h, r, err := resolveHost(s.accountID, s.builder, s.dump)
 		if err != nil {
 			return err
 		}
@@ -152,7 +186,14 @@ func (s *cookieSigner) CanAuthenticate() error {
 	}
 	// Now that we have a host actually test the credentials.
 	_, instance := s.builder.(*instanceLoginRequestBuilder)
-	return testAuth(s, s.host, instance)
+	return testAuth(s, s.client, s.host, instance)
+}
+
+// EnableDump sets the dump format.
+func (s *cookieSigner) EnableDump(format Format) {
+	if c, ok := s.client.(*dumpClient); ok {
+		c.EnableDump(format)
+	}
 }
 
 // refresh updates the cookie and expiration used to sign requests from a successful session
@@ -221,7 +262,14 @@ func (s *oAuthSigner) SetHost(host string) {
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
 func (s *oAuthSigner) CanAuthenticate() error {
-	return testAuth(s, s.host, false)
+	return testAuth(s, s.client, s.host, false)
+}
+
+// EnableDump sets the dump format.
+func (s *oAuthSigner) EnableDump(format Format) {
+	if c, ok := s.client.(*dumpClient); ok {
+		c.EnableDump(format)
+	}
 }
 
 // BuildLoginRequest returns a new *http.Request that can refresh the access token
@@ -240,6 +288,7 @@ func (s *oAuthSigner) BuildLoginRequest(host string) (*http.Request, error) {
 type tokenAuthenticator struct {
 	token string
 	host  string // Only used by CanAuthenticate
+	dump  Format
 }
 
 // Sign sets the OAuth authorization header
@@ -255,13 +304,19 @@ func (t *tokenAuthenticator) SetHost(h string) {
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
 func (t *tokenAuthenticator) CanAuthenticate() error {
-	return testAuth(t, t.host, false)
+	return testAuth(t, NewHttpClient(t.dump), t.host, false)
+}
+
+// EnableDump sets the dump format.
+func (t *tokenAuthenticator) EnableDump(format Format) {
+	t.dump = format
 }
 
 // RightLink 10 authenticator
 type rl10Authenticator struct {
 	secret string
 	host   string
+	dump   Format
 }
 
 // RL10 authenticator uses special header
@@ -277,7 +332,12 @@ func (a *rl10Authenticator) SetHost(h string) {
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
 func (a *rl10Authenticator) CanAuthenticate() error {
-	return testAuth(a, a.host, true)
+	return testAuth(a, NewHttpClient(a.dump), a.host, true)
+}
+
+// EnableDump sets the dump format.
+func (a *rl10Authenticator) EnableDump(format Format) {
+	a.dump = format
 }
 
 // SS authenticator
@@ -342,7 +402,7 @@ func (a *ssAuthenticator) CanAuthenticate() error {
 	}
 	req.Header.Set("X-Api-Version", "1.0")
 	a.Sign(req)
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := a.client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -354,6 +414,14 @@ func (a *ssAuthenticator) CanAuthenticate() error {
 		return fmt.Errorf("%s: %s", resp.Status, body)
 	}
 	return nil
+}
+
+// EnableDump sets the dump format.
+func (a *ssAuthenticator) EnableDump(format Format) {
+	if c, ok := a.client.(*dumpClient); ok {
+		c.EnableDump(format)
+	}
+	a.auther.EnableDump(format)
 }
 
 // basicLoginRequestBuilder builds login requests from users email and password.
@@ -399,42 +467,58 @@ func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string) (*http.Requ
 	}
 	authReq.Header.Set("X-API-Version", "1.5")
 	authReq.Header.Set("Content-Type", "application/json")
-	byt, _ := httputil.DumpRequest(authReq, true)
-	fmt.Printf(string(byt))
 	return authReq, nil
+}
+
+// HTTP client that optionally dumps requests and responses.
+// Also takes care of copying headers on redirect.
+type dumpClient struct {
+	*http.Client
+	format Format
+}
+
+// Do dumps the request, makes the request and dumps the response as specified by the format.
+func (d *dumpClient) Do(req *http.Request) (*http.Response, error) {
+	req.Header.Set("User-Agent", UA)
+	b := dumpRequest(d.format, req)
+	resp, err := d.Client.Do(req)
+	dumpResponse(d.format, resp, req, b)
+	return resp, err
+}
+
+// CheckRedirect returns the current redirect handler.
+func (d *dumpClient) CheckRedirect() func(*http.Request, []*http.Request) error {
+	return d.Client.CheckRedirect
+}
+
+// SetCheckRedirect makes it possible to update the CheckRedirect func on the underlying client.
+func (d *dumpClient) SetCheckRedirect(f func(*http.Request, []*http.Request) error) {
+	d.Client.CheckRedirect = f
+}
+
+// EnableDump sets the dump format
+func (d *dumpClient) EnableDump(format Format) {
+	d.format = format
 }
 
 // resolveHost returns the RightScale API endpoint for the given account.
 // It does that by catching any redirect returned by the API when attempting to use the provided
 // host.
-func resolveHost(accountID int, b loginRequestBuilder) (string, *http.Response, error) {
+func resolveHost(accountID int, b loginRequestBuilder, dump Format) (string, *http.Response, error) {
 	authReq, authErr := b.BuildLoginRequest("us-3.rightscale.com")
 	if authErr != nil {
 		return "", nil, authErr
 	}
-	var redirectHost string
-	client := http.Client{
-		CheckRedirect: func(nextRequest *http.Request, via []*http.Request) error {
-			viaCount := len(via)
-			if viaCount > 10 {
-				return fmt.Errorf("Too many redirects.")
-			}
-			lastRequest := via[viaCount-1]
-			if nextRequest.Header == nil {
-				nextRequest.Header = make(http.Header)
-			}
-			for k, v := range lastRequest.Header {
-				k = http.CanonicalHeaderKey(k)
-				if !omitHeaders[k] {
-					nextRequest.Header[k] = v
-				}
-			}
-			redirectHost = nextRequest.URL.Host
-
-			return nil
-		},
-	}
-	redirectHost = authReq.Host
+	client := NewHttpClient(dump).(*dumpClient)
+	copyRedirect := client.CheckRedirect()
+	redirectHost := authReq.Host
+	client.SetCheckRedirect(func(n *http.Request, v []*http.Request) error {
+		if err := copyRedirect(n, v); err != nil {
+			return err
+		}
+		redirectHost = n.URL.Host
+		return nil
+	})
 	resp, err := client.Do(authReq)
 	if err == nil && resp.StatusCode > 299 {
 		err = fmt.Errorf(resp.Status)
@@ -461,7 +545,7 @@ func endpoint(host, suffix string) string {
 // testAuth makes a GET /api/sessions CM 1.5 request using the given authenticator and returns
 // an error if it failed, nil otherwise.
 // The instance flag specifies whether an instance or an account facing API request should be made.
-func testAuth(auth Authenticator, host string, instance bool) error {
+func testAuth(auth Authenticator, client HttpClient, host string, instance bool) error {
 	if host == "" {
 		return fmt.Errorf("missing host information")
 	}
@@ -477,7 +561,7 @@ func testAuth(auth Authenticator, host string, instance bool) error {
 	}
 	req.Header.Set("X-Api-Version", "1.5")
 	auth.Sign(req)
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}

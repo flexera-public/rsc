@@ -34,21 +34,9 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 		a.Logger.Printf("[%s] %s %s", id, req.Method, req.URL.String())
 	}
 	req.Header.Set("User-Agent", UA)
-	if a.DumpRequestResponse == Debug {
-		b, err := httputil.DumpRequestOut(req, true)
-		if err == nil {
-			fmt.Fprintf(os.Stderr, "%s\n", string(b))
-		} else {
-			fmt.Fprintf(os.Stderr, "Failed to dump request content - %s\n", err)
-		}
-	}
 	var reqBody []byte
-	if a.DumpRequestResponse == Json {
-		var err error
-		reqBody, err = dumpReqBody(req)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to load request body for dump: %s\n", err)
-		}
+	if !a.DumpRequestResponse.IsVerbose() {
+		reqBody = dumpRequest(a.DumpRequestResponse, req)
 	}
 	// Sign last so auth headers don't get printed or logged
 	if a.Auth != nil {
@@ -56,48 +44,17 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 			return nil, err
 		}
 	}
+	if a.DumpRequestResponse.IsVerbose() {
+		reqBody = dumpRequest(a.DumpRequestResponse, req)
+	}
 	resp, err := a.Client.Do(req)
+	dumpResponse(a.DumpRequestResponse, resp, req, reqBody)
 	if err != nil {
 		return nil, err
 	}
 	if a.Logger != nil {
 		d := time.Since(startedAt)
 		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
-	}
-	if a.DumpRequestResponse == Debug {
-		b, err := httputil.DumpResponse(resp, false)
-		if err == nil {
-			fmt.Fprintf(os.Stderr, "--------\n%s", b)
-		} else {
-			fmt.Fprintf(os.Stderr, "Failed to dump response content - %s\n", err)
-		}
-	} else if a.DumpRequestResponse == Json {
-		respBody, err := dumpRespBody(resp)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to load response body for dump: %s\n", err)
-		}
-		dumped := recording.RequestResponse{
-			Verb:       req.Method,
-			Uri:        req.URL.String(),
-			ReqHeader:  req.Header,
-			ReqBody:    string(reqBody),
-			Status:     resp.StatusCode,
-			RespHeader: resp.Header,
-			RespBody:   string(respBody),
-		}
-		b, err := json.MarshalIndent(dumped, "", "    ")
-		if err == nil {
-			fd := os.Stderr
-			f := os.NewFile(10, "fd10")
-			_, err := f.Stat()
-			if err == nil {
-				// fd 10 is open, dump to it (used by recorder)
-				fd = f
-			}
-			fmt.Fprintf(fd, "%s\n", string(b))
-		} else {
-			fmt.Fprintf(os.Stderr, "Failed to dump request content - %s\n", err)
-		}
 	}
 
 	return resp, err
@@ -146,6 +103,73 @@ func (a *Api) LoadResponse(resp *http.Response) (interface{}, error) {
 		respBody = interface{}(bodyMap)
 	}
 	return respBody, err
+}
+
+// Dump request if needed.
+// Return request serialized as JSON if dump format is JSON, nil otherwise.
+func dumpRequest(format Format, req *http.Request) []byte {
+	if format == NoDump {
+		return nil
+	}
+	if format.IsDebug() {
+		b, err := httputil.DumpRequestOut(req, true)
+		if err == nil {
+			fmt.Fprintf(os.Stderr, "%s\n", string(b))
+		} else {
+			fmt.Fprintf(os.Stderr, "Failed to dump request content - %s\n", err)
+		}
+	} else if format.IsJSON() {
+		reqBody, err := dumpReqBody(req)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to load request body for dump: %s\n", err)
+		}
+		return reqBody
+	}
+	return nil
+}
+
+// dumpResponse dumps the response and optionally the request (in case of JSON format) according to
+// the format.
+// It also checks whether the special recorder pipe is opened and if so writes the dump to it.
+func dumpResponse(format Format, resp *http.Response, req *http.Request, reqBody []byte) {
+	if format == NoDump {
+		return
+	}
+	if format.IsDebug() {
+		b, err := httputil.DumpResponse(resp, false)
+		if err == nil {
+			fmt.Fprintf(os.Stderr, "--------\n%s", b)
+		} else {
+			fmt.Fprintf(os.Stderr, "Failed to dump response content - %s\n", err)
+		}
+	} else if format.IsJSON() {
+		respBody, err := dumpRespBody(resp)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to load response body for dump: %s\n", err)
+		}
+		dumped := recording.RequestResponse{
+			Verb:       req.Method,
+			Uri:        req.URL.String(),
+			ReqHeader:  req.Header,
+			ReqBody:    string(reqBody),
+			Status:     resp.StatusCode,
+			RespHeader: resp.Header,
+			RespBody:   string(respBody),
+		}
+		b, err := json.MarshalIndent(dumped, "", "    ")
+		if err == nil {
+			fd := os.Stderr
+			f := os.NewFile(10, "fd10")
+			_, err := f.Stat()
+			if err == nil {
+				// fd 10 is open, dump to it (used by recorder)
+				fd = f
+			}
+			fmt.Fprintf(fd, "%s\n", string(b))
+		} else {
+			fmt.Fprintf(os.Stderr, "Failed to dump request content - %s\n", err)
+		}
+	}
 }
 
 // Dump request body, strongly inspired from httputil.DumpRequest
