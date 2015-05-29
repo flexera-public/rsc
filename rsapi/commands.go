@@ -1,4 +1,4 @@
-package rsapi
+package rsapi // import "gopkg.in/rightscale/rsc.v2/rsapi"
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v2/metadata"
 )
 
 // Result of parsing the command line (ParseCommand method).

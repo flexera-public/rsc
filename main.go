@@ -8,8 +8,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rightscale/rsc/cmd"
 	"gopkg.in/alecthomas/kingpin.v1"
+	"gopkg.in/rightscale/rsc.v2/cmd"
 
 	// phoney reference to make Godep pull this in for the code generators
 	_ "bitbucket.org/pkg/inflect"

@@ -1,7 +1,7 @@
 // This example illustrates how to use CM 1.5 client to build a bash aliases file
 // to login to various systems on various environments. The reference for the API can be found at
 // http://reference.rightscale.com/api1.5/index.html.
-package main
+package main // import "gopkg.in/rightscale/rsc.v2/cm15/examples/rsssh"
 
 import (
 	"encoding/json"
@@ -14,8 +14,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/rightscale/rsc/cm15"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v2/cm15"
+	"gopkg.in/rightscale/rsc.v2/rsapi"
 )
 
 // Top level configuration

@@ -1,4 +1,4 @@
-package cm15
+package cm15 // import "gopkg.in/rightscale/rsc.v2/cm15"
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v2/rsapi"
 )
 
 // BuildRequest builds a HTTP request from a resource name and href and an action name and
