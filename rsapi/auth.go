@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -87,31 +88,10 @@ func NewRL10Authenticator(secret string) Authenticator {
 // RightScale APIs, namely: it copies over the headers that need to be copied over (e.g.
 // X-Api-Version).
 func NewHttpClient(dumpFormat Format) HttpClient {
-	res := dumpClient{format: dumpFormat}
-	c := &http.Client{
-		CheckRedirect: func(nextRequest *http.Request, via []*http.Request) error {
-			viaCount := len(via)
-			if viaCount > 10 {
-				return fmt.Errorf("Too many redirects.")
-			}
-			lastRequest := via[viaCount-1]
-			if nextRequest.Header == nil {
-				nextRequest.Header = make(http.Header)
-			}
-			for k, v := range lastRequest.Header {
-				k = http.CanonicalHeaderKey(k)
-				if !omitHeaders[k] {
-					nextRequest.Header[k] = v
-				}
-			}
-			dumpRequest(res.format, nextRequest)
-
-			return nil
-		},
+	return &dumpClient{
+		RoundTripper: &http.Transport{ResponseHeaderTimeout: 20 * time.Second},
+		Format:       dumpFormat,
 	}
-	res.Client = c
-	res.Client = http.DefaultClient
-	return &res
 }
 
 // loginRequestBuilder is a generic login request factory.
@@ -150,6 +130,20 @@ func (s *cookieSigner) Sign(req *http.Request) error {
 			return authErr
 		}
 		resp, err := s.client.Do(authReq)
+		host, err := extractRedirectHost(resp)
+		if err != nil {
+			return err
+		}
+		if host != "" {
+			authReq, authErr = s.builder.BuildLoginRequest(host)
+			if authErr != nil {
+				return authErr
+			}
+			s.host = host
+			req.Host = host
+			req.URL.Host = host
+			resp, err = s.client.Do(authReq)
+		}
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err)
 		}
@@ -171,20 +165,6 @@ func (s *cookieSigner) SetHost(host string) {
 
 // CanAuthenticate makes a test request to CM 1.5 and returns true if it is successful.
 func (s *cookieSigner) CanAuthenticate() error {
-	// A cookie signer is able to resolve the host an account belongs to by
-	// levaraging the redirect response sent by the API when creating a new session.
-	// So first resolve the host if the signer doesn't have one already.
-	if s.host == "" {
-		h, r, err := resolveHost(s.accountID, s.builder, s.dump)
-		if err != nil {
-			return err
-		}
-		if err := s.refresh(r); err != nil {
-			return err
-		}
-		s.host = h
-	}
-	// Now that we have a host actually test the credentials.
 	_, instance := s.builder.(*instanceLoginRequestBuilder)
 	return testAuth(s, s.client, s.host, instance)
 }
@@ -471,59 +451,46 @@ func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string) (*http.Requ
 }
 
 // HTTP client that optionally dumps requests and responses.
-// Also takes care of copying headers on redirect.
+// This client also disables the default http client redirect handling.
 type dumpClient struct {
-	*http.Client
-	format Format
+	RoundTripper http.RoundTripper
+	Format       Format
 }
 
 // Do dumps the request, makes the request and dumps the response as specified by the format.
 func (d *dumpClient) Do(req *http.Request) (*http.Response, error) {
 	req.Header.Set("User-Agent", UA)
-	b := dumpRequest(d.format, req)
-	resp, err := d.Client.Do(req)
-	dumpResponse(d.format, resp, req, b)
+	var b []byte
+	if d.Format.IsVerbose() {
+		b = dumpRequest(d.Format, req)
+	}
+	resp, err := d.RoundTripper.RoundTrip(req)
+	if d.Format.IsVerbose() {
+		dumpResponse(d.Format, resp, req, b)
+	}
 	return resp, err
-}
-
-// CheckRedirect returns the current redirect handler.
-func (d *dumpClient) CheckRedirect() func(*http.Request, []*http.Request) error {
-	return d.Client.CheckRedirect
-}
-
-// SetCheckRedirect makes it possible to update the CheckRedirect func on the underlying client.
-func (d *dumpClient) SetCheckRedirect(f func(*http.Request, []*http.Request) error) {
-	d.Client.CheckRedirect = f
 }
 
 // EnableDump sets the dump format
 func (d *dumpClient) EnableDump(format Format) {
-	d.format = format
+	d.Format = format
 }
 
-// resolveHost returns the RightScale API endpoint for the given account.
-// It does that by catching any redirect returned by the API when attempting to use the provided
-// host.
-func resolveHost(accountID int, b loginRequestBuilder, dump Format) (string, *http.Response, error) {
-	authReq, authErr := b.BuildLoginRequest("us-3.rightscale.com")
-	if authErr != nil {
-		return "", nil, authErr
-	}
-	client := NewHttpClient(dump).(*dumpClient)
-	copyRedirect := client.CheckRedirect()
-	redirectHost := authReq.Host
-	client.SetCheckRedirect(func(n *http.Request, v []*http.Request) error {
-		if err := copyRedirect(n, v); err != nil {
-			return err
+// extractRedirectHost is a helper function that extracts the Location header from a redirect
+// response. It returns an empty string if the header is missing, an error if it's malformed.
+func extractRedirectHost(resp *http.Response) (string, error) {
+	host := ""
+	if resp.StatusCode > 299 && resp.StatusCode < 399 {
+		loc := resp.Header.Get("Location")
+		if loc != "" {
+			p, err := url.Parse(loc)
+			if err != nil {
+				return "", fmt.Errorf("invalid Location header '%s': %s", loc, err)
+			}
+			host = p.Host
 		}
-		redirectHost = n.URL.Host
-		return nil
-	})
-	resp, err := client.Do(authReq)
-	if err == nil && resp.StatusCode > 299 {
-		err = fmt.Errorf(resp.Status)
 	}
-	return redirectHost, resp, err
+	return host, nil
 }
 
 // Compute API endpoint given a hostname and a path
@@ -560,7 +527,9 @@ func testAuth(auth Authenticator, client HttpClient, host string, instance bool)
 		return err
 	}
 	req.Header.Set("X-Api-Version", "1.5")
-	auth.Sign(req)
+	if err = auth.Sign(req); err != nil {
+		return err
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return err

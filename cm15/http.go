@@ -109,7 +109,7 @@ func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("X-API-Version", "1.5")
+	req.Header.Set("X-Api-Version", "1.5")
 	req.Header.Set("Content-Type", "application/json")
 	return req, nil
 }

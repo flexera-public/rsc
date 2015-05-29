@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/rightscale/rsc/metadata"
@@ -114,14 +115,15 @@ func dumpRequest(format Format, req *http.Request) []byte {
 	if format.IsDebug() {
 		b, err := httputil.DumpRequestOut(req, true)
 		if err == nil {
-			fmt.Fprintf(os.Stderr, "%s\n", string(b))
+			bod := strings.TrimSpace(string(b))
+			fmt.Fprintf(os.Stderr, "%s\n", bod)
 		} else {
-			fmt.Fprintf(os.Stderr, "Failed to dump request content - %s\n", err)
+			fmt.Fprintf(os.Stderr, "** Failed to dump request content - %s\n", err)
 		}
 	} else if format.IsJSON() {
 		reqBody, err := dumpReqBody(req)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to load request body for dump: %s\n", err)
+			fmt.Fprintf(os.Stderr, "** Failed to load request body for dump: %s\n", err)
 		}
 		return reqBody
 	}
@@ -138,14 +140,14 @@ func dumpResponse(format Format, resp *http.Response, req *http.Request, reqBody
 	if format.IsDebug() {
 		b, err := httputil.DumpResponse(resp, false)
 		if err == nil {
-			fmt.Fprintf(os.Stderr, "--------\n%s", b)
+			fmt.Fprintf(os.Stderr, "==> %s\n", b)
 		} else {
-			fmt.Fprintf(os.Stderr, "Failed to dump response content - %s\n", err)
+			fmt.Fprintf(os.Stderr, "** Failed to dump response content - %s\n", err)
 		}
 	} else if format.IsJSON() {
 		respBody, err := dumpRespBody(resp)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to load response body for dump: %s\n", err)
+			fmt.Fprintf(os.Stderr, "** Failed to load response body for dump: %s\n", err)
 		}
 		dumped := recording.RequestResponse{
 			Verb:       req.Method,
@@ -167,7 +169,7 @@ func dumpResponse(format Format, resp *http.Response, req *http.Request, reqBody
 			}
 			fmt.Fprintf(fd, "%s\n", string(b))
 		} else {
-			fmt.Fprintf(os.Stderr, "Failed to dump request content - %s\n", err)
+			fmt.Fprintf(os.Stderr, "** Failed to dump request content - %s\n", err)
 		}
 	}
 }
