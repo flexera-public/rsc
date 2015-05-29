@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -125,6 +126,7 @@ func (s *cookieSigner) Sign(req *http.Request) error {
 	for _, c := range s.cookies {
 		req.AddCookie(c)
 	}
+	req.Header.Set("X-Account", strconv.Itoa(s.accountID))
 	return nil
 }
 
