@@ -218,7 +218,15 @@ func (s *oAuthSigner) Sign(req *http.Request) error {
 			return fmt.Errorf("Authentication failed (failed to read response): %s", err)
 		}
 		if resp.StatusCode != 200 {
-			return fmt.Errorf("Authentication failed: %s", resp.Status)
+			body, err := ioutil.ReadAll(resp.Body)
+			var msg string
+			if err != nil {
+				msg = " - <failed to read body>"
+			}
+			if len(body) > 0 {
+				msg = " - " + string(body)
+			}
+			return fmt.Errorf("Authentication failed: %s%s", resp.Status, msg)
 		}
 		err = json.Unmarshal(jsonBytes, &session)
 		if err != nil {
@@ -343,11 +351,24 @@ func (a *ssAuthenticator) Sign(r *http.Request) error {
 		if err != nil {
 			return err
 		}
-		a.auther.Sign(authReq)
+		if err := a.auther.Sign(authReq); err != nil {
+			return err
+		}
 		authReq.Header.Set("Content-Type", "application/json")
-		_, err = a.client.Do(authReq)
+		resp, err := a.client.Do(authReq)
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err)
+		}
+		if resp.StatusCode != 200 {
+			body, err := ioutil.ReadAll(resp.Body)
+			var msg string
+			if err != nil {
+				msg = " - <failed to read body>"
+			}
+			if len(body) > 0 {
+				msg = " - " + string(body)
+			}
+			return fmt.Errorf("Authentication failed: %s%s", resp.Status, msg)
 		}
 		a.refreshAt = time.Now().Add(2 * time.Hour)
 	}
@@ -392,9 +413,9 @@ func (a *ssAuthenticator) CanAuthenticate(host string) error {
 	if resp.StatusCode != 200 {
 		var body string
 		if b, err := ioutil.ReadAll(resp.Body); err != nil {
-			body = string(b)
+			body = ": " + string(b)
 		}
-		return fmt.Errorf("%s: %s", resp.Status, body)
+		return fmt.Errorf("%s%s", resp.Status, body)
 	}
 	return nil
 }
@@ -533,9 +554,9 @@ func testAuth(auth Authenticator, client HttpClient, host string, instance bool)
 	if resp.StatusCode != 200 {
 		var body string
 		if b, err := ioutil.ReadAll(resp.Body); err != nil {
-			body = string(b)
+			body = ": " + string(b)
 		}
-		return fmt.Errorf("%s: %s", resp.Status, body)
+		return fmt.Errorf("%s%s", resp.Status, body)
 	}
 	return nil
 }
