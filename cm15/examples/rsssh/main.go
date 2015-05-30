@@ -45,7 +45,7 @@ func main() {
 	pwd := flag.String("p", "", "Login password")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
 	conf := flag.String("c", "", "Configuration file")
-	unsecure := flag.Bool("unsecure", false, "Use HTTP instead of HTTPS - used for testing")
+	insecure := flag.Bool("insecure", false, "Use HTTP instead of HTTPS - used for testing")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -86,11 +86,13 @@ func main() {
 		}
 		// Create a new client for every environment because they can be in different accounts.
 		auth := rsapi.NewBasicAuthenticator(*email, *pwd, envDetail.Account)
-		client, err := cm15.New(*host, auth, logger, nil)
-		if err != nil {
-			fail("login failed: %s", err)
+		client := cm15.New(*host, auth, logger, nil)
+		if *insecure {
+			client.Insecure()
 		}
-		client.Unsecure = *unsecure
+		if err := client.CanAuthenticate(); err != nil {
+			fail("invalid credentials: %s", err)
+		}
 		fetchDetails(client, envName, envDetail, &sshConfig)
 	}
 

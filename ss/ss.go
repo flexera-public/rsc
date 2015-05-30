@@ -29,7 +29,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	setupMetadata()
 	api.Metadata = GenMetadata
 	api.Auth = rsapi.NewSSAuthenticator(api.Auth, cmdLine.Account)
-	api.Auth.SetHost(cmdLine.Host)
+	api.Auth.SetHost(api.FullHost())
 	return &Api{api}, nil
 }
 

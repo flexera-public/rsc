@@ -364,8 +364,18 @@ refresh token for authentication, no logger and the default HTTP client:
 refreshToken := ... // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
 auth := rsapi.NewOAuthAuthenticator(refreshToken)
 accountId := 123
-client, err := cm15.New("us-3.rightscale.com", &auth, nil, nil)
+client := cm15.New("us-3.rightscale.com", &auth, nil, nil)
 ```
+You may test the credentials using the `CanAuthenticate` method:
+```go
+if err := client.CanAuthenticate(); err != nil {
+	// Woops creds are not working
+	return err
+}
+```
+This method makes a test API request so is expensive, the idea is to call it once then use the client
+to make a series of requests.
+
 ### Locators
 
 Once a client has been created resources can be retrieved using resource locators. The code defines one

@@ -17,17 +17,11 @@ type Api struct {
 // It makes a test API request and returns an error if authentication fails.
 // logger is optional.
 // If no HTTP client is specified then the default client is used.
-func New(h string, a rsapi.Authenticator, l *log.Logger, c rsapi.HttpClient) (*Api, error) {
-	if a != nil {
-		a.SetHost(h)
-		if err := a.CanAuthenticate(); err != nil {
-			return nil, err
-		}
-	}
+func New(h string, a rsapi.Authenticator, l *log.Logger, c rsapi.HttpClient) *Api {
 	api := rsapi.New(h, a, l, c)
 	api.Metadata = GenMetadata
 	ssApi := Api{Api: api}
-	return &ssApi, nil
+	return &ssApi
 }
 
 // Dispatch request to appropriate low-level method

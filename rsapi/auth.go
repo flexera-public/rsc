@@ -22,7 +22,7 @@ type Authenticator interface {
 	// CanAuthenticate returns nil if the authenticator is able to sign requests successfully
 	// or an error with additional information otherwise.
 	// It makes a test request to CM 1.5 to validate the provided credentials.
-	CanAuthenticate() error
+	CanAuthenticate(host string) error
 	// EnableDump sets the format used by the authenticator to dump requests.
 	// The format flag must have the Verbose bit enabled to have any effect.
 	EnableDump(format Format)
@@ -130,18 +130,22 @@ func (s *cookieSigner) Sign(req *http.Request) error {
 			return authErr
 		}
 		resp, err := s.client.Do(authReq)
-		host, err := extractRedirectHost(resp)
 		if err != nil {
 			return err
 		}
-		if host != "" {
-			authReq, authErr = s.builder.BuildLoginRequest(host)
+		url, err := extractRedirectURL(resp)
+		if err != nil {
+			return err
+		}
+		if url != nil {
+			fullHost := url.Scheme + "://" + url.Host
+			authReq, authErr = s.builder.BuildLoginRequest(fullHost)
 			if authErr != nil {
 				return authErr
 			}
-			s.host = host
-			req.Host = host
-			req.URL.Host = host
+			s.host = fullHost
+			req.Host = url.Host
+			req.URL.Host = url.Host
 			resp, err = s.client.Do(authReq)
 		}
 		if err != nil {
@@ -164,9 +168,9 @@ func (s *cookieSigner) SetHost(host string) {
 }
 
 // CanAuthenticate makes a test request to CM 1.5 and returns true if it is successful.
-func (s *cookieSigner) CanAuthenticate() error {
+func (s *cookieSigner) CanAuthenticate(host string) error {
 	_, instance := s.builder.(*instanceLoginRequestBuilder)
-	return testAuth(s, s.client, s.host, instance)
+	return testAuth(s, s.client, host, instance)
 }
 
 // EnableDump sets the dump format.
@@ -241,15 +245,13 @@ func (s *oAuthSigner) SetHost(host string) {
 }
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
-func (s *oAuthSigner) CanAuthenticate() error {
-	return testAuth(s, s.client, s.host, false)
+func (s *oAuthSigner) CanAuthenticate(host string) error {
+	return testAuth(s, s.client, host, false)
 }
 
 // EnableDump sets the dump format.
 func (s *oAuthSigner) EnableDump(format Format) {
-	if c, ok := s.client.(*dumpClient); ok {
-		c.EnableDump(format)
-	}
+	s.client.(*dumpClient).EnableDump(format)
 }
 
 // BuildLoginRequest returns a new *http.Request that can refresh the access token
@@ -283,8 +285,9 @@ func (t *tokenAuthenticator) SetHost(h string) {
 }
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
-func (t *tokenAuthenticator) CanAuthenticate() error {
-	return testAuth(t, NewHttpClient(t.dump), t.host, false)
+func (t *tokenAuthenticator) CanAuthenticate(host string) error {
+	client := NewHttpClient(t.dump)
+	return testAuth(t, client, host, false)
 }
 
 // EnableDump sets the dump format.
@@ -311,8 +314,9 @@ func (a *rl10Authenticator) SetHost(h string) {
 }
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
-func (a *rl10Authenticator) CanAuthenticate() error {
-	return testAuth(a, NewHttpClient(a.dump), a.host, true)
+func (a *rl10Authenticator) CanAuthenticate(host string) error {
+	client := NewHttpClient(a.dump)
+	return testAuth(a, client, host, true)
 }
 
 // EnableDump sets the dump format.
@@ -371,17 +375,16 @@ func (a *ssAuthenticator) SetHost(host string) {
 }
 
 // CanAuthenticate makes a test request to SS and returns true if it is successful.
-func (a *ssAuthenticator) CanAuthenticate() error {
-	if a.host == "" {
-		return fmt.Errorf("missing host information")
-	}
+func (a *ssAuthenticator) CanAuthenticate(host string) error {
 	url := fmt.Sprintf("api/catalog/accounts/%d/user_preferences", a.accountID)
-	req, err := http.NewRequest("GET", endpoint(a.host, url), nil)
+	req, err := http.NewRequest("GET", endpoint(host, url), nil)
 	if err != nil {
 		return err
 	}
 	req.Header.Set("X-Api-Version", "1.0")
-	a.Sign(req)
+	if err := a.Sign(req); err != nil {
+		return err
+	}
 	resp, err := a.client.Do(req)
 	if err != nil {
 		return err
@@ -398,9 +401,7 @@ func (a *ssAuthenticator) CanAuthenticate() error {
 
 // EnableDump sets the dump format.
 func (a *ssAuthenticator) EnableDump(format Format) {
-	if c, ok := a.client.(*dumpClient); ok {
-		c.EnableDump(format)
-	}
+	a.client.(*dumpClient).EnableDump(format)
 	a.auther.EnableDump(format)
 }
 
@@ -437,7 +438,7 @@ type instanceLoginRequestBuilder struct {
 // BuildLoginRequest builds session create requests from users email and password.
 func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string) (*http.Request, error) {
 	if host == "" {
-		host = "us-3.rightscale.com"
+		host = "https://us-3.rightscale.com"
 	}
 	accountHref := fmt.Sprintf("/api/accounts/%d", b.accountID)
 	jsonStr := fmt.Sprintf(`{"instance_token":"%s","account_href":"%s"}`, b.token, accountHref)
@@ -465,10 +466,13 @@ func (d *dumpClient) Do(req *http.Request) (*http.Response, error) {
 		b = dumpRequest(d.Format, req)
 	}
 	resp, err := d.RoundTripper.RoundTrip(req)
+	if err != nil {
+		return nil, err
+	}
 	if d.Format.IsVerbose() {
 		dumpResponse(d.Format, resp, req, b)
 	}
-	return resp, err
+	return resp, nil
 }
 
 // EnableDump sets the dump format
@@ -476,33 +480,25 @@ func (d *dumpClient) EnableDump(format Format) {
 	d.Format = format
 }
 
-// extractRedirectHost is a helper function that extracts the Location header from a redirect
-// response. It returns an empty string if the header is missing, an error if it's malformed.
-func extractRedirectHost(resp *http.Response) (string, error) {
-	host := ""
+// extractRedirectURL is a helper function that extracts the Location header from a redirect
+// response. It returns nil if the header is missing, an error if it's malformed.
+func extractRedirectURL(resp *http.Response) (*url.URL, error) {
+	var u *url.URL
 	if resp.StatusCode > 299 && resp.StatusCode < 399 {
 		loc := resp.Header.Get("Location")
 		if loc != "" {
-			p, err := url.Parse(loc)
+			var err error
+			u, err = url.Parse(loc)
 			if err != nil {
-				return "", fmt.Errorf("invalid Location header '%s': %s", loc, err)
+				return nil, fmt.Errorf("invalid Location header '%s': %s", loc, err)
 			}
-			host = p.Host
 		}
 	}
-	return host, nil
+	return u, nil
 }
 
 // Compute API endpoint given a hostname and a path
 func endpoint(host, suffix string) string {
-	if !strings.HasPrefix(host, "http") {
-		// Be nice to tests
-		if !strings.HasPrefix(host, "localhost") && !strings.HasPrefix(host, "127.0.0.1") {
-			host = "https://" + host
-		} else {
-			host = "http://" + host
-		}
-	}
 	if !strings.HasSuffix(host, "/") {
 		host += "/"
 	}

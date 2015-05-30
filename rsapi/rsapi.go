@@ -19,11 +19,13 @@ type Api struct {
 	Auth                  Authenticator // Authenticator, signs requests for auth
 	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
 	Host                  string        // API host, e.g. "us-3.rightscale.com"
-	Client                HttpClient    // Underlying http client
-	Unsecure              bool          // Whether HTTP should be used instead of HTTPS (used by RL10 proxied requests)
+	Client                HttpClient    // Underlying http client (not used for authentication requests as these necessitate special redirect handling)
 	DumpRequestResponse   Format        // Whether to dump HTTP requests and responses to STDOUT, and if so in which format
 	FetchLocationResource bool          // Whether to fetch resource pointed by Location header
 	Metadata              ApiMetadata   // Generated API metadata
+
+	insecure bool // Whether HTTP should be used instead of HTTPS (used by RL10 proxied requests)
+	// Use Insecure method to set to true.
 }
 
 // Request/response dump format
@@ -67,18 +69,19 @@ type HttpClient interface {
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
 func New(host string, auth Authenticator, logger *log.Logger, client HttpClient) *Api {
-	if auth != nil {
-		auth.SetHost(host)
-	}
 	if client == nil {
 		client = http.DefaultClient
 	}
-	return &Api{
+	a := &Api{
 		Auth:   auth,
 		Logger: logger,
 		Host:   host,
 		Client: client,
 	}
+	if auth != nil {
+		auth.SetHost(a.FullHost())
+	}
+	return a
 }
 
 // NewRL10 returns a API client that uses the information stored in /var/run/rightlink/secret to do
@@ -115,13 +118,14 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 	host := "localhost:" + port
 	auth := NewRL10Authenticator(secret)
 	auth.SetHost(host)
-	return &Api{
-		Auth:     auth,
-		Logger:   logger,
-		Host:     host,
-		Client:   client,
-		Unsecure: true,
-	}, nil
+	api := &Api{
+		Auth:   auth,
+		Logger: logger,
+		Host:   host,
+		Client: client,
+	}
+	api.Insecure()
+	return api, nil
 }
 
 // Build client from command line
@@ -157,7 +161,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	} else {
 		// No auth, used by tests
 		client = New(cmdLine.Host, nil, nil, httpClient)
-		client.Unsecure = true
+		client.Insecure()
 	}
 	if !cmdLine.ShowHelp && !cmdLine.NoAuth {
 		if cmdLine.OAuthToken == "" && cmdLine.OAuthAccessToken == "" && cmdLine.APIToken == "" && cmdLine.Username == "" && !cmdLine.RL10 {
@@ -183,4 +187,29 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 func (a *Api) EnableDump(format Format) {
 	a.DumpRequestResponse = format
 	a.Auth.EnableDump(format)
+}
+
+// CanAuthenticate() makes a test authenticated request to the RightScale API and returns an error
+// if it fails.
+func (a *Api) CanAuthenticate() error {
+	res := a.Auth.CanAuthenticate(a.FullHost())
+	return res
+}
+
+// Force the use of HTTP instead of HTTPS for all requests.
+func (a *Api) Insecure() {
+	a.insecure = true
+	if a.Auth != nil {
+		// Reset host used for authentication so it's prefixed with "http://"
+		a.Auth.SetHost(a.FullHost())
+	}
+}
+
+// FullHost returns the scheme prefixed hostname and can be used to instantiate http.Client
+func (a *Api) FullHost() string {
+	scheme := "https://"
+	if a.insecure {
+		scheme = "http://"
+	}
+	return scheme + a.Host
 }

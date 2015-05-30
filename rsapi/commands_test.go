@@ -213,7 +213,7 @@ var _ = Describe("ParseCommand", func() {
 
 	BeforeEach(func() {
 		values = nil
-		ssm, _ := ssm.New("", nil, nil, nil)
+		ssm := ssm.New("", nil, nil, nil)
 		api = ssm.Api
 	})
 
@@ -340,7 +340,7 @@ var _ = Describe("ParseCommand with cm15", func() {
 
 	BeforeEach(func() {
 		values = nil
-		cm, _ := cm15.New("", nil, nil, nil)
+		cm := cm15.New("", nil, nil, nil)
 		api = cm.Api
 	})
 

@@ -30,7 +30,7 @@ var _ = Describe("Basic Example", func() {
 
 	BeforeEach(func() {
 		server = ghttp.NewServer()
-		os.Args = []string{"basic", "-unsecure", "-e=dummy", "-p=dummy", "-a=42", "-h=" + server.URL()[7:]}
+		os.Args = []string{"basic", "-insecure", "-e=dummy", "-p=dummy", "-a=42", "-h=" + server.URL()[7:]}
 		osStdout = &out
 	})
 

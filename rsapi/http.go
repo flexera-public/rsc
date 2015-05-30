@@ -20,7 +20,7 @@ import (
 
 // Log request, dump its content if required then make request and log response and dump it.
 func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
-	if a.Unsecure {
+	if a.insecure {
 		req.URL.Scheme = "http"
 	} else {
 		req.URL.Scheme = "https"
@@ -49,10 +49,10 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 		reqBody = dumpRequest(a.DumpRequestResponse, req)
 	}
 	resp, err := a.Client.Do(req)
-	dumpResponse(a.DumpRequestResponse, resp, req, reqBody)
 	if err != nil {
 		return nil, err
 	}
+	dumpResponse(a.DumpRequestResponse, resp, req, reqBody)
 	if a.Logger != nil {
 		d := time.Since(startedAt)
 		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())

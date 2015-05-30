@@ -27,7 +27,7 @@ func main() {
 	pwd := flag.String("p", "", "Login password")
 	account := flag.Int("a", 0, "Account id")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
-	unsecure := flag.Bool("unsecure", false, "Use HTTP instead of HTTPS - used for testing")
+	insecure := flag.Bool("insecure", false, "Use HTTP instead of HTTPS - used for testing")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -46,11 +46,13 @@ func main() {
 	logger := log.New(os.Stdout, "", 0)
 	auth := rsapi.NewBasicAuthenticator(*email, *pwd, *account)
 	ssAuth := rsapi.NewSSAuthenticator(auth, *account)
-	client, err := ssm.New(*host, ssAuth, logger, nil)
-	if err != nil {
-		fail("failed to create SS auth client: %s", err)
+	client := ssm.New(*host, ssAuth, logger, nil)
+	if *insecure {
+		client.Insecure()
 	}
-	client.Unsecure = *unsecure
+	if err := client.CanAuthenticate(); err != nil {
+		fail("invalid credentials: %s", err)
+	}
 
 	// 3. Make execution index call using expanded view
 	l := client.ExecutionLocator(fmt.Sprintf("/projects/%d/executions", *account))

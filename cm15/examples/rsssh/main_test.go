@@ -41,7 +41,7 @@ var _ = Describe("RSSSH Example", func() {
 		tmpFile.WriteString(config)
 		tmpFile.Close()
 		Ω(err).ShouldNot(HaveOccurred())
-		os.Args = []string{"rsssh", "-unsecure", "-c=" + tmpFile.Name(),
+		os.Args = []string{"rsssh", "-insecure", "-c=" + tmpFile.Name(),
 			"-e=dummy", "-p=dummy", "-h=" + server.URL()[7:]}
 	})
 

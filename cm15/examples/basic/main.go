@@ -24,7 +24,7 @@ func main() {
 	pwd := flag.String("p", "", "Login password")
 	account := flag.Int("a", 0, "Account id")
 	host := flag.String("h", "us-3.rightscale.com", "RightScale API host")
-	unsecure := flag.Bool("unsecure", false, "Use HTTP instead of HTTPS - used for testing")
+	insecure := flag.Bool("insecure", false, "Use HTTP instead of HTTPS - used for testing")
 	flag.Parse()
 	if *email == "" {
 		fail("Login email required")
@@ -42,11 +42,13 @@ func main() {
 	// 2. Setup client using basic auth
 	logger := log.New(os.Stdout, "", 0)
 	auth := rsapi.NewBasicAuthenticator(*email, *pwd, *account)
-	client, err := cm15.New(*host, auth, logger, nil)
-	if err != nil {
-		fail("failed to create client: %s", err)
+	client := cm15.New(*host, auth, logger, nil)
+	if *insecure {
+		client.Insecure()
 	}
-	client.Unsecure = *unsecure
+	if err := client.CanAuthenticate(); err != nil {
+		fail("invalid credentials: %s", err)
+	}
 
 	// 3. Make cloud index call using extended view
 	l := client.CloudLocator("/api/clouds")

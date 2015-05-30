@@ -39,10 +39,10 @@ func main() {
 	}
 
 	// 2. Setup client using basic auth
-	auth := rsapi.NewBasicAuthenticator(*email, *pwd)
-	client, err := cm15.New(*account, *host, auth, nil, nil)
-	if err != nil {
-		fail("failed to create client: %s", err)
+	auth := rsapi.NewBasicAuthenticator(*email, *pwd, *account)
+	client := cm15.New(*host, auth, nil, nil)
+	if err := client.CanAuthenticate(); err != nil {
+		fail("invalid credentials: %s", err)
 	}
 	ticker := time.NewTicker(time.Second)
 
