@@ -35,9 +35,8 @@
 			"Rev": "d04eebe26072b09f780b43c72c6df71b12b8d105"
 		},
 		{
-			"ImportPath": "gopkg.in/alecthomas/kingpin.v1",
-			"Comment": "v1.3.5",
-			"Rev": "a1508bd4f5b75aaa7ce97f411fcdc72138434bbb"
+			"ImportPath": "gopkg.in/alecthomas/kingpin.v2",
+			"Rev": "89dac2fb11a9573327691cbcebcd711f5fa67cbd"
 		}
 	]
 }

@@ -1,3 +1,12 @@
+vnext / ?
+---------
+* Remove automatic credential validation on creation
+* Add 'CanAuthenticate' method to clients that makes credential test API request
+* Add 'Insecure' method to clients that force use of HTTP instead of HTTPS
+* Add '--verbose [-v]' flag that dumps auth requests and headers
+* Properly handle redirects returned when creating new sessions on incorrect host
+* Help is now printed on stdout instead of stderr
+
 v2.0.0 / 2015-05-28
 -------------------
 * Remove the need to pass account ID to token based authenticators

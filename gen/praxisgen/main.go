@@ -14,7 +14,7 @@ import (
 
 	"github.com/rightscale/rsc/gen"
 	"github.com/rightscale/rsc/gen/writers"
-	"gopkg.in/alecthomas/kingpin.v1"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 // Data structure used to load content of index.json files

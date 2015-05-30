@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/rightscale/rsc/cmd"
-	"gopkg.in/alecthomas/kingpin.v1"
+	"gopkg.in/alecthomas/kingpin.v2"
 
 	// phoney reference to make Godep pull this in for the code generators
 	_ "bitbucket.org/pkg/inflect"
@@ -18,6 +18,7 @@ import (
 // Command line client entry point.
 func main() {
 	app := kingpin.New("rsc", "A RightScale API client")
+	app.Writer(os.Stdout)
 	app.Version(VV)
 
 	cmdLine, err := ParseCommandLine(app)
@@ -26,6 +27,7 @@ func main() {
 	}
 
 	// Execute appropriate command
+	app.Writer(os.Stderr)
 	var resp *http.Response
 	topCommand := strings.Split(cmdLine.Command, " ")[0]
 	switch topCommand {

@@ -12,7 +12,7 @@ import (
 	"github.com/rightscale/rsc/rl10"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
-	"gopkg.in/alecthomas/kingpin.v1"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 // Retrieve command and top level flag values
