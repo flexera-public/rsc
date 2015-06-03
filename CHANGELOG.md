@@ -1,5 +1,5 @@
-vnext / ?
----------
+v2.0.1 / 2015-06-02
+-------------------
 * Remove automatic credential validation on creation
 * Add 'CanAuthenticate' method to clients that makes credential test API request
 * Add 'Insecure' method to clients that force use of HTTP instead of HTTPS
