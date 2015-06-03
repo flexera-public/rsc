@@ -1,4 +1,4 @@
-package metadata
+package metadata // import "gopkg.in/rightscale/rsc.v2/metadata"
 
 import (
 	"fmt"
