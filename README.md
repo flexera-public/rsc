@@ -4,9 +4,9 @@ Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 [![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](http://gocover.io/github.com/rightscale/rsc)
 
-v2.0.0
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v2.0.0)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v2.0.0.svg)](http://gocover.io/github.com/rightscale/rsc)
+v2.0.1
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v2.0.1)](https://travis-ci.org/rightscale/rsc)
+[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v2.0.1.svg)](http://gocover.io/github.com/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
@@ -43,15 +43,15 @@ As an example the following downloads and runs the MacOS X version:
 $ curl https://binaries.rightscale.com/rsbin/rsc/v2/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v2.0.0 - 2015-05-28 01:31:47 - bc26f00c5f03b05266e8fb036008ade41c4de5e9
+rsc v2.0.1 - 2015-06-03 01:31:47 - bc26f00c5f03b05266e8fb036008ade41c4de5e9
 ```
 
 #### Versioning
 
 - To download the latest stable use the links with 'v2' in them.
-- To download a specific version, replace the 'v2' by the exact version, such as 'v2.0.0'.
+- To download a specific version, replace the 'v2' by the exact version, such as 'v2.0.1'.
 - All versions with the same major number (e.g. 'v2') are intended to be "upward" compatible.
-- The 'v2' links download a specific version, so `rsc --version` will print something like 'v2.0.0'
+- The 'v2' links download a specific version, so `rsc --version` will print something like 'v2.0.1'
   and not 'v2'.
 - The latest dev version is 'master'.
 
@@ -510,7 +510,7 @@ mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
 git clone https://github.com/rightscale/rsc.git rsc.v2
 cd rsc.v2
-git checkout v2.0.0
+git checkout v2.0.1
 make depend
 make
 ```
