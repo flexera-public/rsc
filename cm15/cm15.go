@@ -18,8 +18,7 @@ type Api struct {
 // host may be blank in which case client attempts to resolve it using auth.
 // logger is optional.
 // If client is nil then the default HTTP client is used.
-func New(host string, auth rsapi.Authenticator, logger *log.Logger,
-	client rsapi.HttpClient) *Api {
+func New(host string, auth rsapi.Authenticator, logger *log.Logger, client rsapi.HttpClient) *Api {
 	return fromApi(rsapi.New(host, auth, logger, client))
 }
 
