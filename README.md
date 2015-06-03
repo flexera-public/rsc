@@ -1,5 +1,4 @@
-# rsc - A generic RightScale API client [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE)
-[![Godoc](https://godoc.org/github.com/rightscale/rsc?status.svg)](http://godoc.org/github.com/rightscale/rsc)
+# rsc - A generic RightScale API client [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE) [![Godoc](https://godoc.org/github.com/rightscale/rsc?status.svg)](http://godoc.org/github.com/rightscale/rsc)
 
 Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
