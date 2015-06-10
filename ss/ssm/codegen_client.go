@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssm
+package ssm // import "gopkg.in/rightscale/rsc.v2/ss/ssm"
 
 import (
 	"encoding/json"
@@ -15,8 +15,8 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v2/metadata"
+	"gopkg.in/rightscale/rsc.v2/rsapi"
 )
 
 // Url resolver produces an action URL and HTTP method from its name and a given resource href.

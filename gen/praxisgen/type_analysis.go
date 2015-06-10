@@ -1,4 +1,4 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v2/gen/praxisgen"
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 
 	"bitbucket.org/pkg/inflect"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v2/gen"
 )
 
 // Regular expression used to capture brackets in query name
