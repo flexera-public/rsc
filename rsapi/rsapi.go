@@ -79,7 +79,7 @@ func New(host string, auth Authenticator, logger *log.Logger, client HttpClient)
 		Client: client,
 	}
 	if auth != nil {
-		auth.SetHost(a.FullHost())
+		auth.SetHost(host)
 	}
 	return a
 }
@@ -141,6 +141,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	} else {
 		httpClient = http.DefaultClient
 	}
+	ss := strings.HasPrefix(cmdLine.Command, "ss")
 	if cmdLine.RL10 {
 		var err error
 		if client, err = NewRL10(nil, httpClient); err != nil {
@@ -148,15 +149,27 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		}
 	} else if cmdLine.OAuthToken != "" {
 		auth := NewOAuthAuthenticator(cmdLine.OAuthToken)
+		if ss {
+			auth = NewSSAuthenticator(auth, cmdLine.Account)
+		}
 		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.OAuthAccessToken != "" {
 		auth := NewTokenAuthenticator(cmdLine.OAuthAccessToken)
+		if ss {
+			auth = NewSSAuthenticator(auth, cmdLine.Account)
+		}
 		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.APIToken != "" {
 		auth := NewInstanceAuthenticator(cmdLine.APIToken, cmdLine.Account)
+		if ss {
+			auth = NewSSAuthenticator(auth, cmdLine.Account)
+		}
 		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else if cmdLine.Username != "" && cmdLine.Password != "" {
 		auth := NewBasicAuthenticator(cmdLine.Username, cmdLine.Password, cmdLine.Account)
+		if ss {
+			auth = NewSSAuthenticator(auth, cmdLine.Account)
+		}
 		client = New(cmdLine.Host, auth, nil, httpClient)
 	} else {
 		// No auth, used by tests
@@ -192,7 +205,7 @@ func (a *Api) EnableDump(format Format) {
 // CanAuthenticate() makes a test authenticated request to the RightScale API and returns an error
 // if it fails.
 func (a *Api) CanAuthenticate() error {
-	res := a.Auth.CanAuthenticate(a.FullHost())
+	res := a.Auth.CanAuthenticate(a.Host)
 	return res
 }
 
@@ -200,16 +213,6 @@ func (a *Api) CanAuthenticate() error {
 func (a *Api) Insecure() {
 	a.insecure = true
 	if a.Auth != nil {
-		// Reset host used for authentication so it's prefixed with "http://"
-		a.Auth.SetHost(a.FullHost())
+		a.Auth.Insecure()
 	}
-}
-
-// FullHost returns the scheme prefixed hostname and can be used to instantiate http.Client
-func (a *Api) FullHost() string {
-	scheme := "https://"
-	if a.insecure {
-		scheme = "http://"
-	}
-	return scheme + a.Host
 }

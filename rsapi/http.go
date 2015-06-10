@@ -116,7 +116,7 @@ func dumpRequest(format Format, req *http.Request) []byte {
 		b, err := httputil.DumpRequestOut(req, true)
 		if err == nil {
 			bod := strings.TrimSpace(string(b))
-			fmt.Fprintf(os.Stderr, "%s\n", bod)
+			fmt.Fprintf(os.Stderr, "%s\n%s\n", req.URL.String(), bod)
 		} else {
 			fmt.Fprintf(os.Stderr, "** Failed to dump request content - %s\n", err)
 		}
