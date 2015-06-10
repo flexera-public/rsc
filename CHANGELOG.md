@@ -1,3 +1,8 @@
+v2.0.2 / 2015-06-09
+-------------------
+* Fix issues with authentication using the "ss" command line
+* Remove need to pass HTTP scheme to Authenticator.CanAuthenticate
+
 v2.0.1 / 2015-06-02
 -------------------
 * Remove automatic credential validation on creation
