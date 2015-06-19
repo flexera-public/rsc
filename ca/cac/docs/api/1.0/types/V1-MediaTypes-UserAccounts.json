@@ -1,0 +1,136 @@
+{
+  "name": "V1::MediaTypes::UserAccounts",
+  "id": "V1-MediaTypes-UserAccounts",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#user_accounts"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "account_id": {
+      "description": "RightScale account ID.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "account_name": {
+      "description": "RightScale account name.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "billing_admin_only": {
+      "description": "Does the account have the billing_admin_only account setting enabled?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "cloud_analytics_account_setting_enabled": {
+      "description": "Is the `cloud_analytics` account setting enabled? Just because this setting is enabled,\n            it does not mean that the account is `cloud_analytics_enabled`.",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "cloud_analytics_enabled": {
+      "description": "Does the user have the required settings and permissions for this account to be enabled\n            for them in Cloud Analytics?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "permissions": {
+      "description": "List of permissions that the user has on this account, see\n            `https://support.rightscale.com/12-Guides/15-References/Lists/The_User_Roles` for details",
+      "options": {
+        "member_options": {
+          "values": [
+            "actor",
+            "admin",
+            "enterprise_manager",
+            "observer",
+            "billing"
+          ]
+        }
+      },
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "values": [
+            "actor",
+            "admin",
+            "enterprise_manager",
+            "observer",
+            "billing"
+          ],
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "account_id": {
+        },
+        "account_name": {
+        },
+        "billing_admin_only": {
+        },
+        "cloud_analytics_account_setting_enabled": {
+        },
+        "cloud_analytics_enabled": {
+        },
+        "permissions": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#user_accounts",
+        "account_id": 756,
+        "account_name": "Camaldolensian",
+        "billing_admin_only": false,
+        "cloud_analytics_account_setting_enabled": false,
+        "cloud_analytics_enabled": true,
+        "permissions": [
+          "observer",
+          "admin"
+        ]
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#user_accounts",
+    "account_id": 756,
+    "account_name": "Camaldolensian",
+    "billing_admin_only": false,
+    "cloud_analytics_account_setting_enabled": false,
+    "cloud_analytics_enabled": true,
+    "permissions": [
+      "observer",
+      "admin"
+    ]
+  }
+}

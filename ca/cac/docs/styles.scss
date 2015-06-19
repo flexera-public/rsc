@@ -1,0 +1,18 @@
+$navbar-default-bg: #076cca;
+$navbar-default-gradient-start: #076cca;
+$navbar-default-gradient-end: #065bac;
+$navbar-default-color: #fff;
+$navbar-default-link-color: #fff;
+$navbar-default-link-hover-color: darken($navbar-default-link-color, 10%);
+$navbar-height: 45px;
+
+@import "praxis.scss";
+
+.product-logo {
+  background: url('https://analytics-assets.rightscale.com/3de860c798b9e0ba6e0b13a6e0000391179b5404/images/shell/logo.svg') no-repeat left top transparent;
+  float: left;
+  height: 45px;
+  margin-left: 2rem;
+  width: 228px;
+  text-indent: -9999px;
+}

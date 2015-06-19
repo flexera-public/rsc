@@ -1,0 +1,40 @@
+{
+  "name": "V1::MediaTypes::InstanceCombination::Links",
+  "id": "V1-MediaTypes-InstanceCombination-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "scenario": {
+      "description": "The Scenario to which this InstanceCombination belongs to.",
+      "required": true,
+      "options": {
+        "reference": "V1::MediaTypes::Scenario"
+      },
+      "type": {
+        "name": "V1::MediaTypes::Scenario",
+        "id": "V1-MediaTypes-Scenario",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "scenario": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

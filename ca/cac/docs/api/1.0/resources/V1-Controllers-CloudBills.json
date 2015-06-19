@@ -1,0 +1,205 @@
+{
+  "description": "Enables you to get details about cloud bills. Only Amazon Web Services is supported for now.",
+  "actions": [
+    {
+      "description": "Gets the filter options which can be used for filtering the cloud bill breakdown calls.",
+      "name": "filter_options",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/cloud_bills/actions/filter_options",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "start_time": {
+              "description": "The start time of the period.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              },
+              "source": "query"
+            },
+            "end_time": {
+              "description": "The end time of the period.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              },
+              "source": "query"
+            },
+            "cloud_bill_filters": {
+              "description": "The filters to apply",
+              "example_definition": [
+                [
+                  {
+                    "type": "cloud_bill:account_id",
+                    "value": 12345
+                  },
+                  {
+                    "type": "cloud_bill:account_id",
+                    "value": 54321
+                  },
+                  {
+                    "type": "cloud_bill:cloud_vendor_name",
+                    "value": "Amazon Web Services"
+                  },
+                  {
+                    "type": "cloud_bill:product",
+                    "value": "EC2"
+                  }
+                ]
+              ],
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              },
+              "source": "query"
+            },
+            "filter_types": {
+              "description": "Restricts the filter options to the specified keys.",
+              "required": true,
+              "options": {
+                "member_options": {
+                  "values": [
+                    "cloud_bill:account_id",
+                    "cloud_bill:cloud_vendor_name",
+                    "cloud_bill:cloud_vendor_account_id",
+                    "cloud_bill:product",
+                    "cloud_bill:product_category"
+                  ]
+                }
+              },
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "values": [
+                    "cloud_bill:account_id",
+                    "cloud_bill:cloud_vendor_name",
+                    "cloud_bill:cloud_vendor_account_id",
+                    "cloud_bill:product",
+                    "cloud_bill:product_category"
+                  ],
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "induce",
+          "start_time": "2014-09-12T00:00:00+00:00",
+          "end_time": "2014-02-15T00:00:00+00:00",
+          "cloud_bill_filters": [
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:account_id",
+              "value": "12345"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:account_id",
+              "value": "54321"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:cloud_vendor_name",
+              "value": "Amazon Web Services"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:product",
+              "value": "EC2"
+            }
+          ],
+          "filter_types": [
+            "cloud_bill:cloud_vendor_name",
+            "cloud_bill:cloud_vendor_account_id",
+            "cloud_bill:cloud_vendor_name"
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Filter",
+            "id": "V1-MediaTypes-Filter",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::CloudBills",
+  "metadata": {
+  }
+}

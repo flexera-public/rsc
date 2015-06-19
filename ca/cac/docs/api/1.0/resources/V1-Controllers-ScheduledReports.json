@@ -1,0 +1,663 @@
+{
+  "description": "ScheduledReports are emailed to you, and include usage, cost, and the change from the previous reporting period.\n        These emails include links to AnalysisSnapshots, which are generated automatically by us.",
+  "media_type": "V1-MediaTypes-ScheduledReport",
+  "actions": [
+    {
+      "description": "Create a new ScheduledReport.",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/scheduled_reports",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "ambiguously"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "required": true,
+              "example_definition": "My team report",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "frequency": {
+              "description": "The frequency at which reports are emailed.\n          Daily reports are sent every day but the cost reports can be a few days behind.\n          Weekly reports are sent every Wednesday for the prior week (Sun - Mon).\n          Monthly reports are sent on the 3rd of each month for the prior month.",
+              "values": [
+                "weekly",
+                "daily",
+                "monthly"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "additional_emails": {
+              "description": "In addition to your email, the report will be sent to these additional email addresses.",
+              "example_definition": [
+                [
+                  "john.smith@example.com",
+                  "joe.bloggs@example.org"
+                ]
+              ],
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "attach_csv": {
+              "description": "Whether the emails should include a CSV attachement of the instance data.",
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            },
+            "filters": {
+              "description": "Filters to use for the ScheduledReport.",
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "My team report",
+          "frequency": "monthly",
+          "additional_emails": [
+            "john.smith@example.com",
+            "joe.bloggs@example.org"
+          ],
+          "attach_csv": false,
+          "filters": [
+            {
+              "kind": "ca#filter",
+              "type": "reserved_instance:cloud_id",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "reserved_instance:cloud_id",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "deployments"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "tag:resource_type",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ScheduledReport",
+            "id": "V1-MediaTypes-ScheduledReport",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "List all ScheduledReports.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scheduled_reports",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "ambiguously"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ScheduledReport",
+            "id": "V1-MediaTypes-ScheduledReport",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a specific ScheduledReport.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scheduled_reports/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 47,
+          "view": "ambiguously"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ScheduledReport",
+            "id": "V1-MediaTypes-ScheduledReport",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Update the provided attributes of a ScheduledReport.",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/scheduled_reports/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 47,
+          "view": "ambiguously"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "example_definition": "My team report",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "frequency": {
+              "description": "The frequency at which reports are emailed.\n          Daily reports are sent every day but the cost reports can be a few days behind.\n          Weekly reports are sent every Wednesday for the prior week (Sun - Mon).\n          Monthly reports are sent on the 3rd of each month for the prior month.",
+              "values": [
+                "weekly",
+                "daily",
+                "monthly"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "additional_emails": {
+              "description": "In addition to your email, the report will be sent to these additional email addresses.",
+              "example_definition": [
+                [
+                  "john.smith@example.com",
+                  "joe.bloggs@example.org"
+                ]
+              ],
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "attach_csv": {
+              "description": "Whether the emails should include a CSV attachement of the instance data.",
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "My team report",
+          "frequency": "monthly",
+          "additional_emails": [
+            "john.smith@example.com",
+            "joe.bloggs@example.org"
+          ],
+          "attach_csv": false
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ScheduledReport",
+            "id": "V1-MediaTypes-ScheduledReport",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete a ScheduledReport.",
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/scheduled_reports/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 47
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Create the default Scheduled Report: a weekly report with no filters",
+      "name": "create_defaults",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/scheduled_reports/actions/create_defaults",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::ScheduledReport"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "ambiguously"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ScheduledReport",
+            "id": "V1-MediaTypes-ScheduledReport",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::ScheduledReports",
+  "metadata": {
+  }
+}

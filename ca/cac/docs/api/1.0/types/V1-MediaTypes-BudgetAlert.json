@@ -1,0 +1,285 @@
+{
+  "name": "V1::MediaTypes::BudgetAlert",
+  "id": "V1-MediaTypes-BudgetAlert",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "example_definition": {},
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "values": [
+        "ca#budget_alert"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "name": {
+      "example_definition": "My budget alert",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "budget": {
+      "description": "Budget for the alert.",
+      "type": {
+        "name": "Struct",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "amount": {
+            "description": "Budget amount in US Dollars.",
+            "type": {
+              "name": "Float",
+              "id": "Attributor-Float"
+            }
+          },
+          "period": {
+            "description": "What period is the budget set for, currently only monthly is supported.",
+            "values": [
+              "monthly"
+            ],
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          }
+        }
+      }
+    },
+    "type": {
+      "description": "Whether alerts should be triggered when the actual cost exceeds the monthly budget, or when\n            we forecast the costs going over the monthly budget based on the average daily-cost of the current month.",
+      "values": [
+        "actual",
+        "forecast"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "frequency": {
+      "description": "The intervals at which alerts should be sent, emails will be sent at most once a day, week or month.",
+      "values": [
+        "weekly",
+        "daily",
+        "monthly"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "additional_emails": {
+      "description": "In addition to your email, the report will be sent to these additional email addresses.",
+      "example_definition": [
+        [
+          "john.smith@example.com",
+          "joe.bloggs@example.org"
+        ]
+      ],
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "attach_csv": {
+      "description": "Whether the emails should include a CSV attachement of the instance data.",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "filters": {
+      "description": "Filters to use for the BudgetAlert.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::Filter"
+          },
+          "type": {
+            "name": "V1::MediaTypes::Filter",
+            "id": "V1-MediaTypes-Filter",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "created_at": {
+      "description": "Timestamp of when the BudgetAlert was created.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "updated_at": {
+      "description": "Timestamp of when the BudgetAlert was last updated.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "name": {
+        },
+        "budget": {
+        },
+        "type": {
+        },
+        "frequency": {
+        },
+        "additional_emails": {
+        },
+        "attach_csv": {
+        },
+        "filters": {
+        },
+        "created_at": {
+        },
+        "updated_at": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 883,
+        "href": "/api/budget_alerts/883",
+        "kind": "ca#budget_alert",
+        "name": "My budget alert",
+        "budget": {
+          "amount": 0.0,
+          "period": "monthly"
+        },
+        "type": "actual",
+        "frequency": "weekly",
+        "additional_emails": [
+          "john.smith@example.com",
+          "joe.bloggs@example.org"
+        ],
+        "attach_csv": true,
+        "filters": [
+          {
+            "kind": "ca#filter",
+            "type": "instance:cloud_vendor_name",
+            "value": "Amazon Web Services",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "accounts"
+          },
+          {
+            "kind": "ca#filter",
+            "type": "reserved_instance:cloud_id",
+            "value": "1",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "accounts"
+          }
+        ],
+        "created_at": "2014-01-18T00:00:00+00:00",
+        "updated_at": "2013-08-29T00:00:00+00:00"
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 883,
+        "href": "/api/budget_alerts/883",
+        "name": "My budget alert",
+        "kind": "ca#budget_alert"
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "id": 883,
+    "href": "/api/budget_alerts/883",
+    "kind": "ca#budget_alert",
+    "name": "My budget alert",
+    "budget": {
+      "amount": 0.0,
+      "period": "monthly"
+    },
+    "type": "actual",
+    "frequency": "weekly",
+    "additional_emails": [
+      "john.smith@example.com",
+      "joe.bloggs@example.org"
+    ],
+    "attach_csv": true,
+    "filters": [
+      {
+        "kind": "ca#filter",
+        "type": "instance:cloud_vendor_name",
+        "value": "Amazon Web Services",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "accounts"
+      },
+      {
+        "kind": "ca#filter",
+        "type": "reserved_instance:cloud_id",
+        "value": "1",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "accounts"
+      }
+    ],
+    "created_at": "2014-01-18T00:00:00+00:00",
+    "updated_at": "2013-08-29T00:00:00+00:00"
+  }
+}

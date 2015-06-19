@@ -1,0 +1,524 @@
+{
+  "name": "V1::MediaTypes::UserSetting",
+  "id": "V1-MediaTypes-UserSetting",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#user_setting"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "date_range": {
+      "type": {
+        "name": "Struct",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "type": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "start_time": {
+            "type": {
+              "name": "DateTime",
+              "id": "Attributor-DateTime"
+            }
+          },
+          "end_time": {
+            "type": {
+              "name": "DateTime",
+              "id": "Attributor-DateTime"
+            }
+          },
+          "is_comparison": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          }
+        }
+      }
+    },
+    "granularity": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "module_states": {
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::ModuleState"
+          },
+          "type": {
+            "name": "V1::MediaTypes::ModuleState",
+            "id": "V1-MediaTypes-ModuleState",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "filters": {
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::Filter"
+          },
+          "type": {
+            "name": "V1::MediaTypes::Filter",
+            "id": "V1-MediaTypes-Filter",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "selected_cloud_vendor_names": {
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        },
+        "value": {
+          "type": {
+            "name": "Boolean",
+            "id": "Attributor-Boolean"
+          }
+        }
+      }
+    },
+    "metrics": {
+      "options": {
+        "member_options": {
+          "values": [
+            "average_instance_count",
+            "lowest_instance_count",
+            "highest_instance_count",
+            "total_cost",
+            "wasted_reserved_instance_cost",
+            "managed_instance_rcu_count",
+            "unmanaged_instance_rcu_count",
+            "managed_instance_hours",
+            "unmanaged_instance_hours",
+            "instance_usage_cost",
+            "reserved_instance_upfront_cost",
+            "reserved_instance_recurring_cost"
+          ]
+        }
+      },
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "values": [
+            "average_instance_count",
+            "lowest_instance_count",
+            "highest_instance_count",
+            "total_cost",
+            "wasted_reserved_instance_cost",
+            "managed_instance_rcu_count",
+            "unmanaged_instance_rcu_count",
+            "managed_instance_hours",
+            "unmanaged_instance_hours",
+            "instance_usage_cost",
+            "reserved_instance_upfront_cost",
+            "reserved_instance_recurring_cost"
+          ],
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "onboarding_status": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "main_menu_visibility": {
+      "values": [
+        "open",
+        "closed"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "sorting": {
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        },
+        "value": {
+          "type": {
+            "name": "Hash",
+            "id": null,
+            "key": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "value": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            }
+          }
+        }
+      }
+    },
+    "dismissed_dialogs": {
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        },
+        "value": {
+          "type": {
+            "name": "Boolean",
+            "id": "Attributor-Boolean"
+          }
+        }
+      }
+    },
+    "excluded_tag_types": {
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "table_column_visibility": {
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        },
+        "value": {
+          "type": {
+            "name": "Hash",
+            "id": null,
+            "key": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "value": {
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "date_range": {
+        },
+        "granularity": {
+        },
+        "module_states": {
+        },
+        "filters": {
+        },
+        "selected_cloud_vendor_names": {
+        },
+        "metrics": {
+        },
+        "onboarding_status": {
+        },
+        "main_menu_visibility": {
+        },
+        "sorting": {
+        },
+        "dismissed_dialogs": {
+        },
+        "excluded_tag_types": {
+        },
+        "table_column_visibility": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#user_setting",
+        "date_range": {
+          "type": "fergusonite",
+          "start_time": "2013-12-06T00:00:00+00:00",
+          "end_time": "2013-11-10T00:00:00+00:00",
+          "is_comparison": false
+        },
+        "granularity": "prolific",
+        "module_states": [
+          {
+            "kind": "ca#module_state",
+            "type": "instance:server_template_uid",
+            "active": false,
+            "expanded": false,
+            "sort_key": "average_instance_count"
+          },
+          {
+            "kind": "ca#module_state",
+            "type": "instance:datacenter_key",
+            "active": true,
+            "expanded": false,
+            "sort_key": "average_instance_count"
+          }
+        ],
+        "filters": [
+          {
+            "kind": "ca#filter",
+            "type": "reserved_instance:cloud_id",
+            "value": "Amazon Web Services",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "instances"
+          },
+          {
+            "kind": "ca#filter",
+            "type": "cloud_bill:account_id",
+            "value": "1",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "instances"
+          },
+          {
+            "kind": "ca#filter",
+            "type": "cloud_bill:account_id",
+            "value": "1",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "accounts"
+          }
+        ],
+        "selected_cloud_vendor_names": {
+          "campholide": true,
+          "endocortex": true
+        },
+        "metrics": [
+          "managed_instance_hours",
+          "managed_instance_rcu_count",
+          "managed_instance_rcu_count"
+        ],
+        "onboarding_status": "Comanche",
+        "main_menu_visibility": "closed",
+        "sorting": {
+          "chiragra": {
+            "unresponsiveness": "scalene",
+            "uncounsellable": "nontaxable",
+            "gull": "boviform"
+          },
+          "beldamship": {
+            "maintainableness": "lifeline",
+            "apishamore": "unhearable",
+            "staphylotomy": "blench"
+          },
+          "gaoler": {
+            "unmaned": "ampliative"
+          }
+        },
+        "dismissed_dialogs": {
+          "intendit": true,
+          "ortolan": false
+        },
+        "excluded_tag_types": [
+          "willowweed",
+          "cleaving",
+          "tilemaking"
+        ],
+        "table_column_visibility": {
+          "paganism": {
+            "electrocoating": true,
+            "boarfish": false,
+            "discourageable": true
+          },
+          "masoned": {
+            "Calusa": true,
+            "oar": false,
+            "Simonist": false
+          }
+        }
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#user_setting",
+    "date_range": {
+      "type": "fergusonite",
+      "start_time": "2013-12-06T00:00:00+00:00",
+      "end_time": "2013-11-10T00:00:00+00:00",
+      "is_comparison": false
+    },
+    "granularity": "prolific",
+    "module_states": [
+      {
+        "kind": "ca#module_state",
+        "type": "instance:server_template_uid",
+        "active": false,
+        "expanded": false,
+        "sort_key": "average_instance_count"
+      },
+      {
+        "kind": "ca#module_state",
+        "type": "instance:datacenter_key",
+        "active": true,
+        "expanded": false,
+        "sort_key": "average_instance_count"
+      }
+    ],
+    "filters": [
+      {
+        "kind": "ca#filter",
+        "type": "reserved_instance:cloud_id",
+        "value": "Amazon Web Services",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "instances"
+      },
+      {
+        "kind": "ca#filter",
+        "type": "cloud_bill:account_id",
+        "value": "1",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "instances"
+      },
+      {
+        "kind": "ca#filter",
+        "type": "cloud_bill:account_id",
+        "value": "1",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "accounts"
+      }
+    ],
+    "selected_cloud_vendor_names": {
+      "campholide": true,
+      "endocortex": true
+    },
+    "metrics": [
+      "managed_instance_hours",
+      "managed_instance_rcu_count",
+      "managed_instance_rcu_count"
+    ],
+    "onboarding_status": "Comanche",
+    "main_menu_visibility": "closed",
+    "sorting": {
+      "chiragra": {
+        "unresponsiveness": "scalene",
+        "uncounsellable": "nontaxable",
+        "gull": "boviform"
+      },
+      "beldamship": {
+        "maintainableness": "lifeline",
+        "apishamore": "unhearable",
+        "staphylotomy": "blench"
+      },
+      "gaoler": {
+        "unmaned": "ampliative"
+      }
+    },
+    "dismissed_dialogs": {
+      "intendit": true,
+      "ortolan": false
+    },
+    "excluded_tag_types": [
+      "willowweed",
+      "cleaving",
+      "tilemaking"
+    ],
+    "table_column_visibility": {
+      "paganism": {
+        "electrocoating": true,
+        "boarfish": false,
+        "discourageable": true
+      },
+      "masoned": {
+        "Calusa": true,
+        "oar": false,
+        "Simonist": false
+      }
+    }
+  }
+}

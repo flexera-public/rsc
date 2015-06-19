@@ -1,0 +1,1876 @@
+{
+  "name": "V1::MediaTypes::Scenario",
+  "id": "V1-MediaTypes-Scenario",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "example_definition": {},
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "values": [
+        "ca#scenario"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "name": {
+      "example_definition": "Test Scenario",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "is_persisted": {
+      "description": "Used by the Cloud Analytics UI to define whether the Scenario should be persisted or if it's being used in experimentation mode by a user, which will result in the Scenario to be deleted automatically after a few days.",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "snapshot_timestamp": {
+      "description": "The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "filters": {
+      "description": "Filters to use for the Scenario.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::Filter"
+          },
+          "type": {
+            "name": "V1::MediaTypes::Filter",
+            "id": "V1-MediaTypes-Filter",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "historic_metrics_results": {
+      "description": "The `average_instance_count` and `total_cost` of the scenario for the last 12 months.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::TimeSeriesMetricsResult"
+          },
+          "type": {
+            "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+            "id": "V1-MediaTypes-TimeSeriesMetricsResult",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "private_cloud_instance_count": {
+      "description": "Used by the Cloud Analytics UI to define the total number of instances allocated to private clouds, do not use.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "instance_combinations": {
+      "description": "InstanceCombinations in the Scenario.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::InstanceCombination"
+          },
+          "type": {
+            "name": "V1::MediaTypes::InstanceCombination",
+            "id": "V1-MediaTypes-InstanceCombination",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "created_at": {
+      "description": "Timestamp of when the Scenario was created.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "updated_at": {
+      "description": "Timestamp of when the Scenario was last updated.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "name": {
+        },
+        "is_persisted": {
+        },
+        "snapshot_timestamp": {
+        },
+        "filters": {
+        },
+        "historic_metrics_results": {
+        },
+        "private_cloud_instance_count": {
+        },
+        "instance_combinations": {
+        },
+        "created_at": {
+        },
+        "updated_at": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 627,
+        "href": "/api/scenarios/627",
+        "kind": "ca#scenario",
+        "name": "Test Scenario",
+        "is_persisted": true,
+        "snapshot_timestamp": "2014-12-29T00:00:00+00:00",
+        "filters": [
+          {
+            "kind": "ca#filter",
+            "type": "reserved_instance:account_id",
+            "value": "1",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "instances"
+          },
+          {
+            "kind": "ca#filter",
+            "type": "instance:tag",
+            "value": "Amazon Web Services",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "instances"
+          }
+        ],
+        "historic_metrics_results": [
+          {
+            "kind": "ca#time_series_metrics_result",
+            "timestamp": "2014-04-01T00:00:00+00:00",
+            "results": [
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "plaudit": "oestrual",
+                  "scrapy": "begrutch",
+                  "lyam": "mandragora"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              },
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "formyl": "unbordered"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "ca#time_series_metrics_result",
+            "timestamp": "2013-09-01T00:00:00+00:00",
+            "results": [
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "philodespot": "mealies"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              },
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "mussurana": "zoonosology",
+                  "antihemagglutinin": "nidificational",
+                  "zooxanthella": "trodden"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "ca#time_series_metrics_result",
+            "timestamp": "2013-03-14T00:00:00+00:00",
+            "results": [
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "Victorian": "ox"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              },
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "carpoptosia": "shoddylike",
+                  "hostship": "asexualization",
+                  "viceless": "unexpoundable"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              },
+              {
+                "kind": "ca#metrics_result",
+                "group": {
+                  "overbitter": "vaginule",
+                  "pontooner": "pryer",
+                  "undemonstrable": "coambulant"
+                },
+                "metrics": {
+                  "kind": "ca#metrics",
+                  "average_instance_count": 0.0,
+                  "lowest_instance_count": 0.0,
+                  "highest_instance_count": 0.0,
+                  "total_cost": 0.0,
+                  "wasted_reserved_instance_cost": 0.0,
+                  "managed_instance_rcu_count": 0.0,
+                  "unmanaged_instance_rcu_count": 0.0,
+                  "managed_instance_hours": 0.0,
+                  "unmanaged_instance_hours": 0.0,
+                  "instance_usage_cost": 0.0,
+                  "reserved_instance_upfront_cost": 0.0,
+                  "reserved_instance_recurring_cost": 0.0
+                },
+                "breakdown_metrics_results": [
+
+                ]
+              }
+            ]
+          }
+        ],
+        "private_cloud_instance_count": 143,
+        "instance_combinations": [
+          {
+            "kind": "ca#instance_combination",
+            "id": 478,
+            "href": "/api/scenarios/123/instance_combinations/478",
+            "cloud_vendor_name": "Logicworks",
+            "cloud_name": "EC2 us-east-1",
+            "datacenter_name": "us-east-1a",
+            "instance_type_name": "m1.small",
+            "platform": "Windows",
+            "quantity": 410,
+            "monthly_usage_option": "Other",
+            "monthly_usage_hours": 907,
+            "links": {
+              "scenario": {
+                "id": 982,
+                "href": "/api/scenarios/982",
+                "name": "Test Scenario",
+                "kind": "ca#scenario"
+              }
+            },
+            "created_at": "2013-05-28T00:00:00+00:00",
+            "updated_at": "2012-12-21T00:00:00+00:00",
+            "patterns": [
+              {
+                "id": 946,
+                "kind": "ca#pattern",
+                "href": "/api/patterns/946",
+                "name": "Growth pattern",
+                "summary": "Increase by 10% every months",
+                "type": "temporary",
+                "value": 0.0,
+                "operation": "subtract",
+                "years": "1-3",
+                "months": "5, 7, 9",
+                "created_at": "2013-07-13T00:00:00+00:00",
+                "updated_at": "2014-12-10T00:00:00+00:00"
+              },
+              {
+                "id": 223,
+                "kind": "ca#pattern",
+                "href": "/api/patterns/223",
+                "name": "Growth pattern",
+                "summary": "Increase by 10% every months",
+                "type": "temporary",
+                "value": 0.0,
+                "operation": "subtract",
+                "years": "1, 3",
+                "months": "all",
+                "created_at": "2014-12-01T00:00:00+00:00",
+                "updated_at": "2013-09-24T00:00:00+00:00"
+              },
+              {
+                "id": 338,
+                "kind": "ca#pattern",
+                "href": "/api/patterns/338",
+                "name": "Growth pattern",
+                "summary": "Increase by 10% every months",
+                "type": "permanent",
+                "value": 0.0,
+                "operation": "set_to",
+                "years": "1, 3",
+                "months": "1-3",
+                "created_at": "2013-05-06T00:00:00+00:00",
+                "updated_at": "2014-02-22T00:00:00+00:00"
+              }
+            ],
+            "reserved_instance_purchases": [
+              {
+                "id": 791,
+                "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/791",
+                "kind": "ca#reserved_instance_purchase",
+                "offering_type": "Heavy Utilization",
+                "duration": 31536000,
+                "quantity": 9,
+                "start_date": "2013-06-19T00:00:00+00:00",
+                "auto_renew": false,
+                "created_at": "2013-12-19T00:00:00+00:00",
+                "updated_at": "2014-09-20T00:00:00+00:00",
+                "links": {
+                  "instance_combination": {
+                    "kind": "ca#instance_combination",
+                    "id": 830,
+                    "href": "/api/scenarios/123/instance_combinations/830"
+                  }
+                }
+              },
+              {
+                "id": 815,
+                "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/815",
+                "kind": "ca#reserved_instance_purchase",
+                "offering_type": "Light Utilization",
+                "duration": 31536000,
+                "quantity": 621,
+                "start_date": "2014-08-22T00:00:00+00:00",
+                "auto_renew": false,
+                "created_at": "2014-06-16T00:00:00+00:00",
+                "updated_at": "2014-07-10T00:00:00+00:00",
+                "links": {
+                  "instance_combination": {
+                    "kind": "ca#instance_combination",
+                    "id": 186,
+                    "href": "/api/scenarios/123/instance_combinations/186"
+                  }
+                }
+              },
+              {
+                "id": 184,
+                "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/184",
+                "kind": "ca#reserved_instance_purchase",
+                "offering_type": "Heavy Utilization",
+                "duration": 31536000,
+                "quantity": 663,
+                "start_date": "2013-04-19T00:00:00+00:00",
+                "auto_renew": false,
+                "created_at": "2013-08-31T00:00:00+00:00",
+                "updated_at": "2012-12-10T00:00:00+00:00",
+                "links": {
+                  "instance_combination": {
+                    "kind": "ca#instance_combination",
+                    "id": 516,
+                    "href": "/api/scenarios/123/instance_combinations/516"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "created_at": "2014-11-25T00:00:00+00:00",
+        "updated_at": "2014-09-21T00:00:00+00:00"
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 627,
+        "href": "/api/scenarios/627",
+        "name": "Test Scenario",
+        "kind": "ca#scenario"
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "id": 627,
+    "href": "/api/scenarios/627",
+    "kind": "ca#scenario",
+    "name": "Test Scenario",
+    "is_persisted": true,
+    "snapshot_timestamp": "2014-12-29T00:00:00+00:00",
+    "filters": [
+      {
+        "kind": "ca#filter",
+        "type": "reserved_instance:account_id",
+        "value": "1",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "instances"
+      },
+      {
+        "kind": "ca#filter",
+        "type": "instance:tag",
+        "value": "Amazon Web Services",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "instances"
+      }
+    ],
+    "historic_metrics_results": [
+      {
+        "kind": "ca#time_series_metrics_result",
+        "timestamp": "2014-04-01T00:00:00+00:00",
+        "results": [
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "plaudit": "oestrual",
+              "scrapy": "begrutch",
+              "lyam": "mandragora"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          },
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "formyl": "unbordered"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ca#time_series_metrics_result",
+        "timestamp": "2013-09-01T00:00:00+00:00",
+        "results": [
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "philodespot": "mealies"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          },
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "mussurana": "zoonosology",
+              "antihemagglutinin": "nidificational",
+              "zooxanthella": "trodden"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "ca#time_series_metrics_result",
+        "timestamp": "2013-03-14T00:00:00+00:00",
+        "results": [
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "Victorian": "ox"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          },
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "carpoptosia": "shoddylike",
+              "hostship": "asexualization",
+              "viceless": "unexpoundable"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          },
+          {
+            "kind": "ca#metrics_result",
+            "group": {
+              "overbitter": "vaginule",
+              "pontooner": "pryer",
+              "undemonstrable": "coambulant"
+            },
+            "metrics": {
+              "kind": "ca#metrics",
+              "average_instance_count": 0.0,
+              "lowest_instance_count": 0.0,
+              "highest_instance_count": 0.0,
+              "total_cost": 0.0,
+              "wasted_reserved_instance_cost": 0.0,
+              "managed_instance_rcu_count": 0.0,
+              "unmanaged_instance_rcu_count": 0.0,
+              "managed_instance_hours": 0.0,
+              "unmanaged_instance_hours": 0.0,
+              "instance_usage_cost": 0.0,
+              "reserved_instance_upfront_cost": 0.0,
+              "reserved_instance_recurring_cost": 0.0
+            },
+            "breakdown_metrics_results": [
+
+            ]
+          }
+        ]
+      }
+    ],
+    "private_cloud_instance_count": 143,
+    "instance_combinations": [
+      {
+        "kind": "ca#instance_combination",
+        "id": 478,
+        "href": "/api/scenarios/123/instance_combinations/478",
+        "scenario": {
+          "id": 982,
+          "href": "/api/scenarios/982",
+          "kind": "ca#scenario",
+          "name": "Test Scenario",
+          "is_persisted": true,
+          "snapshot_timestamp": "2013-08-03T00:00:00+00:00",
+          "filters": [
+            {
+              "kind": "ca#filter",
+              "type": "reserved_instance:datacenter_key",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "deployments"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "instance:cloud_vendor_name",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            }
+          ],
+          "historic_metrics_results": [
+            {
+              "kind": "ca#time_series_metrics_result",
+              "timestamp": "2013-09-17T00:00:00+00:00",
+              "results": [
+                {
+                  "kind": "ca#metrics_result",
+                  "breakdown_metrics_results": [
+
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "ca#time_series_metrics_result",
+              "timestamp": "2014-10-10T00:00:00+00:00",
+              "results": [
+                {
+                  "kind": "ca#metrics_result",
+                  "breakdown_metrics_results": [
+
+                  ]
+                },
+                {
+                  "kind": "ca#metrics_result",
+                  "breakdown_metrics_results": [
+
+                  ]
+                },
+                {
+                  "kind": "ca#metrics_result",
+                  "breakdown_metrics_results": [
+
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "ca#time_series_metrics_result",
+              "timestamp": "2014-04-13T00:00:00+00:00",
+              "results": [
+                {
+                  "kind": "ca#metrics_result",
+                  "breakdown_metrics_results": [
+
+                  ]
+                },
+                {
+                  "kind": "ca#metrics_result",
+                  "breakdown_metrics_results": [
+
+                  ]
+                },
+                {
+                  "kind": "ca#metrics_result",
+                  "breakdown_metrics_results": [
+
+                  ]
+                }
+              ]
+            }
+          ],
+          "private_cloud_instance_count": 193,
+          "instance_combinations": [
+            {
+              "kind": "ca#instance_combination",
+              "id": 21,
+              "href": "/api/scenarios/123/instance_combinations/21",
+              "cloud_vendor_name": "Datapipe",
+              "cloud_name": "EC2 us-east-1",
+              "datacenter_name": "us-east-1a",
+              "instance_type_name": "m1.small",
+              "platform": "Linux/UNIX",
+              "quantity": 318,
+              "monthly_usage_option": "9am-5pm, Mon-Fri",
+              "monthly_usage_hours": 758,
+              "patterns": [
+                {
+                  "id": 752,
+                  "href": "/api/patterns/752",
+                  "kind": "ca#pattern",
+                  "name": "Growth pattern",
+                  "summary": "Increase by 10% every months",
+                  "type": "temporary",
+                  "value": 0.0,
+                  "operation": "set_to",
+                  "years": "all",
+                  "months": "5, 7, 9",
+                  "created_at": "2012-11-30T00:00:00+00:00",
+                  "updated_at": "2014-06-14T00:00:00+00:00",
+                  "scenarios": [
+                    {
+                      "id": 345,
+                      "href": "/api/scenarios/345",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    }
+                  ]
+                },
+                {
+                  "id": 222,
+                  "href": "/api/patterns/222",
+                  "kind": "ca#pattern",
+                  "name": "Growth pattern",
+                  "summary": "Increase by 10% every months",
+                  "type": "permanent",
+                  "value": 0.0,
+                  "operation": "set_to",
+                  "years": "all",
+                  "months": "1-3",
+                  "created_at": "2013-07-06T00:00:00+00:00",
+                  "updated_at": "2013-11-18T00:00:00+00:00",
+                  "scenarios": [
+                    {
+                      "id": 156,
+                      "href": "/api/scenarios/156",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    }
+                  ]
+                }
+              ],
+              "reserved_instance_purchases": [
+                {
+                  "id": 329,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/329",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Heavy Utilization",
+                  "duration": 94608000,
+                  "quantity": 792,
+                  "start_date": "2014-11-19T00:00:00+00:00",
+                  "auto_renew": true,
+                  "created_at": "2013-03-13T00:00:00+00:00",
+                  "updated_at": "2014-08-16T00:00:00+00:00",
+                  "links": {
+                  }
+                },
+                {
+                  "id": 140,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/140",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Light Utilization",
+                  "duration": 94608000,
+                  "quantity": 946,
+                  "start_date": "2014-05-02T00:00:00+00:00",
+                  "auto_renew": true,
+                  "created_at": "2013-04-25T00:00:00+00:00",
+                  "updated_at": "2013-04-29T00:00:00+00:00",
+                  "links": {
+                  }
+                }
+              ],
+              "created_at": "2013-07-26T00:00:00+00:00",
+              "updated_at": "2013-02-05T00:00:00+00:00",
+              "links": {
+              }
+            }
+          ],
+          "created_at": "2013-06-25T00:00:00+00:00",
+          "updated_at": "2014-08-10T00:00:00+00:00"
+        },
+        "cloud_vendor_name": "Logicworks",
+        "cloud_name": "EC2 us-east-1",
+        "datacenter_name": "us-east-1a",
+        "instance_type_name": "m1.small",
+        "platform": "Windows",
+        "quantity": 410,
+        "monthly_usage_option": "Other",
+        "monthly_usage_hours": 907,
+        "patterns": [
+          {
+            "id": 946,
+            "href": "/api/patterns/946",
+            "kind": "ca#pattern",
+            "name": "Growth pattern",
+            "summary": "Increase by 10% every months",
+            "type": "temporary",
+            "value": 0.0,
+            "operation": "subtract",
+            "years": "1-3",
+            "months": "5, 7, 9",
+            "created_at": "2013-07-13T00:00:00+00:00",
+            "updated_at": "2014-12-10T00:00:00+00:00",
+            "scenarios": [
+              {
+                "id": 256,
+                "href": "/api/scenarios/256",
+                "name": "Test Scenario",
+                "kind": "ca#scenario"
+              },
+              {
+                "id": 925,
+                "href": "/api/scenarios/925",
+                "name": "Test Scenario",
+                "kind": "ca#scenario"
+              },
+              {
+                "id": 554,
+                "href": "/api/scenarios/554",
+                "name": "Test Scenario",
+                "kind": "ca#scenario"
+              }
+            ]
+          },
+          {
+            "id": 223,
+            "href": "/api/patterns/223",
+            "kind": "ca#pattern",
+            "name": "Growth pattern",
+            "summary": "Increase by 10% every months",
+            "type": "temporary",
+            "value": 0.0,
+            "operation": "subtract",
+            "years": "1, 3",
+            "months": "all",
+            "created_at": "2014-12-01T00:00:00+00:00",
+            "updated_at": "2013-09-24T00:00:00+00:00",
+            "scenarios": [
+              {
+                "id": 281,
+                "href": "/api/scenarios/281",
+                "name": "Test Scenario",
+                "kind": "ca#scenario"
+              },
+              {
+                "id": 60,
+                "href": "/api/scenarios/60",
+                "name": "Test Scenario",
+                "kind": "ca#scenario"
+              }
+            ]
+          },
+          {
+            "id": 338,
+            "href": "/api/patterns/338",
+            "kind": "ca#pattern",
+            "name": "Growth pattern",
+            "summary": "Increase by 10% every months",
+            "type": "permanent",
+            "value": 0.0,
+            "operation": "set_to",
+            "years": "1, 3",
+            "months": "1-3",
+            "created_at": "2013-05-06T00:00:00+00:00",
+            "updated_at": "2014-02-22T00:00:00+00:00",
+            "scenarios": [
+              {
+                "id": 647,
+                "href": "/api/scenarios/647",
+                "name": "Test Scenario",
+                "kind": "ca#scenario"
+              }
+            ]
+          }
+        ],
+        "reserved_instance_purchases": [
+          {
+            "id": 791,
+            "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/791",
+            "kind": "ca#reserved_instance_purchase",
+            "offering_type": "Heavy Utilization",
+            "duration": 31536000,
+            "quantity": 9,
+            "start_date": "2013-06-19T00:00:00+00:00",
+            "auto_renew": false,
+            "instance_combination": {
+              "kind": "ca#instance_combination",
+              "id": 830,
+              "href": "/api/scenarios/123/instance_combinations/830",
+              "cloud_vendor_name": "OpenStack",
+              "cloud_name": "EC2 us-east-1",
+              "datacenter_name": "us-east-1a",
+              "instance_type_name": "m1.small",
+              "platform": "Windows",
+              "quantity": 792,
+              "monthly_usage_option": "Off (0 hours)",
+              "monthly_usage_hours": 657,
+              "patterns": [
+                {
+                  "id": 797,
+                  "href": "/api/patterns/797",
+                  "kind": "ca#pattern",
+                  "name": "Growth pattern",
+                  "summary": "Increase by 10% every months",
+                  "type": "temporary",
+                  "value": 0.0,
+                  "operation": "subtract",
+                  "years": "1-3",
+                  "months": "1-3",
+                  "created_at": "2013-10-10T00:00:00+00:00",
+                  "updated_at": "2014-02-24T00:00:00+00:00",
+                  "scenarios": [
+                    {
+                      "id": 499,
+                      "href": "/api/scenarios/499",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    },
+                    {
+                      "id": 879,
+                      "href": "/api/scenarios/879",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    },
+                    {
+                      "id": 562,
+                      "href": "/api/scenarios/562",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    }
+                  ]
+                }
+              ],
+              "reserved_instance_purchases": [
+                {
+                  "id": 588,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/588",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Medium Utilization",
+                  "duration": 31536000,
+                  "quantity": 386,
+                  "start_date": "2014-08-18T00:00:00+00:00",
+                  "auto_renew": true,
+                  "created_at": "2013-05-06T00:00:00+00:00",
+                  "updated_at": "2012-12-15T00:00:00+00:00",
+                  "links": {
+                  }
+                },
+                {
+                  "id": 541,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/541",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Medium Utilization",
+                  "duration": 31536000,
+                  "quantity": 357,
+                  "start_date": "2014-11-29T00:00:00+00:00",
+                  "auto_renew": false,
+                  "created_at": "2014-05-25T00:00:00+00:00",
+                  "updated_at": "2013-06-06T00:00:00+00:00",
+                  "links": {
+                  }
+                }
+              ],
+              "created_at": "2014-03-31T00:00:00+00:00",
+              "updated_at": "2014-01-13T00:00:00+00:00",
+              "links": {
+              }
+            },
+            "created_at": "2013-12-19T00:00:00+00:00",
+            "updated_at": "2014-09-20T00:00:00+00:00",
+            "links": {
+              "instance_combination": {
+                "kind": "ca#instance_combination",
+                "id": 830,
+                "href": "/api/scenarios/123/instance_combinations/830",
+                "cloud_vendor_name": "OpenStack",
+                "cloud_name": "EC2 us-east-1",
+                "datacenter_name": "us-east-1a",
+                "instance_type_name": "m1.small",
+                "platform": "Windows",
+                "quantity": 792,
+                "monthly_usage_option": "Off (0 hours)",
+                "monthly_usage_hours": 657,
+                "patterns": [
+                  {
+                    "id": 797,
+                    "href": "/api/patterns/797",
+                    "kind": "ca#pattern",
+                    "name": "Growth pattern",
+                    "summary": "Increase by 10% every months",
+                    "type": "temporary",
+                    "value": 0.0,
+                    "operation": "subtract",
+                    "years": "1-3",
+                    "months": "1-3",
+                    "created_at": "2013-10-10T00:00:00+00:00",
+                    "updated_at": "2014-02-24T00:00:00+00:00",
+                    "scenarios": [
+                      {
+                        "id": 499,
+                        "href": "/api/scenarios/499",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      },
+                      {
+                        "id": 879,
+                        "href": "/api/scenarios/879",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      },
+                      {
+                        "id": 562,
+                        "href": "/api/scenarios/562",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      }
+                    ]
+                  }
+                ],
+                "reserved_instance_purchases": [
+                  {
+                    "id": 588,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/588",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Medium Utilization",
+                    "duration": 31536000,
+                    "quantity": 386,
+                    "start_date": "2014-08-18T00:00:00+00:00",
+                    "auto_renew": true,
+                    "created_at": "2013-05-06T00:00:00+00:00",
+                    "updated_at": "2012-12-15T00:00:00+00:00",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": 541,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/541",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Medium Utilization",
+                    "duration": 31536000,
+                    "quantity": 357,
+                    "start_date": "2014-11-29T00:00:00+00:00",
+                    "auto_renew": false,
+                    "created_at": "2014-05-25T00:00:00+00:00",
+                    "updated_at": "2013-06-06T00:00:00+00:00",
+                    "links": {
+                    }
+                  }
+                ],
+                "created_at": "2014-03-31T00:00:00+00:00",
+                "updated_at": "2014-01-13T00:00:00+00:00",
+                "links": {
+                }
+              }
+            }
+          },
+          {
+            "id": 815,
+            "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/815",
+            "kind": "ca#reserved_instance_purchase",
+            "offering_type": "Light Utilization",
+            "duration": 31536000,
+            "quantity": 621,
+            "start_date": "2014-08-22T00:00:00+00:00",
+            "auto_renew": false,
+            "instance_combination": {
+              "kind": "ca#instance_combination",
+              "id": 186,
+              "href": "/api/scenarios/123/instance_combinations/186",
+              "cloud_vendor_name": "IDC Frontier",
+              "cloud_name": "EC2 us-east-1",
+              "datacenter_name": "us-east-1a",
+              "instance_type_name": "m1.small",
+              "platform": "Windows",
+              "quantity": 720,
+              "monthly_usage_option": "Off (0 hours)",
+              "monthly_usage_hours": 858,
+              "patterns": [
+                {
+                  "id": 972,
+                  "href": "/api/patterns/972",
+                  "kind": "ca#pattern",
+                  "name": "Growth pattern",
+                  "summary": "Increase by 10% every months",
+                  "type": "permanent",
+                  "value": 0.0,
+                  "operation": "increase",
+                  "years": "1, 3",
+                  "months": "1-3",
+                  "created_at": "2013-10-18T00:00:00+00:00",
+                  "updated_at": "2012-11-05T00:00:00+00:00",
+                  "scenarios": [
+                    {
+                      "id": 339,
+                      "href": "/api/scenarios/339",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    },
+                    {
+                      "id": 988,
+                      "href": "/api/scenarios/988",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    },
+                    {
+                      "id": 892,
+                      "href": "/api/scenarios/892",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    }
+                  ]
+                }
+              ],
+              "reserved_instance_purchases": [
+                {
+                  "id": 676,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/676",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Heavy Utilization",
+                  "duration": 31536000,
+                  "quantity": 530,
+                  "start_date": "2014-11-11T00:00:00+00:00",
+                  "auto_renew": true,
+                  "created_at": "2013-04-30T00:00:00+00:00",
+                  "updated_at": "2013-06-30T00:00:00+00:00",
+                  "links": {
+                  }
+                },
+                {
+                  "id": 343,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/343",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Medium Utilization",
+                  "duration": 31536000,
+                  "quantity": 803,
+                  "start_date": "2014-09-04T00:00:00+00:00",
+                  "auto_renew": true,
+                  "created_at": "2014-08-20T00:00:00+00:00",
+                  "updated_at": "2014-06-23T00:00:00+00:00",
+                  "links": {
+                  }
+                },
+                {
+                  "id": 999,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/999",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Medium Utilization",
+                  "duration": 94608000,
+                  "quantity": 538,
+                  "start_date": "2013-11-30T00:00:00+00:00",
+                  "auto_renew": true,
+                  "created_at": "2013-09-21T00:00:00+00:00",
+                  "updated_at": "2014-07-06T00:00:00+00:00",
+                  "links": {
+                  }
+                }
+              ],
+              "created_at": "2012-12-08T00:00:00+00:00",
+              "updated_at": "2014-05-20T00:00:00+00:00",
+              "links": {
+              }
+            },
+            "created_at": "2014-06-16T00:00:00+00:00",
+            "updated_at": "2014-07-10T00:00:00+00:00",
+            "links": {
+              "instance_combination": {
+                "kind": "ca#instance_combination",
+                "id": 186,
+                "href": "/api/scenarios/123/instance_combinations/186",
+                "cloud_vendor_name": "IDC Frontier",
+                "cloud_name": "EC2 us-east-1",
+                "datacenter_name": "us-east-1a",
+                "instance_type_name": "m1.small",
+                "platform": "Windows",
+                "quantity": 720,
+                "monthly_usage_option": "Off (0 hours)",
+                "monthly_usage_hours": 858,
+                "patterns": [
+                  {
+                    "id": 972,
+                    "href": "/api/patterns/972",
+                    "kind": "ca#pattern",
+                    "name": "Growth pattern",
+                    "summary": "Increase by 10% every months",
+                    "type": "permanent",
+                    "value": 0.0,
+                    "operation": "increase",
+                    "years": "1, 3",
+                    "months": "1-3",
+                    "created_at": "2013-10-18T00:00:00+00:00",
+                    "updated_at": "2012-11-05T00:00:00+00:00",
+                    "scenarios": [
+                      {
+                        "id": 339,
+                        "href": "/api/scenarios/339",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      },
+                      {
+                        "id": 988,
+                        "href": "/api/scenarios/988",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      },
+                      {
+                        "id": 892,
+                        "href": "/api/scenarios/892",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      }
+                    ]
+                  }
+                ],
+                "reserved_instance_purchases": [
+                  {
+                    "id": 676,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/676",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Heavy Utilization",
+                    "duration": 31536000,
+                    "quantity": 530,
+                    "start_date": "2014-11-11T00:00:00+00:00",
+                    "auto_renew": true,
+                    "created_at": "2013-04-30T00:00:00+00:00",
+                    "updated_at": "2013-06-30T00:00:00+00:00",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": 343,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/343",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Medium Utilization",
+                    "duration": 31536000,
+                    "quantity": 803,
+                    "start_date": "2014-09-04T00:00:00+00:00",
+                    "auto_renew": true,
+                    "created_at": "2014-08-20T00:00:00+00:00",
+                    "updated_at": "2014-06-23T00:00:00+00:00",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": 999,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/999",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Medium Utilization",
+                    "duration": 94608000,
+                    "quantity": 538,
+                    "start_date": "2013-11-30T00:00:00+00:00",
+                    "auto_renew": true,
+                    "created_at": "2013-09-21T00:00:00+00:00",
+                    "updated_at": "2014-07-06T00:00:00+00:00",
+                    "links": {
+                    }
+                  }
+                ],
+                "created_at": "2012-12-08T00:00:00+00:00",
+                "updated_at": "2014-05-20T00:00:00+00:00",
+                "links": {
+                }
+              }
+            }
+          },
+          {
+            "id": 184,
+            "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/184",
+            "kind": "ca#reserved_instance_purchase",
+            "offering_type": "Heavy Utilization",
+            "duration": 31536000,
+            "quantity": 663,
+            "start_date": "2013-04-19T00:00:00+00:00",
+            "auto_renew": false,
+            "instance_combination": {
+              "kind": "ca#instance_combination",
+              "id": 516,
+              "href": "/api/scenarios/123/instance_combinations/516",
+              "cloud_vendor_name": "Rackspace",
+              "cloud_name": "EC2 us-east-1",
+              "datacenter_name": "us-east-1a",
+              "instance_type_name": "m1.small",
+              "platform": "Linux/UNIX",
+              "quantity": 802,
+              "monthly_usage_option": "12hours/day",
+              "monthly_usage_hours": 848,
+              "patterns": [
+                {
+                  "id": 743,
+                  "href": "/api/patterns/743",
+                  "kind": "ca#pattern",
+                  "name": "Growth pattern",
+                  "summary": "Increase by 10% every months",
+                  "type": "permanent",
+                  "value": 0.0,
+                  "operation": "set_to",
+                  "years": "1, 3",
+                  "months": "5, 7, 9",
+                  "created_at": "2013-06-14T00:00:00+00:00",
+                  "updated_at": "2014-10-04T00:00:00+00:00",
+                  "scenarios": [
+                    {
+                      "id": 103,
+                      "href": "/api/scenarios/103",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    },
+                    {
+                      "id": 552,
+                      "href": "/api/scenarios/552",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    }
+                  ]
+                },
+                {
+                  "id": 815,
+                  "href": "/api/patterns/815",
+                  "kind": "ca#pattern",
+                  "name": "Growth pattern",
+                  "summary": "Increase by 10% every months",
+                  "type": "permanent",
+                  "value": 0.0,
+                  "operation": "subtract",
+                  "years": "1-3",
+                  "months": "5, 7, 9",
+                  "created_at": "2014-02-09T00:00:00+00:00",
+                  "updated_at": "2013-08-31T00:00:00+00:00",
+                  "scenarios": [
+                    {
+                      "id": 537,
+                      "href": "/api/scenarios/537",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    },
+                    {
+                      "id": 365,
+                      "href": "/api/scenarios/365",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    },
+                    {
+                      "id": 88,
+                      "href": "/api/scenarios/88",
+                      "name": "Test Scenario",
+                      "kind": "ca#scenario"
+                    }
+                  ]
+                }
+              ],
+              "reserved_instance_purchases": [
+                {
+                  "id": 891,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/891",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Heavy Utilization",
+                  "duration": 94608000,
+                  "quantity": 315,
+                  "start_date": "2013-02-16T00:00:00+00:00",
+                  "auto_renew": false,
+                  "created_at": "2014-05-21T00:00:00+00:00",
+                  "updated_at": "2014-07-28T00:00:00+00:00",
+                  "links": {
+                  }
+                },
+                {
+                  "id": 267,
+                  "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/267",
+                  "kind": "ca#reserved_instance_purchase",
+                  "offering_type": "Heavy Utilization",
+                  "duration": 31536000,
+                  "quantity": 824,
+                  "start_date": "2014-07-05T00:00:00+00:00",
+                  "auto_renew": false,
+                  "created_at": "2012-12-01T00:00:00+00:00",
+                  "updated_at": "2014-06-02T00:00:00+00:00",
+                  "links": {
+                  }
+                }
+              ],
+              "created_at": "2014-02-16T00:00:00+00:00",
+              "updated_at": "2013-07-16T00:00:00+00:00",
+              "links": {
+              }
+            },
+            "created_at": "2013-08-31T00:00:00+00:00",
+            "updated_at": "2012-12-10T00:00:00+00:00",
+            "links": {
+              "instance_combination": {
+                "kind": "ca#instance_combination",
+                "id": 516,
+                "href": "/api/scenarios/123/instance_combinations/516",
+                "cloud_vendor_name": "Rackspace",
+                "cloud_name": "EC2 us-east-1",
+                "datacenter_name": "us-east-1a",
+                "instance_type_name": "m1.small",
+                "platform": "Linux/UNIX",
+                "quantity": 802,
+                "monthly_usage_option": "12hours/day",
+                "monthly_usage_hours": 848,
+                "patterns": [
+                  {
+                    "id": 743,
+                    "href": "/api/patterns/743",
+                    "kind": "ca#pattern",
+                    "name": "Growth pattern",
+                    "summary": "Increase by 10% every months",
+                    "type": "permanent",
+                    "value": 0.0,
+                    "operation": "set_to",
+                    "years": "1, 3",
+                    "months": "5, 7, 9",
+                    "created_at": "2013-06-14T00:00:00+00:00",
+                    "updated_at": "2014-10-04T00:00:00+00:00",
+                    "scenarios": [
+                      {
+                        "id": 103,
+                        "href": "/api/scenarios/103",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      },
+                      {
+                        "id": 552,
+                        "href": "/api/scenarios/552",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 815,
+                    "href": "/api/patterns/815",
+                    "kind": "ca#pattern",
+                    "name": "Growth pattern",
+                    "summary": "Increase by 10% every months",
+                    "type": "permanent",
+                    "value": 0.0,
+                    "operation": "subtract",
+                    "years": "1-3",
+                    "months": "5, 7, 9",
+                    "created_at": "2014-02-09T00:00:00+00:00",
+                    "updated_at": "2013-08-31T00:00:00+00:00",
+                    "scenarios": [
+                      {
+                        "id": 537,
+                        "href": "/api/scenarios/537",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      },
+                      {
+                        "id": 365,
+                        "href": "/api/scenarios/365",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      },
+                      {
+                        "id": 88,
+                        "href": "/api/scenarios/88",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      }
+                    ]
+                  }
+                ],
+                "reserved_instance_purchases": [
+                  {
+                    "id": 891,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/891",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Heavy Utilization",
+                    "duration": 94608000,
+                    "quantity": 315,
+                    "start_date": "2013-02-16T00:00:00+00:00",
+                    "auto_renew": false,
+                    "created_at": "2014-05-21T00:00:00+00:00",
+                    "updated_at": "2014-07-28T00:00:00+00:00",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": 267,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/267",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Heavy Utilization",
+                    "duration": 31536000,
+                    "quantity": 824,
+                    "start_date": "2014-07-05T00:00:00+00:00",
+                    "auto_renew": false,
+                    "created_at": "2012-12-01T00:00:00+00:00",
+                    "updated_at": "2014-06-02T00:00:00+00:00",
+                    "links": {
+                    }
+                  }
+                ],
+                "created_at": "2014-02-16T00:00:00+00:00",
+                "updated_at": "2013-07-16T00:00:00+00:00",
+                "links": {
+                }
+              }
+            }
+          }
+        ],
+        "created_at": "2013-05-28T00:00:00+00:00",
+        "updated_at": "2012-12-21T00:00:00+00:00",
+        "links": {
+          "scenario": {
+            "id": 982,
+            "href": "/api/scenarios/982",
+            "kind": "ca#scenario",
+            "name": "Test Scenario",
+            "is_persisted": true,
+            "snapshot_timestamp": "2013-08-03T00:00:00+00:00",
+            "filters": [
+              {
+                "kind": "ca#filter",
+                "type": "reserved_instance:datacenter_key",
+                "value": "Amazon Web Services",
+                "label": "Example Deployment (Test Account)",
+                "tag_resource_type": "deployments"
+              },
+              {
+                "kind": "ca#filter",
+                "type": "instance:cloud_vendor_name",
+                "value": "Amazon Web Services",
+                "label": "Example Deployment (Test Account)",
+                "tag_resource_type": "instances"
+              }
+            ],
+            "historic_metrics_results": [
+              {
+                "kind": "ca#time_series_metrics_result",
+                "timestamp": "2013-09-17T00:00:00+00:00",
+                "results": [
+                  {
+                    "kind": "ca#metrics_result",
+                    "breakdown_metrics_results": [
+
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "ca#time_series_metrics_result",
+                "timestamp": "2014-10-10T00:00:00+00:00",
+                "results": [
+                  {
+                    "kind": "ca#metrics_result",
+                    "breakdown_metrics_results": [
+
+                    ]
+                  },
+                  {
+                    "kind": "ca#metrics_result",
+                    "breakdown_metrics_results": [
+
+                    ]
+                  },
+                  {
+                    "kind": "ca#metrics_result",
+                    "breakdown_metrics_results": [
+
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "ca#time_series_metrics_result",
+                "timestamp": "2014-04-13T00:00:00+00:00",
+                "results": [
+                  {
+                    "kind": "ca#metrics_result",
+                    "breakdown_metrics_results": [
+
+                    ]
+                  },
+                  {
+                    "kind": "ca#metrics_result",
+                    "breakdown_metrics_results": [
+
+                    ]
+                  },
+                  {
+                    "kind": "ca#metrics_result",
+                    "breakdown_metrics_results": [
+
+                    ]
+                  }
+                ]
+              }
+            ],
+            "private_cloud_instance_count": 193,
+            "instance_combinations": [
+              {
+                "kind": "ca#instance_combination",
+                "id": 21,
+                "href": "/api/scenarios/123/instance_combinations/21",
+                "cloud_vendor_name": "Datapipe",
+                "cloud_name": "EC2 us-east-1",
+                "datacenter_name": "us-east-1a",
+                "instance_type_name": "m1.small",
+                "platform": "Linux/UNIX",
+                "quantity": 318,
+                "monthly_usage_option": "9am-5pm, Mon-Fri",
+                "monthly_usage_hours": 758,
+                "patterns": [
+                  {
+                    "id": 752,
+                    "href": "/api/patterns/752",
+                    "kind": "ca#pattern",
+                    "name": "Growth pattern",
+                    "summary": "Increase by 10% every months",
+                    "type": "temporary",
+                    "value": 0.0,
+                    "operation": "set_to",
+                    "years": "all",
+                    "months": "5, 7, 9",
+                    "created_at": "2012-11-30T00:00:00+00:00",
+                    "updated_at": "2014-06-14T00:00:00+00:00",
+                    "scenarios": [
+                      {
+                        "id": 345,
+                        "href": "/api/scenarios/345",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      }
+                    ]
+                  },
+                  {
+                    "id": 222,
+                    "href": "/api/patterns/222",
+                    "kind": "ca#pattern",
+                    "name": "Growth pattern",
+                    "summary": "Increase by 10% every months",
+                    "type": "permanent",
+                    "value": 0.0,
+                    "operation": "set_to",
+                    "years": "all",
+                    "months": "1-3",
+                    "created_at": "2013-07-06T00:00:00+00:00",
+                    "updated_at": "2013-11-18T00:00:00+00:00",
+                    "scenarios": [
+                      {
+                        "id": 156,
+                        "href": "/api/scenarios/156",
+                        "name": "Test Scenario",
+                        "kind": "ca#scenario"
+                      }
+                    ]
+                  }
+                ],
+                "reserved_instance_purchases": [
+                  {
+                    "id": 329,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/329",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Heavy Utilization",
+                    "duration": 94608000,
+                    "quantity": 792,
+                    "start_date": "2014-11-19T00:00:00+00:00",
+                    "auto_renew": true,
+                    "created_at": "2013-03-13T00:00:00+00:00",
+                    "updated_at": "2014-08-16T00:00:00+00:00",
+                    "links": {
+                    }
+                  },
+                  {
+                    "id": 140,
+                    "href": "/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/140",
+                    "kind": "ca#reserved_instance_purchase",
+                    "offering_type": "Light Utilization",
+                    "duration": 94608000,
+                    "quantity": 946,
+                    "start_date": "2014-05-02T00:00:00+00:00",
+                    "auto_renew": true,
+                    "created_at": "2013-04-25T00:00:00+00:00",
+                    "updated_at": "2013-04-29T00:00:00+00:00",
+                    "links": {
+                    }
+                  }
+                ],
+                "created_at": "2013-07-26T00:00:00+00:00",
+                "updated_at": "2013-02-05T00:00:00+00:00",
+                "links": {
+                }
+              }
+            ],
+            "created_at": "2013-06-25T00:00:00+00:00",
+            "updated_at": "2014-08-10T00:00:00+00:00"
+          }
+        }
+      }
+    ],
+    "created_at": "2014-11-25T00:00:00+00:00",
+    "updated_at": "2014-09-21T00:00:00+00:00"
+  }
+}

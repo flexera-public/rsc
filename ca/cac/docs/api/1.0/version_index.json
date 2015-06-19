@@ -1,0 +1,184 @@
+{
+  "info": {
+  },
+  "resources": {
+    "V1-ApiResources-Accounts": {
+      "name": "V1::ApiResources::Accounts",
+      "friendly_name": "Accounts"
+    },
+    "V1-Controllers-AnalysisSnapshots": {
+      "name": "V1::Controllers::AnalysisSnapshots",
+      "friendly_name": "AnalysisSnapshots"
+    },
+    "V1-Controllers-BudgetAlerts": {
+      "name": "V1::Controllers::BudgetAlerts",
+      "friendly_name": "BudgetAlerts"
+    },
+    "V1-Controllers-CloudBillMetrics": {
+      "name": "V1::Controllers::CloudBillMetrics",
+      "friendly_name": "CloudBillMetrics"
+    },
+    "V1-Controllers-CloudBills": {
+      "name": "V1::Controllers::CloudBills",
+      "friendly_name": "CloudBills"
+    },
+    "V1-ApiResources-CurrentUser": {
+      "name": "V1::ApiResources::CurrentUser",
+      "friendly_name": "CurrentUser"
+    },
+    "V1-Controllers-Scenarios": {
+      "name": "V1::Controllers::Scenarios",
+      "friendly_name": "Scenarios"
+    },
+    "V1-Controllers-InstanceCombinations": {
+      "name": "V1::Controllers::InstanceCombinations",
+      "friendly_name": "InstanceCombinations"
+    },
+    "V1-Controllers-InstanceMetrics": {
+      "name": "V1::Controllers::InstanceMetrics",
+      "friendly_name": "InstanceMetrics"
+    },
+    "V1-Controllers-InstanceUsagePeriods": {
+      "name": "V1::Controllers::InstanceUsagePeriods",
+      "friendly_name": "InstanceUsagePeriods"
+    },
+    "V1-Controllers-Instances": {
+      "name": "V1::Controllers::Instances",
+      "friendly_name": "Instances"
+    },
+    "V1-Controllers-Patterns": {
+      "name": "V1::Controllers::Patterns",
+      "friendly_name": "Patterns"
+    },
+    "V1-Controllers-ReservedInstancePurchases": {
+      "name": "V1::Controllers::ReservedInstancePurchases",
+      "friendly_name": "ReservedInstancePurchases"
+    },
+    "V1-Controllers-ReservedInstances": {
+      "name": "V1::Controllers::ReservedInstances",
+      "friendly_name": "ReservedInstances"
+    },
+    "V1-Controllers-ScheduledReports": {
+      "name": "V1::Controllers::ScheduledReports",
+      "friendly_name": "ScheduledReports"
+    },
+    "V1-Controllers-TempInstancePrices": {
+      "name": "V1::Controllers::TempInstancePrices",
+      "friendly_name": "TempInstancePrices"
+    },
+    "V1-Controllers-UserSettings": {
+      "name": "V1::Controllers::UserSettings",
+      "friendly_name": "UserSettings"
+    },
+    "V1-ApiResources-Users": {
+      "name": "V1::ApiResources::Users",
+      "friendly_name": "Users"
+    }
+  },
+  "schemas": {
+    "V1-MediaTypes-Account": {
+      "name": "V1::MediaTypes::Account",
+      "friendly_name": "Account"
+    },
+    "V1-MediaTypes-CloudAccount": {
+      "name": "V1::MediaTypes::CloudAccount",
+      "friendly_name": "CloudAccount"
+    },
+    "V1-MediaTypes-AnalysisSnapshot": {
+      "name": "V1::MediaTypes::AnalysisSnapshot",
+      "friendly_name": "AnalysisSnapshot"
+    },
+    "V1-MediaTypes-Filter": {
+      "name": "V1::MediaTypes::Filter",
+      "friendly_name": "Filter"
+    },
+    "V1-MediaTypes-ModuleState": {
+      "name": "V1::MediaTypes::ModuleState",
+      "friendly_name": "ModuleState"
+    },
+    "V1-MediaTypes-BudgetAlert": {
+      "name": "V1::MediaTypes::BudgetAlert",
+      "friendly_name": "BudgetAlert"
+    },
+    "V1-MediaTypes-TimeSeriesMetricsResult": {
+      "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+      "friendly_name": "TimeSeriesMetricsResult"
+    },
+    "V1-MediaTypes-MetricsResult": {
+      "name": "V1::MediaTypes::MetricsResult",
+      "friendly_name": "MetricsResult"
+    },
+    "V1-MediaTypes-Metrics": {
+      "name": "V1::MediaTypes::Metrics",
+      "friendly_name": "Metrics"
+    },
+    "V1-MediaTypes-CurrentUser": {
+      "name": "V1::MediaTypes::CurrentUser",
+      "friendly_name": "CurrentUser"
+    },
+    "V1-MediaTypes-UserOnboardingStatus": {
+      "name": "V1::MediaTypes::UserOnboardingStatus",
+      "friendly_name": "UserOnboardingStatus"
+    },
+    "V1-MediaTypes-UserEnvironment": {
+      "name": "V1::MediaTypes::UserEnvironment",
+      "friendly_name": "UserEnvironment"
+    },
+    "V1-MediaTypes-UserSetting": {
+      "name": "V1::MediaTypes::UserSetting",
+      "friendly_name": "UserSetting"
+    },
+    "V1-MediaTypes-Scenario": {
+      "name": "V1::MediaTypes::Scenario",
+      "friendly_name": "Scenario"
+    },
+    "V1-MediaTypes-InstanceCombination": {
+      "name": "V1::MediaTypes::InstanceCombination",
+      "friendly_name": "InstanceCombination"
+    },
+    "V1-MediaTypes-Pattern": {
+      "name": "V1::MediaTypes::Pattern",
+      "friendly_name": "Pattern"
+    },
+    "V1-MediaTypes-ReservedInstancePurchase": {
+      "name": "V1::MediaTypes::ReservedInstancePurchase",
+      "friendly_name": "ReservedInstancePurchase"
+    },
+    "V1-MediaTypes-ReservedInstancePurchase-Links": {
+      "name": "V1::MediaTypes::ReservedInstancePurchase::Links",
+      "friendly_name": "ReservedInstancePurchaseLinks"
+    },
+    "V1-MediaTypes-InstanceCombination-Links": {
+      "name": "V1::MediaTypes::InstanceCombination::Links",
+      "friendly_name": "InstanceCombinationLinks"
+    },
+    "V1-MediaTypes-InstanceUsagePeriod": {
+      "name": "V1::MediaTypes::InstanceUsagePeriod",
+      "friendly_name": "InstanceUsagePeriod"
+    },
+    "V1-MediaTypes-Instance": {
+      "name": "V1::MediaTypes::Instance",
+      "friendly_name": "Instance"
+    },
+    "V1-MediaTypes-Tag": {
+      "name": "V1::MediaTypes::Tag",
+      "friendly_name": "Tag"
+    },
+    "V1-MediaTypes-ReservedInstance": {
+      "name": "V1::MediaTypes::ReservedInstance",
+      "friendly_name": "ReservedInstance"
+    },
+    "V1-MediaTypes-ScheduledReport": {
+      "name": "V1::MediaTypes::ScheduledReport",
+      "friendly_name": "ScheduledReport"
+    },
+    "V1-MediaTypes-User": {
+      "name": "V1::MediaTypes::User",
+      "friendly_name": "User"
+    },
+    "V1-MediaTypes-UserAccounts": {
+      "name": "V1::MediaTypes::UserAccounts",
+      "friendly_name": "UserAccounts"
+    }
+  }
+}

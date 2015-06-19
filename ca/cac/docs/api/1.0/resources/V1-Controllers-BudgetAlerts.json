@@ -1,0 +1,682 @@
+{
+  "description": "Enable you to set a monthly spend budget and be alerted via email when this is exceeded,\n        based on either actual or forecasted spend. These emails include links to AnalysisSnapshots, which are\n        generated automatically by us.",
+  "media_type": "V1-MediaTypes-BudgetAlert",
+  "actions": [
+    {
+      "description": "Create a new BudgetAlert.",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/budget_alerts",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::BudgetAlert"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "quemeful"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::BudgetAlert"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "required": true,
+              "example_definition": "My budget alert",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "budget": {
+              "description": "Budget for the alert.",
+              "required": true,
+              "type": {
+                "name": "Struct",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "amount": {
+                    "description": "Budget amount in US Dollars.",
+                    "type": {
+                      "name": "Float",
+                      "id": "Attributor-Float"
+                    }
+                  },
+                  "period": {
+                    "description": "What period is the budget set for, currently only monthly is supported.",
+                    "values": [
+                      "monthly"
+                    ],
+                    "type": {
+                      "name": "String",
+                      "id": "Attributor-String"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "description": "Whether alerts should be triggered when the actual cost exceeds the monthly budget, or when\n            we forecast the costs going over the monthly budget based on the average daily-cost of the current month.",
+              "values": [
+                "actual",
+                "forecast"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "frequency": {
+              "description": "The intervals at which alerts should be sent, emails will be sent at most once a day, week or month.",
+              "values": [
+                "weekly",
+                "daily",
+                "monthly"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "additional_emails": {
+              "description": "In addition to your email, the report will be sent to these additional email addresses.",
+              "example_definition": [
+                [
+                  "john.smith@example.com",
+                  "joe.bloggs@example.org"
+                ]
+              ],
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "attach_csv": {
+              "description": "Whether the emails should include a CSV attachement of the instance data.",
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            },
+            "filters": {
+              "description": "Filters to use for the BudgetAlert.",
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "My budget alert",
+          "budget": {
+            "amount": 0.0,
+            "period": "monthly"
+          },
+          "type": "forecast",
+          "frequency": "daily",
+          "additional_emails": [
+            "john.smith@example.com",
+            "joe.bloggs@example.org"
+          ],
+          "attach_csv": false,
+          "filters": [
+            {
+              "kind": "ca#filter",
+              "type": "tag:key",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:cloud_vendor_account_id",
+              "value": "1",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "deployments"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::BudgetAlert",
+            "id": "V1-MediaTypes-BudgetAlert",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "List all BudgetAlerts.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/budget_alerts",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::BudgetAlert"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "quemeful"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::BudgetAlert",
+            "id": "V1-MediaTypes-BudgetAlert",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a specific BudgetAlert.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/budget_alerts/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::BudgetAlert"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 428,
+          "view": "quemeful"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::BudgetAlert",
+            "id": "V1-MediaTypes-BudgetAlert",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Update the provided attributes of a BudgetAlert.",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/budget_alerts/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::BudgetAlert"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 428,
+          "view": "quemeful"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::BudgetAlert"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "example_definition": "My budget alert",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "budget": {
+              "description": "Budget for the alert.",
+              "type": {
+                "name": "Struct",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "amount": {
+                    "description": "Budget amount in US Dollars.",
+                    "type": {
+                      "name": "Float",
+                      "id": "Attributor-Float"
+                    }
+                  },
+                  "period": {
+                    "description": "What period is the budget set for, currently only monthly is supported.",
+                    "values": [
+                      "monthly"
+                    ],
+                    "type": {
+                      "name": "String",
+                      "id": "Attributor-String"
+                    }
+                  }
+                }
+              }
+            },
+            "additional_emails": {
+              "description": "In addition to your email, the report will be sent to these additional email addresses.",
+              "example_definition": [
+                [
+                  "john.smith@example.com",
+                  "joe.bloggs@example.org"
+                ]
+              ],
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "type": {
+              "description": "Whether alerts should be triggered when the actual cost exceeds the monthly budget, or when\n            we forecast the costs going over the monthly budget based on the average daily-cost of the current month.",
+              "values": [
+                "actual",
+                "forecast"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "frequency": {
+              "description": "The intervals at which alerts should be sent, emails will be sent at most once a day, week or month.",
+              "values": [
+                "weekly",
+                "daily",
+                "monthly"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "attach_csv": {
+              "description": "Whether the emails should include a CSV attachement of the instance data.",
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "My budget alert",
+          "budget": {
+            "amount": 0.0,
+            "period": "monthly"
+          },
+          "additional_emails": [
+            "john.smith@example.com",
+            "joe.bloggs@example.org"
+          ],
+          "type": "forecast",
+          "frequency": "daily",
+          "attach_csv": false
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::BudgetAlert",
+            "id": "V1-MediaTypes-BudgetAlert",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete a BudgetAlert.",
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/budget_alerts/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::BudgetAlert"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 428
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::BudgetAlerts",
+  "metadata": {
+  }
+}

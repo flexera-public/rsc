@@ -1,0 +1,77 @@
+{
+  "name": "V1::MediaTypes::Tag",
+  "id": "V1-MediaTypes-Tag",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#tag"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "resource_type": {
+      "description": "Whether the tag was applied to an instance, deployment or account.",
+      "values": [
+        "instances",
+        "deployments",
+        "accounts"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "key": {
+      "description": "The namespace and predicate for the tag.",
+      "example_definition": "ec2:name",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "value": {
+      "description": "The value of the tag.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "resource_type": {
+        },
+        "key": {
+        },
+        "value": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#tag",
+        "resource_type": "deployments",
+        "key": "ec2:name",
+        "value": "epidermatic"
+      }
+    }
+  },
+  "identifier": null,
+  "description": "See https://support.rightscale.com/12-Guides/RightScale_101/06-Advanced_Concepts/Tagging for more information on how RightScale uses tags",
+  "example": {
+    "kind": "ca#tag",
+    "resource_type": "deployments",
+    "key": "ec2:name",
+    "value": "epidermatic"
+  }
+}
