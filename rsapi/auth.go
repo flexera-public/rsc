@@ -619,3 +619,73 @@ var omitHeaders map[string]bool = map[string]bool{
 	"Content-Type":   true,
 	"Content-Length": true,
 }
+
+// CA authenticator
+type CAAuthenticator struct {
+	Host      string
+	Username  string
+	Password  string
+	Cookies   map[int][]*http.Cookie
+	RefreshAt time.Time
+	Client    HttpClient
+}
+
+// Add username/password authorization cookies to the *http.Request
+func (a *CAAuthenticator) Sign(r *http.Request, host string, accountId int) error {
+	if err := a.Refresh(a.Host, accountId); err != nil {
+		return err
+	}
+	for _, c := range a.Cookies[accountId] {
+		r.AddCookie(c)
+	}
+
+	return nil
+}
+
+// Make sure global session cookie is up-to-date
+func (a *CAAuthenticator) Refresh(host string, accountId int) error {
+	if time.Now().After(a.RefreshAt) {
+		authReq, authErr := a.newLoginRequest(host, accountId)
+		if authErr != nil {
+			return authErr
+		}
+		resp, err := a.Client.Do(authReq)
+
+		fmt.Println(resp)
+		if err != nil {
+			return fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
+		}
+		if resp.StatusCode != 204 {
+			return fmt.Errorf("Authentication failed: %s", resp.Status)
+		}
+		if a.Cookies == nil {
+			a.Cookies = make(map[int][]*http.Cookie)
+		}
+		a.Cookies[accountId] = resp.Cookies()
+		a.RefreshAt = time.Now().Add(time.Duration(2) * time.Hour)
+	}
+	return nil
+}
+
+// To be called from rsapi.Api to verify credentials, and (re)set host if redirected
+func (a *CAAuthenticator) ResolveHost(host string, accountId int) (string, error) {
+	authReq, authErr := a.newLoginRequest(host, accountId)
+	if authErr != nil {
+		return host, authErr
+	}
+	return resolveHost(authReq, host, accountId)
+}
+
+// Return a new *http.Request with the specified host, and username/password
+func (a *CAAuthenticator) newLoginRequest(host string, accountId int) (*http.Request, error) {
+	jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
+		a.Username, a.Password, accountId)
+	authReq, err := http.NewRequest("POST", fmt.Sprintf("https://%s/api/sessions", host),
+		bytes.NewBufferString(jsonStr))
+	if err != nil {
+		return authReq, fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
+	}
+	authReq.Header.Set("X-API-Version", "1.5")
+	authReq.Header.Set("Content-Type", "application/json")
+	return authReq, nil
+}

@@ -4,11 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/rightscale/rsc/rsapi"
 	"net/http"
 	"net/url"
 	"strconv"
-
-	"github.com/rightscale/rsc/rsapi"
 )
 
 // BuildRequest builds a HTTP request from a resource name and href and an action name and

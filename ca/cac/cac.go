@@ -32,7 +32,7 @@ func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams
 	details := dispatch.RequestDetails{
 		HttpMethod:            method,
 		Host:                  a.Host,
-		Url:                   "/designer" + actionUrl,
+		Url:                   actionUrl,
 		Params:                params,
 		Payload:               payload,
 		AccountId:             a.AccountId,
