@@ -17,12 +17,9 @@ type Api struct {
 // logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(accountId int, host string, auth rsapi.Authenticator, logger *log.Logger,
+func New(host string, auth rsapi.Authenticator, logger *log.Logger,
 	client rsapi.HttpClient) (*Api, error) {
-	api, err := rsapi.New(accountId, host, auth, logger, client)
-	if err != nil {
-		return nil, err
-	}
+	api := rsapi.New(host, auth, logger, client)
 	api.Metadata = GenMetadata
 	return &Api{api}, nil
 }
@@ -32,10 +29,9 @@ func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams
 	details := dispatch.RequestDetails{
 		HttpMethod:            method,
 		Host:                  a.Host,
-		Url:                   "/designer" + actionUrl,
+		Url:                   actionUrl,
 		Params:                params,
 		Payload:               payload,
-		AccountId:             a.AccountId,
 		FetchLocationResource: a.FetchLocationResource,
 	}
 	return dispatch.Dispatch(&details, a)

@@ -8,7 +8,7 @@ import (
 
 const (
 	// Used by rsc to display command line help
-	ApiName = "RightScale Self-Service APIs"
+	ApiName = "RightScale Cloud Analytics APIs"
 )
 
 // Data structure that holds parsed command line values
