@@ -1,0 +1,170 @@
+{
+  "name": "V1::MediaTypes::Metrics",
+  "id": "V1-MediaTypes-Metrics",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#metrics"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "average_instance_count": {
+      "description": "The average instance count.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "lowest_instance_count": {
+      "description": "The lowest instance count at any point.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "highest_instance_count": {
+      "description": "The highest instance count at any point.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "total_cost": {
+      "description": "The total cost (USD).",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "wasted_reserved_instance_cost": {
+      "description": "The total cost (USD) for any period when a Reserved Instance was not being fully utilized. This only applies to Heavy, No Upfront and Partial Upfront Reserved Instances.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "managed_instance_rcu_count": {
+      "description": "The total RightScale Compute Unit count for instances managed by RightScale.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "unmanaged_instance_rcu_count": {
+      "description": "The total RightScale Compute Unit count for instances not managed by RightScale.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "managed_instance_hours": {
+      "description": "The total hours for instances managed by RightScale.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "unmanaged_instance_hours": {
+      "description": "The total hours for instances not managed by RightScale.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "instance_usage_cost": {
+      "description": "The total usage cost (USD) of instances.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "reserved_instance_upfront_cost": {
+      "description": "The upfront cost (USD) of Reserved Instances. This only applies to Light, Mediam, Heavy, Partial and All Upfront Reserved Instances.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "reserved_instance_recurring_cost": {
+      "description": "The recurring cost (USD) of Reserved Instances. This only applies to Heavy, No Upfront and Partial Upfront Reserved Instances.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "average_instance_count": {
+        },
+        "lowest_instance_count": {
+        },
+        "highest_instance_count": {
+        },
+        "total_cost": {
+        },
+        "wasted_reserved_instance_cost": {
+        },
+        "managed_instance_rcu_count": {
+        },
+        "unmanaged_instance_rcu_count": {
+        },
+        "managed_instance_hours": {
+        },
+        "unmanaged_instance_hours": {
+        },
+        "instance_usage_cost": {
+        },
+        "reserved_instance_upfront_cost": {
+        },
+        "reserved_instance_recurring_cost": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#metrics",
+        "average_instance_count": 0.0,
+        "lowest_instance_count": 0.0,
+        "highest_instance_count": 0.0,
+        "total_cost": 0.0,
+        "wasted_reserved_instance_cost": 0.0,
+        "managed_instance_rcu_count": 0.0,
+        "unmanaged_instance_rcu_count": 0.0,
+        "managed_instance_hours": 0.0,
+        "unmanaged_instance_hours": 0.0,
+        "instance_usage_cost": 0.0,
+        "reserved_instance_upfront_cost": 0.0,
+        "reserved_instance_recurring_cost": 0.0
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#metrics",
+    "average_instance_count": 0.0,
+    "lowest_instance_count": 0.0,
+    "highest_instance_count": 0.0,
+    "total_cost": 0.0,
+    "wasted_reserved_instance_cost": 0.0,
+    "managed_instance_rcu_count": 0.0,
+    "unmanaged_instance_rcu_count": 0.0,
+    "managed_instance_hours": 0.0,
+    "unmanaged_instance_hours": 0.0,
+    "instance_usage_cost": 0.0,
+    "reserved_instance_upfront_cost": 0.0,
+    "reserved_instance_recurring_cost": 0.0
+  }
+}

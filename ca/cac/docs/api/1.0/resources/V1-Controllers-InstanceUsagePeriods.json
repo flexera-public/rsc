@@ -1,0 +1,132 @@
+{
+  "description": "Enables you to get usage period details from instances. An instance can have many usage periods, which can\n        be caused by stop/start actions or changes to the instance type etc. InstanceUsagePeriods are used internally to\n        calculate aggregate InstanceMetrics.",
+  "media_type": "V1-MediaTypes-InstanceUsagePeriod",
+  "actions": [
+    {
+      "description": "Gets the instance usage periods of instances.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instance_usage_periods",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceUsagePeriod"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "instance_usage_period_filters": {
+              "description": "Filters the instance usages by instance key.",
+              "required": true,
+              "example_definition": [
+                [
+                  {
+                    "type": "instance_usage_period:instance_key",
+                    "value": "12345::9::i-c1234567"
+                  },
+                  {
+                    "type": "instance_usage_period:instance_key",
+                    "value": "54321::1::i-c7654321"
+                  }
+                ]
+              ],
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "withershins",
+          "instance_usage_period_filters": [
+            {
+              "kind": "ca#filter",
+              "type": "instance_usage_period:instance_key",
+              "value": "12345::9::i-c1234567"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "instance_usage_period:instance_key",
+              "value": "54321::1::i-c7654321"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::InstanceUsagePeriod",
+            "id": "V1-MediaTypes-InstanceUsagePeriod",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::InstanceUsagePeriods",
+  "metadata": {
+  }
+}

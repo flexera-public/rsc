@@ -1,0 +1,776 @@
+{
+  "description": "InstanceCombinations represent instances that make-up a Scenario.\n        Note that, when making create and update calls, a Pattern can only be applied to an InstanceCombination once.",
+  "media_type": "V1-MediaTypes-InstanceCombination",
+  "actions": [
+    {
+      "description": "Create a new InstanceCombination.",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/scenarios/:scenario_id/instance_combinations",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceCombination"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "scenario_id": 92,
+          "view": "syntonically"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceCombination"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "quantity": {
+              "description": "The number of instances.",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "cloud_vendor_name": {
+              "description": "The cloud vendor name of the instances.",
+              "values": [
+                "Amazon Web Services",
+                "CloudStack",
+                "Datapipe",
+                "Eucalyptus",
+                "Google",
+                "HP",
+                "IDC Frontier",
+                "Logicworks",
+                "Microsoft Azure",
+                "OpenStack",
+                "Rackspace",
+                "SoftLayer",
+                "VMware"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "cloud_name": {
+              "description": "The cloud name of the instances.",
+              "required": true,
+              "example_definition": "EC2 us-east-1",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "datacenter_name": {
+              "description": "Where applicable, the datacenter name of the instances.",
+              "example_definition": "us-east-1a",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "instance_type_name": {
+              "description": "The instance type.",
+              "required": true,
+              "example_definition": "m1.small",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "platform": {
+              "description": "The platform isn't the actual operating system of the instance as cloud vendors don't always have a way for us to access this.",
+              "values": [
+                "Linux/UNIX",
+                "Windows"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "monthly_usage_option": {
+              "description": "The number of hours that the instances run for every month.",
+              "values": [
+                "24hours/day",
+                "12hours/day",
+                "9am-5pm, Mon-Fri",
+                "1day/month",
+                "Off (0 hours)",
+                "Other"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "monthly_usage_hours": {
+              "description": "If monthly_usage_option is set to 'Other', this specifies the hours in the month the instances are running.",
+              "required_if": {},
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "patterns": {
+              "description": "Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.",
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Pattern"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Pattern",
+                    "id": "V1-MediaTypes-Pattern",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "quantity": 671,
+          "cloud_vendor_name": "IDC Frontier",
+          "cloud_name": "EC2 us-east-1",
+          "datacenter_name": "us-east-1a",
+          "instance_type_name": "m1.small",
+          "platform": "Linux/UNIX",
+          "monthly_usage_option": "1day/month",
+          "monthly_usage_hours": 510,
+          "patterns": [
+            {
+              "id": 594,
+              "kind": "ca#pattern",
+              "href": "/api/patterns/594",
+              "name": "Growth pattern",
+              "summary": "Increase by 10% every months",
+              "type": "temporary",
+              "value": 0.0,
+              "operation": "subtract",
+              "years": "all",
+              "months": "5, 7, 9",
+              "created_at": "2013-11-21T00:00:00+00:00",
+              "updated_at": "2013-12-15T00:00:00+00:00"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::InstanceCombination",
+            "id": "V1-MediaTypes-InstanceCombination",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a specific InstanceCombination.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceCombination"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 9,
+          "scenario_id": 92,
+          "view": "syntonically"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::InstanceCombination",
+            "id": "V1-MediaTypes-InstanceCombination",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Update the provided attributes of an InstanceCombination.",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceCombination"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 9,
+          "scenario_id": 92,
+          "view": "syntonically"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceCombination"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "quantity": {
+              "description": "The number of instances.",
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "cloud_vendor_name": {
+              "description": "The cloud vendor name of the instances.",
+              "values": [
+                "Amazon Web Services",
+                "CloudStack",
+                "Datapipe",
+                "Eucalyptus",
+                "Google",
+                "HP",
+                "IDC Frontier",
+                "Logicworks",
+                "Microsoft Azure",
+                "OpenStack",
+                "Rackspace",
+                "SoftLayer",
+                "VMware"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "cloud_name": {
+              "description": "The cloud name of the instances.",
+              "example_definition": "EC2 us-east-1",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "datacenter_name": {
+              "description": "Where applicable, the datacenter name of the instances.",
+              "example_definition": "us-east-1a",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "instance_type_name": {
+              "description": "The instance type.",
+              "example_definition": "m1.small",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "platform": {
+              "description": "The platform isn't the actual operating system of the instance as cloud vendors don't always have a way for us to access this.",
+              "values": [
+                "Linux/UNIX",
+                "Windows"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "monthly_usage_option": {
+              "description": "The number of hours that the instances run for every month.",
+              "values": [
+                "24hours/day",
+                "12hours/day",
+                "9am-5pm, Mon-Fri",
+                "1day/month",
+                "Off (0 hours)",
+                "Other"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "monthly_usage_hours": {
+              "description": "If monthly_usage_option is set to 'Other', this specifies the hours in the month the instances are running.",
+              "required_if": {},
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "patterns": {
+              "description": "Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.",
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Pattern"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Pattern",
+                    "id": "V1-MediaTypes-Pattern",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "quantity": 671,
+          "cloud_vendor_name": "IDC Frontier",
+          "cloud_name": "EC2 us-east-1",
+          "datacenter_name": "us-east-1a",
+          "instance_type_name": "m1.small",
+          "platform": "Linux/UNIX",
+          "monthly_usage_option": "1day/month",
+          "monthly_usage_hours": 510,
+          "patterns": [
+            {
+              "id": 594,
+              "kind": "ca#pattern",
+              "href": "/api/patterns/594",
+              "name": "Growth pattern",
+              "summary": "Increase by 10% every months",
+              "type": "temporary",
+              "value": 0.0,
+              "operation": "subtract",
+              "years": "all",
+              "months": "5, 7, 9",
+              "created_at": "2013-11-21T00:00:00+00:00",
+              "updated_at": "2013-12-15T00:00:00+00:00"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::InstanceCombination",
+            "id": "V1-MediaTypes-InstanceCombination",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete an InstanceCombination.",
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceCombination"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 9,
+          "scenario_id": 92
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Returns pricing details for the various reserved instances that can be purchased for this InstanceCombination.",
+      "name": "reserved_instance_prices",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id/actions/reserved_instance_prices",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::InstanceCombination"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "scenario_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 9,
+          "scenario_id": 92,
+          "view": "syntonically"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "id": "V1-MediaTypes-ReservedInstancePurchase",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::InstanceCombinations",
+  "metadata": {
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "description": null,
+  "actions": [
+    {
+      "description": null,
+      "name": "new",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/dev_session/new",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "flow_return_to": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "flow_return_to": "cordon"
+        }
+      },
+      "responses": {
+        "html_template": {
+          "description": null,
+          "status": 200,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": null,
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/dev_session",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "flow_return_to": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "flow_return_to": "cordon"
+        }
+      },
+      "payload": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "email": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "password": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            }
+          }
+        },
+        "example": {
+          "email": "vasu",
+          "password": "fender"
+        }
+      },
+      "responses": {
+        "found": {
+          "description": "The requested resource resides temporarily under a different URI.",
+          "status": 302,
+          "headers": {
+          }
+        },
+        "html_template": {
+          "description": null,
+          "status": 200,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V0::ApiResources::DevSession",
+  "metadata": {
+  }
+}

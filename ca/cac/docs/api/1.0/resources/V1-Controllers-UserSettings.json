@@ -1,0 +1,530 @@
+{
+  "description": "Used by the Cloud Analytics UI to keep track of various UI states.",
+  "media_type": "V1-MediaTypes-UserSetting",
+  "actions": [
+    {
+      "description": "List the UserSettings.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/user_settings",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::UserSetting"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "nonadornment"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::UserSetting",
+            "id": "V1-MediaTypes-UserSetting",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Update the provided attributes of UserSettings.",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/user_settings",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::UserSetting"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "nonadornment"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::UserSetting"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "date_range": {
+              "type": {
+                "name": "Struct",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "type": {
+                    "type": {
+                      "name": "String",
+                      "id": "Attributor-String"
+                    }
+                  },
+                  "start_time": {
+                    "type": {
+                      "name": "DateTime",
+                      "id": "Attributor-DateTime"
+                    }
+                  },
+                  "end_time": {
+                    "type": {
+                      "name": "DateTime",
+                      "id": "Attributor-DateTime"
+                    }
+                  },
+                  "is_comparison": {
+                    "type": {
+                      "name": "Boolean",
+                      "id": "Attributor-Boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "granularity": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "module_states": {
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::ModuleState"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::ModuleState",
+                    "id": "V1-MediaTypes-ModuleState",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            },
+            "filters": {
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            },
+            "selected_cloud_vendor_names": {
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "Boolean",
+                    "id": "Attributor-Boolean"
+                  }
+                }
+              }
+            },
+            "metrics": {
+              "options": {
+                "member_options": {
+                  "values": [
+                    "average_instance_count",
+                    "lowest_instance_count",
+                    "highest_instance_count",
+                    "total_cost",
+                    "wasted_reserved_instance_cost",
+                    "managed_instance_rcu_count",
+                    "unmanaged_instance_rcu_count",
+                    "managed_instance_hours",
+                    "unmanaged_instance_hours",
+                    "instance_usage_cost",
+                    "reserved_instance_upfront_cost",
+                    "reserved_instance_recurring_cost"
+                  ]
+                }
+              },
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "values": [
+                    "average_instance_count",
+                    "lowest_instance_count",
+                    "highest_instance_count",
+                    "total_cost",
+                    "wasted_reserved_instance_cost",
+                    "managed_instance_rcu_count",
+                    "unmanaged_instance_rcu_count",
+                    "managed_instance_hours",
+                    "unmanaged_instance_hours",
+                    "instance_usage_cost",
+                    "reserved_instance_upfront_cost",
+                    "reserved_instance_recurring_cost"
+                  ],
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "onboarding_status": {
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "main_menu_visibility": {
+              "values": [
+                "open",
+                "closed"
+              ],
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "sorting": {
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "Hash",
+                    "id": null,
+                    "key": {
+                      "type": {
+                        "name": "String",
+                        "id": "Attributor-String"
+                      }
+                    },
+                    "value": {
+                      "type": {
+                        "name": "String",
+                        "id": "Attributor-String"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "table_column_visibility": {
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "Hash",
+                    "id": null,
+                    "key": {
+                      "type": {
+                        "name": "String",
+                        "id": "Attributor-String"
+                      }
+                    },
+                    "value": {
+                      "type": {
+                        "name": "Boolean",
+                        "id": "Attributor-Boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "dismissed_dialogs": {
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "Boolean",
+                    "id": "Attributor-Boolean"
+                  }
+                }
+              }
+            },
+            "excluded_tag_types": {
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "date_range": {
+            "type": "firesideship",
+            "start_time": "2012-10-30T00:00:00+00:00",
+            "end_time": "2013-05-27T00:00:00+00:00",
+            "is_comparison": true
+          },
+          "granularity": "punningly",
+          "module_states": [
+            {
+              "kind": "ca#module_state",
+              "type": "instance:state",
+              "active": true,
+              "expanded": true,
+              "sort_key": "total_cost"
+            },
+            {
+              "kind": "ca#module_state",
+              "type": "instance:ss_app",
+              "active": true,
+              "expanded": true,
+              "sort_key": "average_instance_count"
+            }
+          ],
+          "filters": [
+            {
+              "kind": "ca#filter",
+              "type": "instance:datacenter_key",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "reserved_instance:cloud_id",
+              "value": "1",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "deployments"
+            }
+          ],
+          "selected_cloud_vendor_names": {
+            "Polypomorpha": true,
+            "contagion": true
+          },
+          "metrics": [
+            "reserved_instance_recurring_cost",
+            "highest_instance_count"
+          ],
+          "onboarding_status": "Palaemonidae",
+          "main_menu_visibility": "open",
+          "sorting": {
+            "Almon": {
+              "Carlisle": "psalterion"
+            },
+            "demand": {
+              "slackly": "arghool",
+              "clankety": "arachnid",
+              "kelpie": "feaze"
+            }
+          },
+          "table_column_visibility": {
+            "sincaline": {
+              "razzia": false,
+              "violative": true
+            },
+            "theetsee": {
+              "surprisable": true,
+              "snug": true,
+              "solidly": false
+            },
+            "springing": {
+              "reasonlessly": false
+            }
+          },
+          "dismissed_dialogs": {
+            "Pickwickianism": true,
+            "billposting": true,
+            "tricentenary": true
+          },
+          "excluded_tag_types": [
+            "percribrate",
+            "prostemmate"
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::UserSetting",
+            "id": "V1-MediaTypes-UserSetting",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::UserSettings",
+  "metadata": {
+  }
+}

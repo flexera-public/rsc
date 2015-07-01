@@ -1,0 +1,501 @@
+{
+  "name": "V1::MediaTypes::UserEnvironment",
+  "id": "V1-MediaTypes-UserEnvironment",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#user_environment"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "environment": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "use_local_assets": {
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "cloud_management_url": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "analytics_ui_sha": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "google_analytics": {
+      "type": {
+        "name": "Struct",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "account_id": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "domain_name": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          }
+        }
+      }
+    },
+    "current_user": {
+      "type": {
+        "name": "Struct",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "id": {
+            "type": {
+              "name": "Integer",
+              "id": "Attributor-Integer"
+            }
+          },
+          "first_name": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "last_name": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "company": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "phone": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "email": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "first_login_at": {
+            "type": {
+              "name": "DateTime",
+              "id": "Attributor-DateTime"
+            }
+          },
+          "timezone": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "timezone_offset_seconds": {
+            "type": {
+              "name": "Integer",
+              "id": "Attributor-Integer"
+            }
+          },
+          "has_cloud_analytics_enabled_accounts": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "has_admin_on_any_account": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "has_only_expired_accounts": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "has_non_ip_whitelisted_accounts_with_admin": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "beta_enabled": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "is_team_user": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "is_rightscale_employee": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "is_cloud_analytics_only": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "is_selfservice_user": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "can_see_managed_rcus": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "can_see_unmanaged_rcus": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "can_see_cost_and_rcu_metrics": {
+            "type": {
+              "name": "Boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "trial_end_date": {
+            "type": {
+              "name": "DateTime",
+              "id": "Attributor-DateTime"
+            }
+          },
+          "notification_message": {
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          },
+          "selfservice_url": {
+            "description": "The Self-Service URL depends on the current_user's accounts so it's not static like the\n              `cloud_management_url`.",
+            "type": {
+              "name": "String",
+              "id": "Attributor-String"
+            }
+          }
+        }
+      }
+    },
+    "user_settings": {
+      "options": {
+        "reference": "V1::MediaTypes::UserSetting"
+      },
+      "type": {
+        "name": "V1::MediaTypes::UserSetting",
+        "id": "V1-MediaTypes-UserSetting",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "environment": {
+        },
+        "use_local_assets": {
+        },
+        "cloud_management_url": {
+        },
+        "analytics_ui_sha": {
+        },
+        "google_analytics": {
+        },
+        "current_user": {
+        },
+        "user_settings": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#user_environment",
+        "environment": "nonwatertight",
+        "use_local_assets": true,
+        "cloud_management_url": "auriculately",
+        "analytics_ui_sha": "snozzle",
+        "google_analytics": {
+          "account_id": "Ges",
+          "domain_name": "unflated"
+        },
+        "current_user": {
+          "id": 724,
+          "first_name": "immutability",
+          "last_name": "Washoan",
+          "company": "internationalist",
+          "phone": "squiblet",
+          "email": "slatemaker",
+          "first_login_at": "2014-08-02T00:00:00+00:00",
+          "timezone": "stinkbird",
+          "timezone_offset_seconds": 328,
+          "has_cloud_analytics_enabled_accounts": true,
+          "has_admin_on_any_account": true,
+          "has_only_expired_accounts": true,
+          "has_non_ip_whitelisted_accounts_with_admin": false,
+          "beta_enabled": false,
+          "is_team_user": false,
+          "is_rightscale_employee": false,
+          "is_cloud_analytics_only": true,
+          "is_selfservice_user": false,
+          "can_see_managed_rcus": true,
+          "can_see_unmanaged_rcus": true,
+          "can_see_cost_and_rcu_metrics": false,
+          "trial_end_date": "2013-01-27T00:00:00+00:00",
+          "notification_message": "irrational",
+          "selfservice_url": "sculpturing"
+        },
+        "user_settings": {
+          "kind": "ca#user_setting",
+          "date_range": {
+            "type": "marbly",
+            "start_time": "2014-11-02T00:00:00+00:00",
+            "end_time": "2013-01-07T00:00:00+00:00",
+            "is_comparison": false
+          },
+          "granularity": "respirative",
+          "module_states": [
+            {
+              "kind": "ca#module_state",
+              "type": "instance:deployment_key",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "kind": "ca#module_state",
+              "type": "instance:server_template_uid",
+              "active": false,
+              "expanded": true,
+              "sort_key": "average_instance_count"
+            }
+          ],
+          "filters": [
+            {
+              "kind": "ca#filter",
+              "type": "instance:account_id",
+              "value": "1",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "instance:cloud_vendor_name",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "deployments"
+            }
+          ],
+          "selected_cloud_vendor_names": {
+            "nonurgent": true,
+            "replace": false
+          },
+          "metrics": [
+            "reserved_instance_recurring_cost",
+            "reserved_instance_recurring_cost",
+            "unmanaged_instance_hours"
+          ],
+          "onboarding_status": "panegyrist",
+          "main_menu_visibility": "open",
+          "sorting": {
+            "tilyer": {
+              "photophobe": "seminate"
+            }
+          },
+          "dismissed_dialogs": {
+            "lumberdar": true
+          },
+          "excluded_tag_types": [
+            "comurmurer"
+          ],
+          "table_column_visibility": {
+            "uncrying": {
+              "cheerleader": true,
+              "Roist": false
+            },
+            "soonish": {
+              "pickage": true
+            },
+            "hysterolaparotomy": {
+              "credensive": true,
+              "rescind": false,
+              "otherest": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#user_environment",
+    "environment": "nonwatertight",
+    "use_local_assets": true,
+    "cloud_management_url": "auriculately",
+    "analytics_ui_sha": "snozzle",
+    "google_analytics": {
+      "account_id": "Ges",
+      "domain_name": "unflated"
+    },
+    "current_user": {
+      "id": 724,
+      "first_name": "immutability",
+      "last_name": "Washoan",
+      "company": "internationalist",
+      "phone": "squiblet",
+      "email": "slatemaker",
+      "first_login_at": "2014-08-02T00:00:00+00:00",
+      "timezone": "stinkbird",
+      "timezone_offset_seconds": 328,
+      "has_cloud_analytics_enabled_accounts": true,
+      "has_admin_on_any_account": true,
+      "has_only_expired_accounts": true,
+      "has_non_ip_whitelisted_accounts_with_admin": false,
+      "beta_enabled": false,
+      "is_team_user": false,
+      "is_rightscale_employee": false,
+      "is_cloud_analytics_only": true,
+      "is_selfservice_user": false,
+      "can_see_managed_rcus": true,
+      "can_see_unmanaged_rcus": true,
+      "can_see_cost_and_rcu_metrics": false,
+      "trial_end_date": "2013-01-27T00:00:00+00:00",
+      "notification_message": "irrational",
+      "selfservice_url": "sculpturing"
+    },
+    "user_settings": {
+      "kind": "ca#user_setting",
+      "date_range": {
+        "type": "marbly",
+        "start_time": "2014-11-02T00:00:00+00:00",
+        "end_time": "2013-01-07T00:00:00+00:00",
+        "is_comparison": false
+      },
+      "granularity": "respirative",
+      "module_states": [
+        {
+          "kind": "ca#module_state",
+          "type": "instance:deployment_key",
+          "active": true,
+          "expanded": false,
+          "sort_key": "total_cost"
+        },
+        {
+          "kind": "ca#module_state",
+          "type": "instance:server_template_uid",
+          "active": false,
+          "expanded": true,
+          "sort_key": "average_instance_count"
+        }
+      ],
+      "filters": [
+        {
+          "kind": "ca#filter",
+          "type": "instance:account_id",
+          "value": "1",
+          "label": "Example Deployment (Test Account)",
+          "tag_resource_type": "instances"
+        },
+        {
+          "kind": "ca#filter",
+          "type": "instance:cloud_vendor_name",
+          "value": "Amazon Web Services",
+          "label": "Example Deployment (Test Account)",
+          "tag_resource_type": "deployments"
+        }
+      ],
+      "selected_cloud_vendor_names": {
+        "nonurgent": true,
+        "replace": false
+      },
+      "metrics": [
+        "reserved_instance_recurring_cost",
+        "reserved_instance_recurring_cost",
+        "unmanaged_instance_hours"
+      ],
+      "onboarding_status": "panegyrist",
+      "main_menu_visibility": "open",
+      "sorting": {
+        "tilyer": {
+          "photophobe": "seminate"
+        }
+      },
+      "dismissed_dialogs": {
+        "lumberdar": true
+      },
+      "excluded_tag_types": [
+        "comurmurer"
+      ],
+      "table_column_visibility": {
+        "uncrying": {
+          "cheerleader": true,
+          "Roist": false
+        },
+        "soonish": {
+          "pickage": true
+        },
+        "hysterolaparotomy": {
+          "credensive": true,
+          "rescind": false,
+          "otherest": true
+        }
+      }
+    }
+  }
+}

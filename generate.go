@@ -14,4 +14,7 @@
 
 // RightLink 10
 //go:generate praxisgen -metadata=rl10/docs/api -output=rl10 -pkg=rl10 -target=unversioned -client=Api
+
+// CA 1.0
+//go:generate praxisgen -metadata=ca/cac/docs/api -output=ca/cac -pkg=cac -target=1.0 -client=Api
 package main

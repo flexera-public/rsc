@@ -1,0 +1,105 @@
+{
+  "name": "V1::MediaTypes::UserOnboardingStatus",
+  "id": "V1-MediaTypes-UserOnboardingStatus",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#user_onboarding_status"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "status": {
+      "description": "Onboarding status of the user.",
+      "values": [
+        "not_seen",
+        "no_clouds",
+        "with_clouds",
+        "onboard",
+        "all_accounts_expired"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "url_to_add_first_cloud": {
+      "description": "URL that should be used to add the user's first cloud.",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "account_id_to_add_first_cloud": {
+      "description": "RightScale account ID that should be used to add the user's first cloud.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "account_names": {
+      "description": "List of RightScale account names that the user has access to.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "status": {
+        },
+        "url_to_add_first_cloud": {
+        },
+        "account_id_to_add_first_cloud": {
+        },
+        "account_names": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#user_onboarding_status",
+        "status": "onboard",
+        "url_to_add_first_cloud": "overcurrency",
+        "account_id_to_add_first_cloud": 620,
+        "account_names": [
+          "framed",
+          "nabs",
+          "Serean"
+        ]
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#user_onboarding_status",
+    "status": "onboard",
+    "url_to_add_first_cloud": "overcurrency",
+    "account_id_to_add_first_cloud": 620,
+    "account_names": [
+      "framed",
+      "nabs",
+      "Serean"
+    ]
+  }
+}

@@ -6,6 +6,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/rightscale/rsc/ca"
 	"github.com/rightscale/rsc/cm15"
 	"github.com/rightscale/rsc/cm16"
 	"github.com/rightscale/rsc/cmd"
@@ -139,6 +140,9 @@ const (
 
 	// Command for RL10 client
 	Rl10Command = "rl10"
+
+	// Command for CA client
+	CaCommand = "ca"
 )
 
 // Instantiate client with given name from command line arguments
@@ -152,6 +156,8 @@ func ApiClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error)
 		return ss.FromCommandLine(cmdLine)
 	case Rl10Command:
 		return rl10.FromCommandLine(cmdLine)
+	case CaCommand:
+		return ca.FromCommandLine(cmdLine)
 	default:
 		return nil, fmt.Errorf("No client for '%s'", name)
 	}
@@ -174,4 +180,8 @@ func RegisterClientCommands(app *kingpin.Application) {
 	rl10Cmd := app.Command(Rl10Command, rl10.ApiName)
 	registrar = rsapi.Registrar{ApiCmd: rl10Cmd}
 	rl10.RegisterCommands(&registrar)
+
+	caCmd := app.Command(CaCommand, ca.ApiName)
+	registrar = rsapi.Registrar{ApiCmd: caCmd}
+	ca.RegisterCommands(&registrar)
 }

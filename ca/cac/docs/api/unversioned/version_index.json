@@ -1,0 +1,24 @@
+{
+  "info": {
+  },
+  "resources": {
+    "V0-Controllers-DevSession": {
+      "name": "V0::Controllers::DevSession",
+      "friendly_name": "DevSession"
+    },
+    "V0-HealthCheck": {
+      "name": "V0::HealthCheck",
+      "friendly_name": "HealthCheck"
+    },
+    "V0-Controllers-Session": {
+      "name": "V0::Controllers::Session",
+      "friendly_name": "Session"
+    },
+    "V0-Controllers-App": {
+      "name": "V0::Controllers::App",
+      "friendly_name": "App"
+    }
+  },
+  "schemas": {
+  }
+}

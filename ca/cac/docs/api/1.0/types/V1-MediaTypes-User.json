@@ -1,0 +1,164 @@
+{
+  "name": "V1::MediaTypes::User",
+  "id": "V1-MediaTypes-User",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "values": [
+        "ca#user"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "email": {
+      "description": "Email of the user.",
+      "example_definition": "john.smith@example.com",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "accounts": {
+      "description": "List of accounts that the user has access to.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::UserAccounts"
+          },
+          "type": {
+            "name": "V1::MediaTypes::UserAccounts",
+            "id": "V1-MediaTypes-UserAccounts",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "has_any_expired_accounts": {
+      "description": "Does the user have any expired accounts?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "has_any_ip_whitelisted_accounts_with_admin": {
+      "description": "Does the user have the admin permission on any accounts that have IP Whitelists?",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "email": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 447,
+        "href": "semidiapente",
+        "kind": "ca#user",
+        "email": "john.smith@example.com"
+      }
+    },
+    "full": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "email": {
+        },
+        "accounts": {
+        },
+        "has_any_expired_accounts": {
+        },
+        "has_any_ip_whitelisted_accounts_with_admin": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 447,
+        "href": "semidiapente",
+        "kind": "ca#user",
+        "email": "john.smith@example.com",
+        "accounts": [
+          {
+            "kind": "ca#user_accounts",
+            "account_id": 817,
+            "account_name": "tithonographic",
+            "billing_admin_only": false,
+            "cloud_analytics_account_setting_enabled": false,
+            "cloud_analytics_enabled": false,
+            "permissions": [
+              "billing"
+            ]
+          }
+        ],
+        "has_any_expired_accounts": false,
+        "has_any_ip_whitelisted_accounts_with_admin": true
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "id": 447,
+    "href": "semidiapente",
+    "kind": "ca#user",
+    "email": "john.smith@example.com",
+    "accounts": [
+      {
+        "kind": "ca#user_accounts",
+        "account_id": 817,
+        "account_name": "tithonographic",
+        "billing_admin_only": false,
+        "cloud_analytics_account_setting_enabled": false,
+        "cloud_analytics_enabled": false,
+        "permissions": [
+          "billing"
+        ]
+      }
+    ],
+    "has_any_expired_accounts": false,
+    "has_any_ip_whitelisted_accounts_with_admin": true
+  }
+}

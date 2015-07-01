@@ -1,0 +1,79 @@
+{
+  "name": "V1::MediaTypes::CloudAccount",
+  "id": "V1-MediaTypes-CloudAccount",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#cloud_account"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "cloud_id": {
+      "description": "ID of the cloud.",
+      "type": {
+        "name": "Integer",
+        "id": "Attributor-Integer"
+      }
+    },
+    "cloud_name": {
+      "description": "Name of the cloud.",
+      "example_definition": [
+        "EC2 eu-central-1",
+        "Azure West US"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "cloud_type": {
+      "description": "Type of the cloud.",
+      "example_definition": [
+        "amazon",
+        "azure"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "cloud_id": {
+        },
+        "cloud_name": {
+        },
+        "cloud_type": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#cloud_account",
+        "cloud_id": 263,
+        "cloud_name": "Azure West US",
+        "cloud_type": "amazon"
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#cloud_account",
+    "cloud_id": 263,
+    "cloud_name": "Azure West US",
+    "cloud_type": "amazon"
+  }
+}

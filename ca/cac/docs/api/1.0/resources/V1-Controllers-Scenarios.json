@@ -1,0 +1,644 @@
+{
+  "description": "Scenarios can be used to model changes in cloud usage to forecast costs over a 3-year period.\n        Use the forecast action to generate the results after you create a Scenario and add your InstanceCombinations,\n        ReservedInstancePurchases and Patterns.",
+  "media_type": "V1-MediaTypes-Scenario",
+  "actions": [
+    {
+      "description": "Create a new Scenario.",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/scenarios",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "chip"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "example_definition": "Test Scenario",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "is_persisted": {
+              "description": "Used by the Cloud Analytics UI to define whether the Scenario should be persisted or if it's being used in experimentation mode by a user, which will result in the Scenario to be deleted automatically after a few days.",
+              "default": true,
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            },
+            "snapshot_timestamp": {
+              "description": "The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              }
+            },
+            "filters": {
+              "description": "Filters to use for the Scenario.",
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            },
+            "private_cloud_instance_count": {
+              "description": "Used by the Cloud Analytics UI to define the total number of instances allocated to private clouds, do not use.",
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            },
+            "is_blank": {
+              "description": "Set to true to create a blank Scenario, which will result in historic data to be excluded from the Scenario.",
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "Test Scenario",
+          "is_persisted": false,
+          "snapshot_timestamp": "2013-10-13T00:00:00+00:00",
+          "filters": [
+            {
+              "kind": "ca#filter",
+              "type": "instance:tag",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "reserved_instance:cloud_vendor_name",
+              "value": "1",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "accounts"
+            }
+          ],
+          "private_cloud_instance_count": 231,
+          "is_blank": false
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Scenario",
+            "id": "V1-MediaTypes-Scenario",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "List all Scenarios.",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "include_non_persisted": {
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "chip",
+          "include_non_persisted": true
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Scenario",
+            "id": "V1-MediaTypes-Scenario",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a specific Scenario.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 514,
+          "view": "chip"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Scenario",
+            "id": "V1-MediaTypes-Scenario",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Update the provided attributes of a Scenario.",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/scenarios/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 514,
+          "view": "chip"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "example_definition": "Test Scenario",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "is_persisted": {
+              "description": "Used by the Cloud Analytics UI to define whether the Scenario should be persisted or if it's being used in experimentation mode by a user, which will result in the Scenario to be deleted automatically after a few days.",
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            },
+            "snapshot_timestamp": {
+              "description": "The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.",
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              }
+            },
+            "private_cloud_instance_count": {
+              "description": "Used by the Cloud Analytics UI to define the total number of instances allocated to private clouds, do not use.",
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "Test Scenario",
+          "is_persisted": false,
+          "snapshot_timestamp": "2013-10-13T00:00:00+00:00",
+          "private_cloud_instance_count": 231
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Scenario",
+            "id": "V1-MediaTypes-Scenario",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete a Scenario.",
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/scenarios/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 514
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Run a simulation to generate a 3-year forecast showing the `average_instance_count`, `instance_upfront_cost`,\n           `instance_usage_cost` and `instance_recurring_cost` metrics. This call might get major changes so it's best to avoid using it currently.\n           If there are missing prices for any of the InstanceCombinations then these metrics will be excluded from the results for that InstanceCombination.",
+      "name": "forecast",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:id/actions/forecast",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Scenario"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 514,
+          "view": "chip"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+            "id": "V1-MediaTypes-TimeSeriesMetricsResult",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::Scenarios",
+  "metadata": {
+  }
+}

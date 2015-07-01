@@ -1,0 +1,159 @@
+{
+  "name": "V1::MediaTypes::InstanceUsagePeriod",
+  "id": "V1-MediaTypes-InstanceUsagePeriod",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#instance_usage_period"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "instance_key": {
+      "description": "Internal key for uniquely identifying an instance.",
+      "example_definition": "12345::9::i-c1234567",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "usage_start_at": {
+      "description": "The start time of the usage period.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "usage_end_at": {
+      "description": "The end time of the usage period.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "instance_type_name": {
+      "description": "The name of the instance type.",
+      "example_definition": "m1.small",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "pricing_type": {
+      "description": "The pricing type and offering type of the instance.",
+      "values": [
+        "On-Demand Instance",
+        "Spot Instance",
+        "Reserved Instance - Light Utilization",
+        "Reserved Instance - Medium Utilization",
+        "Reserved Instance - Heavy Utilization",
+        "Reserved Instance - Fixed Price"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "hourly_price": {
+      "description": "The hourly price of the instance.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "rcu_rate": {
+      "description": "The hourly RCU rate of the instance.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "reservation_uid": {
+      "description": "The AWS Reserved Instance ID that was applied to this instance during this usage period.\n                        Will be null if no Reserved Instance was applied.",
+      "example_definition": {},
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "estimated_cost": {
+      "description": "The estimated cost of the instance during this usage period.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    },
+    "estimated_managed_rcu_count": {
+      "description": "The estimated managed RCU count of the instance during this usage period.",
+      "type": {
+        "name": "Float",
+        "id": "Attributor-Float"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "instance_key": {
+        },
+        "usage_start_at": {
+        },
+        "usage_end_at": {
+        },
+        "instance_type_name": {
+        },
+        "pricing_type": {
+        },
+        "hourly_price": {
+        },
+        "rcu_rate": {
+        },
+        "reservation_uid": {
+        },
+        "estimated_cost": {
+        },
+        "estimated_managed_rcu_count": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#instance_usage_period",
+        "instance_key": "12345::9::i-c1234567",
+        "usage_start_at": "2014-04-06T00:00:00+00:00",
+        "usage_end_at": "2013-03-12T00:00:00+00:00",
+        "instance_type_name": "m1.small",
+        "pricing_type": "Reserved Instance - Medium Utilization",
+        "hourly_price": 0.0,
+        "rcu_rate": 0.0,
+        "reservation_uid": "083c5f10-52f1-4d09-b672-ea789a4180e3",
+        "estimated_cost": 0.0,
+        "estimated_managed_rcu_count": 0.0
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "kind": "ca#instance_usage_period",
+    "instance_key": "12345::9::i-c1234567",
+    "usage_start_at": "2014-04-06T00:00:00+00:00",
+    "usage_end_at": "2013-03-12T00:00:00+00:00",
+    "instance_type_name": "m1.small",
+    "pricing_type": "Reserved Instance - Medium Utilization",
+    "hourly_price": 0.0,
+    "rcu_rate": 0.0,
+    "reservation_uid": "083c5f10-52f1-4d09-b672-ea789a4180e3",
+    "estimated_cost": 0.0,
+    "estimated_managed_rcu_count": 0.0
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "name": "V1::MediaTypes::Filter",
+  "id": "V1-MediaTypes-Filter",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#filter"
+      ],
+      "default": "ca#filter",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "type": {
+      "description": "The type that is being used to filter. If the account_id filter is left empty, all of the accounts you have access to will be used.",
+      "values": [
+        "instance:account_id",
+        "reserved_instance:account_id",
+        "cloud_bill:account_id",
+        "instance:cloud_vendor_name",
+        "reserved_instance:cloud_vendor_name",
+        "cloud_bill:cloud_vendor_name",
+        "instance:cloud_id",
+        "reserved_instance:cloud_id",
+        "instance:datacenter_key",
+        "reserved_instance:datacenter_key",
+        "instance:instance_type_key",
+        "reserved_instance:instance_type_key",
+        "instance:platform",
+        "reserved_instance:platform",
+        "instance:state",
+        "reserved_instance:state",
+        "instance:deployment_key",
+        "instance:provisioned_by_user_id",
+        "instance:pricing_type",
+        "instance:server_template_uid",
+        "instance:ss_app",
+        "instance:tag",
+        "cloud_bill:cloud_vendor_account_id",
+        "cloud_bill:product",
+        "cloud_bill:product_category",
+        "tag:key",
+        "tag:resource_type",
+        "instance_usage_period:instance_key"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "value": {
+      "description": "The value of the type that is being used to filter.",
+      "example_definition": [
+        "1",
+        "Amazon Web Services"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "label": {
+      "example_definition": "Example Deployment (Test Account)",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "tag_resource_type": {
+      "values": [
+        "instances",
+        "deployments",
+        "accounts"
+      ],
+      "required_if": {
+        "type": "instance:tag"
+      },
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "type": {
+        },
+        "value": {
+        },
+        "label": {
+        },
+        "tag_resource_type": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#filter",
+        "type": "instance:tag",
+        "value": "1",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "accounts"
+      }
+    }
+  },
+  "identifier": null,
+  "description": "A single filter object.",
+  "example": {
+    "kind": "ca#filter",
+    "type": "instance:tag",
+    "value": "1",
+    "label": "Example Deployment (Test Account)",
+    "tag_resource_type": "accounts"
+  }
+}

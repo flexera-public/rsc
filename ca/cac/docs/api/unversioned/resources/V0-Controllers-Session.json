@@ -1,0 +1,29 @@
+{
+  "description": null,
+  "actions": [
+    {
+      "description": null,
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/logout",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "login_redirect": {
+          "description": null,
+          "status": 302,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V0::ApiResources::Session",
+  "metadata": {
+  }
+}

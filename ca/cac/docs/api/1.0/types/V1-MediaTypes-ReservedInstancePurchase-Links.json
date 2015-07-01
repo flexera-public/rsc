@@ -1,0 +1,39 @@
+{
+  "name": "V1::MediaTypes::ReservedInstancePurchase::Links",
+  "id": "V1-MediaTypes-ReservedInstancePurchase-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "instance_combination": {
+      "description": "The InstanceCombination for the ReservedInstance.",
+      "options": {
+        "reference": "V1::MediaTypes::InstanceCombination"
+      },
+      "type": {
+        "name": "V1::MediaTypes::InstanceCombination",
+        "id": "V1-MediaTypes-InstanceCombination",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": null
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "instance_combination": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

@@ -1,0 +1,515 @@
+{
+  "name": "V1::MediaTypes::AnalysisSnapshot",
+  "id": "V1-MediaTypes-AnalysisSnapshot",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "uuid": {
+      "description": "Universally unique ID of the snapshot.",
+      "example_definition": {},
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "href": {
+      "example_definition": {},
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "values": [
+        "ca#analysis_snapshot"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "created_at": {
+      "description": "Timestamp of when the snapshot was created.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "created_by": {
+      "description": "Whether the snapshot was created manually by a user, or automatically via a ScheduledReport or BudgetAlert.",
+      "example_definition": "Scheduled Report - Production",
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "updated_at": {
+      "description": "Timestamp of when the snapshot was last updated.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "start_time": {
+      "description": "The start time of the snapshot.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "end_time": {
+      "description": "The end time of the snapshot.",
+      "type": {
+        "name": "DateTime",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "is_comparison": {
+      "description": "Whether the snapshot should return comparison data for the previous date range.",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "granularity": {
+      "description": "Granularity of time series data.",
+      "values": [
+        "hour",
+        "day",
+        "week",
+        "month"
+      ],
+      "type": {
+        "name": "String",
+        "id": "Attributor-String"
+      }
+    },
+    "metrics": {
+      "description": "Metrics that should be included in the snapshot.",
+      "options": {
+        "member_options": {
+          "values": [
+            "average_instance_count",
+            "lowest_instance_count",
+            "highest_instance_count",
+            "total_cost",
+            "wasted_reserved_instance_cost",
+            "managed_instance_rcu_count",
+            "unmanaged_instance_rcu_count",
+            "managed_instance_hours",
+            "unmanaged_instance_hours",
+            "instance_usage_cost",
+            "reserved_instance_upfront_cost",
+            "reserved_instance_recurring_cost"
+          ]
+        }
+      },
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "values": [
+            "average_instance_count",
+            "lowest_instance_count",
+            "highest_instance_count",
+            "total_cost",
+            "wasted_reserved_instance_cost",
+            "managed_instance_rcu_count",
+            "unmanaged_instance_rcu_count",
+            "managed_instance_hours",
+            "unmanaged_instance_hours",
+            "instance_usage_cost",
+            "reserved_instance_upfront_cost",
+            "reserved_instance_recurring_cost"
+          ],
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "filters": {
+      "description": "Filters used to create the snapshot",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::Filter"
+          },
+          "type": {
+            "name": "V1::MediaTypes::Filter",
+            "id": "V1-MediaTypes-Filter",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "module_states": {
+      "description": "Used by the Cloud Analytics UI to store the state of the snapshot modules based on the state of the Analyze page modules.",
+      "example_definition": {},
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::ModuleState"
+          },
+          "type": {
+            "name": "V1::MediaTypes::ModuleState",
+            "id": "V1-MediaTypes-ModuleState",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    "excluded_tag_types": {
+      "description": "Used by the Cloud Analytics UI to disable tag types in the tags module.",
+      "type": {
+        "name": "Collection",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "missing_access_to_some_accounts": {
+      "description": "Returns true if the user viewing the snapshot does not have access to the all of the accounts that were used to create the snapshot.",
+      "type": {
+        "name": "Boolean",
+        "id": "Attributor-Boolean"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "uuid": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "created_at": {
+        },
+        "created_by": {
+        },
+        "updated_at": {
+        },
+        "start_time": {
+        },
+        "end_time": {
+        },
+        "is_comparison": {
+        },
+        "granularity": {
+        },
+        "metrics": {
+        },
+        "filters": {
+        },
+        "module_states": {
+        },
+        "excluded_tag_types": {
+        },
+        "missing_access_to_some_accounts": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "uuid": "288dd446fb69d83924abc0a57fa626ad871da3f3",
+        "href": "/api/analysis_snapshots/288dd446fb69d83924abc0a57fa626ad871da3f3",
+        "kind": "ca#analysis_snapshot",
+        "created_at": "2014-05-06T00:00:00+00:00",
+        "created_by": "Scheduled Report - Production",
+        "updated_at": "2013-03-07T00:00:00+00:00",
+        "start_time": "2014-10-01T00:00:00+00:00",
+        "end_time": "2013-01-20T00:00:00+00:00",
+        "is_comparison": false,
+        "granularity": "day",
+        "metrics": [
+          "managed_instance_hours",
+          "managed_instance_rcu_count"
+        ],
+        "filters": [
+          {
+            "kind": "ca#filter",
+            "type": "cloud_bill:product_category",
+            "value": "1",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "deployments"
+          },
+          {
+            "kind": "ca#filter",
+            "type": "instance:pricing_type",
+            "value": "Amazon Web Services",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "accounts"
+          },
+          {
+            "kind": "ca#filter",
+            "type": "cloud_bill:cloud_vendor_name",
+            "value": "Amazon Web Services",
+            "label": "Example Deployment (Test Account)",
+            "tag_resource_type": "deployments"
+          }
+        ],
+        "module_states": [
+          {
+            "type": "instance:account_id",
+            "active": true,
+            "expanded": true,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:deployment_key",
+            "active": false,
+            "expanded": true,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:instance_type_key",
+            "active": true,
+            "expanded": true,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:tag",
+            "active": true,
+            "expanded": true,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:cloud_vendor_name",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:cloud_id",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:datacenter_key",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:platform",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:server_template_uid",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:pricing_type",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:provisioned_by_user_id",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:state",
+            "active": true,
+            "expanded": false,
+            "sort_key": "total_cost"
+          },
+          {
+            "type": "instance:ss_app",
+            "active": false,
+            "expanded": false,
+            "sort_key": "total_cost"
+          }
+        ],
+        "excluded_tag_types": [
+          "Cathari",
+          "teetotumwise"
+        ],
+        "missing_access_to_some_accounts": false
+      }
+    },
+    "link": {
+      "attributes": {
+        "uuid": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "uuid": "288dd446fb69d83924abc0a57fa626ad871da3f3",
+        "href": "/api/analysis_snapshots/288dd446fb69d83924abc0a57fa626ad871da3f3",
+        "kind": "ca#analysis_snapshot"
+      }
+    }
+  },
+  "identifier": null,
+  "description": null,
+  "example": {
+    "uuid": "288dd446fb69d83924abc0a57fa626ad871da3f3",
+    "href": "/api/analysis_snapshots/288dd446fb69d83924abc0a57fa626ad871da3f3",
+    "kind": "ca#analysis_snapshot",
+    "created_at": "2014-05-06T00:00:00+00:00",
+    "created_by": "Scheduled Report - Production",
+    "updated_at": "2013-03-07T00:00:00+00:00",
+    "start_time": "2014-10-01T00:00:00+00:00",
+    "end_time": "2013-01-20T00:00:00+00:00",
+    "is_comparison": false,
+    "granularity": "day",
+    "metrics": [
+      "managed_instance_hours",
+      "managed_instance_rcu_count"
+    ],
+    "filters": [
+      {
+        "kind": "ca#filter",
+        "type": "cloud_bill:product_category",
+        "value": "1",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "deployments"
+      },
+      {
+        "kind": "ca#filter",
+        "type": "instance:pricing_type",
+        "value": "Amazon Web Services",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "accounts"
+      },
+      {
+        "kind": "ca#filter",
+        "type": "cloud_bill:cloud_vendor_name",
+        "value": "Amazon Web Services",
+        "label": "Example Deployment (Test Account)",
+        "tag_resource_type": "deployments"
+      }
+    ],
+    "module_states": [
+      {
+        "type": "instance:account_id",
+        "active": true,
+        "expanded": true,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:deployment_key",
+        "active": false,
+        "expanded": true,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:instance_type_key",
+        "active": true,
+        "expanded": true,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:tag",
+        "active": true,
+        "expanded": true,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:cloud_vendor_name",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:cloud_id",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:datacenter_key",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:platform",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:server_template_uid",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:pricing_type",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:provisioned_by_user_id",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:state",
+        "active": true,
+        "expanded": false,
+        "sort_key": "total_cost"
+      },
+      {
+        "type": "instance:ss_app",
+        "active": false,
+        "expanded": false,
+        "sort_key": "total_cost"
+      }
+    ],
+    "excluded_tag_types": [
+      "Cathari",
+      "teetotumwise"
+    ],
+    "missing_access_to_some_accounts": false
+  }
+}

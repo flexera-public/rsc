@@ -1,0 +1,455 @@
+{
+  "description": "AnalysisSnapshots can be used to generate unique links to share data using filters over a date range.",
+  "media_type": "V1-MediaTypes-AnalysisSnapshot",
+  "actions": [
+    {
+      "description": "Create a new AnalysisSnapshot.",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/analysis_snapshots",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::AnalysisSnapshot"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "Pyrenochaeta"
+        }
+      },
+      "payload": {
+        "options": {
+          "reference": "V1::MediaTypes::AnalysisSnapshot"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "start_time": {
+              "description": "The start time of the snapshot.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              }
+            },
+            "end_time": {
+              "description": "The end time of the snapshot.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              }
+            },
+            "is_comparison": {
+              "description": "Whether the snapshot should return comparison data for the previous date range.",
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
+              }
+            },
+            "granularity": {
+              "description": "Granularity of time series data.",
+              "values": [
+                "hour",
+                "day",
+                "week",
+                "month"
+              ],
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              }
+            },
+            "excluded_tag_types": {
+              "description": "Used by the Cloud Analytics UI to disable tag types in the tags module.",
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "metrics": {
+              "description": "Metrics that should be included in the snapshot.",
+              "options": {
+                "member_options": {
+                  "values": [
+                    "average_instance_count",
+                    "lowest_instance_count",
+                    "highest_instance_count",
+                    "total_cost",
+                    "wasted_reserved_instance_cost",
+                    "managed_instance_rcu_count",
+                    "unmanaged_instance_rcu_count",
+                    "managed_instance_hours",
+                    "unmanaged_instance_hours",
+                    "instance_usage_cost",
+                    "reserved_instance_upfront_cost",
+                    "reserved_instance_recurring_cost"
+                  ]
+                }
+              },
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "values": [
+                    "average_instance_count",
+                    "lowest_instance_count",
+                    "highest_instance_count",
+                    "total_cost",
+                    "wasted_reserved_instance_cost",
+                    "managed_instance_rcu_count",
+                    "unmanaged_instance_rcu_count",
+                    "managed_instance_hours",
+                    "unmanaged_instance_hours",
+                    "instance_usage_cost",
+                    "reserved_instance_upfront_cost",
+                    "reserved_instance_recurring_cost"
+                  ],
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "filters": {
+              "description": "Filters used to create the snapshot",
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            },
+            "module_states": {
+              "description": "Used by the Cloud Analytics UI to store the state of the snapshot modules based on the state of the Analyze page modules.",
+              "example_definition": {},
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::ModuleState"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::ModuleState",
+                    "id": "V1-MediaTypes-ModuleState",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "start_time": "2014-02-17T00:00:00+00:00",
+          "end_time": "2012-12-08T00:00:00+00:00",
+          "is_comparison": true,
+          "granularity": "week",
+          "excluded_tag_types": [
+            "suborder",
+            "papyrotype",
+            "tautomery"
+          ],
+          "metrics": [
+            "reserved_instance_recurring_cost",
+            "managed_instance_rcu_count"
+          ],
+          "filters": [
+            {
+              "kind": "ca#filter",
+              "type": "reserved_instance:instance_type_key",
+              "value": "1",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:cloud_vendor_name",
+              "value": "1",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "instances"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "instance:provisioned_by_user_id",
+              "value": "Amazon Web Services",
+              "label": "Example Deployment (Test Account)",
+              "tag_resource_type": "accounts"
+            }
+          ],
+          "module_states": [
+            {
+              "type": "instance:account_id",
+              "active": true,
+              "expanded": true,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:deployment_key",
+              "active": false,
+              "expanded": true,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:instance_type_key",
+              "active": true,
+              "expanded": true,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:tag",
+              "active": true,
+              "expanded": true,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:cloud_vendor_name",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:cloud_id",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:datacenter_key",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:platform",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:server_template_uid",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:pricing_type",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:provisioned_by_user_id",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:state",
+              "active": true,
+              "expanded": false,
+              "sort_key": "total_cost"
+            },
+            {
+              "type": "instance:ss_app",
+              "active": false,
+              "expanded": false,
+              "sort_key": "total_cost"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::AnalysisSnapshot",
+            "id": "V1-MediaTypes-AnalysisSnapshot",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    },
+    {
+      "description": "Show a specific AnalysisSnapshot.",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/analysis_snapshots/:uuid",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::AnalysisSnapshot"
+        },
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "uuid": {
+              "description": "Universally unique ID of the snapshot.",
+              "example_definition": {},
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "uuid": "83cfe63d5a7e5cbb0f54a2b95e5beb3185a24b54",
+          "view": "Pyrenochaeta"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::AnalysisSnapshot",
+            "id": "V1-MediaTypes-AnalysisSnapshot",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::AnalysisSnapshots",
+  "metadata": {
+  }
+}

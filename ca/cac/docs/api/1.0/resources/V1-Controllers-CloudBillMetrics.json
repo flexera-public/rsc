@@ -1,0 +1,237 @@
+{
+  "description": "Enables you to get breakdowns of your cloud bill costs. Only Amazon Web Services is supported for now.",
+  "actions": [
+    {
+      "description": "Calculates the time series of costs for cloud bills in a time period grouped into monthly\n          time buckets and groups them into specified breakdown categories, e.g. show me cost of my\n          cloud bills per month during the last year grouped by product.",
+      "name": "grouped_time_series",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/cloud_bill_metrics/actions/grouped_time_series",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "start_time": {
+              "description": "The start time of the period.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              },
+              "source": "query"
+            },
+            "end_time": {
+              "description": "The end time of the period.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "id": "Attributor-DateTime"
+              },
+              "source": "query"
+            },
+            "cloud_bill_filters": {
+              "description": "The filters to apply",
+              "example_definition": [
+                [
+                  {
+                    "type": "cloud_bill:account_id",
+                    "value": 12345
+                  },
+                  {
+                    "type": "cloud_bill:account_id",
+                    "value": 54321
+                  },
+                  {
+                    "type": "cloud_bill:cloud_vendor_name",
+                    "value": "Amazon Web Services"
+                  },
+                  {
+                    "type": "cloud_bill:product",
+                    "value": "EC2"
+                  }
+                ]
+              ],
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": null
+                  }
+                }
+              },
+              "source": "query"
+            },
+            "group": {
+              "description": "The fields to group the results by.",
+              "required": true,
+              "options": {
+                "member_options": {
+                  "member_options": {
+                    "values": [
+                      "account_id",
+                      "cloud_vendor_name",
+                      "cloud_vendor_account_id",
+                      "product",
+                      "product_category",
+                      "account_name"
+                    ]
+                  }
+                }
+              },
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "member_options": {
+                      "values": [
+                        "account_id",
+                        "cloud_vendor_name",
+                        "cloud_vendor_account_id",
+                        "product",
+                        "product_category",
+                        "account_name"
+                      ]
+                    }
+                  },
+                  "type": {
+                    "name": "Collection",
+                    "id": null,
+                    "options": {
+                    },
+                    "member_attribute": {
+                      "values": [
+                        "account_id",
+                        "cloud_vendor_name",
+                        "cloud_vendor_account_id",
+                        "product",
+                        "product_category",
+                        "account_name"
+                      ],
+                      "type": {
+                        "name": "String",
+                        "id": "Attributor-String"
+                      }
+                    }
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "noveldom",
+          "start_time": "2014-09-13T00:00:00+00:00",
+          "end_time": "2014-08-15T00:00:00+00:00",
+          "cloud_bill_filters": [
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:account_id",
+              "value": "12345"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:account_id",
+              "value": "54321"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:cloud_vendor_name",
+              "value": "Amazon Web Services"
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:product",
+              "value": "EC2"
+            }
+          ],
+          "group": [
+            [
+              "product_category",
+              "product"
+            ],
+            [
+              "product"
+            ],
+            [
+              "cloud_vendor_account_id",
+              "cloud_vendor_account_id"
+            ]
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+            "id": "V1-MediaTypes-TimeSeriesMetricsResult",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": null
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::CloudBillMetrics",
+  "metadata": {
+  }
+}
