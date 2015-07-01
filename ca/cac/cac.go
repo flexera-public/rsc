@@ -19,7 +19,7 @@ type Api struct {
 // If no HTTP client is specified then the default client is used.
 func New(host string, auth rsapi.Authenticator, logger *log.Logger,
 	client rsapi.HttpClient) (*Api, error) {
-	api := rsapi.New(host, auth, logger, client)
+	api := rsapi.New(host, auth, client)
 	api.Metadata = GenMetadata
 	return &Api{api}, nil
 }
