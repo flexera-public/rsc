@@ -8,7 +8,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/user"
 	"regexp"
@@ -77,7 +76,6 @@ func main() {
 	if config.SshUser == "" {
 		config.SshUser = "rightscale"
 	}
-	logger := log.New(os.Stdout, "", 0)
 	var sshConfig = make([]SshConfig, 0)
 
 	for envName, envDetail := range config.Environments {
@@ -86,7 +84,7 @@ func main() {
 		}
 		// Create a new client for every environment because they can be in different accounts.
 		auth := rsapi.NewBasicAuthenticator(*email, *pwd, envDetail.Account)
-		client := cm15.New(*host, auth, logger, nil)
+		client := cm15.New(*host, auth, nil)
 		if *insecure {
 			client.Insecure()
 		}

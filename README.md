@@ -43,7 +43,7 @@ As an example the following downloads and runs the MacOS X version:
 $ curl https://binaries.rightscale.com/rsbin/rsc/v2/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v2.0.2 - 2015-06-10 00:26:42 - 54033bb219c6d7df51c161ad2cd5c7a9d528f05a
+rsc v2.0.2 - 2015-06-10 00:26:42 - 54033bb219c6d7df51c161ad2cd5c7a9d528f05/a
 ```
 
 #### Versioning
@@ -357,14 +357,14 @@ server running the RightLink10 agent. It configures the client to
 talk to the APIs through the proxy exposed by RightLink10. Overall
 the most flexible function is `New` which accepts an API host name,
 a RightScale account ID, authentication information and an optional
-logger and low-level HTTP client. As an example the following creates a
+low-level HTTP client. As an example the following creates a
 CM API 1.5 client that connects to `us-3.rightscale.com` using a OAuth
-refresh token for authentication, no logger and the default HTTP client:
+refresh token for authentication and the default HTTP client:
 ```go
 refreshToken := ... // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
 auth := rsapi.NewOAuthAuthenticator(refreshToken)
 accountId := 123
-client := cm15.New("us-3.rightscale.com", &auth, nil, nil)
+client := cm15.New("us-3.rightscale.com", &auth, nil)
 ```
 You may test the credentials using the `CanAuthenticate` method:
 ```go
@@ -375,6 +375,23 @@ if err := client.CanAuthenticate(); err != nil {
 ```
 This method makes a test API request so is expensive, the idea is to call it once then use the client
 to make a series of requests.
+
+### Logging
+
+The `rsapi` package exposes a `Log` variable of type `log15.Logger`. This logger is used
+by the package to log API requests made to external services. Configure the logger handler
+to enable logging. The [log15](https://godoc.org/gopkg.in/inconshreveable/log15.v2) package comes
+with a number of default handlers including a file and a syslog handlers.
+
+Configuring the `rsapi` package to log to the file `/var/log/myapp.log` would look like:
+```go
+handler, err := log15.FileHandler("/var/log/myapp.log", log15.LogfmtFormat())
+if err != nil {
+	return err
+}
+rsapi.Log.SetHandler(handler)
+```
+Consult the [log15](https://godoc.org/gopkg.in/inconshreveable/log15.v2) GoDocs for more information.
 
 ### Locators
 

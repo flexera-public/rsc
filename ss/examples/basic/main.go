@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"sort"
 	"strings"
@@ -43,10 +42,9 @@ func main() {
 	}
 
 	// 2. Setup client using basic auth
-	logger := log.New(os.Stdout, "", 0)
 	auth := rsapi.NewBasicAuthenticator(*email, *pwd, *account)
 	ssAuth := rsapi.NewSSAuthenticator(auth, *account)
-	client := ssm.New(*host, ssAuth, logger, nil)
+	client := ssm.New(*host, ssAuth, nil)
 	if *insecure {
 		client.Insecure()
 	}

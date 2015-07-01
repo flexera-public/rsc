@@ -27,7 +27,7 @@ func PrintSuccess(format string, a ...interface{}) {
 }
 
 func PrintError(format string, a ...interface{}) {
-	fmt.Fprintf(err, "[ERROR] "+format+"\n", a...)
+	fmt.Fprintf(errOut, "[ERROR] "+format+"\n", a...)
 }
 
 func PrintFatal(format string, a ...interface{}) {

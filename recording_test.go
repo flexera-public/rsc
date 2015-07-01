@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
@@ -80,6 +81,7 @@ var _ = Describe("Recorded request", func() {
 			SetOutput(&stdoutBuf)
 			exitCode := 99
 			osExit = func(code int) { exitCode = code }
+			SetErrorOutput(ioutil.Discard)
 
 			main()
 

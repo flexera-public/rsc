@@ -3,7 +3,6 @@ package rsapi
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -11,25 +10,8 @@ import (
 
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/inconshreveable/log15.v2"
 )
-
-// RightScale client
-// Instances of this struct should be created through `New`, `NewRL10` or `FromCommandLine`.
-type Api struct {
-	Auth                  Authenticator // Authenticator, signs requests for auth
-	Logger                *log.Logger   // Optional logger, if specified requests and responses get logged
-	Host                  string        // API host, e.g. "us-3.rightscale.com"
-	Client                HttpClient    // Underlying http client (not used for authentication requests as these necessitate special redirect handling)
-	DumpRequestResponse   Format        // Whether to dump HTTP requests and responses to STDOUT, and if so in which format
-	FetchLocationResource bool          // Whether to fetch resource pointed by Location header
-	Metadata              ApiMetadata   // Generated API metadata
-
-	insecure bool // Whether HTTP should be used instead of HTTPS (used by RL10 proxied requests)
-	// Use Insecure method to set to true.
-}
-
-// Request/response dump format
-type Format int
 
 const (
 	NoDump  Format = 1 << iota // No dump
@@ -37,6 +19,37 @@ const (
 	JSON                       // Dump in JSON format, exclusive with Debug
 	Verbose                    // Dump auth requests and headers as well
 )
+
+var (
+	// Log is the logger used to record all requests.
+	// Client code may customize its handler appropriately.
+	// The default handler is the DiscardHandler.
+	Log = log15.New()
+)
+
+type (
+	// RightScale client
+	// Instances of this struct should be created through `New`, `NewRL10` or `FromCommandLine`.
+	Api struct {
+		Auth                  Authenticator // Authenticator, signs requests for auth
+		Host                  string        // API host, e.g. "us-3.rightscale.com"
+		Client                HttpClient    // Underlying http client (not used for authentication requests as these necessitate special redirect handling)
+		DumpRequestResponse   Format        // Whether to dump HTTP requests and responses to STDOUT, and if so in which format
+		FetchLocationResource bool          // Whether to fetch resource pointed by Location header
+		Metadata              ApiMetadata   // Generated API metadata
+
+		insecure bool // Whether HTTP should be used instead of HTTPS (used by RL10 proxied requests)
+		// Use Insecure method to set to true.
+	}
+
+	// Request/response dump format
+	Format int
+)
+
+// Default  log handler to DiscardHandler.
+func init() {
+	Log.SetHandler(log15.DiscardHandler())
+}
 
 // IsDebug is a convenience wrapper that returns true if the Debug bit is set on the flag.
 func (f Format) IsDebug() bool {
@@ -65,16 +78,14 @@ type HttpClient interface {
 }
 
 // New returns a API client that uses the given authenticator.
-// logger and client are optional.
 // host may be blank in which case client attempts to resolve it using auth.
 // If no HTTP client is specified then the default client is used.
-func New(host string, auth Authenticator, logger *log.Logger, client HttpClient) *Api {
+func New(host string, auth Authenticator, client HttpClient) *Api {
 	if client == nil {
 		client = http.DefaultClient
 	}
 	a := &Api{
 		Auth:   auth,
-		Logger: logger,
 		Host:   host,
 		Client: client,
 	}
@@ -87,7 +98,7 @@ func New(host string, auth Authenticator, logger *log.Logger, client HttpClient)
 // NewRL10 returns a API client that uses the information stored in /var/run/rightlink/secret to do
 // auth and configure the host. The client behaves identically to the client returned by New in
 // all other regards.
-func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
+func NewRL10(client HttpClient) (*Api, error) {
 	rllConfig, err := os.Open(RllSecret)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to load RLL config: %s", err)
@@ -120,7 +131,6 @@ func NewRL10(logger *log.Logger, client HttpClient) (*Api, error) {
 	auth.SetHost(host)
 	api := &Api{
 		Auth:   auth,
-		Logger: logger,
 		Host:   host,
 		Client: client,
 	}
@@ -144,7 +154,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	ss := strings.HasPrefix(cmdLine.Command, "ss")
 	if cmdLine.RL10 {
 		var err error
-		if client, err = NewRL10(nil, httpClient); err != nil {
+		if client, err = NewRL10(httpClient); err != nil {
 			return nil, err
 		}
 	} else if cmdLine.OAuthToken != "" {
@@ -152,28 +162,28 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 		if ss {
 			auth = NewSSAuthenticator(auth, cmdLine.Account)
 		}
-		client = New(cmdLine.Host, auth, nil, httpClient)
+		client = New(cmdLine.Host, auth, httpClient)
 	} else if cmdLine.OAuthAccessToken != "" {
 		auth := NewTokenAuthenticator(cmdLine.OAuthAccessToken)
 		if ss {
 			auth = NewSSAuthenticator(auth, cmdLine.Account)
 		}
-		client = New(cmdLine.Host, auth, nil, httpClient)
+		client = New(cmdLine.Host, auth, httpClient)
 	} else if cmdLine.APIToken != "" {
 		auth := NewInstanceAuthenticator(cmdLine.APIToken, cmdLine.Account)
 		if ss {
 			auth = NewSSAuthenticator(auth, cmdLine.Account)
 		}
-		client = New(cmdLine.Host, auth, nil, httpClient)
+		client = New(cmdLine.Host, auth, httpClient)
 	} else if cmdLine.Username != "" && cmdLine.Password != "" {
 		auth := NewBasicAuthenticator(cmdLine.Username, cmdLine.Password, cmdLine.Account)
 		if ss {
 			auth = NewSSAuthenticator(auth, cmdLine.Account)
 		}
-		client = New(cmdLine.Host, auth, nil, httpClient)
+		client = New(cmdLine.Host, auth, httpClient)
 	} else {
 		// No auth, used by tests
-		client = New(cmdLine.Host, nil, nil, httpClient)
+		client = New(cmdLine.Host, nil, httpClient)
 		client.Insecure()
 	}
 	if !cmdLine.ShowHelp && !cmdLine.NoAuth {

@@ -27,7 +27,7 @@ func main() {
 	}
 
 	// Execute appropriate command
-	app.Writer(os.Stderr)
+	app.Writer(errOut)
 	var resp *http.Response
 	topCommand := strings.Split(cmdLine.Command, " ")[0]
 	switch topCommand {
@@ -65,9 +65,9 @@ func main() {
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		// Let user know if something went wrong
-		fmt.Fprintln(os.Stderr, resp.Status)
+		fmt.Fprintln(errOut, resp.Status)
 		if len(displayer.body) > 0 {
-			fmt.Fprintln(os.Stderr, displayer.body)
+			fmt.Fprintln(errOut, displayer.body)
 		}
 	} else if cmdLine.ExtractOneSelect != "" {
 		err = displayer.ApplySingleExtract(cmdLine.ExtractOneSelect)

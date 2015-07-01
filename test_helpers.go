@@ -12,7 +12,7 @@ var (
 	out io.Writer = os.Stdout
 
 	// Controls where fmt.(F)Printf should write errors, defaults to stderr.
-	err io.Writer = os.Stderr
+	errOut io.Writer = os.Stderr
 
 	// Controls where fmt.(F)Scanf should read, defaults to stdin.
 	in io.Reader = os.Stdin
@@ -22,7 +22,7 @@ var (
 )
 
 // SetErrorOutput changes where functions print errors, mainly useful for testing
-func SetErrorOutput(o io.Writer) { err = o }
+func SetErrorOutput(o io.Writer) { errOut = o }
 
 // SetOutput changes where functions print, mainly useful for testing
 func SetOutput(o io.Writer) { out = o }

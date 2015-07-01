@@ -27,13 +27,11 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 	}
 	var id string
 	var startedAt time.Time
-	if a.Logger != nil {
-		startedAt = time.Now()
-		b := make([]byte, 6)
-		io.ReadFull(rand.Reader, b)
-		id = base64.StdEncoding.EncodeToString(b)
-		a.Logger.Printf("[%s] %s %s", id, req.Method, req.URL.String())
-	}
+	startedAt = time.Now()
+	b := make([]byte, 6)
+	io.ReadFull(rand.Reader, b)
+	id = base64.StdEncoding.EncodeToString(b)
+	Log.Info("started", "id", id, req.Method, req.URL.String())
 	req.Header.Set("User-Agent", UA)
 	var reqBody []byte
 	if !a.DumpRequestResponse.IsVerbose() {
@@ -53,10 +51,8 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 	dumpResponse(a.DumpRequestResponse, resp, req, reqBody)
-	if a.Logger != nil {
-		d := time.Since(startedAt)
-		a.Logger.Printf("[%s] %s in %s", id, resp.Status, d.String())
-	}
+	d := time.Since(startedAt)
+	Log.Info("completed", "id", id, "status", resp.Status, "time", d.String())
 
 	return resp, err
 }
