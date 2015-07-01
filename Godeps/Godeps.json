@@ -37,6 +37,10 @@
 		{
 			"ImportPath": "gopkg.in/alecthomas/kingpin.v2",
 			"Rev": "89dac2fb11a9573327691cbcebcd711f5fa67cbd"
+		},
+		{
+			"ImportPath": "gopkg.in/inconshreveable/log15.v2",
+			"Rev": "dc7890abeaadcb6a79a9a5ee30bc1897bbf97713"
 		}
 	]
 }
