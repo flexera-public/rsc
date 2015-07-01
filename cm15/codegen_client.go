@@ -8012,7 +8012,7 @@ type ServerTemplate struct {
 	Lineage     string              `json:"lineage,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
-	Revision    string              `json:"revision,omitempty"`
+	Revision    int                 `json:"revision,omitempty"`
 }
 
 //===== Locator
