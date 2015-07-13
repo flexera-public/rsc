@@ -180,7 +180,7 @@ func (api *Api) AnalysisSnapshotLocator(href string) *AnalysisSnapshotLocator {
 // POST /api/analysis_snapshots
 //
 // Create a new AnalysisSnapshot.
-func (loc *AnalysisSnapshotLocator) Create(endTime time.Time, granularity string, startTime time.Time, options rsapi.ApiParams) (*AnalysisSnapshotLocator, error) {
+func (loc *AnalysisSnapshotLocator) Create(endTime *time.Time, granularity string, startTime *time.Time, options rsapi.ApiParams) (*AnalysisSnapshotLocator, error) {
 	var res *AnalysisSnapshotLocator
 	if granularity == "" {
 		return res, fmt.Errorf("granularity is required")
@@ -496,7 +496,7 @@ func (api *Api) CloudBillLocator(href string) *CloudBillLocator {
 // GET /api/cloud_bills/actions/filter_options
 //
 // Gets the filter options which can be used for filtering the cloud bill breakdown calls.
-func (loc *CloudBillLocator) FilterOptions(endTime time.Time, filterTypes []string, startTime time.Time, options rsapi.ApiParams) (*Filter, error) {
+func (loc *CloudBillLocator) FilterOptions(endTime *time.Time, filterTypes []string, startTime *time.Time, options rsapi.ApiParams) (*Filter, error) {
 	var res *Filter
 	if len(filterTypes) == 0 {
 		return res, fmt.Errorf("filterTypes is required")
@@ -559,7 +559,7 @@ func (api *Api) CloudBillMetricLocator(href string) *CloudBillMetricLocator {
 // Calculates the time series of costs for cloud bills in a time period grouped into monthly
 // time buckets and groups them into specified breakdown categories, e.g. show me cost of my
 // cloud bills per month during the last year grouped by product.
-func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime time.Time, group [][]string, startTime time.Time, options rsapi.ApiParams) (*TimeSeriesMetricsResult, error) {
+func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime *time.Time, group [][]string, startTime *time.Time, options rsapi.ApiParams) (*TimeSeriesMetricsResult, error) {
 	var res *TimeSeriesMetricsResult
 	if len(group) == 0 {
 		return res, fmt.Errorf("group is required")
@@ -822,7 +822,7 @@ func (api *Api) InstanceLocator(href string) *InstanceLocator {
 // GET /api/instances
 //
 // Gets instances that overlap with the requested time period.
-func (loc *InstanceLocator) Index(endTime time.Time, startTime time.Time, options rsapi.ApiParams) (*Instance, error) {
+func (loc *InstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.ApiParams) (*Instance, error) {
 	var res *Instance
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -874,7 +874,7 @@ func (loc *InstanceLocator) Index(endTime time.Time, startTime time.Time, option
 // GET /api/instances/actions/count
 //
 // Gets the count of instances that overlap with the requested time period.
-func (loc *InstanceLocator) Count(endTime time.Time, startTime time.Time, options rsapi.ApiParams) (string, error) {
+func (loc *InstanceLocator) Count(endTime *time.Time, startTime *time.Time, options rsapi.ApiParams) (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -951,7 +951,7 @@ func (loc *InstanceLocator) Exist(options rsapi.ApiParams) (string, error) {
 // GET /api/instances/actions/export
 //
 // Exports the instances that overlap with the requested time period in CSV format.
-func (loc *InstanceLocator) Export(endTime time.Time, startTime time.Time, options rsapi.ApiParams) (string, error) {
+func (loc *InstanceLocator) Export(endTime *time.Time, startTime *time.Time, options rsapi.ApiParams) (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -1003,7 +1003,7 @@ func (loc *InstanceLocator) Export(endTime time.Time, startTime time.Time, optio
 // GET /api/instances/actions/filter_options
 //
 // Gets the filter options for instances that overlap with the requested time period.
-func (loc *InstanceLocator) FilterOptions(endTime time.Time, filterTypes []string, startTime time.Time, options rsapi.ApiParams) (*Filter, error) {
+func (loc *InstanceLocator) FilterOptions(endTime *time.Time, filterTypes []string, startTime *time.Time, options rsapi.ApiParams) (*Filter, error) {
 	var res *Filter
 	if len(filterTypes) == 0 {
 		return res, fmt.Errorf("filterTypes is required")
@@ -1311,7 +1311,7 @@ func (api *Api) InstanceMetricLocator(href string) *InstanceMetricLocator {
 //
 // Calculates the overall metrics for instance usages in a time period, e.g. show me the
 // total cost of all my instances during the last month.
-func (loc *InstanceMetricLocator) Overall(endTime time.Time, metrics []string, startTime time.Time, options rsapi.ApiParams) (*MetricsResult, error) {
+func (loc *InstanceMetricLocator) Overall(endTime *time.Time, metrics []string, startTime *time.Time, options rsapi.ApiParams) (*MetricsResult, error) {
 	var res *MetricsResult
 	if len(metrics) == 0 {
 		return res, fmt.Errorf("metrics is required")
@@ -1357,7 +1357,7 @@ func (loc *InstanceMetricLocator) Overall(endTime time.Time, metrics []string, s
 // Calculates the overall metrics for instance usages in a time period and groups them into
 // specified breakdown categories, e.g. show me the total cost of all my instances during the
 // last month grouped by different accounts.
-func (loc *InstanceMetricLocator) GroupedOverall(endTime time.Time, group []string, metrics []string, startTime time.Time, options rsapi.ApiParams) (*MetricsResult, error) {
+func (loc *InstanceMetricLocator) GroupedOverall(endTime *time.Time, group []string, metrics []string, startTime *time.Time, options rsapi.ApiParams) (*MetricsResult, error) {
 	var res *MetricsResult
 	if len(group) == 0 {
 		return res, fmt.Errorf("group is required")
@@ -1419,7 +1419,7 @@ func (loc *InstanceMetricLocator) GroupedOverall(endTime time.Time, group []stri
 // Calculates the metrics time series for instance usages in a time period allowing different
 // time buckets (hour, 3 days, month, etc.), e.g. show me the lowest instance count of my
 // instances per day during the last month.
-func (loc *InstanceMetricLocator) TimeSeries(endTime time.Time, granularity string, metrics []string, startTime time.Time, options rsapi.ApiParams) (*TimeSeriesMetricsResult, error) {
+func (loc *InstanceMetricLocator) TimeSeries(endTime *time.Time, granularity string, metrics []string, startTime *time.Time, options rsapi.ApiParams) (*TimeSeriesMetricsResult, error) {
 	var res *TimeSeriesMetricsResult
 	if granularity == "" {
 		return res, fmt.Errorf("granularity is required")
@@ -1474,7 +1474,7 @@ func (loc *InstanceMetricLocator) TimeSeries(endTime time.Time, granularity stri
 // time buckets (hour, 3 days, month, etc.) and groups them into specified breakdown
 // categories, e.g. show me the lowest instance count of my instances per day during the last
 // month grouped by accounts.
-func (loc *InstanceMetricLocator) GroupedTimeSeries(endTime time.Time, granularity string, group []string, metrics []string, startTime time.Time, options rsapi.ApiParams) (*TimeSeriesMetricsResult, error) {
+func (loc *InstanceMetricLocator) GroupedTimeSeries(endTime *time.Time, granularity string, group []string, metrics []string, startTime *time.Time, options rsapi.ApiParams) (*TimeSeriesMetricsResult, error) {
 	var res *TimeSeriesMetricsResult
 	if granularity == "" {
 		return res, fmt.Errorf("granularity is required")
@@ -1891,7 +1891,7 @@ func (api *Api) ReservedInstanceLocator(href string) *ReservedInstanceLocator {
 // GET /api/reserved_instances
 //
 // Gets Reserved Instances that overlap with the requested time period.
-func (loc *ReservedInstanceLocator) Index(endTime time.Time, startTime time.Time, options rsapi.ApiParams) (*ReservedInstance, error) {
+func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.ApiParams) (*ReservedInstance, error) {
 	var res *ReservedInstance
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -1943,7 +1943,7 @@ func (loc *ReservedInstanceLocator) Index(endTime time.Time, startTime time.Time
 // GET /api/reserved_instances/actions/count
 //
 // Gets the count of Reserved Instances that overlap with the requested time period.
-func (loc *ReservedInstanceLocator) Count(endTime time.Time, startTime time.Time, options rsapi.ApiParams) (string, error) {
+func (loc *ReservedInstanceLocator) Count(endTime *time.Time, startTime *time.Time, options rsapi.ApiParams) (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -2020,7 +2020,7 @@ func (loc *ReservedInstanceLocator) Exist(options rsapi.ApiParams) (string, erro
 // GET /api/reserved_instances/actions/export
 //
 // Exports the Reserved Instances that overlap with the requested time period in CSV format.
-func (loc *ReservedInstanceLocator) Export(endTime time.Time, startTime time.Time, options rsapi.ApiParams) (string, error) {
+func (loc *ReservedInstanceLocator) Export(endTime *time.Time, startTime *time.Time, options rsapi.ApiParams) (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -2072,7 +2072,7 @@ func (loc *ReservedInstanceLocator) Export(endTime time.Time, startTime time.Tim
 // GET /api/reserved_instances/actions/filter_options
 //
 // Gets the filter options for Reserved Instances that overlap with the requested time period.
-func (loc *ReservedInstanceLocator) FilterOptions(endTime time.Time, startTime time.Time, options rsapi.ApiParams) (*Filter, error) {
+func (loc *ReservedInstanceLocator) FilterOptions(endTime *time.Time, startTime *time.Time, options rsapi.ApiParams) (*Filter, error) {
 	var res *Filter
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{
@@ -2153,7 +2153,7 @@ func (api *Api) ReservedInstancePurchaseLocator(href string) *ReservedInstancePu
 // POST /api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases
 //
 // Create a new ReservedInstancePurchase. This is not actually purchased in the cloud and is only used for cost simulation purposes.
-func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int, offeringType string, quantity int, startDate time.Time, options rsapi.ApiParams) (*ReservedInstancePurchaseLocator, error) {
+func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int, offeringType string, quantity int, startDate *time.Time, options rsapi.ApiParams) (*ReservedInstancePurchaseLocator, error) {
 	var res *ReservedInstancePurchaseLocator
 	if offeringType == "" {
 		return res, fmt.Errorf("offeringType is required")
@@ -2339,7 +2339,7 @@ func (api *Api) ScenarioLocator(href string) *ScenarioLocator {
 // POST /api/scenarios
 //
 // Create a new Scenario.
-func (loc *ScenarioLocator) Create(snapshotTimestamp time.Time, options rsapi.ApiParams) (*ScenarioLocator, error) {
+func (loc *ScenarioLocator) Create(snapshotTimestamp *time.Time, options rsapi.ApiParams) (*ScenarioLocator, error) {
 	var res *ScenarioLocator
 	var queryParams rsapi.ApiParams
 	queryParams = rsapi.ApiParams{}
@@ -3159,9 +3159,9 @@ type AccountParam struct {
 }
 
 type AnalysisSnapshotParam struct {
-	CreatedAt                   time.Time      `json:"created_at,omitempty"`
+	CreatedAt                   *time.Time     `json:"created_at,omitempty"`
 	CreatedBy                   string         `json:"created_by,omitempty"`
-	EndTime                     time.Time      `json:"end_time,omitempty"`
+	EndTime                     *time.Time     `json:"end_time,omitempty"`
 	ExcludedTagTypes            []string       `json:"excluded_tag_types,omitempty"`
 	Filters                     []*Filter      `json:"filters,omitempty"`
 	Granularity                 string         `json:"granularity,omitempty"`
@@ -3171,8 +3171,8 @@ type AnalysisSnapshotParam struct {
 	Metrics                     []string       `json:"metrics,omitempty"`
 	MissingAccessToSomeAccounts bool           `json:"missing_access_to_some_accounts,omitempty"`
 	ModuleStates                []*ModuleState `json:"module_states,omitempty"`
-	StartTime                   time.Time      `json:"start_time,omitempty"`
-	UpdatedAt                   time.Time      `json:"updated_at,omitempty"`
+	StartTime                   *time.Time     `json:"start_time,omitempty"`
+	UpdatedAt                   *time.Time     `json:"updated_at,omitempty"`
 	Uuid                        string         `json:"uuid,omitempty"`
 }
 
@@ -3180,7 +3180,7 @@ type BudgetAlertParam struct {
 	AdditionalEmails []string            `json:"additional_emails,omitempty"`
 	AttachCsv        bool                `json:"attach_csv,omitempty"`
 	Budget           *ReturnBudgetStruct `json:"budget,omitempty"`
-	CreatedAt        time.Time           `json:"created_at,omitempty"`
+	CreatedAt        *time.Time          `json:"created_at,omitempty"`
 	Filters          []*Filter           `json:"filters,omitempty"`
 	Frequency        string              `json:"frequency,omitempty"`
 	Href             string              `json:"href,omitempty"`
@@ -3188,7 +3188,7 @@ type BudgetAlertParam struct {
 	Kind             string              `json:"kind,omitempty"`
 	Name             string              `json:"name,omitempty"`
 	Type_            string              `json:"type,omitempty"`
-	UpdatedAt        time.Time           `json:"updated_at,omitempty"`
+	UpdatedAt        *time.Time          `json:"updated_at,omitempty"`
 }
 
 type BudgetStruct struct {
@@ -3204,23 +3204,23 @@ type CloudAccount struct {
 }
 
 type CurrentUserParam struct {
-	Company   string    `json:"company,omitempty"`
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	Email     string    `json:"email,omitempty"`
-	FirstName string    `json:"first_name,omitempty"`
-	Id        int       `json:"id,omitempty"`
-	Kind      string    `json:"kind,omitempty"`
-	LastName  string    `json:"last_name,omitempty"`
-	Phone     string    `json:"phone,omitempty"`
-	Timezone  string    `json:"timezone,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	Company   string     `json:"company,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	Email     string     `json:"email,omitempty"`
+	FirstName string     `json:"first_name,omitempty"`
+	Id        int        `json:"id,omitempty"`
+	Kind      string     `json:"kind,omitempty"`
+	LastName  string     `json:"last_name,omitempty"`
+	Phone     string     `json:"phone,omitempty"`
+	Timezone  string     `json:"timezone,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type DateRangeStruct struct {
-	EndTime      time.Time `json:"end_time,omitempty"`
-	IsComparison bool      `json:"is_comparison,omitempty"`
-	StartTime    time.Time `json:"start_time,omitempty"`
-	Type_        string    `json:"type,omitempty"`
+	EndTime      *time.Time `json:"end_time,omitempty"`
+	IsComparison bool       `json:"is_comparison,omitempty"`
+	StartTime    *time.Time `json:"start_time,omitempty"`
+	Type_        string     `json:"type,omitempty"`
 }
 
 type Filter struct {
@@ -3238,7 +3238,7 @@ type InstanceCombinationLinks struct {
 type InstanceCombinationParam struct {
 	CloudName                 string                           `json:"cloud_name,omitempty"`
 	CloudVendorName           string                           `json:"cloud_vendor_name,omitempty"`
-	CreatedAt                 time.Time                        `json:"created_at,omitempty"`
+	CreatedAt                 *time.Time                       `json:"created_at,omitempty"`
 	DatacenterName            string                           `json:"datacenter_name,omitempty"`
 	Href                      string                           `json:"href,omitempty"`
 	Id                        int                              `json:"id,omitempty"`
@@ -3252,54 +3252,54 @@ type InstanceCombinationParam struct {
 	Quantity                  int                              `json:"quantity,omitempty"`
 	ReservedInstancePurchases []*ReservedInstancePurchaseParam `json:"reserved_instance_purchases,omitempty"`
 	Scenario                  *ScenarioParam                   `json:"scenario,omitempty"`
-	UpdatedAt                 time.Time                        `json:"updated_at,omitempty"`
+	UpdatedAt                 *time.Time                       `json:"updated_at,omitempty"`
 }
 
 type InstanceParam struct {
-	AccountId                         int       `json:"account_id,omitempty"`
-	AccountName                       string    `json:"account_name,omitempty"`
-	CloudId                           int       `json:"cloud_id,omitempty"`
-	CloudName                         string    `json:"cloud_name,omitempty"`
-	CloudVendorName                   string    `json:"cloud_vendor_name,omitempty"`
-	DatacenterKey                     string    `json:"datacenter_key,omitempty"`
-	DatacenterName                    string    `json:"datacenter_name,omitempty"`
-	DeploymentId                      int       `json:"deployment_id,omitempty"`
-	DeploymentName                    string    `json:"deployment_name,omitempty"`
-	EstimatedCostForPeriod            float64   `json:"estimated_cost_for_period,omitempty"`
-	EstimatedManagedRcuCountForPeriod float64   `json:"estimated_managed_rcu_count_for_period,omitempty"`
-	IncarnatorId                      int       `json:"incarnator_id,omitempty"`
-	IncarnatorType                    string    `json:"incarnator_type,omitempty"`
-	InstanceEndAt                     time.Time `json:"instance_end_at,omitempty"`
-	InstanceKey                       string    `json:"instance_key,omitempty"`
-	InstanceName                      string    `json:"instance_name,omitempty"`
-	InstanceRsid                      string    `json:"instance_rsid,omitempty"`
-	InstanceStartAt                   time.Time `json:"instance_start_at,omitempty"`
-	InstanceTypeKey                   string    `json:"instance_type_key,omitempty"`
-	InstanceTypeName                  string    `json:"instance_type_name,omitempty"`
-	InstanceUid                       string    `json:"instance_uid,omitempty"`
-	Kind                              string    `json:"kind,omitempty"`
-	Platform                          string    `json:"platform,omitempty"`
-	ProvisionedByUserEmail            string    `json:"provisioned_by_user_email,omitempty"`
-	ProvisionedByUserId               int       `json:"provisioned_by_user_id,omitempty"`
-	ServerTemplateId                  int       `json:"server_template_id,omitempty"`
-	ServerTemplateName                string    `json:"server_template_name,omitempty"`
-	State                             string    `json:"state,omitempty"`
-	Tags                              []*Tag    `json:"tags,omitempty"`
-	TotalUsageHours                   float64   `json:"total_usage_hours,omitempty"`
+	AccountId                         int        `json:"account_id,omitempty"`
+	AccountName                       string     `json:"account_name,omitempty"`
+	CloudId                           int        `json:"cloud_id,omitempty"`
+	CloudName                         string     `json:"cloud_name,omitempty"`
+	CloudVendorName                   string     `json:"cloud_vendor_name,omitempty"`
+	DatacenterKey                     string     `json:"datacenter_key,omitempty"`
+	DatacenterName                    string     `json:"datacenter_name,omitempty"`
+	DeploymentId                      int        `json:"deployment_id,omitempty"`
+	DeploymentName                    string     `json:"deployment_name,omitempty"`
+	EstimatedCostForPeriod            float64    `json:"estimated_cost_for_period,omitempty"`
+	EstimatedManagedRcuCountForPeriod float64    `json:"estimated_managed_rcu_count_for_period,omitempty"`
+	IncarnatorId                      int        `json:"incarnator_id,omitempty"`
+	IncarnatorType                    string     `json:"incarnator_type,omitempty"`
+	InstanceEndAt                     *time.Time `json:"instance_end_at,omitempty"`
+	InstanceKey                       string     `json:"instance_key,omitempty"`
+	InstanceName                      string     `json:"instance_name,omitempty"`
+	InstanceRsid                      string     `json:"instance_rsid,omitempty"`
+	InstanceStartAt                   *time.Time `json:"instance_start_at,omitempty"`
+	InstanceTypeKey                   string     `json:"instance_type_key,omitempty"`
+	InstanceTypeName                  string     `json:"instance_type_name,omitempty"`
+	InstanceUid                       string     `json:"instance_uid,omitempty"`
+	Kind                              string     `json:"kind,omitempty"`
+	Platform                          string     `json:"platform,omitempty"`
+	ProvisionedByUserEmail            string     `json:"provisioned_by_user_email,omitempty"`
+	ProvisionedByUserId               int        `json:"provisioned_by_user_id,omitempty"`
+	ServerTemplateId                  int        `json:"server_template_id,omitempty"`
+	ServerTemplateName                string     `json:"server_template_name,omitempty"`
+	State                             string     `json:"state,omitempty"`
+	Tags                              []*Tag     `json:"tags,omitempty"`
+	TotalUsageHours                   float64    `json:"total_usage_hours,omitempty"`
 }
 
 type InstanceUsagePeriodParam struct {
-	EstimatedCost            float64   `json:"estimated_cost,omitempty"`
-	EstimatedManagedRcuCount float64   `json:"estimated_managed_rcu_count,omitempty"`
-	HourlyPrice              float64   `json:"hourly_price,omitempty"`
-	InstanceKey              string    `json:"instance_key,omitempty"`
-	InstanceTypeName         string    `json:"instance_type_name,omitempty"`
-	Kind                     string    `json:"kind,omitempty"`
-	PricingType              string    `json:"pricing_type,omitempty"`
-	RcuRate                  float64   `json:"rcu_rate,omitempty"`
-	ReservationUid           string    `json:"reservation_uid,omitempty"`
-	UsageEndAt               time.Time `json:"usage_end_at,omitempty"`
-	UsageStartAt             time.Time `json:"usage_start_at,omitempty"`
+	EstimatedCost            float64    `json:"estimated_cost,omitempty"`
+	EstimatedManagedRcuCount float64    `json:"estimated_managed_rcu_count,omitempty"`
+	HourlyPrice              float64    `json:"hourly_price,omitempty"`
+	InstanceKey              string     `json:"instance_key,omitempty"`
+	InstanceTypeName         string     `json:"instance_type_name,omitempty"`
+	Kind                     string     `json:"kind,omitempty"`
+	PricingType              string     `json:"pricing_type,omitempty"`
+	RcuRate                  float64    `json:"rcu_rate,omitempty"`
+	ReservationUid           string     `json:"reservation_uid,omitempty"`
+	UsageEndAt               *time.Time `json:"usage_end_at,omitempty"`
+	UsageStartAt             *time.Time `json:"usage_start_at,omitempty"`
 }
 
 type Metrics struct {
@@ -3334,7 +3334,7 @@ type ModuleState struct {
 }
 
 type PatternParam struct {
-	CreatedAt time.Time        `json:"created_at,omitempty"`
+	CreatedAt *time.Time       `json:"created_at,omitempty"`
 	Href      string           `json:"href,omitempty"`
 	Id        int              `json:"id,omitempty"`
 	Kind      string           `json:"kind,omitempty"`
@@ -3344,34 +3344,34 @@ type PatternParam struct {
 	Scenarios []*ScenarioParam `json:"scenarios,omitempty"`
 	Summary   string           `json:"summary,omitempty"`
 	Type_     string           `json:"type,omitempty"`
-	UpdatedAt time.Time        `json:"updated_at,omitempty"`
+	UpdatedAt *time.Time       `json:"updated_at,omitempty"`
 	Value     float64          `json:"value,omitempty"`
 	Years     string           `json:"years,omitempty"`
 }
 
 type ReservedInstanceParam struct {
-	AccountId             int       `json:"account_id,omitempty"`
-	AccountName           string    `json:"account_name,omitempty"`
-	CloudId               int       `json:"cloud_id,omitempty"`
-	CloudName             string    `json:"cloud_name,omitempty"`
-	CloudVendorName       string    `json:"cloud_vendor_name,omitempty"`
-	CostSaved             float64   `json:"cost_saved,omitempty"`
-	DatacenterKey         string    `json:"datacenter_key,omitempty"`
-	DatacenterName        string    `json:"datacenter_name,omitempty"`
-	Duration              int       `json:"duration,omitempty"`
-	EndTime               time.Time `json:"end_time,omitempty"`
-	InstanceCount         int       `json:"instance_count,omitempty"`
-	InstanceTypeKey       string    `json:"instance_type_key,omitempty"`
-	InstanceTypeName      string    `json:"instance_type_name,omitempty"`
-	Kind                  string    `json:"kind,omitempty"`
-	OfferingType          string    `json:"offering_type,omitempty"`
-	Platform              string    `json:"platform,omitempty"`
-	ReservationUid        string    `json:"reservation_uid,omitempty"`
-	StartTime             time.Time `json:"start_time,omitempty"`
-	State                 string    `json:"state,omitempty"`
-	Tenancy               string    `json:"tenancy,omitempty"`
-	UnusedRecurringCost   float64   `json:"unused_recurring_cost,omitempty"`
-	UtilizationPercentage float64   `json:"utilization_percentage,omitempty"`
+	AccountId             int        `json:"account_id,omitempty"`
+	AccountName           string     `json:"account_name,omitempty"`
+	CloudId               int        `json:"cloud_id,omitempty"`
+	CloudName             string     `json:"cloud_name,omitempty"`
+	CloudVendorName       string     `json:"cloud_vendor_name,omitempty"`
+	CostSaved             float64    `json:"cost_saved,omitempty"`
+	DatacenterKey         string     `json:"datacenter_key,omitempty"`
+	DatacenterName        string     `json:"datacenter_name,omitempty"`
+	Duration              int        `json:"duration,omitempty"`
+	EndTime               *time.Time `json:"end_time,omitempty"`
+	InstanceCount         int        `json:"instance_count,omitempty"`
+	InstanceTypeKey       string     `json:"instance_type_key,omitempty"`
+	InstanceTypeName      string     `json:"instance_type_name,omitempty"`
+	Kind                  string     `json:"kind,omitempty"`
+	OfferingType          string     `json:"offering_type,omitempty"`
+	Platform              string     `json:"platform,omitempty"`
+	ReservationUid        string     `json:"reservation_uid,omitempty"`
+	StartTime             *time.Time `json:"start_time,omitempty"`
+	State                 string     `json:"state,omitempty"`
+	Tenancy               string     `json:"tenancy,omitempty"`
+	UnusedRecurringCost   float64    `json:"unused_recurring_cost,omitempty"`
+	UtilizationPercentage float64    `json:"utilization_percentage,omitempty"`
 }
 
 type ReservedInstancePurchaseLinks struct {
@@ -3380,7 +3380,7 @@ type ReservedInstancePurchaseLinks struct {
 
 type ReservedInstancePurchaseParam struct {
 	AutoRenew           bool                           `json:"auto_renew,omitempty"`
-	CreatedAt           time.Time                      `json:"created_at,omitempty"`
+	CreatedAt           *time.Time                     `json:"created_at,omitempty"`
 	Duration            int                            `json:"duration,omitempty"`
 	Href                string                         `json:"href,omitempty"`
 	Id                  int                            `json:"id,omitempty"`
@@ -3389,8 +3389,8 @@ type ReservedInstancePurchaseParam struct {
 	Links               *ReservedInstancePurchaseLinks `json:"links,omitempty"`
 	OfferingType        string                         `json:"offering_type,omitempty"`
 	Quantity            int                            `json:"quantity,omitempty"`
-	StartDate           time.Time                      `json:"start_date,omitempty"`
-	UpdatedAt           time.Time                      `json:"updated_at,omitempty"`
+	StartDate           *time.Time                     `json:"start_date,omitempty"`
+	UpdatedAt           *time.Time                     `json:"updated_at,omitempty"`
 }
 
 type ReturnBudgetStruct struct {
@@ -3399,30 +3399,30 @@ type ReturnBudgetStruct struct {
 }
 
 type ReturnCurrentUserStruct struct {
-	BetaEnabled                          bool      `json:"beta_enabled,omitempty"`
-	CanSeeCostAndRcuMetrics              bool      `json:"can_see_cost_and_rcu_metrics,omitempty"`
-	CanSeeManagedRcus                    bool      `json:"can_see_managed_rcus,omitempty"`
-	CanSeeUnmanagedRcus                  bool      `json:"can_see_unmanaged_rcus,omitempty"`
-	Company                              string    `json:"company,omitempty"`
-	Email                                string    `json:"email,omitempty"`
-	FirstLoginAt                         time.Time `json:"first_login_at,omitempty"`
-	FirstName                            string    `json:"first_name,omitempty"`
-	HasAdminOnAnyAccount                 bool      `json:"has_admin_on_any_account,omitempty"`
-	HasCloudAnalyticsEnabledAccounts     bool      `json:"has_cloud_analytics_enabled_accounts,omitempty"`
-	HasNonIpWhitelistedAccountsWithAdmin bool      `json:"has_non_ip_whitelisted_accounts_with_admin,omitempty"`
-	HasOnlyExpiredAccounts               bool      `json:"has_only_expired_accounts,omitempty"`
-	Id                                   int       `json:"id,omitempty"`
-	IsCloudAnalyticsOnly                 bool      `json:"is_cloud_analytics_only,omitempty"`
-	IsRightscaleEmployee                 bool      `json:"is_rightscale_employee,omitempty"`
-	IsSelfserviceUser                    bool      `json:"is_selfservice_user,omitempty"`
-	IsTeamUser                           bool      `json:"is_team_user,omitempty"`
-	LastName                             string    `json:"last_name,omitempty"`
-	NotificationMessage                  string    `json:"notification_message,omitempty"`
-	Phone                                string    `json:"phone,omitempty"`
-	SelfserviceUrl                       string    `json:"selfservice_url,omitempty"`
-	Timezone                             string    `json:"timezone,omitempty"`
-	TimezoneOffsetSeconds                int       `json:"timezone_offset_seconds,omitempty"`
-	TrialEndDate                         time.Time `json:"trial_end_date,omitempty"`
+	BetaEnabled                          bool       `json:"beta_enabled,omitempty"`
+	CanSeeCostAndRcuMetrics              bool       `json:"can_see_cost_and_rcu_metrics,omitempty"`
+	CanSeeManagedRcus                    bool       `json:"can_see_managed_rcus,omitempty"`
+	CanSeeUnmanagedRcus                  bool       `json:"can_see_unmanaged_rcus,omitempty"`
+	Company                              string     `json:"company,omitempty"`
+	Email                                string     `json:"email,omitempty"`
+	FirstLoginAt                         *time.Time `json:"first_login_at,omitempty"`
+	FirstName                            string     `json:"first_name,omitempty"`
+	HasAdminOnAnyAccount                 bool       `json:"has_admin_on_any_account,omitempty"`
+	HasCloudAnalyticsEnabledAccounts     bool       `json:"has_cloud_analytics_enabled_accounts,omitempty"`
+	HasNonIpWhitelistedAccountsWithAdmin bool       `json:"has_non_ip_whitelisted_accounts_with_admin,omitempty"`
+	HasOnlyExpiredAccounts               bool       `json:"has_only_expired_accounts,omitempty"`
+	Id                                   int        `json:"id,omitempty"`
+	IsCloudAnalyticsOnly                 bool       `json:"is_cloud_analytics_only,omitempty"`
+	IsRightscaleEmployee                 bool       `json:"is_rightscale_employee,omitempty"`
+	IsSelfserviceUser                    bool       `json:"is_selfservice_user,omitempty"`
+	IsTeamUser                           bool       `json:"is_team_user,omitempty"`
+	LastName                             string     `json:"last_name,omitempty"`
+	NotificationMessage                  string     `json:"notification_message,omitempty"`
+	Phone                                string     `json:"phone,omitempty"`
+	SelfserviceUrl                       string     `json:"selfservice_url,omitempty"`
+	Timezone                             string     `json:"timezone,omitempty"`
+	TimezoneOffsetSeconds                int        `json:"timezone_offset_seconds,omitempty"`
+	TrialEndDate                         *time.Time `json:"trial_end_date,omitempty"`
 }
 
 type ReturnGoogleAnalyticsStruct struct {
@@ -3431,14 +3431,14 @@ type ReturnGoogleAnalyticsStruct struct {
 }
 
 type ReturnUserSettingsDateRangeStruct struct {
-	EndTime      time.Time `json:"end_time,omitempty"`
-	IsComparison bool      `json:"is_comparison,omitempty"`
-	StartTime    time.Time `json:"start_time,omitempty"`
-	Type_        string    `json:"type,omitempty"`
+	EndTime      *time.Time `json:"end_time,omitempty"`
+	IsComparison bool       `json:"is_comparison,omitempty"`
+	StartTime    *time.Time `json:"start_time,omitempty"`
+	Type_        string     `json:"type,omitempty"`
 }
 
 type ScenarioParam struct {
-	CreatedAt                 time.Time                   `json:"created_at,omitempty"`
+	CreatedAt                 *time.Time                  `json:"created_at,omitempty"`
 	Filters                   []*Filter                   `json:"filters,omitempty"`
 	HistoricMetricsResults    []*TimeSeriesMetricsResult  `json:"historic_metrics_results,omitempty"`
 	Href                      string                      `json:"href,omitempty"`
@@ -3448,21 +3448,21 @@ type ScenarioParam struct {
 	Kind                      string                      `json:"kind,omitempty"`
 	Name                      string                      `json:"name,omitempty"`
 	PrivateCloudInstanceCount int                         `json:"private_cloud_instance_count,omitempty"`
-	SnapshotTimestamp         time.Time                   `json:"snapshot_timestamp,omitempty"`
-	UpdatedAt                 time.Time                   `json:"updated_at,omitempty"`
+	SnapshotTimestamp         *time.Time                  `json:"snapshot_timestamp,omitempty"`
+	UpdatedAt                 *time.Time                  `json:"updated_at,omitempty"`
 }
 
 type ScheduledReportParam struct {
-	AdditionalEmails []string  `json:"additional_emails,omitempty"`
-	AttachCsv        bool      `json:"attach_csv,omitempty"`
-	CreatedAt        time.Time `json:"created_at,omitempty"`
-	Filters          []*Filter `json:"filters,omitempty"`
-	Frequency        string    `json:"frequency,omitempty"`
-	Href             string    `json:"href,omitempty"`
-	Id               int       `json:"id,omitempty"`
-	Kind             string    `json:"kind,omitempty"`
-	Name             string    `json:"name,omitempty"`
-	UpdatedAt        time.Time `json:"updated_at,omitempty"`
+	AdditionalEmails []string   `json:"additional_emails,omitempty"`
+	AttachCsv        bool       `json:"attach_csv,omitempty"`
+	CreatedAt        *time.Time `json:"created_at,omitempty"`
+	Filters          []*Filter  `json:"filters,omitempty"`
+	Frequency        string     `json:"frequency,omitempty"`
+	Href             string     `json:"href,omitempty"`
+	Id               int        `json:"id,omitempty"`
+	Kind             string     `json:"kind,omitempty"`
+	Name             string     `json:"name,omitempty"`
+	UpdatedAt        *time.Time `json:"updated_at,omitempty"`
 }
 
 type Tag struct {
@@ -3475,7 +3475,7 @@ type Tag struct {
 type TimeSeriesMetricsResult struct {
 	Kind      string           `json:"kind,omitempty"`
 	Results   []*MetricsResult `json:"results,omitempty"`
-	Timestamp time.Time        `json:"timestamp,omitempty"`
+	Timestamp *time.Time       `json:"timestamp,omitempty"`
 }
 
 type UserAccounts struct {

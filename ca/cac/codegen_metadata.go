@@ -150,7 +150,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the snapshot.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -158,7 +158,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "excluded_tag_types[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -166,7 +166,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -175,7 +175,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][label]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -183,7 +183,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][tag_resource_type]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -192,7 +192,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][type]",
 						Description: `The type that is being used to filter. If the account_id filter is left empty, all of the accounts you have access to will be used.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -201,7 +201,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][value]",
 						Description: `The value of the type that is being used to filter.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -226,7 +226,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "metrics[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -235,7 +235,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][active]",
 						Description: `Whether this module is displayed on the page or not.`,
-						Type:        "[]string",
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -243,7 +243,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][expanded]",
 						Description: `Whether this module is expanded on the page or not, only applicable for active modules.`,
-						Type:        "[]string",
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -251,7 +251,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -260,7 +260,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][sort_key]",
 						Description: `The metric used to sort the values in the module.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -269,7 +269,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][type]",
 						Description: `Module name.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -278,7 +278,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the snapshot.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -296,7 +296,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the snapshot.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -353,7 +353,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the snapshot.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -424,7 +424,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "additional_emails[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -457,7 +457,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -466,7 +466,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][label]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -474,7 +474,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][tag_resource_type]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -483,7 +483,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][type]",
 						Description: `The type that is being used to filter. If the account_id filter is left empty, all of the accounts you have access to will be used.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -492,7 +492,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][value]",
 						Description: `The value of the type that is being used to filter.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -685,7 +685,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "additional_emails[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -849,7 +849,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -865,7 +865,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -891,7 +891,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -907,7 +907,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -953,7 +953,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -969,7 +969,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -995,7 +995,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1011,7 +1011,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1378,7 +1378,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1418,7 +1418,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1445,7 +1445,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1485,7 +1485,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1525,7 +1525,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1541,7 +1541,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1560,7 +1560,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1576,7 +1576,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1608,7 +1608,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1624,7 +1624,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1643,7 +1643,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1659,7 +1659,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1691,7 +1691,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1731,7 +1731,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1758,7 +1758,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1798,7 +1798,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1838,7 +1838,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1894,7 +1894,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1921,7 +1921,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -1977,7 +1977,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2081,7 +2081,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][created_at]",
 						Description: `Timestamp of when the pattern was created.`,
-						Type:        "[]string",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2089,7 +2089,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][href]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2097,7 +2097,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][id]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2105,7 +2105,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2116,7 +2116,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Description: `The months that the pattern apply to. This can be "all" to apply the pattern in all months;
           a range such as "1-3" meaning the pattern will be applied from the start of January to the end of March; or
           individual months in a comma-separated list such as "5, 7, 9" meaning the pattern will be applied in May, July and September.`,
-						Type:      "[]string",
+						Type:      "string",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -2124,7 +2124,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][name]",
 						Description: `Name of the pattern.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2132,7 +2132,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][operation]",
 						Description: `Type of change, the increase and decrease operations are based on percentages.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2141,7 +2141,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][summary]",
 						Description: `Summary of the pattern.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2151,7 +2151,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Description: `Pattern type reflects whether the change that the pattern applies continues after the pattern has ended.
           Changes made by permanent patterns persist past the chosen end date, e.g. general growth.
           Changes made by temporary patterns only apply during the selected dates, e.g. holiday increase.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2160,7 +2160,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][updated_at]",
 						Description: `Timestamp of when the pattern was last updated.`,
-						Type:        "[]string",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2169,7 +2169,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "patterns[][value]",
 						Description: `Amount of change that the pattern will apply. The increase and decrease operations are based on percentages,
             so for example, use the value 10 to increase/decrease by 10%.`,
-						Type:      "[]string",
+						Type:      "float64",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -2178,7 +2178,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "patterns[][years]",
 						Description: `The years that the pattern will apply to. This can be "all" to apply the pattern in all years;
           a range such as "1-3" to apply the pattern from years 1 to years 3; or individual years in a comma-separated list such as "1,3".`,
-						Type:      "[]string",
+						Type:      "string",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -2394,7 +2394,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][created_at]",
 						Description: `Timestamp of when the pattern was created.`,
-						Type:        "[]string",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2402,7 +2402,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][href]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2410,7 +2410,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][id]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2418,7 +2418,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2429,7 +2429,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Description: `The months that the pattern apply to. This can be "all" to apply the pattern in all months;
           a range such as "1-3" meaning the pattern will be applied from the start of January to the end of March; or
           individual months in a comma-separated list such as "5, 7, 9" meaning the pattern will be applied in May, July and September.`,
-						Type:      "[]string",
+						Type:      "string",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -2437,7 +2437,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][name]",
 						Description: `Name of the pattern.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2445,7 +2445,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][operation]",
 						Description: `Type of change, the increase and decrease operations are based on percentages.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2454,7 +2454,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][summary]",
 						Description: `Summary of the pattern.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2464,7 +2464,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Description: `Pattern type reflects whether the change that the pattern applies continues after the pattern has ended.
           Changes made by permanent patterns persist past the chosen end date, e.g. general growth.
           Changes made by temporary patterns only apply during the selected dates, e.g. holiday increase.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2473,7 +2473,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "patterns[][updated_at]",
 						Description: `Timestamp of when the pattern was last updated.`,
-						Type:        "[]string",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -2482,7 +2482,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "patterns[][value]",
 						Description: `Amount of change that the pattern will apply. The increase and decrease operations are based on percentages,
             so for example, use the value 10 to increase/decrease by 10%.`,
-						Type:      "[]string",
+						Type:      "float64",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -2491,7 +2491,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "patterns[][years]",
 						Description: `The years that the pattern will apply to. This can be "all" to apply the pattern in all years;
           a range such as "1-3" to apply the pattern from years 1 to years 3; or individual years in a comma-separated list such as "1,3".`,
-						Type:      "[]string",
+						Type:      "string",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -2670,7 +2670,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2694,7 +2694,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2721,7 +2721,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2745,7 +2745,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2787,7 +2787,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2843,7 +2843,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2870,7 +2870,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2926,7 +2926,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -2968,7 +2968,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3009,7 +3009,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3036,7 +3036,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3077,7 +3077,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3120,7 +3120,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3193,7 +3193,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3220,7 +3220,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3293,7 +3293,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3872,7 +3872,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3912,7 +3912,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3939,7 +3939,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -3979,7 +3979,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4019,7 +4019,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4035,7 +4035,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4054,7 +4054,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4070,7 +4070,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4102,7 +4102,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4118,7 +4118,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4137,7 +4137,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4153,7 +4153,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4185,7 +4185,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4225,7 +4225,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4252,7 +4252,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4292,7 +4292,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4332,7 +4332,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4388,7 +4388,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4415,7 +4415,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4471,7 +4471,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_time",
 						Description: `The start time of the period.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4558,7 +4558,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_date",
 						Description: `Date at which the ReservedInstance purchase should start from, this can be a future date.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4610,7 +4610,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_date",
 						Description: `Date at which the ReservedInstance purchase should start from, this can be a future date.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4741,7 +4741,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_date",
 						Description: `Date at which the ReservedInstance purchase should start from, this can be a future date.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4793,7 +4793,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "start_date",
 						Description: `Date at which the ReservedInstance purchase should start from, this can be a future date.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4846,7 +4846,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4855,7 +4855,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][label]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4863,7 +4863,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][tag_resource_type]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4872,7 +4872,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][type]",
 						Description: `The type that is being used to filter. If the account_id filter is left empty, all of the accounts you have access to will be used.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4881,7 +4881,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][value]",
 						Description: `The value of the type that is being used to filter.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -4921,7 +4921,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "snapshot_timestamp",
 						Description: `The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -4979,7 +4979,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "snapshot_timestamp",
 						Description: `The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -5116,7 +5116,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "snapshot_timestamp",
 						Description: `The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5158,7 +5158,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "snapshot_timestamp",
 						Description: `The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.`,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5245,7 +5245,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "additional_emails[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5261,7 +5261,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5270,7 +5270,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][label]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5278,7 +5278,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][tag_resource_type]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5287,7 +5287,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][type]",
 						Description: `The type that is being used to filter. If the account_id filter is left empty, all of the accounts you have access to will be used.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5296,7 +5296,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][value]",
 						Description: `The value of the type that is being used to filter.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5467,7 +5467,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "additional_emails[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5648,7 +5648,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][account_id]",
 						Description: `RightScale account ID.`,
-						Type:        "[]string",
+						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5656,7 +5656,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][account_name]",
 						Description: `RightScale account name.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5664,7 +5664,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][billing_admin_only]",
 						Description: `Does the account have the billing_admin_only account setting enabled?`,
-						Type:        "[]string",
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5673,7 +5673,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "accounts[][cloud_analytics_account_setting_enabled]",
 						Description: `Is the ` + `cloud_analytics` + ` account setting enabled? Just because this setting is enabled,
             it does not mean that the account is ` + `cloud_analytics_enabled` + `.`,
-						Type:      "[]string",
+						Type:      "bool",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -5682,7 +5682,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "accounts[][cloud_analytics_enabled]",
 						Description: `Does the user have the required settings and permissions for this account to be enabled
             for them in Cloud Analytics?`,
-						Type:      "[]string",
+						Type:      "bool",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -5690,7 +5690,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5823,7 +5823,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][account_id]",
 						Description: `RightScale account ID.`,
-						Type:        "[]string",
+						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5831,7 +5831,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][account_name]",
 						Description: `RightScale account name.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5839,7 +5839,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][billing_admin_only]",
 						Description: `Does the account have the billing_admin_only account setting enabled?`,
-						Type:        "[]string",
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -5848,7 +5848,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "accounts[][cloud_analytics_account_setting_enabled]",
 						Description: `Is the ` + `cloud_analytics` + ` account setting enabled? Just because this setting is enabled,
             it does not mean that the account is ` + `cloud_analytics_enabled` + `.`,
-						Type:      "[]string",
+						Type:      "bool",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -5857,7 +5857,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name: "accounts[][cloud_analytics_enabled]",
 						Description: `Does the user have the required settings and permissions for this account to be enabled
             for them in Cloud Analytics?`,
-						Type:      "[]string",
+						Type:      "bool",
 						Location:  metadata.PayloadParam,
 						Mandatory: false,
 						NonBlank:  false,
@@ -5865,7 +5865,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "accounts[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6021,7 +6021,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "date_range[end_time]",
 						Description: ``,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6037,7 +6037,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "date_range[start_time]",
 						Description: ``,
-						Type:        "time.Time",
+						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6061,7 +6061,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "excluded_tag_types[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6069,7 +6069,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6078,7 +6078,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][label]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6086,7 +6086,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][tag_resource_type]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6095,7 +6095,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][type]",
 						Description: `The type that is being used to filter. If the account_id filter is left empty, all of the accounts you have access to will be used.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6104,7 +6104,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "filters[][value]",
 						Description: `The value of the type that is being used to filter.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6129,7 +6129,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "metrics[]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6138,7 +6138,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][active]",
 						Description: `Whether this module is displayed on the page or not.`,
-						Type:        "[]string",
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6146,7 +6146,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][expanded]",
 						Description: `Whether this module is expanded on the page or not, only applicable for active modules.`,
-						Type:        "[]string",
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6154,7 +6154,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][kind]",
 						Description: ``,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6163,7 +6163,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][sort_key]",
 						Description: `The metric used to sort the values in the module.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -6172,7 +6172,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "module_states[][type]",
 						Description: `Module name.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
