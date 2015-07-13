@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/rightscale/rsc/cm15"
+	"github.com/rightscale/rsc/httpclient"
 	"github.com/rightscale/rsc/rsapi"
 )
 
@@ -84,9 +85,9 @@ func main() {
 		}
 		// Create a new client for every environment because they can be in different accounts.
 		auth := rsapi.NewBasicAuthenticator(*email, *pwd, envDetail.Account)
-		client := cm15.New(*host, auth, nil)
+		client := cm15.New(*host, auth)
 		if *insecure {
-			client.Insecure()
+			httpclient.Insecure = true
 		}
 		if err := client.CanAuthenticate(); err != nil {
 			fail("invalid credentials: %s", err)

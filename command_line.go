@@ -39,10 +39,9 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("xm", "Extract zero, one or more values using JSON:select and return newline separated list").StringVar(&cmdLine.ExtractSelector)
 	app.Flag("xj", "Extract zero, one or more values using JSON:select and return JSON").StringVar(&cmdLine.ExtractSelectorJson)
 	app.Flag("xh", "Extract header with given name").StringVar(&cmdLine.ExtractHeader)
-	app.Flag("noRedirect", "Do not follow redirect responses").Short('n').BoolVar(&cmdLine.NoRedirect)
 	app.Flag("fetch", "Fetch resource with href present in 'Location' header").BoolVar(&cmdLine.FetchResource)
 	d := &cmdLine.Dump // strange, not sure why Kingpin forces that
-	app.Flag("dump", "Dump HTTP request and response. Possible values are 'debug' or 'json'.").EnumVar(&d, "debug", "json")
+	app.Flag("dump", "Dump HTTP request and response. Possible values are 'debug' or 'json'.").EnumVar(&d, "debug", "json", "record")
 	app.Flag("verbose", "Dump HTTP request and response including auth requests and headers, enables --dump=debug by default, use --dump=json to switch format").Short('v').BoolVar(&cmdLine.Verbose)
 	app.Flag("pp", "Pretty print response body").BoolVar(&cmdLine.Pretty)
 

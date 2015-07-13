@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/rightscale/rsc/httpclient"
 )
 
 // Authenticator interface
@@ -23,12 +25,6 @@ type Authenticator interface {
 	// or an error with additional information otherwise.
 	// It makes a test request to CM 1.5 to validate the provided credentials.
 	CanAuthenticate(host string) error
-	// EnableDump sets the format used by the authenticator to dump requests.
-	// The format flag must have the Verbose bit enabled to have any effect.
-	EnableDump(format Format)
-	// Enable insecure mode: all auth requests are made using HTTP instead of HTTPS.
-	// Used by tests.
-	Insecure()
 }
 
 // NewBasicAuthenticator returns a authenticator that uses email and password to create sessions.
@@ -55,7 +51,7 @@ func NewOAuthAuthenticator(token string) Authenticator {
 	return &oAuthSigner{
 		refreshToken: token,
 		refreshAt:    time.Now().Add(-2 * time.Minute),
-		client:       NewHttpClient(NoDump),
+		client:       httpclient.New(),
 	}
 }
 
@@ -63,7 +59,7 @@ func NewOAuthAuthenticator(token string) Authenticator {
 // This is useful if the oauth handshake has already happened.
 // Use the OAuthAuthenticator to use a refresh token and have the authenticator do the handshake.
 func NewTokenAuthenticator(token string) Authenticator {
-	return &tokenAuthenticator{token: token, dump: NoDump}
+	return &tokenAuthenticator{token: token}
 }
 
 // NewSSAuthenticator returns an authenticator that wraps another one and adds the logic needed to
@@ -77,7 +73,7 @@ func NewSSAuthenticator(auther Authenticator, accountID int) Authenticator {
 		auther:    auther,
 		accountID: accountID,
 		refreshAt: time.Now().Add(-2 * time.Minute),
-		client:    NewHttpClient(NoDump),
+		client:    httpclient.NewNoRedirect(),
 	}
 }
 
@@ -87,19 +83,9 @@ func NewRL10Authenticator(secret string) Authenticator {
 	return &rl10Authenticator{secret: secret}
 }
 
-// NewHttpClient returns a http client that handles redirect in a way that's compatible with the
-// RightScale APIs, namely: it copies over the headers that need to be copied over (e.g.
-// X-Api-Version).
-func NewHttpClient(dumpFormat Format) HttpClient {
-	return &dumpClient{
-		RoundTripper: &http.Transport{ResponseHeaderTimeout: 20 * time.Second},
-		Format:       dumpFormat,
-	}
-}
-
 // loginRequestBuilder is a generic login request factory.
 type loginRequestBuilder interface {
-	BuildLoginRequest(host string, insecure bool) (*http.Request, error)
+	BuildLoginRequest(host string) (*http.Request, error)
 }
 
 // cookieSigner signs requests using adding a global session cookie.
@@ -110,9 +96,7 @@ type cookieSigner struct {
 	cookies   []*http.Cookie
 	host      string
 	refreshAt time.Time
-	client    HttpClient
-	dump      Format
-	insecure  bool
+	client    httpclient.HTTPClient
 }
 
 // newCookieSigner returns a cookie signer that uses the given builder to build login requests.
@@ -121,7 +105,7 @@ func newCookieSigner(builder loginRequestBuilder, accountID int) Authenticator {
 		builder:   builder,
 		accountID: accountID,
 		refreshAt: time.Now().Add(-2 * time.Minute),
-		client:    NewHttpClient(NoDump),
+		client:    httpclient.NewNoRedirect(),
 	}
 }
 
@@ -129,11 +113,11 @@ func newCookieSigner(builder loginRequestBuilder, accountID int) Authenticator {
 // Checks the freshness of the session and creates a new one if needed.
 func (s *cookieSigner) Sign(req *http.Request) error {
 	if time.Now().After(s.refreshAt) {
-		authReq, authErr := s.builder.BuildLoginRequest(s.host, s.insecure)
+		authReq, authErr := s.builder.BuildLoginRequest(s.host)
 		if authErr != nil {
 			return authErr
 		}
-		resp, err := s.client.Do(authReq)
+		resp, err := s.client.DoHidden(authReq)
 		if err != nil {
 			return err
 		}
@@ -142,14 +126,14 @@ func (s *cookieSigner) Sign(req *http.Request) error {
 			return err
 		}
 		if url != nil {
-			authReq, authErr = s.builder.BuildLoginRequest(url.Host, s.insecure)
+			authReq, authErr = s.builder.BuildLoginRequest(url.Host)
 			if authErr != nil {
 				return authErr
 			}
 			s.host = url.Host
 			req.Host = url.Host
 			req.URL.Host = url.Host
-			resp, err = s.client.Do(authReq)
+			resp, err = s.client.DoHidden(authReq)
 		}
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err)
@@ -173,22 +157,7 @@ func (s *cookieSigner) SetHost(host string) {
 // CanAuthenticate makes a test request to CM 1.5 and returns true if it is successful.
 func (s *cookieSigner) CanAuthenticate(host string) error {
 	_, instance := s.builder.(*instanceLoginRequestBuilder)
-	return testAuth(s, s.client, host, instance, s.insecure)
-}
-
-// EnableDump sets the dump format.
-func (s *cookieSigner) EnableDump(format Format) {
-	if c, ok := s.client.(*dumpClient); ok {
-		c.EnableDump(format)
-	}
-}
-
-// Insecure forces the use of HTTP
-func (s *cookieSigner) Insecure() {
-	s.insecure = true
-	if c, ok := s.client.(*dumpClient); ok {
-		c.Insecure()
-	}
+	return testAuth(s, s.client, host, instance)
 }
 
 // refresh updates the cookie and expiration used to sign requests from a successful session
@@ -208,22 +177,21 @@ type oAuthSigner struct {
 	accessToken  string
 	host         string
 	refreshAt    time.Time
-	client       HttpClient
-	insecure     bool
+	client       httpclient.HTTPClient
 }
 
 // Sign adds the OAuth bearer header to the *http.Request
 func (s *oAuthSigner) Sign(req *http.Request) error {
 	if time.Now().After(s.refreshAt) {
 		jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, s.refreshToken)
-		authReq, err := http.NewRequest("POST", buildURL(s.host, "api/oauth2", s.insecure),
+		authReq, err := http.NewRequest("POST", buildURL(s.host, "api/oauth2"),
 			bytes.NewBufferString(jsonStr))
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to build request): %s", err)
 		}
 		authReq.Header.Set("X-API-Version", "1.5")
 		authReq.Header.Set("Content-Type", "application/json")
-		resp, err := s.client.Do(authReq)
+		resp, err := s.client.DoHidden(authReq)
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err) // TBD RETRY A FEW TIMES
 		}
@@ -270,26 +238,13 @@ func (s *oAuthSigner) SetHost(host string) {
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
 func (s *oAuthSigner) CanAuthenticate(host string) error {
-	return testAuth(s, s.client, host, false, s.insecure)
-}
-
-// EnableDump sets the dump format.
-func (s *oAuthSigner) EnableDump(format Format) {
-	s.client.(*dumpClient).EnableDump(format)
-}
-
-// Insecure forces the use of HTTP
-func (s *oAuthSigner) Insecure() {
-	s.client.(*dumpClient).Insecure()
-	s.insecure = true
+	return testAuth(s, s.client, host, false)
 }
 
 // OAuth access token authenticator
 type tokenAuthenticator struct {
-	token    string
-	host     string // Only used by CanAuthenticate
-	dump     Format
-	insecure bool
+	token string
+	host  string // Only used by CanAuthenticate
 }
 
 // Sign sets the OAuth authorization header
@@ -305,26 +260,14 @@ func (t *tokenAuthenticator) SetHost(h string) {
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
 func (t *tokenAuthenticator) CanAuthenticate(host string) error {
-	client := NewHttpClient(t.dump)
-	return testAuth(t, client, host, false, t.insecure)
-}
-
-// EnableDump sets the dump format.
-func (t *tokenAuthenticator) EnableDump(format Format) {
-	t.dump = format
-}
-
-// Insecure forces the use of HTTP
-func (t *tokenAuthenticator) Insecure() {
-	t.insecure = true
+	client := httpclient.New()
+	return testAuth(t, client, host, false)
 }
 
 // RightLink 10 authenticator
 type rl10Authenticator struct {
-	secret   string
-	host     string
-	dump     Format
-	insecure bool
+	secret string
+	host   string
 }
 
 // RL10 authenticator uses special header
@@ -340,18 +283,8 @@ func (a *rl10Authenticator) SetHost(h string) {
 
 // CanAuthenticate makes a test request to CM 1.5 and returns nil if it is successful.
 func (a *rl10Authenticator) CanAuthenticate(host string) error {
-	client := NewHttpClient(a.dump)
-	return testAuth(a, client, host, true, a.insecure)
-}
-
-// EnableDump sets the dump format.
-func (a *rl10Authenticator) EnableDump(format Format) {
-	a.dump = format
-}
-
-// Insecure forces the use of HTTP
-func (a *rl10Authenticator) Insecure() {
-	a.insecure = true
+	client := httpclient.New()
+	return testAuth(a, client, host, true)
 }
 
 // SS authenticator
@@ -360,15 +293,14 @@ type ssAuthenticator struct {
 	accountID int           // Account used to create SS local session
 	host      string        // Login (core) host
 	refreshAt time.Time     // SS local session refresh deadline
-	client    HttpClient
-	insecure  bool
+	client    httpclient.HTTPClient
 }
 
 // Self-Service authenticator first creates a global session with the core then creates a local
 // session with self-service.
 func (a *ssAuthenticator) Sign(r *http.Request) error {
 	if time.Now().After(a.refreshAt) {
-		u := buildURL(a.host, "api/catalog/new_session", a.insecure)
+		u := buildURL(a.host, "api/catalog/new_session")
 		u += "?account_id=" + strconv.Itoa(a.accountID)
 		authReq, err := http.NewRequest("GET", u, nil)
 		if err != nil {
@@ -387,7 +319,7 @@ func (a *ssAuthenticator) Sign(r *http.Request) error {
 		}
 
 		authReq.Header.Set("Content-Type", "application/json")
-		resp, err := a.client.Do(authReq)
+		resp, err := a.client.DoHidden(authReq)
 		if err != nil {
 			return fmt.Errorf("Authentication failed: %s", err)
 		}
@@ -431,7 +363,7 @@ func (a *ssAuthenticator) SetHost(host string) {
 // CanAuthenticate makes a test request to SS and returns true if it is successful.
 func (a *ssAuthenticator) CanAuthenticate(host string) error {
 	url := fmt.Sprintf("api/catalog/accounts/%d/user_preferences", a.accountID)
-	req, err := http.NewRequest("GET", buildURL(host, url, a.insecure), nil)
+	req, err := http.NewRequest("GET", buildURL(host, url), nil)
 	if err != nil {
 		return err
 	}
@@ -439,7 +371,7 @@ func (a *ssAuthenticator) CanAuthenticate(host string) error {
 	if err := a.Sign(req); err != nil {
 		return err
 	}
-	resp, err := a.client.Do(req)
+	resp, err := a.client.DoHidden(req)
 	if err != nil {
 		return err
 	}
@@ -453,19 +385,6 @@ func (a *ssAuthenticator) CanAuthenticate(host string) error {
 	return nil
 }
 
-// EnableDump sets the dump format.
-func (a *ssAuthenticator) EnableDump(format Format) {
-	a.client.(*dumpClient).EnableDump(format)
-	a.auther.EnableDump(format)
-}
-
-// Insecure forces the use of HTTP
-func (a *ssAuthenticator) Insecure() {
-	a.client.(*dumpClient).Insecure()
-	a.auther.Insecure()
-	a.insecure = true
-}
-
 // basicLoginRequestBuilder builds login requests from users email and password.
 type basicLoginRequestBuilder struct {
 	username  string
@@ -474,13 +393,13 @@ type basicLoginRequestBuilder struct {
 }
 
 // BuildLoginRequest builds session create requests from users email and password.
-func (b *basicLoginRequestBuilder) BuildLoginRequest(host string, insecure bool) (*http.Request, error) {
+func (b *basicLoginRequestBuilder) BuildLoginRequest(host string) (*http.Request, error) {
 	if host == "" {
 		host = "us-3.rightscale.com"
 	}
 	jsonStr := fmt.Sprintf(`{"email":"%s","password":"%s","account_href":"/api/accounts/%d"}`,
 		b.username, b.password, b.accountID)
-	authReq, err := http.NewRequest("POST", buildURL(host, "api/sessions", insecure),
+	authReq, err := http.NewRequest("POST", buildURL(host, "api/sessions"),
 		bytes.NewBufferString(jsonStr))
 	if err != nil {
 		return authReq, fmt.Errorf("Authentication failed (failed to build request): %s", err.Error())
@@ -497,13 +416,13 @@ type instanceLoginRequestBuilder struct {
 }
 
 // BuildLoginRequest builds session create requests from users email and password.
-func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string, insecure bool) (*http.Request, error) {
+func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string) (*http.Request, error) {
 	if host == "" {
 		host = "us-3.rightscale.com"
 	}
 	accountHref := fmt.Sprintf("/api/accounts/%d", b.accountID)
 	jsonStr := fmt.Sprintf(`{"instance_token":"%s","account_href":"%s"}`, b.token, accountHref)
-	authReq, err := http.NewRequest("POST", buildURL(host, "api/session/instance", insecure),
+	authReq, err := http.NewRequest("POST", buildURL(host, "api/session/instance"),
 		bytes.NewBufferString(jsonStr))
 	if err != nil {
 		return nil, fmt.Errorf("Authentication failed (failed to build request): %s", err)
@@ -511,41 +430,6 @@ func (b *instanceLoginRequestBuilder) BuildLoginRequest(host string, insecure bo
 	authReq.Header.Set("X-API-Version", "1.5")
 	authReq.Header.Set("Content-Type", "application/json")
 	return authReq, nil
-}
-
-// HTTP client that optionally dumps requests and responses.
-// This client also disables the default http client redirect handling.
-type dumpClient struct {
-	RoundTripper http.RoundTripper
-	Format       Format
-	UseHTTP      bool
-}
-
-// Do dumps the request, makes the request and dumps the response as specified by the format.
-func (d *dumpClient) Do(req *http.Request) (*http.Response, error) {
-	req.Header.Set("User-Agent", UA)
-	var b []byte
-	if d.Format.IsVerbose() {
-		b = dumpRequest(d.Format, req)
-	}
-	resp, err := d.RoundTripper.RoundTrip(req)
-	if err != nil {
-		return nil, err
-	}
-	if d.Format.IsVerbose() {
-		dumpResponse(d.Format, resp, req, b)
-	}
-	return resp, nil
-}
-
-// EnableDump sets the dump format
-func (d *dumpClient) EnableDump(format Format) {
-	d.Format = format
-}
-
-// Insecure forces the use of HTTP
-func (d *dumpClient) Insecure() {
-	d.UseHTTP = true
 }
 
 // extractRedirectURL is a helper function that extracts the Location header from a redirect
@@ -566,9 +450,9 @@ func extractRedirectURL(resp *http.Response) (*url.URL, error) {
 }
 
 // Compute API URL given a scheme, hostname and a path
-func buildURL(host, path string, insecure bool) string {
+func buildURL(host, path string) string {
 	scheme := "https"
-	if insecure {
+	if httpclient.Insecure {
 		scheme = "http"
 	}
 	u := url.URL{
@@ -582,16 +466,16 @@ func buildURL(host, path string, insecure bool) string {
 // testAuth makes a GET /api/sessions CM 1.5 request using the given authenticator and returns
 // an error if it failed, nil otherwise.
 // The instance flag specifies whether an instance or an account facing API request should be made.
-func testAuth(auth Authenticator, client HttpClient, host string, instance, insecure bool) error {
+func testAuth(auth Authenticator, client httpclient.HTTPClient, host string, instance bool) error {
 	if host == "" {
 		return fmt.Errorf("missing host information")
 	}
 	var req *http.Request
 	var err error
 	if instance {
-		req, err = http.NewRequest("GET", buildURL(host, "api/user_data", insecure), nil)
+		req, err = http.NewRequest("GET", buildURL(host, "api/user_data"), nil)
 	} else {
-		req, err = http.NewRequest("GET", buildURL(host, "api/sessions", insecure), nil)
+		req, err = http.NewRequest("GET", buildURL(host, "api/sessions"), nil)
 	}
 	if err != nil {
 		return err
@@ -600,7 +484,7 @@ func testAuth(auth Authenticator, client HttpClient, host string, instance, inse
 	if err = auth.Sign(req); err != nil {
 		return err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.DoHidden(req)
 	if err != nil {
 		return err
 	}

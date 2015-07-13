@@ -35,9 +35,8 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 }
 
 // New returns a Self-Service API client.
-// If no HTTP client is specified then the default client is used.
-func New(h string, a rsapi.Authenticator, c rsapi.HttpClient) *Api {
-	api := rsapi.New(h, a, c)
+func New(h string, a rsapi.Authenticator) *Api {
+	api := rsapi.New(h, a)
 	setupMetadata()
 	api.Metadata = GenMetadata
 	return &Api{Api: api}

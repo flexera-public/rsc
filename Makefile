@@ -111,8 +111,8 @@ upload: depend
 version:
 	@echo -e "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
-	@echo -e "// +build make\n\npackage rsapi\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
-	  >rsapi/user_agent.go
+	@echo -e "// +build make\n\npackage httpclient\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
+	  >httpclient/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 
 # descend into go hell and change/add import statements to suit gopkg.in versioning
@@ -179,7 +179,7 @@ depend:
 
 clean:
 	rm -rf build
-	rm -f version.go rsapi/user_agent.go
+	rm -f version.go httpclient/user_agent.go
 
 # gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
 # and then pointlessly complains about bad formatting in imported packages, sigh

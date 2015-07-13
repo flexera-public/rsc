@@ -12,6 +12,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
+	"github.com/rightscale/rsc/httpclient"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
 	"github.com/rightscale/rsc/ss/ssm"
@@ -44,9 +45,9 @@ func main() {
 	// 2. Setup client using basic auth
 	auth := rsapi.NewBasicAuthenticator(*email, *pwd, *account)
 	ssAuth := rsapi.NewSSAuthenticator(auth, *account)
-	client := ssm.New(*host, ssAuth, nil)
+	client := ssm.New(*host, ssAuth)
 	if *insecure {
-		client.Insecure()
+		httpclient.Insecure = true
 	}
 	if err := client.CanAuthenticate(); err != nil {
 		fail("invalid credentials: %s", err)

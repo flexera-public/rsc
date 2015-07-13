@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/log"
 	"gopkg.in/alecthomas/kingpin.v2"
 
 	// phoney reference to make Godep pull this in for the code generators
@@ -23,11 +24,13 @@ func main() {
 
 	cmdLine, err := ParseCommandLine(app)
 	if err != nil {
-		PrintFatal(err.Error())
+		line := strings.Join(os.Args, " ")
+		PrintFatal(line + ": " + err.Error())
 	}
 
 	// Execute appropriate command
 	app.Writer(errOut)
+	log.Interactive()
 	var resp *http.Response
 	topCommand := strings.Split(cmdLine.Command, " ")[0]
 	switch topCommand {

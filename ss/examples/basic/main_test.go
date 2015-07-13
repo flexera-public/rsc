@@ -46,7 +46,7 @@ var _ = Describe("Basic Example", func() {
 			),
 			ghttp.CombineHandlers(
 				ghttp.VerifyRequest("GET", "/api/catalog/new_session"),
-				ghttp.RespondWith(303, ""),
+				ghttp.RespondWith(303, "", http.Header(map[string][]string{"Location": []string{"foo"}})),
 			),
 			ghttp.CombineHandlers(
 				ghttp.VerifyRequest("GET", "/api/catalog/accounts/42/user_preferences"),

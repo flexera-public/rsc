@@ -23,7 +23,7 @@ func (r *Resource) ExtractVariables(href string) ([]*PathVariable, error) {
 		matches = r.findMatches(href)
 	}
 	if len(matches) == 0 {
-		return nil, fmt.Errorf("Href does not match any action path of resource %s", r.Name)
+		return nil, fmt.Errorf("Href '%s' does not match any action path of resource %s", href, r.Name)
 	}
 	sort.Sort(ByLen(matches))
 	pattern := matches[0]

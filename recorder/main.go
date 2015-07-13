@@ -22,7 +22,7 @@ var exitRegexp = regexp.MustCompile(`exit status (\d+)`)
 
 func main() {
 	// Massage the command line args
-	args := []string{"--dump=json"}
+	args := []string{"--dump=record"}
 	args = append(args, os.Args[1:]...)
 	cmd := exec.Command("../rsc", args...)
 	_, args = extractArg("--dump", args)

@@ -1,5 +1,5 @@
 // +build !make
 
-package rsapi
+package httpclient
 
 const UA = "rsc/dev-unknown-branch"

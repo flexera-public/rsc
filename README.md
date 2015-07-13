@@ -378,18 +378,18 @@ to make a series of requests.
 
 ### Logging
 
-The `rsapi` package exposes a `Log` variable of type `log15.Logger`. This logger is used
-by the package to log API requests made to external services. Configure the logger handler
+The `log` package exposes a `Logger` variable of type `log15.Logger`. This logger is used
+by rsc to log API requests made to external services. Configure the logger handler
 to enable logging. The [log15](https://godoc.org/gopkg.in/inconshreveable/log15.v2) package comes
 with a number of default handlers including a file and a syslog handlers.
 
-Configuring the `rsapi` package to log to the file `/var/log/myapp.log` would look like:
+Configuring the `log` package to log to the file `/var/log/myapp.log` would look like:
 ```go
 handler, err := log15.FileHandler("/var/log/myapp.log", log15.LogfmtFormat())
 if err != nil {
 	return err
 }
-rsapi.Log.SetHandler(handler)
+log.Logger.SetHandler(handler)
 ```
 Consult the [log15](https://godoc.org/gopkg.in/inconshreveable/log15.v2) GoDocs for more information.
 
@@ -464,7 +464,10 @@ dumps the request body and response to STDERR for debugging:
 ```go
 func (a *Api) PerformRequest(req *http.Request) (*http.Response, error)
 ```
-Set the client `DumpRequestResponse` field to true to enable debugging.
+The `httpclient` package exposes a `DumpFormat` variable that controls how much logging is done
+when HTTP requests are done. The default consists of logging the request method and URL as well
+as the response code and timing information. Setting `DumpFormat` to `httpclient.Debug` causes
+the request and response bodies to get logged as well using the Debug log level.
 
 ### Common code
 

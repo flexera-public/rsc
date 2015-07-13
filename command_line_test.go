@@ -13,6 +13,7 @@ import (
 )
 
 var _ = Describe("Command line parsing", func() {
+
 	Context("with a command line", func() {
 		var (
 			args []string
@@ -77,17 +78,6 @@ var _ = Describe("Command line parsing", func() {
 				It("initializes the command line struct", func() {
 					Ω(err).ShouldNot(HaveOccurred())
 					Ω(cmdLine.ExtractHeader).ShouldNot(BeEmpty())
-				})
-			})
-
-			Context("with NoRedirect", func() {
-				BeforeEach(func() {
-					args = append([]string{"--noRedirect"}, args...)
-				})
-
-				It("initializes the command line struct", func() {
-					Ω(err).ShouldNot(HaveOccurred())
-					Ω(cmdLine.NoRedirect).Should(BeTrue())
 				})
 			})
 
