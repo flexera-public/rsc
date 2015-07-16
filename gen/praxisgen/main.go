@@ -1,4 +1,4 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v3/gen/praxisgen"
 
 import (
 	"encoding/json"
@@ -12,8 +12,8 @@ import (
 
 	"bitbucket.org/pkg/inflect"
 
-	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/writers"
+	"gopkg.in/rightscale/rsc.v3/gen"
+	"gopkg.in/rightscale/rsc.v3/gen/writers"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

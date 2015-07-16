@@ -1,4 +1,4 @@
-package writers
+package writers // import "gopkg.in/rightscale/rsc.v3/gen/writers"
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v3/gen"
 )
 
 // ClientWriter struct exposes methods to generate the go API client code
@@ -92,8 +92,8 @@ import (
 	"io/ioutil"
 	{{if .NeedTime}}"time"
 	{{end}}
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/metadata"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 )
 
 // An Href contains the relative path to a resource or resource collection,

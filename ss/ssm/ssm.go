@@ -1,10 +1,10 @@
-package ssm
+package ssm // import "gopkg.in/rightscale/rsc.v3/ss/ssm"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/dispatch"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/dispatch"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 )
 
 // Self-Service manager client

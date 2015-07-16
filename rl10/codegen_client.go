@@ -7,14 +7,14 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rl10
+package rl10 // import "gopkg.in/rightscale/rsc.v3/rl10"
 
 import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/metadata"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 )
 
 // An Href contains the relative path to a resource or resource collection,
