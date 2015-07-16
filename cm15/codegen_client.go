@@ -1524,7 +1524,7 @@ type Cookbook struct {
 	Actions           []map[string]string `json:"actions,omitempty"`
 	CreatedAt         *RubyTime           `json:"created_at,omitempty"`
 	DownloadUrl       string              `json:"download_url,omitempty"`
-	Id                string              `json:"id,omitempty"`
+	Id                int                 `json:"id,omitempty"`
 	Links             []map[string]string `json:"links,omitempty"`
 	Metadata          string              `json:"metadata,omitempty"`
 	Name              string              `json:"name,omitempty"`
@@ -4177,7 +4177,7 @@ type MultiCloudImage struct {
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
-	Revision    string              `json:"revision,omitempty"`
+	Revision    int                 `json:"revision,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -5820,7 +5820,7 @@ type Publication struct {
 	Links         []map[string]string `json:"links,omitempty"`
 	Name          string              `json:"name,omitempty"`
 	Publisher     string              `json:"publisher,omitempty"`
-	Revision      string              `json:"revision,omitempty"`
+	Revision      int                 `json:"revision,omitempty"`
 	RevisionNotes string              `json:"revision_notes,omitempty"`
 	UpdatedAt     *RubyTime           `json:"updated_at,omitempty"`
 }
@@ -6645,7 +6645,7 @@ type RightScript struct {
 	Lineage     string              `json:"lineage,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
-	Revision    string              `json:"revision,omitempty"`
+	Revision    int                 `json:"revision,omitempty"`
 	Source      string              `json:"source,omitempty"`
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 }
@@ -7189,7 +7189,7 @@ type RunnableBinding struct {
 	Links       []map[string]string `json:"links,omitempty"`
 	Position    int                 `json:"position,omitempty"`
 	Recipe      string              `json:"recipe,omitempty"`
-	RightScript string              `json:"right_script,omitempty"`
+	RightScript RightScript         `json:"right_script,omitempty"`
 	Sequence    string              `json:"sequence,omitempty"`
 }
 
@@ -8447,7 +8447,7 @@ type ServerTemplate struct {
 	Lineage     string              `json:"lineage,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
-	Revision    string              `json:"revision,omitempty"`
+	Revision    int                 `json:"revision,omitempty"`
 }
 
 // Locator returns a locator for the given resource

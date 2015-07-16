@@ -1,12 +1,11 @@
-# rsc - A generic RightScale API client [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE) [![Godoc](https://godoc.org/github.com/rightscale/rsc?status.svg)](http://godoc.org/github.com/rightscale/rsc)
+# rsc - A generic RightScale API client
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE) [![Godoc](https://godoc.org/github.com/rightscale/rsc?status.svg)](http://godoc.org/github.com/rightscale/rsc)
 
 Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_master.svg)](http://gocover.io/github.com/rightscale/rsc)
 
 v2.0.2
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v2.0.2)](https://travis-ci.org/rightscale/rsc)
-[![Coverage](https://s3.amazonaws.com/rs-code-coverage/rsc/cc_badge_v2.0.2.svg)](http://gocover.io/github.com/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
@@ -79,41 +78,31 @@ The sections below cover each option in order.
 
 The list of global flags is:
 ```
-  --help            Show help.
-  --version         Show application version.
+  --help           Show help.
+  --version        Show application version.
   -c, --config="/home/raphael/.rsc"  
-                    path to rsc config file
+                   path to rsc config file
   -a, --account=ACCOUNT  
-                    RightScale account ID
-  -h, --host=HOST   RightScale login endpoint (e.g. 'us-3.rightscale.com')
-  --email=EMAIL     Login email, use --email and --password or use
-                    --refreshToken, --accessToken, --apiToken or --rl10
-  --pwd=PWD         Login password, use --email and --password or use
-                    --refreshToken, --accessToken, --apiToken or --rl10
+                   RightScale account ID
+  -h, --host=HOST  RightScale login endpoint (e.g. 'us-3.rightscale.com')
+  --email=EMAIL    Login email, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
+  --pwd=PWD        Login password, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
   -r, --refreshToken=REFRESHTOKEN  
-                    OAuth refresh token, use --email and --password or use
-                    --refreshToken, --accessToken, --apiToken or --rl10
+                   OAuth refresh token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
   -s, --accessToken=ACCESSTOKEN  
-                    OAuth access token, use --email and --password or use
-                    --refreshToken, --accessToken, --apiToken or --rl10
+                   OAuth access token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
   -p, --apiToken=APITOKEN  
-                    Instance API token, use --email and --password or use
-                    --refreshToken, --accessToken, --apiToken or --rl10
-  --rl10            Proxy requests through RightLink 10 agent, use --email and
-                    --password or use --refreshToken, --accessToken, --apiToken
-                    or --rl10
-  --noAuth          Make unauthenticated requests, used for testing
-  --x1=X1           Extract single value using JSON:select
-  --xm=XM           Extract zero, one or more values using JSON:select and
-                    return newline separated list
-  --xj=XJ           Extract zero, one or more values using JSON:select and
-                    return JSON
-  --xh=XH           Extract header with given name
-  -n, --noRedirect  Do not follow redirect responses
-  --fetch           Fetch resource with href present in 'Location' header
-  --dump=DUMP       Dump HTTP request and response. Possible values are 'debug'
-                    or 'json'.
-  --pp              Pretty print response body
+                   Instance API token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
+  --rl10           Proxy requests through RightLink 10 agent, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
+  --noAuth         Make unauthenticated requests, used for testing
+  --x1=X1          Extract single value using JSON:select
+  --xm=XM          Extract zero, one or more values using JSON:select and return newline separated list
+  --xj=XJ          Extract zero, one or more values using JSON:select and return JSON
+  --xh=XH          Extract header with given name
+  --fetch          Fetch resource with href present in 'Location' header
+  --dump=DUMP      Dump HTTP request and response. Possible values are 'debug' or 'json'.
+  -v, --verbose    Dump HTTP request and response including auth requests and headers, enables --dump=debug by default, use --dump=json to switch format
+  --pp             Pretty print response body
 ```
 
 ### Authentication
@@ -361,8 +350,11 @@ low-level HTTP client. As an example the following creates a
 CM API 1.5 client that connects to `us-3.rightscale.com` using a OAuth
 refresh token for authentication and the default HTTP client:
 ```go
-refreshToken := ... // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
-auth := rsapi.NewOAuthAuthenticator(refreshToken)
+// Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
+refreshToken := "3e040efed9a83ac758f3b1cbdfa041b905742169" 
+// Corresponding RightScale account ID
+accountID := 60073
+auth := rsapi.NewOAuthAuthenticator(refreshToken, accountID)
 accountId := 123
 client := cm15.New("us-3.rightscale.com", &auth, nil)
 ```
@@ -441,6 +433,15 @@ loc, err := volumeLocator.Create(&params)
 if err == nil {
 	volume, err := loc.Show(rsapi.ApiParams{})
 	// ... check error, use volume etc.
+}
+```
+It is also possible to create a locator directly from a resource by using the resource `Locator`
+method:
+```
+clouds, err := client.CloudLocator("/api/clouds").Index()
+if err == nil {
+	first := clouds[0].Locator(client)
+	first.Show() // first is a CloudLocator instance
 }
 ```
 

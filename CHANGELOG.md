@@ -1,3 +1,13 @@
+vnext / ?
+---------
+* Add support for Cloud Analytics APIs (via `ca` subcommand and package)
+* Make it possible to specify account when using OAuth (fixes CM 1.6 auth)
+* Add `Locator` method to all resources
+* Refactor logging, expose logger via new `log` package
+* Refactor how low level HTTP client is created, expose config via new `httpclient` package
+* Fix issues with some CM 1.5 resource attribute types
+* BREAK: remove need for providing http.Client instance when creating API client
+
 v2.0.2 / 2015-06-09
 -------------------
 * Fix issues with authentication using the "ss" command line

@@ -47,11 +47,14 @@ func NewInstanceAuthenticator(token string, accountID int) Authenticator {
 // NewOAuthAuthenticator returns a authenticator that uses a oauth refresh token to create access
 // tokens.
 // The refresh token can be found in the CM dashboard under Settings > Account Settings > API Credentials.
-func NewOAuthAuthenticator(token string) Authenticator {
+// Specifying the accountID is only required if the API requires the "X-Account" header to be set
+// (this is true of CM 1.6 at the moment).
+func NewOAuthAuthenticator(token string, accountID int) Authenticator {
 	return &oAuthSigner{
 		refreshToken: token,
 		refreshAt:    time.Now().Add(-2 * time.Minute),
 		client:       httpclient.New(),
+		accountID:    accountID,
 	}
 }
 
@@ -178,6 +181,7 @@ type oAuthSigner struct {
 	host         string
 	refreshAt    time.Time
 	client       httpclient.HTTPClient
+	accountID    int // optional, only used to set X-Account header if present
 }
 
 // Sign adds the OAuth bearer header to the *http.Request
@@ -228,6 +232,9 @@ func (s *oAuthSigner) Sign(req *http.Request) error {
 		s.refreshAt = time.Now().Add(d / 2)
 	}
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", s.accessToken))
+	if s.accountID != 0 {
+		req.Header.Set("X-Account", strconv.Itoa(s.accountID))
+	}
 	return nil
 }
 

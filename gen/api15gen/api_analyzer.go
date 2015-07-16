@@ -72,7 +72,11 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		atts = m["attributes"].(map[string]interface{})
 		attributes = make([]*gen.Attribute, len(atts))
 		for idx, n := range sortedKeys(atts) {
-			attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), a.attributeTypes[n]}
+			at, ok := a.attributeTypes[n+"#"+name]
+			if !ok {
+				at = a.attributeTypes[n]
+			}
+			attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), at}
 		}
 	} else {
 		attributes = []*gen.Attribute{}
