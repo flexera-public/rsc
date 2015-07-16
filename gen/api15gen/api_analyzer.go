@@ -249,6 +249,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		Description: removeBlankLines(description),
 		Actions:     actions,
 		Attributes:  attributes,
+		LocatorFunc: LocatorFunc(attributes, name),
 	}
 }
 
@@ -261,6 +262,25 @@ var (
 	// Regular expression that captures variables in a path
 	routeVariablesRegexp = regexp.MustCompile(`/:([^/]+)`)
 )
+
+func LocatorFunc(attributes []*gen.Attribute, name string) string {
+	hasLinks := false
+	for _, a := range attributes {
+		if a.FieldName == "Links" {
+			hasLinks = true
+			break
+		}
+	}
+	if !hasLinks {
+		return ""
+	}
+	return `for _, l := range r.Links {
+			if l["rel"] == "self" {
+				return api.` + name + `Locator(l["href"]), nil
+			}
+		}
+		return nil, fmt.Errorf("resource has no self link")`
+}
 
 func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) {
 	// :(((( some routes are empty

@@ -170,6 +170,7 @@ type Resource struct {
 	Description string       // Resource description
 	Attributes  []*Attribute // Resource attributes
 	Actions     []*Action    // Resource actions, e.g. "index", "show", "update" ...
+	LocatorFunc string       // Source code for Locator factory method if any
 }
 
 // Resource attributes used to generate resource type definition.

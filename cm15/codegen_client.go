@@ -62,6 +62,16 @@ type Account struct {
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Account) Locator(api *Api) (*AccountLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.AccountLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // AccountLocator exposes the Account resource actions.
@@ -111,6 +121,16 @@ type AccountGroup struct {
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *AccountGroup) Locator(api *Api) (*AccountGroupLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.AccountGroupLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -206,6 +226,16 @@ type Alert struct {
 	Status        string              `json:"status,omitempty"`
 	TriggeredAt   *RubyTime           `json:"triggered_at,omitempty"`
 	UpdatedAt     *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Alert) Locator(api *Api) (*AlertLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.AlertLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -388,6 +418,16 @@ type AlertSpec struct {
 	Variable       string              `json:"variable,omitempty"`
 	VoteTag        string              `json:"vote_tag,omitempty"`
 	VoteType       string              `json:"vote_type,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *AlertSpec) Locator(api *Api) (*AlertSpecLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.AlertSpecLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -576,6 +616,16 @@ type AuditEntry struct {
 	Summary    string              `json:"summary,omitempty"`
 	UpdatedAt  *RubyTime           `json:"updated_at,omitempty"`
 	UserEmail  string              `json:"user_email,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *AuditEntry) Locator(api *Api) (*AuditEntryLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.AuditEntryLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -837,6 +887,16 @@ type Backup struct {
 	Name                string              `json:"name,omitempty"`
 	VolumeSnapshotCount int                 `json:"volume_snapshot_count,omitempty"`
 	VolumeSnapshots     []VolumeSnapshot    `json:"volume_snapshots,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Backup) Locator(api *Api) (*BackupLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.BackupLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -1233,6 +1293,16 @@ type Cloud struct {
 	Name         string                   `json:"name,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Cloud) Locator(api *Api) (*CloudLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.CloudLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // CloudLocator exposes the Cloud resource actions.
@@ -1322,6 +1392,16 @@ type CloudAccount struct {
 	CreatedAt *RubyTime           `json:"created_at,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *CloudAccount) Locator(api *Api) (*CloudAccountLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.CloudAccountLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -1453,6 +1533,16 @@ type Cookbook struct {
 	State             string              `json:"state,omitempty"`
 	UpdatedAt         *RubyTime           `json:"updated_at,omitempty"`
 	Version           string              `json:"version,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Cookbook) Locator(api *Api) (*CookbookLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.CookbookLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -1639,6 +1729,16 @@ type CookbookAttachment struct {
 	Dependency bool                `json:"dependency,omitempty"`
 	Id         string              `json:"id,omitempty"`
 	Links      []map[string]string `json:"links,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *CookbookAttachment) Locator(api *Api) (*CookbookAttachmentLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.CookbookAttachmentLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -1842,6 +1942,16 @@ type Credential struct {
 	Value       string              `json:"value,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Credential) Locator(api *Api) (*CredentialLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.CredentialLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // CredentialLocator exposes the Credential resource actions.
@@ -2011,6 +2121,16 @@ type Datacenter struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Datacenter) Locator(api *Api) (*DatacenterLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.DatacenterLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // DatacenterLocator exposes the Datacenter resource actions.
@@ -2104,6 +2224,16 @@ type Deployment struct {
 	Locked         bool                `json:"locked,omitempty"`
 	Name           string              `json:"name,omitempty"`
 	ServerTagScope string              `json:"server_tag_scope,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Deployment) Locator(api *Api) (*DeploymentLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.DeploymentLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -2402,6 +2532,16 @@ type IdentityProvider struct {
 	UpdatedAt     *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *IdentityProvider) Locator(api *Api) (*IdentityProviderLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.IdentityProviderLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // IdentityProviderLocator exposes the IdentityProvider resource actions.
@@ -2500,6 +2640,16 @@ type Image struct {
 	RootDeviceStorage  string              `json:"root_device_storage,omitempty"`
 	VirtualizationType string              `json:"virtualization_type,omitempty"`
 	Visibility         string              `json:"visibility,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Image) Locator(api *Api) (*ImageLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.ImageLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -2768,6 +2918,16 @@ type Instance struct {
 	TerminatedAt             *RubyTime              `json:"terminated_at,omitempty"`
 	UpdatedAt                *RubyTime              `json:"updated_at,omitempty"`
 	UserData                 string                 `json:"user_data,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Instance) Locator(api *Api) (*InstanceLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.InstanceLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -3249,6 +3409,16 @@ type InstanceCustomLodgement struct {
 	StartAt                              *RubyTime                `json:"start_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *InstanceCustomLodgement) Locator(api *Api) (*InstanceCustomLodgementLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.InstanceCustomLodgementLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // InstanceCustomLodgementLocator exposes the InstanceCustomLodgement resource actions.
@@ -3413,6 +3583,16 @@ type InstanceType struct {
 	ResourceUid     string              `json:"resource_uid,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *InstanceType) Locator(api *Api) (*InstanceTypeLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.InstanceTypeLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // InstanceTypeLocator exposes the InstanceType resource actions.
@@ -3505,6 +3685,16 @@ type IpAddress struct {
 	Links     []map[string]string `json:"links,omitempty"`
 	Name      string              `json:"name,omitempty"`
 	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *IpAddress) Locator(api *Api) (*IpAddressLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.IpAddressLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -3664,6 +3854,16 @@ type IpAddressBinding struct {
 	Recurring   bool                `json:"recurring,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *IpAddressBinding) Locator(api *Api) (*IpAddressBindingLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.IpAddressBindingLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // IpAddressBindingLocator exposes the IpAddressBinding resource actions.
@@ -3800,6 +4000,16 @@ type MonitoringMetric struct {
 	Links     []map[string]string `json:"links,omitempty"`
 	Plugin    string              `json:"plugin,omitempty"`
 	View      string              `json:"view,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *MonitoringMetric) Locator(api *Api) (*MonitoringMetricLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.MonitoringMetricLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -3968,6 +4178,16 @@ type MultiCloudImage struct {
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	Revision    string              `json:"revision,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *MultiCloudImage) Locator(api *Api) (*MultiCloudImageLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.MultiCloudImageLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -4178,6 +4398,16 @@ type MultiCloudImageSetting struct {
 	Links   []map[string]string `json:"links,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *MultiCloudImageSetting) Locator(api *Api) (*MultiCloudImageSettingLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.MultiCloudImageSettingLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // MultiCloudImageSettingLocator exposes the MultiCloudImageSetting resource actions.
@@ -4333,6 +4563,16 @@ type Network struct {
 	Links           []map[string]string `json:"links,omitempty"`
 	Name            string              `json:"name,omitempty"`
 	ResourceUid     string              `json:"resource_uid,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Network) Locator(api *Api) (*NetworkLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.NetworkLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -4491,6 +4731,16 @@ type NetworkGateway struct {
 	State       string              `json:"state,omitempty"`
 	Type        string              `json:"type,omitempty"`
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *NetworkGateway) Locator(api *Api) (*NetworkGatewayLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.NetworkGatewayLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -4656,6 +4906,16 @@ type NetworkOptionGroup struct {
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *NetworkOptionGroup) Locator(api *Api) (*NetworkOptionGroupLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.NetworkOptionGroupLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // NetworkOptionGroupLocator exposes the NetworkOptionGroup resource actions.
@@ -4816,6 +5076,16 @@ type NetworkOptionGroupAttachment struct {
 	NetworkOptionGroup string              `json:"network_option_group,omitempty"`
 	ResourceUid        string              `json:"resource_uid,omitempty"`
 	UpdatedAt          *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *NetworkOptionGroupAttachment) Locator(api *Api) (*NetworkOptionGroupAttachmentLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.NetworkOptionGroupAttachmentLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -5106,6 +5376,16 @@ type Permission struct {
 	RoleTitle string              `json:"role_title,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Permission) Locator(api *Api) (*PermissionLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.PermissionLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // PermissionLocator exposes the Permission resource actions.
@@ -5252,6 +5532,16 @@ type PlacementGroup struct {
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *PlacementGroup) Locator(api *Api) (*PlacementGroupLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.PlacementGroupLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // PlacementGroupLocator exposes the PlacementGroup resource actions.
@@ -5393,6 +5683,16 @@ type Preference struct {
 	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Preference) Locator(api *Api) (*PreferenceLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.PreferenceLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // PreferenceLocator exposes the Preference resource actions.
@@ -5525,6 +5825,16 @@ type Publication struct {
 	UpdatedAt     *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Publication) Locator(api *Api) (*PublicationLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.PublicationLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // PublicationLocator exposes the Publication resource actions.
@@ -5642,6 +5952,16 @@ type PublicationLineage struct {
 	UpdatedAt        *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *PublicationLineage) Locator(api *Api) (*PublicationLineageLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.PublicationLineageLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // PublicationLineageLocator exposes the PublicationLineage resource actions.
@@ -5703,6 +6023,16 @@ type RecurringVolumeAttachment struct {
 	Status       string              `json:"status,omitempty"`
 	StorageType  string              `json:"storage_type,omitempty"`
 	UpdatedAt    *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *RecurringVolumeAttachment) Locator(api *Api) (*RecurringVolumeAttachmentLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RecurringVolumeAttachmentLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -5863,6 +6193,16 @@ type Repository struct {
 	Source          string              `json:"source,omitempty"`
 	SourceType      string              `json:"source_type,omitempty"`
 	UpdatedAt       *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Repository) Locator(api *Api) (*RepositoryLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RepositoryLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -6199,6 +6539,16 @@ type RepositoryAsset struct {
 	Version     string              `json:"version,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *RepositoryAsset) Locator(api *Api) (*RepositoryAssetLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RepositoryAssetLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // RepositoryAssetLocator exposes the RepositoryAsset resource actions.
@@ -6298,6 +6648,16 @@ type RightScript struct {
 	Revision    string              `json:"revision,omitempty"`
 	Source      string              `json:"source,omitempty"`
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *RightScript) Locator(api *Api) (*RightScriptLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RightScriptLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -6481,6 +6841,16 @@ type Route struct {
 	UpdatedAt            *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Route) Locator(api *Api) (*RouteLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RouteLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // RouteLocator exposes the Route resource actions.
@@ -6641,6 +7011,16 @@ type RouteTable struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Routes      []Route             `json:"routes,omitempty"`
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *RouteTable) Locator(api *Api) (*RouteTableLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RouteTableLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -6811,6 +7191,16 @@ type RunnableBinding struct {
 	Recipe      string              `json:"recipe,omitempty"`
 	RightScript string              `json:"right_script,omitempty"`
 	Sequence    string              `json:"sequence,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *RunnableBinding) Locator(api *Api) (*RunnableBindingLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RunnableBindingLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -7121,6 +7511,16 @@ type SecurityGroup struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *SecurityGroup) Locator(api *Api) (*SecurityGroupLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.SecurityGroupLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // SecurityGroupLocator exposes the SecurityGroup resource actions.
@@ -7269,6 +7669,16 @@ type SecurityGroupRule struct {
 	Protocol    string              `json:"protocol,omitempty"`
 	SourceType  string              `json:"source_type,omitempty"`
 	StartPort   string              `json:"start_port,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *SecurityGroupRule) Locator(api *Api) (*SecurityGroupRuleLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.SecurityGroupRuleLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -7452,6 +7862,16 @@ type Server struct {
 	Optimized       bool                `json:"optimized,omitempty"`
 	State           string              `json:"state,omitempty"`
 	UpdatedAt       *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Server) Locator(api *Api) (*ServerLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.ServerLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -7740,6 +8160,16 @@ type ServerArray struct {
 	State            string                 `json:"state,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *ServerArray) Locator(api *Api) (*ServerArrayLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.ServerArrayLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // ServerArrayLocator exposes the ServerArray resource actions.
@@ -8018,6 +8448,16 @@ type ServerTemplate struct {
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	Revision    string              `json:"revision,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *ServerTemplate) Locator(api *Api) (*ServerTemplateLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.ServerTemplateLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -8395,6 +8835,16 @@ type ServerTemplateMultiCloudImage struct {
 	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *ServerTemplateMultiCloudImage) Locator(api *Api) (*ServerTemplateMultiCloudImageLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.ServerTemplateMultiCloudImageLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // ServerTemplateMultiCloudImageLocator exposes the ServerTemplateMultiCloudImage resource actions.
@@ -8557,6 +9007,16 @@ type Session struct {
 	Message string              `json:"message,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Session) Locator(api *Api) (*SessionLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.SessionLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // SessionLocator exposes the Session resource actions.
@@ -8685,6 +9145,16 @@ type SshKey struct {
 	Links       []map[string]string `json:"links,omitempty"`
 	Material    string              `json:"material,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *SshKey) Locator(api *Api) (*SshKeyLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.SshKeyLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -8830,6 +9300,16 @@ type Subnet struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	State       string              `json:"state,omitempty"`
 	Visibility  string              `json:"visibility,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Subnet) Locator(api *Api) (*SubnetLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.SubnetLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -9180,6 +9660,16 @@ type Task struct {
 	Summary string              `json:"summary,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Task) Locator(api *Api) (*TaskLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.TaskLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // TaskLocator exposes the Task resource actions.
@@ -9243,6 +9733,16 @@ type User struct {
 	PrincipalUid string              `json:"principal_uid,omitempty"`
 	TimezoneName string              `json:"timezone_name,omitempty"`
 	UpdatedAt    *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *User) Locator(api *Api) (*UserLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.UserLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator
@@ -9465,6 +9965,16 @@ type Volume struct {
 	VolumeType  string              `json:"volume_type,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Volume) Locator(api *Api) (*VolumeLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.VolumeLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // VolumeLocator exposes the Volume resource actions.
@@ -9634,6 +10144,16 @@ type VolumeAttachment struct {
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *VolumeAttachment) Locator(api *Api) (*VolumeAttachmentLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.VolumeAttachmentLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // VolumeAttachmentLocator exposes the VolumeAttachment resource actions.
@@ -9799,6 +10319,16 @@ type VolumeSnapshot struct {
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *VolumeSnapshot) Locator(api *Api) (*VolumeSnapshotLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.VolumeSnapshotLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
+}
+
 //===== Locator
 
 // VolumeSnapshotLocator exposes the VolumeSnapshot resource actions.
@@ -9949,6 +10479,16 @@ type VolumeType struct {
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Size        string              `json:"size,omitempty"`
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *VolumeType) Locator(api *Api) (*VolumeTypeLocator, error) {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.VolumeTypeLocator(l["href"]), nil
+		}
+	}
+	return nil, fmt.Errorf("resource has no self link")
 }
 
 //===== Locator

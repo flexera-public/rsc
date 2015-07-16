@@ -136,7 +136,12 @@ const resourceTmpl = `{{$resource := .}}{{define "ActionBody"}}` + actionBodyTmp
 type {{.Name}} struct { {{range .Attributes}}
 {{.FieldName}} {{.FieldType}} ` + "`" + `json:"{{.Name}},omitempty"` + "`" + `{{end}}
 }
-
+{{if .LocatorFunc}}
+// Locator returns a locator for the given resource
+func (r *{{.Name}}) Locator(api *Api) (*{{.Name}}Locator, error) {
+	{{.LocatorFunc}}
+}
+{{end}}
 {{if .Actions}}
 //===== Locator
 
