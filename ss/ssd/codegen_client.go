@@ -68,6 +68,11 @@ type Schedule struct {
 	Timestamps      *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Schedule) Locator(api *Api) *ScheduleLocator {
+	return api.ScheduleLocator(r.Href)
+}
+
 //===== Locator
 
 // ScheduleLocator exposes the Schedule resource actions.
@@ -276,6 +281,11 @@ type Template struct {
 	ShortDescription   string            `json:"short_description,omitempty"`
 	Source             string            `json:"source,omitempty"`
 	Timestamps         *TimestampsStruct `json:"timestamps,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Template) Locator(api *Api) *TemplateLocator {
+	return api.TemplateLocator(r.Href)
 }
 
 //===== Locator

@@ -138,7 +138,7 @@ type {{.Name}} struct { {{range .Attributes}}
 }
 {{if .LocatorFunc}}
 // Locator returns a locator for the given resource
-func (r *{{.Name}}) Locator(api *Api) (*{{.Name}}Locator, error) {
+func (r *{{.Name}}) Locator(api *Api) *{{.Name}}Locator {
 	{{.LocatorFunc}}
 }
 {{end}}

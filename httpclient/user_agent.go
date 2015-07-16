@@ -2,4 +2,4 @@
 
 package httpclient
 
-const UA = "rsc/dev-1437005383-master"
+const UA = "rsc/dev-1437066517-master"

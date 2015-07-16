@@ -63,13 +63,13 @@ type Account struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Account) Locator(api *Api) (*AccountLocator, error) {
+func (r *Account) Locator(api *Api) *AccountLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.AccountLocator(l["href"]), nil
+			return api.AccountLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -124,13 +124,13 @@ type AccountGroup struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *AccountGroup) Locator(api *Api) (*AccountGroupLocator, error) {
+func (r *AccountGroup) Locator(api *Api) *AccountGroupLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.AccountGroupLocator(l["href"]), nil
+			return api.AccountGroupLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -229,13 +229,13 @@ type Alert struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Alert) Locator(api *Api) (*AlertLocator, error) {
+func (r *Alert) Locator(api *Api) *AlertLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.AlertLocator(l["href"]), nil
+			return api.AlertLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -421,13 +421,13 @@ type AlertSpec struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *AlertSpec) Locator(api *Api) (*AlertSpecLocator, error) {
+func (r *AlertSpec) Locator(api *Api) *AlertSpecLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.AlertSpecLocator(l["href"]), nil
+			return api.AlertSpecLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -619,13 +619,13 @@ type AuditEntry struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *AuditEntry) Locator(api *Api) (*AuditEntryLocator, error) {
+func (r *AuditEntry) Locator(api *Api) *AuditEntryLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.AuditEntryLocator(l["href"]), nil
+			return api.AuditEntryLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -890,13 +890,13 @@ type Backup struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Backup) Locator(api *Api) (*BackupLocator, error) {
+func (r *Backup) Locator(api *Api) *BackupLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.BackupLocator(l["href"]), nil
+			return api.BackupLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -1294,13 +1294,13 @@ type Cloud struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Cloud) Locator(api *Api) (*CloudLocator, error) {
+func (r *Cloud) Locator(api *Api) *CloudLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.CloudLocator(l["href"]), nil
+			return api.CloudLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -1395,13 +1395,13 @@ type CloudAccount struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *CloudAccount) Locator(api *Api) (*CloudAccountLocator, error) {
+func (r *CloudAccount) Locator(api *Api) *CloudAccountLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.CloudAccountLocator(l["href"]), nil
+			return api.CloudAccountLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -1536,13 +1536,13 @@ type Cookbook struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Cookbook) Locator(api *Api) (*CookbookLocator, error) {
+func (r *Cookbook) Locator(api *Api) *CookbookLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.CookbookLocator(l["href"]), nil
+			return api.CookbookLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -1732,13 +1732,13 @@ type CookbookAttachment struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *CookbookAttachment) Locator(api *Api) (*CookbookAttachmentLocator, error) {
+func (r *CookbookAttachment) Locator(api *Api) *CookbookAttachmentLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.CookbookAttachmentLocator(l["href"]), nil
+			return api.CookbookAttachmentLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -1943,13 +1943,13 @@ type Credential struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Credential) Locator(api *Api) (*CredentialLocator, error) {
+func (r *Credential) Locator(api *Api) *CredentialLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.CredentialLocator(l["href"]), nil
+			return api.CredentialLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -2122,13 +2122,13 @@ type Datacenter struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Datacenter) Locator(api *Api) (*DatacenterLocator, error) {
+func (r *Datacenter) Locator(api *Api) *DatacenterLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.DatacenterLocator(l["href"]), nil
+			return api.DatacenterLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -2227,13 +2227,13 @@ type Deployment struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Deployment) Locator(api *Api) (*DeploymentLocator, error) {
+func (r *Deployment) Locator(api *Api) *DeploymentLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.DeploymentLocator(l["href"]), nil
+			return api.DeploymentLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -2533,13 +2533,13 @@ type IdentityProvider struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *IdentityProvider) Locator(api *Api) (*IdentityProviderLocator, error) {
+func (r *IdentityProvider) Locator(api *Api) *IdentityProviderLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.IdentityProviderLocator(l["href"]), nil
+			return api.IdentityProviderLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -2643,13 +2643,13 @@ type Image struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Image) Locator(api *Api) (*ImageLocator, error) {
+func (r *Image) Locator(api *Api) *ImageLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.ImageLocator(l["href"]), nil
+			return api.ImageLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -2921,13 +2921,13 @@ type Instance struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Instance) Locator(api *Api) (*InstanceLocator, error) {
+func (r *Instance) Locator(api *Api) *InstanceLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.InstanceLocator(l["href"]), nil
+			return api.InstanceLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -3410,13 +3410,13 @@ type InstanceCustomLodgement struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *InstanceCustomLodgement) Locator(api *Api) (*InstanceCustomLodgementLocator, error) {
+func (r *InstanceCustomLodgement) Locator(api *Api) *InstanceCustomLodgementLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.InstanceCustomLodgementLocator(l["href"]), nil
+			return api.InstanceCustomLodgementLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -3584,13 +3584,13 @@ type InstanceType struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *InstanceType) Locator(api *Api) (*InstanceTypeLocator, error) {
+func (r *InstanceType) Locator(api *Api) *InstanceTypeLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.InstanceTypeLocator(l["href"]), nil
+			return api.InstanceTypeLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -3688,13 +3688,13 @@ type IpAddress struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *IpAddress) Locator(api *Api) (*IpAddressLocator, error) {
+func (r *IpAddress) Locator(api *Api) *IpAddressLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.IpAddressLocator(l["href"]), nil
+			return api.IpAddressLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -3855,13 +3855,13 @@ type IpAddressBinding struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *IpAddressBinding) Locator(api *Api) (*IpAddressBindingLocator, error) {
+func (r *IpAddressBinding) Locator(api *Api) *IpAddressBindingLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.IpAddressBindingLocator(l["href"]), nil
+			return api.IpAddressBindingLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -4003,13 +4003,13 @@ type MonitoringMetric struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *MonitoringMetric) Locator(api *Api) (*MonitoringMetricLocator, error) {
+func (r *MonitoringMetric) Locator(api *Api) *MonitoringMetricLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.MonitoringMetricLocator(l["href"]), nil
+			return api.MonitoringMetricLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -4181,13 +4181,13 @@ type MultiCloudImage struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *MultiCloudImage) Locator(api *Api) (*MultiCloudImageLocator, error) {
+func (r *MultiCloudImage) Locator(api *Api) *MultiCloudImageLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.MultiCloudImageLocator(l["href"]), nil
+			return api.MultiCloudImageLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -4399,13 +4399,13 @@ type MultiCloudImageSetting struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *MultiCloudImageSetting) Locator(api *Api) (*MultiCloudImageSettingLocator, error) {
+func (r *MultiCloudImageSetting) Locator(api *Api) *MultiCloudImageSettingLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.MultiCloudImageSettingLocator(l["href"]), nil
+			return api.MultiCloudImageSettingLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -4566,13 +4566,13 @@ type Network struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Network) Locator(api *Api) (*NetworkLocator, error) {
+func (r *Network) Locator(api *Api) *NetworkLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.NetworkLocator(l["href"]), nil
+			return api.NetworkLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -4734,13 +4734,13 @@ type NetworkGateway struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *NetworkGateway) Locator(api *Api) (*NetworkGatewayLocator, error) {
+func (r *NetworkGateway) Locator(api *Api) *NetworkGatewayLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.NetworkGatewayLocator(l["href"]), nil
+			return api.NetworkGatewayLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -4907,13 +4907,13 @@ type NetworkOptionGroup struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *NetworkOptionGroup) Locator(api *Api) (*NetworkOptionGroupLocator, error) {
+func (r *NetworkOptionGroup) Locator(api *Api) *NetworkOptionGroupLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.NetworkOptionGroupLocator(l["href"]), nil
+			return api.NetworkOptionGroupLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -5079,13 +5079,13 @@ type NetworkOptionGroupAttachment struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *NetworkOptionGroupAttachment) Locator(api *Api) (*NetworkOptionGroupAttachmentLocator, error) {
+func (r *NetworkOptionGroupAttachment) Locator(api *Api) *NetworkOptionGroupAttachmentLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.NetworkOptionGroupAttachmentLocator(l["href"]), nil
+			return api.NetworkOptionGroupAttachmentLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -5377,13 +5377,13 @@ type Permission struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Permission) Locator(api *Api) (*PermissionLocator, error) {
+func (r *Permission) Locator(api *Api) *PermissionLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.PermissionLocator(l["href"]), nil
+			return api.PermissionLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -5533,13 +5533,13 @@ type PlacementGroup struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *PlacementGroup) Locator(api *Api) (*PlacementGroupLocator, error) {
+func (r *PlacementGroup) Locator(api *Api) *PlacementGroupLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.PlacementGroupLocator(l["href"]), nil
+			return api.PlacementGroupLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -5684,13 +5684,13 @@ type Preference struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Preference) Locator(api *Api) (*PreferenceLocator, error) {
+func (r *Preference) Locator(api *Api) *PreferenceLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.PreferenceLocator(l["href"]), nil
+			return api.PreferenceLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -5826,13 +5826,13 @@ type Publication struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Publication) Locator(api *Api) (*PublicationLocator, error) {
+func (r *Publication) Locator(api *Api) *PublicationLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.PublicationLocator(l["href"]), nil
+			return api.PublicationLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -5953,13 +5953,13 @@ type PublicationLineage struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *PublicationLineage) Locator(api *Api) (*PublicationLineageLocator, error) {
+func (r *PublicationLineage) Locator(api *Api) *PublicationLineageLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.PublicationLineageLocator(l["href"]), nil
+			return api.PublicationLineageLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -6026,13 +6026,13 @@ type RecurringVolumeAttachment struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *RecurringVolumeAttachment) Locator(api *Api) (*RecurringVolumeAttachmentLocator, error) {
+func (r *RecurringVolumeAttachment) Locator(api *Api) *RecurringVolumeAttachmentLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.RecurringVolumeAttachmentLocator(l["href"]), nil
+			return api.RecurringVolumeAttachmentLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -6196,13 +6196,13 @@ type Repository struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Repository) Locator(api *Api) (*RepositoryLocator, error) {
+func (r *Repository) Locator(api *Api) *RepositoryLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.RepositoryLocator(l["href"]), nil
+			return api.RepositoryLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -6540,13 +6540,13 @@ type RepositoryAsset struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *RepositoryAsset) Locator(api *Api) (*RepositoryAssetLocator, error) {
+func (r *RepositoryAsset) Locator(api *Api) *RepositoryAssetLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.RepositoryAssetLocator(l["href"]), nil
+			return api.RepositoryAssetLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -6651,13 +6651,13 @@ type RightScript struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *RightScript) Locator(api *Api) (*RightScriptLocator, error) {
+func (r *RightScript) Locator(api *Api) *RightScriptLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.RightScriptLocator(l["href"]), nil
+			return api.RightScriptLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -6842,13 +6842,13 @@ type Route struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Route) Locator(api *Api) (*RouteLocator, error) {
+func (r *Route) Locator(api *Api) *RouteLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.RouteLocator(l["href"]), nil
+			return api.RouteLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -7014,13 +7014,13 @@ type RouteTable struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *RouteTable) Locator(api *Api) (*RouteTableLocator, error) {
+func (r *RouteTable) Locator(api *Api) *RouteTableLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.RouteTableLocator(l["href"]), nil
+			return api.RouteTableLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -7194,13 +7194,13 @@ type RunnableBinding struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *RunnableBinding) Locator(api *Api) (*RunnableBindingLocator, error) {
+func (r *RunnableBinding) Locator(api *Api) *RunnableBindingLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.RunnableBindingLocator(l["href"]), nil
+			return api.RunnableBindingLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -7512,13 +7512,13 @@ type SecurityGroup struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *SecurityGroup) Locator(api *Api) (*SecurityGroupLocator, error) {
+func (r *SecurityGroup) Locator(api *Api) *SecurityGroupLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.SecurityGroupLocator(l["href"]), nil
+			return api.SecurityGroupLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -7672,13 +7672,13 @@ type SecurityGroupRule struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *SecurityGroupRule) Locator(api *Api) (*SecurityGroupRuleLocator, error) {
+func (r *SecurityGroupRule) Locator(api *Api) *SecurityGroupRuleLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.SecurityGroupRuleLocator(l["href"]), nil
+			return api.SecurityGroupRuleLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -7865,13 +7865,13 @@ type Server struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Server) Locator(api *Api) (*ServerLocator, error) {
+func (r *Server) Locator(api *Api) *ServerLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.ServerLocator(l["href"]), nil
+			return api.ServerLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -8161,13 +8161,13 @@ type ServerArray struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *ServerArray) Locator(api *Api) (*ServerArrayLocator, error) {
+func (r *ServerArray) Locator(api *Api) *ServerArrayLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.ServerArrayLocator(l["href"]), nil
+			return api.ServerArrayLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -8451,13 +8451,13 @@ type ServerTemplate struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *ServerTemplate) Locator(api *Api) (*ServerTemplateLocator, error) {
+func (r *ServerTemplate) Locator(api *Api) *ServerTemplateLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.ServerTemplateLocator(l["href"]), nil
+			return api.ServerTemplateLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -8836,13 +8836,13 @@ type ServerTemplateMultiCloudImage struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *ServerTemplateMultiCloudImage) Locator(api *Api) (*ServerTemplateMultiCloudImageLocator, error) {
+func (r *ServerTemplateMultiCloudImage) Locator(api *Api) *ServerTemplateMultiCloudImageLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.ServerTemplateMultiCloudImageLocator(l["href"]), nil
+			return api.ServerTemplateMultiCloudImageLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -9008,13 +9008,13 @@ type Session struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Session) Locator(api *Api) (*SessionLocator, error) {
+func (r *Session) Locator(api *Api) *SessionLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.SessionLocator(l["href"]), nil
+			return api.SessionLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -9148,13 +9148,13 @@ type SshKey struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *SshKey) Locator(api *Api) (*SshKeyLocator, error) {
+func (r *SshKey) Locator(api *Api) *SshKeyLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.SshKeyLocator(l["href"]), nil
+			return api.SshKeyLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -9303,13 +9303,13 @@ type Subnet struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Subnet) Locator(api *Api) (*SubnetLocator, error) {
+func (r *Subnet) Locator(api *Api) *SubnetLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.SubnetLocator(l["href"]), nil
+			return api.SubnetLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -9661,13 +9661,13 @@ type Task struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Task) Locator(api *Api) (*TaskLocator, error) {
+func (r *Task) Locator(api *Api) *TaskLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.TaskLocator(l["href"]), nil
+			return api.TaskLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -9736,13 +9736,13 @@ type User struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *User) Locator(api *Api) (*UserLocator, error) {
+func (r *User) Locator(api *Api) *UserLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.UserLocator(l["href"]), nil
+			return api.UserLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -9966,13 +9966,13 @@ type Volume struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Volume) Locator(api *Api) (*VolumeLocator, error) {
+func (r *Volume) Locator(api *Api) *VolumeLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.VolumeLocator(l["href"]), nil
+			return api.VolumeLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -10145,13 +10145,13 @@ type VolumeAttachment struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *VolumeAttachment) Locator(api *Api) (*VolumeAttachmentLocator, error) {
+func (r *VolumeAttachment) Locator(api *Api) *VolumeAttachmentLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.VolumeAttachmentLocator(l["href"]), nil
+			return api.VolumeAttachmentLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -10320,13 +10320,13 @@ type VolumeSnapshot struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *VolumeSnapshot) Locator(api *Api) (*VolumeSnapshotLocator, error) {
+func (r *VolumeSnapshot) Locator(api *Api) *VolumeSnapshotLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.VolumeSnapshotLocator(l["href"]), nil
+			return api.VolumeSnapshotLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator
@@ -10482,13 +10482,13 @@ type VolumeType struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *VolumeType) Locator(api *Api) (*VolumeTypeLocator, error) {
+func (r *VolumeType) Locator(api *Api) *VolumeTypeLocator {
 	for _, l := range r.Links {
 		if l["rel"] == "self" {
-			return api.VolumeTypeLocator(l["href"]), nil
+			return api.VolumeTypeLocator(l["href"])
 		}
 	}
-	return nil, fmt.Errorf("resource has no self link")
+	return nil
 }
 
 //===== Locator

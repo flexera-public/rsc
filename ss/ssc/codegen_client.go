@@ -67,6 +67,11 @@ type AccountPreference struct {
 	Value      string            `json:"value,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *AccountPreference) Locator(api *Api) *AccountPreferenceLocator {
+	return api.AccountPreferenceLocator(r.Href)
+}
+
 //===== Locator
 
 // AccountPreferenceLocator exposes the AccountPreference resource actions.
@@ -216,6 +221,11 @@ type Application struct {
 	ShortDescription   string            `json:"short_description,omitempty"`
 	TemplateInfo       *TemplateInfo     `json:"template_info,omitempty"`
 	Timestamps         *TimestampsStruct `json:"timestamps,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Application) Locator(api *Api) *ApplicationLocator {
+	return api.ApplicationLocator(r.Href)
 }
 
 //===== Locator
@@ -563,6 +573,11 @@ type NotificationRule struct {
 	Timestamps  *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *NotificationRule) Locator(api *Api) *NotificationRuleLocator {
+	return api.NotificationRuleLocator(r.Href)
+}
+
 //===== Locator
 
 // NotificationRuleLocator exposes the NotificationRule resource actions.
@@ -764,6 +779,11 @@ type UserPreference struct {
 	Value              string              `json:"value,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *UserPreference) Locator(api *Api) *UserPreferenceLocator {
+	return api.UserPreferenceLocator(r.Href)
+}
+
 //===== Locator
 
 // UserPreferenceLocator exposes the UserPreference resource actions.
@@ -938,6 +958,11 @@ type UserPreferenceInfo struct {
 	ValueConstraint []string          `json:"value_constraint,omitempty"`
 	ValueRange      *ValueRangeStruct `json:"value_range,omitempty"`
 	ValueType       string            `json:"value_type,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *UserPreferenceInfo) Locator(api *Api) *UserPreferenceInfoLocator {
+	return api.UserPreferenceInfoLocator(r.Href)
 }
 
 //===== Locator

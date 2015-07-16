@@ -16,6 +16,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	}
 
 	// Attributes
+	hasHref := false
 	attributes := []*gen.Attribute{}
 	m, ok := res["media_type"].(string)
 	if ok {
@@ -25,6 +26,9 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 			if ok {
 				attributes = make([]*gen.Attribute, len(attrs))
 				for idx, n := range sortedKeys(attrs) {
+					if n == "href" {
+						hasHref = true
+					}
 					param, err := a.AnalyzeAttribute(n, n, attrs[n].(map[string]interface{}))
 					if err != nil {
 						return err
@@ -35,6 +39,9 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 		}
 	}
 	resource.Attributes = attributes
+	if hasHref {
+		resource.LocatorFunc = locatorFunc(name)
+	}
 
 	// Actions
 	actions, err := a.AnalyzeActions(name, res)
@@ -49,4 +56,10 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	desc.ResourceNames = append(desc.ResourceNames, resName)
 
 	return nil
+}
+
+// locatorFunc returns the source for the function returning the resource locator built from its
+// href field.
+func locatorFunc(resource string) string {
+	return "return api." + resource + "Locator(r.Href)"
 }

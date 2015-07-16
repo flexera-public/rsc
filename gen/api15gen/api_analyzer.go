@@ -276,10 +276,10 @@ func LocatorFunc(attributes []*gen.Attribute, name string) string {
 	}
 	return `for _, l := range r.Links {
 			if l["rel"] == "self" {
-				return api.` + name + `Locator(l["href"]), nil
+				return api.` + name + `Locator(l["href"])
 			}
 		}
-		return nil, fmt.Errorf("resource has no self link")`
+		return nil`
 }
 
 func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) {

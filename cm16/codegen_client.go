@@ -64,6 +64,11 @@ type Account struct {
 	Name string `json:"name,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Account) Locator(api *Api) *AccountLocator {
+	return api.AccountLocator(r.Href)
+}
+
 //===== Locator
 
 // AccountLocator exposes the Account resource actions.
@@ -135,6 +140,11 @@ type Cloud struct {
 	Id          int    `json:"id,omitempty"`
 	Kind        string `json:"kind,omitempty"`
 	Name        string `json:"name,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Cloud) Locator(api *Api) *CloudLocator {
+	return api.CloudLocator(r.Href)
 }
 
 //===== Locator
@@ -210,6 +220,11 @@ type Datacenter struct {
 	LegacyId    int              `json:"legacy_id,omitempty"`
 	Links       *DatacenterLinks `json:"links,omitempty"`
 	Name        string           `json:"name,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Datacenter) Locator(api *Api) *DatacenterLocator {
+	return api.DatacenterLocator(r.Href)
 }
 
 //===== Locator
@@ -289,6 +304,11 @@ type Deployment struct {
 	ServerArrays []*ServerArray   `json:"server_arrays,omitempty"`
 	Servers      []*Server        `json:"servers,omitempty"`
 	Tags         []string         `json:"tags,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Deployment) Locator(api *Api) *DeploymentLocator {
+	return api.DeploymentLocator(r.Href)
 }
 
 //===== Locator
@@ -388,6 +408,11 @@ type Image struct {
 	RootDeviceStorage  string      `json:"root_device_storage,omitempty"`
 	VirtualizationType string      `json:"virtualization_type,omitempty"`
 	Visibility         string      `json:"visibility,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Image) Locator(api *Api) *ImageLocator {
+	return api.ImageLocator(r.Href)
 }
 
 //===== Locator
@@ -502,6 +527,11 @@ type Instance struct {
 	Timestamps         *TimestampsStruct        `json:"timestamps,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Instance) Locator(api *Api) *InstanceLocator {
+	return api.InstanceLocator(r.Href)
+}
+
 //===== Locator
 
 // InstanceLocator exposes the Instance resource actions.
@@ -602,6 +632,11 @@ type InstanceType struct {
 	Name        string             `json:"name,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *InstanceType) Locator(api *Api) *InstanceTypeLocator {
+	return api.InstanceTypeLocator(r.Href)
+}
+
 //===== Locator
 
 // InstanceTypeLocator exposes the InstanceType resource actions.
@@ -675,6 +710,11 @@ type IpAddress struct {
 	LegacyId int             `json:"legacy_id,omitempty"`
 	Links    *IpAddressLinks `json:"links,omitempty"`
 	Name     string          `json:"name,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *IpAddress) Locator(api *Api) *IpAddressLocator {
+	return api.IpAddressLocator(r.Href)
 }
 
 //===== Locator
@@ -752,6 +792,11 @@ type IpAddressBinding struct {
 	PrivatePort int                    `json:"private_port,omitempty"`
 	Protocol    string                 `json:"protocol,omitempty"`
 	PublicPort  int                    `json:"public_port,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *IpAddressBinding) Locator(api *Api) *IpAddressBindingLocator {
+	return api.IpAddressBindingLocator(r.Href)
 }
 
 //===== Locator
@@ -832,6 +877,11 @@ type MultiCloudImage struct {
 	Version         int    `json:"version,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *MultiCloudImage) Locator(api *Api) *MultiCloudImageLocator {
+	return api.MultiCloudImageLocator(r.Href)
+}
+
 //===== Locator
 
 // MultiCloudImageLocator exposes the MultiCloudImage resource actions.
@@ -902,6 +952,11 @@ type Network struct {
 	LegacyId    int           `json:"legacy_id,omitempty"`
 	Links       *NetworkLinks `json:"links,omitempty"`
 	Name        string        `json:"name,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Network) Locator(api *Api) *NetworkLocator {
+	return api.NetworkLocator(r.Href)
 }
 
 //===== Locator
@@ -975,6 +1030,11 @@ type NetworkInterface struct {
 	Links       *NetworkInterfaceLinks `json:"links,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *NetworkInterface) Locator(api *Api) *NetworkInterfaceLocator {
+	return api.NetworkInterfaceLocator(r.Href)
+}
+
 //===== Locator
 
 // NetworkInterfaceLocator exposes the NetworkInterface resource actions.
@@ -1043,6 +1103,11 @@ type NetworkInterfaceAttachment struct {
 	Id    string                           `json:"id,omitempty"`
 	Kind  string                           `json:"kind,omitempty"`
 	Links *NetworkInterfaceAttachmentLinks `json:"links,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *NetworkInterfaceAttachment) Locator(api *Api) *NetworkInterfaceAttachmentLocator {
+	return api.NetworkInterfaceAttachmentLocator(r.Href)
 }
 
 //===== Locator
@@ -1117,6 +1182,11 @@ type SecurityGroup struct {
 	LegacyId    int                 `json:"legacy_id,omitempty"`
 	Links       *SecurityGroupLinks `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *SecurityGroup) Locator(api *Api) *SecurityGroupLocator {
+	return api.SecurityGroupLocator(r.Href)
 }
 
 //===== Locator
@@ -1211,6 +1281,11 @@ type Server struct {
 	Tags            []string     `json:"tags,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Server) Locator(api *Api) *ServerLocator {
+	return api.ServerLocator(r.Href)
+}
+
 //===== Locator
 
 // ServerLocator exposes the Server resource actions.
@@ -1296,6 +1371,11 @@ type ServerArray struct {
 	Tags            []string               `json:"tags,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *ServerArray) Locator(api *Api) *ServerArrayLocator {
+	return api.ServerArrayLocator(r.Href)
+}
+
 //===== Locator
 
 // ServerArrayLocator exposes the ServerArray resource actions.
@@ -1375,6 +1455,11 @@ type ServerTemplate struct {
 	Version     int    `json:"version,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *ServerTemplate) Locator(api *Api) *ServerTemplateLocator {
+	return api.ServerTemplateLocator(r.Href)
+}
+
 //===== Locator
 
 // ServerTemplateLocator exposes the ServerTemplate resource actions.
@@ -1444,6 +1529,11 @@ type SshKey struct {
 	Kind        string `json:"kind,omitempty"`
 	LegacyId    int    `json:"legacy_id,omitempty"`
 	ResourceUid string `json:"resource_uid,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *SshKey) Locator(api *Api) *SshKeyLocator {
+	return api.SshKeyLocator(r.Href)
 }
 
 //===== Locator
@@ -1519,6 +1609,11 @@ type Subnet struct {
 	LegacyId    int          `json:"legacy_id,omitempty"`
 	Links       *SubnetLinks `json:"links,omitempty"`
 	Name        string       `json:"name,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Subnet) Locator(api *Api) *SubnetLocator {
+	return api.SubnetLocator(r.Href)
 }
 
 //===== Locator

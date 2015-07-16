@@ -96,6 +96,11 @@ type Execution struct {
 	Timestamps           *TimestampsStruct      `json:"timestamps,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Execution) Locator(api *Api) *ExecutionLocator {
+	return api.ExecutionLocator(r.Href)
+}
+
 //===== Locator
 
 // ExecutionLocator exposes the Execution resource actions.
@@ -584,6 +589,11 @@ type Notification struct {
 	Timestamps *TimestampsStruct  `json:"timestamps,omitempty"`
 }
 
+// Locator returns a locator for the given resource
+func (r *Notification) Locator(api *Api) *NotificationLocator {
+	return api.NotificationLocator(r.Href)
+}
+
 //===== Locator
 
 // NotificationLocator exposes the Notification resource actions.
@@ -673,6 +683,11 @@ type Operation struct {
 	Name                 string                 `json:"name,omitempty"`
 	Status               *StatusStruct          `json:"status,omitempty"`
 	Timestamps           *TimestampsStruct      `json:"timestamps,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Operation) Locator(api *Api) *OperationLocator {
+	return api.OperationLocator(r.Href)
 }
 
 //===== Locator
@@ -819,6 +834,11 @@ type ScheduledAction struct {
 	RecurrenceDescription string                `json:"recurrence_description,omitempty"`
 	Timestamps            *TimestampsStruct     `json:"timestamps,omitempty"`
 	Timezone              string                `json:"timezone,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *ScheduledAction) Locator(api *Api) *ScheduledActionLocator {
+	return api.ScheduledActionLocator(r.Href)
 }
 
 //===== Locator
