@@ -42,7 +42,7 @@ As an example the following downloads and runs the MacOS X version:
 $ curl https://binaries.rightscale.com/rsbin/rsc/v3/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v3.0.0 - 2015-06-10 00:26:42 - 54033bb219c6d7df51c161ad2cd5c7a9d528f05/a
+rsc v3.0.0 - 2015-07-16 21:53:52 - 7b7923b178a74eff4fa3a73bfd549d384964cbfe
 ```
 
 #### Versioning
