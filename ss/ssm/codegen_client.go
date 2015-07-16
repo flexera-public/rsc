@@ -19,13 +19,18 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Url resolver produces an action URL and HTTP method from its name and a given resource href.
-// The algorithm consists of first extracting the variables from the href and then substituing them
-// in the action path. If there are more than one action paths then the algorithm picks the one that
-// can substitute the most variables.
-type UrlResolver string
+// An Href contains the relative path to a resource or resource collection,
+// e.g. "/api/servers/123" or "/api/servers".
+type Href string
 
-func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
+// ActionPath computes the path to the given resource action. For example given the href
+// "/api/servers/123" calling ActionPath with resource "servers" and action "clone" returns the path
+// "/api/servers/123/clone" and verb POST.
+// The algorithm consists of extracting the variables from the href by looking up a matching
+// pattern from the resource metadata. The variables are then substituted in the action path.
+// If there are more than one pattern that match the href then the algorithm picks the one that can
+// substitute the most variables.
+func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
@@ -93,15 +98,15 @@ type Execution struct {
 
 //===== Locator
 
-// Execution resource locator, exposes resource actions.
+// ExecutionLocator exposes the Execution resource actions.
 type ExecutionLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Execution resource locator factory
+// ExecutionLocator builds a locator from the given href.
 func (api *Api) ExecutionLocator(href string) *ExecutionLocator {
-	return &ExecutionLocator{UrlResolver(href), api}
+	return &ExecutionLocator{Href(href), api}
 }
 
 //===== Actions
@@ -126,7 +131,7 @@ func (loc *ExecutionLocator) Index(options rsapi.ApiParams) ([]*Execution, error
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "index")
+	uri, err := loc.ActionPath("Execution", "index")
 	if err != nil {
 		return res, err
 	}
@@ -155,7 +160,7 @@ func (loc *ExecutionLocator) Show(options rsapi.ApiParams) (*Execution, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "show")
+	uri, err := loc.ActionPath("Execution", "show")
 	if err != nil {
 		return res, err
 	}
@@ -228,7 +233,7 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 	if templateHrefOpt != nil {
 		payloadParams["template_href"] = templateHrefOpt
 	}
-	uri, err := loc.Url("Execution", "create")
+	uri, err := loc.ActionPath("Execution", "create")
 	if err != nil {
 		return res, err
 	}
@@ -240,7 +245,7 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ExecutionLocator{UrlResolver(location), loc.api}, nil
+		return &ExecutionLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -259,7 +264,7 @@ func (loc *ExecutionLocator) Patch(options rsapi.ApiParams) error {
 	if endsAtOpt != nil {
 		payloadParams["ends_at"] = endsAtOpt
 	}
-	uri, err := loc.Url("Execution", "patch")
+	uri, err := loc.ActionPath("Execution", "patch")
 	if err != nil {
 		return err
 	}
@@ -281,7 +286,7 @@ func (loc *ExecutionLocator) Delete(options rsapi.ApiParams) error {
 		queryParams["force"] = forceOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "delete")
+	uri, err := loc.ActionPath("Execution", "delete")
 	if err != nil {
 		return err
 	}
@@ -308,7 +313,7 @@ func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.ApiParams) 
 		queryParams["force"] = forceOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "multi_delete")
+	uri, err := loc.ActionPath("Execution", "multi_delete")
 	if err != nil {
 		return err
 	}
@@ -331,7 +336,7 @@ func (loc *ExecutionLocator) Download(apiVersion string) error {
 		"api_version": apiVersion,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "download")
+	uri, err := loc.ActionPath("Execution", "download")
 	if err != nil {
 		return err
 	}
@@ -348,7 +353,7 @@ func (loc *ExecutionLocator) Download(apiVersion string) error {
 func (loc *ExecutionLocator) Launch() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "launch")
+	uri, err := loc.ActionPath("Execution", "launch")
 	if err != nil {
 		return err
 	}
@@ -365,7 +370,7 @@ func (loc *ExecutionLocator) Launch() error {
 func (loc *ExecutionLocator) Start() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "start")
+	uri, err := loc.ActionPath("Execution", "start")
 	if err != nil {
 		return err
 	}
@@ -382,7 +387,7 @@ func (loc *ExecutionLocator) Start() error {
 func (loc *ExecutionLocator) Stop() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "stop")
+	uri, err := loc.ActionPath("Execution", "stop")
 	if err != nil {
 		return err
 	}
@@ -399,7 +404,7 @@ func (loc *ExecutionLocator) Stop() error {
 func (loc *ExecutionLocator) Terminate() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "terminate")
+	uri, err := loc.ActionPath("Execution", "terminate")
 	if err != nil {
 		return err
 	}
@@ -422,7 +427,7 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "multi_launch")
+	uri, err := loc.ActionPath("Execution", "multi_launch")
 	if err != nil {
 		return err
 	}
@@ -445,7 +450,7 @@ func (loc *ExecutionLocator) MultiStart(ids []string) error {
 		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "multi_start")
+	uri, err := loc.ActionPath("Execution", "multi_start")
 	if err != nil {
 		return err
 	}
@@ -468,7 +473,7 @@ func (loc *ExecutionLocator) MultiStop(ids []string) error {
 		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "multi_stop")
+	uri, err := loc.ActionPath("Execution", "multi_stop")
 	if err != nil {
 		return err
 	}
@@ -491,7 +496,7 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Execution", "multi_terminate")
+	uri, err := loc.ActionPath("Execution", "multi_terminate")
 	if err != nil {
 		return err
 	}
@@ -518,7 +523,7 @@ func (loc *ExecutionLocator) Run(name string, options rsapi.ApiParams) error {
 	if configurationOptionsOpt != nil {
 		payloadParams["configuration_options"] = configurationOptionsOpt
 	}
-	uri, err := loc.Url("Execution", "run")
+	uri, err := loc.ActionPath("Execution", "run")
 	if err != nil {
 		return err
 	}
@@ -551,7 +556,7 @@ func (loc *ExecutionLocator) MultiRun(ids []string, name string, options rsapi.A
 	if configurationOptionsOpt != nil {
 		payloadParams["configuration_options"] = configurationOptionsOpt
 	}
-	uri, err := loc.Url("Execution", "multi_run")
+	uri, err := loc.ActionPath("Execution", "multi_run")
 	if err != nil {
 		return err
 	}
@@ -581,15 +586,15 @@ type Notification struct {
 
 //===== Locator
 
-// Notification resource locator, exposes resource actions.
+// NotificationLocator exposes the Notification resource actions.
 type NotificationLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Notification resource locator factory
+// NotificationLocator builds a locator from the given href.
 func (api *Api) NotificationLocator(href string) *NotificationLocator {
-	return &NotificationLocator{UrlResolver(href), api}
+	return &NotificationLocator{Href(href), api}
 }
 
 //===== Actions
@@ -610,7 +615,7 @@ func (loc *NotificationLocator) Index(options rsapi.ApiParams) ([]*Notification,
 		queryParams["ids[]"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Notification", "index")
+	uri, err := loc.ActionPath("Notification", "index")
 	if err != nil {
 		return res, err
 	}
@@ -634,7 +639,7 @@ func (loc *NotificationLocator) Show() (*Notification, error) {
 	var res *Notification
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Notification", "show")
+	uri, err := loc.ActionPath("Notification", "show")
 	if err != nil {
 		return res, err
 	}
@@ -672,15 +677,15 @@ type Operation struct {
 
 //===== Locator
 
-// Operation resource locator, exposes resource actions.
+// OperationLocator exposes the Operation resource actions.
 type OperationLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Operation resource locator factory
+// OperationLocator builds a locator from the given href.
 func (api *Api) OperationLocator(href string) *OperationLocator {
-	return &OperationLocator{UrlResolver(href), api}
+	return &OperationLocator{Href(href), api}
 }
 
 //===== Actions
@@ -709,7 +714,7 @@ func (loc *OperationLocator) Index(options rsapi.ApiParams) ([]*Operation, error
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Operation", "index")
+	uri, err := loc.ActionPath("Operation", "index")
 	if err != nil {
 		return res, err
 	}
@@ -738,7 +743,7 @@ func (loc *OperationLocator) Show(options rsapi.ApiParams) (*Operation, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Operation", "show")
+	uri, err := loc.ActionPath("Operation", "show")
 	if err != nil {
 		return res, err
 	}
@@ -776,7 +781,7 @@ func (loc *OperationLocator) Create(executionId string, name string, options rsa
 	if options_Opt != nil {
 		payloadParams["options"] = options_Opt
 	}
-	uri, err := loc.Url("Operation", "create")
+	uri, err := loc.ActionPath("Operation", "create")
 	if err != nil {
 		return res, err
 	}
@@ -788,7 +793,7 @@ func (loc *OperationLocator) Create(executionId string, name string, options rsa
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &OperationLocator{UrlResolver(location), loc.api}, nil
+		return &OperationLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -818,15 +823,15 @@ type ScheduledAction struct {
 
 //===== Locator
 
-// ScheduledAction resource locator, exposes resource actions.
+// ScheduledActionLocator exposes the ScheduledAction resource actions.
 type ScheduledActionLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// ScheduledAction resource locator factory
+// ScheduledActionLocator builds a locator from the given href.
 func (api *Api) ScheduledActionLocator(href string) *ScheduledActionLocator {
-	return &ScheduledActionLocator{UrlResolver(href), api}
+	return &ScheduledActionLocator{Href(href), api}
 }
 
 //===== Actions
@@ -843,7 +848,7 @@ func (loc *ScheduledActionLocator) Index(options rsapi.ApiParams) ([]*ScheduledA
 		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledAction", "index")
+	uri, err := loc.ActionPath("ScheduledAction", "index")
 	if err != nil {
 		return res, err
 	}
@@ -867,7 +872,7 @@ func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
 	var res *ScheduledAction
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledAction", "show")
+	uri, err := loc.ActionPath("ScheduledAction", "show")
 	if err != nil {
 		return res, err
 	}
@@ -918,7 +923,7 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 	if timezoneOpt != nil {
 		payloadParams["timezone"] = timezoneOpt
 	}
-	uri, err := loc.Url("ScheduledAction", "create")
+	uri, err := loc.ActionPath("ScheduledAction", "create")
 	if err != nil {
 		return res, err
 	}
@@ -930,7 +935,7 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ScheduledActionLocator{UrlResolver(location), loc.api}, nil
+		return &ScheduledActionLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -945,7 +950,7 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 	if nextOccurrenceOpt != nil {
 		payloadParams["next_occurrence"] = nextOccurrenceOpt
 	}
-	uri, err := loc.Url("ScheduledAction", "patch")
+	uri, err := loc.ActionPath("ScheduledAction", "patch")
 	if err != nil {
 		return err
 	}
@@ -962,7 +967,7 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 func (loc *ScheduledActionLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledAction", "delete")
+	uri, err := loc.ActionPath("ScheduledAction", "delete")
 	if err != nil {
 		return err
 	}
@@ -984,7 +989,7 @@ func (loc *ScheduledActionLocator) Skip(options rsapi.ApiParams) error {
 	if countOpt != nil {
 		payloadParams["count"] = countOpt
 	}
-	uri, err := loc.Url("ScheduledAction", "skip")
+	uri, err := loc.ActionPath("ScheduledAction", "skip")
 	if err != nil {
 		return err
 	}

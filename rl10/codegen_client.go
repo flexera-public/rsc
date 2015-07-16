@@ -17,13 +17,18 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Url resolver produces an action URL and HTTP method from its name and a given resource href.
-// The algorithm consists of first extracting the variables from the href and then substituing them
-// in the action path. If there are more than one action paths then the algorithm picks the one that
-// can substitute the most variables.
-type UrlResolver string
+// An Href contains the relative path to a resource or resource collection,
+// e.g. "/api/servers/123" or "/api/servers".
+type Href string
 
-func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
+// ActionPath computes the path to the given resource action. For example given the href
+// "/api/servers/123" calling ActionPath with resource "servers" and action "clone" returns the path
+// "/api/servers/123/clone" and verb POST.
+// The algorithm consists of extracting the variables from the href by looking up a matching
+// pattern from the resource metadata. The variables are then substituted in the action path.
+// If there are more than one pattern that match the href then the algorithm picks the one that can
+// substitute the most variables.
+func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
@@ -53,15 +58,15 @@ type DebugCookbookPath struct {
 
 //===== Locator
 
-// DebugCookbookPath resource locator, exposes resource actions.
+// DebugCookbookPathLocator exposes the DebugCookbookPath resource actions.
 type DebugCookbookPathLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// DebugCookbookPath resource locator factory
+// DebugCookbookPathLocator builds a locator from the given href.
 func (api *Api) DebugCookbookPathLocator(href string) *DebugCookbookPathLocator {
-	return &DebugCookbookPathLocator{UrlResolver(href), api}
+	return &DebugCookbookPathLocator{Href(href), api}
 }
 
 //===== Actions
@@ -73,7 +78,7 @@ func (loc *DebugCookbookPathLocator) Show() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("DebugCookbookPath", "show")
+	uri, err := loc.ActionPath("DebugCookbookPath", "show")
 	if err != nil {
 		return res, err
 	}
@@ -103,7 +108,7 @@ func (loc *DebugCookbookPathLocator) Update(path string) (string, error) {
 		"path": path,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("DebugCookbookPath", "update")
+	uri, err := loc.ActionPath("DebugCookbookPath", "update")
 	if err != nil {
 		return res, err
 	}
@@ -126,7 +131,7 @@ func (loc *DebugCookbookPathLocator) Update(path string) (string, error) {
 func (loc *DebugCookbookPathLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("DebugCookbookPath", "delete")
+	uri, err := loc.ActionPath("DebugCookbookPath", "delete")
 	if err != nil {
 		return err
 	}
@@ -145,15 +150,15 @@ type Env struct {
 
 //===== Locator
 
-// Env resource locator, exposes resource actions.
+// EnvLocator exposes the Env resource actions.
 type EnvLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Env resource locator factory
+// EnvLocator builds a locator from the given href.
 func (api *Api) EnvLocator(href string) *EnvLocator {
-	return &EnvLocator{UrlResolver(href), api}
+	return &EnvLocator{Href(href), api}
 }
 
 //===== Actions
@@ -165,7 +170,7 @@ func (loc *EnvLocator) Index() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Env", "index")
+	uri, err := loc.ActionPath("Env", "index")
 	if err != nil {
 		return res, err
 	}
@@ -189,7 +194,7 @@ func (loc *EnvLocator) Show() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Env", "show")
+	uri, err := loc.ActionPath("Env", "show")
 	if err != nil {
 		return res, err
 	}
@@ -219,7 +224,7 @@ func (loc *EnvLocator) Update(payload string) (string, error) {
 	payloadParams = rsapi.ApiParams{
 		"payload": payload,
 	}
-	uri, err := loc.Url("Env", "update")
+	uri, err := loc.ActionPath("Env", "update")
 	if err != nil {
 		return res, err
 	}
@@ -242,7 +247,7 @@ func (loc *EnvLocator) Update(payload string) (string, error) {
 func (loc *EnvLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Env", "delete")
+	uri, err := loc.ActionPath("Env", "delete")
 	if err != nil {
 		return err
 	}
@@ -261,15 +266,15 @@ type Proc struct {
 
 //===== Locator
 
-// Proc resource locator, exposes resource actions.
+// ProcLocator exposes the Proc resource actions.
 type ProcLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Proc resource locator factory
+// ProcLocator builds a locator from the given href.
 func (api *Api) ProcLocator(href string) *ProcLocator {
-	return &ProcLocator{UrlResolver(href), api}
+	return &ProcLocator{Href(href), api}
 }
 
 //===== Actions
@@ -281,7 +286,7 @@ func (loc *ProcLocator) Index() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Proc", "index")
+	uri, err := loc.ActionPath("Proc", "index")
 	if err != nil {
 		return res, err
 	}
@@ -305,7 +310,7 @@ func (loc *ProcLocator) Show() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Proc", "show")
+	uri, err := loc.ActionPath("Proc", "show")
 	if err != nil {
 		return res, err
 	}
@@ -330,15 +335,15 @@ type Rl10 struct {
 
 //===== Locator
 
-// Rl10 resource locator, exposes resource actions.
+// Rl10Locator exposes the Rl10 resource actions.
 type Rl10Locator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Rl10 resource locator factory
+// Rl10Locator builds a locator from the given href.
 func (api *Api) Rl10Locator(href string) *Rl10Locator {
-	return &Rl10Locator{UrlResolver(href), api}
+	return &Rl10Locator{Href(href), api}
 }
 
 //===== Actions
@@ -356,7 +361,7 @@ func (loc *Rl10Locator) Upgrade(exec string) (string, error) {
 		"exec": exec,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Rl10", "upgrade")
+	uri, err := loc.ActionPath("Rl10", "upgrade")
 	if err != nil {
 		return res, err
 	}
@@ -394,7 +399,7 @@ func (loc *Rl10Locator) RunRecipe(recipe string, options rsapi.ApiParams) (strin
 		queryParams["json"] = jsonOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Rl10", "run_recipe")
+	uri, err := loc.ActionPath("Rl10", "run_recipe")
 	if err != nil {
 		return res, err
 	}
@@ -431,7 +436,7 @@ func (loc *Rl10Locator) RunRightScript(options rsapi.ApiParams) (string, error) 
 		queryParams["right_script_id"] = rightScriptIdOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Rl10", "run_right_script")
+	uri, err := loc.ActionPath("Rl10", "run_right_script")
 	if err != nil {
 		return res, err
 	}
@@ -456,15 +461,15 @@ type TSS struct {
 
 //===== Locator
 
-// TSS resource locator, exposes resource actions.
+// TSSLocator exposes the TSS resource actions.
 type TSSLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// TSS resource locator factory
+// TSSLocator builds a locator from the given href.
 func (api *Api) TSSLocator(href string) *TSSLocator {
-	return &TSSLocator{UrlResolver(href), api}
+	return &TSSLocator{Href(href), api}
 }
 
 //===== Actions
@@ -476,7 +481,7 @@ func (loc *TSSLocator) GetHostname() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("TSS", "get_hostname")
+	uri, err := loc.ActionPath("TSS", "get_hostname")
 	if err != nil {
 		return res, err
 	}
@@ -506,7 +511,7 @@ func (loc *TSSLocator) PutHostname(hostname string) (string, error) {
 		"hostname": hostname,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("TSS", "put_hostname")
+	uri, err := loc.ActionPath("TSS", "put_hostname")
 	if err != nil {
 		return res, err
 	}

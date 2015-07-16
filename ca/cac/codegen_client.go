@@ -19,13 +19,18 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Url resolver produces an action URL and HTTP method from its name and a given resource href.
-// The algorithm consists of first extracting the variables from the href and then substituing them
-// in the action path. If there are more than one action paths then the algorithm picks the one that
-// can substitute the most variables.
-type UrlResolver string
+// An Href contains the relative path to a resource or resource collection,
+// e.g. "/api/servers/123" or "/api/servers".
+type Href string
 
-func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
+// ActionPath computes the path to the given resource action. For example given the href
+// "/api/servers/123" calling ActionPath with resource "servers" and action "clone" returns the path
+// "/api/servers/123/clone" and verb POST.
+// The algorithm consists of extracting the variables from the href by looking up a matching
+// pattern from the resource metadata. The variables are then substituted in the action path.
+// If there are more than one pattern that match the href then the algorithm picks the one that can
+// substitute the most variables.
+func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
@@ -57,15 +62,15 @@ type Account struct {
 
 //===== Locator
 
-// Account resource locator, exposes resource actions.
+// AccountLocator exposes the Account resource actions.
 type AccountLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Account resource locator factory
+// AccountLocator builds a locator from the given href.
 func (api *Api) AccountLocator(href string) *AccountLocator {
-	return &AccountLocator{UrlResolver(href), api}
+	return &AccountLocator{Href(href), api}
 }
 
 //===== Actions
@@ -82,7 +87,7 @@ func (loc *AccountLocator) Create(options rsapi.ApiParams) (*AccountLocator, err
 	if dunnoOpt != nil {
 		payloadParams["dunno"] = dunnoOpt
 	}
-	uri, err := loc.Url("Account", "create")
+	uri, err := loc.ActionPath("Account", "create")
 	if err != nil {
 		return res, err
 	}
@@ -94,7 +99,7 @@ func (loc *AccountLocator) Create(options rsapi.ApiParams) (*AccountLocator, err
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &AccountLocator{UrlResolver(location), loc.api}, nil
+		return &AccountLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -110,7 +115,7 @@ func (loc *AccountLocator) Index(options rsapi.ApiParams) (*Account, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Account", "index")
+	uri, err := loc.ActionPath("Account", "index")
 	if err != nil {
 		return res, err
 	}
@@ -139,7 +144,7 @@ func (loc *AccountLocator) Show(options rsapi.ApiParams) (*Account, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Account", "show")
+	uri, err := loc.ActionPath("Account", "show")
 	if err != nil {
 		return res, err
 	}
@@ -164,15 +169,15 @@ type AnalysisSnapshot struct {
 
 //===== Locator
 
-// AnalysisSnapshot resource locator, exposes resource actions.
+// AnalysisSnapshotLocator exposes the AnalysisSnapshot resource actions.
 type AnalysisSnapshotLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// AnalysisSnapshot resource locator factory
+// AnalysisSnapshotLocator builds a locator from the given href.
 func (api *Api) AnalysisSnapshotLocator(href string) *AnalysisSnapshotLocator {
-	return &AnalysisSnapshotLocator{UrlResolver(href), api}
+	return &AnalysisSnapshotLocator{Href(href), api}
 }
 
 //===== Actions
@@ -217,7 +222,7 @@ func (loc *AnalysisSnapshotLocator) Create(endTime *time.Time, granularity strin
 	if moduleStatesOpt != nil {
 		payloadParams["module_states"] = moduleStatesOpt
 	}
-	uri, err := loc.Url("AnalysisSnapshot", "create")
+	uri, err := loc.ActionPath("AnalysisSnapshot", "create")
 	if err != nil {
 		return res, err
 	}
@@ -229,7 +234,7 @@ func (loc *AnalysisSnapshotLocator) Create(endTime *time.Time, granularity strin
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &AnalysisSnapshotLocator{UrlResolver(location), loc.api}, nil
+		return &AnalysisSnapshotLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -245,7 +250,7 @@ func (loc *AnalysisSnapshotLocator) Show(options rsapi.ApiParams) (*AnalysisSnap
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AnalysisSnapshot", "show")
+	uri, err := loc.ActionPath("AnalysisSnapshot", "show")
 	if err != nil {
 		return res, err
 	}
@@ -272,15 +277,15 @@ type BudgetAlert struct {
 
 //===== Locator
 
-// BudgetAlert resource locator, exposes resource actions.
+// BudgetAlertLocator exposes the BudgetAlert resource actions.
 type BudgetAlertLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// BudgetAlert resource locator factory
+// BudgetAlertLocator builds a locator from the given href.
 func (api *Api) BudgetAlertLocator(href string) *BudgetAlertLocator {
-	return &BudgetAlertLocator{UrlResolver(href), api}
+	return &BudgetAlertLocator{Href(href), api}
 }
 
 //===== Actions
@@ -327,7 +332,7 @@ func (loc *BudgetAlertLocator) Create(budget *BudgetStruct, frequency string, na
 	if filtersOpt != nil {
 		payloadParams["filters"] = filtersOpt
 	}
-	uri, err := loc.Url("BudgetAlert", "create")
+	uri, err := loc.ActionPath("BudgetAlert", "create")
 	if err != nil {
 		return res, err
 	}
@@ -339,7 +344,7 @@ func (loc *BudgetAlertLocator) Create(budget *BudgetStruct, frequency string, na
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &BudgetAlertLocator{UrlResolver(location), loc.api}, nil
+		return &BudgetAlertLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -355,7 +360,7 @@ func (loc *BudgetAlertLocator) Index(options rsapi.ApiParams) (*BudgetAlert, err
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("BudgetAlert", "index")
+	uri, err := loc.ActionPath("BudgetAlert", "index")
 	if err != nil {
 		return res, err
 	}
@@ -384,7 +389,7 @@ func (loc *BudgetAlertLocator) Show(options rsapi.ApiParams) (*BudgetAlert, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("BudgetAlert", "show")
+	uri, err := loc.ActionPath("BudgetAlert", "show")
 	if err != nil {
 		return res, err
 	}
@@ -438,7 +443,7 @@ func (loc *BudgetAlertLocator) Update(options rsapi.ApiParams) (*BudgetAlert, er
 	if type_Opt != nil {
 		payloadParams["type"] = type_Opt
 	}
-	uri, err := loc.Url("BudgetAlert", "update")
+	uri, err := loc.ActionPath("BudgetAlert", "update")
 	if err != nil {
 		return res, err
 	}
@@ -461,7 +466,7 @@ func (loc *BudgetAlertLocator) Update(options rsapi.ApiParams) (*BudgetAlert, er
 func (loc *BudgetAlertLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("BudgetAlert", "destroy")
+	uri, err := loc.ActionPath("BudgetAlert", "destroy")
 	if err != nil {
 		return err
 	}
@@ -480,15 +485,15 @@ type CloudBill struct {
 
 //===== Locator
 
-// CloudBill resource locator, exposes resource actions.
+// CloudBillLocator exposes the CloudBill resource actions.
 type CloudBillLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// CloudBill resource locator factory
+// CloudBillLocator builds a locator from the given href.
 func (api *Api) CloudBillLocator(href string) *CloudBillLocator {
-	return &CloudBillLocator{UrlResolver(href), api}
+	return &CloudBillLocator{Href(href), api}
 }
 
 //===== Actions
@@ -516,7 +521,7 @@ func (loc *CloudBillLocator) FilterOptions(endTime *time.Time, filterTypes []str
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CloudBill", "filter_options")
+	uri, err := loc.ActionPath("CloudBill", "filter_options")
 	if err != nil {
 		return res, err
 	}
@@ -541,15 +546,15 @@ type CloudBillMetric struct {
 
 //===== Locator
 
-// CloudBillMetric resource locator, exposes resource actions.
+// CloudBillMetricLocator exposes the CloudBillMetric resource actions.
 type CloudBillMetricLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// CloudBillMetric resource locator factory
+// CloudBillMetricLocator builds a locator from the given href.
 func (api *Api) CloudBillMetricLocator(href string) *CloudBillMetricLocator {
-	return &CloudBillMetricLocator{UrlResolver(href), api}
+	return &CloudBillMetricLocator{Href(href), api}
 }
 
 //===== Actions
@@ -579,7 +584,7 @@ func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime *time.Time, group [
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CloudBillMetric", "grouped_time_series")
+	uri, err := loc.ActionPath("CloudBillMetric", "grouped_time_series")
 	if err != nil {
 		return res, err
 	}
@@ -604,15 +609,15 @@ type CurrentUser struct {
 
 //===== Locator
 
-// CurrentUser resource locator, exposes resource actions.
+// CurrentUserLocator exposes the CurrentUser resource actions.
 type CurrentUserLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// CurrentUser resource locator factory
+// CurrentUserLocator builds a locator from the given href.
 func (api *Api) CurrentUserLocator(href string) *CurrentUserLocator {
-	return &CurrentUserLocator{UrlResolver(href), api}
+	return &CurrentUserLocator{Href(href), api}
 }
 
 //===== Actions
@@ -629,7 +634,7 @@ func (loc *CurrentUserLocator) Show(options rsapi.ApiParams) (*CurrentUser, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CurrentUser", "show")
+	uri, err := loc.ActionPath("CurrentUser", "show")
 	if err != nil {
 		return res, err
 	}
@@ -692,7 +697,7 @@ func (loc *CurrentUserLocator) Update(password string, options rsapi.ApiParams) 
 	if timezoneOpt != nil {
 		payloadParams["timezone"] = timezoneOpt
 	}
-	uri, err := loc.Url("CurrentUser", "update")
+	uri, err := loc.ActionPath("CurrentUser", "update")
 	if err != nil {
 		return res, err
 	}
@@ -734,7 +739,7 @@ func (loc *CurrentUserLocator) CloudAccounts(awsAccessKeyId string, awsAccountNu
 		"aws_secret_access_key": awsSecretAccessKey,
 		"cloud_vendor_name":     cloudVendorName,
 	}
-	uri, err := loc.Url("CurrentUser", "cloud_accounts")
+	uri, err := loc.ActionPath("CurrentUser", "cloud_accounts")
 	if err != nil {
 		return err
 	}
@@ -757,7 +762,7 @@ func (loc *CurrentUserLocator) OnboardingStatus(options rsapi.ApiParams) (*UserO
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CurrentUser", "onboarding_status")
+	uri, err := loc.ActionPath("CurrentUser", "onboarding_status")
 	if err != nil {
 		return res, err
 	}
@@ -781,7 +786,7 @@ func (loc *CurrentUserLocator) Environment() (*UserEnvironment, error) {
 	var res *UserEnvironment
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("CurrentUser", "environment")
+	uri, err := loc.ActionPath("CurrentUser", "environment")
 	if err != nil {
 		return res, err
 	}
@@ -806,15 +811,15 @@ type Instance struct {
 
 //===== Locator
 
-// Instance resource locator, exposes resource actions.
+// InstanceLocator exposes the Instance resource actions.
 type InstanceLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Instance resource locator factory
+// InstanceLocator builds a locator from the given href.
 func (api *Api) InstanceLocator(href string) *InstanceLocator {
-	return &InstanceLocator{UrlResolver(href), api}
+	return &InstanceLocator{Href(href), api}
 }
 
 //===== Actions
@@ -854,7 +859,7 @@ func (loc *InstanceLocator) Index(endTime *time.Time, startTime *time.Time, opti
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instance", "index")
+	uri, err := loc.ActionPath("Instance", "index")
 	if err != nil {
 		return res, err
 	}
@@ -890,7 +895,7 @@ func (loc *InstanceLocator) Count(endTime *time.Time, startTime *time.Time, opti
 		queryParams["timezone"] = timezoneOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instance", "count")
+	uri, err := loc.ActionPath("Instance", "count")
 	if err != nil {
 		return res, err
 	}
@@ -931,7 +936,7 @@ func (loc *InstanceLocator) Exist(options rsapi.ApiParams) (string, error) {
 		queryParams["timezone"] = timezoneOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instance", "exist")
+	uri, err := loc.ActionPath("Instance", "exist")
 	if err != nil {
 		return res, err
 	}
@@ -983,7 +988,7 @@ func (loc *InstanceLocator) Export(endTime *time.Time, startTime *time.Time, opt
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instance", "export")
+	uri, err := loc.ActionPath("Instance", "export")
 	if err != nil {
 		return res, err
 	}
@@ -1043,7 +1048,7 @@ func (loc *InstanceLocator) FilterOptions(endTime *time.Time, filterTypes []stri
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Instance", "filter_options")
+	uri, err := loc.ActionPath("Instance", "filter_options")
 	if err != nil {
 		return res, err
 	}
@@ -1069,15 +1074,15 @@ type InstanceCombination struct {
 
 //===== Locator
 
-// InstanceCombination resource locator, exposes resource actions.
+// InstanceCombinationLocator exposes the InstanceCombination resource actions.
 type InstanceCombinationLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// InstanceCombination resource locator factory
+// InstanceCombinationLocator builds a locator from the given href.
 func (api *Api) InstanceCombinationLocator(href string) *InstanceCombinationLocator {
-	return &InstanceCombinationLocator{UrlResolver(href), api}
+	return &InstanceCombinationLocator{Href(href), api}
 }
 
 //===== Actions
@@ -1129,7 +1134,7 @@ func (loc *InstanceCombinationLocator) Create(cloudName string, cloudVendorName 
 	if patternsOpt != nil {
 		payloadParams["patterns"] = patternsOpt
 	}
-	uri, err := loc.Url("InstanceCombination", "create")
+	uri, err := loc.ActionPath("InstanceCombination", "create")
 	if err != nil {
 		return res, err
 	}
@@ -1141,7 +1146,7 @@ func (loc *InstanceCombinationLocator) Create(cloudName string, cloudVendorName 
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &InstanceCombinationLocator{UrlResolver(location), loc.api}, nil
+		return &InstanceCombinationLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -1157,7 +1162,7 @@ func (loc *InstanceCombinationLocator) Show(options rsapi.ApiParams) (*InstanceC
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceCombination", "show")
+	uri, err := loc.ActionPath("InstanceCombination", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1223,7 +1228,7 @@ func (loc *InstanceCombinationLocator) Update(options rsapi.ApiParams) (*Instanc
 	if quantityOpt != nil {
 		payloadParams["quantity"] = quantityOpt
 	}
-	uri, err := loc.Url("InstanceCombination", "update")
+	uri, err := loc.ActionPath("InstanceCombination", "update")
 	if err != nil {
 		return res, err
 	}
@@ -1246,7 +1251,7 @@ func (loc *InstanceCombinationLocator) Update(options rsapi.ApiParams) (*Instanc
 func (loc *InstanceCombinationLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceCombination", "destroy")
+	uri, err := loc.ActionPath("InstanceCombination", "destroy")
 	if err != nil {
 		return err
 	}
@@ -1269,7 +1274,7 @@ func (loc *InstanceCombinationLocator) ReservedInstancePrices(options rsapi.ApiP
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceCombination", "reserved_instance_prices")
+	uri, err := loc.ActionPath("InstanceCombination", "reserved_instance_prices")
 	if err != nil {
 		return res, err
 	}
@@ -1294,15 +1299,15 @@ type InstanceMetric struct {
 
 //===== Locator
 
-// InstanceMetric resource locator, exposes resource actions.
+// InstanceMetricLocator exposes the InstanceMetric resource actions.
 type InstanceMetricLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// InstanceMetric resource locator factory
+// InstanceMetricLocator builds a locator from the given href.
 func (api *Api) InstanceMetricLocator(href string) *InstanceMetricLocator {
-	return &InstanceMetricLocator{UrlResolver(href), api}
+	return &InstanceMetricLocator{Href(href), api}
 }
 
 //===== Actions
@@ -1335,7 +1340,7 @@ func (loc *InstanceMetricLocator) Overall(endTime *time.Time, metrics []string, 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceMetric", "overall")
+	uri, err := loc.ActionPath("InstanceMetric", "overall")
 	if err != nil {
 		return res, err
 	}
@@ -1397,7 +1402,7 @@ func (loc *InstanceMetricLocator) GroupedOverall(endTime *time.Time, group []str
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceMetric", "grouped_overall")
+	uri, err := loc.ActionPath("InstanceMetric", "grouped_overall")
 	if err != nil {
 		return res, err
 	}
@@ -1451,7 +1456,7 @@ func (loc *InstanceMetricLocator) TimeSeries(endTime *time.Time, granularity str
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceMetric", "time_series")
+	uri, err := loc.ActionPath("InstanceMetric", "time_series")
 	if err != nil {
 		return res, err
 	}
@@ -1522,7 +1527,7 @@ func (loc *InstanceMetricLocator) GroupedTimeSeries(endTime *time.Time, granular
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceMetric", "grouped_time_series")
+	uri, err := loc.ActionPath("InstanceMetric", "grouped_time_series")
 	if err != nil {
 		return res, err
 	}
@@ -1551,7 +1556,7 @@ func (loc *InstanceMetricLocator) CurrentCount(options rsapi.ApiParams) (string,
 		queryParams["instance_filters[]"] = instanceFiltersOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceMetric", "current_count")
+	uri, err := loc.ActionPath("InstanceMetric", "current_count")
 	if err != nil {
 		return res, err
 	}
@@ -1578,15 +1583,15 @@ type InstanceUsagePeriod struct {
 
 //===== Locator
 
-// InstanceUsagePeriod resource locator, exposes resource actions.
+// InstanceUsagePeriodLocator exposes the InstanceUsagePeriod resource actions.
 type InstanceUsagePeriodLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// InstanceUsagePeriod resource locator factory
+// InstanceUsagePeriodLocator builds a locator from the given href.
 func (api *Api) InstanceUsagePeriodLocator(href string) *InstanceUsagePeriodLocator {
-	return &InstanceUsagePeriodLocator{UrlResolver(href), api}
+	return &InstanceUsagePeriodLocator{Href(href), api}
 }
 
 //===== Actions
@@ -1608,7 +1613,7 @@ func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filte
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("InstanceUsagePeriod", "index")
+	uri, err := loc.ActionPath("InstanceUsagePeriod", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1634,15 +1639,15 @@ type Pattern struct {
 
 //===== Locator
 
-// Pattern resource locator, exposes resource actions.
+// PatternLocator exposes the Pattern resource actions.
 type PatternLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Pattern resource locator factory
+// PatternLocator builds a locator from the given href.
 func (api *Api) PatternLocator(href string) *PatternLocator {
-	return &PatternLocator{UrlResolver(href), api}
+	return &PatternLocator{Href(href), api}
 }
 
 //===== Actions
@@ -1686,7 +1691,7 @@ func (loc *PatternLocator) Create(months string, name string, operation string, 
 	if summaryOpt != nil {
 		payloadParams["summary"] = summaryOpt
 	}
-	uri, err := loc.Url("Pattern", "create")
+	uri, err := loc.ActionPath("Pattern", "create")
 	if err != nil {
 		return res, err
 	}
@@ -1698,7 +1703,7 @@ func (loc *PatternLocator) Create(months string, name string, operation string, 
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &PatternLocator{UrlResolver(location), loc.api}, nil
+		return &PatternLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -1714,7 +1719,7 @@ func (loc *PatternLocator) Index(options rsapi.ApiParams) (*Pattern, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Pattern", "index")
+	uri, err := loc.ActionPath("Pattern", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1743,7 +1748,7 @@ func (loc *PatternLocator) Show(options rsapi.ApiParams) (*Pattern, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Pattern", "show")
+	uri, err := loc.ActionPath("Pattern", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1801,7 +1806,7 @@ func (loc *PatternLocator) Update(options rsapi.ApiParams) (*Pattern, error) {
 	if yearsOpt != nil {
 		payloadParams["years"] = yearsOpt
 	}
-	uri, err := loc.Url("Pattern", "update")
+	uri, err := loc.ActionPath("Pattern", "update")
 	if err != nil {
 		return res, err
 	}
@@ -1824,7 +1829,7 @@ func (loc *PatternLocator) Update(options rsapi.ApiParams) (*Pattern, error) {
 func (loc *PatternLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Pattern", "destroy")
+	uri, err := loc.ActionPath("Pattern", "destroy")
 	if err != nil {
 		return err
 	}
@@ -1850,7 +1855,7 @@ func (loc *PatternLocator) CreateDefaults(options rsapi.ApiParams) (*Pattern, er
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Pattern", "create_defaults")
+	uri, err := loc.ActionPath("Pattern", "create_defaults")
 	if err != nil {
 		return res, err
 	}
@@ -1875,15 +1880,15 @@ type ReservedInstance struct {
 
 //===== Locator
 
-// ReservedInstance resource locator, exposes resource actions.
+// ReservedInstanceLocator exposes the ReservedInstance resource actions.
 type ReservedInstanceLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// ReservedInstance resource locator factory
+// ReservedInstanceLocator builds a locator from the given href.
 func (api *Api) ReservedInstanceLocator(href string) *ReservedInstanceLocator {
-	return &ReservedInstanceLocator{UrlResolver(href), api}
+	return &ReservedInstanceLocator{Href(href), api}
 }
 
 //===== Actions
@@ -1923,7 +1928,7 @@ func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Ti
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstance", "index")
+	uri, err := loc.ActionPath("ReservedInstance", "index")
 	if err != nil {
 		return res, err
 	}
@@ -1959,7 +1964,7 @@ func (loc *ReservedInstanceLocator) Count(endTime *time.Time, startTime *time.Ti
 		queryParams["timezone"] = timezoneOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstance", "count")
+	uri, err := loc.ActionPath("ReservedInstance", "count")
 	if err != nil {
 		return res, err
 	}
@@ -2000,7 +2005,7 @@ func (loc *ReservedInstanceLocator) Exist(options rsapi.ApiParams) (string, erro
 		queryParams["timezone"] = timezoneOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstance", "exist")
+	uri, err := loc.ActionPath("ReservedInstance", "exist")
 	if err != nil {
 		return res, err
 	}
@@ -2052,7 +2057,7 @@ func (loc *ReservedInstanceLocator) Export(endTime *time.Time, startTime *time.T
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstance", "export")
+	uri, err := loc.ActionPath("ReservedInstance", "export")
 	if err != nil {
 		return res, err
 	}
@@ -2112,7 +2117,7 @@ func (loc *ReservedInstanceLocator) FilterOptions(endTime *time.Time, startTime 
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstance", "filter_options")
+	uri, err := loc.ActionPath("ReservedInstance", "filter_options")
 	if err != nil {
 		return res, err
 	}
@@ -2137,15 +2142,15 @@ type ReservedInstancePurchase struct {
 
 //===== Locator
 
-// ReservedInstancePurchase resource locator, exposes resource actions.
+// ReservedInstancePurchaseLocator exposes the ReservedInstancePurchase resource actions.
 type ReservedInstancePurchaseLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// ReservedInstancePurchase resource locator factory
+// ReservedInstancePurchaseLocator builds a locator from the given href.
 func (api *Api) ReservedInstancePurchaseLocator(href string) *ReservedInstancePurchaseLocator {
-	return &ReservedInstancePurchaseLocator{UrlResolver(href), api}
+	return &ReservedInstancePurchaseLocator{Href(href), api}
 }
 
 //===== Actions
@@ -2172,7 +2177,7 @@ func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int,
 		"quantity":      quantity,
 		"start_date":    startDate,
 	}
-	uri, err := loc.Url("ReservedInstancePurchase", "create")
+	uri, err := loc.ActionPath("ReservedInstancePurchase", "create")
 	if err != nil {
 		return res, err
 	}
@@ -2184,7 +2189,7 @@ func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int,
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ReservedInstancePurchaseLocator{UrlResolver(location), loc.api}, nil
+		return &ReservedInstancePurchaseLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -2200,7 +2205,7 @@ func (loc *ReservedInstancePurchaseLocator) Index(options rsapi.ApiParams) (*Res
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstancePurchase", "index")
+	uri, err := loc.ActionPath("ReservedInstancePurchase", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2229,7 +2234,7 @@ func (loc *ReservedInstancePurchaseLocator) Show(options rsapi.ApiParams) (*Rese
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstancePurchase", "show")
+	uri, err := loc.ActionPath("ReservedInstancePurchase", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2279,7 +2284,7 @@ func (loc *ReservedInstancePurchaseLocator) Update(options rsapi.ApiParams) (*Re
 	if startDateOpt != nil {
 		payloadParams["start_date"] = startDateOpt
 	}
-	uri, err := loc.Url("ReservedInstancePurchase", "update")
+	uri, err := loc.ActionPath("ReservedInstancePurchase", "update")
 	if err != nil {
 		return res, err
 	}
@@ -2302,7 +2307,7 @@ func (loc *ReservedInstancePurchaseLocator) Update(options rsapi.ApiParams) (*Re
 func (loc *ReservedInstancePurchaseLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ReservedInstancePurchase", "destroy")
+	uri, err := loc.ActionPath("ReservedInstancePurchase", "destroy")
 	if err != nil {
 		return err
 	}
@@ -2323,15 +2328,15 @@ type Scenario struct {
 
 //===== Locator
 
-// Scenario resource locator, exposes resource actions.
+// ScenarioLocator exposes the Scenario resource actions.
 type ScenarioLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Scenario resource locator factory
+// ScenarioLocator builds a locator from the given href.
 func (api *Api) ScenarioLocator(href string) *ScenarioLocator {
-	return &ScenarioLocator{UrlResolver(href), api}
+	return &ScenarioLocator{Href(href), api}
 }
 
 //===== Actions
@@ -2371,7 +2376,7 @@ func (loc *ScenarioLocator) Create(snapshotTimestamp *time.Time, options rsapi.A
 	if privateCloudInstanceCountOpt != nil {
 		payloadParams["private_cloud_instance_count"] = privateCloudInstanceCountOpt
 	}
-	uri, err := loc.Url("Scenario", "create")
+	uri, err := loc.ActionPath("Scenario", "create")
 	if err != nil {
 		return res, err
 	}
@@ -2383,7 +2388,7 @@ func (loc *ScenarioLocator) Create(snapshotTimestamp *time.Time, options rsapi.A
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ScenarioLocator{UrlResolver(location), loc.api}, nil
+		return &ScenarioLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -2403,7 +2408,7 @@ func (loc *ScenarioLocator) Index(options rsapi.ApiParams) (*Scenario, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Scenario", "index")
+	uri, err := loc.ActionPath("Scenario", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2432,7 +2437,7 @@ func (loc *ScenarioLocator) Show(options rsapi.ApiParams) (*Scenario, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Scenario", "show")
+	uri, err := loc.ActionPath("Scenario", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2478,7 +2483,7 @@ func (loc *ScenarioLocator) Update(options rsapi.ApiParams) (*Scenario, error) {
 	if snapshotTimestampOpt != nil {
 		payloadParams["snapshot_timestamp"] = snapshotTimestampOpt
 	}
-	uri, err := loc.Url("Scenario", "update")
+	uri, err := loc.ActionPath("Scenario", "update")
 	if err != nil {
 		return res, err
 	}
@@ -2501,7 +2506,7 @@ func (loc *ScenarioLocator) Update(options rsapi.ApiParams) (*Scenario, error) {
 func (loc *ScenarioLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Scenario", "destroy")
+	uri, err := loc.ActionPath("Scenario", "destroy")
 	if err != nil {
 		return err
 	}
@@ -2526,7 +2531,7 @@ func (loc *ScenarioLocator) Forecast(options rsapi.ApiParams) (*TimeSeriesMetric
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Scenario", "forecast")
+	uri, err := loc.ActionPath("Scenario", "forecast")
 	if err != nil {
 		return res, err
 	}
@@ -2552,15 +2557,15 @@ type ScheduledReport struct {
 
 //===== Locator
 
-// ScheduledReport resource locator, exposes resource actions.
+// ScheduledReportLocator exposes the ScheduledReport resource actions.
 type ScheduledReportLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// ScheduledReport resource locator factory
+// ScheduledReportLocator builds a locator from the given href.
 func (api *Api) ScheduledReportLocator(href string) *ScheduledReportLocator {
-	return &ScheduledReportLocator{UrlResolver(href), api}
+	return &ScheduledReportLocator{Href(href), api}
 }
 
 //===== Actions
@@ -2599,7 +2604,7 @@ func (loc *ScheduledReportLocator) Create(frequency string, name string, options
 	if filtersOpt != nil {
 		payloadParams["filters"] = filtersOpt
 	}
-	uri, err := loc.Url("ScheduledReport", "create")
+	uri, err := loc.ActionPath("ScheduledReport", "create")
 	if err != nil {
 		return res, err
 	}
@@ -2611,7 +2616,7 @@ func (loc *ScheduledReportLocator) Create(frequency string, name string, options
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ScheduledReportLocator{UrlResolver(location), loc.api}, nil
+		return &ScheduledReportLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -2627,7 +2632,7 @@ func (loc *ScheduledReportLocator) Index(options rsapi.ApiParams) (*ScheduledRep
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledReport", "index")
+	uri, err := loc.ActionPath("ScheduledReport", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2656,7 +2661,7 @@ func (loc *ScheduledReportLocator) Show(options rsapi.ApiParams) (*ScheduledRepo
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledReport", "show")
+	uri, err := loc.ActionPath("ScheduledReport", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2702,7 +2707,7 @@ func (loc *ScheduledReportLocator) Update(options rsapi.ApiParams) (*ScheduledRe
 	if nameOpt != nil {
 		payloadParams["name"] = nameOpt
 	}
-	uri, err := loc.Url("ScheduledReport", "update")
+	uri, err := loc.ActionPath("ScheduledReport", "update")
 	if err != nil {
 		return res, err
 	}
@@ -2725,7 +2730,7 @@ func (loc *ScheduledReportLocator) Update(options rsapi.ApiParams) (*ScheduledRe
 func (loc *ScheduledReportLocator) Destroy() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledReport", "destroy")
+	uri, err := loc.ActionPath("ScheduledReport", "destroy")
 	if err != nil {
 		return err
 	}
@@ -2748,7 +2753,7 @@ func (loc *ScheduledReportLocator) CreateDefaults(options rsapi.ApiParams) (*Sch
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("ScheduledReport", "create_defaults")
+	uri, err := loc.ActionPath("ScheduledReport", "create_defaults")
 	if err != nil {
 		return res, err
 	}
@@ -2774,15 +2779,15 @@ type TempInstancePrice struct {
 
 //===== Locator
 
-// TempInstancePrice resource locator, exposes resource actions.
+// TempInstancePriceLocator exposes the TempInstancePrice resource actions.
 type TempInstancePriceLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// TempInstancePrice resource locator factory
+// TempInstancePriceLocator builds a locator from the given href.
 func (api *Api) TempInstancePriceLocator(href string) *TempInstancePriceLocator {
-	return &TempInstancePriceLocator{UrlResolver(href), api}
+	return &TempInstancePriceLocator{Href(href), api}
 }
 
 //===== Actions
@@ -2794,7 +2799,7 @@ func (loc *TempInstancePriceLocator) Index() (string, error) {
 	var res string
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("TempInstancePrice", "index")
+	uri, err := loc.ActionPath("TempInstancePrice", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2820,15 +2825,15 @@ type User struct {
 
 //===== Locator
 
-// User resource locator, exposes resource actions.
+// UserLocator exposes the User resource actions.
 type UserLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// User resource locator factory
+// UserLocator builds a locator from the given href.
 func (api *Api) UserLocator(href string) *UserLocator {
-	return &UserLocator{UrlResolver(href), api}
+	return &UserLocator{Href(href), api}
 }
 
 //===== Actions
@@ -2856,7 +2861,7 @@ func (loc *UserLocator) Create(accounts []*UserAccounts, email string, options r
 		"accounts": accounts,
 		"email":    email,
 	}
-	uri, err := loc.Url("User", "create")
+	uri, err := loc.ActionPath("User", "create")
 	if err != nil {
 		return res, err
 	}
@@ -2868,7 +2873,7 @@ func (loc *UserLocator) Create(accounts []*UserAccounts, email string, options r
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &UserLocator{UrlResolver(location), loc.api}, nil
+		return &UserLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -2884,7 +2889,7 @@ func (loc *UserLocator) Index(options rsapi.ApiParams) (*User, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("User", "index")
+	uri, err := loc.ActionPath("User", "index")
 	if err != nil {
 		return res, err
 	}
@@ -2913,7 +2918,7 @@ func (loc *UserLocator) Show(options rsapi.ApiParams) (*User, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("User", "show")
+	uri, err := loc.ActionPath("User", "show")
 	if err != nil {
 		return res, err
 	}
@@ -2948,7 +2953,7 @@ func (loc *UserLocator) Update(options rsapi.ApiParams) (*User, error) {
 	if accountsOpt != nil {
 		payloadParams["accounts"] = accountsOpt
 	}
-	uri, err := loc.Url("User", "update")
+	uri, err := loc.ActionPath("User", "update")
 	if err != nil {
 		return res, err
 	}
@@ -2988,7 +2993,7 @@ func (loc *UserLocator) Invite(options rsapi.ApiParams) (*User, error) {
 	if messageOpt != nil {
 		payloadParams["message"] = messageOpt
 	}
-	uri, err := loc.Url("User", "invite")
+	uri, err := loc.ActionPath("User", "invite")
 	if err != nil {
 		return res, err
 	}
@@ -3013,15 +3018,15 @@ type UserSetting struct {
 
 //===== Locator
 
-// UserSetting resource locator, exposes resource actions.
+// UserSettingLocator exposes the UserSetting resource actions.
 type UserSettingLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// UserSetting resource locator factory
+// UserSettingLocator builds a locator from the given href.
 func (api *Api) UserSettingLocator(href string) *UserSettingLocator {
-	return &UserSettingLocator{UrlResolver(href), api}
+	return &UserSettingLocator{Href(href), api}
 }
 
 //===== Actions
@@ -3038,7 +3043,7 @@ func (loc *UserSettingLocator) Show(options rsapi.ApiParams) (*UserSetting, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("UserSetting", "show")
+	uri, err := loc.ActionPath("UserSetting", "show")
 	if err != nil {
 		return res, err
 	}
@@ -3116,7 +3121,7 @@ func (loc *UserSettingLocator) Update(options rsapi.ApiParams) (*UserSetting, er
 	if tableColumnVisibilityOpt != nil {
 		payloadParams["table_column_visibility"] = tableColumnVisibilityOpt
 	}
-	uri, err := loc.Url("UserSetting", "update")
+	uri, err := loc.ActionPath("UserSetting", "update")
 	if err != nil {
 		return res, err
 	}

@@ -19,13 +19,18 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Url resolver produces an action URL and HTTP method from its name and a given resource href.
-// The algorithm consists of first extracting the variables from the href and then substituing them
-// in the action path. If there are more than one action paths then the algorithm picks the one that
-// can substitute the most variables.
-type UrlResolver string
+// An Href contains the relative path to a resource or resource collection,
+// e.g. "/api/servers/123" or "/api/servers".
+type Href string
 
-func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
+// ActionPath computes the path to the given resource action. For example given the href
+// "/api/servers/123" calling ActionPath with resource "servers" and action "clone" returns the path
+// "/api/servers/123/clone" and verb POST.
+// The algorithm consists of extracting the variables from the href by looking up a matching
+// pattern from the resource metadata. The variables are then substituted in the action path.
+// If there are more than one pattern that match the href then the algorithm picks the one that can
+// substitute the most variables.
+func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
@@ -65,15 +70,15 @@ type Schedule struct {
 
 //===== Locator
 
-// Schedule resource locator, exposes resource actions.
+// ScheduleLocator exposes the Schedule resource actions.
 type ScheduleLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Schedule resource locator factory
+// ScheduleLocator builds a locator from the given href.
 func (api *Api) ScheduleLocator(href string) *ScheduleLocator {
-	return &ScheduleLocator{UrlResolver(href), api}
+	return &ScheduleLocator{Href(href), api}
 }
 
 //===== Actions
@@ -85,7 +90,7 @@ func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 	var res []*Schedule
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Schedule", "index")
+	uri, err := loc.ActionPath("Schedule", "index")
 	if err != nil {
 		return res, err
 	}
@@ -109,7 +114,7 @@ func (loc *ScheduleLocator) Show() (*Schedule, error) {
 	var res *Schedule
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Schedule", "show")
+	uri, err := loc.ActionPath("Schedule", "show")
 	if err != nil {
 		return res, err
 	}
@@ -151,7 +156,7 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 	if descriptionOpt != nil {
 		payloadParams["description"] = descriptionOpt
 	}
-	uri, err := loc.Url("Schedule", "create")
+	uri, err := loc.ActionPath("Schedule", "create")
 	if err != nil {
 		return res, err
 	}
@@ -163,7 +168,7 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ScheduleLocator{UrlResolver(location), loc.api}, nil
+		return &ScheduleLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -191,7 +196,7 @@ func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
 	if stopRecurrenceOpt != nil {
 		payloadParams["stop_recurrence"] = stopRecurrenceOpt
 	}
-	uri, err := loc.Url("Schedule", "update")
+	uri, err := loc.ActionPath("Schedule", "update")
 	if err != nil {
 		return err
 	}
@@ -209,7 +214,7 @@ func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
 func (loc *ScheduleLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Schedule", "delete")
+	uri, err := loc.ActionPath("Schedule", "delete")
 	if err != nil {
 		return err
 	}
@@ -233,7 +238,7 @@ func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Schedule", "multi_delete")
+	uri, err := loc.ActionPath("Schedule", "multi_delete")
 	if err != nil {
 		return err
 	}
@@ -275,15 +280,15 @@ type Template struct {
 
 //===== Locator
 
-// Template resource locator, exposes resource actions.
+// TemplateLocator exposes the Template resource actions.
 type TemplateLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Template resource locator factory
+// TemplateLocator builds a locator from the given href.
 func (api *Api) TemplateLocator(href string) *TemplateLocator {
-	return &TemplateLocator{UrlResolver(href), api}
+	return &TemplateLocator{Href(href), api}
 }
 
 //===== Actions
@@ -300,7 +305,7 @@ func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) 
 		queryParams["ids[]"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Template", "index")
+	uri, err := loc.ActionPath("Template", "index")
 	if err != nil {
 		return res, err
 	}
@@ -329,7 +334,7 @@ func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Template", "show")
+	uri, err := loc.ActionPath("Template", "show")
 	if err != nil {
 		return res, err
 	}
@@ -359,7 +364,7 @@ func (loc *TemplateLocator) Create(source *FileUpload) (*TemplateLocator, error)
 	payloadParams = rsapi.ApiParams{
 		"source": source,
 	}
-	uri, err := loc.Url("Template", "create")
+	uri, err := loc.ActionPath("Template", "create")
 	if err != nil {
 		return res, err
 	}
@@ -371,7 +376,7 @@ func (loc *TemplateLocator) Create(source *FileUpload) (*TemplateLocator, error)
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &TemplateLocator{UrlResolver(location), loc.api}, nil
+		return &TemplateLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -387,7 +392,7 @@ func (loc *TemplateLocator) Update(source *FileUpload) error {
 	payloadParams = rsapi.ApiParams{
 		"source": source,
 	}
-	uri, err := loc.Url("Template", "update")
+	uri, err := loc.ActionPath("Template", "update")
 	if err != nil {
 		return err
 	}
@@ -404,7 +409,7 @@ func (loc *TemplateLocator) Update(source *FileUpload) error {
 func (loc *TemplateLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Template", "delete")
+	uri, err := loc.ActionPath("Template", "delete")
 	if err != nil {
 		return err
 	}
@@ -427,7 +432,7 @@ func (loc *TemplateLocator) MultiDelete(ids []string) error {
 		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Template", "multi_delete")
+	uri, err := loc.ActionPath("Template", "multi_delete")
 	if err != nil {
 		return err
 	}
@@ -450,7 +455,7 @@ func (loc *TemplateLocator) Download(apiVersion string) error {
 		"api_version": apiVersion,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Template", "download")
+	uri, err := loc.ActionPath("Template", "download")
 	if err != nil {
 		return err
 	}
@@ -473,7 +478,7 @@ func (loc *TemplateLocator) Compile(source string) error {
 	payloadParams = rsapi.ApiParams{
 		"source": source,
 	}
-	uri, err := loc.Url("Template", "compile")
+	uri, err := loc.ActionPath("Template", "compile")
 	if err != nil {
 		return err
 	}
@@ -516,7 +521,7 @@ func (loc *TemplateLocator) Publish(id string, options rsapi.ApiParams) error {
 	if shortDescriptionOpt != nil {
 		payloadParams["short_description"] = shortDescriptionOpt
 	}
-	uri, err := loc.Url("Template", "publish")
+	uri, err := loc.ActionPath("Template", "publish")
 	if err != nil {
 		return err
 	}
@@ -539,7 +544,7 @@ func (loc *TemplateLocator) Unpublish(id string) error {
 	payloadParams = rsapi.ApiParams{
 		"id": id,
 	}
-	uri, err := loc.Url("Template", "unpublish")
+	uri, err := loc.ActionPath("Template", "unpublish")
 	if err != nil {
 		return err
 	}

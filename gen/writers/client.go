@@ -96,13 +96,18 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Url resolver produces an action URL and HTTP method from its name and a given resource href.
-// The algorithm consists of first extracting the variables from the href and then substituing them
-// in the action path. If there are more than one action paths then the algorithm picks the one that
-// can substitute the most variables.
-type UrlResolver string
+// An Href contains the relative path to a resource or resource collection,
+// e.g. "/api/servers/123" or "/api/servers".
+type Href string
 
-func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
+// ActionPath computes the path to the given resource action. For example given the href
+// "/api/servers/123" calling ActionPath with resource "servers" and action "clone" returns the path
+// "/api/servers/123/clone" and verb POST.
+// The algorithm consists of extracting the variables from the href by looking up a matching
+// pattern from the resource metadata. The variables are then substituted in the action path. 
+// If there are more than one pattern that match the href then the algorithm picks the one that can
+// substitute the most variables.
+func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
@@ -135,16 +140,17 @@ type {{.Name}} struct { {{range .Attributes}}
 {{if .Actions}}
 //===== Locator
 
-// {{.Name}} resource locator, exposes resource actions.
+// {{.Name}}Locator exposes the {{.Name}} resource actions.
 type {{.Name}}Locator struct {
-	UrlResolver
+	Href
 	api *{{.ClientName}}
 }
 
-// {{.Name}} resource locator factory
+// {{.Name}}Locator builds a locator from the given href.
 func (api *{{.ClientName}}) {{.Name}}Locator(href string) *{{.Name}}Locator {
-	return &{{.Name}}Locator{UrlResolver(href), api}
+	return &{{.Name}}Locator{Href(href), api}
 }
+
 //===== Actions
 {{end}}{{range .Actions}}{{range .PathPatterns}}
 // {{.HttpMethod}} {{.Path}}{{end}}
@@ -162,7 +168,7 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	}
 	{{end}}{{end}}{{/* end range .Params */}}var queryParams rsapi.ApiParams{{paramsInitializer . 1 "queryParams"}}
 	var payloadParams rsapi.ApiParams{{paramsInitializer . 2 "payloadParams"}}
-	uri, err := loc.Url("{{$action.ResourceName}}", "{{$action.Name}}")
+	uri, err := loc.ActionPath("{{$action.ResourceName}}", "{{$action.Name}}")
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}
@@ -174,7 +180,7 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &{{stripStar .Return}}{UrlResolver(location), loc.api}, nil
+		return &{{stripStar .Return}}{Href(location), loc.api}, nil
 	}{{else if .Return}}defer resp.Body.Close()
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

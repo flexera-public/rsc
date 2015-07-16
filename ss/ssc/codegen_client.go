@@ -19,13 +19,18 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Url resolver produces an action URL and HTTP method from its name and a given resource href.
-// The algorithm consists of first extracting the variables from the href and then substituing them
-// in the action path. If there are more than one action paths then the algorithm picks the one that
-// can substitute the most variables.
-type UrlResolver string
+// An Href contains the relative path to a resource or resource collection,
+// e.g. "/api/servers/123" or "/api/servers".
+type Href string
 
-func (r *UrlResolver) Url(rName, aName string) (*metadata.ActionPath, error) {
+// ActionPath computes the path to the given resource action. For example given the href
+// "/api/servers/123" calling ActionPath with resource "servers" and action "clone" returns the path
+// "/api/servers/123/clone" and verb POST.
+// The algorithm consists of extracting the variables from the href by looking up a matching
+// pattern from the resource metadata. The variables are then substituted in the action path.
+// If there are more than one pattern that match the href then the algorithm picks the one that can
+// substitute the most variables.
+func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	res, ok := GenMetadata[rName]
 	if !ok {
 		return nil, fmt.Errorf("No resource with name '%s'", rName)
@@ -64,15 +69,15 @@ type AccountPreference struct {
 
 //===== Locator
 
-// AccountPreference resource locator, exposes resource actions.
+// AccountPreferenceLocator exposes the AccountPreference resource actions.
 type AccountPreferenceLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// AccountPreference resource locator factory
+// AccountPreferenceLocator builds a locator from the given href.
 func (api *Api) AccountPreferenceLocator(href string) *AccountPreferenceLocator {
-	return &AccountPreferenceLocator{UrlResolver(href), api}
+	return &AccountPreferenceLocator{Href(href), api}
 }
 
 //===== Actions
@@ -93,7 +98,7 @@ func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountP
 		queryParams["group"] = groupOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AccountPreference", "index")
+	uri, err := loc.ActionPath("AccountPreference", "index")
 	if err != nil {
 		return res, err
 	}
@@ -117,7 +122,7 @@ func (loc *AccountPreferenceLocator) Show() (*AccountPreference, error) {
 	var res *AccountPreference
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AccountPreference", "show")
+	uri, err := loc.ActionPath("AccountPreference", "show")
 	if err != nil {
 		return res, err
 	}
@@ -155,7 +160,7 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 		"name":       name,
 		"value":      value,
 	}
-	uri, err := loc.Url("AccountPreference", "create")
+	uri, err := loc.ActionPath("AccountPreference", "create")
 	if err != nil {
 		return res, err
 	}
@@ -167,7 +172,7 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &AccountPreferenceLocator{UrlResolver(location), loc.api}, nil
+		return &AccountPreferenceLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -177,7 +182,7 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 func (loc *AccountPreferenceLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("AccountPreference", "delete")
+	uri, err := loc.ActionPath("AccountPreference", "delete")
 	if err != nil {
 		return err
 	}
@@ -215,15 +220,15 @@ type Application struct {
 
 //===== Locator
 
-// Application resource locator, exposes resource actions.
+// ApplicationLocator exposes the Application resource actions.
 type ApplicationLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// Application resource locator factory
+// ApplicationLocator builds a locator from the given href.
 func (api *Api) ApplicationLocator(href string) *ApplicationLocator {
-	return &ApplicationLocator{UrlResolver(href), api}
+	return &ApplicationLocator{Href(href), api}
 }
 
 //===== Actions
@@ -240,7 +245,7 @@ func (loc *ApplicationLocator) Index(options rsapi.ApiParams) ([]*Application, e
 		queryParams["ids[]"] = idsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Application", "index")
+	uri, err := loc.ActionPath("Application", "index")
 	if err != nil {
 		return res, err
 	}
@@ -269,7 +274,7 @@ func (loc *ApplicationLocator) Show(options rsapi.ApiParams) (*Application, erro
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Application", "show")
+	uri, err := loc.ActionPath("Application", "show")
 	if err != nil {
 		return res, err
 	}
@@ -323,7 +328,7 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 	if templateHrefOpt != nil {
 		payloadParams["template_href"] = templateHrefOpt
 	}
-	uri, err := loc.Url("Application", "create")
+	uri, err := loc.ActionPath("Application", "create")
 	if err != nil {
 		return res, err
 	}
@@ -335,7 +340,7 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &ApplicationLocator{UrlResolver(location), loc.api}, nil
+		return &ApplicationLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -374,7 +379,7 @@ func (loc *ApplicationLocator) Update(options rsapi.ApiParams) error {
 	if templateHrefOpt != nil {
 		payloadParams["template_href"] = templateHrefOpt
 	}
-	uri, err := loc.Url("Application", "update")
+	uri, err := loc.ActionPath("Application", "update")
 	if err != nil {
 		return err
 	}
@@ -425,7 +430,7 @@ func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) e
 	if templateHrefOpt != nil {
 		payloadParams["template_href"] = templateHrefOpt
 	}
-	uri, err := loc.Url("Application", "multi_update")
+	uri, err := loc.ActionPath("Application", "multi_update")
 	if err != nil {
 		return err
 	}
@@ -442,7 +447,7 @@ func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) e
 func (loc *ApplicationLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Application", "delete")
+	uri, err := loc.ActionPath("Application", "delete")
 	if err != nil {
 		return err
 	}
@@ -465,7 +470,7 @@ func (loc *ApplicationLocator) MultiDelete(ids []string) error {
 		"ids[]": ids,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Application", "multi_delete")
+	uri, err := loc.ActionPath("Application", "multi_delete")
 	if err != nil {
 		return err
 	}
@@ -488,7 +493,7 @@ func (loc *ApplicationLocator) Download(apiVersion string) error {
 		"api_version": apiVersion,
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("Application", "download")
+	uri, err := loc.ActionPath("Application", "download")
 	if err != nil {
 		return err
 	}
@@ -526,7 +531,7 @@ func (loc *ApplicationLocator) Launch(options rsapi.ApiParams) error {
 	if scheduleNameOpt != nil {
 		payloadParams["schedule_name"] = scheduleNameOpt
 	}
-	uri, err := loc.Url("Application", "launch")
+	uri, err := loc.ActionPath("Application", "launch")
 	if err != nil {
 		return err
 	}
@@ -560,15 +565,15 @@ type NotificationRule struct {
 
 //===== Locator
 
-// NotificationRule resource locator, exposes resource actions.
+// NotificationRuleLocator exposes the NotificationRule resource actions.
 type NotificationRuleLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// NotificationRule resource locator factory
+// NotificationRuleLocator builds a locator from the given href.
 func (api *Api) NotificationRuleLocator(href string) *NotificationRuleLocator {
-	return &NotificationRuleLocator{UrlResolver(href), api}
+	return &NotificationRuleLocator{Href(href), api}
 }
 
 //===== Actions
@@ -590,7 +595,7 @@ func (loc *NotificationRuleLocator) Index(source string, options rsapi.ApiParams
 		queryParams["targets"] = targetsOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NotificationRule", "index")
+	uri, err := loc.ActionPath("NotificationRule", "index")
 	if err != nil {
 		return res, err
 	}
@@ -634,7 +639,7 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 		"source":       source,
 		"target":       target,
 	}
-	uri, err := loc.Url("NotificationRule", "create")
+	uri, err := loc.ActionPath("NotificationRule", "create")
 	if err != nil {
 		return res, err
 	}
@@ -646,7 +651,7 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &NotificationRuleLocator{UrlResolver(location), loc.api}, nil
+		return &NotificationRuleLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -662,7 +667,7 @@ func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
 	payloadParams = rsapi.ApiParams{
 		"min_severity": minSeverity,
 	}
-	uri, err := loc.Url("NotificationRule", "patch")
+	uri, err := loc.ActionPath("NotificationRule", "patch")
 	if err != nil {
 		return err
 	}
@@ -680,7 +685,7 @@ func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 	var res *NotificationRule
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NotificationRule", "show")
+	uri, err := loc.ActionPath("NotificationRule", "show")
 	if err != nil {
 		return res, err
 	}
@@ -703,7 +708,7 @@ func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 func (loc *NotificationRuleLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("NotificationRule", "delete")
+	uri, err := loc.ActionPath("NotificationRule", "delete")
 	if err != nil {
 		return err
 	}
@@ -733,7 +738,7 @@ func (loc *NotificationRuleLocator) MultiDelete(options rsapi.ApiParams) error {
 	if targetOpt != nil {
 		payloadParams["target"] = targetOpt
 	}
-	uri, err := loc.Url("NotificationRule", "multi_delete")
+	uri, err := loc.ActionPath("NotificationRule", "multi_delete")
 	if err != nil {
 		return err
 	}
@@ -761,15 +766,15 @@ type UserPreference struct {
 
 //===== Locator
 
-// UserPreference resource locator, exposes resource actions.
+// UserPreferenceLocator exposes the UserPreference resource actions.
 type UserPreferenceLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// UserPreference resource locator factory
+// UserPreferenceLocator builds a locator from the given href.
 func (api *Api) UserPreferenceLocator(href string) *UserPreferenceLocator {
-	return &UserPreferenceLocator{UrlResolver(href), api}
+	return &UserPreferenceLocator{Href(href), api}
 }
 
 //===== Actions
@@ -792,7 +797,7 @@ func (loc *UserPreferenceLocator) Index(options rsapi.ApiParams) ([]*UserPrefere
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("UserPreference", "index")
+	uri, err := loc.ActionPath("UserPreference", "index")
 	if err != nil {
 		return res, err
 	}
@@ -821,7 +826,7 @@ func (loc *UserPreferenceLocator) Show(options rsapi.ApiParams) (*UserPreference
 		queryParams["view"] = viewOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("UserPreference", "show")
+	uri, err := loc.ActionPath("UserPreference", "show")
 	if err != nil {
 		return res, err
 	}
@@ -858,7 +863,7 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 		"user_preference_info_id": userPreferenceInfoId,
 		"value":                   value,
 	}
-	uri, err := loc.Url("UserPreference", "create")
+	uri, err := loc.ActionPath("UserPreference", "create")
 	if err != nil {
 		return res, err
 	}
@@ -870,7 +875,7 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 	if len(location) == 0 {
 		return res, fmt.Errorf("Missing location header in response")
 	} else {
-		return &UserPreferenceLocator{UrlResolver(location), loc.api}, nil
+		return &UserPreferenceLocator{Href(location), loc.api}, nil
 	}
 }
 
@@ -889,7 +894,7 @@ func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.ApiPar
 	if idOpt != nil {
 		payloadParams["id"] = idOpt
 	}
-	uri, err := loc.Url("UserPreference", "update")
+	uri, err := loc.ActionPath("UserPreference", "update")
 	if err != nil {
 		return err
 	}
@@ -906,7 +911,7 @@ func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.ApiPar
 func (loc *UserPreferenceLocator) Delete() error {
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("UserPreference", "delete")
+	uri, err := loc.ActionPath("UserPreference", "delete")
 	if err != nil {
 		return err
 	}
@@ -937,15 +942,15 @@ type UserPreferenceInfo struct {
 
 //===== Locator
 
-// UserPreferenceInfo resource locator, exposes resource actions.
+// UserPreferenceInfoLocator exposes the UserPreferenceInfo resource actions.
 type UserPreferenceInfoLocator struct {
-	UrlResolver
+	Href
 	api *Api
 }
 
-// UserPreferenceInfo resource locator factory
+// UserPreferenceInfoLocator builds a locator from the given href.
 func (api *Api) UserPreferenceInfoLocator(href string) *UserPreferenceInfoLocator {
-	return &UserPreferenceInfoLocator{UrlResolver(href), api}
+	return &UserPreferenceInfoLocator{Href(href), api}
 }
 
 //===== Actions
@@ -962,7 +967,7 @@ func (loc *UserPreferenceInfoLocator) Index(options rsapi.ApiParams) ([]*UserPre
 		queryParams["filter[]"] = filterOpt
 	}
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("UserPreferenceInfo", "index")
+	uri, err := loc.ActionPath("UserPreferenceInfo", "index")
 	if err != nil {
 		return res, err
 	}
@@ -986,7 +991,7 @@ func (loc *UserPreferenceInfoLocator) Show() (*UserPreferenceInfo, error) {
 	var res *UserPreferenceInfo
 	var queryParams rsapi.ApiParams
 	var payloadParams rsapi.ApiParams
-	uri, err := loc.Url("UserPreferenceInfo", "show")
+	uri, err := loc.ActionPath("UserPreferenceInfo", "show")
 	if err != nil {
 		return res, err
 	}
