@@ -1,5 +1,5 @@
-vnext / ?
----------
+v3.0.0 / 2015-07-16
+-------------------
 * Add support for Cloud Analytics APIs (via `ca` subcommand and package)
 * Make it possible to specify account when using OAuth (fixes CM 1.6 auth)
 * Add `Locator` method to all resources
