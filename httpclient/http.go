@@ -155,7 +155,6 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool) (*http.Response, erro
 	hide := (DumpFormat == NoDump) || (hidden && !DumpFormat.IsVerbose())
 	if !hide {
 		startedAt = time.Now()
-		id = "foo"
 		b := make([]byte, 6)
 		io.ReadFull(rand.Reader, b)
 		id = base64.StdEncoding.EncodeToString(b)

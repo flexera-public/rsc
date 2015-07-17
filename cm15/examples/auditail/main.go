@@ -40,7 +40,7 @@ func main() {
 
 	// 2. Setup client using basic auth
 	auth := rsapi.NewBasicAuthenticator(*email, *pwd, *account)
-	client := cm15.New(*host, auth, nil, nil)
+	client := cm15.New(*host, auth)
 	if err := client.CanAuthenticate(); err != nil {
 		fail("invalid credentials: %s", err)
 	}
