@@ -124,8 +124,8 @@ func (f Format) IsVerbose() bool {
 	return f&Verbose != 0
 }
 
-// Record is a convenience wrapper that returns true if the Record bit is set on the flag.
-func (f Format) Record() bool {
+// IsRecord is a convenience wrapper that returns true if the Record bit is set on the flag.
+func (f Format) IsRecord() bool {
 	return f&Record != 0
 }
 
@@ -152,13 +152,13 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool) (*http.Response, erro
 	var startedAt time.Time
 	var id string
 	var reqBody []byte
+	log.Info("started", "id", id, req.Method, req.URL.String())
 	hide := (DumpFormat == NoDump) || (hidden && !DumpFormat.IsVerbose())
 	if !hide {
 		startedAt = time.Now()
 		b := make([]byte, 6)
 		io.ReadFull(rand.Reader, b)
 		id = base64.StdEncoding.EncodeToString(b)
-		log.Info("started", "id", id, req.Method, req.URL.String())
 		reqBody = dumpRequest(req)
 	}
 	resp, err := d.Client.Do(req)
@@ -172,8 +172,8 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool) (*http.Response, erro
 	}
 	if !hide {
 		dumpResponse(resp, req, reqBody)
-		log.Info("completed", "id", id, "status", resp.Status, "time", time.Since(startedAt).String())
 	}
+	log.Info("completed", "id", id, "status", resp.Status, "time", time.Since(startedAt).String())
 
 	return resp, nil
 }
@@ -196,7 +196,7 @@ func dumpRequest(req *http.Request) []byte {
 			buffer.WriteString("\n")
 			buffer.Write(reqBody)
 		}
-		fmt.Fprintf(OsStderr, buffer.String())
+		fmt.Fprint(OsStderr, buffer.String())
 	} else if DumpFormat.IsJSON() {
 		return reqBody
 	}
@@ -222,7 +222,7 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 			buffer.WriteString("\n")
 			buffer.Write(respBody)
 		}
-		fmt.Fprintf(OsStderr, buffer.String())
+		fmt.Fprint(OsStderr, buffer.String())
 	} else if DumpFormat.IsJSON() {
 		reqHeaders := make(http.Header)
 		filterHeaders(req.Header, func(name string, value []string) {
@@ -246,7 +246,7 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 			log.Error("Failed to dump request content", "error", err.Error())
 			return
 		}
-		if DumpFormat.Record() {
+		if DumpFormat.IsRecord() {
 			f := os.NewFile(10, "fd10")
 			_, err = f.Stat()
 			if err == nil {
@@ -254,7 +254,7 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 				fmt.Fprintf(f, "%s\n", string(b))
 			}
 		}
-		fmt.Fprintf(OsStderr, string(b))
+		fmt.Fprint(OsStderr, string(b))
 	}
 }
 
