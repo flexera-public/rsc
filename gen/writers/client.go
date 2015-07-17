@@ -177,9 +177,18 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}
-	{{if .Return}}resp, {{else}}_, {{end}}err {{if .Return}}:{{end}}= loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return {{if $action.Return}}res, {{end}}fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
 	{{if .ReturnLocation}}location := resp.Header.Get("Location")
 	if len(location) == 0 {
