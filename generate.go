@@ -17,4 +17,5 @@
 
 // CA 1.0
 //go:generate praxisgen -metadata=ca/cac/docs/api -output=ca/cac -pkg=cac -target=1.0 -client=Api
+
 package main
