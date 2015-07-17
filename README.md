@@ -4,8 +4,8 @@
 Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 
-v3.0.0
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v3.0.0)](https://travis-ci.org/rightscale/rsc)
+v3.0.1
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v3.0.1)](https://travis-ci.org/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
@@ -48,9 +48,9 @@ rsc v3.0.0 - 2015-07-16 21:53:52 - 7b7923b178a74eff4fa3a73bfd549d384964cbfe
 #### Versioning
 
 - To download the latest stable use the links with 'v3' in them.
-- To download a specific version, replace the 'v3' by the exact version, such as 'v3.0.0'.
+- To download a specific version, replace the 'v3' by the exact version, such as 'v3.0.1'.
 - All versions with the same major number (e.g. 'v3') are intended to be "upward" compatible.
-- The 'v3' links download a specific version, so `rsc --version` will print something like 'v3.0.0'
+- The 'v3' links download a specific version, so `rsc --version` will print something like 'v3.0.1'
   and not 'v3'.
 - The latest dev version is 'master'.
 
@@ -531,7 +531,7 @@ mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
 git clone https://github.com/rightscale/rsc.git rsc.v3
 cd rsc.v3
-git checkout v3.0.0
+git checkout v3.0.1
 make depend
 make
 ```
