@@ -1,10 +1,10 @@
-package cac
+package cac // import "gopkg.in/rightscale/rsc.v3/ca/cac"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/dispatch"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/dispatch"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 )
 
 // Self-Service designer client

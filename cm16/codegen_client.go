@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cm16
+package cm16 // import "gopkg.in/rightscale/rsc.v3/cm16"
 
 import (
 	"encoding/json"
@@ -15,8 +15,8 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/metadata"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 )
 
 // An Href contains the relative path to a resource or resource collection,
