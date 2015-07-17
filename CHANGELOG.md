@@ -1,3 +1,10 @@
+v3.0.1 / 2015-07-17
+-------------------
+* Fix request logging so it doesn't require dumping as well
+* Fix dump output formatting
+* Add proper error handling for invalid HTTP status codes
+* Fix auditail example
+
 v3.0.0 / 2015-07-16
 -------------------
 * Add support for Cloud Analytics APIs (via `ca` subcommand and package)
@@ -6,6 +13,8 @@ v3.0.0 / 2015-07-16
 * Refactor logging, expose logger via new `log` package
 * Refactor how low level HTTP client is created, expose config via new `httpclient` package
 * Fix issues with some CM 1.5 resource attribute types
+* Make request timeouts configurable in `httpclient` package
+* Make certificate validation optional (see `httpclient.NoCertCheck`)
 * BREAK: remove need for providing http.Client instance when creating API client
 
 v2.0.2 / 2015-06-09
