@@ -9,7 +9,7 @@ Godeps/_workspace
 recorder/recorder
 recorder/recording_new.json
 version.go
-rsapi/user_agent.go
+httpclient/user_agent.go
 cm15/examples/auditail/auditail
 cm15/examples/basic/basic
 cm15/examples/rsssh/rsssh
