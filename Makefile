@@ -222,4 +222,5 @@ praxisgen:
 	which praxisgen
 
 api15json:
+	mkdir -p rsapi15
 	curl -s -o rsapi15/api_data.json http://reference.rightscale.com/api1.5/api_data.json
