@@ -9276,6 +9276,21 @@
             "mandatory": false,
             "non_blank": true
           },
+          "server[instance][cloud_specific_attributes][num_cores]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The number of CPU cores. Only available on UCA clouds."
+          },
+          "server[instance][cloud_specific_attributes][memory_mb]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The memory size in MB. Only available on UCA clouds."
+          },
+          "server[instance][cloud_specific_attributes][disk_gb]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The local disk space. Only available on UCA clouds."
+          },
           "server[instance][ramdisk_image_href]": {
             "class": "String",
             "description": "The href of the Ramdisk Image.",
@@ -10713,6 +10728,21 @@
             "mandatory": false,
             "non_blank": true
           },
+          "instance[cloud_specific_attributes][num_cores]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The number of CPU cores. Only available on UCA clouds."
+          },
+          "instance[cloud_specific_attributes][memory_mb]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The memory size in MB. Only available on UCA clouds."
+          },
+          "instance[cloud_specific_attributes][disk_gb]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The local disk space. Only available on UCA clouds."
+          },
           "instance[cloud_specific_attributes]": {
             "class": "Hash",
             "description": "Cloud specific attributes that have no generic rightscale abstraction",
@@ -10861,6 +10891,21 @@
             "description": "The number of IOPS (I/O Operations Per Second) this root volume should support. Only available on clouds supporting performance provisioning.",
             "mandatory": false,
             "non_blank": true
+          },
+          "instance[cloud_specific_attributes][num_cores]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The number of CPU cores. Only available on UCA clouds."
+          },
+          "instance[cloud_specific_attributes][memory_mb]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The memory size in MB. Only available on UCA clouds."
+          },
+          "instance[cloud_specific_attributes][disk_gb]": {
+            "mandatory": false,
+            "class": "Integer",
+            "description": "The local disk space. Only available on UCA clouds."
           },
           "instance[cloud_specific_attributes]": {
             "class": "Hash",
