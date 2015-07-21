@@ -1,10 +1,10 @@
-package ca
+package ca // import "gopkg.in/rightscale/rsc.v3/ca"
 
 import (
-	"github.com/rightscale/rsc/ca/cac"
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/ca/cac"
+	"gopkg.in/rightscale/rsc.v3/cmd"
+	"gopkg.in/rightscale/rsc.v3/metadata"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 	"regexp"
 	"strings"
 )
