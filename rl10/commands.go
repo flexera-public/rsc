@@ -22,11 +22,15 @@ func RegisterCommands(registrar rsapi.ApiCommandRegistrar) {
 
 // Parse and run command
 func (a *Api) RunCommand(cmd string) (*http.Response, error) {
-	parsed, err := a.ParseCommand(cmd, "/rll", commandValues)
+	c, err := a.ParseCommand(cmd, "/rll", commandValues)
 	if err != nil {
 		return nil, err
 	}
-	return a.Dispatch(parsed.HttpMethod, parsed.Uri, parsed.QueryParams, parsed.PayloadParams)
+	req, err := a.BuildHTTPRequest(c.HttpMethod, c.Uri, "", c.QueryParams, c.PayloadParams)
+	if err != nil {
+		return nil, err
+	}
+	return a.PerformRequest(req)
 }
 
 // Show command help

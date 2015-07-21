@@ -1,13 +1,136 @@
 package rsapi
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
+	"net/url"
+	"strconv"
 
 	"github.com/rightscale/rsc/metadata"
 )
+
+// FileUpload represents payload fields that correspond to multipart file uploads.
+type FileUpload struct {
+	Name     string    // Multipart part name
+	Filename string    // Uploaded filename
+	Reader   io.Reader // Backing reader
+}
+
+// Build HTTP request given all its parts.
+// If any member of the Payload field is of type io.Reader then the resulting request has a
+// multipart body where each member of type io.Reader is mapped to a single part and all other
+// members make up the first part.
+func (a *Api) BuildHTTPRequest(verb, path, version string, params, payload ApiParams) (*http.Request, error) {
+	u := url.URL{Host: a.Host, Path: path}
+	if params != nil {
+		var values = u.Query()
+		for n, p := range params {
+			switch t := p.(type) {
+			case string:
+				values.Set(n, t)
+			case int:
+				values.Set(n, strconv.Itoa(t))
+			case bool:
+				values.Set(n, strconv.FormatBool(t))
+			case []string:
+				for _, e := range t {
+					values.Add(n, e)
+				}
+			case []int:
+				for _, e := range t {
+					values.Add(n, strconv.Itoa(e))
+				}
+			case []bool:
+				for _, e := range t {
+					values.Add(n, strconv.FormatBool(e))
+				}
+			case []interface{}:
+				for _, e := range t {
+					values.Add(n, fmt.Sprintf("%v", e))
+				}
+			case map[string]string:
+				for pn, e := range t {
+					values.Add(fmt.Sprintf("%s[%s]", n, pn), e)
+				}
+			default:
+				return nil, fmt.Errorf("Invalid param value <%+v> for %s, value must be a string, an integer, a bool, an array of these types of a map of strings", p, n)
+			}
+		}
+		u.RawQuery = values.Encode()
+	}
+	var jsonBytes []byte
+	var body io.Reader
+	var isMultipart bool
+	var boundary string
+	if payload != nil {
+		var fields io.Reader
+		var uploads []*FileUpload
+		for k, v := range payload {
+			if mpart, ok := v.(*FileUpload); ok {
+				uploads = append(uploads, mpart)
+				delete(payload, k)
+			}
+		}
+		if len(payload) > 0 {
+			var err error
+			if jsonBytes, err = json.Marshal(payload); err != nil {
+				return nil, fmt.Errorf("failed to serialize request body: %s", err.Error())
+			}
+			fields = bytes.NewBuffer(jsonBytes)
+		}
+		if len(uploads) > 0 {
+			isMultipart = true
+			var buffer bytes.Buffer
+			w := multipart.NewWriter(&buffer)
+			if len(payload) > 0 {
+				p, err := w.CreateFormField("payload")
+				if err != nil {
+					return nil, fmt.Errorf("failed to create multipart payload: %s", err.Error())
+				}
+				_, err = io.Copy(p, fields)
+				if err != nil {
+					return nil, fmt.Errorf("failed to copy multipart payload: %s", err.Error())
+				}
+			}
+			for _, u := range uploads {
+				p, err := w.CreateFormFile(u.Name, u.Filename)
+				if err != nil {
+					return nil, fmt.Errorf("failed to create multipart file: %s", err.Error())
+				}
+				_, err = io.Copy(p, u.Reader)
+				if err != nil {
+					return nil, fmt.Errorf("failed to copy multipart file: %s", err.Error())
+				}
+			}
+			if err := w.Close(); err != nil {
+				return nil, fmt.Errorf("failed to close multipart body: %s", err.Error())
+			}
+			boundary = w.Boundary()
+			body = &buffer
+		} else {
+			body = fields
+		}
+	}
+	var req, err = http.NewRequest(verb, u.String(), body)
+	if err != nil {
+		return nil, err
+	}
+	if version != "" {
+		req.Header.Set("X-API-Version", version)
+	}
+	if isMultipart {
+		req.Header.Set("Content-Type", fmt.Sprintf("multipart/form-data; boundary=%s", boundary))
+	} else {
+		req.Header.Set("Content-Type", "application/json")
+	}
+
+	return req, nil
+}
 
 // Log request, dump its content if required then make request and log response and dump it.
 func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {

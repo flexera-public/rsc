@@ -1,12 +1,8 @@
 package cm15
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
-	"strconv"
 
 	"github.com/rightscale/rsc/rsapi"
 )
@@ -36,80 +32,5 @@ func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams
 		return nil, err
 	}
 	payloadParams, queryParams := rsapi.IdentifyParams(act, params)
-	return a.buildHttpRequest(actionUrl.HttpMethod, actionUrl.Path, queryParams, payloadParams)
-}
-
-// Helper function that signs, makes and logs HTTP request.
-// Used by generated client code.
-func (a *Api) Dispatch(verb, uri string, params, payload rsapi.ApiParams) (*http.Response, error) {
-	req, err := a.buildHttpRequest(verb, uri, params, payload)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := a.PerformRequest(req)
-	if a.FetchLocationResource && resp != nil {
-		loc := resp.Header.Get("Location")
-		if loc != "" {
-			resp, err = a.Dispatch("GET", loc, rsapi.ApiParams{}, rsapi.ApiParams{})
-		}
-	}
-	return resp, err
-}
-
-// Helper function that puts together and HTTP request from its verb, uri and params.
-func (a *Api) buildHttpRequest(verb, uri string, params rsapi.ApiParams, payload rsapi.ApiParams) (*http.Request, error) {
-	u := url.URL{
-		Host: a.Host,
-		Path: uri,
-	}
-	if params != nil {
-		values := u.Query()
-		for n, p := range params {
-			switch t := p.(type) {
-			case string:
-				values.Set(n, t)
-			case int:
-				values.Set(n, strconv.Itoa(t))
-			case bool:
-				values.Set(n, strconv.FormatBool(t))
-			case []string:
-				for _, e := range t {
-					values.Add(n, e)
-				}
-			case []int:
-				for _, e := range t {
-					values.Add(n, strconv.Itoa(e))
-				}
-			case []bool:
-				for _, e := range t {
-					values.Add(n, strconv.FormatBool(e))
-				}
-			case []interface{}:
-				for _, e := range t {
-					values.Add(n, fmt.Sprintf("%v", e))
-				}
-			case map[string]string:
-				for pn, e := range t {
-					values.Add(fmt.Sprintf("%s[%s]", n, pn), e)
-				}
-			default:
-				return nil, fmt.Errorf("Invalid param value <%+v> for %s, value must be a string, an integer, a bool, an array of these types of a map of strings", p, n)
-			}
-		}
-		u.RawQuery = values.Encode()
-	}
-	var jsonBytes []byte
-	if payload != nil && len(payload) > 0 {
-		var err error
-		if jsonBytes, err = json.Marshal(payload); err != nil {
-			return nil, fmt.Errorf("Failed to serialize request body - %s", err)
-		}
-	}
-	req, err := http.NewRequest(verb, u.String(), bytes.NewBuffer(jsonBytes))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("X-Api-Version", "1.5")
-	req.Header.Set("Content-Type", "application/json")
-	return req, nil
+	return a.BuildHTTPRequest(actionUrl.HttpMethod, actionUrl.Path, "1.5", queryParams, payloadParams)
 }

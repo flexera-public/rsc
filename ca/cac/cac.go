@@ -1,11 +1,6 @@
 package cac
 
-import (
-	"net/http"
-
-	"github.com/rightscale/rsc/dispatch"
-	"github.com/rightscale/rsc/rsapi"
-)
+import "github.com/rightscale/rsc/rsapi"
 
 // Self-Service designer client
 type Api struct {
@@ -20,17 +15,4 @@ func New(h string, a rsapi.Authenticator) *Api {
 	api := rsapi.New(h, a)
 	api.Metadata = GenMetadata
 	return &Api{Api: api}
-}
-
-// Dispatch request to appropriate low-level method
-func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error) {
-	details := dispatch.RequestDetails{
-		HttpMethod:            method,
-		Host:                  a.Host,
-		Url:                   actionUrl,
-		Params:                params,
-		Payload:               payload,
-		FetchLocationResource: a.FetchLocationResource,
-	}
-	return dispatch.Dispatch(&details, a)
 }

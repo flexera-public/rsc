@@ -29,8 +29,7 @@ func main() {
 	destDirVal := flag.String("output", curDir,
 		"Path to output file")
 	pkgName := flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
-	targetVersion := flag.String("target", "",
-		"Target version, only generate code for this version.\nIf this option is specified then the generated code lives directly under package <pkg>, otherwise it lives under <pkg>.<version>.")
+	targetVersion := flag.String("target", "", "Version of API to generate code for")
 	clientName := flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
 	tool := flag.String("tool", "rsc", "Tool or library for which to generate code, supported values are 'rsc' or 'angular'")
 	flag.Parse()
@@ -45,6 +44,10 @@ func main() {
 	destDir := *destDirVal
 	if stat, _ := os.Stat(destDir); stat != nil && !stat.IsDir() {
 		kingpin.Fatalf("%s is not a valid directory.", destDir)
+	}
+
+	if *targetVersion == "" {
+		kingpin.Fatalf("-target option is required.")
 	}
 
 	if *tool == "rsc" {
@@ -135,7 +138,7 @@ func main() {
 		case "rsc":
 			clientPath := path.Join(destDir, pkg, "codegen_client.go")
 			metadataPath := path.Join(destDir, pkg, "codegen_metadata.go")
-			kingpin.FatalIfError(generateClient(descriptor, clientPath, *pkgName), "")
+			kingpin.FatalIfError(generateClient(*targetVersion, descriptor, clientPath, *pkgName), "")
 			kingpin.FatalIfError(generateMetadata(descriptor, metadataPath, *pkgName), "")
 			generated = append(generated, clientPath)
 			generated = append(generated, metadataPath)
@@ -186,7 +189,7 @@ func toPackageName(version string) string {
 }
 
 // Generate API client code, drives the code writer.
-func generateClient(descriptor *gen.ApiDescriptor, codegen, pkg string) error {
+func generateClient(version string, descriptor *gen.ApiDescriptor, codegen, pkg string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
@@ -195,7 +198,7 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen, pkg string) error {
 	if err != nil {
 		return err
 	}
-	kingpin.FatalIfError(c.WriteHeader(pkg, descriptor.NeedTime, descriptor.NeedJson, f), "")
+	kingpin.FatalIfError(c.WriteHeader(pkg, version, descriptor.NeedTime, descriptor.NeedJson, f), "")
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)

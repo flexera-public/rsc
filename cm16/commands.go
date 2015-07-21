@@ -32,7 +32,11 @@ func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 	if !strings.HasPrefix(href, "/api") {
 		href = path.Join("/api", href)
 	}
-	return a.Dispatch("GET", href, parsed.QueryParams, nil)
+	req, err := a.BuildHTTPRequest("GET", href, "1.6", parsed.QueryParams, nil)
+	if err != nil {
+		return nil, err
+	}
+	return a.PerformRequest(req)
 }
 
 // Show command help

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"bitbucket.org/pkg/inflect"
 
@@ -61,10 +62,32 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 	if !ok {
 		n = "Struct" // Assume inline struct (e.g. payload types)
 	}
-	if n == "Tempfile" {
-		//TODO: support multipart file upload...
-		fmt.Printf("Warn: %s is a TempFile - file upload is currently not supported, generating code using string.\n", query)
-		n = "String"
+	if strings.HasSuffix(n, "FileUpload") {
+		// A little bit hacky but this is to make upload work with resticle
+		// The idea is that a type named "FileUpload" is assumed to define a multipart
+		// request with a file part.
+		// The type must define a "name" and  "filename" string fields.
+		t, ok := a.RawTypes[n]
+		if !ok {
+			return nil, fmt.Errorf("Unknown type %s for %s", n, prettify(typeDef))
+		}
+		attrs, ok := t["attributes"]
+		if !ok {
+			return nil, fmt.Errorf("Invalid file upload type %s for %s: no attributes", n, prettify(typeDef))
+		}
+		mattrs, ok := attrs.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("Invalid file upload type %s for %s: basic type", n, prettify(typeDef))
+		}
+		_, ok = mattrs["name"]
+		if !ok {
+			return nil, fmt.Errorf("Invalid file upload type %s for %s: no name", n, prettify(typeDef))
+		}
+		_, ok = mattrs["filename"]
+		if !ok {
+			return nil, fmt.Errorf("Invalid file upload type %s for %s: no filename", n, prettify(typeDef))
+		}
+		return &gen.UploadDataType{TypeName: n}, nil
 	}
 	if isBuiltInType(n) {
 		n = "String"

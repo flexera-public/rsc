@@ -40,8 +40,13 @@ func NewClientWriter() (*ClientWriter, error) {
 }
 
 // Write header text
-func (c *ClientWriter) WriteHeader(pkg string, needTime, needJson bool, w io.Writer) error {
-	ctx := map[string]interface{}{"Pkg": pkg, "NeedTime": needTime, "NeedJson": needJson}
+func (c *ClientWriter) WriteHeader(pkg, version string, needTime, needJson bool, w io.Writer) error {
+	ctx := map[string]interface{}{
+		"Pkg":        pkg,
+		"APIVersion": version,
+		"NeedTime":   needTime,
+		"NeedJson":   needJson,
+	}
 	return c.headerTmpl.Execute(w, ctx)
 }
 
@@ -96,6 +101,9 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
+// API Version
+const APIVersion = "{{.APIVersion}}"
+
 // An Href contains the relative path to a resource or resource collection,
 // e.g. "/api/servers/123" or "/api/servers".
 type Href string
@@ -128,7 +136,6 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	}
 	return action.Url(vars)
 }
-
 `
 
 const resourceTmpl = `{{$resource := .}}{{define "ActionBody"}}` + actionBodyTmpl + `{{end}}
@@ -171,13 +178,17 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	{{end}}{{range .Params}}{{if and .Mandatory (blankCondition .VarName .Type)}}{{blankCondition .VarName .Type}}
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.VarName}} is required")
 	}
-	{{end}}{{end}}{{/* end range .Params */}}var queryParams rsapi.ApiParams{{paramsInitializer . 1 "queryParams"}}
-	var payloadParams rsapi.ApiParams{{paramsInitializer . 2 "payloadParams"}}
+	{{end}}{{end}}{{/* end range .Params */}}var params rsapi.ApiParams{{paramsInitializer . 1 "params"}}
+	var p rsapi.ApiParams{{paramsInitializer . 2 "p"}}
 	uri, err := loc.ActionPath("{{$action.ResourceName}}", "{{$action.Name}}")
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return {{if $action.Return}}res, {{end}}err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}

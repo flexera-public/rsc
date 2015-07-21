@@ -1,0 +1,19 @@
+name "Empty CAT"
+rs_ca_ver 20131202
+short_description "Blank"
+
+parameter 'param1' do
+  type 'string'
+  label 'blah'
+  allowed_pattern /Hello/i
+  default 'hello'
+  operations 'do_nothing'
+end
+
+operation 'do_nothing' do
+  definition 'blah'
+end
+
+define blah($param1) do
+
+end

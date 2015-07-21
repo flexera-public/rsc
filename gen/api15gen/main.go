@@ -78,7 +78,7 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	kingpin.FatalIfError(c.WriteHeader("cm15", false /*needTime*/, true /*needJson*/, f), "")
+	kingpin.FatalIfError(c.WriteHeader("cm15", "1.5", false /*needTime*/, true /*needJson*/, f), "")
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)

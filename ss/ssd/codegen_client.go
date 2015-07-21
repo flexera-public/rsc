@@ -19,6 +19,9 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
+// API Version
+const APIVersion = "1.0"
+
 // An Href contains the relative path to a resource or resource collection,
 // e.g. "/api/servers/123" or "/api/servers".
 type Href string
@@ -93,13 +96,17 @@ func (api *Api) ScheduleLocator(href string) *ScheduleLocator {
 // List the schedules available in Designer.
 func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 	var res []*Schedule
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Schedule", "index")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -126,13 +133,17 @@ func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 // Show detailed information about a given Schedule.
 func (loc *ScheduleLocator) Show() (*Schedule, error) {
 	var res *Schedule
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Schedule", "show")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -168,22 +179,26 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 	if stopRecurrence == nil {
 		return res, fmt.Errorf("stopRecurrence is required")
 	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
 		"name":             name,
 		"start_recurrence": startRecurrence,
 		"stop_recurrence":  stopRecurrence,
 	}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
-		payloadParams["description"] = descriptionOpt
+		p["description"] = descriptionOpt
 	}
 	uri, err := loc.ActionPath("Schedule", "create")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -209,30 +224,34 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 // Update one or more attributes of an existing Schedule.
 // Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
 func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{}
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
-		payloadParams["description"] = descriptionOpt
+		p["description"] = descriptionOpt
 	}
 	var nameOpt = options["name"]
 	if nameOpt != nil {
-		payloadParams["name"] = nameOpt
+		p["name"] = nameOpt
 	}
 	var startRecurrenceOpt = options["start_recurrence"]
 	if startRecurrenceOpt != nil {
-		payloadParams["start_recurrence"] = startRecurrenceOpt
+		p["start_recurrence"] = startRecurrenceOpt
 	}
 	var stopRecurrenceOpt = options["stop_recurrence"]
 	if stopRecurrenceOpt != nil {
-		payloadParams["stop_recurrence"] = stopRecurrenceOpt
+		p["stop_recurrence"] = stopRecurrenceOpt
 	}
 	uri, err := loc.ActionPath("Schedule", "update")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -253,13 +272,17 @@ func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
 // Delete a Schedule from the system.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
 func (loc *ScheduleLocator) Delete() error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Schedule", "delete")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -283,16 +306,20 @@ func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{
 		"ids[]": ids,
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Schedule", "multi_delete")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -362,18 +389,22 @@ func (api *Api) TemplateLocator(href string) *TemplateLocator {
 // List the templates available in Designer along with some general details.
 func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) {
 	var res []*Template
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
-		queryParams["ids[]"] = idsOpt
+		params["ids[]"] = idsOpt
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Template", "index")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -400,18 +431,22 @@ func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) 
 // Show detailed information about a given Template. Use the views specified below for more information.
 func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
 	var res *Template
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
-		queryParams["view"] = viewOpt
+		params["view"] = viewOpt
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Template", "show")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -436,21 +471,22 @@ func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
 // POST /collections/:collection_id/templates
 //
 // Create a new Template by uploading its content to Designer.
-func (loc *TemplateLocator) Create(source *FileUpload) (*TemplateLocator, error) {
+func (loc *TemplateLocator) Create(source *rsapi.FileUpload) (*TemplateLocator, error) {
 	var res *TemplateLocator
-	if source == nil {
-		return res, fmt.Errorf("source is required")
-	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
 		"source": source,
 	}
 	uri, err := loc.ActionPath("Template", "create")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -474,20 +510,21 @@ func (loc *TemplateLocator) Create(source *FileUpload) (*TemplateLocator, error)
 // PUT /collections/:collection_id/templates/:id
 //
 // Update the content of an existing Template (a Template with the same "name" value in the CAT).
-func (loc *TemplateLocator) Update(source *FileUpload) error {
-	if source == nil {
-		return fmt.Errorf("source is required")
-	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
+func (loc *TemplateLocator) Update(source *rsapi.FileUpload) error {
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
 		"source": source,
 	}
 	uri, err := loc.ActionPath("Template", "update")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -507,13 +544,17 @@ func (loc *TemplateLocator) Update(source *FileUpload) error {
 //
 // Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
 func (loc *TemplateLocator) Delete() error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Template", "delete")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -536,16 +577,20 @@ func (loc *TemplateLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{
 		"ids[]": ids,
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Template", "multi_delete")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -568,16 +613,20 @@ func (loc *TemplateLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
 		return fmt.Errorf("apiVersion is required")
 	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{
 		"api_version": apiVersion,
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Template", "download")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -600,16 +649,20 @@ func (loc *TemplateLocator) Compile(source string) error {
 	if source == "" {
 		return fmt.Errorf("source is required")
 	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
 		"source": source,
 	}
 	uri, err := loc.ActionPath("Template", "compile")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -632,36 +685,40 @@ func (loc *TemplateLocator) Publish(id string, options rsapi.ApiParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
 		"id": id,
 	}
 	var nameOpt = options["name"]
 	if nameOpt != nil {
-		payloadParams["name"] = nameOpt
+		p["name"] = nameOpt
 	}
 	var overriddenApplicationHrefOpt = options["overridden_application_href"]
 	if overriddenApplicationHrefOpt != nil {
-		payloadParams["overridden_application_href"] = overriddenApplicationHrefOpt
+		p["overridden_application_href"] = overriddenApplicationHrefOpt
 	}
 	var scheduleRequiredOpt = options["schedule_required"]
 	if scheduleRequiredOpt != nil {
-		payloadParams["schedule_required"] = scheduleRequiredOpt
+		p["schedule_required"] = scheduleRequiredOpt
 	}
 	var schedulesOpt = options["schedules"]
 	if schedulesOpt != nil {
-		payloadParams["schedules"] = schedulesOpt
+		p["schedules"] = schedulesOpt
 	}
 	var shortDescriptionOpt = options["short_description"]
 	if shortDescriptionOpt != nil {
-		payloadParams["short_description"] = shortDescriptionOpt
+		p["short_description"] = shortDescriptionOpt
 	}
 	uri, err := loc.ActionPath("Template", "publish")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -684,16 +741,20 @@ func (loc *TemplateLocator) Unpublish(id string) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
 		"id": id,
 	}
 	uri, err := loc.ActionPath("Template", "unpublish")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -714,14 +775,6 @@ func (loc *TemplateLocator) Unpublish(id string) error {
 type ApplicationInfo struct {
 	Href string `json:"href,omitempty"`
 	Name string `json:"name,omitempty"`
-}
-
-type FileUpload struct {
-	Filename string `json:"filename,omitempty"`
-	Head     string `json:"head,omitempty"`
-	Name     string `json:"name,omitempty"`
-	Tempfile string `json:"tempfile,omitempty"`
-	Type_    string `json:"type,omitempty"`
 }
 
 type Parameter struct {

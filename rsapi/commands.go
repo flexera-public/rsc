@@ -110,6 +110,12 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 				return nil, fmt.Errorf("Value for '%s' must be of the form NAME=VALUE, got %s", name, value)
 			}
 			*coerced = append(*coerced, ApiParams{fmt.Sprintf("%s[%s]", name, velems[0]): velems[1]})
+		case "file":
+			file, err := os.Open(value)
+			if err != nil {
+				return nil, fmt.Errorf("Invalid file upload path '%s' for %s: %s", value, name, err)
+			}
+			*coerced = append(*coerced, ApiParams{name: &FileUpload{Name: name, Filename: value, Reader: file}})
 		}
 	}
 	for _, p := range action.CommandFlags {
@@ -144,10 +150,10 @@ func (a *Api) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 	if err != nil {
 		return err
 	}
-	resource, action, href := target.Resource, target.Action, target.Href
+	_, action, href := target.Resource, target.Action, target.Href
 	if len(action.CommandFlags) == 0 {
-		fmt.Printf("usage: rsc [<flags>] %s %s %s\n", strings.Split(cmd, " ")[0],
-			action.Name, href)
+		fmt.Printf("usage: rsc [<FLAGS>] %s %s %s\n\n%s\n", strings.Split(cmd, " ")[0],
+			action.Name, href, action.Description)
 		return nil
 	}
 	flagHelp := make([]string, len(action.CommandFlags))
@@ -166,9 +172,9 @@ func (a *Api) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 		}
 		flagHelp[i] = fmt.Sprintf("%s=%s\n    <%s> %s", f.Name, f.Type, attrs, f.Description)
 	}
-	fmt.Printf("usage: rsc [<flags>] %s %s %s [<%s %s params>]\n\n", strings.Split(cmd, " ")[0],
-		action.Name, href, strings.ToLower(resource.Name), action.Name)
-	fmt.Printf("%s %s params:\n%s\n", resource.Name, action.Name, strings.Join(flagHelp, "\n\n"))
+	fmt.Printf("usage: rsc [<FLAGS>] %s %s %s [<PARAMS>]\n\n%s\n\n", strings.Split(cmd, " ")[0],
+		action.Name, href, action.Description)
+	fmt.Printf("PARAMS:\n%s\n", strings.Join(flagHelp, "\n\n"))
 	return nil
 }
 

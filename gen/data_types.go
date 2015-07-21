@@ -266,6 +266,8 @@ func (p *ActionParam) Signature() (sig string) {
 		sig = fmt.Sprintf("*%s", t.TypeName)
 	case *EnumerableDataType:
 		sig = "map[string]interface{}"
+	case *UploadDataType:
+		sig = "*rsapi.FileUpload"
 	}
 	return
 }
@@ -281,7 +283,7 @@ type DataType interface {
 	Name() string                     // Type name
 }
 
-// A basic data type only has a name, i.e. "int" or "string"
+// A basic data type only has a name, i.e. "int", "string"...
 type BasicDataType string
 
 // true if both b and other represent the same type
@@ -360,6 +362,28 @@ func (e *EnumerableDataType) IsEquivalent(other DataType) bool {
 // Implement DataType
 func (e *EnumerableDataType) Name() string {
 	return "map[string]interface{}"
+}
+
+// UploadDataType represents the payload of a multipart request with a file part.
+type UploadDataType struct {
+	TypeName string
+}
+
+// true if other is a upload data type and the backing type is the same.
+func (u *UploadDataType) IsEquivalent(other DataType) bool {
+	o, ok := other.(*UploadDataType)
+	if !ok {
+		return false
+	}
+	if o.TypeName != u.TypeName {
+		return false
+	}
+	return true
+}
+
+// Implement DataType
+func (u *UploadDataType) Name() string {
+	return "Upload"
 }
 
 // Make it possible to sort action parameters by name

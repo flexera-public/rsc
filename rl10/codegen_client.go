@@ -17,6 +17,9 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
+// API Version
+const APIVersion = "unversioned"
+
 // An Href contains the relative path to a resource or resource collection,
 // e.g. "/api/servers/123" or "/api/servers".
 type Href string
@@ -76,13 +79,17 @@ func (api *Api) DebugCookbookPathLocator(href string) *DebugCookbookPathLocator 
 // Retrieve debug cookbook directory location
 func (loc *DebugCookbookPathLocator) Show() (string, error) {
 	var res string
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("DebugCookbookPath", "show")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -112,16 +119,20 @@ func (loc *DebugCookbookPathLocator) Update(path string) (string, error) {
 	if path == "" {
 		return res, fmt.Errorf("path is required")
 	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{
 		"path": path,
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("DebugCookbookPath", "update")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -147,13 +158,17 @@ func (loc *DebugCookbookPathLocator) Update(path string) (string, error) {
 //
 // Remove debug cookbook directory location
 func (loc *DebugCookbookPathLocator) Delete() error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("DebugCookbookPath", "delete")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -195,13 +210,17 @@ func (api *Api) EnvLocator(href string) *EnvLocator {
 // Retrieve all environment variables
 func (loc *EnvLocator) Index() (string, error) {
 	var res string
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Env", "index")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -228,13 +247,17 @@ func (loc *EnvLocator) Index() (string, error) {
 // Retrieve environment variable value
 func (loc *EnvLocator) Show() (string, error) {
 	var res string
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Env", "show")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -264,16 +287,20 @@ func (loc *EnvLocator) Update(payload string) (string, error) {
 	if payload == "" {
 		return res, fmt.Errorf("payload is required")
 	}
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
-	payloadParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
 		"payload": payload,
 	}
 	uri, err := loc.ActionPath("Env", "update")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -299,13 +326,17 @@ func (loc *EnvLocator) Update(payload string) (string, error) {
 //
 // Delete environment variable
 func (loc *EnvLocator) Delete() error {
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Env", "delete")
 	if err != nil {
 		return err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return err
 	}
@@ -347,13 +378,17 @@ func (api *Api) ProcLocator(href string) *ProcLocator {
 // List all process variables
 func (loc *ProcLocator) Index() (string, error) {
 	var res string
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Proc", "index")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -380,13 +415,17 @@ func (loc *ProcLocator) Index() (string, error) {
 // Retrieve process variable value
 func (loc *ProcLocator) Show() (string, error) {
 	var res string
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Proc", "show")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -437,16 +476,20 @@ func (loc *Rl10Locator) Upgrade(exec string) (string, error) {
 	if exec == "" {
 		return res, fmt.Errorf("exec is required")
 	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{
 		"exec": exec,
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Rl10", "upgrade")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -476,24 +519,28 @@ func (loc *Rl10Locator) RunRecipe(recipe string, options rsapi.ApiParams) (strin
 	if recipe == "" {
 		return res, fmt.Errorf("recipe is required")
 	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{
 		"recipe": recipe,
 	}
 	var argumentsOpt = options["arguments"]
 	if argumentsOpt != nil {
-		queryParams["arguments"] = argumentsOpt
+		params["arguments"] = argumentsOpt
 	}
 	var jsonOpt = options["json"]
 	if jsonOpt != nil {
-		queryParams["json"] = jsonOpt
+		params["json"] = jsonOpt
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Rl10", "run_recipe")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -520,26 +567,30 @@ func (loc *Rl10Locator) RunRecipe(recipe string, options rsapi.ApiParams) (strin
 // Run RightScripts synchronously
 func (loc *Rl10Locator) RunRightScript(options rsapi.ApiParams) (string, error) {
 	var res string
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{}
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{}
 	var argumentsOpt = options["arguments"]
 	if argumentsOpt != nil {
-		queryParams["arguments"] = argumentsOpt
+		params["arguments"] = argumentsOpt
 	}
 	var rightScriptOpt = options["right_script"]
 	if rightScriptOpt != nil {
-		queryParams["right_script"] = rightScriptOpt
+		params["right_script"] = rightScriptOpt
 	}
 	var rightScriptIdOpt = options["right_script_id"]
 	if rightScriptIdOpt != nil {
-		queryParams["right_script_id"] = rightScriptIdOpt
+		params["right_script_id"] = rightScriptIdOpt
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("Rl10", "run_right_script")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -587,13 +638,17 @@ func (api *Api) TSSLocator(href string) *TSSLocator {
 // Get the TSS hostname to proxy
 func (loc *TSSLocator) GetHostname() (string, error) {
 	var res string
-	var queryParams rsapi.ApiParams
-	var payloadParams rsapi.ApiParams
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("TSS", "get_hostname")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}
@@ -623,16 +678,20 @@ func (loc *TSSLocator) PutHostname(hostname string) (string, error) {
 	if hostname == "" {
 		return res, fmt.Errorf("hostname is required")
 	}
-	var queryParams rsapi.ApiParams
-	queryParams = rsapi.ApiParams{
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{
 		"hostname": hostname,
 	}
-	var payloadParams rsapi.ApiParams
+	var p rsapi.ApiParams
 	uri, err := loc.ActionPath("TSS", "put_hostname")
 	if err != nil {
 		return res, err
 	}
-	resp, err := loc.api.Dispatch(uri.HttpMethod, uri.Path, queryParams, payloadParams)
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
 		return res, err
 	}

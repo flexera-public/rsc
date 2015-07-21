@@ -52,23 +52,22 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	if len(args) == 0 {
 		args = []string{"--help"}
 	}
-	cmd, err := app.Parse(args)
-	if err != nil && len(args) > 0 {
-		// This is a bit hacky: basically doing `rsc api15 index clouds --help` results
-		// in a command line that kingpin is unable to parse. So capture the `--help` and
-		// retry parsing without it.
-		lastArgIndex := len(args)
-		help := args[lastArgIndex-1]
-		if help == "--help" || help == "-h" || help == "-help" || help == "-?" {
-			cmdLine.ShowHelp = true
-			lastArgIndex -= 1
-			cmd, err = app.Parse(args[:lastArgIndex])
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			return nil, err
-		}
+	// This is a bit hacky: basically doing `rsc api15 index clouds --help` results
+	// in a command line that kingpin hijacks. So capture the `--help` try parsing
+	// without it so we can print our own help.
+	lastArgIndex := len(args)
+	help := args[lastArgIndex-1]
+	var cmd string
+	var err error
+	if help == "--help" || help == "-h" || help == "-help" || help == "-?" {
+		cmdLine.ShowHelp = true
+		lastArgIndex -= 1
+		cmd, err = app.Parse(args[:lastArgIndex])
+	} else {
+		cmd, err = app.Parse(args)
+	}
+	if err != nil {
+		return nil, err
 	}
 
 	// 3. Complement with defaults from config at given path

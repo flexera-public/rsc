@@ -138,13 +138,15 @@ func escapeBackticks(d string) string {
 	return strings.Join(elems, "` + `")
 }
 
-// Type of flag, one of "string", "[]string", "int" or "map"
+// Type of flag, one of "string", "[]string", "int", "map" or "file"
 func flagType(param *gen.ActionParam) string {
 	path := param.QueryName
 	if _, ok := param.Type.(*gen.ArrayDataType); ok {
 		return "[]string"
 	} else if _, ok := param.Type.(*gen.EnumerableDataType); ok {
 		return "map"
+	} else if _, ok := param.Type.(*gen.UploadDataType); ok {
+		return "file"
 	}
 	b, ok := param.Type.(*gen.BasicDataType)
 	if !ok {

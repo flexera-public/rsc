@@ -3,7 +3,6 @@ package ssc
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/dispatch"
 	"github.com/rightscale/rsc/rsapi"
 )
 
@@ -21,15 +20,8 @@ func New(h string, a rsapi.Authenticator) *Api {
 	return &ssApi
 }
 
-// Dispatch request to appropriate low-level method
-func (a *Api) Dispatch(method, actionUrl string, params, payload rsapi.ApiParams) (*http.Response, error) {
-	details := dispatch.RequestDetails{
-		HttpMethod:            method,
-		Host:                  a.Host,
-		Url:                   "/catalog" + actionUrl,
-		Params:                params,
-		Payload:               payload,
-		FetchLocationResource: a.FetchLocationResource,
-	}
-	return dispatch.Dispatch(&details, a)
+// BuildHTTPRequest wraps the underlying rsapi implementation and simply prefixes the path with
+// the service catalog path.
+func (a *Api) BuildHTTPRequest(verb, path, version string, params, payload rsapi.ApiParams) (*http.Request, error) {
+	return a.Api.BuildHTTPRequest(verb, "/catalog"+path, version, params, payload)
 }

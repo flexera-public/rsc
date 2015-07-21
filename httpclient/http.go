@@ -210,10 +210,7 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 	if DumpFormat == NoDump {
 		return
 	}
-	respBody, err := dumpRespBody(resp)
-	if err != nil {
-		log.Error("Failed to load response body for dump", "error", err.Error())
-	}
+	respBody, _ := dumpRespBody(resp)
 	if DumpFormat.IsDebug() {
 		var buffer bytes.Buffer
 		buffer.WriteString("==> " + resp.Proto + " " + resp.Status + "\n")
@@ -221,6 +218,7 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 		if respBody != nil {
 			buffer.WriteString("\n")
 			buffer.Write(respBody)
+			buffer.WriteString("\n")
 		}
 		fmt.Fprint(OsStderr, buffer.String())
 	} else if DumpFormat.IsJSON() {

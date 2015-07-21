@@ -117,18 +117,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 				} else {
 					// Raw payload (no attributes)
 					payload = pd
-					var required bool
-					if req, ok := p.(map[string]interface{})["required"]; ok {
-						required = req.(bool)
-					}
-					param := &gen.ActionParam{
-						Name:      "payload",
-						QueryName: "payload",
-						VarName:   "payload",
-						Type:      pd,
-						Location:  gen.PayloadParam,
-						Mandatory: required,
-					}
+					param := rawPayload(pd, p)
 					params = append(params, param)
 					leafParams = append(leafParams, param)
 				}
@@ -232,6 +221,22 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 	return actions, nil
 }
 
+// rawPayload is a helper function that creates a ActionParam for a raw (non object) payload
+func rawPayload(typ gen.DataType, p interface{}) *gen.ActionParam {
+	var required bool
+	if req, ok := p.(map[string]interface{})["required"]; ok {
+		required = req.(bool)
+	}
+	return &gen.ActionParam{
+		Name:      "payload",
+		QueryName: "payload",
+		VarName:   "payload",
+		Type:      typ,
+		Location:  gen.PayloadParam,
+		Mandatory: required,
+	}
+}
+
 // Extract path patterns from action urls
 // Urls consist of an array of map, each map has the following keys:
 // "verb", "path", "version"
@@ -288,7 +293,7 @@ func toPattern(verb, path string) *gen.PathPattern {
 // Extract leaf parameters from given action param
 func extractLeafParams(a *gen.ActionParam, seen map[string]*[]*gen.ActionParam) []*gen.ActionParam {
 	switch t := a.Type.(type) {
-	case *gen.BasicDataType, *gen.EnumerableDataType:
+	case *gen.BasicDataType, *gen.EnumerableDataType, *gen.UploadDataType:
 		return []*gen.ActionParam{a}
 	case *gen.ArrayDataType:
 		p := t.ElemType

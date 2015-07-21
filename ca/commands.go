@@ -27,7 +27,11 @@ func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return a.Dispatch(parsed.HttpMethod, parsed.Uri, parsed.QueryParams, parsed.PayloadParams)
+	req, err := a.BuildHTTPRequest(parsed.HttpMethod, parsed.Uri, "1.0", parsed.QueryParams, parsed.PayloadParams)
+	if err != nil {
+		return nil, err
+	}
+	return a.PerformRequest(req)
 }
 
 // Show command help
