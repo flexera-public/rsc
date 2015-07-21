@@ -152,13 +152,13 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool) (*http.Response, erro
 	var startedAt time.Time
 	var id string
 	var reqBody []byte
+	b := make([]byte, 6)
+	io.ReadFull(rand.Reader, b)
+	id = base64.StdEncoding.EncodeToString(b)
 	log.Info("started", "id", id, req.Method, req.URL.String())
 	hide := (DumpFormat == NoDump) || (hidden && !DumpFormat.IsVerbose())
 	if !hide {
 		startedAt = time.Now()
-		b := make([]byte, 6)
-		io.ReadFull(rand.Reader, b)
-		id = base64.StdEncoding.EncodeToString(b)
 		reqBody = dumpRequest(req)
 	}
 	resp, err := d.Client.Do(req)

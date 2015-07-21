@@ -105,7 +105,7 @@ Multiple Schedules can be associated with a Template when published to the Catal
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "start_recurrence[hour]",
+						Name:        "stop_recurrence[hour]",
 						Description: `The hour of day from 0 to 23.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
@@ -113,7 +113,7 @@ Multiple Schedules can be associated with a Template when published to the Catal
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "start_recurrence[minute]",
+						Name:        "stop_recurrence[minute]",
 						Description: `The minute from 0 to 59.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
@@ -121,7 +121,7 @@ Multiple Schedules can be associated with a Template when published to the Catal
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "start_recurrence[rule]",
+						Name:        "stop_recurrence[rule]",
 						Description: `A RRULE string describing the recurrence rule.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
@@ -219,7 +219,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "start_recurrence[hour]",
+						Name:        "stop_recurrence[hour]",
 						Description: `The hour of day from 0 to 23.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
@@ -227,7 +227,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "start_recurrence[minute]",
+						Name:        "stop_recurrence[minute]",
 						Description: `The minute from 0 to 59.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
@@ -235,7 +235,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "start_recurrence[rule]",
+						Name:        "stop_recurrence[rule]",
 						Description: `A RRULE string describing the recurrence rule.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,

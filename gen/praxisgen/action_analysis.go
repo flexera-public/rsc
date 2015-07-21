@@ -108,7 +108,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						payloadParamNames = append(payloadParamNames, att.Name)
 						att.Location = gen.PayloadParam
 						params = append(params, att)
-						extracted := extractLeafParams(att, make(map[string]*[]*gen.ActionParam))
+						extracted := extractLeafParams(att, att.Name, make(map[string]*[]*gen.ActionParam))
 						for _, e := range extracted {
 							e.Location = gen.PayloadParam
 						}
@@ -291,17 +291,31 @@ func toPattern(verb, path string) *gen.PathPattern {
 }
 
 // Extract leaf parameters from given action param
-func extractLeafParams(a *gen.ActionParam, seen map[string]*[]*gen.ActionParam) []*gen.ActionParam {
+func extractLeafParams(a *gen.ActionParam, root string, seen map[string]*[]*gen.ActionParam) []*gen.ActionParam {
 	switch t := a.Type.(type) {
 	case *gen.BasicDataType, *gen.EnumerableDataType, *gen.UploadDataType:
-		return []*gen.ActionParam{a}
+		dup := gen.ActionParam{
+			Name:        a.Name,
+			QueryName:   root,
+			Description: a.Description,
+			VarName:     a.VarName,
+			Location:    a.Location,
+			Type:        a.Type,
+			Mandatory:   a.Mandatory,
+			NonBlank:    a.NonBlank,
+			Regexp:      a.Regexp,
+			ValidValues: a.ValidValues,
+			Min:         a.Min,
+			Max:         a.Max,
+		}
+		return []*gen.ActionParam{&dup}
 	case *gen.ArrayDataType:
 		p := t.ElemType
 		eq, ok := seen[p.Name]
 		if !ok {
 			eq = &[]*gen.ActionParam{}
 			seen[p.Name] = eq
-			*eq = extractLeafParams(p, seen)
+			*eq = extractLeafParams(p, root+"[]", seen)
 		}
 		return *eq
 	case *gen.ObjectDataType:
@@ -311,7 +325,7 @@ func extractLeafParams(a *gen.ActionParam, seen map[string]*[]*gen.ActionParam) 
 			if !ok {
 				eq = &[]*gen.ActionParam{}
 				seen[f.Name] = eq
-				*eq = extractLeafParams(f, seen)
+				*eq = extractLeafParams(f, fmt.Sprintf("%s[%s]", root, f.Name), seen)
 			}
 			params = append(params, *eq...)
 		}
