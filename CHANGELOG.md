@@ -1,3 +1,9 @@
+v3.0.2 / 2015-07-21
+-------------------
+* Add support for file uploads (self-service templates creation)
+* Fix praxisgen bug causing incorrect command line for ss
+* Fix request ID logging
+
 v3.0.1 / 2015-07-17
 -------------------
 * Fix request logging so it doesn't require dumping as well
