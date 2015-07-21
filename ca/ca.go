@@ -1,12 +1,13 @@
 package ca
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/rightscale/rsc/ca/cac"
 	"github.com/rightscale/rsc/cmd"
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
-	"regexp"
-	"strings"
 )
 
 // Metadata synthetized from all CA APIs metadata
@@ -27,6 +28,14 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	api.Host = apiHostFromLogin(cmdLine.Host)
 	api.Metadata = GenMetadata
 	return &Api{api}, nil
+}
+
+// New returns a CA API client.
+func New(h string, a rsapi.Authenticator) *Api {
+	api := rsapi.New(h, a)
+	setupMetadata()
+	api.Metadata = GenMetadata
+	return &Api{Api: api}
 }
 
 func apiHostFromLogin(host string) string {

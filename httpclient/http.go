@@ -195,6 +195,7 @@ func dumpRequest(req *http.Request) []byte {
 		if reqBody != nil {
 			buffer.WriteString("\n")
 			buffer.Write(reqBody)
+			buffer.WriteString("\n")
 		}
 		fmt.Fprint(OsStderr, buffer.String())
 	} else if DumpFormat.IsJSON() {
