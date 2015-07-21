@@ -63,7 +63,7 @@ var _ = Describe("Upload Example", func() {
 			),
 		)
 		main()
-		Ω(out.String()).Should(Equal(output))
+		Ω(out.String()).Should(HavePrefix(output))
 	})
 
 })
@@ -75,7 +75,7 @@ func trace(rw http.ResponseWriter, req *http.Request) {
 }
 
 const (
-	output = "template_8_template_tests__2015-04-29_21:05:26.663 created at 2015-04-29 21:05:45.163 +0000 +0000 by Joe\n"
+	output = "template_8_template_tests__2015-04-29_21:05:26.663 created at 2015-04-29 21:05:45.163"
 
 	responseBody = `{
 	   "kind":"self_service#template",
