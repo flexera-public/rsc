@@ -64,7 +64,7 @@ func main() {
 	}
 	name := filepath.Base(*cat)
 	l := client.TemplateLocator(fmt.Sprintf("/designer/collections/%d/templates", *account))
-	upload := rsapi.FileUpload{Name: name, Filename: name, Reader: file}
+	upload := rsapi.FileUpload{Name: "source", Filename: name, Reader: file}
 	t, err := l.Create(&upload)
 	if err != nil {
 		fail("failed to create template: %s", err)
