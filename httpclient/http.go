@@ -95,6 +95,14 @@ func NewNoRedirect() HTTPClient {
 	return &dumpClient{Client: newRawClient(true)}
 }
 
+// ShortToken creates a 6 bytes unique string.
+// Not meant to be cryptographically unique but good enough for logs.
+func ShortToken() string {
+	b := make([]byte, 6)
+	io.ReadFull(rand.Reader, b)
+	return base64.StdEncoding.EncodeToString(b)
+}
+
 // newRawClient creates an http package Client taking into account both the parameters and package
 // variables.
 func newRawClient(noredirect bool) *http.Client {
@@ -149,12 +157,9 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool) (*http.Response, erro
 	}
 	req.Header.Set("User-Agent", UA)
 
-	var startedAt time.Time
-	var id string
 	var reqBody []byte
-	b := make([]byte, 6)
-	io.ReadFull(rand.Reader, b)
-	id = base64.StdEncoding.EncodeToString(b)
+	startedAt := time.Now()
+	id := ShortToken()
 	log.Info("started", "id", id, req.Method, req.URL.String())
 	hide := (DumpFormat == NoDump) || (hidden && !DumpFormat.IsVerbose())
 	if !hide {
