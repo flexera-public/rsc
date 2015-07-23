@@ -1,3 +1,8 @@
+vNext
+-------------------
+* Add cloud specific attributes to servers and instances
+* Fix issue with request timing logging
+
 v3.0.2 / 2015-07-21
 -------------------
 * Add support for file uploads (self-service templates creation)
