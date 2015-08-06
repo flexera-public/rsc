@@ -132,6 +132,7 @@
 	"server_tag_scope": "string",
 	"short_description": "string",
 	"size": "string",
+	"size#Volumes": "int",
 	"source": "string",
 	"source_info_summary": "string",
 	"source_type": "string",

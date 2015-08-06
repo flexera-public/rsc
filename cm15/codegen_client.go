@@ -13316,7 +13316,7 @@ type Volume struct {
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
-	Size        string              `json:"size,omitempty"`
+	Size        int                 `json:"size,omitempty"`
 	Status      string              `json:"status,omitempty"`
 	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 	VolumeType  string              `json:"volume_type,omitempty"`
@@ -14208,8 +14208,11 @@ type CloudAccountParam struct {
 
 type CloudSpecificAttributes struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	DiskGb                        int    `json:"disk_gb,omitempty"`
 	EbsOptimized                  string `json:"ebs_optimized,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	MemoryMb                      int    `json:"memory_mb,omitempty"`
+	NumCores                      int    `json:"num_cores,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
@@ -14217,7 +14220,10 @@ type CloudSpecificAttributes struct {
 
 type CloudSpecificAttributes2 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	DiskGb                        int    `json:"disk_gb,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	MemoryMb                      int    `json:"memory_mb,omitempty"`
+	NumCores                      int    `json:"num_cores,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
