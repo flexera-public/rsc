@@ -106,7 +106,7 @@ func ShortToken() string {
 // newRawClient creates an http package Client taking into account both the parameters and package
 // variables.
 func newRawClient(noredirect bool) *http.Client {
-	tr := http.Transport{ResponseHeaderTimeout: ResponseHeaderTimeout}
+	tr := http.Transport{ResponseHeaderTimeout: ResponseHeaderTimeout, Proxy: http.ProxyFromEnvironment}
 	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: NoCertCheck}
 	c := http.Client{Transport: &tr}
 	if noredirect {
