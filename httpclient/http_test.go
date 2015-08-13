@@ -170,4 +170,15 @@ var _ = Describe("HTTP client", func() {
 		})
 	})
 
+	// CAN'T DO: Proxy support must be tested using integration tests. See:
+	// https://go.googlesource.com/go/+/go1.4.2/src/net/http/transport.go#296 dealing
+	// with httpProxyEnv instantions. The env is read only once ever and the methods
+	// to reset this mechanism for testing purposes are internal to the http package.
+	// Context("with proxy", func() {
+	// 	BeforeEach(func() {
+	// 	  os.Setenv("http_proxy", "http://1.2.3.4:90")
+	// 		client = httpclient.New()
+	// 	})
+	//})
+
 })
