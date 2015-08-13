@@ -2,6 +2,7 @@ vNext
 -------------------
 * Add cloud specific attributes to servers and instances
 * Fix issue with request timing logging
+* Go through proxy if http_proxy is set
 
 v3.0.2 / 2015-07-21
 -------------------
