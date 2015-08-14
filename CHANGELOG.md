@@ -1,8 +1,8 @@
-vNext
+v3.1.0 / 2015-08-14
 -------------------
+* Proxy support: honor HTTP_PROXY and HTTPS_PROXY environment variables
 * Add cloud specific attributes to servers and instances
 * Fix issue with request timing logging
-* Go through proxy if http_proxy is set
 
 v3.0.2 / 2015-07-21
 -------------------
