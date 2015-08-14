@@ -1,9 +1,9 @@
-package ssc
+package ssc // import "gopkg.in/rightscale/rsc.v3/ss/ssc"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 )
 
 // Self-Service catalog client
