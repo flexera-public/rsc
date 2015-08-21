@@ -377,6 +377,55 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Manipulate the TSS proxy`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
+				Name:        "put_control",
+				Description: `Control the TSS monitoring`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HttpMethod: "PUT",
+						Pattern:    "/rll/tss/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_monitoring",
+						Description: ``,
+						Type:        "bool",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "tss_id",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				ApiParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_monitoring",
+						Description: ``,
+						Type:        "bool",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "tss_id",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name:        "get_hostname",
 				Description: `Get the TSS hostname to proxy`,
 				PathPatterns: []*metadata.PathPattern{
