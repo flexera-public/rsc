@@ -111,6 +111,7 @@ func (d *ApiDescriptor) FinalizeTypeNames(rawTypes map[string][]*ObjectDataType)
 					newName := d.uniqueTypeName(tn)
 					ty.TypeName = newName
 					d.Types[newName] = ty
+					d.TypeNames = append(d.TypeNames, newName)
 				}
 			}
 		}

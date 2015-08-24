@@ -1478,7 +1478,7 @@ func (loc *BackupLocator) Show() (*Backup, error) {
 // Updates the committed tag for all of the VolumeSnapshots in the given Backup to the given value.
 // Required parameters:
 // backup
-func (loc *BackupLocator) Update(backup *BackupParam2) error {
+func (loc *BackupLocator) Update(backup *BackupParam3) error {
 	if backup == nil {
 		return fmt.Errorf("backup is required")
 	}
@@ -10837,7 +10837,7 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 // Wrap an existing instance and set current instance for new server
 // Required parameters:
 // server
-func (loc *ServerLocator) WrapInstance(server *ServerParam2) error {
+func (loc *ServerLocator) WrapInstance(server *ServerParam3) error {
 	if server == nil {
 		return fmt.Errorf("server is required")
 	}
@@ -14183,6 +14183,14 @@ type BackupParam struct {
 }
 
 type BackupParam2 struct {
+	Description    string `json:"description,omitempty"`
+	Iops           string `json:"iops,omitempty"`
+	Name           string `json:"name,omitempty"`
+	Size           string `json:"size,omitempty"`
+	VolumeTypeHref string `json:"volume_type_href,omitempty"`
+}
+
+type BackupParam3 struct {
 	Committed string `json:"committed,omitempty"`
 }
 
@@ -14219,6 +14227,25 @@ type CloudSpecificAttributes struct {
 }
 
 type CloudSpecificAttributes2 struct {
+	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	DiskGb                        int    `json:"disk_gb,omitempty"`
+	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	MemoryMb                      int    `json:"memory_mb,omitempty"`
+	NumCores                      int    `json:"num_cores,omitempty"`
+	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
+}
+
+type CloudSpecificAttributes3 struct {
+	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
+}
+
+type CloudSpecificAttributes4 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
 	DiskGb                        int    `json:"disk_gb,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
@@ -14299,6 +14326,65 @@ type InstanceParam struct {
 }
 
 type InstanceParam2 struct {
+	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes2 `json:"cloud_specific_attributes,omitempty"`
+	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
+	DeploymentHref           string                    `json:"deployment_href,omitempty"`
+	ImageHref                string                    `json:"image_href,omitempty"`
+	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
+	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
+	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
+	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
+	Name                     string                    `json:"name,omitempty"`
+	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
+	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
+	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
+	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
+	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
+	UserData                 string                    `json:"user_data,omitempty"`
+}
+
+type InstanceParam3 struct {
+	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
+	CloudHref                string                    `json:"cloud_href,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
+	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
+	ImageHref                string                    `json:"image_href,omitempty"`
+	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
+	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
+	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
+	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
+	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
+	PlacementGroupHref       string                    `json:"placement_group_href,omitempty"`
+	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
+	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
+	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
+	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
+	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
+	UserData                 string                    `json:"user_data,omitempty"`
+}
+
+type InstanceParam4 struct {
+	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
+	CloudHref                string                    `json:"cloud_href,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
+	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
+	ImageHref                string                    `json:"image_href,omitempty"`
+	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
+	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
+	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
+	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
+	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
+	PlacementGroupHref       string                    `json:"placement_group_href,omitempty"`
+	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
+	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
+	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
+	SshKeyHref               string                    `json:"ssh_key_href,omitempty"`
+	SubnetHrefs              []string                  `json:"subnet_hrefs,omitempty"`
+	UserData                 string                    `json:"user_data,omitempty"`
+}
+
+type InstanceParam5 struct {
 	Href                string                 `json:"href,omitempty"`
 	Inputs              map[string]interface{} `json:"inputs,omitempty"`
 	MultiCloudImageHref string                 `json:"multi_cloud_image_href,omitempty"`
@@ -14553,7 +14639,7 @@ type ServerArrayParam struct {
 	DeploymentHref   string              `json:"deployment_href,omitempty"`
 	Description      string              `json:"description,omitempty"`
 	ElasticityParams *ElasticityParams   `json:"elasticity_params,omitempty"`
-	Instance         *InstanceParam2     `json:"instance,omitempty"`
+	Instance         *InstanceParam3     `json:"instance,omitempty"`
 	Name             string              `json:"name,omitempty"`
 	Optimized        string              `json:"optimized,omitempty"`
 	State            string              `json:"state,omitempty"`
@@ -14573,15 +14659,23 @@ type ServerArrayParam2 struct {
 type ServerParam struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam2 `json:"instance,omitempty"`
+	Instance       *InstanceParam4 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 	Optimized      string          `json:"optimized,omitempty"`
 }
 
 type ServerParam2 struct {
+	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	Description                   string `json:"description,omitempty"`
+	Name                          string `json:"name,omitempty"`
+	Optimized                     string `json:"optimized,omitempty"`
+	RootVolumeSize                string `json:"root_volume_size,omitempty"`
+}
+
+type ServerParam3 struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam2 `json:"instance,omitempty"`
+	Instance       *InstanceParam5 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 }
 

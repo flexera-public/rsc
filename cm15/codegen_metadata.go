@@ -1714,7 +1714,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "backup",
 						Description: ``,
-						Type:        "*BackupParam2",
+						Type:        "*BackupParam3",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -10820,7 +10820,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server",
 						Description: ``,
-						Type:        "*ServerParam2",
+						Type:        "*ServerParam3",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
