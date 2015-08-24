@@ -1685,6 +1685,15 @@ type TimestampsStruct struct {
 
 type TimestampsStruct2 struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
+}
+
+type TimestampsStruct3 struct {
+	CreatedAt  *time.Time `json:"created_at,omitempty"`
+	FinishedAt *time.Time `json:"finished_at,omitempty"`
+}
+
+type TimestampsStruct4 struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
