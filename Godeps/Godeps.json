@@ -25,6 +25,10 @@
 			"Rev": "40e4aedc8fabf8c23e040057540867186712faa5"
 		},
 		{
+			"ImportPath": "github.com/mattn/go-isatty",
+			"Rev": "ae0b1f8f8004be68d791a576e3d8e7648ab41449"
+		},
+		{
 			"ImportPath": "github.com/onsi/ginkgo",
 			"Comment": "v1.1.0-33-g17ea479",
 			"Rev": "17ea479729ee427265ac1e913443018350946ddf"
@@ -40,10 +44,12 @@
 		},
 		{
 			"ImportPath": "gopkg.in/alecthomas/kingpin.v2",
-			"Rev": "89dac2fb11a9573327691cbcebcd711f5fa67cbd"
+			"Comment": "v2.0.12",
+			"Rev": "639879d6110b1b0409410c7b737ef0bb18325038"
 		},
 		{
 			"ImportPath": "gopkg.in/inconshreveable/log15.v2",
+			"Comment": "v2.10",
 			"Rev": "dc7890abeaadcb6a79a9a5ee30bc1897bbf97713"
 		}
 	]
