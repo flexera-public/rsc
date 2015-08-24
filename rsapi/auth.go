@@ -362,7 +362,7 @@ func (a *ssAuthenticator) SetHost(host string) {
 		a.host = host
 		return
 	}
-	elems[len(elems)-2] = strings.Replace(elems[len(elems)-2], "us", "selfservice", 1)
+	elems[len(elems)-2] = "selfservice"
 	ssLoginHostPrefix := strings.Join(elems, "-")
 	a.host = strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
 }
