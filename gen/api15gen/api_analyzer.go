@@ -396,9 +396,9 @@ var noMediaTypeResources = map[string]bool{
 func parseReturn(kind, resName, contentType string) string {
 	switch kind {
 	case "show":
-		return fmt.Sprintf("*%s", resourceType(resName))
+		return refType(resName)
 	case "index":
-		return fmt.Sprintf("[]*%s", resourceType(resName))
+		return fmt.Sprintf("[]%s", refType(resName))
 	case "create":
 		if _, ok := noMediaTypeResources[resName]; ok {
 			return "map[string]interface{}"
@@ -417,9 +417,9 @@ func parseReturn(kind, resName, contentType string) string {
 				return "string"
 			}
 			elems := strings.SplitN(contentType[27:], ";", 2)
-			name := resourceType(inflect.Camelize(elems[0]))
+			name := refType(inflect.Camelize(elems[0]))
 			if len(elems) > 1 && elems[1] == "type=collection" {
-				name = "[]*" + name
+				name = "[]" + refType(inflect.Camelize(elems[0]))
 			}
 			return name
 		default: // Shouldn't be here
@@ -427,6 +427,16 @@ func parseReturn(kind, resName, contentType string) string {
 		}
 	}
 
+}
+
+// refType returns the Go code required to declare a variable of the given resource type.
+// i.e. var foo *ResourceName
+func refType(resName string) string {
+	res := resourceType(resName)
+	if res != "map[string]interface{}" {
+		res = "*" + res
+	}
+	return res
 }
 
 // Name of go type for resource with given name
@@ -437,7 +447,7 @@ func resourceType(resName string) string {
 		return "Account"
 	}
 	if _, ok := noMediaTypeResources[resName]; ok {
-		return "map[string]string"
+		return "map[string]interface{}"
 	}
 	return inflect.Singularize(resName)
 }

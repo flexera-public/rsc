@@ -3319,8 +3319,8 @@ func (api *API) HealthCheckLocator(href string) *HealthCheckLocator {
 // GET /api/health-check/
 //
 // Check health of RightApi controllers
-func (loc *HealthCheckLocator) Index() ([]*map[string]string, error) {
-	var res []*map[string]string
+func (loc *HealthCheckLocator) Index() ([]map[string]interface{}, error) {
+	var res []map[string]interface{}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("HealthCheck", "index")
@@ -5352,8 +5352,8 @@ func (api *API) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
 // Required parameters:
 // end: An integer number of seconds from current time. e.g. -150 or 0
 // start: An integer number of seconds from current time. e.g. -300
-func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]string, error) {
-	var res map[string]string
+func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]interface{}, error) {
+	var res map[string]interface{}
 	if end == "" {
 		return res, fmt.Errorf("end is required")
 	}
@@ -8332,8 +8332,8 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options rsapi.
 // Required parameters:
 // asset_hrefs: Hrefs of the assets that should be imported.
 // namespace: The namespace to import into.
-func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespace string) ([]*map[string]string, error) {
-	var res []*map[string]string
+func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespace string) ([]map[string]interface{}, error) {
+	var res []map[string]interface{}
 	if len(assetHrefs) == 0 {
 		return res, fmt.Errorf("assetHrefs is required")
 	}
@@ -11503,8 +11503,8 @@ func (loc *ServerTemplateLocator) Destroy() error {
 // Identifies RightScripts attached to the resource that differ from their HEAD.
 // If the attached revision of the RightScript is the HEAD, then this will indicate
 // a difference between it and the latest committed revision in the same lineage.
-func (loc *ServerTemplateLocator) DetectChangesInHead() ([]*map[string]string, error) {
-	var res []*map[string]string
+func (loc *ServerTemplateLocator) DetectChangesInHead() ([]map[string]interface{}, error) {
+	var res []map[string]interface{}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerTemplate", "detect_changes_in_head")
@@ -11654,8 +11654,8 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 // Version constraints on missing dependencies and the state of the Chef Recipes;
 // whether or not the cookbook or recipe itself could be found among the
 // attachments, will also be reported.
-func (loc *ServerTemplateLocator) Resolve() ([]*map[string]string, error) {
-	var res []*map[string]string
+func (loc *ServerTemplateLocator) Resolve() ([]map[string]interface{}, error) {
+	var res []map[string]interface{}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerTemplate", "resolve")
@@ -12212,8 +12212,8 @@ func (loc *SessionLocator) Index() ([]*Session, error) {
 // This call can be used by an instance to get it's own details.
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions/instance
-func (loc *SessionLocator) IndexInstanceSession() (Instance, error) {
-	var res Instance
+func (loc *SessionLocator) IndexInstanceSession() (*Instance, error) {
+	var res *Instance
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Session", "index_instance_session")
@@ -12716,8 +12716,8 @@ func (api *API) TagLocator(href string) *TagLocator {
 // The hrefs can belong to various resource types and the tags for a non-existent href will be empty.
 // Required parameters:
 // resource_hrefs: Hrefs of the resources for which tags are to be returned.
-func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string, error) {
-	var res []*map[string]string
+func (loc *TagLocator) ByResource(resourceHrefs []string) ([]map[string]interface{}, error) {
+	var res []map[string]interface{}
 	if len(resourceHrefs) == 0 {
 		return res, fmt.Errorf("resourceHrefs is required")
 	}
@@ -12778,8 +12778,8 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]*map[string]string,
 // include_tags_with_prefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
 // match_all: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
 // with_deleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
-func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.APIParams) ([]*map[string]string, error) {
-	var res []*map[string]string
+func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.APIParams) ([]map[string]interface{}, error) {
+	var res []map[string]interface{}
 	if resourceType == "" {
 		return res, fmt.Errorf("resourceType is required")
 	}
@@ -13271,8 +13271,8 @@ func (api *API) UserDataLocator(href string) *UserDataLocator {
 // GET /api/user_data/
 //
 // No description provided for show.
-func (loc *UserDataLocator) Show() (*map[string]string, error) {
-	var res *map[string]string
+func (loc *UserDataLocator) Show() (map[string]interface{}, error) {
+	var res map[string]interface{}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserData", "show")
