@@ -1,3 +1,8 @@
+v3.1.1 / 2015-08-24
+-------------------
+* Update to latest kingpin v2
+* Fix issue with cm15 package including server creation
+
 v3.1.0 / 2015-08-14
 -------------------
 * Proxy support: honor HTTP_PROXY and HTTPS_PROXY environment variables
