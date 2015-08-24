@@ -104,7 +104,7 @@ var _ = Describe("Action", func() {
 
 		JustBeforeEach(func() {
 			var p *metadata.ActionPath
-			p, err = action.Url(variables)
+			p, err = action.URL(variables)
 			if err == nil {
 				url = p.Path
 			}

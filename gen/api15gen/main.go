@@ -53,7 +53,7 @@ func main() {
 	}
 
 	// 2. Analyze
-	analyzer := NewApiAnalyzer(apiData, attributes)
+	analyzer := NewAPIAnalyzer(apiData, attributes)
 	descriptor := analyzer.Analyze()
 
 	// 3. Write codegen_client.go
@@ -69,7 +69,7 @@ func main() {
 }
 
 // Generate API client code, drives the code writer.
-func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
+func generateClient(descriptor *gen.APIDescriptor, codegen string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
@@ -78,7 +78,7 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 	if err != nil {
 		return err
 	}
-	kingpin.FatalIfError(c.WriteHeader("cm15", "1.5", false /*needTime*/, true /*needJson*/, f), "")
+	kingpin.FatalIfError(c.WriteHeader("cm15", "1.5", false /*needTime*/, true /*needJSON*/, f), "")
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)
@@ -98,7 +98,7 @@ func generateClient(descriptor *gen.ApiDescriptor, codegen string) error {
 }
 
 // Generate API metadata, drives the metadata writer.
-func generateMetadata(descriptor *gen.ApiDescriptor, codegen string) error {
+func generateMetadata(descriptor *gen.APIDescriptor, codegen string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err

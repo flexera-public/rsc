@@ -278,8 +278,8 @@ type rl10Authenticator struct {
 }
 
 // RL10 authenticator uses special header
-func (s *rl10Authenticator) Sign(r *http.Request) error {
-	r.Header.Set("X-RLL-Secret", s.secret)
+func (a *rl10Authenticator) Sign(r *http.Request) error {
+	r.Header.Set("X-RLL-Secret", a.secret)
 	return nil
 }
 
@@ -506,7 +506,7 @@ func testAuth(auth Authenticator, client httpclient.HTTPClient, host string, ins
 }
 
 // Headers that should be copied when creating the redirect request
-var omitHeaders map[string]bool = map[string]bool{
+var omitHeaders = map[string]bool{
 	"Content-Type":   true,
 	"Content-Length": true,
 }

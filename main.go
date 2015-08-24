@@ -47,7 +47,7 @@ func main() {
 		}
 	default:
 		var client cmd.CommandClient
-		client, err = ApiClient(topCommand, cmdLine)
+		client, err = APIClient(topCommand, cmdLine)
 		if err == nil {
 			resp, err = runCommand(client, cmdLine)
 		}
@@ -83,8 +83,8 @@ func main() {
 	} else {
 		if cmdLine.ExtractSelector != "" {
 			err = displayer.ApplyExtract(cmdLine.ExtractSelector, false)
-		} else if cmdLine.ExtractSelectorJson != "" {
-			err = displayer.ApplyExtract(cmdLine.ExtractSelectorJson, true)
+		} else if cmdLine.ExtractSelectorJSON != "" {
+			err = displayer.ApplyExtract(cmdLine.ExtractSelectorJSON, true)
 		} else if cmdLine.ExtractHeader != "" {
 			err = displayer.ApplyHeaderExtract(cmdLine.ExtractHeader)
 		}
@@ -121,7 +121,7 @@ func runCommand(client cmd.CommandClient, cmdLine *cmd.CommandLine) (resp *http.
 	if cmdLine.ShowHelp {
 		err = client.ShowCommandHelp(cmdLine.Command)
 	} else if len(cmds) > 1 && cmds[1] == "actions" {
-		err = client.ShowApiActions(cmdLine.Command)
+		err = client.ShowAPIActions(cmdLine.Command)
 	} else {
 		resp, err = client.RunCommand(cmdLine.Command)
 	}

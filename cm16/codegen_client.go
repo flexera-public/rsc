@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated with:
-// $ praxisgen -metadata=cm16/api_docs -output=cm16 -pkg=cm16 -target=1.6 -client=Api
+// $ praxisgen -metadata=cm16/api_docs -output=cm16 -pkg=cm16 -target=1.6 -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -52,7 +52,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	if err != nil {
 		return nil, err
 	}
-	return action.Url(vars)
+	return action.URL(vars)
 }
 
 /******  Account ******/
@@ -68,7 +68,7 @@ type Account struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Account) Locator(api *Api) *AccountLocator {
+func (r *Account) Locator(api *API) *AccountLocator {
 	return api.AccountLocator(r.Href)
 }
 
@@ -77,11 +77,11 @@ func (r *Account) Locator(api *Api) *AccountLocator {
 // AccountLocator exposes the Account resource actions.
 type AccountLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // AccountLocator builds a locator from the given href.
-func (api *Api) AccountLocator(href string) *AccountLocator {
+func (api *API) AccountLocator(href string) *AccountLocator {
 	return &AccountLocator{Href(href), api}
 }
 
@@ -90,19 +90,19 @@ func (api *Api) AccountLocator(href string) *AccountLocator {
 // GET /api/accounts
 //
 // Currently not implemented.
-func (loc *AccountLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *AccountLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Account", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -125,19 +125,19 @@ func (loc *AccountLocator) Index(options rsapi.ApiParams) error {
 // GET /api/accounts/:id
 //
 // Currently not implemented.
-func (loc *AccountLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *AccountLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Account", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ type Cloud struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Cloud) Locator(api *Api) *CloudLocator {
+func (r *Cloud) Locator(api *API) *CloudLocator {
 	return api.CloudLocator(r.Href)
 }
 
@@ -181,11 +181,11 @@ func (r *Cloud) Locator(api *Api) *CloudLocator {
 // CloudLocator exposes the Cloud resource actions.
 type CloudLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // CloudLocator builds a locator from the given href.
-func (api *Api) CloudLocator(href string) *CloudLocator {
+func (api *API) CloudLocator(href string) *CloudLocator {
 	return &CloudLocator{Href(href), api}
 }
 
@@ -194,19 +194,19 @@ func (api *Api) CloudLocator(href string) *CloudLocator {
 // GET /api/clouds
 //
 // Currently not implemented.
-func (loc *CloudLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *CloudLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Cloud", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -229,19 +229,19 @@ func (loc *CloudLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:id
 //
 // Currently not implemented.
-func (loc *CloudLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *CloudLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Cloud", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -278,7 +278,7 @@ type Datacenter struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Datacenter) Locator(api *Api) *DatacenterLocator {
+func (r *Datacenter) Locator(api *API) *DatacenterLocator {
 	return api.DatacenterLocator(r.Href)
 }
 
@@ -287,11 +287,11 @@ func (r *Datacenter) Locator(api *Api) *DatacenterLocator {
 // DatacenterLocator exposes the Datacenter resource actions.
 type DatacenterLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // DatacenterLocator builds a locator from the given href.
-func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
+func (api *API) DatacenterLocator(href string) *DatacenterLocator {
 	return &DatacenterLocator{Href(href), api}
 }
 
@@ -301,19 +301,19 @@ func (api *Api) DatacenterLocator(href string) *DatacenterLocator {
 // GET /api/clouds/:cloud_id/datacenters
 //
 // Currently not implemented.
-func (loc *DatacenterLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *DatacenterLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Datacenter", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -337,19 +337,19 @@ func (loc *DatacenterLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/datacenters/:id
 //
 // Currently not implemented.
-func (loc *DatacenterLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *DatacenterLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Datacenter", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -388,7 +388,7 @@ type Deployment struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Deployment) Locator(api *Api) *DeploymentLocator {
+func (r *Deployment) Locator(api *API) *DeploymentLocator {
 	return api.DeploymentLocator(r.Href)
 }
 
@@ -397,11 +397,11 @@ func (r *Deployment) Locator(api *Api) *DeploymentLocator {
 // DeploymentLocator exposes the Deployment resource actions.
 type DeploymentLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // DeploymentLocator builds a locator from the given href.
-func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
+func (api *API) DeploymentLocator(href string) *DeploymentLocator {
 	return &DeploymentLocator{Href(href), api}
 }
 
@@ -410,10 +410,10 @@ func (api *Api) DeploymentLocator(href string) *DeploymentLocator {
 // GET /api/deployments
 //
 // List all Deployments in an Account.
-func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error) {
+func (loc *DeploymentLocator) Index(options rsapi.APIParams) (*Deployment, error) {
 	var res *Deployment
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
 		params["ids"] = idsOpt
@@ -422,12 +422,12 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Deployment", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -456,20 +456,20 @@ func (loc *DeploymentLocator) Index(options rsapi.ApiParams) (*Deployment, error
 // GET /api/deployments/:id
 //
 // Show a single Deployment
-func (loc *DeploymentLocator) Show(options rsapi.ApiParams) (*Deployment, error) {
+func (loc *DeploymentLocator) Show(options rsapi.APIParams) (*Deployment, error) {
 	var res *Deployment
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Deployment", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -518,7 +518,7 @@ type Image struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Image) Locator(api *Api) *ImageLocator {
+func (r *Image) Locator(api *API) *ImageLocator {
 	return api.ImageLocator(r.Href)
 }
 
@@ -527,11 +527,11 @@ func (r *Image) Locator(api *Api) *ImageLocator {
 // ImageLocator exposes the Image resource actions.
 type ImageLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ImageLocator builds a locator from the given href.
-func (api *Api) ImageLocator(href string) *ImageLocator {
+func (api *API) ImageLocator(href string) *ImageLocator {
 	return &ImageLocator{Href(href), api}
 }
 
@@ -540,10 +540,10 @@ func (api *Api) ImageLocator(href string) *ImageLocator {
 // GET /api/clouds/:cloud_id/images
 //
 // Lists all Images for the given Cloud.
-func (loc *ImageLocator) Index(options rsapi.ApiParams) (*Image, error) {
+func (loc *ImageLocator) Index(options rsapi.APIParams) (*Image, error) {
 	var res *Image
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter"] = filterOpt
@@ -552,12 +552,12 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) (*Image, error) {
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Image", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -587,19 +587,19 @@ func (loc *ImageLocator) Index(options rsapi.ApiParams) (*Image, error) {
 // GET /api/clouds/:cloud_id/images/:id
 //
 // Currently not implemented.
-func (loc *ImageLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ImageLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Image", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -661,7 +661,7 @@ type Instance struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Instance) Locator(api *Api) *InstanceLocator {
+func (r *Instance) Locator(api *API) *InstanceLocator {
 	return api.InstanceLocator(r.Href)
 }
 
@@ -670,11 +670,11 @@ func (r *Instance) Locator(api *Api) *InstanceLocator {
 // InstanceLocator exposes the Instance resource actions.
 type InstanceLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // InstanceLocator builds a locator from the given href.
-func (api *Api) InstanceLocator(href string) *InstanceLocator {
+func (api *API) InstanceLocator(href string) *InstanceLocator {
 	return &InstanceLocator{Href(href), api}
 }
 
@@ -684,10 +684,10 @@ func (api *Api) InstanceLocator(href string) *InstanceLocator {
 // GET /api/clouds/:cloud_id/instances
 //
 // List all Instances in an account.
-func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
+func (loc *InstanceLocator) Index(options rsapi.APIParams) (*Instance, error) {
 	var res *Instance
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter"] = filterOpt
@@ -704,12 +704,12 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Instance", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -739,19 +739,19 @@ func (loc *InstanceLocator) Index(options rsapi.ApiParams) (*Instance, error) {
 // GET /api/clouds/:cloud_id/instances/:id
 //
 // Currently not implemented.
-func (loc *InstanceLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *InstanceLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Instance", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -792,7 +792,7 @@ type InstanceType struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *InstanceType) Locator(api *Api) *InstanceTypeLocator {
+func (r *InstanceType) Locator(api *API) *InstanceTypeLocator {
 	return api.InstanceTypeLocator(r.Href)
 }
 
@@ -801,11 +801,11 @@ func (r *InstanceType) Locator(api *Api) *InstanceTypeLocator {
 // InstanceTypeLocator exposes the InstanceType resource actions.
 type InstanceTypeLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // InstanceTypeLocator builds a locator from the given href.
-func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
+func (api *API) InstanceTypeLocator(href string) *InstanceTypeLocator {
 	return &InstanceTypeLocator{Href(href), api}
 }
 
@@ -815,19 +815,19 @@ func (api *Api) InstanceTypeLocator(href string) *InstanceTypeLocator {
 // GET /api/clouds/:cloud_id/instance_types
 //
 // Currently not implemented.
-func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *InstanceTypeLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceType", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -851,19 +851,19 @@ func (loc *InstanceTypeLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/instance_types/:id
 //
 // Currently not implemented.
-func (loc *InstanceTypeLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *InstanceTypeLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceType", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -898,7 +898,7 @@ type IpAddress struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *IpAddress) Locator(api *Api) *IpAddressLocator {
+func (r *IpAddress) Locator(api *API) *IpAddressLocator {
 	return api.IpAddressLocator(r.Href)
 }
 
@@ -907,11 +907,11 @@ func (r *IpAddress) Locator(api *Api) *IpAddressLocator {
 // IpAddressLocator exposes the IpAddress resource actions.
 type IpAddressLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // IpAddressLocator builds a locator from the given href.
-func (api *Api) IpAddressLocator(href string) *IpAddressLocator {
+func (api *API) IpAddressLocator(href string) *IpAddressLocator {
 	return &IpAddressLocator{Href(href), api}
 }
 
@@ -921,19 +921,19 @@ func (api *Api) IpAddressLocator(href string) *IpAddressLocator {
 // GET /api/clouds/:cloud_id/ip_addresses
 //
 // Currently not implemented.
-func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *IpAddressLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("IpAddress", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -957,19 +957,19 @@ func (loc *IpAddressLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/ip_addresses/:id
 //
 // Currently not implemented.
-func (loc *IpAddressLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *IpAddressLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("IpAddress", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1006,7 +1006,7 @@ type IpAddressBinding struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *IpAddressBinding) Locator(api *Api) *IpAddressBindingLocator {
+func (r *IpAddressBinding) Locator(api *API) *IpAddressBindingLocator {
 	return api.IpAddressBindingLocator(r.Href)
 }
 
@@ -1015,11 +1015,11 @@ func (r *IpAddressBinding) Locator(api *Api) *IpAddressBindingLocator {
 // IpAddressBindingLocator exposes the IpAddressBinding resource actions.
 type IpAddressBindingLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // IpAddressBindingLocator builds a locator from the given href.
-func (api *Api) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
+func (api *API) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
 	return &IpAddressBindingLocator{Href(href), api}
 }
 
@@ -1029,19 +1029,19 @@ func (api *Api) IpAddressBindingLocator(href string) *IpAddressBindingLocator {
 // GET /api/clouds/:cloud_id/ip_address_bindings
 //
 // Currently not implemented.
-func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *IpAddressBindingLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("IpAddressBinding", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1065,19 +1065,19 @@ func (loc *IpAddressBindingLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/ip_address_bindings/:id
 //
 // Currently not implemented.
-func (loc *IpAddressBindingLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *IpAddressBindingLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("IpAddressBinding", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1115,7 +1115,7 @@ type MultiCloudImage struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *MultiCloudImage) Locator(api *Api) *MultiCloudImageLocator {
+func (r *MultiCloudImage) Locator(api *API) *MultiCloudImageLocator {
 	return api.MultiCloudImageLocator(r.Href)
 }
 
@@ -1124,11 +1124,11 @@ func (r *MultiCloudImage) Locator(api *Api) *MultiCloudImageLocator {
 // MultiCloudImageLocator exposes the MultiCloudImage resource actions.
 type MultiCloudImageLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // MultiCloudImageLocator builds a locator from the given href.
-func (api *Api) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
+func (api *API) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 	return &MultiCloudImageLocator{Href(href), api}
 }
 
@@ -1137,19 +1137,19 @@ func (api *Api) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 // GET /api/multi_cloud_images
 //
 // Currently not implemented.
-func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *MultiCloudImageLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("MultiCloudImage", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1172,19 +1172,19 @@ func (loc *MultiCloudImageLocator) Index(options rsapi.ApiParams) error {
 // GET /api/multi_cloud_images/:id
 //
 // Currently not implemented.
-func (loc *MultiCloudImageLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *MultiCloudImageLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("MultiCloudImage", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1218,7 +1218,7 @@ type Network struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Network) Locator(api *Api) *NetworkLocator {
+func (r *Network) Locator(api *API) *NetworkLocator {
 	return api.NetworkLocator(r.Href)
 }
 
@@ -1227,11 +1227,11 @@ func (r *Network) Locator(api *Api) *NetworkLocator {
 // NetworkLocator exposes the Network resource actions.
 type NetworkLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // NetworkLocator builds a locator from the given href.
-func (api *Api) NetworkLocator(href string) *NetworkLocator {
+func (api *API) NetworkLocator(href string) *NetworkLocator {
 	return &NetworkLocator{Href(href), api}
 }
 
@@ -1240,19 +1240,19 @@ func (api *Api) NetworkLocator(href string) *NetworkLocator {
 // GET /api/networks
 //
 // Currently not implemented.
-func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *NetworkLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Network", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1275,19 +1275,19 @@ func (loc *NetworkLocator) Index(options rsapi.ApiParams) error {
 // GET /api/networks/:id
 //
 // Currently not implemented.
-func (loc *NetworkLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *NetworkLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Network", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1320,7 +1320,7 @@ type NetworkInterface struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *NetworkInterface) Locator(api *Api) *NetworkInterfaceLocator {
+func (r *NetworkInterface) Locator(api *API) *NetworkInterfaceLocator {
 	return api.NetworkInterfaceLocator(r.Href)
 }
 
@@ -1329,11 +1329,11 @@ func (r *NetworkInterface) Locator(api *Api) *NetworkInterfaceLocator {
 // NetworkInterfaceLocator exposes the NetworkInterface resource actions.
 type NetworkInterfaceLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // NetworkInterfaceLocator builds a locator from the given href.
-func (api *Api) NetworkInterfaceLocator(href string) *NetworkInterfaceLocator {
+func (api *API) NetworkInterfaceLocator(href string) *NetworkInterfaceLocator {
 	return &NetworkInterfaceLocator{Href(href), api}
 }
 
@@ -1342,19 +1342,19 @@ func (api *Api) NetworkInterfaceLocator(href string) *NetworkInterfaceLocator {
 // GET /api/network_interfaces
 //
 // Currently not implemented.
-func (loc *NetworkInterfaceLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *NetworkInterfaceLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("NetworkInterface", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1377,19 +1377,19 @@ func (loc *NetworkInterfaceLocator) Index(options rsapi.ApiParams) error {
 // GET /api/network_interfaces/:id
 //
 // Currently not implemented.
-func (loc *NetworkInterfaceLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *NetworkInterfaceLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("NetworkInterface", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1421,7 +1421,7 @@ type NetworkInterfaceAttachment struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *NetworkInterfaceAttachment) Locator(api *Api) *NetworkInterfaceAttachmentLocator {
+func (r *NetworkInterfaceAttachment) Locator(api *API) *NetworkInterfaceAttachmentLocator {
 	return api.NetworkInterfaceAttachmentLocator(r.Href)
 }
 
@@ -1430,11 +1430,11 @@ func (r *NetworkInterfaceAttachment) Locator(api *Api) *NetworkInterfaceAttachme
 // NetworkInterfaceAttachmentLocator exposes the NetworkInterfaceAttachment resource actions.
 type NetworkInterfaceAttachmentLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // NetworkInterfaceAttachmentLocator builds a locator from the given href.
-func (api *Api) NetworkInterfaceAttachmentLocator(href string) *NetworkInterfaceAttachmentLocator {
+func (api *API) NetworkInterfaceAttachmentLocator(href string) *NetworkInterfaceAttachmentLocator {
 	return &NetworkInterfaceAttachmentLocator{Href(href), api}
 }
 
@@ -1443,19 +1443,19 @@ func (api *Api) NetworkInterfaceAttachmentLocator(href string) *NetworkInterface
 // GET /api/network_interface_attachments
 //
 // Currently not implemented.
-func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("NetworkInterfaceAttachment", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1478,19 +1478,19 @@ func (loc *NetworkInterfaceAttachmentLocator) Index(options rsapi.ApiParams) err
 // GET /api/network_interface_attachments/:id
 //
 // Currently not implemented.
-func (loc *NetworkInterfaceAttachmentLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *NetworkInterfaceAttachmentLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("NetworkInterfaceAttachment", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1526,7 +1526,7 @@ type SecurityGroup struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *SecurityGroup) Locator(api *Api) *SecurityGroupLocator {
+func (r *SecurityGroup) Locator(api *API) *SecurityGroupLocator {
 	return api.SecurityGroupLocator(r.Href)
 }
 
@@ -1535,11 +1535,11 @@ func (r *SecurityGroup) Locator(api *Api) *SecurityGroupLocator {
 // SecurityGroupLocator exposes the SecurityGroup resource actions.
 type SecurityGroupLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // SecurityGroupLocator builds a locator from the given href.
-func (api *Api) SecurityGroupLocator(href string) *SecurityGroupLocator {
+func (api *API) SecurityGroupLocator(href string) *SecurityGroupLocator {
 	return &SecurityGroupLocator{Href(href), api}
 }
 
@@ -1550,19 +1550,19 @@ func (api *Api) SecurityGroupLocator(href string) *SecurityGroupLocator {
 // GET /api/clouds/:cloud_id/instances/:instance_id/security_groups
 //
 // Currently not implemented.
-func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *SecurityGroupLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("SecurityGroup", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1586,19 +1586,19 @@ func (loc *SecurityGroupLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/security_groups/:id
 //
 // Currently not implemented.
-func (loc *SecurityGroupLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *SecurityGroupLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("SecurityGroup", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1649,7 +1649,7 @@ type Server struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Server) Locator(api *Api) *ServerLocator {
+func (r *Server) Locator(api *API) *ServerLocator {
 	return api.ServerLocator(r.Href)
 }
 
@@ -1658,11 +1658,11 @@ func (r *Server) Locator(api *Api) *ServerLocator {
 // ServerLocator exposes the Server resource actions.
 type ServerLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ServerLocator builds a locator from the given href.
-func (api *Api) ServerLocator(href string) *ServerLocator {
+func (api *API) ServerLocator(href string) *ServerLocator {
 	return &ServerLocator{Href(href), api}
 }
 
@@ -1671,19 +1671,19 @@ func (api *Api) ServerLocator(href string) *ServerLocator {
 // GET /api/servers
 //
 // Currently not implemented.
-func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ServerLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Server", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1706,19 +1706,19 @@ func (loc *ServerLocator) Index(options rsapi.ApiParams) error {
 // GET /api/servers/:id
 //
 // Currently not implemented.
-func (loc *ServerLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ServerLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Server", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1765,7 +1765,7 @@ type ServerArray struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *ServerArray) Locator(api *Api) *ServerArrayLocator {
+func (r *ServerArray) Locator(api *API) *ServerArrayLocator {
 	return api.ServerArrayLocator(r.Href)
 }
 
@@ -1774,11 +1774,11 @@ func (r *ServerArray) Locator(api *Api) *ServerArrayLocator {
 // ServerArrayLocator exposes the ServerArray resource actions.
 type ServerArrayLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ServerArrayLocator builds a locator from the given href.
-func (api *Api) ServerArrayLocator(href string) *ServerArrayLocator {
+func (api *API) ServerArrayLocator(href string) *ServerArrayLocator {
 	return &ServerArrayLocator{Href(href), api}
 }
 
@@ -1787,19 +1787,19 @@ func (api *Api) ServerArrayLocator(href string) *ServerArrayLocator {
 // GET /api/server_arrays
 //
 // Currently not implemented.
-func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ServerArrayLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerArray", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1822,19 +1822,19 @@ func (loc *ServerArrayLocator) Index(options rsapi.ApiParams) error {
 // GET /api/server_arrays/:id
 //
 // Currently not implemented.
-func (loc *ServerArrayLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ServerArrayLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerArray", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1875,7 +1875,7 @@ type ServerTemplate struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *ServerTemplate) Locator(api *Api) *ServerTemplateLocator {
+func (r *ServerTemplate) Locator(api *API) *ServerTemplateLocator {
 	return api.ServerTemplateLocator(r.Href)
 }
 
@@ -1884,11 +1884,11 @@ func (r *ServerTemplate) Locator(api *Api) *ServerTemplateLocator {
 // ServerTemplateLocator exposes the ServerTemplate resource actions.
 type ServerTemplateLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ServerTemplateLocator builds a locator from the given href.
-func (api *Api) ServerTemplateLocator(href string) *ServerTemplateLocator {
+func (api *API) ServerTemplateLocator(href string) *ServerTemplateLocator {
 	return &ServerTemplateLocator{Href(href), api}
 }
 
@@ -1897,19 +1897,19 @@ func (api *Api) ServerTemplateLocator(href string) *ServerTemplateLocator {
 // GET /api/server_templates
 //
 // Currently not implemented.
-func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ServerTemplateLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerTemplate", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1932,19 +1932,19 @@ func (loc *ServerTemplateLocator) Index(options rsapi.ApiParams) error {
 // GET /api/server_templates/:id
 //
 // Currently not implemented.
-func (loc *ServerTemplateLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ServerTemplateLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerTemplate", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1977,7 +1977,7 @@ type SshKey struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *SshKey) Locator(api *Api) *SshKeyLocator {
+func (r *SshKey) Locator(api *API) *SshKeyLocator {
 	return api.SshKeyLocator(r.Href)
 }
 
@@ -1986,11 +1986,11 @@ func (r *SshKey) Locator(api *Api) *SshKeyLocator {
 // SshKeyLocator exposes the SshKey resource actions.
 type SshKeyLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // SshKeyLocator builds a locator from the given href.
-func (api *Api) SshKeyLocator(href string) *SshKeyLocator {
+func (api *API) SshKeyLocator(href string) *SshKeyLocator {
 	return &SshKeyLocator{Href(href), api}
 }
 
@@ -2000,19 +2000,19 @@ func (api *Api) SshKeyLocator(href string) *SshKeyLocator {
 // GET /api/clouds/:cloud_id/ssh_keys
 //
 // Currently not implemented.
-func (loc *SshKeyLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *SshKeyLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("SshKey", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -2036,19 +2036,19 @@ func (loc *SshKeyLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/ssh_keys/:id
 //
 // Currently not implemented.
-func (loc *SshKeyLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *SshKeyLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("SshKey", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -2083,7 +2083,7 @@ type Subnet struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Subnet) Locator(api *Api) *SubnetLocator {
+func (r *Subnet) Locator(api *API) *SubnetLocator {
 	return api.SubnetLocator(r.Href)
 }
 
@@ -2092,11 +2092,11 @@ func (r *Subnet) Locator(api *Api) *SubnetLocator {
 // SubnetLocator exposes the Subnet resource actions.
 type SubnetLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // SubnetLocator builds a locator from the given href.
-func (api *Api) SubnetLocator(href string) *SubnetLocator {
+func (api *API) SubnetLocator(href string) *SubnetLocator {
 	return &SubnetLocator{Href(href), api}
 }
 
@@ -2107,19 +2107,19 @@ func (api *Api) SubnetLocator(href string) *SubnetLocator {
 // GET /api/clouds/:cloud_id/instances/:instance_id/subnets
 //
 // Currently not implemented.
-func (loc *SubnetLocator) Index(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *SubnetLocator) Index(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Subnet", "index")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -2143,19 +2143,19 @@ func (loc *SubnetLocator) Index(options rsapi.ApiParams) error {
 // GET /api/clouds/:cloud_id/subnets/:id
 //
 // Currently not implemented.
-func (loc *SubnetLocator) Show(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *SubnetLocator) Show(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Subnet", "show")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}

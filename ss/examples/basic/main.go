@@ -55,7 +55,7 @@ func main() {
 
 	// 3. Make execution index call using expanded view
 	l := client.ExecutionLocator(fmt.Sprintf("/projects/%d/executions", *account))
-	execs, err := l.Index(rsapi.ApiParams{})
+	execs, err := l.Index(rsapi.APIParams{})
 	if err != nil {
 		fail("failed to list executions: %s", err)
 	}
@@ -74,6 +74,7 @@ func main() {
 	w.Flush()
 }
 
+// ByName makes it possible to sort executions by name.
 type ByName []*ssm.Execution
 
 func (b ByName) Len() int           { return len(b) }

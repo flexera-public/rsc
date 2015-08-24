@@ -45,7 +45,7 @@ func (r *Resource) ExtractVariables(href string) ([]*PathVariable, error) {
 	return variables, nil
 }
 
-// Retrieve action with given name, returns nil if none is found.
+// GetAction returns the action with thengiven name, returns nil if none is found.
 func (r *Resource) GetAction(name string) *Action {
 	for _, a := range r.Actions {
 		if a.Name == name {

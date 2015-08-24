@@ -9,26 +9,26 @@ import (
 )
 
 const (
-	// Used by rsc to display command line help
-	ApiName = "RightScale CM API 1.6"
+	// APIName is used by rsc to display the command line help.
+	APIName = "RightScale CM API 1.6"
 )
 
 // Data structure that holds parsed command line values
 var commandValues rsapi.ActionCommands
 
-// Register all commands with kinpin application
+// RegisterCommands registers all the commands with the kinpin application.
 func RegisterCommands(registrar *rsapi.Registrar) {
 	commandValues = rsapi.ActionCommands{}
-	registrar.RegisterActionCommands(ApiName, GenMetadata, commandValues)
+	registrar.RegisterActionCommands(APIName, GenMetadata, commandValues)
 }
 
-// Parse and run command
-func (a *Api) RunCommand(cmd string) (*http.Response, error) {
+// RunCommand parses and runs the command with the given name.
+func (a *API) RunCommand(cmd string) (*http.Response, error) {
 	parsed, err := a.ParseCommand(cmd, "/api", commandValues)
 	if err != nil {
 		return nil, err
 	}
-	href := parsed.Uri
+	href := parsed.URI
 	if !strings.HasPrefix(href, "/api") {
 		href = path.Join("/api", href)
 	}
@@ -39,12 +39,12 @@ func (a *Api) RunCommand(cmd string) (*http.Response, error) {
 	return a.PerformRequest(req)
 }
 
-// Show command help
-func (a *Api) ShowCommandHelp(cmd string) error {
+// ShowCommandHelp displays help for the given command.
+func (a *API) ShowCommandHelp(cmd string) error {
 	return a.ShowHelp(cmd, "/api", commandValues)
 }
 
-// Show command hrefs
-func (a *Api) ShowApiActions(cmd string) error {
+// ShowAPIActions displays the command hrefs.
+func (a *API) ShowAPIActions(cmd string) error {
 	return a.ShowActions(cmd, "/api", commandValues)
 }

@@ -3,7 +3,7 @@ package log
 import "gopkg.in/inconshreveable/log15.v2"
 
 var (
-	// Central logger. Configure its handler as appropriate.
+	// Logger is the main rsc logger. Configure its handler as appropriate.
 	Logger log15.Logger
 )
 

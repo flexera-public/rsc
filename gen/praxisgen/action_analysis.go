@@ -12,10 +12,10 @@ import (
 // Regular expression that captures variables in a path
 var pathVariablesRegexp = regexp.MustCompile(`/:([^/]+)`)
 
-// Parse out resource actions
+// AnalyzeActions parses out a resource actions.
 // Resource actions in the JSON consist of an array of map. The map keys are:
 // "description", "name", "metadata", "urls", "headers", "params", "payload" and "responses".
-func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]interface{}) ([]*gen.Action, error) {
+func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]interface{}) ([]*gen.Action, error) {
 	methods := resource["actions"].([]interface{})
 	actions := make([]*gen.Action, len(methods))
 	for i, m := range methods {
@@ -78,7 +78,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 		for _, p := range params {
 			if p.Location == gen.QueryParam {
 				leafParams[idx] = p
-				idx += 1
+				idx++
 			}
 		}
 		paramNames := make([]string, len(queryParamNames))
@@ -167,7 +167,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						m := media.(map[string]interface{})
 						if name, ok := m["name"]; ok {
 							returnTypeName = toGoTypeName(name.(string), true)
-							a.descriptor.NeedJson = true
+							a.descriptor.NeedJSON = true
 							// Analyze return type to make sure it gets recorded
 							_, err := a.AnalyzeType(a.RawTypes[name.(string)], "return")
 							if err != nil {
@@ -187,7 +187,7 @@ func (a *ApiAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 									} else {
 										returnTypeName = "*" + n
 									}
-									a.descriptor.NeedJson = true
+									a.descriptor.NeedJSON = true
 									break
 								}
 							}
@@ -237,11 +237,11 @@ func rawPayload(typ gen.DataType, p interface{}) *gen.ActionParam {
 	}
 }
 
-// Extract path patterns from action urls
+// ParseUrls extracts the path patterns from an action URLs.
 // Urls consist of an array of map, each map has the following keys:
 // "verb", "path", "version"
 // Also make it support the resticle format: array of pairs of verb + path.
-func (a *ApiAnalyzer) ParseUrls(urls interface{}) ([]*gen.PathPattern, error) {
+func (a *APIAnalyzer) ParseUrls(urls interface{}) ([]*gen.PathPattern, error) {
 	var patterns []*gen.PathPattern
 	if urlElems, ok := urls.([]interface{}); ok {
 		patterns = make([]*gen.PathPattern, len(urlElems))
@@ -274,7 +274,7 @@ func (a *ApiAnalyzer) ParseUrls(urls interface{}) ([]*gen.PathPattern, error) {
 // Create path pattern from HTTP verb and request path
 func toPattern(verb, path string) *gen.PathPattern {
 	pattern := gen.PathPattern{
-		HttpMethod: verb,
+		HTTPMethod: verb,
 		Path:       path,
 		Pattern:    pathVariablesRegexp.ReplaceAllLiteralString(path, "/%s"),
 		Regexp: pathVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(path),

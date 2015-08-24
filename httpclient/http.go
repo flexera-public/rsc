@@ -21,11 +21,17 @@ import (
 )
 
 const (
-	NoDump  Format = 1 << iota // No dump
-	Debug                      // Dump in human readable format, exclusive with JSON
-	JSON                       // Dump in JSON format, exclusive with Debug
-	Verbose                    // Dump all requests and auth headers
-	Record                     // Dump to recorder file descriptor (used by tests)
+	// NoDump is the default value for DumpFormat.
+	NoDump Format = 1 << iota
+	// Debug formats the dumps in human readable format, the use of this flag is exclusive with
+	// JSON.
+	Debug
+	// JSON formats the dumps in JSON, the use of this flag is exclusive with Debug.
+	JSON
+	// Verbose enables the dumps for all requests and auth headers.
+	Verbose
+	// Record causes the dumps to be written to the recorder file descriptor (used by tests).
+	Record
 )
 
 const (
@@ -42,15 +48,15 @@ var (
 	// API endpoints.
 	Insecure bool
 
-	// NoCheckCert dictates whether the SSL handshakes should bypass X509 certificate
+	// NoCertCheck dictates whether the SSL handshakes should bypass X509 certificate
 	// validation (true) or not (false).
 	NoCertCheck bool
 
-	// ResponseHeaderTimeout, if non-zero, specifies the amount of
+	// ResponseHeaderTimeout if non-zero, specifies the amount of
 	// time to wait in seconds for a server's response headers after fully
 	// writing the request (including its body, if any). This
 	// time does not include the time to read the response body.
-	ResponseHeaderTimeout time.Duration = 20 * time.Second
+	ResponseHeaderTimeout = 20 * time.Second
 
 	// HiddenHeaders lists headers that should not be logged unless DumpFormat is Verbose.
 	HiddenHeaders = map[string]bool{"Authorization": true, "Cookie": true}
@@ -62,14 +68,14 @@ var (
 )
 
 type (
-	// Use interface instead of raw http.Client to ease testing
+	// HTTPClient makes it easier to stub HTTP clients for testing.
 	HTTPClient interface {
 		Do(req *http.Request) (*http.Response, error)
 		// DoHidden prevents logging, useful for requests made during authorization.
 		DoHidden(req *http.Request) (*http.Response, error)
 	}
 
-	// Request/response dump format
+	// Format is the request/response dump format.
 	Format int
 
 	// HTTP client that optionally dumps requests and responses.
@@ -238,7 +244,7 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 		})
 		dumped := recording.RequestResponse{
 			Verb:       req.Method,
-			Uri:        req.URL.String(),
+			URI:        req.URL.String(),
 			ReqHeader:  reqHeaders,
 			ReqBody:    string(reqBody),
 			Status:     resp.StatusCode,

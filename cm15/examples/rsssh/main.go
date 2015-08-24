@@ -18,25 +18,25 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Top level configuration
+// Config is the top level configuration.
 type Config struct {
-	SshOptions   string                       // SSH options to use in the ssh command in the built aliases
-	SshUser      string                       // The SSH user name. Default is rightscale
+	SSHOptions   string                       // SSH options to use in the ssh command in the built aliases
+	SSHUser      string                       // The SSH user name. Default is rightscale
 	OutputFile   string                       // The output file location. By default rightscale_aliases
 	Environments map[string]EnvironmentDetail // Environment Detail
 }
 
-// Detail of a particular environment
+// EnvironmentDetail describes a particular environment.
 type EnvironmentDetail struct {
 	Account      int               // RightScale account ID
 	ServerArrays map[string]string // Details about Server Arrays
 	Servers      map[string]string // Details about Servers
 }
 
-// The SSH configuration used to build the aliases
-type SshConfig struct {
+// SSHConfig is the SSH configuration used to build the aliases.
+type SSHConfig struct {
 	Name      string
-	IpAddress string
+	IPAddress string
 }
 
 func main() {
@@ -74,10 +74,10 @@ func main() {
 	if config.OutputFile == "" {
 		config.OutputFile = "rightscale_aliases"
 	}
-	if config.SshUser == "" {
-		config.SshUser = "rightscale"
+	if config.SSHUser == "" {
+		config.SSHUser = "rightscale"
 	}
-	var sshConfig = make([]SshConfig, 0)
+	var sshConfig = make([]SSHConfig, 0)
 
 	for envName, envDetail := range config.Environments {
 		if envDetail.Account == 0 {
@@ -95,7 +95,7 @@ func main() {
 		fetchDetails(client, envName, envDetail, &sshConfig)
 	}
 
-	aliases := buildAliases(sshConfig, config.SshOptions, config.SshUser)
+	aliases := buildAliases(sshConfig, config.SSHOptions, config.SSHUser)
 	writeFile(config.OutputFile, []byte(aliases), 0644)
 }
 
@@ -106,7 +106,7 @@ var writeFile = func(outputFile string, bytes []byte, perm os.FileMode) {
 }
 
 // Fetch details about all servers and server arrays in an environment
-func fetchDetails(client *cm15.Api, envName string, envDetail EnvironmentDetail, sshConfig *[]SshConfig) {
+func fetchDetails(client *cm15.API, envName string, envDetail EnvironmentDetail, sshConfig *[]SSHConfig) {
 	for nickname, name := range envDetail.ServerArrays {
 		// Obtain the resource
 		instances := serverArray(client, name)
@@ -114,13 +114,13 @@ func fetchDetails(client *cm15.Api, envName string, envDetail EnvironmentDetail,
 		for _, instance := range instances {
 			ipAddress := instance.PublicIpAddresses[0]
 			number := getInstanceNumber(instance.Name)
-			*sshConfig = append(*sshConfig, SshConfig{Name: envName + "_" + nickname + number, IpAddress: ipAddress})
+			*sshConfig = append(*sshConfig, SSHConfig{Name: envName + "_" + nickname + number, IPAddress: ipAddress})
 		}
 	}
 	for nickname, name := range envDetail.Servers {
 		instance := server(client, name)
 		ipAddress := instance.PublicIpAddresses[0]
-		*sshConfig = append(*sshConfig, SshConfig{Name: envName + "_" + nickname, IpAddress: ipAddress})
+		*sshConfig = append(*sshConfig, SSHConfig{Name: envName + "_" + nickname, IPAddress: ipAddress})
 	}
 }
 
@@ -131,24 +131,23 @@ func getInstanceNumber(name string) string {
 	matches := re.FindStringSubmatch(name)
 	if len(matches) == 0 {
 		return ""
-	} else {
-		return matches[len(matches)-1]
 	}
+	return matches[len(matches)-1]
 }
 
 // Builds the aliases string based on the SSH configuration of all servers and server arrays in all environments.
-func buildAliases(sshConfig []SshConfig, sshOptions, sshUser string) string {
+func buildAliases(sshConfig []SSHConfig, sshOptions, sshUser string) string {
 	var aliases string
 	for _, conf := range sshConfig {
-		aliases = aliases + fmt.Sprintf("alias %v='ssh %v %v@%v'\n", conf.Name, sshOptions, sshUser, conf.IpAddress)
+		aliases = aliases + fmt.Sprintf("alias %v='ssh %v %v@%v'\n", conf.Name, sshOptions, sshUser, conf.IPAddress)
 	}
 	return aliases
 }
 
 // Makes a GET call on the given server array and returns all its current instances.
-func serverArray(client *cm15.Api, name string) []*cm15.Instance {
+func serverArray(client *cm15.API, name string) []*cm15.Instance {
 	serverArrayLocator := client.ServerArrayLocator("/api/server_arrays")
-	serverArrays, err := serverArrayLocator.Index(rsapi.ApiParams{"view": "default", "filter": []string{"name==" + name}})
+	serverArrays, err := serverArrayLocator.Index(rsapi.APIParams{"view": "default", "filter": []string{"name==" + name}})
 	if err != nil {
 		fail("Failed to retrieve server array: %v\n", err.Error())
 	}
@@ -166,7 +165,7 @@ func serverArray(client *cm15.Api, name string) []*cm15.Instance {
 		}
 	}
 	instanceLocator := client.InstanceLocator(instancesHref)
-	instances, err := instanceLocator.Index(rsapi.ApiParams{})
+	instances, err := instanceLocator.Index(rsapi.APIParams{})
 	if err != nil {
 		fail("Failed to retrieve current instances of the server array: %v\n", err.Error())
 	}
@@ -177,9 +176,9 @@ func serverArray(client *cm15.Api, name string) []*cm15.Instance {
 }
 
 // Makes a GET call on the given server and returns the current instance of the server.
-func server(client *cm15.Api, name string) *cm15.Instance {
+func server(client *cm15.API, name string) *cm15.Instance {
 	serverLocator := client.ServerLocator("/api/servers")
-	servers, err := serverLocator.Index(rsapi.ApiParams{"view": "instance_detail", "filter": []string{"name==" + name}})
+	servers, err := serverLocator.Index(rsapi.APIParams{"view": "instance_detail", "filter": []string{"name==" + name}})
 	if err != nil {
 		fail("Failed to retrieve server: %v\n", err.Error())
 	}

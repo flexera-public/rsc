@@ -17,7 +17,7 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-// Data structure used to load content of index.json files
+// Index is the data structure used to load content of index.json files.
 type Index map[string]map[string]map[string]interface{}
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 		"Path to output file")
 	pkgName := flag.String("pkg", "", "Name of generated package, e.g. \"rsapi16\"")
 	targetVersion := flag.String("target", "", "Version of API to generate code for")
-	clientName := flag.String("client", "", "Name of API client go struct, e.g. \"Api16\".")
+	clientName := flag.String("client", "", "Name of API client go struct, e.g. \"API16\".")
 	tool := flag.String("tool", "rsc", "Tool or library for which to generate code, supported values are 'rsc' or 'angular'")
 	flag.Parse()
 
@@ -74,7 +74,7 @@ func main() {
 	}
 
 	// 2. Analyze
-	descriptors := make(map[string]*gen.ApiDescriptor) // descriptors indexed by version
+	descriptors := make(map[string]*gen.APIDescriptor) // descriptors indexed by version
 	for dirPath, index := range indeces {
 		for version, resources := range index {
 			if len(*targetVersion) > 0 {
@@ -112,7 +112,7 @@ func main() {
 				}
 				apiTypes[typeName.(string)] = typeData
 			}
-			analyzer := NewApiAnalyzer(version, *clientName, apiResources, apiTypes)
+			analyzer := NewAPIAnalyzer(version, *clientName, apiResources, apiTypes)
 			d, err := analyzer.Analyze()
 			kingpin.FatalIfError(err, "")
 			if existing, ok := descriptors[version]; ok {
@@ -181,7 +181,7 @@ func toPackageName(version string) string {
 	i := 1
 	p := parts[len(parts)-i]
 	for p == "0" && i <= len(parts) {
-		i += 1
+		i++
 		p = parts[len(parts)-i]
 	}
 	version = strings.Join(parts, "_")
@@ -189,7 +189,7 @@ func toPackageName(version string) string {
 }
 
 // Generate API client code, drives the code writer.
-func generateClient(version string, descriptor *gen.ApiDescriptor, codegen, pkg string) error {
+func generateClient(version string, descriptor *gen.APIDescriptor, codegen, pkg string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
@@ -198,7 +198,7 @@ func generateClient(version string, descriptor *gen.ApiDescriptor, codegen, pkg 
 	if err != nil {
 		return err
 	}
-	kingpin.FatalIfError(c.WriteHeader(pkg, version, descriptor.NeedTime, descriptor.NeedJson, f), "")
+	kingpin.FatalIfError(c.WriteHeader(pkg, version, descriptor.NeedTime, descriptor.NeedJSON, f), "")
 	for _, name := range descriptor.ResourceNames {
 		resource := descriptor.Resources[name]
 		c.WriteResourceHeader(name, f)
@@ -218,7 +218,7 @@ func generateClient(version string, descriptor *gen.ApiDescriptor, codegen, pkg 
 }
 
 // Generate API metadata, drives the metadata writer.
-func generateMetadata(descriptor *gen.ApiDescriptor, codegen, pkg string) error {
+func generateMetadata(descriptor *gen.APIDescriptor, codegen, pkg string) error {
 	f, err := os.Create(codegen)
 	if err != nil {
 		return err
@@ -238,7 +238,7 @@ func generateMetadata(descriptor *gen.ApiDescriptor, codegen, pkg string) error 
 }
 
 // Generate API metadata, drives the metadata writer.
-func generateAngular(descriptor *gen.ApiDescriptor, pkgDir string) ([]string, error) {
+func generateAngular(descriptor *gen.APIDescriptor, pkgDir string) ([]string, error) {
 	var files []string
 	for _, name := range descriptor.ResourceNames {
 		res := descriptor.Resources[name]

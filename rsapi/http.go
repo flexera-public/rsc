@@ -21,11 +21,11 @@ type FileUpload struct {
 	Reader   io.Reader // Backing reader
 }
 
-// Build HTTP request given all its parts.
+// BuildHTTPRequest creates a http.Request given all its parts.
 // If any member of the Payload field is of type io.Reader then the resulting request has a
 // multipart body where each member of type io.Reader is mapped to a single part and all other
 // members make up the first part.
-func (a *Api) BuildHTTPRequest(verb, path, version string, params, payload ApiParams) (*http.Request, error) {
+func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIParams) (*http.Request, error) {
 	u := url.URL{Host: a.Host, Path: path}
 	if params != nil {
 		var values = u.Query()
@@ -132,8 +132,9 @@ func (a *Api) BuildHTTPRequest(verb, path, version string, params, payload ApiPa
 	return req, nil
 }
 
-// Log request, dump its content if required then make request and log response and dump it.
-func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
+// PerformRequest logs the request, dumping its content if required then makes the request and logs
+// and dumps the corresponding response.
+func (a *API) PerformRequest(req *http.Request) (*http.Response, error) {
 	// Sign last so auth headers don't get printed or logged
 	if a.Auth != nil {
 		if err := a.Auth.Sign(req); err != nil {
@@ -149,16 +150,16 @@ func (a *Api) PerformRequest(req *http.Request) (*http.Response, error) {
 }
 
 // IdentifyParams organizes the given params in two groups: the payload params and the query params.
-func IdentifyParams(a *metadata.Action, params ApiParams) (payloadParams ApiParams, queryParams ApiParams) {
+func IdentifyParams(a *metadata.Action, params APIParams) (payloadParams APIParams, queryParams APIParams) {
 	payloadParamNames := a.PayloadParamNames()
-	payloadParams = make(ApiParams)
+	payloadParams = make(APIParams)
 	for _, n := range payloadParamNames {
 		if p, ok := params[n]; ok {
 			payloadParams[n] = p
 		}
 	}
 	queryParamNames := a.QueryParamNames()
-	queryParams = make(ApiParams)
+	queryParams = make(APIParams)
 	for _, n := range queryParamNames {
 		if p, ok := params[n]; ok {
 			queryParams[n] = p
@@ -167,10 +168,10 @@ func IdentifyParams(a *metadata.Action, params ApiParams) (payloadParams ApiPara
 	return payloadParams, queryParams
 }
 
-// Deserialize JSON response into generic object.
+// LoadResponse deserializes the JSON response into a generic object.
 // If the response has a "Location" header then the returned object is a map with one key "Location"
 // containing the value of the header.
-func (a *Api) LoadResponse(resp *http.Response) (interface{}, error) {
+func (a *API) LoadResponse(resp *http.Response) (interface{}, error) {
 	defer resp.Body.Close()
 	var respBody interface{}
 	jsonResp, err := ioutil.ReadAll(resp.Body)

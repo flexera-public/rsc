@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-// Resource action
+// Action represents a resource action.
 type Action struct {
 	Name         string
 	Description  string
 	PathPatterns []*PathPattern // Action path patterns and
-	ApiParams    []*ActionParam // Actual API request parameters
-	CommandFlags []*ActionParam // Parameters initialized via command lines, these correspond to the leaves of all ApiParams.
+	APIParams    []*ActionParam // Actual API request parameters
+	CommandFlags []*ActionParam // Parameters initialized via command lines, these correspond to the leaves of all APIParams.
 	Payload      string         // Name of payload type, only set for basic types
 }
 
@@ -36,7 +36,7 @@ func (a *Action) PayloadParamNames() []string {
 // location (path, query string or payload).
 func (a *Action) paramsByLocation(loc Location) []string {
 	var res []string
-	for _, p := range a.ApiParams {
+	for _, p := range a.APIParams {
 		if p.Location == loc {
 			res = append(res, p.Name)
 		}
@@ -45,7 +45,7 @@ func (a *Action) paramsByLocation(loc Location) []string {
 	return res
 }
 
-// Indicates a parameter location (i.e. URL path, query string or request body)
+// Location indicates a parameter location (i.e. URL path, query string or request body).
 type Location int
 
 // Possible param location
@@ -55,7 +55,7 @@ const (
 	PayloadParam
 )
 
-// Resource action parameters
+// ActionParam represents a resource action parameters.
 type ActionParam struct {
 	Name        string         // Param name
 	Description string         // Param description
@@ -67,21 +67,21 @@ type ActionParam struct {
 	ValidValues []string       // List of valid values for parameter
 }
 
-// A path pattern represents a possible path for a given action.
+// PathPattern represents a possible path for a given action.
 type PathPattern struct {
-	HttpMethod string         // "GET", "POST", "PUT", "DELETE", ...
+	HTTPMethod string         // "GET", "POST", "PUT", "DELETE", ...
 	Pattern    string         // Actual pattern, e.g. "/clouds/%s/instances/%s"
 	Variables  []string       // Pattern variable names in order of appearance in pattern, e.g. "cloud_id", "id"
 	Regexp     *regexp.Regexp // Regexp used to match href and capture variable values, e.g. "/clouds/([^/]+)/instances/([^/])+"
 }
 
-// Url returns a URL to the action given a set of values that can be used to substitute the action
+// URL returns a URL to the action given a set of values that can be used to substitute the action
 // paths pattern variables. This method tries to use a many variables as possible so that
 // "the longest" path gets used. So if for example an action has the patterns "/instances/:id" and
 // "/clouds/:cloud_id/instances/:id" and both the :cloud_id and :id variable values are given as
 // parameter, the method returns a URL built from substituting the values of the later (longer) path.
 // The method returns an error in case no path pattern can have all its variables subsituted.
-func (a *Action) Url(vars []*PathVariable) (*ActionPath, error) {
+func (a *Action) URL(vars []*PathVariable) (*ActionPath, error) {
 	candidates := make([]*ActionPath, len(a.PathPatterns))
 	allMissing := []string{}
 	j := 0
@@ -90,8 +90,8 @@ func (a *Action) Url(vars []*PathVariable) (*ActionPath, error) {
 		if path == "" {
 			allMissing = append(allMissing, names...)
 		} else {
-			candidates[j] = &ActionPath{path, p.HttpMethod, len(names)}
-			j += 1
+			candidates[j] = &ActionPath{path, p.HTTPMethod, len(names)}
+			j++
 		}
 	}
 	if j == 0 {
@@ -103,10 +103,10 @@ func (a *Action) Url(vars []*PathVariable) (*ActionPath, error) {
 	return candidates[0], nil
 }
 
-// A match built from a path pattern and given variable values
+// ActionPath is a match built from a path pattern and given variable values.
 type ActionPath struct {
 	Path       string // Actual path, e.g. "/clouds/1/instances/42"
-	HttpMethod string // HTTP method
+	HTTPMethod string // HTTP method
 	weight     int    // Match relevance, i.e. number of variables consumed to produce match value
 }
 
@@ -137,20 +137,20 @@ func (p *PathPattern) Substitute(vars []*PathVariable) (string, []string) {
 	return fmt.Sprintf(p.Pattern, values...), used
 }
 
-// A path variable consists of a name and value
+// PathVariable consists of a name and value.
 type PathVariable struct {
 	Name  string // e.g. "cloud_id"
 	Value string // e.g. "1"
 }
 
-// Make it possible to sort path patterns by length
+// ByLen makes it possible to sort path patterns by length.
 type ByLen []*PathPattern
 
 func (b ByLen) Len() int           { return len(b) }
 func (b ByLen) Swap(i, j int)      { b[i], b[j] = b[j], b[i] }
 func (b ByLen) Less(i, j int) bool { return len(b[i].Pattern) > len(b[j].Pattern) }
 
-// Make it possible to sort path match by weight, from heaviest to lightest
+// ByWeight makes it possible to sort path match by weight, from heaviest to lightest.
 type ByWeight []*ActionPath
 
 func (b ByWeight) Len() int           { return len(b) }

@@ -9,31 +9,32 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-// Interface implemented by registrar used by each API client to register its subcommands
-type ApiCommandRegistrar interface {
+// APICommandRegistrar is the interface implemented by registrar used by each API client to
+// register subcommands.
+type APICommandRegistrar interface {
 	// Register subcommands for all resource actions
 	// Store subcommand parse results into given command line value recipient
 	RegisterActionCommands(apiName string, metadata map[string]*metadata.Resource,
 		cmdValues ActionCommands)
 }
 
-// Implements ApiCommandRegistrar
+// Registrar implements APICommandRegistrar.
 // Create one of these per API client and initialize it with specific API subcommand
 type Registrar struct {
 	// Kingpin command under which API subcommands should be registered
-	ApiCmd *kingpin.CmdClause
+	APICmd *kingpin.CmdClause
 }
 
-// ApiCommandRegistrar implementation
+// RegisterActionCommands implements APICommandRegistrar.
 func (r *Registrar) RegisterActionCommands(apiName string, res map[string]*metadata.Resource,
 	cmds ActionCommands) {
 
 	// Add special "actions" action
-	_, ok := cmds[fmt.Sprintf("%s %s", r.ApiCmd.FullCommand(), "actions")]
+	_, ok := cmds[fmt.Sprintf("%s %s", r.APICmd.FullCommand(), "actions")]
 	if !ok {
 		pattern := "List all %s actions and associated hrefs. If a resource href is provided only list actions for that resource."
 		description := fmt.Sprintf(pattern, apiName)
-		actionsCmd := r.ApiCmd.Command("actions", description)
+		actionsCmd := r.APICmd.Command("actions", description)
 		actionsCmdValue := ActionCommand{}
 		hrefMsg := "Href of resource to show actions for."
 		actionsCmd.Arg("href", hrefMsg).StringVar(&actionsCmdValue.Href)
@@ -59,7 +60,7 @@ func (r *Registrar) RegisterActionCommands(apiName string, res map[string]*metad
 	}
 	sort.Strings(actionNames)
 	for _, action := range actionNames {
-		if _, ok := cmds[fmt.Sprintf("%s %s", r.ApiCmd.FullCommand(), action)]; ok {
+		if _, ok := cmds[fmt.Sprintf("%s %s", r.APICmd.FullCommand(), action)]; ok {
 			continue // Already registered - can happen with SS where multiple APIs are registered under the same command
 		}
 		resources := []string{}
@@ -95,7 +96,7 @@ func (r *Registrar) RegisterActionCommands(apiName string, res map[string]*metad
 			}
 
 		}
-		actionCmd := r.ApiCmd.Command(action, description)
+		actionCmd := r.APICmd.Command(action, description)
 		actionCmdValue := ActionCommand{}
 		hrefMsg := "API Resource or resource collection href on which to act, e.g. '/api/servers'"
 		paramsMsg := "Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'"

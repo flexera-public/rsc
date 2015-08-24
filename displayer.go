@@ -18,7 +18,7 @@ type Displayer struct {
 	prettify  bool
 }
 
-// Factory method for displayer, reads body out of response
+// NewDisplayer creates a new displayer using the response body.
 func NewDisplayer(resp *http.Response) (*Displayer, error) {
 	defer resp.Body.Close()
 	js, err := ioutil.ReadAll(resp.Body)
@@ -35,7 +35,8 @@ func NewDisplayer(resp *http.Response) (*Displayer, error) {
 	return &disp, nil
 }
 
-// Apply a single extract JSON selector, it's an error if selector yields more than one value
+// ApplySingleExtract applies the given JSON selector and returns the results.
+// It's an error if the selector yields more than one value.
 func (d *Displayer) ApplySingleExtract(extract string) error {
 	if err := d.ApplyExtract(extract, true); err != nil {
 		return err
@@ -64,7 +65,7 @@ func (d *Displayer) ApplySingleExtract(extract string) error {
 	return nil
 }
 
-// Apply JSON selector
+// ApplyExtract applies selector to js.
 func (d *Displayer) ApplyExtract(selector string, js bool) error {
 	parser, err := jsonselect.CreateParserFromString(d.body)
 	if err != nil {
@@ -88,7 +89,7 @@ func (d *Displayer) ApplyExtract(selector string, js bool) error {
 	return nil
 }
 
-// Apply header extraction
+// ApplyHeaderExtract reads the value of the given header.
 func (d *Displayer) ApplyHeaderExtract(header string) error {
 	d.RawOutput = d.response.Header.Get(header)
 	if d.RawOutput == "" {
@@ -97,12 +98,12 @@ func (d *Displayer) ApplyHeaderExtract(header string) error {
 	return nil
 }
 
-// Prettify output
+// Pretty switches the display mode to produce human friendly output.
 func (d *Displayer) Pretty() {
 	d.prettify = true
 }
 
-// Return output
+// Output returns the current output.
 func (d *Displayer) Output() string {
 	output := d.RawOutput
 	if output == nil {

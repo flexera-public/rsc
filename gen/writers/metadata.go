@@ -14,7 +14,7 @@ type MetadataWriter struct {
 	resourceTmpl *template.Template
 }
 
-// Commands writer factory
+// NewMetadataWriter creates a new writer that generates metadata data structures.
 func NewMetadataWriter() (*MetadataWriter, error) {
 	funcMap := template.FuncMap{
 		"comment":         comment,
@@ -39,13 +39,13 @@ func NewMetadataWriter() (*MetadataWriter, error) {
 	}, nil
 }
 
-// Write header text
+// WriteHeader writes the generic header text.
 func (c *MetadataWriter) WriteHeader(pkg string, w io.Writer) error {
 	return c.headerTmpl.Execute(w, pkg)
 }
 
-// Write metadata
-func (c *MetadataWriter) WriteMetadata(d *gen.ApiDescriptor, w io.Writer) error {
+// WriteMetadata writes the data structures that describe the API resources and actions.
+func (c *MetadataWriter) WriteMetadata(d *gen.APIDescriptor, w io.Writer) error {
 	resources := make([]*gen.Resource, len(d.ResourceNames))
 	for i, n := range d.ResourceNames {
 		resources[i] = d.Resources[n]
@@ -103,7 +103,7 @@ const actionMetadataTmpl = `&metadata.Action {
 				Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 				PathPatterns: []*metadata.PathPattern{ {{range .PathPatterns}}
 					&metadata.PathPattern{
-						HttpMethod: "{{.HttpMethod}}",
+						HTTPMethod: "{{.HTTPMethod}}",
 						Pattern: "{{.Pattern}}",
 						Variables: []string{ {{if .Variables}}"{{join .Variables "\", \""}}"{{end}}},
 						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),
@@ -122,7 +122,7 @@ const actionMetadataTmpl = `&metadata.Action {
 					},{{end}}
 				},{{if .Payload}}
 				Payload: "{{.Payload.Name}}",{{end}}
-				ApiParams: []*metadata.ActionParam{ {{range .Params}}
+				APIParams: []*metadata.ActionParam{ {{range .Params}}
 					&metadata.ActionParam{
 						Name: "{{.QueryName}}",
 						Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,

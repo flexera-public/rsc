@@ -7,7 +7,7 @@ import (
 	"github.com/rightscale/rsc/gen"
 )
 
-var _ = Describe("ApiAnalyzer ParseRoute", func() {
+var _ = Describe("APIAnalyzer ParseRoute", func() {
 	var (
 		moniker, route string
 
@@ -25,7 +25,7 @@ var _ = Describe("ApiAnalyzer ParseRoute", func() {
 
 		It("computes the path pattern", func() {
 			Ω(len(pathPatterns)).Should(Equal(1))
-			Ω(pathPatterns[0].HttpMethod).Should(Equal("GET"))
+			Ω(pathPatterns[0].HTTPMethod).Should(Equal("GET"))
 			Ω(pathPatterns[0].Pattern).Should(Equal("/api/servers"))
 			Ω(pathPatterns[0].Variables).Should(BeEmpty())
 		})
@@ -48,7 +48,7 @@ var _ = Describe("ApiAnalyzer ParseRoute", func() {
 
 		It("computes the path pattern", func() {
 			Ω(len(pathPatterns)).Should(Equal(1))
-			Ω(pathPatterns[0].HttpMethod).Should(Equal("PUT"))
+			Ω(pathPatterns[0].HTTPMethod).Should(Equal("PUT"))
 			Ω(pathPatterns[0].Pattern).Should(Equal("/api/servers/%s"))
 			Ω(len(pathPatterns[0].Variables)).Should(Equal(1))
 			Ω(pathPatterns[0].Variables[0]).Should(Equal("id"))
@@ -62,7 +62,7 @@ var _ = Describe("ApiAnalyzer ParseRoute", func() {
 
 		It("computes the path pattern", func() {
 			Ω(len(pathPatterns)).Should(Equal(1))
-			Ω(pathPatterns[0].HttpMethod).Should(Equal("PUT"))
+			Ω(pathPatterns[0].HTTPMethod).Should(Equal("PUT"))
 			Ω(pathPatterns[0].Pattern).Should(Equal("/api/clouds/%s/instances/%s/security_groups/%s"))
 			Ω(len(pathPatterns[0].Variables)).Should(Equal(3))
 			Ω(pathPatterns[0].Variables[0]).Should(Equal("cloud_id"))
@@ -80,18 +80,18 @@ var _ = Describe("ApiAnalyzer ParseRoute", func() {
 
 		It("computes the path patterns", func() {
 			Ω(len(pathPatterns)).Should(Equal(3))
-			Ω(pathPatterns[0].HttpMethod).Should(Equal("GET"))
+			Ω(pathPatterns[0].HTTPMethod).Should(Equal("GET"))
 			Ω(pathPatterns[0].Pattern).Should(Equal("/api/security_groups/%s"))
 			Ω(len(pathPatterns[0].Variables)).Should(Equal(1))
 			Ω(pathPatterns[0].Variables[0]).Should(Equal("id"))
 			Ω(pathPatterns[0].Pattern).Should(Equal("/api/security_groups/%s"))
 			Ω(len(pathPatterns[1].Variables)).Should(Equal(2))
-			Ω(pathPatterns[1].HttpMethod).Should(Equal("GET"))
+			Ω(pathPatterns[1].HTTPMethod).Should(Equal("GET"))
 			Ω(pathPatterns[1].Variables[0]).Should(Equal("instance_id"))
 			Ω(pathPatterns[1].Variables[1]).Should(Equal("id"))
 			Ω(pathPatterns[1].Pattern).Should(Equal("/api/instances/%s/security_groups/%s"))
 			Ω(len(pathPatterns[2].Variables)).Should(Equal(3))
-			Ω(pathPatterns[2].HttpMethod).Should(Equal("GET"))
+			Ω(pathPatterns[2].HTTPMethod).Should(Equal("GET"))
 			Ω(pathPatterns[2].Variables[0]).Should(Equal("cloud_id"))
 			Ω(pathPatterns[2].Variables[1]).Should(Equal("instance_id"))
 			Ω(pathPatterns[2].Variables[2]).Should(Equal("id"))

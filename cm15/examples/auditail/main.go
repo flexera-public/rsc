@@ -69,9 +69,9 @@ func main() {
 }
 
 // Make an API call and fetch the audit entries matching specified criteria
-func fetchAuditEntries(client *cm15.Api, filterEmail string) ([]*cm15.AuditEntry, error) {
+func fetchAuditEntries(client *cm15.API, filterEmail string) ([]*cm15.AuditEntry, error) {
 	auditLocator := client.AuditEntryLocator("/api/audit_entries")
-	var apiParams = rsapi.ApiParams{"filter": []string{"user_email==" + filterEmail}}
+	var apiParams = rsapi.APIParams{"filter": []string{"user_email==" + filterEmail}}
 	auditEntries, err := auditLocator.Index(
 		tomorrow(),  // End date
 		"100",       // Limit

@@ -9,11 +9,11 @@ import (
 )
 
 var _ = Describe("normalize", func() {
-	var payload rsapi.ApiParams
+	var payload rsapi.APIParams
 	var name string
 	var value interface{}
 
-	var res rsapi.ApiParams
+	var res rsapi.APIParams
 	var resErr error
 
 	JustBeforeEach(func() {
@@ -21,7 +21,7 @@ var _ = Describe("normalize", func() {
 	})
 
 	BeforeEach(func() {
-		payload = rsapi.ApiParams{}
+		payload = rsapi.APIParams{}
 	})
 
 	Describe("with a simple string", func() {
@@ -31,7 +31,7 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			Ω(res).Should(Equal(rsapi.ApiParams{"val": "foo"}))
+			Ω(res).Should(Equal(rsapi.APIParams{"val": "foo"}))
 		})
 	})
 
@@ -42,7 +42,7 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			Ω(res).Should(Equal(rsapi.ApiParams{"val": 42}))
+			Ω(res).Should(Equal(rsapi.APIParams{"val": 42}))
 		})
 	})
 
@@ -53,7 +53,7 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			Ω(res).Should(Equal(rsapi.ApiParams{"val": 42.5}))
+			Ω(res).Should(Equal(rsapi.APIParams{"val": 42.5}))
 		})
 	})
 
@@ -64,7 +64,7 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			Ω(res).Should(Equal(rsapi.ApiParams{"val": true}))
+			Ω(res).Should(Equal(rsapi.APIParams{"val": true}))
 		})
 	})
 
@@ -75,7 +75,7 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			Ω(res).Should(Equal(rsapi.ApiParams{"val": []interface{}{"foo"}}))
+			Ω(res).Should(Equal(rsapi.APIParams{"val": []interface{}{"foo"}}))
 		})
 	})
 
@@ -86,7 +86,7 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			Ω(res).Should(Equal(rsapi.ApiParams{"val": rsapi.ApiParams{"a": "foo"}}))
+			Ω(res).Should(Equal(rsapi.APIParams{"val": rsapi.APIParams{"a": "foo"}}))
 		})
 	})
 
@@ -97,8 +97,8 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected := rsapi.ApiParams{
-				"val": rsapi.ApiParams{
+			expected := rsapi.APIParams{
+				"val": rsapi.APIParams{
 					"a": []interface{}{"foo"},
 				},
 			}
@@ -113,8 +113,8 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected := rsapi.ApiParams{
-				"val": rsapi.ApiParams{
+			expected := rsapi.APIParams{
+				"val": rsapi.APIParams{
 					"a": []interface{}{"foo"},
 				},
 			}
@@ -123,8 +123,8 @@ var _ = Describe("normalize", func() {
 			value = "bar"
 			res, resErr = rsapi.Normalize(res, name, value)
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected = rsapi.ApiParams{
-				"val": rsapi.ApiParams{
+			expected = rsapi.APIParams{
+				"val": rsapi.APIParams{
 					"a": []interface{}{"foo", "bar"},
 				},
 			}
@@ -139,8 +139,8 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected := rsapi.ApiParams{
-				"val": []interface{}{rsapi.ApiParams{"a": "foo"}},
+			expected := rsapi.APIParams{
+				"val": []interface{}{rsapi.APIParams{"a": "foo"}},
 			}
 			Ω(res).Should(Equal(expected))
 		})
@@ -153,8 +153,8 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected := rsapi.ApiParams{
-				"val": []interface{}{rsapi.ApiParams{"a": []interface{}{"foo"}}},
+			expected := rsapi.APIParams{
+				"val": []interface{}{rsapi.APIParams{"a": []interface{}{"foo"}}},
 			}
 			Ω(res).Should(Equal(expected))
 		})
@@ -167,16 +167,16 @@ var _ = Describe("normalize", func() {
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected := rsapi.ApiParams{
-				"val": []interface{}{rsapi.ApiParams{"a": "foo"}},
+			expected := rsapi.APIParams{
+				"val": []interface{}{rsapi.APIParams{"a": "foo"}},
 			}
 			Ω(res).Should(Equal(expected))
 			name = "val[][b]"
 			value = "bar"
 			res, resErr = rsapi.Normalize(res, name, value)
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected = rsapi.ApiParams{
-				"val": []interface{}{rsapi.ApiParams{"a": "foo", "b": "bar"}},
+			expected = rsapi.APIParams{
+				"val": []interface{}{rsapi.APIParams{"a": "foo", "b": "bar"}},
 			}
 			Ω(res).Should(Equal(expected))
 		})
@@ -186,16 +186,16 @@ var _ = Describe("normalize", func() {
 		BeforeEach(func() {
 			name = "val[][b]"
 			value = "baz"
-			payload = rsapi.ApiParams{
-				"val": []interface{}{rsapi.ApiParams{"a": "foo", "b": "bar"}},
+			payload = rsapi.APIParams{
+				"val": []interface{}{rsapi.APIParams{"a": "foo", "b": "bar"}},
 			}
 		})
 		It("sets the value", func() {
 			Ω(resErr).ShouldNot(HaveOccurred())
-			expected := rsapi.ApiParams{
+			expected := rsapi.APIParams{
 				"val": []interface{}{
-					rsapi.ApiParams{"a": "foo", "b": "bar"},
-					rsapi.ApiParams{"b": "baz"},
+					rsapi.APIParams{"a": "foo", "b": "bar"},
+					rsapi.APIParams{"b": "baz"},
 				},
 			}
 			Ω(res).Should(Equal(expected))
@@ -206,7 +206,7 @@ var _ = Describe("normalize", func() {
 var _ = Describe("ParseCommand", func() {
 	var cmd, hrefPrefix string
 	var values rsapi.ActionCommands
-	var api *rsapi.Api
+	var api *rsapi.API
 
 	var parsed *rsapi.ParsedCommand
 	var parseErr error
@@ -214,7 +214,7 @@ var _ = Describe("ParseCommand", func() {
 	BeforeEach(func() {
 		values = nil
 		ssm := ssm.New("", nil)
-		api = ssm.Api
+		api = ssm.API
 	})
 
 	JustBeforeEach(func() {
@@ -238,18 +238,18 @@ var _ = Describe("ParseCommand", func() {
 		It("parses", func() {
 			Ω(parseErr).ShouldNot(HaveOccurred())
 			Ω(parsed).ShouldNot(BeNil())
-			payload := rsapi.ApiParams{
+			payload := rsapi.APIParams{
 				"name": "Tip CWF",
-				"configuration_options": []interface{}{rsapi.ApiParams{
+				"configuration_options": []interface{}{rsapi.APIParams{
 					"name":  "environment_name",
 					"type":  "string",
 					"value": "ss2",
 				}},
 			}
 			expected := rsapi.ParsedCommand{
-				HttpMethod:    "POST",
-				Uri:           "/projects/42/executions/54/actions/run",
-				QueryParams:   rsapi.ApiParams{},
+				HTTPMethod:    "POST",
+				URI:           "/projects/42/executions/54/actions/run",
+				QueryParams:   rsapi.APIParams{},
 				PayloadParams: payload,
 			}
 			Ω(*parsed).Should(Equal(expected))
@@ -276,15 +276,15 @@ var _ = Describe("ParseCommand", func() {
 		It("parses", func() {
 			Ω(parseErr).ShouldNot(HaveOccurred())
 			Ω(parsed).ShouldNot(BeNil())
-			payload := rsapi.ApiParams{
+			payload := rsapi.APIParams{
 				"name": "Tip CWF2",
 				"configuration_options": []interface{}{
-					rsapi.ApiParams{
+					rsapi.APIParams{
 						"name":  "environment_name",
 						"type":  "string",
 						"value": "ss2",
 					},
-					rsapi.ApiParams{
+					rsapi.APIParams{
 						"name":  "environment_name2",
 						"type":  "string",
 						"value": "ss2",
@@ -292,9 +292,9 @@ var _ = Describe("ParseCommand", func() {
 				},
 			}
 			expected := rsapi.ParsedCommand{
-				HttpMethod:    "POST",
-				Uri:           "/projects/42/executions/54/actions/run",
-				QueryParams:   rsapi.ApiParams{},
+				HTTPMethod:    "POST",
+				URI:           "/projects/42/executions/54/actions/run",
+				QueryParams:   rsapi.APIParams{},
 				PayloadParams: payload,
 			}
 			Ω(*parsed).Should(Equal(expected))
@@ -316,14 +316,14 @@ var _ = Describe("ParseCommand", func() {
 		It("parses", func() {
 			Ω(parseErr).ShouldNot(HaveOccurred())
 			Ω(parsed).ShouldNot(BeNil())
-			query := rsapi.ApiParams{
+			query := rsapi.APIParams{
 				"filter[]": []interface{}{"status==running", "status==stopped"},
 			}
 			expected := rsapi.ParsedCommand{
-				HttpMethod:    "GET",
-				Uri:           "/projects/42/executions",
+				HTTPMethod:    "GET",
+				URI:           "/projects/42/executions",
 				QueryParams:   query,
-				PayloadParams: rsapi.ApiParams{},
+				PayloadParams: rsapi.APIParams{},
 			}
 			Ω(*parsed).Should(Equal(expected))
 		})
@@ -333,7 +333,7 @@ var _ = Describe("ParseCommand", func() {
 var _ = Describe("ParseCommand with cm15", func() {
 	var cmd, hrefPrefix string
 	var values rsapi.ActionCommands
-	var api *rsapi.Api
+	var api *rsapi.API
 
 	var parsed *rsapi.ParsedCommand
 	var parseErr error
@@ -341,7 +341,7 @@ var _ = Describe("ParseCommand with cm15", func() {
 	BeforeEach(func() {
 		values = nil
 		cm := cm15.New("", nil)
-		api = cm.Api
+		api = cm.API
 	})
 
 	JustBeforeEach(func() {
@@ -367,14 +367,14 @@ var _ = Describe("ParseCommand with cm15", func() {
 		It("parses", func() {
 			Ω(parseErr).ShouldNot(HaveOccurred())
 			Ω(parsed).ShouldNot(BeNil())
-			payload := rsapi.ApiParams{
-				"server": rsapi.ApiParams{
+			payload := rsapi.APIParams{
+				"server": rsapi.APIParams{
 					"name":            "server name",
 					"deployment_href": "/api/deployments/1",
-					"instance": rsapi.ApiParams{
+					"instance": rsapi.APIParams{
 						"href":                 "/api/clouds/1/instances/42",
 						"server_template_href": "/api/server_templates/123",
-						"inputs": rsapi.ApiParams{
+						"inputs": rsapi.APIParams{
 							"STRING_INPUT_1": "text:testing123",
 							"STRING_INPUT_2": "text:testing124",
 						},
@@ -382,9 +382,9 @@ var _ = Describe("ParseCommand with cm15", func() {
 				},
 			}
 			expected := rsapi.ParsedCommand{
-				HttpMethod:    "POST",
-				Uri:           "/api/servers/wrap_instance",
-				QueryParams:   rsapi.ApiParams{},
+				HTTPMethod:    "POST",
+				URI:           "/api/servers/wrap_instance",
+				QueryParams:   rsapi.APIParams{},
 				PayloadParams: payload,
 			}
 			Ω(*parsed).Should(Equal(expected))

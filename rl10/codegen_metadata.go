@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated with:
-// $ praxisgen -metadata=rl10/docs/api -output=rl10 -pkg=rl10 -target=unversioned -client=Api
+// $ praxisgen -metadata=rl10/docs/api -output=rl10 -pkg=rl10 -target=unversioned -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -26,14 +26,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Retrieve debug cookbook directory location`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/rll/debug/cookbook",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/debug/cookbook`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -41,7 +41,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Set debug cookbook directory location`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PUT",
+						HTTPMethod: "PUT",
 						Pattern:    "/rll/debug/cookbook",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/debug/cookbook`),
@@ -57,7 +57,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "path",
 						Description: ``,
@@ -74,14 +74,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Remove debug cookbook directory location`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/rll/debug/cookbook",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/debug/cookbook`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -94,14 +94,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Retrieve all environment variables`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/rll/env",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/env`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -109,14 +109,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Retrieve environment variable value`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/rll/env/%s",
 						Variables:  []string{"name"},
 						Regexp:     regexp.MustCompile(`/rll/env/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -124,7 +124,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Set environment variable value`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PUT",
+						HTTPMethod: "PUT",
 						Pattern:    "/rll/env/%s",
 						Variables:  []string{"name"},
 						Regexp:     regexp.MustCompile(`/rll/env/([^/]+)`),
@@ -141,7 +141,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 				Payload: "string",
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "payload",
 						Description: ``,
@@ -158,14 +158,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete environment variable`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/rll/env/%s",
 						Variables:  []string{"name"},
 						Regexp:     regexp.MustCompile(`/rll/env/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -178,14 +178,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all process variables`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/rll/proc",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/proc`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -193,14 +193,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Retrieve process variable value`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/rll/proc/%s",
 						Variables:  []string{"name"},
 						Regexp:     regexp.MustCompile(`/rll/proc/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -213,7 +213,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Relaunch the RightLink process using a specified binary`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/rll/upgrade",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/upgrade`),
@@ -229,7 +229,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "exec",
 						Description: `Absolute path to binary`,
@@ -246,7 +246,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Run git-based scripts (as recipes) synchronously`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/rll/run/recipe",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/run/recipe`),
@@ -278,7 +278,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "arguments",
 						Description: `Script argument values`,
@@ -311,7 +311,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Run RightScripts synchronously`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/rll/run/right_script",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/run/right_script`),
@@ -343,7 +343,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "arguments",
 						Description: `Script argument values`,
@@ -381,14 +381,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Get the TSS hostname to proxy`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/rll/tss/hostname",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/tss/hostname`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -396,7 +396,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Set the TSS hostname to proxy`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PUT",
+						HTTPMethod: "PUT",
 						Pattern:    "/rll/tss/hostname",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/tss/hostname`),
@@ -412,7 +412,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "hostname",
 						Description: ``,

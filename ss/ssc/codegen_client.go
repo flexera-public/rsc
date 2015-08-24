@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated with:
-// $ praxisgen -metadata=ss/ssc/restful_doc -output=ss/ssc -pkg=ssc -target=1.0 -client=Api
+// $ praxisgen -metadata=ss/ssc/restful_doc -output=ss/ssc -pkg=ssc -target=1.0 -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -52,7 +52,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	if err != nil {
 		return nil, err
 	}
-	return action.Url(vars)
+	return action.URL(vars)
 }
 
 /******  AccountPreference ******/
@@ -71,7 +71,7 @@ type AccountPreference struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *AccountPreference) Locator(api *Api) *AccountPreferenceLocator {
+func (r *AccountPreference) Locator(api *API) *AccountPreferenceLocator {
 	return api.AccountPreferenceLocator(r.Href)
 }
 
@@ -80,11 +80,11 @@ func (r *AccountPreference) Locator(api *Api) *AccountPreferenceLocator {
 // AccountPreferenceLocator exposes the AccountPreference resource actions.
 type AccountPreferenceLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // AccountPreferenceLocator builds a locator from the given href.
-func (api *Api) AccountPreferenceLocator(href string) *AccountPreferenceLocator {
+func (api *API) AccountPreferenceLocator(href string) *AccountPreferenceLocator {
 	return &AccountPreferenceLocator{Href(href), api}
 }
 
@@ -93,10 +93,10 @@ func (api *Api) AccountPreferenceLocator(href string) *AccountPreferenceLocator 
 // GET /accounts/:account_id/account_preferences
 //
 // List the AccountPreferences for this account.
-func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountPreference, error) {
+func (loc *AccountPreferenceLocator) Index(options rsapi.APIParams) ([]*AccountPreference, error) {
 	var res []*AccountPreference
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
@@ -105,12 +105,12 @@ func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountP
 	if groupOpt != nil {
 		params["group"] = groupOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AccountPreference", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -141,13 +141,13 @@ func (loc *AccountPreferenceLocator) Index(options rsapi.ApiParams) ([]*AccountP
 // Get details for a particular AccountPreference
 func (loc *AccountPreferenceLocator) Show() (*AccountPreference, error) {
 	var res *AccountPreference
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AccountPreference", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -187,9 +187,9 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 	if value == "" {
 		return res, fmt.Errorf("value is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"group_name": groupName,
 		"name":       name,
 		"value":      value,
@@ -198,7 +198,7 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -227,13 +227,13 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 //
 // Delete an AccountPreference
 func (loc *AccountPreferenceLocator) Delete() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AccountPreference", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -279,7 +279,7 @@ type Application struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Application) Locator(api *Api) *ApplicationLocator {
+func (r *Application) Locator(api *API) *ApplicationLocator {
 	return api.ApplicationLocator(r.Href)
 }
 
@@ -288,11 +288,11 @@ func (r *Application) Locator(api *Api) *ApplicationLocator {
 // ApplicationLocator exposes the Application resource actions.
 type ApplicationLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ApplicationLocator builds a locator from the given href.
-func (api *Api) ApplicationLocator(href string) *ApplicationLocator {
+func (api *API) ApplicationLocator(href string) *ApplicationLocator {
 	return &ApplicationLocator{Href(href), api}
 }
 
@@ -301,20 +301,20 @@ func (api *Api) ApplicationLocator(href string) *ApplicationLocator {
 // GET /catalogs/:catalog_id/applications
 //
 // List the Applications available in the specified Catalog.
-func (loc *ApplicationLocator) Index(options rsapi.ApiParams) ([]*Application, error) {
+func (loc *ApplicationLocator) Index(options rsapi.APIParams) ([]*Application, error) {
 	var res []*Application
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
 		params["ids[]"] = idsOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Application", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -343,20 +343,20 @@ func (loc *ApplicationLocator) Index(options rsapi.ApiParams) ([]*Application, e
 // GET /catalogs/:catalog_id/applications/:id
 //
 // Show detailed information about a given Application.
-func (loc *ApplicationLocator) Show(options rsapi.ApiParams) (*Application, error) {
+func (loc *ApplicationLocator) Show(options rsapi.APIParams) (*Application, error) {
 	var res *Application
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Application", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -385,7 +385,7 @@ func (loc *ApplicationLocator) Show(options rsapi.ApiParams) (*Application, erro
 // POST /catalogs/:catalog_id/applications
 //
 // Create a new Application in the Catalog.
-func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, shortDescription string, options rsapi.ApiParams) (*ApplicationLocator, error) {
+func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, shortDescription string, options rsapi.APIParams) (*ApplicationLocator, error) {
 	var res *ApplicationLocator
 	if compiledCat == nil {
 		return res, fmt.Errorf("compiledCat is required")
@@ -396,9 +396,9 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 	if shortDescription == "" {
 		return res, fmt.Errorf("shortDescription is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"compiled_cat":      compiledCat,
 		"name":              name,
 		"short_description": shortDescription,
@@ -423,7 +423,7 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -451,10 +451,10 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 // PUT /catalogs/:catalog_id/applications/:id
 //
 // Update the content of an existing Application.
-func (loc *ApplicationLocator) Update(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+func (loc *ApplicationLocator) Update(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var compiledCatOpt = options["compiled_cat"]
 	if compiledCatOpt != nil {
 		p["compiled_cat"] = compiledCatOpt
@@ -487,7 +487,7 @@ func (loc *ApplicationLocator) Update(options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -510,13 +510,13 @@ func (loc *ApplicationLocator) Update(options rsapi.ApiParams) error {
 // PUT /catalogs/:catalog_id/applications
 //
 // Update the content of multiple Applications.
-func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) error {
+func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.APIParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"id": id,
 	}
 	var compiledCatOpt = options["compiled_cat"]
@@ -551,7 +551,7 @@ func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) e
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -575,13 +575,13 @@ func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.ApiParams) e
 //
 // Delete an Application from the Catalog
 func (loc *ApplicationLocator) Delete() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Application", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -608,16 +608,16 @@ func (loc *ApplicationLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Application", "multi_delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -644,16 +644,16 @@ func (loc *ApplicationLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
 		return fmt.Errorf("apiVersion is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"api_version": apiVersion,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Application", "download")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -676,10 +676,10 @@ func (loc *ApplicationLocator) Download(apiVersion string) error {
 // POST /catalogs/:catalog_id/applications/:id/actions/launch
 //
 // Launches an Application by creating an Execution with ScheduledActions as needed to match the optional Schedule provided.
-func (loc *ApplicationLocator) Launch(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+func (loc *ApplicationLocator) Launch(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
 		p["description"] = descriptionOpt
@@ -704,7 +704,7 @@ func (loc *ApplicationLocator) Launch(options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -746,7 +746,7 @@ type NotificationRule struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *NotificationRule) Locator(api *Api) *NotificationRuleLocator {
+func (r *NotificationRule) Locator(api *API) *NotificationRuleLocator {
 	return api.NotificationRuleLocator(r.Href)
 }
 
@@ -755,11 +755,11 @@ func (r *NotificationRule) Locator(api *Api) *NotificationRuleLocator {
 // NotificationRuleLocator exposes the NotificationRule resource actions.
 type NotificationRuleLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // NotificationRuleLocator builds a locator from the given href.
-func (api *Api) NotificationRuleLocator(href string) *NotificationRuleLocator {
+func (api *API) NotificationRuleLocator(href string) *NotificationRuleLocator {
 	return &NotificationRuleLocator{Href(href), api}
 }
 
@@ -768,25 +768,25 @@ func (api *Api) NotificationRuleLocator(href string) *NotificationRuleLocator {
 // GET /accounts/:account_id/notification_rules
 //
 // List all notification rules, potentially filtering by a collection of resources.
-func (loc *NotificationRuleLocator) Index(source string, options rsapi.ApiParams) ([]*NotificationRule, error) {
+func (loc *NotificationRuleLocator) Index(source string, options rsapi.APIParams) ([]*NotificationRule, error) {
 	var res []*NotificationRule
 	if source == "" {
 		return res, fmt.Errorf("source is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"source": source,
 	}
 	var targetsOpt = options["targets"]
 	if targetsOpt != nil {
 		params["targets"] = targetsOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("NotificationRule", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -816,7 +816,7 @@ func (loc *NotificationRuleLocator) Index(source string, options rsapi.ApiParams
 //
 // Create one notification rule for a specific target and source.
 // The source must be unique in the scope of target and account.
-func (loc *NotificationRuleLocator) Create(minSeverity string, source string, target string, options rsapi.ApiParams) (*NotificationRuleLocator, error) {
+func (loc *NotificationRuleLocator) Create(minSeverity string, source string, target string, options rsapi.APIParams) (*NotificationRuleLocator, error) {
 	var res *NotificationRuleLocator
 	if minSeverity == "" {
 		return res, fmt.Errorf("minSeverity is required")
@@ -827,14 +827,14 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 	if target == "" {
 		return res, fmt.Errorf("target is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
 	}
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"min_severity": minSeverity,
 		"source":       source,
 		"target":       target,
@@ -843,7 +843,7 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -875,16 +875,16 @@ func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
 	if minSeverity == "" {
 		return fmt.Errorf("minSeverity is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"min_severity": minSeverity,
 	}
 	uri, err := loc.ActionPath("NotificationRule", "patch")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -909,13 +909,13 @@ func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
 // Show one notification rule.
 func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 	var res *NotificationRule
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("NotificationRule", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -945,13 +945,13 @@ func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 //
 // Delete one notification rule.
 func (loc *NotificationRuleLocator) Delete() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("NotificationRule", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -974,10 +974,10 @@ func (loc *NotificationRuleLocator) Delete() error {
 // DELETE /accounts/:account_id/notification_rules
 //
 // Delete one or more notification rules by id or source and target.
-func (loc *NotificationRuleLocator) MultiDelete(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+func (loc *NotificationRuleLocator) MultiDelete(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var idOpt = options["id"]
 	if idOpt != nil {
 		p["id"] = idOpt
@@ -994,7 +994,7 @@ func (loc *NotificationRuleLocator) MultiDelete(options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1030,7 +1030,7 @@ type UserPreference struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *UserPreference) Locator(api *Api) *UserPreferenceLocator {
+func (r *UserPreference) Locator(api *API) *UserPreferenceLocator {
 	return api.UserPreferenceLocator(r.Href)
 }
 
@@ -1039,11 +1039,11 @@ func (r *UserPreference) Locator(api *Api) *UserPreferenceLocator {
 // UserPreferenceLocator exposes the UserPreference resource actions.
 type UserPreferenceLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // UserPreferenceLocator builds a locator from the given href.
-func (api *Api) UserPreferenceLocator(href string) *UserPreferenceLocator {
+func (api *API) UserPreferenceLocator(href string) *UserPreferenceLocator {
 	return &UserPreferenceLocator{Href(href), api}
 }
 
@@ -1054,10 +1054,10 @@ func (api *Api) UserPreferenceLocator(href string) *UserPreferenceLocator {
 // List the UserPreference for users in this account.
 // Only administrators and infrastructure users may request the preferences of other users.
 // Users who are not members of the admin role need to specify a filter with their ID in order to retrieve their preferences.
-func (loc *UserPreferenceLocator) Index(options rsapi.ApiParams) ([]*UserPreference, error) {
+func (loc *UserPreferenceLocator) Index(options rsapi.APIParams) ([]*UserPreference, error) {
 	var res []*UserPreference
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
@@ -1066,12 +1066,12 @@ func (loc *UserPreferenceLocator) Index(options rsapi.ApiParams) ([]*UserPrefere
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserPreference", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1100,20 +1100,20 @@ func (loc *UserPreferenceLocator) Index(options rsapi.ApiParams) ([]*UserPrefere
 // GET /accounts/:account_id/user_preferences/:id
 //
 // Get details for a particular UserPreference
-func (loc *UserPreferenceLocator) Show(options rsapi.ApiParams) (*UserPreference, error) {
+func (loc *UserPreferenceLocator) Show(options rsapi.APIParams) (*UserPreference, error) {
 	var res *UserPreference
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserPreference", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1152,9 +1152,9 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 	if userPreferenceInfoId == "" {
 		return res, fmt.Errorf("userPreferenceInfoId is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"user_id":                 userId,
 		"user_preference_info_id": userPreferenceInfoId,
 		"value":                   value,
@@ -1163,7 +1163,7 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1193,10 +1193,10 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 // Update the value of a UserPreference.
 // Multiple values may be updated using a multipart request.
 // Values are validated with the corresponding UserPreferenceInfo.
-func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"value": value,
 	}
 	var idOpt = options["id"]
@@ -1207,7 +1207,7 @@ func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.ApiPar
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1231,13 +1231,13 @@ func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.ApiPar
 //
 // Delete a UserPreference
 func (loc *UserPreferenceLocator) Delete() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserPreference", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1276,7 +1276,7 @@ type UserPreferenceInfo struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *UserPreferenceInfo) Locator(api *Api) *UserPreferenceInfoLocator {
+func (r *UserPreferenceInfo) Locator(api *API) *UserPreferenceInfoLocator {
 	return api.UserPreferenceInfoLocator(r.Href)
 }
 
@@ -1285,11 +1285,11 @@ func (r *UserPreferenceInfo) Locator(api *Api) *UserPreferenceInfoLocator {
 // UserPreferenceInfoLocator exposes the UserPreferenceInfo resource actions.
 type UserPreferenceInfoLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // UserPreferenceInfoLocator builds a locator from the given href.
-func (api *Api) UserPreferenceInfoLocator(href string) *UserPreferenceInfoLocator {
+func (api *API) UserPreferenceInfoLocator(href string) *UserPreferenceInfoLocator {
 	return &UserPreferenceInfoLocator{Href(href), api}
 }
 
@@ -1298,20 +1298,20 @@ func (api *Api) UserPreferenceInfoLocator(href string) *UserPreferenceInfoLocato
 // GET /accounts/:account_id/user_preference_infos
 //
 // List the UserPreferenceInfo.
-func (loc *UserPreferenceInfoLocator) Index(options rsapi.ApiParams) ([]*UserPreferenceInfo, error) {
+func (loc *UserPreferenceInfoLocator) Index(options rsapi.APIParams) ([]*UserPreferenceInfo, error) {
 	var res []*UserPreferenceInfo
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserPreferenceInfo", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1342,13 +1342,13 @@ func (loc *UserPreferenceInfoLocator) Index(options rsapi.ApiParams) ([]*UserPre
 // Get details for a particular UserPreferenceInfo
 func (loc *UserPreferenceInfoLocator) Show() (*UserPreferenceInfo, error) {
 	var res *UserPreferenceInfo
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserPreferenceInfo", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}

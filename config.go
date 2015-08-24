@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-// Basic configuration settings required by all clients
+// ClientConfig is the basic configuration settings required by all clients.
 type ClientConfig struct {
 	Account   int    // RightScale account ID
 	LoginHost string // RightScale API login host, e.g. "us-3.rightscale.com"
@@ -48,7 +48,7 @@ func (cfg *ClientConfig) Save(path string) error {
 	return nil
 }
 
-// Create configuration file and save it to file at given path
+// CreateConfig creates a configuration file and saves it to the file at the given path.
 func CreateConfig(path string) error {
 	config, _ := LoadConfig(path)
 	var emailDef, passwordDef, accountDef, hostDef string

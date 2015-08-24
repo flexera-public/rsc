@@ -103,7 +103,7 @@ func main() {
 // Read file asynchronously
 func readAllAsync(f io.ReadCloser) (*[]byte, chan struct{}) {
 	done := make(chan struct{}, 1) // signal that the read is done
-	buf := make([]byte, 0)         // placeholder buffer for the result
+	var buf []byte                 // placeholder buffer for the result
 	go func() {
 		var err error
 		buf, err = ioutil.ReadAll(f)

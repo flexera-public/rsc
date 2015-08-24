@@ -6,22 +6,22 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Self-Service designer client
-type Api struct {
-	*rsapi.Api
+// API is the Self-Service designer client.
+type API struct {
+	*rsapi.API
 }
 
 // New returns a Self-Service catalog API client.
 // It makes a test API request and returns an error if authentication fails.
-func New(h string, a rsapi.Authenticator) *Api {
+func New(h string, a rsapi.Authenticator) *API {
 	api := rsapi.New(h, a)
 	api.Metadata = GenMetadata
-	ssApi := Api{Api: api}
-	return &ssApi
+	ssAPI := API{API: api}
+	return &ssAPI
 }
 
 // BuildHTTPRequest wraps the underlying rsapi implementation and simply prefixes the path with
 // the service designer path.
-func (a *Api) BuildHTTPRequest(verb, path, version string, params, payload rsapi.ApiParams) (*http.Request, error) {
-	return a.Api.BuildHTTPRequest(verb, "/designer"+path, version, params, payload)
+func (a *API) BuildHTTPRequest(verb, path, version string, params, payload rsapi.APIParams) (*http.Request, error) {
+	return a.API.BuildHTTPRequest(verb, "/designer"+path, version, params, payload)
 }

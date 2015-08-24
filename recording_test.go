@@ -38,7 +38,7 @@ var _ = Describe("Recorded request", func() {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			fmt.Fprintf(os.Stderr, "Json decode: %s\n", err.Error())
+			fmt.Fprintf(os.Stderr, "JSON decode: %s\n", err.Error())
 		}
 		// Perform the test by running main() with the command line args set
 		It(strings.Join(testCase.CmdArgs, " "), func() {
@@ -48,7 +48,7 @@ var _ = Describe("Recorded request", func() {
 
 			// construct list of verifiers
 			url := regexp.MustCompile(`https?://[^/]+(/[^?]+)\??(.*)`).
-				FindStringSubmatch(testCase.RR.Uri)
+				FindStringSubmatch(testCase.RR.URI)
 			//fmt.Fprintf(os.Stderr, "URL: %#v\n", url)
 			handlers := []http.HandlerFunc{
 				ghttp.VerifyRequest(testCase.RR.Verb, url[1], url[2]),
@@ -57,7 +57,7 @@ var _ = Describe("Recorded request", func() {
 				handlers = append(handlers,
 					ghttp.VerifyJSON(testCase.RR.ReqBody))
 			}
-			for k, _ := range testCase.RR.ReqHeader {
+			for k := range testCase.RR.ReqHeader {
 				handlers = append(handlers,
 					ghttp.VerifyHeaderKV(k, testCase.RR.ReqHeader.Get(k)))
 			}

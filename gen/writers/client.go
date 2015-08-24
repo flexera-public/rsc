@@ -15,7 +15,7 @@ type ClientWriter struct {
 	resourceTmpl *template.Template
 }
 
-// Client writer factory
+// NewClientWriter is the  client writer factory.
 func NewClientWriter() (*ClientWriter, error) {
 	funcMap := template.FuncMap{
 		"comment":           comment,
@@ -39,28 +39,28 @@ func NewClientWriter() (*ClientWriter, error) {
 	}, nil
 }
 
-// Write header text
-func (c *ClientWriter) WriteHeader(pkg, version string, needTime, needJson bool, w io.Writer) error {
+// WriteHeader writes the header text.
+func (c *ClientWriter) WriteHeader(pkg, version string, needTime, needJSON bool, w io.Writer) error {
 	ctx := map[string]interface{}{
 		"Pkg":        pkg,
 		"APIVersion": version,
 		"NeedTime":   needTime,
-		"NeedJson":   needJson,
+		"NeedJSON":   needJSON,
 	}
 	return c.headerTmpl.Execute(w, ctx)
 }
 
-// Write resource header
+// WriteResourceHeader writes the resource header.
 func (c *ClientWriter) WriteResourceHeader(name string, w io.Writer) {
 	fmt.Fprintf(w, "/******  %s ******/\n\n", name)
 }
 
-// Write separator between resources and data types
+// WriteTypeSectionHeader writes the separator between resources and data types.
 func (c *ClientWriter) WriteTypeSectionHeader(w io.Writer) {
 	fmt.Fprintf(w, "\n/****** Parameter Data Types ******/\n\n\n")
 }
 
-// Write type declaration for resource action arguments
+// WriteType writest the type declaration for a resource action arguments.
 func (c *ClientWriter) WriteType(o *gen.ObjectDataType, w io.Writer) {
 	fields := make([]string, len(o.Fields))
 	for i, f := range o.Fields {
@@ -72,7 +72,7 @@ func (c *ClientWriter) WriteType(o *gen.ObjectDataType, w io.Writer) {
 	fmt.Fprintf(w, "%s\n\n", decl)
 }
 
-// Write code for a resource
+// WriteResource writest the code for a resource.
 func (c *ClientWriter) WriteResource(resource *gen.Resource, w io.Writer) error {
 	return c.resourceTmpl.Execute(w, resource)
 }
@@ -92,7 +92,7 @@ const headerTmpl = `
 package {{.Pkg}}
 
 import (
-	{{if .NeedJson}}"encoding/json"
+	{{if .NeedJSON}}"encoding/json"
 	{{end}}"fmt"
 	"io/ioutil"
 	{{if .NeedTime}}"time"
@@ -134,7 +134,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	if err != nil {
 		return nil, err
 	}
-	return action.Url(vars)
+	return action.URL(vars)
 }
 `
 
@@ -145,7 +145,7 @@ type {{.Name}} struct { {{range .Attributes}}
 }
 {{if .LocatorFunc}}
 // Locator returns a locator for the given resource
-func (r *{{.Name}}) Locator(api *Api) *{{.Name}}Locator {
+func (r *{{.Name}}) Locator(api *API) *{{.Name}}Locator {
 	{{.LocatorFunc}}
 }
 {{end}}
@@ -165,7 +165,7 @@ func (api *{{.ClientName}}) {{.Name}}Locator(href string) *{{.Name}}Locator {
 
 //===== Actions
 {{end}}{{range .Actions}}{{range .PathPatterns}}
-// {{.HttpMethod}} {{.Path}}{{end}}
+// {{.HTTPMethod}} {{.Path}}{{end}}
 //
 {{comment .Description}}
 func (loc *{{$resource.Name}}Locator) {{.MethodName}}({{parameters .}}){{if .Return}} ({{.Return}},{{end}} error{{if .Return}}){{end}} {
@@ -178,13 +178,13 @@ const actionBodyTmpl = `{{$action := .}}{{if .Return}}var res {{.Return}}
 	{{end}}{{range .Params}}{{if and .Mandatory (blankCondition .VarName .Type)}}{{blankCondition .VarName .Type}}
 		return {{if $action.Return}}res, {{end}}fmt.Errorf("{{.VarName}} is required")
 	}
-	{{end}}{{end}}{{/* end range .Params */}}var params rsapi.ApiParams{{paramsInitializer . 1 "params"}}
-	var p rsapi.ApiParams{{paramsInitializer . 2 "p"}}
+	{{end}}{{end}}{{/* end range .Params */}}var params rsapi.APIParams{{paramsInitializer . 1 "params"}}
+	var p rsapi.APIParams{{paramsInitializer . 2 "p"}}
 	uri, err := loc.ActionPath("{{$action.ResourceName}}", "{{$action.Name}}")
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return {{if $action.Return}}res, {{end}}err
 	}

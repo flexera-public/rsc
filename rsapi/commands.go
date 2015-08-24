@@ -13,31 +13,32 @@ import (
 	"github.com/rightscale/rsc/metadata"
 )
 
-// Result of parsing the command line (ParseCommand method).
+// ParsedCommand is the result of parsing the command line (ParseCommand method).
 // The parser infers the Uri and HTTP method of the request that need to be made and builds the
 // maps of query string and payload parameters. The parameter values are all coerced to the type
 // dictated by the API metadata.
 type ParsedCommand struct {
-	HttpMethod    string
-	Uri           string
-	QueryParams   ApiParams
-	PayloadParams ApiParams
+	HTTPMethod    string
+	URI           string
+	QueryParams   APIParams
+	PayloadParams APIParams
 }
 
-// Data structure initialized during command line parsing and used by ParseCommand to create the
-// final ParsedCommand struct. Each specific API client registers the action commands under the
-// main command line tool command. kingpin then initializes the values from the command line.
+// ActionCommand is a data structure initialized during command line parsing and used by
+// ParseCommand to create the final ParsedCommand struct.
+// Each specific API client registers the action commands under the main command line tool command.
+// kingpin then initializes the values from the command line.
 type ActionCommand struct {
 	Href     string   // Resource or collection href
 	Params   []string // Action parameters
 	ShowHelp string   // Whether to list flags supported by resource action
 }
 
-// Action command values indexed by action name
+// ActionCommands indexes action command values by action name.
 type ActionCommands map[string]*ActionCommand
 
-// Actually run command
-func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*ParsedCommand, error) {
+// ParseCommand actually runs a command.
+func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*ParsedCommand, error) {
 	// 0. Show help if requested
 	val, ok := values[cmd]
 	if !ok {
@@ -57,7 +58,7 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 
 	// 2. Coerce and validate given flag values, use array for payload as order is meaningful
 	//    when building the data structure (e.g. in the case of array of hashes)
-	var queryParams, payloadParams []ApiParams
+	var queryParams, payloadParams []APIParams
 	var seen []string
 	for _, p := range params {
 		param, value, err := a.findParamAndValue(action, p)
@@ -73,10 +74,9 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 				}
 				return nil, fmt.Errorf("Unknown %s.%s flag '%s'. Supported flags are: %s",
 					resource.Name, action.Name, name, strings.Join(supported, ", "))
-			} else {
-				return nil, fmt.Errorf("Unknown %s.%s flag '%s'. %s.%s does not accept any flag",
-					resource.Name, action.Name, name, resource.Name, action.Name)
 			}
+			return nil, fmt.Errorf("Unknown %s.%s flag '%s'. %s.%s does not accept any flag",
+				resource.Name, action.Name, name, resource.Name, action.Name)
 		}
 		name := param.Name
 		seen = append(seen, name)
@@ -89,33 +89,33 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 		}
 		switch param.Type {
 		case "string", "[]string", "interface{}":
-			*coerced = append(*coerced, ApiParams{name: value})
+			*coerced = append(*coerced, APIParams{name: value})
 		case "int", "[]int":
 			val, err := strconv.Atoi(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be an integer, value provided was '%s'",
 					name, value)
 			}
-			*coerced = append(*coerced, ApiParams{name: val})
+			*coerced = append(*coerced, APIParams{name: val})
 		case "bool", "[]bool":
 			val, err := strconv.ParseBool(value)
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
 					name, value)
 			}
-			*coerced = append(*coerced, ApiParams{name: val})
+			*coerced = append(*coerced, APIParams{name: val})
 		case "map":
 			velems := strings.SplitN(value, "=", 2)
 			if len(velems) != 2 {
 				return nil, fmt.Errorf("Value for '%s' must be of the form NAME=VALUE, got %s", name, value)
 			}
-			*coerced = append(*coerced, ApiParams{fmt.Sprintf("%s[%s]", name, velems[0]): velems[1]})
+			*coerced = append(*coerced, APIParams{fmt.Sprintf("%s[%s]", name, velems[0]): velems[1]})
 		case "file":
 			file, err := os.Open(value)
 			if err != nil {
 				return nil, fmt.Errorf("Invalid file upload path '%s' for %s: %s", value, name, err)
 			}
-			*coerced = append(*coerced, ApiParams{name: &FileUpload{Name: name, Filename: value, Reader: file}})
+			*coerced = append(*coerced, APIParams{name: &FileUpload{Name: name, Filename: value, Reader: file}})
 		}
 	}
 	for _, p := range action.CommandFlags {
@@ -141,11 +141,11 @@ func (a *Api) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 		return nil, err
 	}
 
-	return &ParsedCommand{path.HttpMethod, path.Path, qParams, pParams}, nil
+	return &ParsedCommand{path.HTTPMethod, path.Path, qParams, pParams}, nil
 }
 
-// Show help for given command and flags
-func (a *Api) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
+// ShowHelp displays help for the given command and flags.
+func (a *API) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 	target, _, err := a.ParseCommandAndFlags(cmd, hrefPrefix, values)
 	if err != nil {
 		return err
@@ -178,7 +178,7 @@ func (a *Api) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 	return nil
 }
 
-// Target of command: resource type and href as well as action details
+// CommandTarget is the target of a command: resource type and href as well as action details.
 type CommandTarget struct {
 	Resource *metadata.Resource   // Resource command applies to
 	Action   *metadata.Action     // Action command corresponds to
@@ -186,8 +186,8 @@ type CommandTarget struct {
 	Href     string               // Resource href
 }
 
-// Parse command and flags and infer resource, action, href and params
-func (a *Api) ParseCommandAndFlags(cmd, hrefPrefix string, values ActionCommands) (*CommandTarget, []string, error) {
+// ParseCommandAndFlags parses a command flag and infers the resource, action, href and params.
+func (a *API) ParseCommandAndFlags(cmd, hrefPrefix string, values ActionCommands) (*CommandTarget, []string, error) {
 	resource, vars, err := a.parseResource(cmd, hrefPrefix, values)
 	if err != nil {
 		return nil, nil, err
@@ -210,7 +210,7 @@ func (a *Api) ParseCommandAndFlags(cmd, hrefPrefix string, values ActionCommands
 			resource.Name, actionName, strings.Join(supported, ", "))
 	}
 
-	path, err := action.Url(vars)
+	path, err := action.URL(vars)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -219,8 +219,8 @@ func (a *Api) ParseCommandAndFlags(cmd, hrefPrefix string, values ActionCommands
 	return &CommandTarget{resource, action, path, flags.Href}, flags.Params, nil
 }
 
-// Print all known actions for API or selected resource if any.
-func (a *Api) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
+// ShowActions prints all known actions for an API or the selected resource if any.
+func (a *API) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 	res, _, err := a.parseResource(cmd, hrefPrefix, values)
 	resource := ""
 	if err == nil {
@@ -229,9 +229,9 @@ func (a *Api) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 	actions := make(map[string][][2]string)
 	resNames := make([]string, len(a.Metadata))
 	idx := 0
-	for n, _ := range a.Metadata {
+	for n := range a.Metadata {
 		resNames[idx] = n
-		idx += 1
+		idx++
 	}
 	sort.Strings(resNames)
 	for _, resName := range resNames {
@@ -259,9 +259,9 @@ func (a *Api) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 	}
 	keys := make([]string, len(actions))
 	i := 0
-	for k, _ := range actions {
+	for k := range actions {
 		keys[i] = k
-		i += 1
+		i++
 	}
 	sort.Strings(keys)
 	var lines []string
@@ -313,7 +313,7 @@ func (a *Api) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 
 // Identify action resource if any
 // Return error if no resource could be identified
-func (a *Api) parseResource(cmd, hrefPrefix string, commandValues ActionCommands) (*metadata.Resource, []*metadata.PathVariable, error) {
+func (a *API) parseResource(cmd, hrefPrefix string, commandValues ActionCommands) (*metadata.Resource, []*metadata.PathVariable, error) {
 	flags := commandValues[cmd]
 	if flags == nil {
 		return nil, nil, fmt.Errorf("Invalid command line, try --help.")
@@ -347,7 +347,7 @@ var captureEnumRegex = regexp.MustCompile(`.*\[(.+)\]$`)
 // the flag is of the form "NAME[KEY]=VALUE" (e.g. inputs).
 // First check if there is a parameter with the given flag name, then check for the enumerable case
 // if not found.
-func (a *Api) findParamAndValue(action *metadata.Action, flag string) (*metadata.ActionParam, string, error) {
+func (a *API) findParamAndValue(action *metadata.Action, flag string) (*metadata.ActionParam, string, error) {
 	elems := strings.SplitN(flag, "=", 2)
 	if len(elems) != 2 {
 		return nil, "", fmt.Errorf("Arguments must be of the form NAME=VALUE, value provided was '%s'", flag)
@@ -406,8 +406,8 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 }
 
 // Reconstruct query from flatten values
-func buildQuery(values []ApiParams) (ApiParams, error) {
-	query := ApiParams{}
+func buildQuery(values []APIParams) (APIParams, error) {
+	query := APIParams{}
 	for _, value := range values {
 		// Only one iteration below, flatten params only have one element each
 		for name, param := range value {
@@ -426,8 +426,8 @@ func buildQuery(values []ApiParams) (ApiParams, error) {
 }
 
 // Reconstruct payload map from flatten values
-func buildPayload(values []ApiParams) (ApiParams, error) {
-	payload := ApiParams{}
+func buildPayload(values []APIParams) (APIParams, error) {
+	payload := APIParams{}
 	for _, value := range values {
 		// Only one iteration below, flatten params only have one element each
 		for name, param := range value {
@@ -446,10 +446,11 @@ var (
 	childRegexp2 = regexp.MustCompile(`^\[\](.+)$`)
 )
 
-// Recursively travers a query string encoded name and build up the corresponding structure.
+// Normalize recursively traverses a query string encoded name and builds up the corresponding
+// structure.
 // "a[b]" produces a map[string]interface{} with key "b"
 // "a[]" produces a []interface{}
-func Normalize(payload ApiParams, name string, v interface{}) (ApiParams, error) {
+func Normalize(payload APIParams, name string, v interface{}) (APIParams, error) {
 	var matches = nameRegex.FindStringSubmatch(name)
 	if len(matches) == 0 {
 		return nil, nil
@@ -467,11 +468,11 @@ func Normalize(payload ApiParams, name string, v interface{}) (ApiParams, error)
 		if _, ok := payload[k]; !ok {
 			payload[k] = []interface{}{}
 		}
-		if a, ok := payload[k].([]interface{}); !ok {
+		a, ok := payload[k].([]interface{})
+		if !ok {
 			return nil, fmt.Errorf("expected array for param '%s'", k)
-		} else {
-			payload[k] = append(a, v)
 		}
+		payload[k] = append(a, v)
 	} else {
 		matches = childRegexp.FindStringSubmatch(after)
 		if len(matches) == 0 {
@@ -490,7 +491,7 @@ func Normalize(payload ApiParams, name string, v interface{}) (ApiParams, error)
 			}
 			var handled bool
 			if len(array) > 0 {
-				if last, ok := array[len(array)-1].(ApiParams); ok {
+				if last, ok := array[len(array)-1].(APIParams); ok {
 					if _, ok := last[childKey]; !ok {
 						handled = true
 						Normalize(last, childKey, v)
@@ -498,7 +499,7 @@ func Normalize(payload ApiParams, name string, v interface{}) (ApiParams, error)
 				}
 			}
 			if !handled {
-				var p, err = Normalize(ApiParams{}, childKey, v)
+				var p, err = Normalize(APIParams{}, childKey, v)
 				if err != nil {
 					return nil, err
 				}
@@ -506,12 +507,12 @@ func Normalize(payload ApiParams, name string, v interface{}) (ApiParams, error)
 			}
 		} else {
 			if payload[k] == nil {
-				payload[k] = ApiParams{}
+				payload[k] = APIParams{}
 			}
-			if _, ok := payload[k].(ApiParams); !ok {
+			if _, ok := payload[k].(APIParams); !ok {
 				return nil, fmt.Errorf("expected map for param '%s'", k)
 			}
-			var p, err = Normalize(payload[k].(ApiParams), after, v)
+			var p, err = Normalize(payload[k].(APIParams), after, v)
 			if err != nil {
 				return nil, err
 			}

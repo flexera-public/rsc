@@ -50,7 +50,7 @@ var _ = Describe("Config", func() {
 
 			Context("containing invalid JSON", func() {
 				BeforeEach(func() {
-					tempFile.WriteString(`{invalidJson}`)
+					tempFile.WriteString(`{invalidJSON}`)
 				})
 
 				It("returns an error", func() {

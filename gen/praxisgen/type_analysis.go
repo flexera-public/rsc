@@ -13,8 +13,8 @@ import (
 // Regular expression used to capture brackets in query name
 var bracketRegexp = regexp.MustCompile(`(\[|\])+`)
 
-// Analyze an attribute, create corresponding ActionParam
-func (a *ApiAnalyzer) AnalyzeAttribute(name, query string, attr map[string]interface{}) (*gen.ActionParam, error) {
+// AnalyzeAttribute analyzes an attribute creating a corresponding ActionParam.
+func (a *APIAnalyzer) AnalyzeAttribute(name, query string, attr map[string]interface{}) (*gen.ActionParam, error) {
 	param := gen.ActionParam{Name: name, QueryName: query, VarName: toVarName(name)}
 	if d, ok := attr["description"]; ok {
 		param.Description = removeBlankLines(d.(string))
@@ -56,8 +56,8 @@ func (a *ApiAnalyzer) AnalyzeAttribute(name, query string, attr map[string]inter
 	return &param, nil
 }
 
-// Analyze type given its json definition
-func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) (gen.DataType, error) {
+// AnalyzeType analyzes a type given its JSON definition.
+func (a *APIAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) (gen.DataType, error) {
 	n, ok := typeDef["name"].(string)
 	if !ok {
 		n = "Struct" // Assume inline struct (e.g. payload types)
@@ -183,8 +183,8 @@ func (a *ApiAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 	return dataType, nil
 }
 
-// Helper method that creates or retrieve a object data type given its attributes.
-func (a *ApiAnalyzer) CreateType(query string, attributes map[string]interface{}) (*gen.ObjectDataType, error) {
+// CreateType is a helper method that creates or retrieve a object data type given its attributes.
+func (a *APIAnalyzer) CreateType(query string, attributes map[string]interface{}) (*gen.ObjectDataType, error) {
 	name := inflect.Camelize(bracketRegexp.ReplaceAllLiteralString(query, "_") + "_struct")
 	obj := a.Registry.CreateInlineType(name)
 	obj.Fields = make([]*gen.ActionParam, len(attributes))

@@ -13,13 +13,13 @@ import (
 // Metadata synthetized from all CA APIs metadata
 var GenMetadata map[string]*metadata.Resource
 
-// CA 1.0 common client to all cloud analytics APIs
-type Api struct {
-	*rsapi.Api
+// API is the CA 1.0 common client to all cloud analytics APIs.
+type API struct {
+	*rsapi.API
 }
 
-// Build client from command line
-func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
+// FromCommandLine builds a client from the command line.
+func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 	api, err := rsapi.FromCommandLine(cmdLine)
 	if err != nil {
 		return nil, err
@@ -27,15 +27,15 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	setupMetadata()
 	api.Host = apiHostFromLogin(cmdLine.Host)
 	api.Metadata = GenMetadata
-	return &Api{api}, nil
+	return &API{api}, nil
 }
 
 // New returns a CA API client.
-func New(h string, a rsapi.Authenticator) *Api {
+func New(h string, a rsapi.Authenticator) *API {
 	api := rsapi.New(h, a)
 	setupMetadata()
 	api.Metadata = GenMetadata
-	return &Api{Api: api}
+	return &API{API: api}
 }
 
 func apiHostFromLogin(host string) string {

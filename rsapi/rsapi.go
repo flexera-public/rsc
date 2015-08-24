@@ -13,36 +13,36 @@ import (
 )
 
 type (
-	// RightScale client
+	// API is the RightScale API client.
 	// Instances of this struct should be created through `New`, `NewRL10` or `FromCommandLine`.
-	Api struct {
+	API struct {
 		Auth                  Authenticator         // Authenticator, signs requests for auth
 		Host                  string                // API host, e.g. "us-3.rightscale.com"
 		Client                httpclient.HTTPClient // Underlying http client (not used for authentication requests as these necessitate special redirect handling)
 		FetchLocationResource bool                  // Whether to fetch resource pointed by Location header
-		Metadata              ApiMetadata           // Generated API metadata
+		Metadata              APIMetadata           // Generated API metadata
 
 		insecure bool // Whether HTTP should be used instead of HTTPS (used by RL10 proxied requests)
 		// Use Insecure method to set to true.
 	}
 )
 
-// Api metadata consists of resource metadata indexed by resource name
-type ApiMetadata map[string]*metadata.Resource
+// APIMetadata consists of resource metadata indexed by resource name.
+type APIMetadata map[string]*metadata.Resource
 
-// Generic API parameter type, used to specify optional parameters for example
-type ApiParams map[string]interface{}
+// APIParams is a generic API parameter type, used to specify optional parameters for example.
+type APIParams map[string]interface{}
 
 // New returns a API client that uses the given authenticator.
 // host may be blank in which case client attempts to resolve it using auth.
-func New(host string, auth Authenticator) *Api {
+func New(host string, auth Authenticator) *API {
 	client := httpclient.New()
 	if strings.HasPrefix(host, "http://") {
 		host = host[7:]
 	} else if strings.HasPrefix(host, "https://") {
 		host = host[8:]
 	}
-	a := &Api{
+	a := &API{
 		Auth:   auth,
 		Host:   host,
 		Client: client,
@@ -56,7 +56,7 @@ func New(host string, auth Authenticator) *Api {
 // NewRL10 returns a API client that uses the information stored in /var/run/rightlink/secret to do
 // auth and configure the host. The client behaves identically to the client returned by New in
 // all other regards.
-func NewRL10() (*Api, error) {
+func NewRL10() (*API, error) {
 	client := httpclient.New()
 	rllConfig, err := os.Open(RllSecret)
 	if err != nil {
@@ -88,7 +88,7 @@ func NewRL10() (*Api, error) {
 	host := "localhost:" + port
 	auth := NewRL10Authenticator(secret)
 	auth.SetHost(host)
-	api := &Api{
+	api := &API{
 		Auth:   auth,
 		Host:   host,
 		Client: client,
@@ -97,9 +97,9 @@ func NewRL10() (*Api, error) {
 	return api, nil
 }
 
-// Build client from command line
-func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
-	var client *Api
+// FromCommandLine builds an API client from the command line.
+func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
+	var client *API
 	ss := strings.HasPrefix(cmdLine.Command, "ss")
 	if cmdLine.RL10 {
 		var err error
@@ -156,9 +156,9 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	return client, nil
 }
 
-// CanAuthenticate() makes a test authenticated request to the RightScale API and returns an error
+// CanAuthenticate makes a test authenticated request to the RightScale API and returns an error
 // if it fails.
-func (a *Api) CanAuthenticate() error {
+func (a *API) CanAuthenticate() error {
 	res := a.Auth.CanAuthenticate(a.Host)
 	return res
 }

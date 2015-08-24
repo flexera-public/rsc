@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated with:
-// $ praxisgen -metadata=ss/ssm/restful_doc -output=ss/ssm -pkg=ssm -target=1.0 -client=Api
+// $ praxisgen -metadata=ss/ssm/restful_doc -output=ss/ssm -pkg=ssm -target=1.0 -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -36,7 +36,7 @@ Self-Service.`,
 				Description: `List information about the Executions, or use a filter to only return certain Executions. A view can be used for various levels of detail.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/executions",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions`),
@@ -69,7 +69,7 @@ Self-Service.`,
 						ValidValues: []string{"default", "expanded"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: `Filter by status, syntax is ["status==running"]`,
@@ -103,7 +103,7 @@ Self-Service.`,
 				Description: `Show details for a given Execution. A view can be used for various levels of detail.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/executions/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)`),
@@ -120,7 +120,7 @@ Self-Service.`,
 						ValidValues: []string{"default", "expanded", "source"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -138,7 +138,7 @@ Self-Service.`,
 				Description: `Create a new execution from a CAT, a compiled CAT, an Application in the Catalog, or a Template in Designer`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions`),
@@ -990,7 +990,7 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "application_href",
 						Description: `The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and template_href.`,
@@ -1095,7 +1095,7 @@ Self-Service.`,
 				Description: `Updates an execution end date or selected schedule.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/projects/%s/executions/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)`),
@@ -1119,7 +1119,7 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "current_schedule",
 						Description: `The name of the schedule to select, or nil to use the '24/7' schedule`,
@@ -1144,7 +1144,7 @@ Self-Service.`,
 				Description: `No description provided for delete.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/projects/%s/executions/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)`),
@@ -1161,7 +1161,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:  false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "force",
 						Description: `Force delete execution, bypass state validation so that non term can deleted.
@@ -1179,7 +1179,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Delete several executions from the database. Note: if an execution has not successfully been terminated, there may still be associated cloud resources running.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/projects/%s/executions",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions`),
@@ -1204,7 +1204,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "force",
 						Description: `Force delete execution, bypass state validation so that non term can deleted.
@@ -1230,7 +1230,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Download the CAT source for the execution.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/executions/%s/download",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/download`),
@@ -1246,7 +1246,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "api_version",
 						Description: `The API version (only valid value is currently "1.0")`,
@@ -1263,14 +1263,14 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Launch an Execution.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/%s/actions/launch",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/launch`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -1278,14 +1278,14 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Start an Execution.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/%s/actions/start",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/start`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -1293,14 +1293,14 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Stop an Execution.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/%s/actions/stop",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/stop`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -1308,14 +1308,14 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Terminate an Execution.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/%s/actions/terminate",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/terminate`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -1323,7 +1323,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Launch several Executions.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/actions/launch",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/launch`),
@@ -1339,7 +1339,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `List of execution IDs to launch`,
@@ -1356,7 +1356,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Start several Executions.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/actions/start",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/start`),
@@ -1372,7 +1372,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `List of execution IDs to start`,
@@ -1389,7 +1389,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Stop several Executions.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/actions/stop",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/stop`),
@@ -1405,7 +1405,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `List of execution IDs to stop`,
@@ -1422,7 +1422,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Terminate several Executions.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/actions/terminate",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/terminate`),
@@ -1438,7 +1438,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `List of execution IDs to terminate`,
@@ -1455,7 +1455,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Runs an Operation on an Execution.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/%s/actions/run",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/run`),
@@ -1496,7 +1496,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "configuration_options[]",
 						Description: `The configuration options of the operation. These are the values provided for the CloudApp parameters that this operation depends on.`,
@@ -1521,7 +1521,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				Description: `Runs an Operation on several Executions.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/executions/actions/run",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/run`),
@@ -1570,7 +1570,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `List of execution IDs to run`,
@@ -1610,7 +1610,7 @@ available via the API/UI and are not distributed externally to users.`,
 				Description: `List the most recent 50 Notifications. Use the filter parameter to specify specify Executions.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/notifications",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/notifications`),
@@ -1634,7 +1634,7 @@ available via the API/UI and are not distributed externally to users.`,
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: `Filter by Execution`,
@@ -1659,14 +1659,14 @@ available via the API/UI and are not distributed externally to users.`,
 				Description: `Get details for a specific Notification`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/notifications/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/notifications/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -1682,7 +1682,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 				Description: `Get the list of 50 most recent Operations (usually filtered by Execution).`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/operations",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/operations`),
@@ -1723,7 +1723,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 						ValidValues: []string{"default", "expanded"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: `Filter by Execution ID or status`,
@@ -1765,7 +1765,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 				Description: `Get the details for a specific Operation`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/operations/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/operations/([^/]+)`),
@@ -1782,7 +1782,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 						ValidValues: []string{"default", "expanded"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `Optional view to return`,
@@ -1800,7 +1800,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 				Description: `Trigger an Operation to run by specifying the Execution ID and the name of the Operation.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/operations",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/operations`),
@@ -1849,7 +1849,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "execution_id",
 						Description: `The Execution ID on which to run the operation`,
@@ -1889,7 +1889,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				Description: `List ScheduledAction resources in the project. The list can be filtered to a given execution.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/scheduled_actions",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions`),
@@ -1905,7 +1905,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: `Filter by execution id or execution creator (user) id.`,
@@ -1922,14 +1922,14 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				Description: `Retrieve given ScheduledAction resource.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/projects/%s/scheduled_actions/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -1937,7 +1937,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				Description: `Create a new ScheduledAction resource.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/scheduled_actions",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions`),
@@ -2027,7 +2027,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "action",
 						Description: `The name of the action to be run. When the value is "run", the "operation" struct should contain the name of the operation to run as well as any options needed by the operation.`,
@@ -2093,7 +2093,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				Description: `Updates the 'next_occurrence' property of a ScheduledAction.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/projects/%s/scheduled_actions/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)`),
@@ -2109,7 +2109,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "next_occurrence",
 						Description: `The Date/Time for the next occurrence, useful for delaying a single occurrence. DateTimes should be passed as ISO-8601 formatted time strings.`,
@@ -2126,14 +2126,14 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				Description: `Delete a ScheduledAction.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/projects/%s/scheduled_actions/%s",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2141,7 +2141,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				Description: `Skips the requested number of ScheduledAction occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledAction is returned.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/projects/%s/scheduled_actions/%s/actions/skip",
 						Variables:  []string{"project_id", "id"},
 						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)/actions/skip`),
@@ -2157,7 +2157,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "count",
 						Description: `The number of scheduled occurrences to skip. If not provided, the default count is 1.`,

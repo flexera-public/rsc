@@ -337,7 +337,7 @@ import "github.com/rightscale/rsc
 
 ### Client Creation
 
-Each API client package defines an `Api` struct that represents the API
+Each API client package defines an `API` struct that represents the API
 client. Clients are created using one of three factory methods: `New`,
 `NewRL10` or `FromCommandLine`. The latter is used by the top level
 `main` package to create clients from the values provided on the command
@@ -419,11 +419,11 @@ and the `Index()` method is defined as:
 // Optional parameters:
 // filter
 // view
-func (loc *CloudLocator) Index(options rsapi.ApiParams) ([]*Cloud, error)
+func (loc *CloudLocator) Index(options rsapi.APIParams) ([]*Cloud, error)
 ```
 The following code would invoke the `Index()` method using the default view and no filter to make the API request:
 ```go
-var clouds, err = api.CloudLocator("/api/clouds").Index(rsapi.ApiParams{})
+var clouds, err = api.CloudLocator("/api/clouds").Index(rsapi.APIParams{})
 ```
 `Create` actions all return a locator so that fetching the corresponding resource is easy:
 ```go
@@ -431,7 +431,7 @@ var volumesLocator = client.VolumeLocator("/api/clouds/1/volumes")
 var params cm15.VolumeParam{} // Code that sets parameters omitted for brevity
 loc, err := volumeLocator.Create(&params)
 if err == nil {
-	volume, err := loc.Show(rsapi.ApiParams{})
+	volume, err := loc.Show(rsapi.APIParams{})
 	// ... check error, use volume etc.
 }
 ```
@@ -458,12 +458,12 @@ method which accepts the name of a resource, the name of an action,
 the href of the resource and a map of generic parameters (in the form of
 `map[string]interface{}`):
 ```go
-func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams) (*http.Request, error)
+func (a *API) BuildRequest(resource, action, href string, params rsapi.APIParams) (*http.Request, error)
 ```
 The client also exposes a `PerformRequest` method that makes the request and optionally
 dumps the request body and response to STDERR for debugging:
 ```go
-func (a *Api) PerformRequest(req *http.Request) (*http.Response, error)
+func (a *API) PerformRequest(req *http.Request) (*http.Response, error)
 ```
 The `httpclient` package exposes a `DumpFormat` variable that controls how much logging is done
 when HTTP requests are done. The default consists of logging the request method and URL as well
@@ -473,7 +473,7 @@ the request and response bodies to get logged as well using the Debug log level.
 ### Common code
 
 The package `rsapi` contains common code for all client packages. It
-also defines an Api struct that each client embeds as an anonymous field
+also defines an API struct that each client embeds as an anonymous field
 and leverages for all common code. One such method that may be of use in
 your code is `LoadResponse` that simply unmarshals the response body JSON
 and returns the result. If the response contains a `Location` header (all
@@ -481,7 +481,7 @@ and returns the result. If the response contains a `Location` header (all
 the value of the location under the `"Location"` key. The signature of
 `LoadResponse` is:
 ```go
-func (a *Api) LoadResponse(resp *http.Response) (interface{}, error)
+func (a *API) LoadResponse(resp *http.Response) (interface{}, error)
 ```
 The `rsapi` package also includes authenticators which signs API requests
 by adding the required auth headers (cookie in the case of email/password

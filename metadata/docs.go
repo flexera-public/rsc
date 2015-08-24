@@ -1,4 +1,4 @@
-// This package contains data structured produced by all API generators and consumed
+// Package metadata contains data structured produced by all API generators and consumed
 // by all API clients and command line tools.
 // These data structures include information about each resource exposed by the API.
 // They describe the actions exposed by each resource in a way that a command line

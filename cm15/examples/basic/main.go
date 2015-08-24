@@ -51,7 +51,7 @@ func main() {
 
 	// 3. Make cloud index call using extended view
 	l := client.CloudLocator("/api/clouds")
-	clouds, err := l.Index(rsapi.ApiParams{"view": "extended"})
+	clouds, err := l.Index(rsapi.APIParams{"view": "extended"})
 	if err != nil {
 		fail("failed to list clouds: %s", err)
 	}

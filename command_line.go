@@ -16,7 +16,7 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-// Retrieve command and top level flag values
+// ParseCommandLine retrieves the command and top level flag values.
 func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	// 1. Register all commands
 	app.Command("setup", "create config file, defaults to $HOME/.rsc, use '--config' to override")
@@ -37,7 +37,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("noAuth", "Make unauthenticated requests, used for testing").BoolVar(&cmdLine.NoAuth)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
 	app.Flag("xm", "Extract zero, one or more values using JSON:select and return newline separated list").StringVar(&cmdLine.ExtractSelector)
-	app.Flag("xj", "Extract zero, one or more values using JSON:select and return JSON").StringVar(&cmdLine.ExtractSelectorJson)
+	app.Flag("xj", "Extract zero, one or more values using JSON:select and return JSON").StringVar(&cmdLine.ExtractSelectorJSON)
 	app.Flag("xh", "Extract header with given name").StringVar(&cmdLine.ExtractHeader)
 	app.Flag("fetch", "Fetch resource with href present in 'Location' header").BoolVar(&cmdLine.FetchResource)
 	d := &cmdLine.Dump // strange, not sure why Kingpin forces that
@@ -61,7 +61,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	var err error
 	if help == "--help" || help == "-h" || help == "-help" || help == "-?" {
 		cmdLine.ShowHelp = true
-		lastArgIndex -= 1
+		lastArgIndex--
 		cmd, err = app.Parse(args[:lastArgIndex])
 	} else {
 		cmd, err = app.Parse(args)
@@ -127,24 +127,24 @@ func validateCommandLine(cmdLine *cmd.CommandLine) {
 
 // List all client commands below
 const (
-	// Command for API 1.5 client
+	// Cm15Command is the command for API 1.5 client.
 	Cm15Command = "cm15"
 
-	// Command for API 1.6 client
+	// Cm16Command is the command for API 1.6 client.
 	Cm16Command = "cm16"
 
-	// Command for SS client
+	// SsCommand is the command for SS client.
 	SsCommand = "ss"
 
-	// Command for RL10 client
+	// Rl10Command is the command for RL10 client.
 	Rl10Command = "rl10"
 
-	// Command for CA client
+	// CaCommand is the command for CA client.
 	CaCommand = "ca"
 )
 
-// Instantiate client with given name from command line arguments
-func ApiClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error) {
+// APIClient instantiates a client with the given name from command line arguments.
+func APIClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error) {
 	switch name {
 	case Cm15Command:
 		return cm15.FromCommandLine(cmdLine)
@@ -161,25 +161,25 @@ func ApiClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error)
 	}
 }
 
-// Register all API client commands
+// RegisterClientCommands registers all API client commands.
 func RegisterClientCommands(app *kingpin.Application) {
-	cm15Cmd := app.Command(Cm15Command, cm15.ApiName)
-	registrar := rsapi.Registrar{ApiCmd: cm15Cmd}
+	cm15Cmd := app.Command(Cm15Command, cm15.APIName)
+	registrar := rsapi.Registrar{APICmd: cm15Cmd}
 	cm15.RegisterCommands(&registrar)
 
-	cm16Cmd := app.Command(Cm16Command, cm16.ApiName)
-	registrar = rsapi.Registrar{ApiCmd: cm16Cmd}
+	cm16Cmd := app.Command(Cm16Command, cm16.APIName)
+	registrar = rsapi.Registrar{APICmd: cm16Cmd}
 	cm16.RegisterCommands(&registrar)
 
-	ssCmd := app.Command(SsCommand, ss.ApiName)
-	registrar = rsapi.Registrar{ApiCmd: ssCmd}
+	ssCmd := app.Command(SsCommand, ss.APIName)
+	registrar = rsapi.Registrar{APICmd: ssCmd}
 	ss.RegisterCommands(&registrar)
 
-	rl10Cmd := app.Command(Rl10Command, rl10.ApiName)
-	registrar = rsapi.Registrar{ApiCmd: rl10Cmd}
+	rl10Cmd := app.Command(Rl10Command, rl10.APIName)
+	registrar = rsapi.Registrar{APICmd: rl10Cmd}
 	rl10.RegisterCommands(&registrar)
 
-	caCmd := app.Command(CaCommand, ca.ApiName)
-	registrar = rsapi.Registrar{ApiCmd: caCmd}
+	caCmd := app.Command(CaCommand, ca.APIName)
+	registrar = rsapi.Registrar{APICmd: caCmd}
 	ca.RegisterCommands(&registrar)
 }

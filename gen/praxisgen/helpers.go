@@ -17,7 +17,8 @@ var (
 	// Check whether string only contains blank characters
 	blankRegexp = regexp.MustCompile(`^\s*$`)
 
-	// List of praxis built-in types for which there is no "type" member in the corresponding JSON
+	// BuiltInTypes is the list of praxis built-in types for which there is no "type" member
+	// in the corresponding JSON.
 	BuiltInTypes = []string{"RsId", "IP", "QueryFilter", "Href", "Tag", "CSV"}
 )
 
@@ -77,7 +78,7 @@ func removeBlankLines(doc string) string {
 	for _, line := range lines {
 		if len(line) > 0 && !blankRegexp.MatchString(line) {
 			fullLines[i] = line
-			i += 1
+			i++
 		}
 	}
 	return strings.Join(fullLines[:i], "\n")
@@ -97,9 +98,9 @@ func isBuiltInType(name string) bool {
 func sortedKeys(m map[string]interface{}) []string {
 	keys := make([]string, len(m))
 	idx := 0
-	for k, _ := range m {
+	for k := range m {
 		keys[idx] = k
-		idx += 1
+		idx++
 	}
 	sort.Strings(keys)
 	return keys

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestApi15gen(t *testing.T) {
+func TestAPI15gen(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Api15gen Suite")
+	RunSpecs(t, "API15gen Suite")
 }

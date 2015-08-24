@@ -15,13 +15,13 @@ import (
 // Metadata synthetized from all SS APIs metadata
 var GenMetadata map[string]*metadata.Resource
 
-// Self-Service 1.0 common client to all self-service APIs
-type Api struct {
-	*rsapi.Api
+// API is the Self-Service 1.0 common client to all self-service APIs.
+type API struct {
+	*rsapi.API
 }
 
-// Build client from command line
-func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
+// FromCommandLine builds a client from the command line.
+func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 	api, err := rsapi.FromCommandLine(cmdLine)
 	if err != nil {
 		return nil, err
@@ -31,18 +31,18 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*Api, error) {
 	if api.Auth != nil {
 		api.Auth.SetHost(api.Host)
 	}
-	return &Api{api}, nil
+	return &API{api}, nil
 }
 
 // New returns a Self-Service API client.
-func New(h string, a rsapi.Authenticator) *Api {
+func New(h string, a rsapi.Authenticator) *API {
 	api := rsapi.New(h, a)
 	setupMetadata()
 	api.Metadata = GenMetadata
-	return &Api{Api: api}
+	return &API{API: api}
 }
 
-// Return Self-service endpoint from login endpoint.
+// HostFromLogin returns the Self-service endpoint from its login endpoint.
 // The following isn't great but seems better than having to enter by hand.
 func HostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")

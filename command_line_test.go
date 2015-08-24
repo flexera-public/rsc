@@ -66,7 +66,7 @@ var _ = Describe("Command line parsing", func() {
 
 				It("initializes the command line struct", func() {
 					Ω(err).ShouldNot(HaveOccurred())
-					Ω(cmdLine.ExtractSelectorJson).ShouldNot(BeEmpty())
+					Ω(cmdLine.ExtractSelectorJSON).ShouldNot(BeEmpty())
 				})
 			})
 
@@ -138,12 +138,12 @@ var _ = Describe("Command line parsing", func() {
 				})
 
 				JustBeforeEach(func() {
-					client, clErr = ApiClient("cm15", cmdLine)
+					client, clErr = APIClient("cm15", cmdLine)
 				})
 				It("creates the client", func() {
 					Ω(clErr).ShouldNot(HaveOccurred())
 					Ω(client).ShouldNot(BeNil())
-					_, ok := client.(*cm15.Api)
+					_, ok := client.(*cm15.API)
 					Ω(ok).Should(BeTrue())
 				})
 			})
@@ -154,12 +154,12 @@ var _ = Describe("Command line parsing", func() {
 				})
 
 				JustBeforeEach(func() {
-					client, clErr = ApiClient("cm16", cmdLine)
+					client, clErr = APIClient("cm16", cmdLine)
 				})
 				It("creates the client", func() {
 					Ω(clErr).ShouldNot(HaveOccurred())
 					Ω(client).ShouldNot(BeNil())
-					_, ok := client.(*cm16.Api)
+					_, ok := client.(*cm16.API)
 					Ω(ok).Should(BeTrue())
 				})
 			})
@@ -170,12 +170,12 @@ var _ = Describe("Command line parsing", func() {
 				})
 
 				JustBeforeEach(func() {
-					client, clErr = ApiClient("ss", cmdLine)
+					client, clErr = APIClient("ss", cmdLine)
 				})
 				It("creates the client", func() {
 					Ω(clErr).ShouldNot(HaveOccurred())
 					Ω(client).ShouldNot(BeNil())
-					_, ok := client.(*ss.Api)
+					_, ok := client.(*ss.API)
 					Ω(ok).Should(BeTrue())
 				})
 			})

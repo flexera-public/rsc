@@ -13,7 +13,7 @@ type AngularWriter struct {
 	angularTmpl *template.Template
 }
 
-// Angular writer factory
+// NewAngularWriter creates a new code writer that generates angular.js types.
 func NewAngularWriter() (*AngularWriter, error) {
 	funcMap := template.FuncMap{
 		"comment":     comment,
@@ -30,7 +30,7 @@ func NewAngularWriter() (*AngularWriter, error) {
 	}, nil
 }
 
-// Write code for a resource
+// WriteResource writes the code for a resource.
 func (c *AngularWriter) WriteResource(resource *gen.Resource, w io.Writer) error {
 	return c.angularTmpl.Execute(w, resource)
 }
@@ -73,7 +73,7 @@ app.service('{{.Name}}Client', function(ApiFactory) {
   return ApiFactory.buildClient({
     actions: { {{range .Actions}}{{$action := .}}
       {{.Name}}: {
-        method: '{{(index .PathPatterns 0).HttpMethod}}',
+        method: '{{(index .PathPatterns 0).HTTPMethod}}',
         path: '{{path .}}'{{if .QueryParamNames}},
         queryParams: {
         {{range .QueryParamNames}}  {{.}}: { {{if mandatory $action .}}required: true {{end}}},

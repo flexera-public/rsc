@@ -25,6 +25,7 @@ func decodeBase64(b []byte) []byte {
 	return data
 }
 
+// Encrypt encrypts the given text with a hard-coded secret. Not truly secure.
 func Encrypt(text string) (string, error) {
 	bytes := []byte(text)
 	key := seekret()
@@ -43,6 +44,7 @@ func Encrypt(text string) (string, error) {
 	return string(encodeBase64(ciphertext)), nil
 }
 
+// Decrypt decrypts the given encrypted string using the hard-coded secret.
 func Decrypt(text string) (string, error) {
 	if text == "" {
 		return "", nil

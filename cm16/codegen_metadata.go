@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated with:
-// $ praxisgen -metadata=cm16/api_docs -output=cm16 -pkg=cm16 -target=1.6 -client=Api
+// $ praxisgen -metadata=cm16/api_docs -output=cm16 -pkg=cm16 -target=1.6 -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -28,7 +28,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/accounts",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/accounts`),
@@ -45,7 +45,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -63,7 +63,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/accounts/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/accounts/([^/]+)`),
@@ -80,7 +80,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -105,7 +105,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/clouds`),
@@ -122,7 +122,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -140,7 +140,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)`),
@@ -157,7 +157,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -183,13 +183,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/datacenters",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/datacenters`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/datacenters",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/datacenters`),
@@ -206,7 +206,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -224,13 +224,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/datacenters/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/datacenters/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/datacenters/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/datacenters/([^/]+)`),
@@ -247,7 +247,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -271,7 +271,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `          List all Deployments in an Account.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/deployments",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/deployments`),
@@ -296,7 +296,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full", "link"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ids",
 						Description: `Comma separated list of Deployment IDs`,
@@ -322,7 +322,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a single Deployment`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/deployments/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/deployments/([^/]+)`),
@@ -339,7 +339,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full", "link"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -363,7 +363,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Lists all Images for the given Cloud.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/images",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/images`),
@@ -394,7 +394,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "filter",
 						Description: `              Filter images by attribute. A filter takes the form <attribute><operator><value>.
@@ -426,13 +426,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/images/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/images/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/images/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/images/([^/]+)`),
@@ -449,7 +449,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -479,13 +479,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `          List all Instances in an account.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instances",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instances`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances`),
@@ -536,7 +536,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full", "tiny", "link"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "filter",
 						Description: `              Filter instances by attribute. A filter takes the form <attribute><operator><value>.
@@ -588,13 +588,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instances/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/instances/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)`),
@@ -611,7 +611,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full", "tiny"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -638,13 +638,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_types",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instance_types`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instance_types",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instance_types`),
@@ -661,7 +661,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -679,13 +679,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_types/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/instance_types/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instance_types/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instance_types/([^/]+)`),
@@ -702,7 +702,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -726,13 +726,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/ip_addresses",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/ip_addresses`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_addresses",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses`),
@@ -749,7 +749,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -767,13 +767,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/ip_addresses/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/ip_addresses/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_addresses/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)`),
@@ -790,7 +790,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -815,13 +815,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/ip_address_bindings",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/ip_address_bindings`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_address_bindings",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings`),
@@ -838,7 +838,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -856,13 +856,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/ip_address_bindings/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/ip_address_bindings/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_address_bindings/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings/([^/]+)`),
@@ -879,7 +879,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -906,7 +906,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/multi_cloud_images",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/multi_cloud_images`),
@@ -923,7 +923,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -941,7 +941,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/multi_cloud_images/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/multi_cloud_images/([^/]+)`),
@@ -958,7 +958,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -981,7 +981,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/networks",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/networks`),
@@ -998,7 +998,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1016,7 +1016,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/networks/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/networks/([^/]+)`),
@@ -1033,7 +1033,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1057,7 +1057,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/network_interfaces",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/network_interfaces`),
@@ -1074,7 +1074,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1092,7 +1092,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/network_interfaces/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/network_interfaces/([^/]+)`),
@@ -1109,7 +1109,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1133,7 +1133,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/network_interface_attachments",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/network_interface_attachments`),
@@ -1150,7 +1150,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1168,7 +1168,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/network_interface_attachments/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/network_interface_attachments/([^/]+)`),
@@ -1185,7 +1185,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1210,19 +1210,19 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/security_groups",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/security_groups`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/security_groups",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/security_groups`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances/%s/security_groups",
 						Variables:  []string{"cloud_id", "instance_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/security_groups`),
@@ -1239,7 +1239,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1257,13 +1257,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/security_groups/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/security_groups/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/security_groups/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)`),
@@ -1280,7 +1280,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1316,7 +1316,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/servers",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/servers`),
@@ -1333,7 +1333,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1351,7 +1351,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/servers/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/servers/([^/]+)`),
@@ -1368,7 +1368,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1400,7 +1400,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/server_arrays",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/server_arrays`),
@@ -1417,7 +1417,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1435,7 +1435,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/server_arrays/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/server_arrays/([^/]+)`),
@@ -1452,7 +1452,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "extended", "full"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1483,7 +1483,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/server_templates",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/server_templates`),
@@ -1500,7 +1500,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "embedded"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1518,7 +1518,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/server_templates/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/server_templates/([^/]+)`),
@@ -1535,7 +1535,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default", "embedded"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1558,13 +1558,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/ssh_keys",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/ssh_keys`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ssh_keys",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys`),
@@ -1581,7 +1581,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1599,13 +1599,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/ssh_keys/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/ssh_keys/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ssh_keys/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys/([^/]+)`),
@@ -1622,7 +1622,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1646,19 +1646,19 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/subnets",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/subnets`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/subnets",
 						Variables:  []string{"cloud_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/subnets`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances/%s/subnets",
 						Variables:  []string{"cloud_id", "instance_id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets`),
@@ -1675,7 +1675,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,
@@ -1693,13 +1693,13 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `      Currently not implemented.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/subnets/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/subnets/([^/]+)`),
 					},
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/subnets/%s",
 						Variables:  []string{"cloud_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/subnets/([^/]+)`),
@@ -1716,7 +1716,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"default"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: `The view to use to render this resource`,

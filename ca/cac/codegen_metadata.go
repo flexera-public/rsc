@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated with:
-// $ praxisgen -metadata=ca/cac/docs/api -output=ca/cac -pkg=cac -target=1.0 -client=Api
+// $ praxisgen -metadata=ca/cac/docs/api -output=ca/cac -pkg=cac -target=1.0 -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -28,7 +28,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new child account.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/accounts",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/accounts`),
@@ -44,7 +44,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "dunno",
 						Description: ``,
@@ -61,7 +61,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all accounts.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/accounts",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/accounts`),
@@ -77,7 +77,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -94,7 +94,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific account.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/accounts/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/accounts/([^/]+)`),
@@ -110,7 +110,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -132,7 +132,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new AnalysisSnapshot.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/analysis_snapshots",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/analysis_snapshots`),
@@ -284,7 +284,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -366,7 +366,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific AnalysisSnapshot.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/analysis_snapshots/%s",
 						Variables:  []string{"uuid"},
 						Regexp:     regexp.MustCompile(`/api/analysis_snapshots/([^/]+)`),
@@ -382,7 +382,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -406,7 +406,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new BudgetAlert.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/budget_alerts",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/budget_alerts`),
@@ -525,7 +525,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"actual", "forecast"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -601,7 +601,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all BudgetAlerts.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/budget_alerts",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/budget_alerts`),
@@ -617,7 +617,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -634,7 +634,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific BudgetAlert.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/budget_alerts/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/budget_alerts/([^/]+)`),
@@ -650,7 +650,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -667,7 +667,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the provided attributes of a BudgetAlert.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/budget_alerts/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/budget_alerts/([^/]+)`),
@@ -743,7 +743,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"actual", "forecast"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -811,14 +811,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete a BudgetAlert.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/budget_alerts/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/budget_alerts/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -831,7 +831,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets the filter options which can be used for filtering the cloud bill breakdown calls.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/cloud_bills/actions/filter_options",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/cloud_bills/actions/filter_options`),
@@ -879,7 +879,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_bill_filters[]",
 						Description: `The filters to apply`,
@@ -935,7 +935,7 @@ var GenMetadata = map[string]*metadata.Resource{
           cloud bills per month during the last year grouped by product.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/cloud_bill_metrics/actions/grouped_time_series",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/cloud_bill_metrics/actions/grouped_time_series`),
@@ -983,7 +983,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "cloud_bill_filters[]",
 						Description: `The filters to apply`,
@@ -1037,7 +1037,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show the user's details.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/current_user",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/current_user`),
@@ -1053,7 +1053,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -1070,7 +1070,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the user's details.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/current_user",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/current_user`),
@@ -1151,7 +1151,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", "Africa/Asmara", "Africa/Asmera", "Africa/Bamako", "Africa/Bangui", "Africa/Banjul", "Africa/Bissau", "Africa/Blantyre", "Africa/Brazzaville", "Africa/Bujumbura", "Africa/Cairo", "Africa/Casablanca", "Africa/Ceuta", "Africa/Conakry", "Africa/Dakar", "Africa/Dar_es_Salaam", "Africa/Djibouti", "Africa/Douala", "Africa/El_Aaiun", "Africa/Freetown", "Africa/Gaborone", "Africa/Harare", "Africa/Johannesburg", "Africa/Juba", "Africa/Kampala", "Africa/Khartoum", "Africa/Kigali", "Africa/Kinshasa", "Africa/Lagos", "Africa/Libreville", "Africa/Lome", "Africa/Luanda", "Africa/Lubumbashi", "Africa/Lusaka", "Africa/Malabo", "Africa/Maputo", "Africa/Maseru", "Africa/Mbabane", "Africa/Mogadishu", "Africa/Monrovia", "Africa/Nairobi", "Africa/Ndjamena", "Africa/Niamey", "Africa/Nouakchott", "Africa/Ouagadougou", "Africa/Porto-Novo", "Africa/Sao_Tome", "Africa/Timbuktu", "Africa/Tripoli", "Africa/Tunis", "Africa/Windhoek", "America/Adak", "America/Anchorage", "America/Anguilla", "America/Antigua", "America/Araguaina", "America/Argentina/Buenos_Aires", "America/Argentina/Catamarca", "America/Argentina/ComodRivadavia", "America/Argentina/Cordoba", "America/Argentina/Jujuy", "America/Argentina/La_Rioja", "America/Argentina/Mendoza", "America/Argentina/Rio_Gallegos", "America/Argentina/Salta", "America/Argentina/San_Juan", "America/Argentina/San_Luis", "America/Argentina/Tucuman", "America/Argentina/Ushuaia", "America/Aruba", "America/Asuncion", "America/Atikokan", "America/Atka", "America/Bahia", "America/Bahia_Banderas", "America/Barbados", "America/Belem", "America/Belize", "America/Blanc-Sablon", "America/Boa_Vista", "America/Bogota", "America/Boise", "America/Buenos_Aires", "America/Cambridge_Bay", "America/Campo_Grande", "America/Cancun", "America/Caracas", "America/Catamarca", "America/Cayenne", "America/Cayman", "America/Chicago", "America/Chihuahua", "America/Coral_Harbour", "America/Cordoba", "America/Costa_Rica", "America/Creston", "America/Cuiaba", "America/Curacao", "America/Danmarkshavn", "America/Dawson", "America/Dawson_Creek", "America/Denver", "America/Detroit", "America/Dominica", "America/Edmonton", "America/Eirunepe", "America/El_Salvador", "America/Ensenada", "America/Fort_Wayne", "America/Fortaleza", "America/Glace_Bay", "America/Godthab", "America/Goose_Bay", "America/Grand_Turk", "America/Grenada", "America/Guadeloupe", "America/Guatemala", "America/Guayaquil", "America/Guyana", "America/Halifax", "America/Havana", "America/Hermosillo", "America/Indiana/Indianapolis", "America/Indiana/Knox", "America/Indiana/Marengo", "America/Indiana/Petersburg", "America/Indiana/Tell_City", "America/Indiana/Vevay", "America/Indiana/Vincennes", "America/Indiana/Winamac", "America/Indianapolis", "America/Inuvik", "America/Iqaluit", "America/Jamaica", "America/Jujuy", "America/Juneau", "America/Kentucky/Louisville", "America/Kentucky/Monticello", "America/Knox_IN", "America/Kralendijk", "America/La_Paz", "America/Lima", "America/Los_Angeles", "America/Louisville", "America/Lower_Princes", "America/Maceio", "America/Managua", "America/Manaus", "America/Marigot", "America/Martinique", "America/Matamoros", "America/Mazatlan", "America/Mendoza", "America/Menominee", "America/Merida", "America/Metlakatla", "America/Mexico_City", "America/Miquelon", "America/Moncton", "America/Monterrey", "America/Montevideo", "America/Montreal", "America/Montserrat", "America/Nassau", "America/New_York", "America/Nipigon", "America/Nome", "America/Noronha", "America/North_Dakota/Beulah", "America/North_Dakota/Center", "America/North_Dakota/New_Salem", "America/Ojinaga", "America/Panama", "America/Pangnirtung", "America/Paramaribo", "America/Phoenix", "America/Port-au-Prince", "America/Port_of_Spain", "America/Porto_Acre", "America/Porto_Velho", "America/Puerto_Rico", "America/Rainy_River", "America/Rankin_Inlet", "America/Recife", "America/Regina", "America/Resolute", "America/Rio_Branco", "America/Rosario", "America/Santa_Isabel", "America/Santarem", "America/Santiago", "America/Santo_Domingo", "America/Sao_Paulo", "America/Scoresbysund", "America/Shiprock", "America/Sitka", "America/St_Barthelemy", "America/St_Johns", "America/St_Kitts", "America/St_Lucia", "America/St_Thomas", "America/St_Vincent", "America/Swift_Current", "America/Tegucigalpa", "America/Thule", "America/Thunder_Bay", "America/Tijuana", "America/Toronto", "America/Tortola", "America/Vancouver", "America/Virgin", "America/Whitehorse", "America/Winnipeg", "America/Yakutat", "America/Yellowknife", "Antarctica/Casey", "Antarctica/Davis", "Antarctica/DumontDUrville", "Antarctica/Macquarie", "Antarctica/Mawson", "Antarctica/McMurdo", "Antarctica/Palmer", "Antarctica/Rothera", "Antarctica/South_Pole", "Antarctica/Syowa", "Antarctica/Troll", "Antarctica/Vostok", "Arctic/Longyearbyen", "Asia/Aden", "Asia/Almaty", "Asia/Amman", "Asia/Anadyr", "Asia/Aqtau", "Asia/Aqtobe", "Asia/Ashgabat", "Asia/Ashkhabad", "Asia/Baghdad", "Asia/Bahrain", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Bishkek", "Asia/Brunei", "Asia/Calcutta", "Asia/Chita", "Asia/Choibalsan", "Asia/Chongqing", "Asia/Chungking", "Asia/Colombo", "Asia/Dacca", "Asia/Damascus", "Asia/Dhaka", "Asia/Dili", "Asia/Dubai", "Asia/Dushanbe", "Asia/Gaza", "Asia/Harbin", "Asia/Hebron", "Asia/Ho_Chi_Minh", "Asia/Hong_Kong", "Asia/Hovd", "Asia/Irkutsk", "Asia/Istanbul", "Asia/Jakarta", "Asia/Jayapura", "Asia/Jerusalem", "Asia/Kabul", "Asia/Kamchatka", "Asia/Karachi", "Asia/Kashgar", "Asia/Kathmandu", "Asia/Katmandu", "Asia/Khandyga", "Asia/Kolkata", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuching", "Asia/Kuwait", "Asia/Macao", "Asia/Macau", "Asia/Magadan", "Asia/Makassar", "Asia/Manila", "Asia/Muscat", "Asia/Nicosia", "Asia/Novokuznetsk", "Asia/Novosibirsk", "Asia/Omsk", "Asia/Oral", "Asia/Phnom_Penh", "Asia/Pontianak", "Asia/Pyongyang", "Asia/Qatar", "Asia/Qyzylorda", "Asia/Rangoon", "Asia/Riyadh", "Asia/Saigon", "Asia/Sakhalin", "Asia/Samarkand", "Asia/Seoul", "Asia/Shanghai", "Asia/Singapore", "Asia/Srednekolymsk", "Asia/Taipei", "Asia/Tashkent", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tel_Aviv", "Asia/Thimbu", "Asia/Thimphu", "Asia/Tokyo", "Asia/Ujung_Pandang", "Asia/Ulaanbaatar", "Asia/Ulan_Bator", "Asia/Urumqi", "Asia/Ust-Nera", "Asia/Vientiane", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Bermuda", "Atlantic/Canary", "Atlantic/Cape_Verde", "Atlantic/Faeroe", "Atlantic/Faroe", "Atlantic/Jan_Mayen", "Atlantic/Madeira", "Atlantic/Reykjavik", "Atlantic/South_Georgia", "Atlantic/St_Helena", "Atlantic/Stanley", "Australia/ACT", "Australia/Adelaide", "Australia/Brisbane", "Australia/Broken_Hill", "Australia/Canberra", "Australia/Currie", "Australia/Darwin", "Australia/Eucla", "Australia/Hobart", "Australia/LHI", "Australia/Lindeman", "Australia/Lord_Howe", "Australia/Melbourne", "Australia/NSW", "Australia/North", "Australia/Perth", "Australia/Queensland", "Australia/South", "Australia/Sydney", "Australia/Tasmania", "Australia/Victoria", "Australia/West", "Australia/Yancowinna", "Brazil/Acre", "Brazil/DeNoronha", "Brazil/East", "Brazil/West", "CET", "CST6CDT", "Canada/Atlantic", "Canada/Central", "Canada/East-Saskatchewan", "Canada/Eastern", "Canada/Mountain", "Canada/Newfoundland", "Canada/Pacific", "Canada/Saskatchewan", "Canada/Yukon", "Chile/Continental", "Chile/EasterIsland", "Cuba", "EET", "EST", "EST5EDT", "Egypt", "Eire", "Etc/GMT", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT-0", "Etc/GMT-1", "Etc/GMT-10", "Etc/GMT-11", "Etc/GMT-12", "Etc/GMT-13", "Etc/GMT-14", "Etc/GMT-2", "Etc/GMT-3", "Etc/GMT-4", "Etc/GMT-5", "Etc/GMT-6", "Etc/GMT-7", "Etc/GMT-8", "Etc/GMT-9", "Etc/GMT0", "Etc/Greenwich", "Etc/UCT", "Etc/UTC", "Etc/Universal", "Etc/Zulu", "Europe/Amsterdam", "Europe/Andorra", "Europe/Athens", "Europe/Belfast", "Europe/Belgrade", "Europe/Berlin", "Europe/Bratislava", "Europe/Brussels", "Europe/Bucharest", "Europe/Budapest", "Europe/Busingen", "Europe/Chisinau", "Europe/Copenhagen", "Europe/Dublin", "Europe/Gibraltar", "Europe/Guernsey", "Europe/Helsinki", "Europe/Isle_of_Man", "Europe/Istanbul", "Europe/Jersey", "Europe/Kaliningrad", "Europe/Kiev", "Europe/Lisbon", "Europe/Ljubljana", "Europe/London", "Europe/Luxembourg", "Europe/Madrid", "Europe/Malta", "Europe/Mariehamn", "Europe/Minsk", "Europe/Monaco", "Europe/Moscow", "Europe/Nicosia", "Europe/Oslo", "Europe/Paris", "Europe/Podgorica", "Europe/Prague", "Europe/Riga", "Europe/Rome", "Europe/Samara", "Europe/San_Marino", "Europe/Sarajevo", "Europe/Simferopol", "Europe/Skopje", "Europe/Sofia", "Europe/Stockholm", "Europe/Tallinn", "Europe/Tirane", "Europe/Tiraspol", "Europe/Uzhgorod", "Europe/Vaduz", "Europe/Vatican", "Europe/Vienna", "Europe/Vilnius", "Europe/Volgograd", "Europe/Warsaw", "Europe/Zagreb", "Europe/Zaporozhye", "Europe/Zurich", "GB", "GB-Eire", "GMT", "GMT+0", "GMT-0", "GMT0", "Greenwich", "HST", "Hongkong", "Iceland", "Indian/Antananarivo", "Indian/Chagos", "Indian/Christmas", "Indian/Cocos", "Indian/Comoro", "Indian/Kerguelen", "Indian/Mahe", "Indian/Maldives", "Indian/Mauritius", "Indian/Mayotte", "Indian/Reunion", "Iran", "Israel", "Jamaica", "Japan", "Kwajalein", "Libya", "MET", "MST", "MST7MDT", "Mexico/BajaNorte", "Mexico/BajaSur", "Mexico/General", "NZ", "NZ-CHAT", "Navajo", "PRC", "PST8PDT", "Pacific/Apia", "Pacific/Auckland", "Pacific/Bougainville", "Pacific/Chatham", "Pacific/Chuuk", "Pacific/Easter", "Pacific/Efate", "Pacific/Enderbury", "Pacific/Fakaofo", "Pacific/Fiji", "Pacific/Funafuti", "Pacific/Galapagos", "Pacific/Gambier", "Pacific/Guadalcanal", "Pacific/Guam", "Pacific/Honolulu", "Pacific/Johnston", "Pacific/Kiritimati", "Pacific/Kosrae", "Pacific/Kwajalein", "Pacific/Majuro", "Pacific/Marquesas", "Pacific/Midway", "Pacific/Nauru", "Pacific/Niue", "Pacific/Norfolk", "Pacific/Noumea", "Pacific/Pago_Pago", "Pacific/Palau", "Pacific/Pitcairn", "Pacific/Pohnpei", "Pacific/Ponape", "Pacific/Port_Moresby", "Pacific/Rarotonga", "Pacific/Saipan", "Pacific/Samoa", "Pacific/Tahiti", "Pacific/Tarawa", "Pacific/Tongatapu", "Pacific/Truk", "Pacific/Wake", "Pacific/Wallis", "Pacific/Yap", "Poland", "Portugal", "ROC", "ROK", "Singapore", "Turkey", "UCT", "US/Alaska", "US/Aleutian", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New", "US/Samoa", "UTC", "Universal", "W-SU", "WET", "Zulu"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -1234,7 +1234,7 @@ var GenMetadata = map[string]*metadata.Resource{
           or the account used to login if there are no available child accounts.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/current_user/actions/cloud_accounts",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/current_user/actions/cloud_accounts`),
@@ -1274,7 +1274,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "aws_access_key_id",
 						Description: ``,
@@ -1315,7 +1315,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets the onboarding status of the user.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/current_user/actions/onboarding_status",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/current_user/actions/onboarding_status`),
@@ -1331,7 +1331,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -1348,14 +1348,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets various environment settings.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/current_user/actions/environment",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/current_user/actions/environment`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -1368,7 +1368,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets instances that overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instances",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instances`),
@@ -1441,7 +1441,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -1515,7 +1515,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets the count of instances that overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/count",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instances/actions/count`),
@@ -1556,7 +1556,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", "Africa/Asmara", "Africa/Asmera", "Africa/Bamako", "Africa/Bangui", "Africa/Banjul", "Africa/Bissau", "Africa/Blantyre", "Africa/Brazzaville", "Africa/Bujumbura", "Africa/Cairo", "Africa/Casablanca", "Africa/Ceuta", "Africa/Conakry", "Africa/Dakar", "Africa/Dar_es_Salaam", "Africa/Djibouti", "Africa/Douala", "Africa/El_Aaiun", "Africa/Freetown", "Africa/Gaborone", "Africa/Harare", "Africa/Johannesburg", "Africa/Juba", "Africa/Kampala", "Africa/Khartoum", "Africa/Kigali", "Africa/Kinshasa", "Africa/Lagos", "Africa/Libreville", "Africa/Lome", "Africa/Luanda", "Africa/Lubumbashi", "Africa/Lusaka", "Africa/Malabo", "Africa/Maputo", "Africa/Maseru", "Africa/Mbabane", "Africa/Mogadishu", "Africa/Monrovia", "Africa/Nairobi", "Africa/Ndjamena", "Africa/Niamey", "Africa/Nouakchott", "Africa/Ouagadougou", "Africa/Porto-Novo", "Africa/Sao_Tome", "Africa/Timbuktu", "Africa/Tripoli", "Africa/Tunis", "Africa/Windhoek", "America/Adak", "America/Anchorage", "America/Anguilla", "America/Antigua", "America/Araguaina", "America/Argentina/Buenos_Aires", "America/Argentina/Catamarca", "America/Argentina/ComodRivadavia", "America/Argentina/Cordoba", "America/Argentina/Jujuy", "America/Argentina/La_Rioja", "America/Argentina/Mendoza", "America/Argentina/Rio_Gallegos", "America/Argentina/Salta", "America/Argentina/San_Juan", "America/Argentina/San_Luis", "America/Argentina/Tucuman", "America/Argentina/Ushuaia", "America/Aruba", "America/Asuncion", "America/Atikokan", "America/Atka", "America/Bahia", "America/Bahia_Banderas", "America/Barbados", "America/Belem", "America/Belize", "America/Blanc-Sablon", "America/Boa_Vista", "America/Bogota", "America/Boise", "America/Buenos_Aires", "America/Cambridge_Bay", "America/Campo_Grande", "America/Cancun", "America/Caracas", "America/Catamarca", "America/Cayenne", "America/Cayman", "America/Chicago", "America/Chihuahua", "America/Coral_Harbour", "America/Cordoba", "America/Costa_Rica", "America/Creston", "America/Cuiaba", "America/Curacao", "America/Danmarkshavn", "America/Dawson", "America/Dawson_Creek", "America/Denver", "America/Detroit", "America/Dominica", "America/Edmonton", "America/Eirunepe", "America/El_Salvador", "America/Ensenada", "America/Fort_Wayne", "America/Fortaleza", "America/Glace_Bay", "America/Godthab", "America/Goose_Bay", "America/Grand_Turk", "America/Grenada", "America/Guadeloupe", "America/Guatemala", "America/Guayaquil", "America/Guyana", "America/Halifax", "America/Havana", "America/Hermosillo", "America/Indiana/Indianapolis", "America/Indiana/Knox", "America/Indiana/Marengo", "America/Indiana/Petersburg", "America/Indiana/Tell_City", "America/Indiana/Vevay", "America/Indiana/Vincennes", "America/Indiana/Winamac", "America/Indianapolis", "America/Inuvik", "America/Iqaluit", "America/Jamaica", "America/Jujuy", "America/Juneau", "America/Kentucky/Louisville", "America/Kentucky/Monticello", "America/Knox_IN", "America/Kralendijk", "America/La_Paz", "America/Lima", "America/Los_Angeles", "America/Louisville", "America/Lower_Princes", "America/Maceio", "America/Managua", "America/Manaus", "America/Marigot", "America/Martinique", "America/Matamoros", "America/Mazatlan", "America/Mendoza", "America/Menominee", "America/Merida", "America/Metlakatla", "America/Mexico_City", "America/Miquelon", "America/Moncton", "America/Monterrey", "America/Montevideo", "America/Montreal", "America/Montserrat", "America/Nassau", "America/New_York", "America/Nipigon", "America/Nome", "America/Noronha", "America/North_Dakota/Beulah", "America/North_Dakota/Center", "America/North_Dakota/New_Salem", "America/Ojinaga", "America/Panama", "America/Pangnirtung", "America/Paramaribo", "America/Phoenix", "America/Port-au-Prince", "America/Port_of_Spain", "America/Porto_Acre", "America/Porto_Velho", "America/Puerto_Rico", "America/Rainy_River", "America/Rankin_Inlet", "America/Recife", "America/Regina", "America/Resolute", "America/Rio_Branco", "America/Rosario", "America/Santa_Isabel", "America/Santarem", "America/Santiago", "America/Santo_Domingo", "America/Sao_Paulo", "America/Scoresbysund", "America/Shiprock", "America/Sitka", "America/St_Barthelemy", "America/St_Johns", "America/St_Kitts", "America/St_Lucia", "America/St_Thomas", "America/St_Vincent", "America/Swift_Current", "America/Tegucigalpa", "America/Thule", "America/Thunder_Bay", "America/Tijuana", "America/Toronto", "America/Tortola", "America/Vancouver", "America/Virgin", "America/Whitehorse", "America/Winnipeg", "America/Yakutat", "America/Yellowknife", "Antarctica/Casey", "Antarctica/Davis", "Antarctica/DumontDUrville", "Antarctica/Macquarie", "Antarctica/Mawson", "Antarctica/McMurdo", "Antarctica/Palmer", "Antarctica/Rothera", "Antarctica/South_Pole", "Antarctica/Syowa", "Antarctica/Troll", "Antarctica/Vostok", "Arctic/Longyearbyen", "Asia/Aden", "Asia/Almaty", "Asia/Amman", "Asia/Anadyr", "Asia/Aqtau", "Asia/Aqtobe", "Asia/Ashgabat", "Asia/Ashkhabad", "Asia/Baghdad", "Asia/Bahrain", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Bishkek", "Asia/Brunei", "Asia/Calcutta", "Asia/Chita", "Asia/Choibalsan", "Asia/Chongqing", "Asia/Chungking", "Asia/Colombo", "Asia/Dacca", "Asia/Damascus", "Asia/Dhaka", "Asia/Dili", "Asia/Dubai", "Asia/Dushanbe", "Asia/Gaza", "Asia/Harbin", "Asia/Hebron", "Asia/Ho_Chi_Minh", "Asia/Hong_Kong", "Asia/Hovd", "Asia/Irkutsk", "Asia/Istanbul", "Asia/Jakarta", "Asia/Jayapura", "Asia/Jerusalem", "Asia/Kabul", "Asia/Kamchatka", "Asia/Karachi", "Asia/Kashgar", "Asia/Kathmandu", "Asia/Katmandu", "Asia/Khandyga", "Asia/Kolkata", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuching", "Asia/Kuwait", "Asia/Macao", "Asia/Macau", "Asia/Magadan", "Asia/Makassar", "Asia/Manila", "Asia/Muscat", "Asia/Nicosia", "Asia/Novokuznetsk", "Asia/Novosibirsk", "Asia/Omsk", "Asia/Oral", "Asia/Phnom_Penh", "Asia/Pontianak", "Asia/Pyongyang", "Asia/Qatar", "Asia/Qyzylorda", "Asia/Rangoon", "Asia/Riyadh", "Asia/Saigon", "Asia/Sakhalin", "Asia/Samarkand", "Asia/Seoul", "Asia/Shanghai", "Asia/Singapore", "Asia/Srednekolymsk", "Asia/Taipei", "Asia/Tashkent", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tel_Aviv", "Asia/Thimbu", "Asia/Thimphu", "Asia/Tokyo", "Asia/Ujung_Pandang", "Asia/Ulaanbaatar", "Asia/Ulan_Bator", "Asia/Urumqi", "Asia/Ust-Nera", "Asia/Vientiane", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Bermuda", "Atlantic/Canary", "Atlantic/Cape_Verde", "Atlantic/Faeroe", "Atlantic/Faroe", "Atlantic/Jan_Mayen", "Atlantic/Madeira", "Atlantic/Reykjavik", "Atlantic/South_Georgia", "Atlantic/St_Helena", "Atlantic/Stanley", "Australia/ACT", "Australia/Adelaide", "Australia/Brisbane", "Australia/Broken_Hill", "Australia/Canberra", "Australia/Currie", "Australia/Darwin", "Australia/Eucla", "Australia/Hobart", "Australia/LHI", "Australia/Lindeman", "Australia/Lord_Howe", "Australia/Melbourne", "Australia/NSW", "Australia/North", "Australia/Perth", "Australia/Queensland", "Australia/South", "Australia/Sydney", "Australia/Tasmania", "Australia/Victoria", "Australia/West", "Australia/Yancowinna", "Brazil/Acre", "Brazil/DeNoronha", "Brazil/East", "Brazil/West", "CET", "CST6CDT", "Canada/Atlantic", "Canada/Central", "Canada/East-Saskatchewan", "Canada/Eastern", "Canada/Mountain", "Canada/Newfoundland", "Canada/Pacific", "Canada/Saskatchewan", "Canada/Yukon", "Chile/Continental", "Chile/EasterIsland", "Cuba", "EET", "EST", "EST5EDT", "Egypt", "Eire", "Etc/GMT", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT-0", "Etc/GMT-1", "Etc/GMT-10", "Etc/GMT-11", "Etc/GMT-12", "Etc/GMT-13", "Etc/GMT-14", "Etc/GMT-2", "Etc/GMT-3", "Etc/GMT-4", "Etc/GMT-5", "Etc/GMT-6", "Etc/GMT-7", "Etc/GMT-8", "Etc/GMT-9", "Etc/GMT0", "Etc/Greenwich", "Etc/UCT", "Etc/UTC", "Etc/Universal", "Etc/Zulu", "Europe/Amsterdam", "Europe/Andorra", "Europe/Athens", "Europe/Belfast", "Europe/Belgrade", "Europe/Berlin", "Europe/Bratislava", "Europe/Brussels", "Europe/Bucharest", "Europe/Budapest", "Europe/Busingen", "Europe/Chisinau", "Europe/Copenhagen", "Europe/Dublin", "Europe/Gibraltar", "Europe/Guernsey", "Europe/Helsinki", "Europe/Isle_of_Man", "Europe/Istanbul", "Europe/Jersey", "Europe/Kaliningrad", "Europe/Kiev", "Europe/Lisbon", "Europe/Ljubljana", "Europe/London", "Europe/Luxembourg", "Europe/Madrid", "Europe/Malta", "Europe/Mariehamn", "Europe/Minsk", "Europe/Monaco", "Europe/Moscow", "Europe/Nicosia", "Europe/Oslo", "Europe/Paris", "Europe/Podgorica", "Europe/Prague", "Europe/Riga", "Europe/Rome", "Europe/Samara", "Europe/San_Marino", "Europe/Sarajevo", "Europe/Simferopol", "Europe/Skopje", "Europe/Sofia", "Europe/Stockholm", "Europe/Tallinn", "Europe/Tirane", "Europe/Tiraspol", "Europe/Uzhgorod", "Europe/Vaduz", "Europe/Vatican", "Europe/Vienna", "Europe/Vilnius", "Europe/Volgograd", "Europe/Warsaw", "Europe/Zagreb", "Europe/Zaporozhye", "Europe/Zurich", "GB", "GB-Eire", "GMT", "GMT+0", "GMT-0", "GMT0", "Greenwich", "HST", "Hongkong", "Iceland", "Indian/Antananarivo", "Indian/Chagos", "Indian/Christmas", "Indian/Cocos", "Indian/Comoro", "Indian/Kerguelen", "Indian/Mahe", "Indian/Maldives", "Indian/Mauritius", "Indian/Mayotte", "Indian/Reunion", "Iran", "Israel", "Jamaica", "Japan", "Kwajalein", "Libya", "MET", "MST", "MST7MDT", "Mexico/BajaNorte", "Mexico/BajaSur", "Mexico/General", "NZ", "NZ-CHAT", "Navajo", "PRC", "PST8PDT", "Pacific/Apia", "Pacific/Auckland", "Pacific/Bougainville", "Pacific/Chatham", "Pacific/Chuuk", "Pacific/Easter", "Pacific/Efate", "Pacific/Enderbury", "Pacific/Fakaofo", "Pacific/Fiji", "Pacific/Funafuti", "Pacific/Galapagos", "Pacific/Gambier", "Pacific/Guadalcanal", "Pacific/Guam", "Pacific/Honolulu", "Pacific/Johnston", "Pacific/Kiritimati", "Pacific/Kosrae", "Pacific/Kwajalein", "Pacific/Majuro", "Pacific/Marquesas", "Pacific/Midway", "Pacific/Nauru", "Pacific/Niue", "Pacific/Norfolk", "Pacific/Noumea", "Pacific/Pago_Pago", "Pacific/Palau", "Pacific/Pitcairn", "Pacific/Pohnpei", "Pacific/Ponape", "Pacific/Port_Moresby", "Pacific/Rarotonga", "Pacific/Saipan", "Pacific/Samoa", "Pacific/Tahiti", "Pacific/Tarawa", "Pacific/Tongatapu", "Pacific/Truk", "Pacific/Wake", "Pacific/Wallis", "Pacific/Yap", "Poland", "Portugal", "ROC", "ROK", "Singapore", "Turkey", "UCT", "US/Alaska", "US/Aleutian", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New", "US/Samoa", "UTC", "Universal", "W-SU", "WET", "Zulu"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -1598,7 +1598,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Checks if any instances overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/exist",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instances/actions/exist`),
@@ -1639,7 +1639,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", "Africa/Asmara", "Africa/Asmera", "Africa/Bamako", "Africa/Bangui", "Africa/Banjul", "Africa/Bissau", "Africa/Blantyre", "Africa/Brazzaville", "Africa/Bujumbura", "Africa/Cairo", "Africa/Casablanca", "Africa/Ceuta", "Africa/Conakry", "Africa/Dakar", "Africa/Dar_es_Salaam", "Africa/Djibouti", "Africa/Douala", "Africa/El_Aaiun", "Africa/Freetown", "Africa/Gaborone", "Africa/Harare", "Africa/Johannesburg", "Africa/Juba", "Africa/Kampala", "Africa/Khartoum", "Africa/Kigali", "Africa/Kinshasa", "Africa/Lagos", "Africa/Libreville", "Africa/Lome", "Africa/Luanda", "Africa/Lubumbashi", "Africa/Lusaka", "Africa/Malabo", "Africa/Maputo", "Africa/Maseru", "Africa/Mbabane", "Africa/Mogadishu", "Africa/Monrovia", "Africa/Nairobi", "Africa/Ndjamena", "Africa/Niamey", "Africa/Nouakchott", "Africa/Ouagadougou", "Africa/Porto-Novo", "Africa/Sao_Tome", "Africa/Timbuktu", "Africa/Tripoli", "Africa/Tunis", "Africa/Windhoek", "America/Adak", "America/Anchorage", "America/Anguilla", "America/Antigua", "America/Araguaina", "America/Argentina/Buenos_Aires", "America/Argentina/Catamarca", "America/Argentina/ComodRivadavia", "America/Argentina/Cordoba", "America/Argentina/Jujuy", "America/Argentina/La_Rioja", "America/Argentina/Mendoza", "America/Argentina/Rio_Gallegos", "America/Argentina/Salta", "America/Argentina/San_Juan", "America/Argentina/San_Luis", "America/Argentina/Tucuman", "America/Argentina/Ushuaia", "America/Aruba", "America/Asuncion", "America/Atikokan", "America/Atka", "America/Bahia", "America/Bahia_Banderas", "America/Barbados", "America/Belem", "America/Belize", "America/Blanc-Sablon", "America/Boa_Vista", "America/Bogota", "America/Boise", "America/Buenos_Aires", "America/Cambridge_Bay", "America/Campo_Grande", "America/Cancun", "America/Caracas", "America/Catamarca", "America/Cayenne", "America/Cayman", "America/Chicago", "America/Chihuahua", "America/Coral_Harbour", "America/Cordoba", "America/Costa_Rica", "America/Creston", "America/Cuiaba", "America/Curacao", "America/Danmarkshavn", "America/Dawson", "America/Dawson_Creek", "America/Denver", "America/Detroit", "America/Dominica", "America/Edmonton", "America/Eirunepe", "America/El_Salvador", "America/Ensenada", "America/Fort_Wayne", "America/Fortaleza", "America/Glace_Bay", "America/Godthab", "America/Goose_Bay", "America/Grand_Turk", "America/Grenada", "America/Guadeloupe", "America/Guatemala", "America/Guayaquil", "America/Guyana", "America/Halifax", "America/Havana", "America/Hermosillo", "America/Indiana/Indianapolis", "America/Indiana/Knox", "America/Indiana/Marengo", "America/Indiana/Petersburg", "America/Indiana/Tell_City", "America/Indiana/Vevay", "America/Indiana/Vincennes", "America/Indiana/Winamac", "America/Indianapolis", "America/Inuvik", "America/Iqaluit", "America/Jamaica", "America/Jujuy", "America/Juneau", "America/Kentucky/Louisville", "America/Kentucky/Monticello", "America/Knox_IN", "America/Kralendijk", "America/La_Paz", "America/Lima", "America/Los_Angeles", "America/Louisville", "America/Lower_Princes", "America/Maceio", "America/Managua", "America/Manaus", "America/Marigot", "America/Martinique", "America/Matamoros", "America/Mazatlan", "America/Mendoza", "America/Menominee", "America/Merida", "America/Metlakatla", "America/Mexico_City", "America/Miquelon", "America/Moncton", "America/Monterrey", "America/Montevideo", "America/Montreal", "America/Montserrat", "America/Nassau", "America/New_York", "America/Nipigon", "America/Nome", "America/Noronha", "America/North_Dakota/Beulah", "America/North_Dakota/Center", "America/North_Dakota/New_Salem", "America/Ojinaga", "America/Panama", "America/Pangnirtung", "America/Paramaribo", "America/Phoenix", "America/Port-au-Prince", "America/Port_of_Spain", "America/Porto_Acre", "America/Porto_Velho", "America/Puerto_Rico", "America/Rainy_River", "America/Rankin_Inlet", "America/Recife", "America/Regina", "America/Resolute", "America/Rio_Branco", "America/Rosario", "America/Santa_Isabel", "America/Santarem", "America/Santiago", "America/Santo_Domingo", "America/Sao_Paulo", "America/Scoresbysund", "America/Shiprock", "America/Sitka", "America/St_Barthelemy", "America/St_Johns", "America/St_Kitts", "America/St_Lucia", "America/St_Thomas", "America/St_Vincent", "America/Swift_Current", "America/Tegucigalpa", "America/Thule", "America/Thunder_Bay", "America/Tijuana", "America/Toronto", "America/Tortola", "America/Vancouver", "America/Virgin", "America/Whitehorse", "America/Winnipeg", "America/Yakutat", "America/Yellowknife", "Antarctica/Casey", "Antarctica/Davis", "Antarctica/DumontDUrville", "Antarctica/Macquarie", "Antarctica/Mawson", "Antarctica/McMurdo", "Antarctica/Palmer", "Antarctica/Rothera", "Antarctica/South_Pole", "Antarctica/Syowa", "Antarctica/Troll", "Antarctica/Vostok", "Arctic/Longyearbyen", "Asia/Aden", "Asia/Almaty", "Asia/Amman", "Asia/Anadyr", "Asia/Aqtau", "Asia/Aqtobe", "Asia/Ashgabat", "Asia/Ashkhabad", "Asia/Baghdad", "Asia/Bahrain", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Bishkek", "Asia/Brunei", "Asia/Calcutta", "Asia/Chita", "Asia/Choibalsan", "Asia/Chongqing", "Asia/Chungking", "Asia/Colombo", "Asia/Dacca", "Asia/Damascus", "Asia/Dhaka", "Asia/Dili", "Asia/Dubai", "Asia/Dushanbe", "Asia/Gaza", "Asia/Harbin", "Asia/Hebron", "Asia/Ho_Chi_Minh", "Asia/Hong_Kong", "Asia/Hovd", "Asia/Irkutsk", "Asia/Istanbul", "Asia/Jakarta", "Asia/Jayapura", "Asia/Jerusalem", "Asia/Kabul", "Asia/Kamchatka", "Asia/Karachi", "Asia/Kashgar", "Asia/Kathmandu", "Asia/Katmandu", "Asia/Khandyga", "Asia/Kolkata", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuching", "Asia/Kuwait", "Asia/Macao", "Asia/Macau", "Asia/Magadan", "Asia/Makassar", "Asia/Manila", "Asia/Muscat", "Asia/Nicosia", "Asia/Novokuznetsk", "Asia/Novosibirsk", "Asia/Omsk", "Asia/Oral", "Asia/Phnom_Penh", "Asia/Pontianak", "Asia/Pyongyang", "Asia/Qatar", "Asia/Qyzylorda", "Asia/Rangoon", "Asia/Riyadh", "Asia/Saigon", "Asia/Sakhalin", "Asia/Samarkand", "Asia/Seoul", "Asia/Shanghai", "Asia/Singapore", "Asia/Srednekolymsk", "Asia/Taipei", "Asia/Tashkent", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tel_Aviv", "Asia/Thimbu", "Asia/Thimphu", "Asia/Tokyo", "Asia/Ujung_Pandang", "Asia/Ulaanbaatar", "Asia/Ulan_Bator", "Asia/Urumqi", "Asia/Ust-Nera", "Asia/Vientiane", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Bermuda", "Atlantic/Canary", "Atlantic/Cape_Verde", "Atlantic/Faeroe", "Atlantic/Faroe", "Atlantic/Jan_Mayen", "Atlantic/Madeira", "Atlantic/Reykjavik", "Atlantic/South_Georgia", "Atlantic/St_Helena", "Atlantic/Stanley", "Australia/ACT", "Australia/Adelaide", "Australia/Brisbane", "Australia/Broken_Hill", "Australia/Canberra", "Australia/Currie", "Australia/Darwin", "Australia/Eucla", "Australia/Hobart", "Australia/LHI", "Australia/Lindeman", "Australia/Lord_Howe", "Australia/Melbourne", "Australia/NSW", "Australia/North", "Australia/Perth", "Australia/Queensland", "Australia/South", "Australia/Sydney", "Australia/Tasmania", "Australia/Victoria", "Australia/West", "Australia/Yancowinna", "Brazil/Acre", "Brazil/DeNoronha", "Brazil/East", "Brazil/West", "CET", "CST6CDT", "Canada/Atlantic", "Canada/Central", "Canada/East-Saskatchewan", "Canada/Eastern", "Canada/Mountain", "Canada/Newfoundland", "Canada/Pacific", "Canada/Saskatchewan", "Canada/Yukon", "Chile/Continental", "Chile/EasterIsland", "Cuba", "EET", "EST", "EST5EDT", "Egypt", "Eire", "Etc/GMT", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT-0", "Etc/GMT-1", "Etc/GMT-10", "Etc/GMT-11", "Etc/GMT-12", "Etc/GMT-13", "Etc/GMT-14", "Etc/GMT-2", "Etc/GMT-3", "Etc/GMT-4", "Etc/GMT-5", "Etc/GMT-6", "Etc/GMT-7", "Etc/GMT-8", "Etc/GMT-9", "Etc/GMT0", "Etc/Greenwich", "Etc/UCT", "Etc/UTC", "Etc/Universal", "Etc/Zulu", "Europe/Amsterdam", "Europe/Andorra", "Europe/Athens", "Europe/Belfast", "Europe/Belgrade", "Europe/Berlin", "Europe/Bratislava", "Europe/Brussels", "Europe/Bucharest", "Europe/Budapest", "Europe/Busingen", "Europe/Chisinau", "Europe/Copenhagen", "Europe/Dublin", "Europe/Gibraltar", "Europe/Guernsey", "Europe/Helsinki", "Europe/Isle_of_Man", "Europe/Istanbul", "Europe/Jersey", "Europe/Kaliningrad", "Europe/Kiev", "Europe/Lisbon", "Europe/Ljubljana", "Europe/London", "Europe/Luxembourg", "Europe/Madrid", "Europe/Malta", "Europe/Mariehamn", "Europe/Minsk", "Europe/Monaco", "Europe/Moscow", "Europe/Nicosia", "Europe/Oslo", "Europe/Paris", "Europe/Podgorica", "Europe/Prague", "Europe/Riga", "Europe/Rome", "Europe/Samara", "Europe/San_Marino", "Europe/Sarajevo", "Europe/Simferopol", "Europe/Skopje", "Europe/Sofia", "Europe/Stockholm", "Europe/Tallinn", "Europe/Tirane", "Europe/Tiraspol", "Europe/Uzhgorod", "Europe/Vaduz", "Europe/Vatican", "Europe/Vienna", "Europe/Vilnius", "Europe/Volgograd", "Europe/Warsaw", "Europe/Zagreb", "Europe/Zaporozhye", "Europe/Zurich", "GB", "GB-Eire", "GMT", "GMT+0", "GMT-0", "GMT0", "Greenwich", "HST", "Hongkong", "Iceland", "Indian/Antananarivo", "Indian/Chagos", "Indian/Christmas", "Indian/Cocos", "Indian/Comoro", "Indian/Kerguelen", "Indian/Mahe", "Indian/Maldives", "Indian/Mauritius", "Indian/Mayotte", "Indian/Reunion", "Iran", "Israel", "Jamaica", "Japan", "Kwajalein", "Libya", "MET", "MST", "MST7MDT", "Mexico/BajaNorte", "Mexico/BajaSur", "Mexico/General", "NZ", "NZ-CHAT", "Navajo", "PRC", "PST8PDT", "Pacific/Apia", "Pacific/Auckland", "Pacific/Bougainville", "Pacific/Chatham", "Pacific/Chuuk", "Pacific/Easter", "Pacific/Efate", "Pacific/Enderbury", "Pacific/Fakaofo", "Pacific/Fiji", "Pacific/Funafuti", "Pacific/Galapagos", "Pacific/Gambier", "Pacific/Guadalcanal", "Pacific/Guam", "Pacific/Honolulu", "Pacific/Johnston", "Pacific/Kiritimati", "Pacific/Kosrae", "Pacific/Kwajalein", "Pacific/Majuro", "Pacific/Marquesas", "Pacific/Midway", "Pacific/Nauru", "Pacific/Niue", "Pacific/Norfolk", "Pacific/Noumea", "Pacific/Pago_Pago", "Pacific/Palau", "Pacific/Pitcairn", "Pacific/Pohnpei", "Pacific/Ponape", "Pacific/Port_Moresby", "Pacific/Rarotonga", "Pacific/Saipan", "Pacific/Samoa", "Pacific/Tahiti", "Pacific/Tarawa", "Pacific/Tongatapu", "Pacific/Truk", "Pacific/Wake", "Pacific/Wallis", "Pacific/Yap", "Poland", "Portugal", "ROC", "ROK", "Singapore", "Turkey", "UCT", "US/Alaska", "US/Aleutian", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New", "US/Samoa", "UTC", "Universal", "W-SU", "WET", "Zulu"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -1681,7 +1681,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Exports the instances that overlap with the requested time period in CSV format.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/export",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instances/actions/export`),
@@ -1754,7 +1754,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -1828,7 +1828,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets the filter options for instances that overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/filter_options",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instances/actions/filter_options`),
@@ -1917,7 +1917,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -2013,7 +2013,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new InstanceCombination.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/scenarios/%s/instance_combinations",
 						Variables:  []string{"scenario_id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations`),
@@ -2201,7 +2201,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -2293,7 +2293,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific InstanceCombination.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s",
 						Variables:  []string{"scenario_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)`),
@@ -2309,7 +2309,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -2326,7 +2326,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the provided attributes of an InstanceCombination.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s",
 						Variables:  []string{"scenario_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)`),
@@ -2514,7 +2514,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -2606,14 +2606,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete an InstanceCombination.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s",
 						Variables:  []string{"scenario_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -2621,7 +2621,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Returns pricing details for the various reserved instances that can be purchased for this InstanceCombination.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/actions/reserved_instance_prices",
 						Variables:  []string{"scenario_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/actions/reserved_instance_prices`),
@@ -2637,7 +2637,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -2660,7 +2660,7 @@ var GenMetadata = map[string]*metadata.Resource{
           total cost of all my instances during the last month.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/overall",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/overall`),
@@ -2717,7 +2717,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -2777,7 +2777,7 @@ var GenMetadata = map[string]*metadata.Resource{
           last month grouped by different accounts.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/grouped_overall",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/grouped_overall`),
@@ -2866,7 +2866,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -2958,7 +2958,7 @@ var GenMetadata = map[string]*metadata.Resource{
           instances per day during the last month.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/time_series",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/time_series`),
@@ -3032,7 +3032,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -3110,7 +3110,7 @@ var GenMetadata = map[string]*metadata.Resource{
           month grouped by accounts.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/grouped_time_series",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/grouped_time_series`),
@@ -3216,7 +3216,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -3323,7 +3323,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `          Returns the count of currently running instances.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/current_count",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/current_count`),
@@ -3339,7 +3339,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
@@ -3363,7 +3363,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets the instance usage periods of instances.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/instance_usage_periods",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/instance_usage_periods`),
@@ -3387,7 +3387,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "instance_usage_period_filters[]",
 						Description: `Filters the instance usages by instance key.`,
@@ -3418,7 +3418,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new Pattern.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/patterns",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/patterns`),
@@ -3498,7 +3498,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:  false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -3579,7 +3579,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all Patterns.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/patterns",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/patterns`),
@@ -3595,7 +3595,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -3612,7 +3612,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific Pattern.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/patterns/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/patterns/([^/]+)`),
@@ -3628,7 +3628,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -3645,7 +3645,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the provided attributes of a Pattern.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/patterns/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/patterns/([^/]+)`),
@@ -3725,7 +3725,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:  false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -3806,14 +3806,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete a Pattern.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/patterns/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/patterns/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -3824,7 +3824,7 @@ var GenMetadata = map[string]*metadata.Resource{
           Decrease by 5% every month, Decrease by 10% every month, Decrease by 15% every month, Add 1 every month.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/patterns/actions/create_defaults",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/patterns/actions/create_defaults`),
@@ -3840,7 +3840,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -3862,7 +3862,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets Reserved Instances that overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/reserved_instances`),
@@ -3935,7 +3935,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -4009,7 +4009,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets the count of Reserved Instances that overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/count",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/count`),
@@ -4050,7 +4050,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", "Africa/Asmara", "Africa/Asmera", "Africa/Bamako", "Africa/Bangui", "Africa/Banjul", "Africa/Bissau", "Africa/Blantyre", "Africa/Brazzaville", "Africa/Bujumbura", "Africa/Cairo", "Africa/Casablanca", "Africa/Ceuta", "Africa/Conakry", "Africa/Dakar", "Africa/Dar_es_Salaam", "Africa/Djibouti", "Africa/Douala", "Africa/El_Aaiun", "Africa/Freetown", "Africa/Gaborone", "Africa/Harare", "Africa/Johannesburg", "Africa/Juba", "Africa/Kampala", "Africa/Khartoum", "Africa/Kigali", "Africa/Kinshasa", "Africa/Lagos", "Africa/Libreville", "Africa/Lome", "Africa/Luanda", "Africa/Lubumbashi", "Africa/Lusaka", "Africa/Malabo", "Africa/Maputo", "Africa/Maseru", "Africa/Mbabane", "Africa/Mogadishu", "Africa/Monrovia", "Africa/Nairobi", "Africa/Ndjamena", "Africa/Niamey", "Africa/Nouakchott", "Africa/Ouagadougou", "Africa/Porto-Novo", "Africa/Sao_Tome", "Africa/Timbuktu", "Africa/Tripoli", "Africa/Tunis", "Africa/Windhoek", "America/Adak", "America/Anchorage", "America/Anguilla", "America/Antigua", "America/Araguaina", "America/Argentina/Buenos_Aires", "America/Argentina/Catamarca", "America/Argentina/ComodRivadavia", "America/Argentina/Cordoba", "America/Argentina/Jujuy", "America/Argentina/La_Rioja", "America/Argentina/Mendoza", "America/Argentina/Rio_Gallegos", "America/Argentina/Salta", "America/Argentina/San_Juan", "America/Argentina/San_Luis", "America/Argentina/Tucuman", "America/Argentina/Ushuaia", "America/Aruba", "America/Asuncion", "America/Atikokan", "America/Atka", "America/Bahia", "America/Bahia_Banderas", "America/Barbados", "America/Belem", "America/Belize", "America/Blanc-Sablon", "America/Boa_Vista", "America/Bogota", "America/Boise", "America/Buenos_Aires", "America/Cambridge_Bay", "America/Campo_Grande", "America/Cancun", "America/Caracas", "America/Catamarca", "America/Cayenne", "America/Cayman", "America/Chicago", "America/Chihuahua", "America/Coral_Harbour", "America/Cordoba", "America/Costa_Rica", "America/Creston", "America/Cuiaba", "America/Curacao", "America/Danmarkshavn", "America/Dawson", "America/Dawson_Creek", "America/Denver", "America/Detroit", "America/Dominica", "America/Edmonton", "America/Eirunepe", "America/El_Salvador", "America/Ensenada", "America/Fort_Wayne", "America/Fortaleza", "America/Glace_Bay", "America/Godthab", "America/Goose_Bay", "America/Grand_Turk", "America/Grenada", "America/Guadeloupe", "America/Guatemala", "America/Guayaquil", "America/Guyana", "America/Halifax", "America/Havana", "America/Hermosillo", "America/Indiana/Indianapolis", "America/Indiana/Knox", "America/Indiana/Marengo", "America/Indiana/Petersburg", "America/Indiana/Tell_City", "America/Indiana/Vevay", "America/Indiana/Vincennes", "America/Indiana/Winamac", "America/Indianapolis", "America/Inuvik", "America/Iqaluit", "America/Jamaica", "America/Jujuy", "America/Juneau", "America/Kentucky/Louisville", "America/Kentucky/Monticello", "America/Knox_IN", "America/Kralendijk", "America/La_Paz", "America/Lima", "America/Los_Angeles", "America/Louisville", "America/Lower_Princes", "America/Maceio", "America/Managua", "America/Manaus", "America/Marigot", "America/Martinique", "America/Matamoros", "America/Mazatlan", "America/Mendoza", "America/Menominee", "America/Merida", "America/Metlakatla", "America/Mexico_City", "America/Miquelon", "America/Moncton", "America/Monterrey", "America/Montevideo", "America/Montreal", "America/Montserrat", "America/Nassau", "America/New_York", "America/Nipigon", "America/Nome", "America/Noronha", "America/North_Dakota/Beulah", "America/North_Dakota/Center", "America/North_Dakota/New_Salem", "America/Ojinaga", "America/Panama", "America/Pangnirtung", "America/Paramaribo", "America/Phoenix", "America/Port-au-Prince", "America/Port_of_Spain", "America/Porto_Acre", "America/Porto_Velho", "America/Puerto_Rico", "America/Rainy_River", "America/Rankin_Inlet", "America/Recife", "America/Regina", "America/Resolute", "America/Rio_Branco", "America/Rosario", "America/Santa_Isabel", "America/Santarem", "America/Santiago", "America/Santo_Domingo", "America/Sao_Paulo", "America/Scoresbysund", "America/Shiprock", "America/Sitka", "America/St_Barthelemy", "America/St_Johns", "America/St_Kitts", "America/St_Lucia", "America/St_Thomas", "America/St_Vincent", "America/Swift_Current", "America/Tegucigalpa", "America/Thule", "America/Thunder_Bay", "America/Tijuana", "America/Toronto", "America/Tortola", "America/Vancouver", "America/Virgin", "America/Whitehorse", "America/Winnipeg", "America/Yakutat", "America/Yellowknife", "Antarctica/Casey", "Antarctica/Davis", "Antarctica/DumontDUrville", "Antarctica/Macquarie", "Antarctica/Mawson", "Antarctica/McMurdo", "Antarctica/Palmer", "Antarctica/Rothera", "Antarctica/South_Pole", "Antarctica/Syowa", "Antarctica/Troll", "Antarctica/Vostok", "Arctic/Longyearbyen", "Asia/Aden", "Asia/Almaty", "Asia/Amman", "Asia/Anadyr", "Asia/Aqtau", "Asia/Aqtobe", "Asia/Ashgabat", "Asia/Ashkhabad", "Asia/Baghdad", "Asia/Bahrain", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Bishkek", "Asia/Brunei", "Asia/Calcutta", "Asia/Chita", "Asia/Choibalsan", "Asia/Chongqing", "Asia/Chungking", "Asia/Colombo", "Asia/Dacca", "Asia/Damascus", "Asia/Dhaka", "Asia/Dili", "Asia/Dubai", "Asia/Dushanbe", "Asia/Gaza", "Asia/Harbin", "Asia/Hebron", "Asia/Ho_Chi_Minh", "Asia/Hong_Kong", "Asia/Hovd", "Asia/Irkutsk", "Asia/Istanbul", "Asia/Jakarta", "Asia/Jayapura", "Asia/Jerusalem", "Asia/Kabul", "Asia/Kamchatka", "Asia/Karachi", "Asia/Kashgar", "Asia/Kathmandu", "Asia/Katmandu", "Asia/Khandyga", "Asia/Kolkata", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuching", "Asia/Kuwait", "Asia/Macao", "Asia/Macau", "Asia/Magadan", "Asia/Makassar", "Asia/Manila", "Asia/Muscat", "Asia/Nicosia", "Asia/Novokuznetsk", "Asia/Novosibirsk", "Asia/Omsk", "Asia/Oral", "Asia/Phnom_Penh", "Asia/Pontianak", "Asia/Pyongyang", "Asia/Qatar", "Asia/Qyzylorda", "Asia/Rangoon", "Asia/Riyadh", "Asia/Saigon", "Asia/Sakhalin", "Asia/Samarkand", "Asia/Seoul", "Asia/Shanghai", "Asia/Singapore", "Asia/Srednekolymsk", "Asia/Taipei", "Asia/Tashkent", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tel_Aviv", "Asia/Thimbu", "Asia/Thimphu", "Asia/Tokyo", "Asia/Ujung_Pandang", "Asia/Ulaanbaatar", "Asia/Ulan_Bator", "Asia/Urumqi", "Asia/Ust-Nera", "Asia/Vientiane", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Bermuda", "Atlantic/Canary", "Atlantic/Cape_Verde", "Atlantic/Faeroe", "Atlantic/Faroe", "Atlantic/Jan_Mayen", "Atlantic/Madeira", "Atlantic/Reykjavik", "Atlantic/South_Georgia", "Atlantic/St_Helena", "Atlantic/Stanley", "Australia/ACT", "Australia/Adelaide", "Australia/Brisbane", "Australia/Broken_Hill", "Australia/Canberra", "Australia/Currie", "Australia/Darwin", "Australia/Eucla", "Australia/Hobart", "Australia/LHI", "Australia/Lindeman", "Australia/Lord_Howe", "Australia/Melbourne", "Australia/NSW", "Australia/North", "Australia/Perth", "Australia/Queensland", "Australia/South", "Australia/Sydney", "Australia/Tasmania", "Australia/Victoria", "Australia/West", "Australia/Yancowinna", "Brazil/Acre", "Brazil/DeNoronha", "Brazil/East", "Brazil/West", "CET", "CST6CDT", "Canada/Atlantic", "Canada/Central", "Canada/East-Saskatchewan", "Canada/Eastern", "Canada/Mountain", "Canada/Newfoundland", "Canada/Pacific", "Canada/Saskatchewan", "Canada/Yukon", "Chile/Continental", "Chile/EasterIsland", "Cuba", "EET", "EST", "EST5EDT", "Egypt", "Eire", "Etc/GMT", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT-0", "Etc/GMT-1", "Etc/GMT-10", "Etc/GMT-11", "Etc/GMT-12", "Etc/GMT-13", "Etc/GMT-14", "Etc/GMT-2", "Etc/GMT-3", "Etc/GMT-4", "Etc/GMT-5", "Etc/GMT-6", "Etc/GMT-7", "Etc/GMT-8", "Etc/GMT-9", "Etc/GMT0", "Etc/Greenwich", "Etc/UCT", "Etc/UTC", "Etc/Universal", "Etc/Zulu", "Europe/Amsterdam", "Europe/Andorra", "Europe/Athens", "Europe/Belfast", "Europe/Belgrade", "Europe/Berlin", "Europe/Bratislava", "Europe/Brussels", "Europe/Bucharest", "Europe/Budapest", "Europe/Busingen", "Europe/Chisinau", "Europe/Copenhagen", "Europe/Dublin", "Europe/Gibraltar", "Europe/Guernsey", "Europe/Helsinki", "Europe/Isle_of_Man", "Europe/Istanbul", "Europe/Jersey", "Europe/Kaliningrad", "Europe/Kiev", "Europe/Lisbon", "Europe/Ljubljana", "Europe/London", "Europe/Luxembourg", "Europe/Madrid", "Europe/Malta", "Europe/Mariehamn", "Europe/Minsk", "Europe/Monaco", "Europe/Moscow", "Europe/Nicosia", "Europe/Oslo", "Europe/Paris", "Europe/Podgorica", "Europe/Prague", "Europe/Riga", "Europe/Rome", "Europe/Samara", "Europe/San_Marino", "Europe/Sarajevo", "Europe/Simferopol", "Europe/Skopje", "Europe/Sofia", "Europe/Stockholm", "Europe/Tallinn", "Europe/Tirane", "Europe/Tiraspol", "Europe/Uzhgorod", "Europe/Vaduz", "Europe/Vatican", "Europe/Vienna", "Europe/Vilnius", "Europe/Volgograd", "Europe/Warsaw", "Europe/Zagreb", "Europe/Zaporozhye", "Europe/Zurich", "GB", "GB-Eire", "GMT", "GMT+0", "GMT-0", "GMT0", "Greenwich", "HST", "Hongkong", "Iceland", "Indian/Antananarivo", "Indian/Chagos", "Indian/Christmas", "Indian/Cocos", "Indian/Comoro", "Indian/Kerguelen", "Indian/Mahe", "Indian/Maldives", "Indian/Mauritius", "Indian/Mayotte", "Indian/Reunion", "Iran", "Israel", "Jamaica", "Japan", "Kwajalein", "Libya", "MET", "MST", "MST7MDT", "Mexico/BajaNorte", "Mexico/BajaSur", "Mexico/General", "NZ", "NZ-CHAT", "Navajo", "PRC", "PST8PDT", "Pacific/Apia", "Pacific/Auckland", "Pacific/Bougainville", "Pacific/Chatham", "Pacific/Chuuk", "Pacific/Easter", "Pacific/Efate", "Pacific/Enderbury", "Pacific/Fakaofo", "Pacific/Fiji", "Pacific/Funafuti", "Pacific/Galapagos", "Pacific/Gambier", "Pacific/Guadalcanal", "Pacific/Guam", "Pacific/Honolulu", "Pacific/Johnston", "Pacific/Kiritimati", "Pacific/Kosrae", "Pacific/Kwajalein", "Pacific/Majuro", "Pacific/Marquesas", "Pacific/Midway", "Pacific/Nauru", "Pacific/Niue", "Pacific/Norfolk", "Pacific/Noumea", "Pacific/Pago_Pago", "Pacific/Palau", "Pacific/Pitcairn", "Pacific/Pohnpei", "Pacific/Ponape", "Pacific/Port_Moresby", "Pacific/Rarotonga", "Pacific/Saipan", "Pacific/Samoa", "Pacific/Tahiti", "Pacific/Tarawa", "Pacific/Tongatapu", "Pacific/Truk", "Pacific/Wake", "Pacific/Wallis", "Pacific/Yap", "Poland", "Portugal", "ROC", "ROK", "Singapore", "Turkey", "UCT", "US/Alaska", "US/Aleutian", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New", "US/Samoa", "UTC", "Universal", "W-SU", "WET", "Zulu"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -4092,7 +4092,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Checks if any Reserved Instances overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/exist",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/exist`),
@@ -4133,7 +4133,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"Africa/Abidjan", "Africa/Accra", "Africa/Addis_Ababa", "Africa/Algiers", "Africa/Asmara", "Africa/Asmera", "Africa/Bamako", "Africa/Bangui", "Africa/Banjul", "Africa/Bissau", "Africa/Blantyre", "Africa/Brazzaville", "Africa/Bujumbura", "Africa/Cairo", "Africa/Casablanca", "Africa/Ceuta", "Africa/Conakry", "Africa/Dakar", "Africa/Dar_es_Salaam", "Africa/Djibouti", "Africa/Douala", "Africa/El_Aaiun", "Africa/Freetown", "Africa/Gaborone", "Africa/Harare", "Africa/Johannesburg", "Africa/Juba", "Africa/Kampala", "Africa/Khartoum", "Africa/Kigali", "Africa/Kinshasa", "Africa/Lagos", "Africa/Libreville", "Africa/Lome", "Africa/Luanda", "Africa/Lubumbashi", "Africa/Lusaka", "Africa/Malabo", "Africa/Maputo", "Africa/Maseru", "Africa/Mbabane", "Africa/Mogadishu", "Africa/Monrovia", "Africa/Nairobi", "Africa/Ndjamena", "Africa/Niamey", "Africa/Nouakchott", "Africa/Ouagadougou", "Africa/Porto-Novo", "Africa/Sao_Tome", "Africa/Timbuktu", "Africa/Tripoli", "Africa/Tunis", "Africa/Windhoek", "America/Adak", "America/Anchorage", "America/Anguilla", "America/Antigua", "America/Araguaina", "America/Argentina/Buenos_Aires", "America/Argentina/Catamarca", "America/Argentina/ComodRivadavia", "America/Argentina/Cordoba", "America/Argentina/Jujuy", "America/Argentina/La_Rioja", "America/Argentina/Mendoza", "America/Argentina/Rio_Gallegos", "America/Argentina/Salta", "America/Argentina/San_Juan", "America/Argentina/San_Luis", "America/Argentina/Tucuman", "America/Argentina/Ushuaia", "America/Aruba", "America/Asuncion", "America/Atikokan", "America/Atka", "America/Bahia", "America/Bahia_Banderas", "America/Barbados", "America/Belem", "America/Belize", "America/Blanc-Sablon", "America/Boa_Vista", "America/Bogota", "America/Boise", "America/Buenos_Aires", "America/Cambridge_Bay", "America/Campo_Grande", "America/Cancun", "America/Caracas", "America/Catamarca", "America/Cayenne", "America/Cayman", "America/Chicago", "America/Chihuahua", "America/Coral_Harbour", "America/Cordoba", "America/Costa_Rica", "America/Creston", "America/Cuiaba", "America/Curacao", "America/Danmarkshavn", "America/Dawson", "America/Dawson_Creek", "America/Denver", "America/Detroit", "America/Dominica", "America/Edmonton", "America/Eirunepe", "America/El_Salvador", "America/Ensenada", "America/Fort_Wayne", "America/Fortaleza", "America/Glace_Bay", "America/Godthab", "America/Goose_Bay", "America/Grand_Turk", "America/Grenada", "America/Guadeloupe", "America/Guatemala", "America/Guayaquil", "America/Guyana", "America/Halifax", "America/Havana", "America/Hermosillo", "America/Indiana/Indianapolis", "America/Indiana/Knox", "America/Indiana/Marengo", "America/Indiana/Petersburg", "America/Indiana/Tell_City", "America/Indiana/Vevay", "America/Indiana/Vincennes", "America/Indiana/Winamac", "America/Indianapolis", "America/Inuvik", "America/Iqaluit", "America/Jamaica", "America/Jujuy", "America/Juneau", "America/Kentucky/Louisville", "America/Kentucky/Monticello", "America/Knox_IN", "America/Kralendijk", "America/La_Paz", "America/Lima", "America/Los_Angeles", "America/Louisville", "America/Lower_Princes", "America/Maceio", "America/Managua", "America/Manaus", "America/Marigot", "America/Martinique", "America/Matamoros", "America/Mazatlan", "America/Mendoza", "America/Menominee", "America/Merida", "America/Metlakatla", "America/Mexico_City", "America/Miquelon", "America/Moncton", "America/Monterrey", "America/Montevideo", "America/Montreal", "America/Montserrat", "America/Nassau", "America/New_York", "America/Nipigon", "America/Nome", "America/Noronha", "America/North_Dakota/Beulah", "America/North_Dakota/Center", "America/North_Dakota/New_Salem", "America/Ojinaga", "America/Panama", "America/Pangnirtung", "America/Paramaribo", "America/Phoenix", "America/Port-au-Prince", "America/Port_of_Spain", "America/Porto_Acre", "America/Porto_Velho", "America/Puerto_Rico", "America/Rainy_River", "America/Rankin_Inlet", "America/Recife", "America/Regina", "America/Resolute", "America/Rio_Branco", "America/Rosario", "America/Santa_Isabel", "America/Santarem", "America/Santiago", "America/Santo_Domingo", "America/Sao_Paulo", "America/Scoresbysund", "America/Shiprock", "America/Sitka", "America/St_Barthelemy", "America/St_Johns", "America/St_Kitts", "America/St_Lucia", "America/St_Thomas", "America/St_Vincent", "America/Swift_Current", "America/Tegucigalpa", "America/Thule", "America/Thunder_Bay", "America/Tijuana", "America/Toronto", "America/Tortola", "America/Vancouver", "America/Virgin", "America/Whitehorse", "America/Winnipeg", "America/Yakutat", "America/Yellowknife", "Antarctica/Casey", "Antarctica/Davis", "Antarctica/DumontDUrville", "Antarctica/Macquarie", "Antarctica/Mawson", "Antarctica/McMurdo", "Antarctica/Palmer", "Antarctica/Rothera", "Antarctica/South_Pole", "Antarctica/Syowa", "Antarctica/Troll", "Antarctica/Vostok", "Arctic/Longyearbyen", "Asia/Aden", "Asia/Almaty", "Asia/Amman", "Asia/Anadyr", "Asia/Aqtau", "Asia/Aqtobe", "Asia/Ashgabat", "Asia/Ashkhabad", "Asia/Baghdad", "Asia/Bahrain", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Bishkek", "Asia/Brunei", "Asia/Calcutta", "Asia/Chita", "Asia/Choibalsan", "Asia/Chongqing", "Asia/Chungking", "Asia/Colombo", "Asia/Dacca", "Asia/Damascus", "Asia/Dhaka", "Asia/Dili", "Asia/Dubai", "Asia/Dushanbe", "Asia/Gaza", "Asia/Harbin", "Asia/Hebron", "Asia/Ho_Chi_Minh", "Asia/Hong_Kong", "Asia/Hovd", "Asia/Irkutsk", "Asia/Istanbul", "Asia/Jakarta", "Asia/Jayapura", "Asia/Jerusalem", "Asia/Kabul", "Asia/Kamchatka", "Asia/Karachi", "Asia/Kashgar", "Asia/Kathmandu", "Asia/Katmandu", "Asia/Khandyga", "Asia/Kolkata", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuching", "Asia/Kuwait", "Asia/Macao", "Asia/Macau", "Asia/Magadan", "Asia/Makassar", "Asia/Manila", "Asia/Muscat", "Asia/Nicosia", "Asia/Novokuznetsk", "Asia/Novosibirsk", "Asia/Omsk", "Asia/Oral", "Asia/Phnom_Penh", "Asia/Pontianak", "Asia/Pyongyang", "Asia/Qatar", "Asia/Qyzylorda", "Asia/Rangoon", "Asia/Riyadh", "Asia/Saigon", "Asia/Sakhalin", "Asia/Samarkand", "Asia/Seoul", "Asia/Shanghai", "Asia/Singapore", "Asia/Srednekolymsk", "Asia/Taipei", "Asia/Tashkent", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tel_Aviv", "Asia/Thimbu", "Asia/Thimphu", "Asia/Tokyo", "Asia/Ujung_Pandang", "Asia/Ulaanbaatar", "Asia/Ulan_Bator", "Asia/Urumqi", "Asia/Ust-Nera", "Asia/Vientiane", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Bermuda", "Atlantic/Canary", "Atlantic/Cape_Verde", "Atlantic/Faeroe", "Atlantic/Faroe", "Atlantic/Jan_Mayen", "Atlantic/Madeira", "Atlantic/Reykjavik", "Atlantic/South_Georgia", "Atlantic/St_Helena", "Atlantic/Stanley", "Australia/ACT", "Australia/Adelaide", "Australia/Brisbane", "Australia/Broken_Hill", "Australia/Canberra", "Australia/Currie", "Australia/Darwin", "Australia/Eucla", "Australia/Hobart", "Australia/LHI", "Australia/Lindeman", "Australia/Lord_Howe", "Australia/Melbourne", "Australia/NSW", "Australia/North", "Australia/Perth", "Australia/Queensland", "Australia/South", "Australia/Sydney", "Australia/Tasmania", "Australia/Victoria", "Australia/West", "Australia/Yancowinna", "Brazil/Acre", "Brazil/DeNoronha", "Brazil/East", "Brazil/West", "CET", "CST6CDT", "Canada/Atlantic", "Canada/Central", "Canada/East-Saskatchewan", "Canada/Eastern", "Canada/Mountain", "Canada/Newfoundland", "Canada/Pacific", "Canada/Saskatchewan", "Canada/Yukon", "Chile/Continental", "Chile/EasterIsland", "Cuba", "EET", "EST", "EST5EDT", "Egypt", "Eire", "Etc/GMT", "Etc/GMT+0", "Etc/GMT+1", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12", "Etc/GMT+2", "Etc/GMT+3", "Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6", "Etc/GMT+7", "Etc/GMT+8", "Etc/GMT+9", "Etc/GMT-0", "Etc/GMT-1", "Etc/GMT-10", "Etc/GMT-11", "Etc/GMT-12", "Etc/GMT-13", "Etc/GMT-14", "Etc/GMT-2", "Etc/GMT-3", "Etc/GMT-4", "Etc/GMT-5", "Etc/GMT-6", "Etc/GMT-7", "Etc/GMT-8", "Etc/GMT-9", "Etc/GMT0", "Etc/Greenwich", "Etc/UCT", "Etc/UTC", "Etc/Universal", "Etc/Zulu", "Europe/Amsterdam", "Europe/Andorra", "Europe/Athens", "Europe/Belfast", "Europe/Belgrade", "Europe/Berlin", "Europe/Bratislava", "Europe/Brussels", "Europe/Bucharest", "Europe/Budapest", "Europe/Busingen", "Europe/Chisinau", "Europe/Copenhagen", "Europe/Dublin", "Europe/Gibraltar", "Europe/Guernsey", "Europe/Helsinki", "Europe/Isle_of_Man", "Europe/Istanbul", "Europe/Jersey", "Europe/Kaliningrad", "Europe/Kiev", "Europe/Lisbon", "Europe/Ljubljana", "Europe/London", "Europe/Luxembourg", "Europe/Madrid", "Europe/Malta", "Europe/Mariehamn", "Europe/Minsk", "Europe/Monaco", "Europe/Moscow", "Europe/Nicosia", "Europe/Oslo", "Europe/Paris", "Europe/Podgorica", "Europe/Prague", "Europe/Riga", "Europe/Rome", "Europe/Samara", "Europe/San_Marino", "Europe/Sarajevo", "Europe/Simferopol", "Europe/Skopje", "Europe/Sofia", "Europe/Stockholm", "Europe/Tallinn", "Europe/Tirane", "Europe/Tiraspol", "Europe/Uzhgorod", "Europe/Vaduz", "Europe/Vatican", "Europe/Vienna", "Europe/Vilnius", "Europe/Volgograd", "Europe/Warsaw", "Europe/Zagreb", "Europe/Zaporozhye", "Europe/Zurich", "GB", "GB-Eire", "GMT", "GMT+0", "GMT-0", "GMT0", "Greenwich", "HST", "Hongkong", "Iceland", "Indian/Antananarivo", "Indian/Chagos", "Indian/Christmas", "Indian/Cocos", "Indian/Comoro", "Indian/Kerguelen", "Indian/Mahe", "Indian/Maldives", "Indian/Mauritius", "Indian/Mayotte", "Indian/Reunion", "Iran", "Israel", "Jamaica", "Japan", "Kwajalein", "Libya", "MET", "MST", "MST7MDT", "Mexico/BajaNorte", "Mexico/BajaSur", "Mexico/General", "NZ", "NZ-CHAT", "Navajo", "PRC", "PST8PDT", "Pacific/Apia", "Pacific/Auckland", "Pacific/Bougainville", "Pacific/Chatham", "Pacific/Chuuk", "Pacific/Easter", "Pacific/Efate", "Pacific/Enderbury", "Pacific/Fakaofo", "Pacific/Fiji", "Pacific/Funafuti", "Pacific/Galapagos", "Pacific/Gambier", "Pacific/Guadalcanal", "Pacific/Guam", "Pacific/Honolulu", "Pacific/Johnston", "Pacific/Kiritimati", "Pacific/Kosrae", "Pacific/Kwajalein", "Pacific/Majuro", "Pacific/Marquesas", "Pacific/Midway", "Pacific/Nauru", "Pacific/Niue", "Pacific/Norfolk", "Pacific/Noumea", "Pacific/Pago_Pago", "Pacific/Palau", "Pacific/Pitcairn", "Pacific/Pohnpei", "Pacific/Ponape", "Pacific/Port_Moresby", "Pacific/Rarotonga", "Pacific/Saipan", "Pacific/Samoa", "Pacific/Tahiti", "Pacific/Tarawa", "Pacific/Tongatapu", "Pacific/Truk", "Pacific/Wake", "Pacific/Wallis", "Pacific/Yap", "Poland", "Portugal", "ROC", "ROK", "Singapore", "Turkey", "UCT", "US/Alaska", "US/Aleutian", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Indiana-Starke", "US/Michigan", "US/Mountain", "US/Pacific", "US/Pacific-New", "US/Samoa", "UTC", "Universal", "W-SU", "WET", "Zulu"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -4175,7 +4175,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Exports the Reserved Instances that overlap with the requested time period in CSV format.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/export",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/export`),
@@ -4248,7 +4248,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -4322,7 +4322,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Gets the filter options for Reserved Instances that overlap with the requested time period.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/filter_options",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/filter_options`),
@@ -4411,7 +4411,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "end_time",
 						Description: `The end time of the period.`,
@@ -4506,7 +4506,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new ReservedInstancePurchase. This is not actually purchased in the cloud and is only used for cost simulation purposes.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases",
 						Variables:  []string{"scenario_id", "instance_combination_id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases`),
@@ -4564,7 +4564,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -4623,7 +4623,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all ReservedInstancePurchases for the InstanceCombination.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases",
 						Variables:  []string{"scenario_id", "instance_combination_id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases`),
@@ -4639,7 +4639,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -4656,7 +4656,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific ReservedInstancePurchase.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases/%s",
 						Variables:  []string{"scenario_id", "instance_combination_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)`),
@@ -4672,7 +4672,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -4689,7 +4689,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the provided attributes of a ReservedInstancePurchase.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases/%s",
 						Variables:  []string{"scenario_id", "instance_combination_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)`),
@@ -4747,7 +4747,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -4806,14 +4806,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete a ReservedInstancePurchase. This is not actually deleted in the cloud and is only used for cost simulation purposes.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases/%s",
 						Variables:  []string{"scenario_id", "instance_combination_id", "id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -4828,7 +4828,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new Scenario.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/scenarios",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/scenarios`),
@@ -4927,7 +4927,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -4992,7 +4992,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all Scenarios.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/scenarios`),
@@ -5016,7 +5016,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "include_non_persisted",
 						Description: ``,
@@ -5041,7 +5041,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific Scenario.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)`),
@@ -5057,7 +5057,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5074,7 +5074,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the provided attributes of a Scenario.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/scenarios/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)`),
@@ -5122,7 +5122,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5171,14 +5171,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete a Scenario.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/scenarios/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -5188,7 +5188,7 @@ var GenMetadata = map[string]*metadata.Resource{
            If there are missing prices for any of the InstanceCombinations then these metrics will be excluded from the results for that InstanceCombination.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/actions/forecast",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/actions/forecast`),
@@ -5204,7 +5204,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5227,7 +5227,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create a new ScheduledReport.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/scheduled_reports",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/scheduled_reports`),
@@ -5322,7 +5322,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5383,7 +5383,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all ScheduledReports.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scheduled_reports",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/scheduled_reports`),
@@ -5399,7 +5399,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5416,7 +5416,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific ScheduledReport.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/scheduled_reports/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/scheduled_reports/([^/]+)`),
@@ -5432,7 +5432,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5449,7 +5449,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the provided attributes of a ScheduledReport.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/scheduled_reports/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/scheduled_reports/([^/]+)`),
@@ -5501,7 +5501,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5554,14 +5554,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete a ScheduledReport.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "DELETE",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/scheduled_reports/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/scheduled_reports/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -5569,7 +5569,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create the default Scheduled Report: a weekly report with no filters`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/scheduled_reports/actions/create_defaults",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/scheduled_reports/actions/create_defaults`),
@@ -5585,7 +5585,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5608,14 +5608,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Returns a JSON blob with all prices for Scenario Builder.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/temp_instance_prices",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/temp_instance_prices`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
-				ApiParams:    []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},
@@ -5630,7 +5630,7 @@ var GenMetadata = map[string]*metadata.Resource{
           them the login details. Returns an error if the user already exists.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/users",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/users`),
@@ -5705,7 +5705,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5738,7 +5738,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List all users.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/users",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/users`),
@@ -5754,7 +5754,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5771,7 +5771,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show a specific user.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/users/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/users/([^/]+)`),
@@ -5787,7 +5787,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5805,7 +5805,7 @@ var GenMetadata = map[string]*metadata.Resource{
           This cannot be used to update other user parameters such as their name or password.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/users/%s",
 						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`/api/users/([^/]+)`),
@@ -5872,7 +5872,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"ca#user_accounts"},
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5900,7 +5900,7 @@ var GenMetadata = map[string]*metadata.Resource{
           the cloud credentials required to connect their clouds to RightScale.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/users/actions/invite",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/users/actions/invite`),
@@ -5932,7 +5932,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "account_id",
 						Description: `RightScale account ID.`,
@@ -5970,7 +5970,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `List the UserSettings.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "GET",
+						HTTPMethod: "GET",
 						Pattern:    "/api/user_settings",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/user_settings`),
@@ -5986,7 +5986,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -6003,7 +6003,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update the provided attributes of UserSettings.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PATCH",
+						HTTPMethod: "PATCH",
 						Pattern:    "/api/user_settings",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/api/user_settings`),
@@ -6211,7 +6211,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,

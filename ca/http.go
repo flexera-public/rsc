@@ -11,7 +11,7 @@ import (
 // parameters.
 // It is intended for generic clients that need to consume APIs in a generic maner.
 // The method builds an HTTP request that can be fed to PerformRequest.
-func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams) (*http.Request, error) {
+func (a *API) BuildRequest(resource, action, href string, params rsapi.APIParams) (*http.Request, error) {
 	// First lookup metadata
 	res, ok := GenMetadata[resource]
 	if !ok {
@@ -27,10 +27,10 @@ func (a *Api) BuildRequest(resource, action, href string, params rsapi.ApiParams
 	if err != nil {
 		return nil, err
 	}
-	actionUrl, err := act.Url(vars)
+	actionURL, err := act.URL(vars)
 	if err != nil {
 		return nil, err
 	}
 	_, queryParams := rsapi.IdentifyParams(act, params)
-	return a.BuildHTTPRequest("GET", actionUrl.Path, "1.0", queryParams, nil)
+	return a.BuildHTTPRequest("GET", actionURL.Path, "1.0", queryParams, nil)
 }

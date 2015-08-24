@@ -11,8 +11,8 @@ import (
 	"bitbucket.org/pkg/inflect"
 )
 
-// The analyzer struct holds the analysis results
-type ApiAnalyzer struct {
+// APIAnalyzer holds the analysis results.
+type APIAnalyzer struct {
 	// Raw resources as defined in API json metadata
 	rawResources map[string]interface{}
 	// Attribute type mappings defined in attributes.json
@@ -23,9 +23,9 @@ type ApiAnalyzer struct {
 	rawTypes map[string][]*gen.ObjectDataType
 }
 
-// Factory method for API analyzer
-func NewApiAnalyzer(resources map[string]interface{}, attributeTypes map[string]string) *ApiAnalyzer {
-	return &ApiAnalyzer{
+// NewAPIAnalyzer is the factory method for the API analyzer
+func NewAPIAnalyzer(resources map[string]interface{}, attributeTypes map[string]string) *APIAnalyzer {
+	return &APIAnalyzer{
 		rawResources:   resources,
 		attributeTypes: attributeTypes,
 		rawTypes:       make(map[string][]*gen.ObjectDataType),
@@ -33,17 +33,17 @@ func NewApiAnalyzer(resources map[string]interface{}, attributeTypes map[string]
 }
 
 // Analyze iterate through all resources and initializes the Resources and ParamTypes fields of
-// the ApiAnalyzer struct accordingly.
-func (a *ApiAnalyzer) Analyze() *gen.ApiDescriptor {
-	var descriptor = &gen.ApiDescriptor{
+// the APIAnalyzer struct accordingly.
+func (a *APIAnalyzer) Analyze() *gen.APIDescriptor {
+	var descriptor = &gen.APIDescriptor{
 		Resources: make(map[string]*gen.Resource),
 		Types:     make(map[string]*gen.ObjectDataType),
 	}
 	var rawResourceNames = make([]string, len(a.rawResources))
 	var idx = 0
-	for n, _ := range a.rawResources {
+	for n := range a.rawResources {
 		rawResourceNames[idx] = n
-		idx += 1
+		idx++
 	}
 	sort.Strings(rawResourceNames)
 	for _, name := range rawResourceNames {
@@ -56,7 +56,7 @@ func (a *ApiAnalyzer) Analyze() *gen.ApiDescriptor {
 
 // AnalyzeResource analyzes the given resource and updates the Resources and ParamTypes analyzer
 // fields accordingly
-func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descriptor *gen.ApiDescriptor) {
+func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descriptor *gen.APIDescriptor) {
 	var res = resource.(map[string]interface{})
 
 	// Compute description
@@ -105,9 +105,9 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		}
 		var allParamNames = make([]string, len(params))
 		var i = 0
-		for n, _ := range params {
+		for n := range params {
 			allParamNames[i] = n
-			i += 1
+			i++
 		}
 		sort.Strings(allParamNames)
 
@@ -121,9 +121,9 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		// Record new parameter types
 		var paramTypeNames = make([]string, len(paramAnalyzer.ParamTypes))
 		var idx = 0
-		for n, _ := range paramAnalyzer.ParamTypes {
+		for n := range paramAnalyzer.ParamTypes {
 			paramTypeNames[idx] = n
-			idx += 1
+			idx++
 		}
 		sort.Strings(paramTypeNames)
 		for _, name := range paramTypeNames {
@@ -249,7 +249,7 @@ func (a *ApiAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 	name = inflect.Singularize(name)
 	descriptor.Resources[name] = &gen.Resource{
 		Name:        name,
-		ClientName:  "Api",
+		ClientName:  "API",
 		Description: removeBlankLines(description),
 		Actions:     actions,
 		Attributes:  attributes,
@@ -267,6 +267,7 @@ var (
 	routeVariablesRegexp = regexp.MustCompile(`/:([^/]+)`)
 )
 
+// LocatorFunc returns the source code for building a locator instance from a resource.
 func LocatorFunc(attributes []*gen.Attribute, name string) string {
 	hasLinks := false
 	for _, a := range attributes {
@@ -286,6 +287,7 @@ func LocatorFunc(attributes []*gen.Attribute, name string) string {
 		return nil`
 }
 
+// ParseRoute parses a API 1.5 route and returns corresponding path patterns.
 func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) {
 	// :(((( some routes are empty
 	var paths []string
@@ -323,7 +325,7 @@ func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) 
 				continue
 			}
 			paths[j] = path
-			j += 1
+			j++
 		}
 		paths = paths[:j]
 	}
@@ -332,7 +334,7 @@ func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) 
 		rx := routeVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(p), `/([^/]+)`)
 		rx = fmt.Sprintf("^%s$", rx)
 		pattern := gen.PathPattern{
-			HttpMethod: method,
+			HTTPMethod: method,
 			Path:       p,
 			Pattern:    routeVariablesRegexp.ReplaceAllLiteralString(p, "/%s"),
 			Regexp:     rx,
@@ -400,9 +402,8 @@ func parseReturn(kind, resName, contentType string) string {
 	case "create":
 		if _, ok := noMediaTypeResources[resName]; ok {
 			return "map[string]interface{}"
-		} else {
-			return "*" + inflect.Singularize(resName) + "Locator"
 		}
+		return "*" + inflect.Singularize(resName) + "Locator"
 	case "update", "destroy":
 		return ""
 	case "current_instances":
@@ -437,18 +438,17 @@ func resourceType(resName string) string {
 	}
 	if _, ok := noMediaTypeResources[resName]; ok {
 		return "map[string]string"
-	} else {
-		return inflect.Singularize(resName)
 	}
+	return inflect.Singularize(resName)
 }
 
 // Return keys of given maps sorted
 func sortedKeys(m map[string]interface{}) []string {
 	keys := make([]string, len(m))
 	idx := 0
-	for k, _ := range m {
+	for k := range m {
 		keys[idx] = k
-		idx += 1
+		idx++
 	}
 	sort.Strings(keys)
 	return keys

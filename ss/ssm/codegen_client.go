@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated with:
-// $ praxisgen -metadata=ss/ssm/restful_doc -output=ss/ssm -pkg=ssm -target=1.0 -client=Api
+// $ praxisgen -metadata=ss/ssm/restful_doc -output=ss/ssm -pkg=ssm -target=1.0 -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -52,7 +52,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	if err != nil {
 		return nil, err
 	}
-	return action.Url(vars)
+	return action.URL(vars)
 }
 
 /******  Execution ******/
@@ -100,7 +100,7 @@ type Execution struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Execution) Locator(api *Api) *ExecutionLocator {
+func (r *Execution) Locator(api *API) *ExecutionLocator {
 	return api.ExecutionLocator(r.Href)
 }
 
@@ -109,11 +109,11 @@ func (r *Execution) Locator(api *Api) *ExecutionLocator {
 // ExecutionLocator exposes the Execution resource actions.
 type ExecutionLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ExecutionLocator builds a locator from the given href.
-func (api *Api) ExecutionLocator(href string) *ExecutionLocator {
+func (api *API) ExecutionLocator(href string) *ExecutionLocator {
 	return &ExecutionLocator{Href(href), api}
 }
 
@@ -122,10 +122,10 @@ func (api *Api) ExecutionLocator(href string) *ExecutionLocator {
 // GET /projects/:project_id/executions
 //
 // List information about the Executions, or use a filter to only return certain Executions. A view can be used for various levels of detail.
-func (loc *ExecutionLocator) Index(options rsapi.ApiParams) ([]*Execution, error) {
+func (loc *ExecutionLocator) Index(options rsapi.APIParams) ([]*Execution, error) {
 	var res []*Execution
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
@@ -138,12 +138,12 @@ func (loc *ExecutionLocator) Index(options rsapi.ApiParams) ([]*Execution, error
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -172,20 +172,20 @@ func (loc *ExecutionLocator) Index(options rsapi.ApiParams) ([]*Execution, error
 // GET /projects/:project_id/executions/:id
 //
 // Show details for a given Execution. A view can be used for various levels of detail.
-func (loc *ExecutionLocator) Show(options rsapi.ApiParams) (*Execution, error) {
+func (loc *ExecutionLocator) Show(options rsapi.APIParams) (*Execution, error) {
 	var res *Execution
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -214,11 +214,11 @@ func (loc *ExecutionLocator) Show(options rsapi.ApiParams) (*Execution, error) {
 // POST /projects/:project_id/executions
 //
 // Create a new execution from a CAT, a compiled CAT, an Application in the Catalog, or a Template in Designer
-func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator, error) {
+func (loc *ExecutionLocator) Create(options rsapi.APIParams) (*ExecutionLocator, error) {
 	var res *ExecutionLocator
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var applicationHrefOpt = options["application_href"]
 	if applicationHrefOpt != nil {
 		p["application_href"] = applicationHrefOpt
@@ -271,7 +271,7 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -299,10 +299,10 @@ func (loc *ExecutionLocator) Create(options rsapi.ApiParams) (*ExecutionLocator,
 // PATCH /projects/:project_id/executions/:id
 //
 // Updates an execution end date or selected schedule.
-func (loc *ExecutionLocator) Patch(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+func (loc *ExecutionLocator) Patch(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var currentScheduleOpt = options["current_schedule"]
 	if currentScheduleOpt != nil {
 		p["current_schedule"] = currentScheduleOpt
@@ -315,7 +315,7 @@ func (loc *ExecutionLocator) Patch(options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -338,19 +338,19 @@ func (loc *ExecutionLocator) Patch(options rsapi.ApiParams) error {
 // DELETE /projects/:project_id/executions/:id
 //
 // No description provided for delete.
-func (loc *ExecutionLocator) Delete(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+func (loc *ExecutionLocator) Delete(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var forceOpt = options["force"]
 	if forceOpt != nil {
 		params["force"] = forceOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -373,24 +373,24 @@ func (loc *ExecutionLocator) Delete(options rsapi.ApiParams) error {
 // DELETE /projects/:project_id/executions
 //
 // Delete several executions from the database. Note: if an execution has not successfully been terminated, there may still be associated cloud resources running.
-func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.ApiParams) error {
+func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.APIParams) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
 	var forceOpt = options["force"]
 	if forceOpt != nil {
 		params["force"] = forceOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "multi_delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -417,16 +417,16 @@ func (loc *ExecutionLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
 		return fmt.Errorf("apiVersion is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"api_version": apiVersion,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "download")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -450,13 +450,13 @@ func (loc *ExecutionLocator) Download(apiVersion string) error {
 //
 // Launch an Execution.
 func (loc *ExecutionLocator) Launch() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "launch")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -480,13 +480,13 @@ func (loc *ExecutionLocator) Launch() error {
 //
 // Start an Execution.
 func (loc *ExecutionLocator) Start() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "start")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -510,13 +510,13 @@ func (loc *ExecutionLocator) Start() error {
 //
 // Stop an Execution.
 func (loc *ExecutionLocator) Stop() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "stop")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -540,13 +540,13 @@ func (loc *ExecutionLocator) Stop() error {
 //
 // Terminate an Execution.
 func (loc *ExecutionLocator) Terminate() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "terminate")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -573,16 +573,16 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "multi_launch")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -609,16 +609,16 @@ func (loc *ExecutionLocator) MultiStart(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "multi_start")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -645,16 +645,16 @@ func (loc *ExecutionLocator) MultiStop(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "multi_stop")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -681,16 +681,16 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Execution", "multi_terminate")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -713,13 +713,13 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 // POST /projects/:project_id/executions/:id/actions/run
 //
 // Runs an Operation on an Execution.
-func (loc *ExecutionLocator) Run(name string, options rsapi.ApiParams) error {
+func (loc *ExecutionLocator) Run(name string, options rsapi.APIParams) error {
 	if name == "" {
 		return fmt.Errorf("name is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"name": name,
 	}
 	var configurationOptionsOpt = options["configuration_options"]
@@ -730,7 +730,7 @@ func (loc *ExecutionLocator) Run(name string, options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -753,19 +753,19 @@ func (loc *ExecutionLocator) Run(name string, options rsapi.ApiParams) error {
 // POST /projects/:project_id/executions/actions/run
 //
 // Runs an Operation on several Executions.
-func (loc *ExecutionLocator) MultiRun(ids []string, name string, options rsapi.ApiParams) error {
+func (loc *ExecutionLocator) MultiRun(ids []string, name string, options rsapi.APIParams) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
 	if name == "" {
 		return fmt.Errorf("name is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"name": name,
 	}
 	var configurationOptionsOpt = options["configuration_options"]
@@ -776,7 +776,7 @@ func (loc *ExecutionLocator) MultiRun(ids []string, name string, options rsapi.A
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -814,7 +814,7 @@ type Notification struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Notification) Locator(api *Api) *NotificationLocator {
+func (r *Notification) Locator(api *API) *NotificationLocator {
 	return api.NotificationLocator(r.Href)
 }
 
@@ -823,11 +823,11 @@ func (r *Notification) Locator(api *Api) *NotificationLocator {
 // NotificationLocator exposes the Notification resource actions.
 type NotificationLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // NotificationLocator builds a locator from the given href.
-func (api *Api) NotificationLocator(href string) *NotificationLocator {
+func (api *API) NotificationLocator(href string) *NotificationLocator {
 	return &NotificationLocator{Href(href), api}
 }
 
@@ -836,10 +836,10 @@ func (api *Api) NotificationLocator(href string) *NotificationLocator {
 // GET /projects/:project_id/notifications
 //
 // List the most recent 50 Notifications. Use the filter parameter to specify specify Executions.
-func (loc *NotificationLocator) Index(options rsapi.ApiParams) ([]*Notification, error) {
+func (loc *NotificationLocator) Index(options rsapi.APIParams) ([]*Notification, error) {
 	var res []*Notification
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
@@ -848,12 +848,12 @@ func (loc *NotificationLocator) Index(options rsapi.ApiParams) ([]*Notification,
 	if idsOpt != nil {
 		params["ids[]"] = idsOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Notification", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -884,13 +884,13 @@ func (loc *NotificationLocator) Index(options rsapi.ApiParams) ([]*Notification,
 // Get details for a specific Notification
 func (loc *NotificationLocator) Show() (*Notification, error) {
 	var res *Notification
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Notification", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -936,7 +936,7 @@ type Operation struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Operation) Locator(api *Api) *OperationLocator {
+func (r *Operation) Locator(api *API) *OperationLocator {
 	return api.OperationLocator(r.Href)
 }
 
@@ -945,11 +945,11 @@ func (r *Operation) Locator(api *Api) *OperationLocator {
 // OperationLocator exposes the Operation resource actions.
 type OperationLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // OperationLocator builds a locator from the given href.
-func (api *Api) OperationLocator(href string) *OperationLocator {
+func (api *API) OperationLocator(href string) *OperationLocator {
 	return &OperationLocator{Href(href), api}
 }
 
@@ -958,10 +958,10 @@ func (api *Api) OperationLocator(href string) *OperationLocator {
 // GET /projects/:project_id/operations
 //
 // Get the list of 50 most recent Operations (usually filtered by Execution).
-func (loc *OperationLocator) Index(options rsapi.ApiParams) ([]*Operation, error) {
+func (loc *OperationLocator) Index(options rsapi.APIParams) ([]*Operation, error) {
 	var res []*Operation
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
@@ -978,12 +978,12 @@ func (loc *OperationLocator) Index(options rsapi.ApiParams) ([]*Operation, error
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Operation", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1012,20 +1012,20 @@ func (loc *OperationLocator) Index(options rsapi.ApiParams) ([]*Operation, error
 // GET /projects/:project_id/operations/:id
 //
 // Get the details for a specific Operation
-func (loc *OperationLocator) Show(options rsapi.ApiParams) (*Operation, error) {
+func (loc *OperationLocator) Show(options rsapi.APIParams) (*Operation, error) {
 	var res *Operation
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Operation", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1054,7 +1054,7 @@ func (loc *OperationLocator) Show(options rsapi.ApiParams) (*Operation, error) {
 // POST /projects/:project_id/operations
 //
 // Trigger an Operation to run by specifying the Execution ID and the name of the Operation.
-func (loc *OperationLocator) Create(executionId string, name string, options rsapi.ApiParams) (*OperationLocator, error) {
+func (loc *OperationLocator) Create(executionId string, name string, options rsapi.APIParams) (*OperationLocator, error) {
 	var res *OperationLocator
 	if executionId == "" {
 		return res, fmt.Errorf("executionId is required")
@@ -1062,9 +1062,9 @@ func (loc *OperationLocator) Create(executionId string, name string, options rsa
 	if name == "" {
 		return res, fmt.Errorf("name is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"execution_id": executionId,
 		"name":         name,
 	}
@@ -1076,7 +1076,7 @@ func (loc *OperationLocator) Create(executionId string, name string, options rsa
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1126,7 +1126,7 @@ type ScheduledAction struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *ScheduledAction) Locator(api *Api) *ScheduledActionLocator {
+func (r *ScheduledAction) Locator(api *API) *ScheduledActionLocator {
 	return api.ScheduledActionLocator(r.Href)
 }
 
@@ -1135,11 +1135,11 @@ func (r *ScheduledAction) Locator(api *Api) *ScheduledActionLocator {
 // ScheduledActionLocator exposes the ScheduledAction resource actions.
 type ScheduledActionLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ScheduledActionLocator builds a locator from the given href.
-func (api *Api) ScheduledActionLocator(href string) *ScheduledActionLocator {
+func (api *API) ScheduledActionLocator(href string) *ScheduledActionLocator {
 	return &ScheduledActionLocator{Href(href), api}
 }
 
@@ -1148,20 +1148,20 @@ func (api *Api) ScheduledActionLocator(href string) *ScheduledActionLocator {
 // GET /projects/:project_id/scheduled_actions
 //
 // List ScheduledAction resources in the project. The list can be filtered to a given execution.
-func (loc *ScheduledActionLocator) Index(options rsapi.ApiParams) ([]*ScheduledAction, error) {
+func (loc *ScheduledActionLocator) Index(options rsapi.APIParams) ([]*ScheduledAction, error) {
 	var res []*ScheduledAction
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ScheduledAction", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1192,13 +1192,13 @@ func (loc *ScheduledActionLocator) Index(options rsapi.ApiParams) ([]*ScheduledA
 // Retrieve given ScheduledAction resource.
 func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
 	var res *ScheduledAction
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ScheduledAction", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1227,7 +1227,7 @@ func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
 // POST /projects/:project_id/scheduled_actions
 //
 // Create a new ScheduledAction resource.
-func (loc *ScheduledActionLocator) Create(action string, executionId string, firstOccurrence *time.Time, options rsapi.ApiParams) (*ScheduledActionLocator, error) {
+func (loc *ScheduledActionLocator) Create(action string, executionId string, firstOccurrence *time.Time, options rsapi.APIParams) (*ScheduledActionLocator, error) {
 	var res *ScheduledActionLocator
 	if action == "" {
 		return res, fmt.Errorf("action is required")
@@ -1235,9 +1235,9 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 	if executionId == "" {
 		return res, fmt.Errorf("executionId is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"action":           action,
 		"execution_id":     executionId,
 		"first_occurrence": firstOccurrence,
@@ -1262,7 +1262,7 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -1290,10 +1290,10 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 // PATCH /projects/:project_id/scheduled_actions/:id
 //
 // Updates the 'next_occurrence' property of a ScheduledAction.
-func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+func (loc *ScheduledActionLocator) Patch(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var nextOccurrenceOpt = options["next_occurrence"]
 	if nextOccurrenceOpt != nil {
 		p["next_occurrence"] = nextOccurrenceOpt
@@ -1302,7 +1302,7 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1326,13 +1326,13 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.ApiParams) error {
 //
 // Delete a ScheduledAction.
 func (loc *ScheduledActionLocator) Delete() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ScheduledAction", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -1355,10 +1355,10 @@ func (loc *ScheduledActionLocator) Delete() error {
 // POST /projects/:project_id/scheduled_actions/:id/actions/skip
 //
 // Skips the requested number of ScheduledAction occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledAction is returned.
-func (loc *ScheduledActionLocator) Skip(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+func (loc *ScheduledActionLocator) Skip(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var countOpt = options["count"]
 	if countOpt != nil {
 		p["count"] = countOpt
@@ -1367,7 +1367,7 @@ func (loc *ScheduledActionLocator) Skip(options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}

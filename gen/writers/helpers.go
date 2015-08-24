@@ -30,20 +30,20 @@ func parameters(a *gen.Action) string {
 	var hasOptional = a.HasOptionalParams()
 	var countParams = len(m)
 	if hasOptional {
-		countParams += 1
+		countParams++
 	}
 	var params = make([]string, countParams)
 	for i, param := range m {
 		params[i] = fmt.Sprintf("%s %s", param.VarName, param.Signature())
 	}
 	if hasOptional {
-		params[countParams-1] = "options rsapi.ApiParams"
+		params[countParams-1] = "options rsapi.APIParams"
 	}
 
 	return strings.Join(params, ", ")
 }
 
-// Produces code that initializes a ApiParams struct with the values of parameters for the given
+// Produces code that initializes a APIParams struct with the values of parameters for the given
 // action and location.
 func paramsInitializer(action *gen.Action, location int, varName string) string {
 	var fields []string
@@ -65,7 +65,7 @@ func paramsInitializer(action *gen.Action, location int, varName string) string 
 	if len(fields) == 0 && len(optionals) == 0 {
 		return ""
 	}
-	var paramsDecl = fmt.Sprintf("rsapi.ApiParams{\n%s\n}", strings.Join(fields, "\n\t"))
+	var paramsDecl = fmt.Sprintf("rsapi.APIParams{\n%s\n}", strings.Join(fields, "\n\t"))
 	if len(optionals) == 0 {
 		return fmt.Sprintf("\n%s = %s", varName, paramsDecl)
 	}

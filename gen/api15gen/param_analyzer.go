@@ -25,8 +25,8 @@ var (
 	partsRegexp = regexp.MustCompile("[^[:alnum:]]+")
 )
 
-// Analyzer exposes "analyze" method which initialized all the fields but 'rawParams' which is
-// initialized by factory method.
+// ParamAnalyzer exposes the "Analyze" method which initializes all the fields but 'rawParams'
+// which is initialized by the factory method.
 // The analyzer takes a map describing the parameters of a method as found in the API JSON and
 // produces the corresponding set of ActionParam structs.
 type ParamAnalyzer struct {
@@ -47,7 +47,7 @@ type ParamAnalyzer struct {
 	LeafParams []*gen.ActionParam
 }
 
-// Factory method, initialize 'path' and 'rawParams' fields
+// NewAnalyzer is the factory method, it initializes the 'path' and 'rawParams' fields.
 func NewAnalyzer(params map[string]interface{}) *ParamAnalyzer {
 	return &ParamAnalyzer{rawParams: params}
 }
@@ -59,9 +59,9 @@ func (p *ParamAnalyzer) Analyze() {
 	params := p.rawParams
 	paths := make([]string, len(params))
 	i := 0
-	for n, _ := range params {
+	for n := range params {
 		paths[i] = n
-		i += 1
+		i++
 	}
 	sort.Strings(paths)
 	sort.Sort(ByReverseLength(paths))
@@ -177,13 +177,13 @@ func (p *ParamAnalyzer) Analyze() {
 	res := make([]*gen.ActionParam, len(top))
 	for _, param := range top {
 		res[i] = param
-		i += 1
+		i++
 	}
 	sort.Sort(gen.ByName(res))
 	p.Params = res
 }
 
-// Sort array of string by length
+// ByReverseLength makes it possible to sort an array of strings by length.
 type ByReverseLength []string
 
 func (s ByReverseLength) Len() int {
@@ -335,7 +335,7 @@ func removeBlankLines(doc string) string {
 	for _, line := range lines {
 		if len(line) > 0 && !blankRegexp.MatchString(line) {
 			fullLines[i] = line
-			i += 1
+			i++
 		}
 	}
 	return strings.Join(fullLines[:i], "\n")

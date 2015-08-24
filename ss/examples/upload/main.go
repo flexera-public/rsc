@@ -69,7 +69,7 @@ func main() {
 	if err != nil {
 		fail("failed to create template: %s", err)
 	}
-	created, err := t.Show(rsapi.ApiParams{})
+	created, err := t.Show(rsapi.APIParams{})
 	if err != nil {
 		fail("failed to retrieve created template: %s", err)
 	}

@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated with:
-// $ praxisgen -metadata=ss/ssd/restful_doc -output=ss/ssd -pkg=ssd -target=1.0 -client=Api
+// $ praxisgen -metadata=ss/ssd/restful_doc -output=ss/ssd -pkg=ssd -target=1.0 -client=API
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -52,7 +52,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	if err != nil {
 		return nil, err
 	}
-	return action.Url(vars)
+	return action.URL(vars)
 }
 
 /******  Schedule ******/
@@ -72,7 +72,7 @@ type Schedule struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Schedule) Locator(api *Api) *ScheduleLocator {
+func (r *Schedule) Locator(api *API) *ScheduleLocator {
 	return api.ScheduleLocator(r.Href)
 }
 
@@ -81,11 +81,11 @@ func (r *Schedule) Locator(api *Api) *ScheduleLocator {
 // ScheduleLocator exposes the Schedule resource actions.
 type ScheduleLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // ScheduleLocator builds a locator from the given href.
-func (api *Api) ScheduleLocator(href string) *ScheduleLocator {
+func (api *API) ScheduleLocator(href string) *ScheduleLocator {
 	return &ScheduleLocator{Href(href), api}
 }
 
@@ -96,13 +96,13 @@ func (api *Api) ScheduleLocator(href string) *ScheduleLocator {
 // List the schedules available in Designer.
 func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 	var res []*Schedule
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Schedule", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -133,13 +133,13 @@ func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 // Show detailed information about a given Schedule.
 func (loc *ScheduleLocator) Show() (*Schedule, error) {
 	var res *Schedule
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Schedule", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -168,7 +168,7 @@ func (loc *ScheduleLocator) Show() (*Schedule, error) {
 // POST /collections/:collection_id/schedules
 //
 // Create a new Schedule.
-func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, stopRecurrence *Recurrence, options rsapi.ApiParams) (*ScheduleLocator, error) {
+func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, stopRecurrence *Recurrence, options rsapi.APIParams) (*ScheduleLocator, error) {
 	var res *ScheduleLocator
 	if name == "" {
 		return res, fmt.Errorf("name is required")
@@ -179,9 +179,9 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 	if stopRecurrence == nil {
 		return res, fmt.Errorf("stopRecurrence is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"name":             name,
 		"start_recurrence": startRecurrence,
 		"stop_recurrence":  stopRecurrence,
@@ -194,7 +194,7 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -223,10 +223,10 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 //
 // Update one or more attributes of an existing Schedule.
 // Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
-func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{}
+func (loc *ScheduleLocator) Update(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
 		p["description"] = descriptionOpt
@@ -247,7 +247,7 @@ func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -272,13 +272,13 @@ func (loc *ScheduleLocator) Update(options rsapi.ApiParams) error {
 // Delete a Schedule from the system.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
 func (loc *ScheduleLocator) Delete() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Schedule", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -306,16 +306,16 @@ func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Schedule", "multi_delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -365,7 +365,7 @@ type Template struct {
 }
 
 // Locator returns a locator for the given resource
-func (r *Template) Locator(api *Api) *TemplateLocator {
+func (r *Template) Locator(api *API) *TemplateLocator {
 	return api.TemplateLocator(r.Href)
 }
 
@@ -374,11 +374,11 @@ func (r *Template) Locator(api *Api) *TemplateLocator {
 // TemplateLocator exposes the Template resource actions.
 type TemplateLocator struct {
 	Href
-	api *Api
+	api *API
 }
 
 // TemplateLocator builds a locator from the given href.
-func (api *Api) TemplateLocator(href string) *TemplateLocator {
+func (api *API) TemplateLocator(href string) *TemplateLocator {
 	return &TemplateLocator{Href(href), api}
 }
 
@@ -387,20 +387,20 @@ func (api *Api) TemplateLocator(href string) *TemplateLocator {
 // GET /collections/:collection_id/templates
 //
 // List the templates available in Designer along with some general details.
-func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) {
+func (loc *TemplateLocator) Index(options rsapi.APIParams) ([]*Template, error) {
 	var res []*Template
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
 		params["ids[]"] = idsOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Template", "index")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -429,20 +429,20 @@ func (loc *TemplateLocator) Index(options rsapi.ApiParams) ([]*Template, error) 
 // GET /collections/:collection_id/templates/:id
 //
 // Show detailed information about a given Template. Use the views specified below for more information.
-func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
+func (loc *TemplateLocator) Show(options rsapi.APIParams) (*Template, error) {
 	var res *Template
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Template", "show")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -473,16 +473,16 @@ func (loc *TemplateLocator) Show(options rsapi.ApiParams) (*Template, error) {
 // Create a new Template by uploading its content to Designer.
 func (loc *TemplateLocator) Create(source *rsapi.FileUpload) (*TemplateLocator, error) {
 	var res *TemplateLocator
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"source": source,
 	}
 	uri, err := loc.ActionPath("Template", "create")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -511,16 +511,16 @@ func (loc *TemplateLocator) Create(source *rsapi.FileUpload) (*TemplateLocator, 
 //
 // Update the content of an existing Template (a Template with the same "name" value in the CAT).
 func (loc *TemplateLocator) Update(source *rsapi.FileUpload) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"source": source,
 	}
 	uri, err := loc.ActionPath("Template", "update")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -544,13 +544,13 @@ func (loc *TemplateLocator) Update(source *rsapi.FileUpload) error {
 //
 // Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
 func (loc *TemplateLocator) Delete() error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
+	var params rsapi.APIParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Template", "delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -577,16 +577,16 @@ func (loc *TemplateLocator) MultiDelete(ids []string) error {
 	if len(ids) == 0 {
 		return fmt.Errorf("ids is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"ids[]": ids,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Template", "multi_delete")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -613,16 +613,16 @@ func (loc *TemplateLocator) Download(apiVersion string) error {
 	if apiVersion == "" {
 		return fmt.Errorf("apiVersion is required")
 	}
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
 		"api_version": apiVersion,
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Template", "download")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -649,16 +649,16 @@ func (loc *TemplateLocator) Compile(source string) error {
 	if source == "" {
 		return fmt.Errorf("source is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"source": source,
 	}
 	uri, err := loc.ActionPath("Template", "compile")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -681,13 +681,13 @@ func (loc *TemplateLocator) Compile(source string) error {
 // POST /collections/:collection_id/templates/actions/publish
 //
 // Publish the given Template to the Catalog so that users can launch it.
-func (loc *TemplateLocator) Publish(id string, options rsapi.ApiParams) error {
+func (loc *TemplateLocator) Publish(id string, options rsapi.APIParams) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"id": id,
 	}
 	var nameOpt = options["name"]
@@ -714,7 +714,7 @@ func (loc *TemplateLocator) Publish(id string, options rsapi.ApiParams) error {
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}
@@ -741,16 +741,16 @@ func (loc *TemplateLocator) Unpublish(id string) error {
 	if id == "" {
 		return fmt.Errorf("id is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"id": id,
 	}
 	uri, err := loc.ActionPath("Template", "unpublish")
 	if err != nil {
 		return err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return err
 	}

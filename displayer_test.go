@@ -31,25 +31,25 @@ var _ = Describe("Displayer", func() {
 	})
 
 	Context("with a response containing invalid JSON", func() {
-		var invalidJson = "{notvalid}"
+		var invalidJSON = "{notvalid}"
 		BeforeEach(func() {
-			resp = makeResponse(invalidJson, nil)
+			resp = makeResponse(invalidJSON, nil)
 		})
 
 		It("NewDisplayer contains the raw value", func() {
 			Ω(displayer).ShouldNot(BeNil())
-			Ω(displayer.RawOutput).Should(Equal(invalidJson))
+			Ω(displayer.RawOutput).Should(Equal(invalidJSON))
 			Ω(err).Should(BeNil())
 		})
 	})
 
 	Context("with a response containing valid JSON", func() {
 		var (
-			validJson = `{"foo":"bar","baz":42,"m":[{"a":1},{"a":2}]}`
+			validJSON = `{"foo":"bar","baz":42,"m":[{"a":1},{"a":2}]}`
 		)
 
 		BeforeEach(func() {
-			resp = makeResponse(validJson, nil)
+			resp = makeResponse(validJSON, nil)
 		})
 
 		It("NewDisplayer returns a new displayer and no error", func() {
@@ -81,7 +81,7 @@ var _ = Describe("Displayer", func() {
 			)
 
 			BeforeEach(func() {
-				json.Unmarshal([]byte(validJson), &value)
+				json.Unmarshal([]byte(validJSON), &value)
 			})
 
 			It("returns the output", func() {

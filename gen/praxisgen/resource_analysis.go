@@ -5,8 +5,8 @@ import (
 	"github.com/rightscale/rsc/gen"
 )
 
-// Create API descriptor from raw resources and types
-func (a *ApiAnalyzer) AnalyzeResource(name string, res map[string]interface{}, desc *gen.ApiDescriptor) error {
+// AnalyzeResource creates an API descriptor from raw resources and types.
+func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, desc *gen.APIDescriptor) error {
 	name = inflect.Singularize(name)
 	resource := gen.Resource{Name: name, ClientName: a.ClientName}
 
