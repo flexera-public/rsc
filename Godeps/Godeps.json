@@ -1,11 +1,15 @@
 {
-	"ImportPath": "rs/rsc",
-	"GoVersion": "go1.4",
+	"ImportPath": "github.com/rightscale/rsc",
+	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
 			"ImportPath": "bitbucket.org/pkg/inflect",
 			"Comment": "go.r60-12",
 			"Rev": "8961c3750a47b8c0b3e118d52513b97adf85a7e8"
+		},
+		{
+			"ImportPath": "github.com/alecthomas/template",
+			"Rev": "b867cc6ab45cece8143cfcc6fc9c77cf3f2c23c0"
 		},
 		{
 			"ImportPath": "github.com/alecthomas/units",
@@ -17,8 +21,12 @@
 			"Rev": "a582018feafb39c4884d1b03cad98b91e2804276"
 		},
 		{
-			"ImportPath": "github.com/mgutz/ansi",
-			"Rev": "376eb392d7d7e2ae025da0037c73cf8c20a428d8"
+			"ImportPath": "github.com/mattn/go-colorable",
+			"Rev": "40e4aedc8fabf8c23e040057540867186712faa5"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-isatty",
+			"Rev": "ae0b1f8f8004be68d791a576e3d8e7648ab41449"
 		},
 		{
 			"ImportPath": "github.com/onsi/ginkgo",
@@ -36,15 +44,13 @@
 		},
 		{
 			"ImportPath": "gopkg.in/alecthomas/kingpin.v2",
-			"Rev": "89dac2fb11a9573327691cbcebcd711f5fa67cbd"
+			"Comment": "v2.0.12",
+			"Rev": "639879d6110b1b0409410c7b737ef0bb18325038"
 		},
 		{
 			"ImportPath": "gopkg.in/inconshreveable/log15.v2",
+			"Comment": "v2.10",
 			"Rev": "dc7890abeaadcb6a79a9a5ee30bc1897bbf97713"
-		},
-		{
-			"ImportPath": "github.com/mattn/go-isatty",
-			"Rev": "ae0b1f8f8004be68d791a576e3d8e7648ab41449"
 		}
 	]
 }
