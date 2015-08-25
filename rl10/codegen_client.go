@@ -633,6 +633,52 @@ func (api *API) TSSLocator(href string) *TSSLocator {
 
 //===== Actions
 
+// PUT /rll/tss/control
+//
+// Control the TSS monitoring
+func (loc *TSSLocator) PutControl(options rsapi.ApiParams) (string, error) {
+	var res string
+	var params rsapi.ApiParams
+	params = rsapi.ApiParams{}
+	var enableMonitoringOpt = options["enable_monitoring"]
+	if enableMonitoringOpt != nil {
+		params["enable_monitoring"] = enableMonitoringOpt
+	}
+	var tssIdOpt = options["tss_id"]
+	if tssIdOpt != nil {
+		params["tss_id"] = tssIdOpt
+	}
+	var p rsapi.ApiParams
+	uri, err := loc.ActionPath("TSS", "put_control")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
 // GET /rll/tss/hostname
 //
 // Get the TSS hostname to proxy

@@ -6,6 +6,7 @@
       "description": "Retrieve all environment variables",
       "name": "index",
       "metadata": {
+
       },
       "urls": [
         {
@@ -19,6 +20,7 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
+
           },
           "media_type": {
             "identifier": "text/plain"
@@ -30,6 +32,7 @@
       "description": "Retrieve environment variable value",
       "name": "show",
       "metadata": {
+
       },
       "urls": [
         {
@@ -43,6 +46,7 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
+
           },
           "media_type": {
             "identifier": "text/plain"
@@ -54,6 +58,7 @@
       "description": "Set environment variable value",
       "name": "update",
       "metadata": {
+
       },
       "urls": [
         {
@@ -84,7 +89,7 @@
           }
         },
         "example": {
-          "name": "unnamableness"
+          "name": "embellishes"
         }
       },
       "payload": {
@@ -93,13 +98,14 @@
           "name": "String",
           "id": "Attributor-String"
         },
-        "example": "postmediastinal"
+        "example": "attention"
       },
       "responses": {
         "ok": {
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
+
           },
           "media_type": {
             "identifier": "text/plain"
@@ -111,6 +117,7 @@
       "description": "Delete environment variable",
       "name": "delete",
       "metadata": {
+
       },
       "urls": [
         {
@@ -124,6 +131,7 @@
           "description": "The server successfully processed the request, but is not returning any content.",
           "status": 204,
           "headers": {
+
           }
         }
       }
@@ -131,5 +139,6 @@
   ],
   "name": "Resources::Env",
   "metadata": {
+
   }
 }

@@ -6,6 +6,7 @@
       "description": "Relaunch the RightLink process using a specified binary",
       "name": "upgrade",
       "metadata": {
+
       },
       "urls": [
         {
@@ -37,7 +38,7 @@
           }
         },
         "example": {
-          "exec": "synadelphite"
+          "exec": "sandblasted"
         }
       },
       "responses": {
@@ -45,6 +46,7 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
+
           },
           "media_type": {
             "identifier": "text/plain"
@@ -56,6 +58,7 @@
       "description": "Run git-based scripts (as recipes) synchronously",
       "name": "run_recipe",
       "metadata": {
+
       },
       "urls": [
         {
@@ -118,10 +121,10 @@
           }
         },
         "example": {
-          "recipe": "kerat",
-          "json": "occasion",
+          "recipe": "turbulently",
+          "json": "graphologists",
           "arguments": {
-            "tiger": "misexpression"
+            "Rourke": "alfresco"
           }
         }
       },
@@ -130,6 +133,7 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
+
           },
           "media_type": {
             "identifier": "text/plain"
@@ -141,6 +145,7 @@
       "description": "Run RightScripts synchronously",
       "name": "run_right_script",
       "metadata": {
+
       },
       "urls": [
         {
@@ -202,10 +207,10 @@
           }
         },
         "example": {
-          "right_script": "papulosquamous",
+          "right_script": "Jocasta",
           "right_script_id": 142,
           "arguments": {
-            "tiger": "misexpression"
+            "Rourke": "alfresco"
           }
         }
       },
@@ -214,6 +219,7 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
+
           },
           "media_type": {
             "identifier": "text/plain"
@@ -224,5 +230,6 @@
   ],
   "name": "Resources::Rl10",
   "metadata": {
+
   }
 }
