@@ -1,3 +1,9 @@
+v4.0.0 / 2015-08-25
+-------------------
+* [break] Fix issues reported by `golint`, e.g. `ApiParams` => `APIParams`
+* [break] Fix return types for APIs that don't return resources
+* Add TSS control actions to RL10 client
+
 v3.1.1 / 2015-08-24
 -------------------
 * Update to latest kingpin v2
