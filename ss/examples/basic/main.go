@@ -1,7 +1,7 @@
 // This basic example illustrates how to setup a Self-Service client to make a simple
 // API call. The reference for the API can be found at
 // https://s3.amazonaws.com/rs_api_docs/selfservice/manager/index.html#/
-package main // import "gopkg.in/rightscale/rsc.v3/ss/examples/basic"
+package main // import "gopkg.in/rightscale/rsc.v4/ss/examples/basic"
 
 import (
 	"flag"
@@ -12,10 +12,10 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"gopkg.in/rightscale/rsc.v3/httpclient"
-	"gopkg.in/rightscale/rsc.v3/rsapi"
-	"gopkg.in/rightscale/rsc.v3/ss"
-	"gopkg.in/rightscale/rsc.v3/ss/ssm"
+	"gopkg.in/rightscale/rsc.v4/httpclient"
+	"gopkg.in/rightscale/rsc.v4/rsapi"
+	"gopkg.in/rightscale/rsc.v4/ss"
+	"gopkg.in/rightscale/rsc.v4/ss/ssm"
 )
 
 // For testing

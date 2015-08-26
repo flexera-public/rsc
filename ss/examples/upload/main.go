@@ -1,6 +1,6 @@
 // This upload example illustrates how to upload a CAT to the self-service designer service.
 // The reference for the API can be found at https://s3.amazonaws.com/rs_api_docs/selfservice/manager/index.html#/
-package main // import "gopkg.in/rightscale/rsc.v3/ss/examples/upload"
+package main // import "gopkg.in/rightscale/rsc.v4/ss/examples/upload"
 
 import (
 	"flag"
@@ -10,9 +10,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v3/httpclient"
-	"gopkg.in/rightscale/rsc.v3/rsapi"
-	"gopkg.in/rightscale/rsc.v3/ss/ssd"
+	"gopkg.in/rightscale/rsc.v4/httpclient"
+	"gopkg.in/rightscale/rsc.v4/rsapi"
+	"gopkg.in/rightscale/rsc.v4/ss/ssd"
 )
 
 // For testing

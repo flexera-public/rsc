@@ -7,15 +7,15 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cm15 // import "gopkg.in/rightscale/rsc.v3/cm15"
+package cm15 // import "gopkg.in/rightscale/rsc.v4/cm15"
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 
-	"gopkg.in/rightscale/rsc.v3/metadata"
-	"gopkg.in/rightscale/rsc.v3/rsapi"
+	"gopkg.in/rightscale/rsc.v4/metadata"
+	"gopkg.in/rightscale/rsc.v4/rsapi"
 )
 
 // API Version

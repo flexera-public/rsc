@@ -5,7 +5,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"gopkg.in/rightscale/rsc.v3/metadata"
+	"gopkg.in/rightscale/rsc.v4/metadata"
 )
 
 var _ = Describe("Action", func() {

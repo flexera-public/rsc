@@ -1,4 +1,4 @@
-package rsapi // import "gopkg.in/rightscale/rsc.v3/rsapi"
+package rsapi // import "gopkg.in/rightscale/rsc.v4/rsapi"
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"gopkg.in/rightscale/rsc.v3/metadata"
+	"gopkg.in/rightscale/rsc.v4/metadata"
 )
 
 // FileUpload represents payload fields that correspond to multipart file uploads.

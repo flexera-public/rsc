@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"gopkg.in/alecthomas/kingpin.v2"
-	"gopkg.in/rightscale/rsc.v3/cmd"
-	"gopkg.in/rightscale/rsc.v3/log"
+	"gopkg.in/rightscale/rsc.v4/cmd"
+	"gopkg.in/rightscale/rsc.v4/log"
 
 	// phoney reference to make Godep pull this in for the code generators
 	_ "bitbucket.org/pkg/inflect"

@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/ghttp"
-	"gopkg.in/rightscale/rsc.v3/httpclient"
+	"gopkg.in/rightscale/rsc.v4/httpclient"
 )
 
 // Helper function that creates a http.Header from a name value pair

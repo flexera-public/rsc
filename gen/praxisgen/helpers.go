@@ -1,4 +1,4 @@
-package main // import "gopkg.in/rightscale/rsc.v3/gen/praxisgen"
+package main // import "gopkg.in/rightscale/rsc.v4/gen/praxisgen"
 
 import (
 	"encoding/json"

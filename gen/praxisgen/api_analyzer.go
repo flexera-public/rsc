@@ -1,9 +1,9 @@
-package main // import "gopkg.in/rightscale/rsc.v3/gen/praxisgen"
+package main // import "gopkg.in/rightscale/rsc.v4/gen/praxisgen"
 
 import (
 	"sort"
 
-	"gopkg.in/rightscale/rsc.v3/gen"
+	"gopkg.in/rightscale/rsc.v4/gen"
 )
 
 // APIAnalyzer is holds the analysis results.

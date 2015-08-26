@@ -1,10 +1,10 @@
-package ca // import "gopkg.in/rightscale/rsc.v3/ca"
+package ca // import "gopkg.in/rightscale/rsc.v4/ca"
 
 import (
 	"fmt"
 	"net/http"
 
-	"gopkg.in/rightscale/rsc.v3/rsapi"
+	"gopkg.in/rightscale/rsc.v4/rsapi"
 )
 
 // BuildRequest builds a HTTP request from a resource name and href and an action name and
