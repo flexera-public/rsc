@@ -1,5 +1,5 @@
 // This upload example illustrates how to upload a CAT to the self-service designer service.
-// The reference for the API can be found at https://rs-api-docs.s3.amazonaws.com/selfservice/manager/index.html#/
+// The reference for the API can be found at http://reference.rightscale.com/selfservice/manager/index.html#/
 package main
 
 import (

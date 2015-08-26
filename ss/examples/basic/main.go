@@ -1,6 +1,6 @@
 // This basic example illustrates how to setup a Self-Service client to make a simple
 // API call. The reference for the API can be found at
-// https://rs-api-docs.s3.amazonaws.com/selfservice/manager/index.html#/
+// http://reference.rightscale.com/selfservice/manager/index.html#/
 package main
 
 import (
