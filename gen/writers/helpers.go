@@ -1,12 +1,12 @@
-package writers
+package writers // import "gopkg.in/rightscale/rsc.v3/gen/writers"
 
 import (
 	"fmt"
 	"os"
 	"strings"
 
-	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/writers/text"
+	"gopkg.in/rightscale/rsc.v3/gen"
+	"gopkg.in/rightscale/rsc.v3/gen/writers/text"
 )
 
 // Produce line comments by concatenating given strings and producing 80 characters long lines

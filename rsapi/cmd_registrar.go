@@ -1,12 +1,12 @@
-package rsapi
+package rsapi // import "gopkg.in/rightscale/rsc.v3/rsapi"
 
 import (
 	"fmt"
 	"sort"
 	"strings"
 
-	"github.com/rightscale/rsc/metadata"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"gopkg.in/rightscale/rsc.v3/metadata"
 )
 
 // APICommandRegistrar is the interface implemented by registrar used by each API client to

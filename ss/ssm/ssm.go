@@ -1,9 +1,9 @@
-package ssm
+package ssm // import "gopkg.in/rightscale/rsc.v3/ss/ssm"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v3/rsapi"
 )
 
 // API is the Self-Service manager client.
