@@ -4749,7 +4749,7 @@ type InstanceType struct {
 	CpuSpeed        string              `json:"cpu_speed,omitempty"`
 	Description     string              `json:"description,omitempty"`
 	Links           []map[string]string `json:"links,omitempty"`
-	LocalDiskSize   string              `json:"local_disk_size,omitempty"`
+	LocalDiskSize   int                 `json:"local_disk_size,omitempty"`
 	LocalDisks      int                 `json:"local_disks,omitempty"`
 	Memory          string              `json:"memory,omitempty"`
 	Name            string              `json:"name,omitempty"`

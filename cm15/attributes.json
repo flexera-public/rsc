@@ -72,7 +72,7 @@
 	"last_name": "string",
 	"lineage": "string",
 	"links": "[]map[string]string",
-	"local_disk_size": "string",
+	"local_disk_size": "int",
 	"local_disks": "int",
 	"locked": "bool",
 	"long_description": "string",
