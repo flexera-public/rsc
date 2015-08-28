@@ -306,7 +306,7 @@ func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) 
 	case "Servers#launch":
 		method, paths = "POST", []string{"/api/servers/:id/launch"}
 	case "Servers#terminate":
-		method, paths = "POST", []string{"/api/servers/:id/teminate"}
+		method, paths = "POST", []string{"/api/servers/:id/terminate"}
 	default:
 		bounds := routeRegexp.FindAllStringIndex(route, -1)
 		matches := make([]string, len(bounds))

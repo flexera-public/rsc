@@ -10634,9 +10634,9 @@ URL of this servers current_instance. See Instances#terminate for details.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/api/servers/%s/teminate",
+						Pattern:    "/api/servers/%s/terminate",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/teminate$`),
+						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/terminate$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
