@@ -10730,7 +10730,7 @@ func (loc *ServerLocator) Show(options rsapi.APIParams) (*Server, error) {
 	return res, err
 }
 
-// POST /api/servers/:id/teminate
+// POST /api/servers/:id/terminate
 //
 // Terminates the current instance of this server. This function is equivalent to invoking the terminate action on the
 // URL of this servers current_instance. See Instances#terminate for details.
