@@ -171,6 +171,10 @@ func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 							// Analyze return type to make sure it gets recorded
 							_, err := a.AnalyzeType(a.RawTypes[name.(string)], "return")
 							if err != nil {
+								fmt.Println("\nUnable to find: " + name.(string) + " in")
+								for k, _ := range a.RawTypes {
+									fmt.Println(k)
+								}
 								return nil, err
 							}
 						} else {
