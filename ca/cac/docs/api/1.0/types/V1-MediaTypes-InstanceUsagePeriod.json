@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::InstanceUsagePeriod",
+  "family": "hash",
   "id": "V1-MediaTypes-InstanceUsagePeriod",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -22,6 +25,7 @@
       "example_definition": "12345::9::i-c1234567",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -29,6 +33,7 @@
       "description": "The start time of the usage period.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -36,6 +41,7 @@
       "description": "The end time of the usage period.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -44,6 +50,7 @@
       "example_definition": "m1.small",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -59,6 +66,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -66,6 +74,7 @@
       "description": "The hourly price of the instance.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -73,14 +82,16 @@
       "description": "The hourly RCU rate of the instance.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
     "reservation_uid": {
       "description": "The AWS Reserved Instance ID that was applied to this instance during this usage period.\n                        Will be null if no Reserved Instance was applied.",
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fac29fdab38@/Users/callumdryden/git/analytics_api_service/design/v1/media_types/instance_usage_period.rb:27>",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -88,6 +99,7 @@
       "description": "The estimated cost of the instance during this usage period.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -95,6 +107,7 @@
       "description": "The estimated managed RCU count of the instance during this usage period.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     }
@@ -135,13 +148,13 @@
         "pricing_type": "Reserved Instance - Medium Utilization",
         "hourly_price": 0.0,
         "rcu_rate": 0.0,
-        "reservation_uid": "083c5f10-52f1-4d09-b672-ea789a4180e3",
+        "reservation_uid": "5aa8211d-b8ba-4f87-8dfc-447e2928fcfa",
         "estimated_cost": 0.0,
         "estimated_managed_rcu_count": 0.0
       }
     }
   },
-  "identifier": null,
+  "identifier": "",
   "description": null,
   "example": {
     "kind": "ca#instance_usage_period",
@@ -152,7 +165,7 @@
     "pricing_type": "Reserved Instance - Medium Utilization",
     "hourly_price": 0.0,
     "rcu_rate": 0.0,
-    "reservation_uid": "083c5f10-52f1-4d09-b672-ea789a4180e3",
+    "reservation_uid": "5aa8211d-b8ba-4f87-8dfc-447e2928fcfa",
     "estimated_cost": 0.0,
     "estimated_managed_rcu_count": 0.0
   }

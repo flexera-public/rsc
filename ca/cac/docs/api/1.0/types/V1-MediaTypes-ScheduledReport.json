@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::ScheduledReport",
+  "family": "hash",
   "id": "V1-MediaTypes-ScheduledReport",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -11,13 +13,15 @@
     "id": {
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
     "href": {
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fac2a170650@/Users/callumdryden/git/analytics_api_service/design/v1/media_types/scheduled_report.rb:11>",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -27,6 +31,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -34,6 +39,7 @@
       "example_definition": "My team report",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -46,25 +52,26 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "additional_emails": {
       "description": "In addition to your email, the report will be sent to these additional email addresses.",
       "example_definition": [
-        [
-          "john.smith@example.com",
-          "joe.bloggs@example.org"
-        ]
+        "john.smith@example.com",
+        "joe.bloggs@example.org"
       ],
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
         "member_attribute": {
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         }
@@ -74,6 +81,7 @@
       "description": "Whether the emails should include a CSV attachement of the instance data.",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -81,6 +89,7 @@
       "description": "Filters to use for the ScheduledReport.",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -90,14 +99,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::Filter",
+            "family": "hash",
             "id": "V1-MediaTypes-Filter",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -106,6 +116,7 @@
       "description": "Timestamp of when the Scheduled Report was created",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -113,6 +124,7 @@
       "description": "Timestamp of when the Scheduled Report was last updated",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     }
@@ -164,7 +176,7 @@
           {
             "kind": "ca#filter",
             "type": "cloud_bill:account_id",
-            "value": "1",
+            "value": "Amazon Web Services",
             "label": "Example Deployment (Test Account)",
             "tag_resource_type": "deployments"
           }
@@ -193,7 +205,7 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "",
   "description": null,
   "example": {
     "id": 898,
@@ -217,7 +229,7 @@
       {
         "kind": "ca#filter",
         "type": "cloud_bill:account_id",
-        "value": "1",
+        "value": "Amazon Web Services",
         "label": "Example Deployment (Test Account)",
         "tag_resource_type": "deployments"
       }

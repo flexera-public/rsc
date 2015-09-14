@@ -3,6 +3,27 @@
   "actions": [
     {
       "description": null,
+      "name": "idocs",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/idocs/?",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "found": {
+          "description": "The requested resource resides temporarily under a different URI.",
+          "status": 302,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": null,
       "name": "show",
       "metadata": {
       },
@@ -14,13 +35,10 @@
         }
       ],
       "responses": {
-        "ok": {
-          "description": "Standard response for successful HTTP requests.",
+        "html_template": {
+          "description": null,
           "status": 200,
           "headers": {
-          },
-          "media_type": {
-            "identifier": "text/html"
           }
         },
         "login_redirect": {
@@ -40,5 +58,8 @@
   ],
   "name": "V0::ApiResources::App",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

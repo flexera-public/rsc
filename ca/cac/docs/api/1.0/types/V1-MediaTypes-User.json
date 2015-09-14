@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::User",
+  "family": "hash",
   "id": "V1-MediaTypes-User",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -11,12 +13,14 @@
     "id": {
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
     "href": {
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -26,6 +30,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -34,6 +39,7 @@
       "example_definition": "john.smith@example.com",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -41,6 +47,7 @@
       "description": "List of accounts that the user has access to.",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -50,14 +57,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::UserAccounts",
+            "family": "hash",
             "id": "V1-MediaTypes-UserAccounts",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -66,6 +74,7 @@
       "description": "Does the user have any expired accounts?",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -73,6 +82,7 @@
       "description": "Does the user have the admin permission on any accounts that have IP Whitelists?",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     }
@@ -128,9 +138,9 @@
             "billing_admin_only": false,
             "cloud_analytics_account_setting_enabled": false,
             "cloud_analytics_enabled": false,
-            "permissions": [
-              "billing"
-            ]
+            "permissions": {
+              "billing": true
+            }
           }
         ],
         "has_any_expired_accounts": false,
@@ -138,7 +148,7 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "",
   "description": null,
   "example": {
     "id": 447,
@@ -153,9 +163,9 @@
         "billing_admin_only": false,
         "cloud_analytics_account_setting_enabled": false,
         "cloud_analytics_enabled": false,
-        "permissions": [
-          "billing"
-        ]
+        "permissions": {
+          "billing": true
+        }
       }
     ],
     "has_any_expired_accounts": false,

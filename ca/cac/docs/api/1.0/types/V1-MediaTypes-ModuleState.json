@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::ModuleState",
+  "family": "hash",
   "id": "V1-MediaTypes-ModuleState",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -37,6 +40,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -44,6 +48,7 @@
       "description": "Whether this module is displayed on the page or not.",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -51,6 +56,7 @@
       "description": "Whether this module is expanded on the page or not, only applicable for active modules.",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -62,6 +68,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     }
@@ -90,7 +97,7 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "",
   "description": "Used by the Cloud Analytics UI to store the state of UI modules.",
   "example": {
     "kind": "ca#module_state",

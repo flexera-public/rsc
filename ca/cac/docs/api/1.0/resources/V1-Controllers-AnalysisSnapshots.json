@@ -20,10 +20,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,6 +34,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -48,10 +51,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -61,6 +66,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               }
             },
@@ -69,6 +75,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               }
             },
@@ -77,6 +84,7 @@
               "default": false,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             },
@@ -91,19 +99,22 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
             "excluded_tag_types": {
               "description": "Used by the Cloud Analytics UI to disable tag types in the tags module.",
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
                 "member_attribute": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -130,7 +141,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -151,6 +163,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -160,6 +173,7 @@
               "description": "Filters used to create the snapshot",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -169,23 +183,25 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             },
             "module_states": {
               "description": "Used by the Cloud Analytics UI to store the state of the snapshot modules based on the state of the Analyze page modules.",
-              "example_definition": {},
+              "example_definition": "#<Proc:0x007fac29da9fa8@/Users/callumdryden/git/analytics_api_service/design/v1/media_types/analysis_snapshot.rb:36>",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -195,14 +211,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::ModuleState",
+                    "family": "hash",
                     "id": "V1-MediaTypes-ModuleState",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
@@ -214,27 +231,27 @@
           "end_time": "2012-12-08T00:00:00+00:00",
           "is_comparison": true,
           "granularity": "week",
-          "excluded_tag_types": [
-            "suborder",
-            "papyrotype",
-            "tautomery"
-          ],
-          "metrics": [
-            "reserved_instance_recurring_cost",
-            "managed_instance_rcu_count"
-          ],
+          "excluded_tag_types": {
+            "suborder": true,
+            "papyrotype": true,
+            "tautomery": true
+          },
+          "metrics": {
+            "reserved_instance_recurring_cost": true,
+            "managed_instance_rcu_count": true
+          },
           "filters": [
             {
               "kind": "ca#filter",
               "type": "reserved_instance:instance_type_key",
-              "value": "1",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "instances"
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:cloud_vendor_name",
-              "value": "1",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "instances"
             },
@@ -348,14 +365,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::AnalysisSnapshot",
+            "family": "hash",
             "id": "V1-MediaTypes-AnalysisSnapshot",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -378,19 +396,22 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "uuid": {
               "description": "Universally unique ID of the snapshot.",
-              "example_definition": {},
+              "example_definition": "#<Proc:0x007fac29d81b20@/Users/callumdryden/git/analytics_api_service/design/v1/media_types/analysis_snapshot.rb:8>",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "url"
@@ -399,6 +420,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -406,7 +428,7 @@
           }
         },
         "example": {
-          "uuid": "83cfe63d5a7e5cbb0f54a2b95e5beb3185a24b54",
+          "uuid": "2158ce5b629e877314f763f0bbab537dd4cd80ec",
           "view": "Pyrenochaeta"
         }
       },
@@ -430,14 +452,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::AnalysisSnapshot",
+            "family": "hash",
             "id": "V1-MediaTypes-AnalysisSnapshot",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -451,5 +474,8 @@
   ],
   "name": "V1::ApiResources::AnalysisSnapshots",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

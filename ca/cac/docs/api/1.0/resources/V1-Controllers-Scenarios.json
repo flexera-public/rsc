@@ -20,10 +20,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,6 +34,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -48,10 +51,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -60,6 +65,7 @@
               "example_definition": "Test Scenario",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -68,6 +74,7 @@
               "default": true,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             },
@@ -76,6 +83,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               }
             },
@@ -83,6 +91,7 @@
               "description": "Filters to use for the Scenario.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -92,14 +101,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
@@ -108,6 +118,7 @@
               "description": "Used by the Cloud Analytics UI to define the total number of instances allocated to private clouds, do not use.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               }
             },
@@ -116,6 +127,7 @@
               "default": false,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             }
@@ -136,7 +148,7 @@
             {
               "kind": "ca#filter",
               "type": "reserved_instance:cloud_vendor_name",
-              "value": "1",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "accounts"
             }
@@ -165,14 +177,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::Scenario",
+            "family": "hash",
             "id": "V1-MediaTypes-Scenario",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -195,10 +208,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -207,6 +222,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -215,6 +231,7 @@
               "default": false,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               },
               "source": "query"
@@ -245,15 +262,28 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::Scenario",
-            "id": "V1-MediaTypes-Scenario",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::Scenario::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Scenario-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Scenario"
+              },
+              "type": {
+                "name": "V1::MediaTypes::Scenario",
+                "family": "hash",
+                "id": "V1-MediaTypes-Scenario",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -276,10 +306,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -288,6 +320,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -296,6 +329,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -327,14 +361,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::Scenario",
+            "family": "hash",
             "id": "V1-MediaTypes-Scenario",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -363,10 +398,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -375,6 +412,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -383,6 +421,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -400,10 +439,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -412,6 +453,7 @@
               "example_definition": "Test Scenario",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -419,6 +461,7 @@
               "description": "Used by the Cloud Analytics UI to define whether the Scenario should be persisted or if it's being used in experimentation mode by a user, which will result in the Scenario to be deleted automatically after a few days.",
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             },
@@ -426,6 +469,7 @@
               "description": "The timestamp of when a snapshot of historic data was taken when creating the Scenario. When creating a new Scenario, you usually want to use the current time.",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               }
             },
@@ -433,6 +477,7 @@
               "description": "Used by the Cloud Analytics UI to define the total number of instances allocated to private clouds, do not use.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               }
             }
@@ -465,14 +510,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::Scenario",
+            "family": "hash",
             "id": "V1-MediaTypes-Scenario",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -501,10 +547,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -513,6 +561,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -568,10 +617,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -580,6 +631,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -588,6 +640,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -619,14 +672,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+            "family": "hash",
             "id": "V1-MediaTypes-TimeSeriesMetricsResult",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -640,5 +694,8 @@
   ],
   "name": "V1::ApiResources::Scenarios",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

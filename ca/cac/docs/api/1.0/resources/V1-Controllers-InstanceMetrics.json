@@ -1,8 +1,8 @@
 {
-  "description": "Enables you to get aggregated metrics from instances, such as total_cost or lowest_instance_count.",
+  "description": "Enables you to get aggregated metrics from instances, such as `total_cost` or `lowest_instance_count`.\n\nBoth HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number\nof filters applied it is possible that the URL may exceed the maximum length. If the URL length is over\n2,083 characters we recommend using a POST request with the parameters in the body.\n",
   "actions": [
     {
-      "description": "          Calculates the overall metrics for instance usages in a time period, e.g. show me the\n          total cost of all my instances during the last month.\n",
+      "description": "Calculates the overall metrics for instance usages in a time period, e.g. show me the\n          total cost of all my instances during the last month.",
       "name": "overall",
       "metadata": {
       },
@@ -11,27 +11,26 @@
           "verb": "GET",
           "path": "/api/instance_metrics/actions/overall",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instance_metrics/actions/overall",
+          "version": "1.0"
         }
       ],
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -621,6 +620,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -630,6 +630,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -639,6 +640,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -662,7 +664,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -680,6 +683,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -689,28 +693,27 @@
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -720,14 +723,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -736,36 +740,42 @@
           }
         },
         "example": {
-          "view": "hygienic",
           "timezone": "Asia/Omsk",
           "start_time": "2014-09-18T00:00:00+00:00",
           "end_time": "2014-06-22T00:00:00+00:00",
-          "metrics": [
-            "highest_instance_count",
-            "average_instance_count",
-            "wasted_reserved_instance_cost"
-          ],
+          "metrics": {
+            "highest_instance_count": true,
+            "average_instance_count": true,
+            "wasted_reserved_instance_cost": true
+          },
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ]
         }
@@ -790,20 +800,21 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::MetricsResult",
+            "family": "hash",
             "id": "V1-MediaTypes-MetricsResult",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
     },
     {
-      "description": "          Calculates the overall metrics for instance usages in a time period and groups them into\n          specified breakdown categories, e.g. show me the total cost of all my instances during the\n          last month grouped by different accounts.\n",
+      "description": "Calculates the overall metrics for instance usages in a time period and groups them into\n          specified breakdown categories, e.g. show me the total cost of all my instances during the\n          last month grouped by different accounts.",
       "name": "grouped_overall",
       "metadata": {
       },
@@ -812,27 +823,26 @@
           "verb": "GET",
           "path": "/api/instance_metrics/actions/grouped_overall",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instance_metrics/actions/grouped_overall",
+          "version": "1.0"
         }
       ],
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -1422,6 +1432,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -1431,6 +1442,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -1440,6 +1452,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -1463,7 +1476,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -1481,6 +1495,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -1490,28 +1505,27 @@
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -1521,14 +1535,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -1552,7 +1567,6 @@
                     "pricing_type",
                     "server_template_uid",
                     "ss_app",
-                    "tag",
                     "instance_key",
                     "account_name",
                     "cloud_name",
@@ -1571,6 +1585,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -1588,7 +1603,6 @@
                     "pricing_type",
                     "server_template_uid",
                     "ss_app",
-                    "tag",
                     "instance_key",
                     "account_name",
                     "cloud_name",
@@ -1605,6 +1619,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -1639,6 +1654,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -1665,6 +1681,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -1675,6 +1692,7 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -1683,6 +1701,7 @@
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -1690,41 +1709,47 @@
           }
         },
         "example": {
-          "view": "hygienic",
           "timezone": "Asia/Omsk",
           "start_time": "2014-09-18T00:00:00+00:00",
           "end_time": "2014-06-22T00:00:00+00:00",
-          "metrics": [
-            "highest_instance_count",
-            "average_instance_count",
-            "wasted_reserved_instance_cost"
-          ],
+          "metrics": {
+            "highest_instance_count": true,
+            "average_instance_count": true,
+            "wasted_reserved_instance_cost": true
+          },
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ],
           "group": [
-            "cloud_name",
-            "instance_rsid",
+            "datacenter_name",
+            "tag_key",
             "account_id"
           ],
           "order": [
@@ -1753,21 +1778,34 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::MetricsResult",
-            "id": "V1-MediaTypes-MetricsResult",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::MetricsResult::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-MetricsResult-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::MetricsResult"
+              },
+              "type": {
+                "name": "V1::MediaTypes::MetricsResult",
+                "family": "hash",
+                "id": "V1-MediaTypes-MetricsResult",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     {
-      "description": "          Calculates the metrics time series for instance usages in a time period allowing different\n          time buckets (hour, 3 days, month, etc.), e.g. show me the lowest instance count of my\n          instances per day during the last month.\n",
+      "description": "Calculates the metrics time series for instance usages in a time period allowing different\n          time buckets (hour, 3 days, month, etc.), e.g. show me the lowest instance count of my\n          instances per day during the last month.",
       "name": "time_series",
       "metadata": {
       },
@@ -1776,27 +1814,26 @@
           "verb": "GET",
           "path": "/api/instance_metrics/actions/time_series",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instance_metrics/actions/time_series",
+          "version": "1.0"
         }
       ],
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -2386,6 +2423,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -2395,6 +2433,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -2404,6 +2443,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -2427,7 +2467,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -2445,6 +2486,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -2454,28 +2496,27 @@
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -2485,14 +2526,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -2509,6 +2551,7 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -2517,6 +2560,7 @@
               "description": "The interval for the time bucket to group the results by, e.g. if the granularity is day and the interval is 2 then the results will be grouped into buckets representing a period of 2 days.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -2524,36 +2568,42 @@
           }
         },
         "example": {
-          "view": "hygienic",
           "timezone": "Asia/Omsk",
           "start_time": "2014-09-18T00:00:00+00:00",
           "end_time": "2014-06-22T00:00:00+00:00",
-          "metrics": [
-            "highest_instance_count",
-            "average_instance_count",
-            "wasted_reserved_instance_cost"
-          ],
+          "metrics": {
+            "highest_instance_count": true,
+            "average_instance_count": true,
+            "wasted_reserved_instance_cost": true
+          },
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ],
           "granularity": "day",
@@ -2579,21 +2629,34 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::TimeSeriesMetricsResult",
-            "id": "V1-MediaTypes-TimeSeriesMetricsResult",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::TimeSeriesMetricsResult::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-TimeSeriesMetricsResult-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::TimeSeriesMetricsResult"
+              },
+              "type": {
+                "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+                "family": "hash",
+                "id": "V1-MediaTypes-TimeSeriesMetricsResult",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     {
-      "description": "          Calculates the metrics time series for instance usages in a time period allowing different\n          time buckets (hour, 3 days, month, etc.) and groups them into specified breakdown\n          categories, e.g. show me the lowest instance count of my instances per day during the last\n          month grouped by accounts.\n",
+      "description": "Calculates the metrics time series for instance usages in a time period allowing different\n          time buckets (hour, 3 days, month, etc.) and groups them into specified breakdown\n          categories, e.g. show me the lowest instance count of my instances per day during the last\n          month grouped by accounts.",
       "name": "grouped_time_series",
       "metadata": {
       },
@@ -2602,27 +2665,26 @@
           "verb": "GET",
           "path": "/api/instance_metrics/actions/grouped_time_series",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instance_metrics/actions/grouped_time_series",
+          "version": "1.0"
         }
       ],
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -3212,6 +3274,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -3221,6 +3284,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -3230,6 +3294,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -3253,7 +3318,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -3271,6 +3337,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -3280,28 +3347,27 @@
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3311,14 +3377,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -3335,6 +3402,7 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -3343,6 +3411,7 @@
               "description": "The interval for the time bucket to group the results by, e.g. if the granularity is day and the interval is 2 then the results will be grouped into buckets representing a period of 2 days.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -3365,7 +3434,6 @@
                     "pricing_type",
                     "server_template_uid",
                     "ss_app",
-                    "tag",
                     "instance_key",
                     "account_name",
                     "cloud_name",
@@ -3384,6 +3452,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3401,7 +3470,6 @@
                     "pricing_type",
                     "server_template_uid",
                     "ss_app",
-                    "tag",
                     "instance_key",
                     "account_name",
                     "cloud_name",
@@ -3418,6 +3486,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -3452,6 +3521,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3478,6 +3548,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -3488,6 +3559,7 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -3496,6 +3568,7 @@
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -3503,43 +3576,49 @@
           }
         },
         "example": {
-          "view": "hygienic",
           "timezone": "Asia/Omsk",
           "start_time": "2014-09-18T00:00:00+00:00",
           "end_time": "2014-06-22T00:00:00+00:00",
-          "metrics": [
-            "highest_instance_count",
-            "average_instance_count",
-            "wasted_reserved_instance_cost"
-          ],
+          "metrics": {
+            "highest_instance_count": true,
+            "average_instance_count": true,
+            "wasted_reserved_instance_cost": true
+          },
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ],
           "granularity": "day",
           "interval": 21,
           "group": [
-            "cloud_name",
-            "instance_rsid",
+            "datacenter_name",
+            "tag_key",
             "account_id"
           ],
           "order": [
@@ -3568,21 +3647,34 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::TimeSeriesMetricsResult",
-            "id": "V1-MediaTypes-TimeSeriesMetricsResult",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::TimeSeriesMetricsResult::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-TimeSeriesMetricsResult-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::TimeSeriesMetricsResult"
+              },
+              "type": {
+                "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+                "family": "hash",
+                "id": "V1-MediaTypes-TimeSeriesMetricsResult",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     {
-      "description": "          Returns the count of currently running instances.\n",
+      "description": "Returns the count of currently running instances.",
       "name": "current_count",
       "metadata": {
       },
@@ -3591,15 +3683,22 @@
           "verb": "GET",
           "path": "/api/instance_metrics/actions/current_count",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instance_metrics/actions/current_count",
+          "version": "1.0"
         }
       ],
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -3607,28 +3706,27 @@
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3638,14 +3736,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -3658,23 +3757,30 @@
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ]
         }
@@ -3706,5 +3812,8 @@
   ],
   "name": "V1::ApiResources::InstanceMetrics",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

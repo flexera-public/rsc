@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::CurrentUser",
+  "family": "hash",
   "id": "V1-MediaTypes-CurrentUser",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -11,6 +13,7 @@
     "id": {
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -20,6 +23,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -27,6 +31,7 @@
       "description": "First name of the user.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -34,6 +39,7 @@
       "description": "Last name of the user.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -42,6 +48,7 @@
       "example_definition": "john.smith@example.com",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -634,6 +641,7 @@
       "default": "UTC",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -641,6 +649,7 @@
       "description": "The company of the user.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -648,6 +657,7 @@
       "description": "The phone number of the user.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -655,6 +665,7 @@
       "description": "Timestamp of when the user was created.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -662,6 +673,7 @@
       "description": "Timestamp of when the user was last updated.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     }
@@ -705,7 +717,7 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "",
   "description": null,
   "example": {
     "id": 894,

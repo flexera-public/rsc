@@ -38,5 +38,8 @@
   ],
   "name": "V0::ApiResources::Healthcheck",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

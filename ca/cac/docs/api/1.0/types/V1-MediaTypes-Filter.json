@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::Filter",
+  "family": "hash",
   "id": "V1-MediaTypes-Filter",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -15,6 +17,7 @@
       "default": "ca#filter",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -43,6 +46,7 @@
         "instance:server_template_uid",
         "instance:ss_app",
         "instance:tag",
+        "reserved_instance:offering_type",
         "cloud_bill:cloud_vendor_account_id",
         "cloud_bill:product",
         "cloud_bill:product_category",
@@ -52,28 +56,30 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "value": {
       "description": "The value of the type that is being used to filter.",
-      "example_definition": [
-        "1",
-        "Amazon Web Services"
-      ],
+      "example_definition": "Amazon Web Services",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "label": {
+      "description": "The human-readable label for the filter. Not required when filtering resources; will be present in responses from the API.",
       "example_definition": "Example Deployment (Test Account)",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "tag_resource_type": {
+      "description": "The resource type that is being tagged. Only required for filters with type `instance:tag`.",
       "values": [
         "instances",
         "deployments",
@@ -84,6 +90,7 @@
       },
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     }
@@ -106,18 +113,18 @@
       "example": {
         "kind": "ca#filter",
         "type": "instance:tag",
-        "value": "1",
+        "value": "Amazon Web Services",
         "label": "Example Deployment (Test Account)",
         "tag_resource_type": "accounts"
       }
     }
   },
-  "identifier": null,
-  "description": "A single filter object.",
+  "identifier": "",
+  "description": "Filters are used to restrict results for\n[Instances](#/1.0/controller/V1-Controllers-Instances),\n[CloudBills](#/1.0/controller/V1-Controllers-CloudBills), and\n[ReservedInstances](#/1.0/controller/V1-Controllers-Instances). The logic for\ncombining filters is:\n\n* Filters which share a type are OR-ed together.\n* Groups of filters with different types are AND-ed.\n\nThere are some examples below to illustrate this, using these instances:\n\n<table class=\"table table-bordered\">\n  <thead>\n    <tr><th>id</th> <th>account_id</th> <th>cloud_vendor_name</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>A</td> <td>1234</td> <td>Amazon Web Services</td></tr>\n    <tr><td>B</td> <td>1234</td> <td>Microsoft Azure</td></tr>\n    <tr><td>C</td> <td>1235</td> <td>Google</td></tr>\n    <tr><td>D</td> <td>1236</td> <td>Google</td></tr>\n  </tbody>\n</table>\n\n#### Returns instances A and C\n\n```json\n[{\n  \"type\": \"instance:account_id\",\n  \"value\": \"1234\"\n}, {\n  \"type\": \"instance:account_id\",\n  \"value\": \"1235\"\n}, {\n  \"type\": \"instance:cloud_vendor_name\",\n  \"value\": \"Amazon Web Services\"\n}, {\n  \"type\": \"instance:cloud_vendor_name\",\n  \"value\": \"Google\"\n}]\n```\n\n#### Returns instance D only\n\n```json\n[{\n  \"type\": \"instance:account_id\",\n  \"value\": \"1234\"\n}, {\n  \"type\": \"instance:account_id\",\n  \"value\": \"1236\"\n}, {\n  \"type\": \"instance:cloud_vendor_name\",\n  \"value\": \"Google\"\n}]\n```\n\n#### Returns instances A, B, and D\n\n```json\n[{\n  \"type\": \"instance:account_id\",\n  \"value\": \"1234\"\n}, {\n  \"type\": \"instance:account_id\",\n  \"value\": \"1235\"\n}]\n```\n",
   "example": {
     "kind": "ca#filter",
     "type": "instance:tag",
-    "value": "1",
+    "value": "Amazon Web Services",
     "label": "Example Deployment (Test Account)",
     "tag_resource_type": "accounts"
   }

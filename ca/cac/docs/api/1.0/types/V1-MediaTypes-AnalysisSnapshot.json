@@ -1,25 +1,29 @@
 {
   "name": "V1::MediaTypes::AnalysisSnapshot",
+  "family": "hash",
   "id": "V1-MediaTypes-AnalysisSnapshot",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
   "attributes": {
     "uuid": {
       "description": "Universally unique ID of the snapshot.",
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fac29d81b20@/Users/callumdryden/git/analytics_api_service/design/v1/media_types/analysis_snapshot.rb:8>",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "href": {
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fac29d81788@/Users/callumdryden/git/analytics_api_service/design/v1/media_types/analysis_snapshot.rb:10>",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -29,6 +33,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -36,6 +41,7 @@
       "description": "Timestamp of when the snapshot was created.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -44,6 +50,7 @@
       "example_definition": "Scheduled Report - Production",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -51,6 +58,7 @@
       "description": "Timestamp of when the snapshot was last updated.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -58,6 +66,7 @@
       "description": "The start time of the snapshot.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -65,6 +74,7 @@
       "description": "The end time of the snapshot.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -72,6 +82,7 @@
       "description": "Whether the snapshot should return comparison data for the previous date range.",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -85,6 +96,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -109,7 +121,8 @@
         }
       },
       "type": {
-        "name": "Collection",
+        "name": "V1::Types::Set",
+        "family": "hash",
         "id": null,
         "options": {
         },
@@ -130,6 +143,7 @@
           ],
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         }
@@ -139,6 +153,7 @@
       "description": "Filters used to create the snapshot",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -148,23 +163,25 @@
           },
           "type": {
             "name": "V1::MediaTypes::Filter",
+            "family": "hash",
             "id": "V1-MediaTypes-Filter",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
     },
     "module_states": {
       "description": "Used by the Cloud Analytics UI to store the state of the snapshot modules based on the state of the Analyze page modules.",
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fac29da9fa8@/Users/callumdryden/git/analytics_api_service/design/v1/media_types/analysis_snapshot.rb:36>",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -174,14 +191,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::ModuleState",
+            "family": "hash",
             "id": "V1-MediaTypes-ModuleState",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -189,13 +207,15 @@
     "excluded_tag_types": {
       "description": "Used by the Cloud Analytics UI to disable tag types in the tags module.",
       "type": {
-        "name": "Collection",
+        "name": "V1::Types::Set",
+        "family": "hash",
         "id": null,
         "options": {
         },
         "member_attribute": {
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         }
@@ -205,6 +225,7 @@
       "description": "Returns true if the user viewing the snapshot does not have access to the all of the accounts that were used to create the snapshot.",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     }
@@ -245,8 +266,8 @@
       },
       "type": "standard",
       "example": {
-        "uuid": "288dd446fb69d83924abc0a57fa626ad871da3f3",
-        "href": "/api/analysis_snapshots/288dd446fb69d83924abc0a57fa626ad871da3f3",
+        "uuid": "d4c0c9075cb1027c82656cda4c29f78dab57b97f",
+        "href": "/api/analysis_snapshots/d4c0c9075cb1027c82656cda4c29f78dab57b97f",
         "kind": "ca#analysis_snapshot",
         "created_at": "2014-05-06T00:00:00+00:00",
         "created_by": "Scheduled Report - Production",
@@ -255,21 +276,21 @@
         "end_time": "2013-01-20T00:00:00+00:00",
         "is_comparison": false,
         "granularity": "day",
-        "metrics": [
-          "managed_instance_hours",
-          "managed_instance_rcu_count"
-        ],
+        "metrics": {
+          "managed_instance_hours": true,
+          "managed_instance_rcu_count": true
+        },
         "filters": [
           {
             "kind": "ca#filter",
-            "type": "cloud_bill:product_category",
-            "value": "1",
+            "type": "instance_usage_period:instance_key",
+            "value": "Amazon Web Services",
             "label": "Example Deployment (Test Account)",
             "tag_resource_type": "deployments"
           },
           {
             "kind": "ca#filter",
-            "type": "instance:pricing_type",
+            "type": "instance_usage_period:instance_key",
             "value": "Amazon Web Services",
             "label": "Example Deployment (Test Account)",
             "tag_resource_type": "accounts"
@@ -362,10 +383,10 @@
             "sort_key": "total_cost"
           }
         ],
-        "excluded_tag_types": [
-          "Cathari",
-          "teetotumwise"
-        ],
+        "excluded_tag_types": {
+          "Cathari": true,
+          "teetotumwise": true
+        },
         "missing_access_to_some_accounts": false
       }
     },
@@ -380,17 +401,17 @@
       },
       "type": "standard",
       "example": {
-        "uuid": "288dd446fb69d83924abc0a57fa626ad871da3f3",
-        "href": "/api/analysis_snapshots/288dd446fb69d83924abc0a57fa626ad871da3f3",
+        "uuid": "d4c0c9075cb1027c82656cda4c29f78dab57b97f",
+        "href": "/api/analysis_snapshots/d4c0c9075cb1027c82656cda4c29f78dab57b97f",
         "kind": "ca#analysis_snapshot"
       }
     }
   },
-  "identifier": null,
+  "identifier": "",
   "description": null,
   "example": {
-    "uuid": "288dd446fb69d83924abc0a57fa626ad871da3f3",
-    "href": "/api/analysis_snapshots/288dd446fb69d83924abc0a57fa626ad871da3f3",
+    "uuid": "d4c0c9075cb1027c82656cda4c29f78dab57b97f",
+    "href": "/api/analysis_snapshots/d4c0c9075cb1027c82656cda4c29f78dab57b97f",
     "kind": "ca#analysis_snapshot",
     "created_at": "2014-05-06T00:00:00+00:00",
     "created_by": "Scheduled Report - Production",
@@ -399,21 +420,21 @@
     "end_time": "2013-01-20T00:00:00+00:00",
     "is_comparison": false,
     "granularity": "day",
-    "metrics": [
-      "managed_instance_hours",
-      "managed_instance_rcu_count"
-    ],
+    "metrics": {
+      "managed_instance_hours": true,
+      "managed_instance_rcu_count": true
+    },
     "filters": [
       {
         "kind": "ca#filter",
-        "type": "cloud_bill:product_category",
-        "value": "1",
+        "type": "instance_usage_period:instance_key",
+        "value": "Amazon Web Services",
         "label": "Example Deployment (Test Account)",
         "tag_resource_type": "deployments"
       },
       {
         "kind": "ca#filter",
-        "type": "instance:pricing_type",
+        "type": "instance_usage_period:instance_key",
         "value": "Amazon Web Services",
         "label": "Example Deployment (Test Account)",
         "tag_resource_type": "accounts"
@@ -506,10 +527,10 @@
         "sort_key": "total_cost"
       }
     ],
-    "excluded_tag_types": [
-      "Cathari",
-      "teetotumwise"
-    ],
+    "excluded_tag_types": {
+      "Cathari": true,
+      "teetotumwise": true
+    },
     "missing_access_to_some_accounts": false
   }
 }

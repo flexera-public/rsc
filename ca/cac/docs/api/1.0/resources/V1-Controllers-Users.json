@@ -20,10 +20,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,6 +34,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -39,7 +42,7 @@
           }
         },
         "example": {
-          "view": "condemningly"
+          "view": "unrigged"
         }
       },
       "payload": {
@@ -48,10 +51,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -62,6 +67,7 @@
               "example_definition": "john.smith@example.com",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -70,6 +76,7 @@
               "required": true,
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -79,14 +86,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::UserAccounts",
+                    "family": "hash",
                     "id": "V1-MediaTypes-UserAccounts",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
@@ -98,40 +106,39 @@
           "accounts": [
             {
               "kind": "ca#user_accounts",
-              "account_id": 58,
-              "account_name": "novelwright",
-              "billing_admin_only": true,
-              "cloud_analytics_account_setting_enabled": false,
-              "cloud_analytics_enabled": true,
-              "permissions": [
-                "enterprise_manager"
-              ]
-            },
-            {
-              "kind": "ca#user_accounts",
-              "account_id": 440,
-              "account_name": "cantharus",
-              "billing_admin_only": true,
+              "account_id": 103,
+              "account_name": "faujasite",
+              "billing_admin_only": false,
               "cloud_analytics_account_setting_enabled": true,
               "cloud_analytics_enabled": false,
-              "permissions": [
-                "actor",
-                "observer",
-                "billing"
-              ]
+              "permissions": {
+                "billing": true,
+                "enterprise_manager": true
+              }
             },
             {
               "kind": "ca#user_accounts",
-              "account_id": 143,
-              "account_name": "preconclusion",
+              "account_id": 337,
+              "account_name": "emblazer",
               "billing_admin_only": false,
-              "cloud_analytics_account_setting_enabled": false,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": false,
+              "permissions": {
+                "observer": true
+              }
+            },
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 356,
+              "account_name": "hemafibrite",
+              "billing_admin_only": true,
+              "cloud_analytics_account_setting_enabled": true,
               "cloud_analytics_enabled": true,
-              "permissions": [
-                "observer",
-                "admin",
-                "billing"
-              ]
+              "permissions": {
+                "enterprise_manager": true,
+                "observer": true,
+                "billing": true
+              }
             }
           ]
         }
@@ -156,14 +163,21 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::User",
+            "family": "hash",
             "id": "V1-MediaTypes-User",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
           }
         }
       }
@@ -186,10 +200,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -198,6 +214,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -205,7 +222,7 @@
           }
         },
         "example": {
-          "view": "condemningly"
+          "view": "unrigged"
         }
       },
       "responses": {
@@ -227,15 +244,34 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::User",
-            "id": "V1-MediaTypes-User",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::User::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-User-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::User"
+              },
+              "type": {
+                "name": "V1::MediaTypes::User",
+                "family": "hash",
+                "id": "V1-MediaTypes-User",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
           }
         }
       }
@@ -258,17 +294,21 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "id": {
+              "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -277,6 +317,7 @@
               "default": "full",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -284,8 +325,8 @@
           }
         },
         "example": {
-          "id": 878,
-          "view": "condemningly"
+          "id": 539,
+          "view": "unrigged"
         }
       },
       "responses": {
@@ -308,19 +349,26 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::User",
+            "family": "hash",
             "id": "V1-MediaTypes-User",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
           "description": "The requested resource could not be found but may be available again in the future.",
           "status": 404,
+          "headers": {
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
           "headers": {
           }
         }
@@ -344,17 +392,21 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "id": {
+              "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -363,6 +415,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -370,8 +423,8 @@
           }
         },
         "example": {
-          "id": 878,
-          "view": "condemningly"
+          "id": 539,
+          "view": "unrigged"
         }
       },
       "payload": {
@@ -380,10 +433,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -392,6 +447,7 @@
               "description": "List of accounts that the user has access to.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -401,14 +457,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::UserAccounts",
+                    "family": "hash",
                     "id": "V1-MediaTypes-UserAccounts",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
@@ -419,40 +476,39 @@
           "accounts": [
             {
               "kind": "ca#user_accounts",
-              "account_id": 58,
-              "account_name": "novelwright",
-              "billing_admin_only": true,
-              "cloud_analytics_account_setting_enabled": false,
-              "cloud_analytics_enabled": true,
-              "permissions": [
-                "enterprise_manager"
-              ]
-            },
-            {
-              "kind": "ca#user_accounts",
-              "account_id": 440,
-              "account_name": "cantharus",
-              "billing_admin_only": true,
+              "account_id": 103,
+              "account_name": "faujasite",
+              "billing_admin_only": false,
               "cloud_analytics_account_setting_enabled": true,
               "cloud_analytics_enabled": false,
-              "permissions": [
-                "actor",
-                "observer",
-                "billing"
-              ]
+              "permissions": {
+                "billing": true,
+                "enterprise_manager": true
+              }
             },
             {
               "kind": "ca#user_accounts",
-              "account_id": 143,
-              "account_name": "preconclusion",
+              "account_id": 337,
+              "account_name": "emblazer",
               "billing_admin_only": false,
-              "cloud_analytics_account_setting_enabled": false,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": false,
+              "permissions": {
+                "observer": true
+              }
+            },
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 356,
+              "account_name": "hemafibrite",
+              "billing_admin_only": true,
+              "cloud_analytics_account_setting_enabled": true,
               "cloud_analytics_enabled": true,
-              "permissions": [
-                "observer",
-                "admin",
-                "billing"
-              ]
+              "permissions": {
+                "enterprise_manager": true,
+                "observer": true,
+                "billing": true
+              }
             }
           ]
         }
@@ -477,19 +533,102 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::User",
+            "family": "hash",
             "id": "V1-MediaTypes-User",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
           "description": "The requested resource could not be found but may be available again in the future.",
           "status": 404,
+          "headers": {
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Remove a users access to all RightScale accounts",
+      "name": "delete",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/users/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 539
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
           "headers": {
           }
         }
@@ -513,26 +652,32 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "account_id": {
               "description": "RightScale account ID.",
+              "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               }
             },
             "email": {
               "description": "User's email address.",
+              "required": true,
               "example_definition": "john.smith@example.com",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -540,15 +685,16 @@
               "description": "Optional message to include in the invitation email.",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             }
           }
         },
         "example": {
-          "account_id": 726,
+          "account_id": 921,
           "email": "john.smith@example.com",
-          "message": "antisun"
+          "message": "winterbloom"
         }
       },
       "responses": {
@@ -571,14 +717,21 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::User",
+            "family": "hash",
             "id": "V1-MediaTypes-User",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
           }
         }
       }
@@ -586,5 +739,8 @@
   ],
   "name": "V1::ApiResources::Users",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

@@ -20,10 +20,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,6 +34,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -40,6 +43,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -57,10 +61,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -70,6 +76,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               }
             },
@@ -77,22 +84,25 @@
               "description": "The cloud vendor name of the instances.",
               "values": [
                 "Amazon Web Services",
-                "CloudStack",
-                "Datapipe",
                 "Eucalyptus",
-                "Google",
-                "HP",
-                "IDC Frontier",
-                "Logicworks",
-                "Microsoft Azure",
-                "OpenStack",
                 "Rackspace",
+                "CloudStack",
+                "OpenStack",
                 "SoftLayer",
-                "VMware"
+                "Sunrise",
+                "Google",
+                "Microsoft Azure",
+                "HP",
+                "Blue Skies",
+                "VMware",
+                "Datapipe",
+                "IDC Frontier",
+                "Logicworks"
               ],
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -102,6 +112,7 @@
               "example_definition": "EC2 us-east-1",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -110,6 +121,7 @@
               "example_definition": "us-east-1a",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -119,6 +131,7 @@
               "example_definition": "m1.small",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -131,6 +144,7 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -147,14 +161,18 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
             "monthly_usage_hours": {
               "description": "If monthly_usage_option is set to 'Other', this specifies the hours in the month the instances are running.",
-              "required_if": {},
+              "required_if": {
+                "monthly_usage_option": "Other"
+              },
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               }
             },
@@ -162,6 +180,7 @@
               "description": "Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -171,14 +190,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Pattern",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Pattern",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
@@ -187,7 +207,7 @@
         },
         "example": {
           "quantity": 671,
-          "cloud_vendor_name": "IDC Frontier",
+          "cloud_vendor_name": "Sunrise",
           "cloud_name": "EC2 us-east-1",
           "datacenter_name": "us-east-1a",
           "instance_type_name": "m1.small",
@@ -205,7 +225,7 @@
               "value": 0.0,
               "operation": "subtract",
               "years": "all",
-              "months": "5, 7, 9",
+              "months": "all",
               "created_at": "2013-11-21T00:00:00+00:00",
               "updated_at": "2013-12-15T00:00:00+00:00"
             }
@@ -232,14 +252,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::InstanceCombination",
+            "family": "hash",
             "id": "V1-MediaTypes-InstanceCombination",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -268,10 +289,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -280,6 +303,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -288,6 +312,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -296,6 +321,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -328,14 +354,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::InstanceCombination",
+            "family": "hash",
             "id": "V1-MediaTypes-InstanceCombination",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -364,10 +391,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -376,6 +405,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -384,6 +414,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -392,6 +423,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -410,10 +442,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -422,6 +456,7 @@
               "description": "The number of instances.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               }
             },
@@ -429,21 +464,24 @@
               "description": "The cloud vendor name of the instances.",
               "values": [
                 "Amazon Web Services",
-                "CloudStack",
-                "Datapipe",
                 "Eucalyptus",
-                "Google",
-                "HP",
-                "IDC Frontier",
-                "Logicworks",
-                "Microsoft Azure",
-                "OpenStack",
                 "Rackspace",
+                "CloudStack",
+                "OpenStack",
                 "SoftLayer",
-                "VMware"
+                "Sunrise",
+                "Google",
+                "Microsoft Azure",
+                "HP",
+                "Blue Skies",
+                "VMware",
+                "Datapipe",
+                "IDC Frontier",
+                "Logicworks"
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -452,6 +490,7 @@
               "example_definition": "EC2 us-east-1",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -460,6 +499,7 @@
               "example_definition": "us-east-1a",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -468,6 +508,7 @@
               "example_definition": "m1.small",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -479,6 +520,7 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -494,14 +536,18 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
             "monthly_usage_hours": {
               "description": "If monthly_usage_option is set to 'Other', this specifies the hours in the month the instances are running.",
-              "required_if": {},
+              "required_if": {
+                "monthly_usage_option": "Other"
+              },
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               }
             },
@@ -509,6 +555,7 @@
               "description": "Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -518,14 +565,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Pattern",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Pattern",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
@@ -534,7 +582,7 @@
         },
         "example": {
           "quantity": 671,
-          "cloud_vendor_name": "IDC Frontier",
+          "cloud_vendor_name": "Sunrise",
           "cloud_name": "EC2 us-east-1",
           "datacenter_name": "us-east-1a",
           "instance_type_name": "m1.small",
@@ -552,7 +600,7 @@
               "value": 0.0,
               "operation": "subtract",
               "years": "all",
-              "months": "5, 7, 9",
+              "months": "all",
               "created_at": "2013-11-21T00:00:00+00:00",
               "updated_at": "2013-12-15T00:00:00+00:00"
             }
@@ -579,14 +627,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::InstanceCombination",
+            "family": "hash",
             "id": "V1-MediaTypes-InstanceCombination",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -615,10 +664,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -627,6 +678,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -635,6 +687,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -691,10 +744,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -703,6 +758,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -711,6 +767,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -719,6 +776,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -751,14 +809,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "family": "hash",
             "id": "V1-MediaTypes-ReservedInstancePurchase",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -771,6 +830,10 @@
     }
   ],
   "name": "V1::ApiResources::InstanceCombinations",
+  "parent": "V1-ApiResources-Scenarios",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

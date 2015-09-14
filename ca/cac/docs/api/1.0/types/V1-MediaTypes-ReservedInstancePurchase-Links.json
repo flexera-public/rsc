@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::ReservedInstancePurchase::Links",
+  "family": "hash",
   "id": "V1-MediaTypes-ReservedInstancePurchase-Links",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -15,14 +17,15 @@
       },
       "type": {
         "name": "V1::MediaTypes::InstanceCombination",
+        "family": "hash",
         "id": "V1-MediaTypes-InstanceCombination",
         "key": {
           "type": {
             "name": "Symbol",
+            "family": "string",
             "id": "Attributor-Symbol"
           }
-        },
-        "attributes": null
+        }
       }
     }
   },

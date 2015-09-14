@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+  "family": "hash",
   "id": "V1-MediaTypes-TimeSeriesMetricsResult",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,18 +16,21 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "timestamp": {
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
     "results": {
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -35,14 +40,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::MetricsResult",
+            "family": "hash",
             "id": "V1-MediaTypes-MetricsResult",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -87,9 +93,8 @@
               {
                 "kind": "ca#metrics_result",
                 "group": {
-                  "uncodded": "cotingoid",
-                  "flutelike": "multigap",
-                  "bobtail": "radicicolous"
+                  "uninstructedness": "resoluble",
+                  "propulsity": "stannum"
                 },
                 "metrics": {
                   "kind": "ca#metrics",
@@ -142,7 +147,7 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "",
   "description": null,
   "example": {
     "kind": "ca#time_series_metrics_result",
@@ -172,9 +177,8 @@
           {
             "kind": "ca#metrics_result",
             "group": {
-              "uncodded": "cotingoid",
-              "flutelike": "multigap",
-              "bobtail": "radicicolous"
+              "uninstructedness": "resoluble",
+              "propulsity": "stannum"
             },
             "metrics": {
               "kind": "ca#metrics",

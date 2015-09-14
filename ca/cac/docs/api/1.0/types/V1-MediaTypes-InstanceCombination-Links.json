@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::InstanceCombination::Links",
+  "family": "hash",
   "id": "V1-MediaTypes-InstanceCombination-Links",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -16,14 +18,15 @@
       },
       "type": {
         "name": "V1::MediaTypes::Scenario",
+        "family": "hash",
         "id": "V1-MediaTypes-Scenario",
         "key": {
           "type": {
             "name": "Symbol",
+            "family": "string",
             "id": "Attributor-Symbol"
           }
-        },
-        "attributes": null
+        }
       }
     }
   },

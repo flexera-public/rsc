@@ -1,5 +1,5 @@
 {
-  "description": "Enables you to get details about cloud bills. Only Amazon Web Services is supported for now.",
+  "description": "Enables you to get details about cloud bills. Only Amazon Web Services is supported for now.\n\nBoth HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number\nof filters applied it is possible that the URL may exceed the maximum length. If the URL length is over\n2,083 characters we recommend using a POST request with the parameters in the body.\n",
   "actions": [
     {
       "description": "Gets the filter options which can be used for filtering the cloud bill breakdown calls.",
@@ -11,32 +11,32 @@
           "verb": "GET",
           "path": "/api/cloud_bills/actions/filter_options",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/cloud_bills/actions/filter_options",
+          "version": "1.0"
         }
       ],
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "start_time": {
               "description": "The start time of the period.",
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -46,6 +46,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -53,27 +54,26 @@
             "cloud_bill_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "cloud_bill:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "cloud_bill:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "cloud_bill:cloud_vendor_name",
-                    "value": "Amazon Web Services"
-                  },
-                  {
-                    "type": "cloud_bill:product",
-                    "value": "EC2"
-                  }
-                ]
+                {
+                  "type": "cloud_bill:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "cloud_bill:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "cloud_bill:cloud_vendor_name",
+                  "value": "Amazon Web Services"
+                },
+                {
+                  "type": "cloud_bill:product",
+                  "value": "EC2"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -83,14 +83,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -111,7 +112,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -125,6 +127,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -134,36 +137,154 @@
           }
         },
         "example": {
-          "view": "induce",
           "start_time": "2014-09-12T00:00:00+00:00",
           "end_time": "2014-02-15T00:00:00+00:00",
           "cloud_bill_filters": [
             {
               "kind": "ca#filter",
               "type": "cloud_bill:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:cloud_vendor_name",
-              "value": "Amazon Web Services"
+              "value": "Amazon Web Services",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:product",
-              "value": "EC2"
+              "value": "EC2",
+              "label": null,
+              "tag_resource_type": null
             }
           ],
-          "filter_types": [
-            "cloud_bill:cloud_vendor_name",
-            "cloud_bill:cloud_vendor_account_id",
-            "cloud_bill:cloud_vendor_name"
-          ]
+          "filter_types": {
+            "cloud_bill:cloud_vendor_name": true,
+            "cloud_bill:cloud_vendor_account_id": true
+          }
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::Filter::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Filter-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Filter"
+              },
+              "type": {
+                "name": "V1::MediaTypes::Filter",
+                "family": "hash",
+                "id": "V1-MediaTypes-Filter",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "Exports the cloud bills for the time range given, along with the instance data for non-AWS providers, with columns for each account tag.",
+      "name": "export",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/cloud_bills/actions/export",
+          "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/cloud_bills/actions/export",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "start_time": {
+              "description": "The start time of the period.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "family": "temporal",
+                "id": "Attributor-DateTime"
+              },
+              "source": "query"
+            },
+            "end_time": {
+              "description": "The end time of the period.",
+              "required": true,
+              "type": {
+                "name": "DateTime",
+                "family": "temporal",
+                "id": "Attributor-DateTime"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "induce",
+          "start_time": "2014-09-12T00:00:00+00:00",
+          "end_time": "2014-02-15T00:00:00+00:00"
         }
       },
       "responses": {
@@ -186,14 +307,28 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::Filter",
+            "family": "hash",
             "id": "V1-MediaTypes-Filter",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
+          }
+        },
+        "csv_download": {
+          "description": null,
+          "status": 200,
+          "headers": {
+            "Content-Disposition": {
+              "value": "/attachment; filename=\\\"\\w+\\\"/",
+              "type": "regexp"
+            }
+          },
+          "media_type": {
+            "identifier": "text/csv"
           }
         }
       }
@@ -201,5 +336,8 @@
   ],
   "name": "V1::ApiResources::CloudBills",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

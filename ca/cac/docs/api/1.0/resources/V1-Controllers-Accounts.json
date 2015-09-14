@@ -1,5 +1,5 @@
 {
-  "description": "Accounts act as a container for clouds credentials and other RightScale concepts such as\n        Deployments or ServerArrays. Users with the `enterprise_manager` permission in an account can create\n        child accounts. This resource is not included in the public docs.",
+  "description": "Accounts act as a container for clouds credentials and other RightScale concepts such as\n        Deployments or ServerArrays. Users with the `enterprise_manager` permission in an account can create\n        child accounts. This resource is not included in the public docs.\n\n        The view `full` is not supported if the any of the user's accounts use IP Whitelisting.",
   "media_type": "V1-MediaTypes-Account",
   "actions": [
     {
@@ -14,30 +14,82 @@
           "version": "1.0"
         }
       ],
+      "params": {
+        "options": {
+          "reference": "V1::MediaTypes::Account"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "villanous"
+        }
+      },
       "payload": {
         "options": {
           "reference": "V1::MediaTypes::Account"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "dunno": {
+            "master_account_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              }
+            },
+            "name": {
+              "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
+              }
+            },
+            "shard_id": {
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
               }
             }
           }
         },
         "example": {
-          "dunno": "porchlike"
+          "master_account_id": 189,
+          "name": "marrowlike",
+          "shard_id": 367
         }
       },
       "responses": {
@@ -60,14 +112,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::Account",
+            "family": "hash",
             "id": "V1-MediaTypes-Account",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "unprocessable_entity": {
@@ -102,10 +155,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -114,6 +169,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -121,7 +177,7 @@
           }
         },
         "example": {
-          "view": "Aganippe"
+          "view": "villanous"
         }
       },
       "responses": {
@@ -143,15 +199,34 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::Account",
-            "id": "V1-MediaTypes-Account",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::Account::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Account-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Account"
+              },
+              "type": {
+                "name": "V1::MediaTypes::Account",
+                "family": "hash",
+                "id": "V1-MediaTypes-Account",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
           }
         }
       }
@@ -174,10 +249,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -185,6 +262,7 @@
             "id": {
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -193,6 +271,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -200,8 +279,8 @@
           }
         },
         "example": {
-          "id": 498,
-          "view": "Aganippe"
+          "id": 760,
+          "view": "villanous"
         }
       },
       "responses": {
@@ -224,14 +303,21 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::Account",
+            "family": "hash",
             "id": "V1-MediaTypes-Account",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
           }
         }
       }
@@ -239,5 +325,8 @@
   ],
   "name": "V1::ApiResources::Accounts",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

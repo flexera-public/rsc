@@ -16,17 +16,21 @@
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "flow_return_to": {
+              "default": "",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -67,10 +71,12 @@
       "params": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -78,6 +84,7 @@
             "flow_return_to": {
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -91,10 +98,12 @@
       "payload": {
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -102,12 +111,14 @@
             "email": {
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
             "password": {
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             }
@@ -142,5 +153,8 @@
   ],
   "name": "V0::ApiResources::DevSession",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }
