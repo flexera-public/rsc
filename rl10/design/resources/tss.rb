@@ -53,7 +53,7 @@ module Resources
     end
 
     action :put_control do
-      description 'Control the TSS monitoring (deprecated, use the /rll/tss/control resource)'
+      description 'Control the TSS monitoring (deprecated, use the update action)'
       routing { put '' }
       params do
         attribute :tss_id, String, required: false
