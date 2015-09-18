@@ -1,6 +1,8 @@
-Unreleased
-----------
+v4.0.1 / 2015-09-18
+-------------------
 * Support new TSS control actions in RL10 API
+* cm15: Fix typo in server terminate action (thank you @manuelfelipe)
+* cm15: Fix local disk size attribute for InstanceType (thank you @manuelfelipe)
 
 v4.0.0 / 2015-08-25
 -------------------
