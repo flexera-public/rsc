@@ -21,6 +21,10 @@
     "Resources-TSS": {
       "name": "Resources::TSS",
       "friendly_name": "TSS"
+    },
+    "Resources-TSSControl": {
+      "name": "Resources::TSSControl",
+      "friendly_name": "TSSControl"
     }
   },
   "schemas": {
