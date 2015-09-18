@@ -9,16 +9,6 @@ module Resources
       prefix '/rll/tss'
     end
 
-    action :put_control do
-      description 'Control the TSS monitoring (deprecated, use the /rll/tss/control resource)'
-      routing { put '/control' }
-      params do
-        attribute :tss_id, String, required: false
-        attribute :enable_monitoring, Attributor::String, required: false, example: 'all'
-      end
-      response :ok
-    end
-
     action :get_hostname do
       description 'Get the TSS hostname to proxy (deprecated, RL10 knows the hostname)'
       routing { get '/hostname' }
@@ -61,6 +51,17 @@ module Resources
       end
       response :ok
     end
+
+    action :put_control do
+      description 'Control the TSS monitoring (deprecated, use the /rll/tss/control resource)'
+      routing { put '' }
+      params do
+        attribute :tss_id, String, required: false
+        attribute :enable_monitoring, Attributor::String, required: false, example: 'all'
+      end
+      response :ok
+    end
+
   end
 
 end
