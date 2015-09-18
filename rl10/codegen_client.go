@@ -636,10 +636,10 @@ func (api *API) TSSLocator(href string) *TSSLocator {
 // PUT /rll/tss/control
 //
 // Control the TSS monitoring
-func (loc *TSSLocator) PutControl(options rsapi.ApiParams) (string, error) {
+func (loc *TSSLocator) PutControl(options rsapi.APIParams) (string, error) {
 	var res string
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
 	var enableMonitoringOpt = options["enable_monitoring"]
 	if enableMonitoringOpt != nil {
 		params["enable_monitoring"] = enableMonitoringOpt
@@ -648,12 +648,12 @@ func (loc *TSSLocator) PutControl(options rsapi.ApiParams) (string, error) {
 	if tssIdOpt != nil {
 		params["tss_id"] = tssIdOpt
 	}
-	var p rsapi.ApiParams
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("TSS", "put_control")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}

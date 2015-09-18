@@ -37,8 +37,8 @@
             "enable_monitoring": {
               "required": false,
               "type": {
-                "name": "Boolean",
-                "id": "Attributor-Boolean"
+                "name": "String",
+                "id": "Attributor-String"
               },
               "source": "query"
             }
