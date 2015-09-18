@@ -6,7 +6,6 @@
       "description": "Retrieve debug cookbook directory location",
       "name": "show",
       "metadata": {
-
       },
       "urls": [
         {
@@ -20,7 +19,6 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
-
           },
           "media_type": {
             "identifier": "text/plain"
@@ -32,7 +30,6 @@
       "description": "Set debug cookbook directory location",
       "name": "update",
       "metadata": {
-
       },
       "urls": [
         {
@@ -71,7 +68,6 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
-
           },
           "media_type": {
             "identifier": "text/plain"
@@ -83,7 +79,6 @@
       "description": "Remove debug cookbook directory location",
       "name": "delete",
       "metadata": {
-
       },
       "urls": [
         {
@@ -97,7 +92,6 @@
           "description": "The server successfully processed the request, but is not returning any content.",
           "status": 204,
           "headers": {
-
           }
         }
       }
@@ -105,6 +99,5 @@
   ],
   "name": "Resources::DebugCookbookPath",
   "metadata": {
-
   }
 }

@@ -3,96 +3,9 @@
   "media_type": "Praxis-SimpleMediaType",
   "actions": [
     {
-      "description": "Control the TSS monitoring",
-      "name": "put_control",
-      "metadata": {
-
-      },
-      "urls": [
-        {
-          "verb": "PUT",
-          "path": "/rll/tss/control",
-          "version": "n/a"
-        }
-      ],
-      "params": {
-        "type": {
-          "name": "Struct",
-          "id": null,
-          "key": {
-            "type": {
-              "name": "Symbol",
-              "id": "Attributor-Symbol"
-            }
-          },
-          "attributes": {
-            "tss_id": {
-              "required": false,
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
-            "enable_monitoring": {
-              "required": false,
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            }
-          }
-        },
-        "example": {
-          "tss_id": "intends",
-          "enable_monitoring": true
-        }
-      },
-      "responses": {
-        "ok": {
-          "description": "Standard response for successful HTTP requests.",
-          "status": 200,
-          "headers": {
-
-          },
-          "media_type": {
-            "identifier": "text/plain"
-          }
-        }
-      }
-    },
-    {
-      "description": "Get the TSS hostname to proxy",
-      "name": "get_hostname",
-      "metadata": {
-
-      },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/rll/tss/hostname",
-          "version": "n/a"
-        }
-      ],
-      "responses": {
-        "ok": {
-          "description": "Standard response for successful HTTP requests.",
-          "status": 200,
-          "headers": {
-
-          },
-          "media_type": {
-            "identifier": "text/plain"
-          }
-        }
-      }
-    },
-    {
       "description": "Set the TSS hostname to proxy",
-      "name": "put_hostname",
+      "name": "update",
       "metadata": {
-
       },
       "urls": [
         {
@@ -131,7 +44,162 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
-
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Control the TSS monitoring (deprecated)",
+      "name": "put_control",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/control",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "tss_id": {
+              "required": false,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "enable_monitoring": {
+              "required": false,
+              "example_definition": "all",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "tss_id": "intends",
+          "enable_monitoring": "all"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Get the TSS hostname to proxy",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/hostname",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Get the TSS hostname to proxy (deprecated)",
+      "name": "get_hostname",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/hostname",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Set the TSS hostname to proxy (deprecated)",
+      "name": "put_hostname",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/hostname",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "hostname": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "hostname": "hies"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
           },
           "media_type": {
             "identifier": "text/plain"
@@ -142,6 +210,5 @@
   ],
   "name": "Resources::TSS",
   "metadata": {
-
   }
 }
