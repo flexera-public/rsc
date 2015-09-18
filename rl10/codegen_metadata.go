@@ -381,7 +381,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Control the TSS monitoring`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "PUT",
+						HTTPMethod: "PUT",
 						Pattern:    "/rll/tss/control",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`/rll/tss/control`),
@@ -391,7 +391,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "enable_monitoring",
 						Description: ``,
-						Type:        "bool",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -405,11 +405,11 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "enable_monitoring",
 						Description: ``,
-						Type:        "bool",
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
