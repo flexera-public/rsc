@@ -3,9 +3,9 @@ package rsapi_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc/cm15"
-	"github.com/rightscale/rsc/rsapi"
-	"github.com/rightscale/rsc/ss/ssm"
+	"gopkg.in/rightscale/rsc.v4/cm15"
+	"gopkg.in/rightscale/rsc.v4/rsapi"
+	"gopkg.in/rightscale/rsc.v4/ss/ssm"
 )
 
 var _ = Describe("normalize", func() {

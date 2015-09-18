@@ -5,11 +5,11 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc/cm15"
-	"github.com/rightscale/rsc/cm16"
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"gopkg.in/rightscale/rsc.v4/cm15"
+	"gopkg.in/rightscale/rsc.v4/cm16"
+	"gopkg.in/rightscale/rsc.v4/cmd"
+	"gopkg.in/rightscale/rsc.v4/ss"
 )
 
 var _ = Describe("Command line parsing", func() {
