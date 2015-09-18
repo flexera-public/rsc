@@ -24,6 +24,11 @@
       "controller": "Resources-TSS",
       "name": "Resources::TSS",
       "media_type": "Praxis-SimpleMediaType"
+    },
+    "TSSControl": {
+      "controller": "Resources-TSSControl",
+      "name": "Resources::TSSControl",
+      "media_type": "Praxis-SimpleMediaType"
     }
   }
 }

@@ -1,3 +1,7 @@
+Unreleased
+----------
+* Support new TSS control actions in RL10 API
+
 v4.0.0 / 2015-08-25
 -------------------
 * [break] Fix issues reported by `golint`, e.g. `ApiParams` => `APIParams`

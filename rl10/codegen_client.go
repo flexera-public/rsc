@@ -614,7 +614,7 @@ func (loc *Rl10Locator) RunRightScript(options rsapi.APIParams) (string, error) 
 
 /******  TSS ******/
 
-// Manipulate the TSS proxy
+// Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)
 type TSS struct {
 }
 
@@ -633,55 +633,9 @@ func (api *API) TSSLocator(href string) *TSSLocator {
 
 //===== Actions
 
-// PUT /rll/tss/control
-//
-// Control the TSS monitoring
-func (loc *TSSLocator) PutControl(options rsapi.ApiParams) (string, error) {
-	var res string
-	var params rsapi.ApiParams
-	params = rsapi.ApiParams{}
-	var enableMonitoringOpt = options["enable_monitoring"]
-	if enableMonitoringOpt != nil {
-		params["enable_monitoring"] = enableMonitoringOpt
-	}
-	var tssIdOpt = options["tss_id"]
-	if tssIdOpt != nil {
-		params["tss_id"] = tssIdOpt
-	}
-	var p rsapi.ApiParams
-	uri, err := loc.ActionPath("TSS", "put_control")
-	if err != nil {
-		return res, err
-	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
-	if err != nil {
-		return res, err
-	}
-	resp, err := loc.api.PerformRequest(req)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		respBody, _ := ioutil.ReadAll(resp.Body)
-		sr := string(respBody)
-		if sr != "" {
-			sr = ": " + sr
-		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
-	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	res = string(respBody)
-	return res, err
-}
-
 // GET /rll/tss/hostname
 //
-// Get the TSS hostname to proxy
+// Get the TSS hostname to proxy (deprecated, RL10 knows the hostname)
 func (loc *TSSLocator) GetHostname() (string, error) {
 	var res string
 	var params rsapi.APIParams
@@ -718,7 +672,7 @@ func (loc *TSSLocator) GetHostname() (string, error) {
 
 // PUT /rll/tss/hostname
 //
-// Set the TSS hostname to proxy
+// Set the TSS hostname to proxy (deprecated, RL10 knows the hostname)
 func (loc *TSSLocator) PutHostname(hostname string) (string, error) {
 	var res string
 	if hostname == "" {
@@ -730,6 +684,156 @@ func (loc *TSSLocator) PutHostname(hostname string) (string, error) {
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("TSS", "put_hostname")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+/******  TSSControl ******/
+
+// Manipulate monitoring (TSS) settings
+type TSSControl struct {
+}
+
+//===== Locator
+
+// TSSControlLocator exposes the TSSControl resource actions.
+type TSSControlLocator struct {
+	Href
+	api *API
+}
+
+// TSSControlLocator builds a locator from the given href.
+func (api *API) TSSControlLocator(href string) *TSSControlLocator {
+	return &TSSControlLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /rll/tss/control
+//
+// Show monitoring features
+func (loc *TSSControlLocator) Show() (string, error) {
+	var res string
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSControl", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/tss/control
+//
+// Enable/disable monitoring features
+func (loc *TSSControlLocator) Update(options rsapi.APIParams) (string, error) {
+	var res string
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var enableMonitoringOpt = options["enable_monitoring"]
+	if enableMonitoringOpt != nil {
+		params["enable_monitoring"] = enableMonitoringOpt
+	}
+	var tssIdOpt = options["tss_id"]
+	if tssIdOpt != nil {
+		params["tss_id"] = tssIdOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSControl", "update")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/tss/control
+//
+// Control the TSS monitoring (deprecated, use the /rll/tss/control resource)
+func (loc *TSSControlLocator) PutControl(options rsapi.APIParams) (string, error) {
+	var res string
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var enableMonitoringOpt = options["enable_monitoring"]
+	if enableMonitoringOpt != nil {
+		params["enable_monitoring"] = enableMonitoringOpt
+	}
+	var tssIdOpt = options["tss_id"]
+	if tssIdOpt != nil {
+		params["tss_id"] = tssIdOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSControl", "put_control")
 	if err != nil {
 		return res, err
 	}

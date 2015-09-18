@@ -374,60 +374,11 @@ var GenMetadata = map[string]*metadata.Resource{
 	},
 	"TSS": &metadata.Resource{
 		Name:        "TSS",
-		Description: `Manipulate the TSS proxy`,
+		Description: `Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)`,
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "put_control",
-				Description: `Control the TSS monitoring`,
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						HttpMethod: "PUT",
-						Pattern:    "/rll/tss/control",
-						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/rll/tss/control`),
-					},
-				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "enable_monitoring",
-						Description: ``,
-						Type:        "bool",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "tss_id",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-				ApiParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "enable_monitoring",
-						Description: ``,
-						Type:        "bool",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "tss_id",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-			},
-
-			&metadata.Action{
 				Name:        "get_hostname",
-				Description: `Get the TSS hostname to proxy`,
+				Description: `Get the TSS hostname to proxy (deprecated, RL10 knows the hostname)`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -442,7 +393,7 @@ var GenMetadata = map[string]*metadata.Resource{
 
 			&metadata.Action{
 				Name:        "put_hostname",
-				Description: `Set the TSS hostname to proxy`,
+				Description: `Set the TSS hostname to proxy (deprecated, RL10 knows the hostname)`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",
@@ -468,6 +419,126 @@ var GenMetadata = map[string]*metadata.Resource{
 						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
+		},
+	},
+	"TSSControl": &metadata.Resource{
+		Name:        "TSSControl",
+		Description: `Manipulate monitoring (TSS) settings`,
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "show",
+				Description: `Show monitoring features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/rll/tss/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Enable/disable monitoring features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/tss/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_monitoring",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"false", "true", "none", "util", "extra", "all"},
+					},
+					&metadata.ActionParam{
+						Name:        "tss_id",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_monitoring",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"false", "true", "none", "util", "extra", "all"},
+					},
+					&metadata.ActionParam{
+						Name:        "tss_id",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "put_control",
+				Description: `Control the TSS monitoring (deprecated, use the /rll/tss/control resource)`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/tss/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_monitoring",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "tss_id",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_monitoring",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "tss_id",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},

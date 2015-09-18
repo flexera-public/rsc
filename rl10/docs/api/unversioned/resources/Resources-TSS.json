@@ -1,72 +1,11 @@
 {
-  "description": "Manipulate the TSS proxy",
+  "description": "Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)",
   "media_type": "Praxis-SimpleMediaType",
   "actions": [
     {
-      "description": "Control the TSS monitoring",
-      "name": "put_control",
-      "metadata": {
-
-      },
-      "urls": [
-        {
-          "verb": "PUT",
-          "path": "/rll/tss/control",
-          "version": "n/a"
-        }
-      ],
-      "params": {
-        "type": {
-          "name": "Struct",
-          "id": null,
-          "key": {
-            "type": {
-              "name": "Symbol",
-              "id": "Attributor-Symbol"
-            }
-          },
-          "attributes": {
-            "tss_id": {
-              "required": false,
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
-            "enable_monitoring": {
-              "required": false,
-              "type": {
-                "name": "Boolean",
-                "id": "Attributor-Boolean"
-              },
-              "source": "query"
-            }
-          }
-        },
-        "example": {
-          "tss_id": "intends",
-          "enable_monitoring": true
-        }
-      },
-      "responses": {
-        "ok": {
-          "description": "Standard response for successful HTTP requests.",
-          "status": 200,
-          "headers": {
-
-          },
-          "media_type": {
-            "identifier": "text/plain"
-          }
-        }
-      }
-    },
-    {
-      "description": "Get the TSS hostname to proxy",
+      "description": "Get the TSS hostname to proxy (deprecated, RL10 knows the hostname)",
       "name": "get_hostname",
       "metadata": {
-
       },
       "urls": [
         {
@@ -80,7 +19,6 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
-
           },
           "media_type": {
             "identifier": "text/plain"
@@ -89,10 +27,9 @@
       }
     },
     {
-      "description": "Set the TSS hostname to proxy",
+      "description": "Set the TSS hostname to proxy (deprecated, RL10 knows the hostname)",
       "name": "put_hostname",
       "metadata": {
-
       },
       "urls": [
         {
@@ -131,7 +68,6 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
-
           },
           "media_type": {
             "identifier": "text/plain"
@@ -142,6 +78,5 @@
   ],
   "name": "Resources::TSS",
   "metadata": {
-
   }
 }
