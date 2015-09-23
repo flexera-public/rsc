@@ -54,7 +54,7 @@ to use in your own integration.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: `Filter by group, so that only AccountPreferences belonging to that group are returned`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -200,7 +200,7 @@ and can launch them to create Executions in the Manager application.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `An optional list of Application IDs to retrieve. If not specified, all are returned.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1382,7 +1382,7 @@ and can launch them to create Executions in the Manager application.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `The Application IDs to delete`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1669,7 +1669,7 @@ and can launch them to create Executions in the Manager application.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1891,7 +1891,7 @@ Users who are not members of the admin role need to specify a filter with their 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: `Filter by user, so that only UserPreference belonging to that user are returned. Use "me" as a shortcut for the current user ID.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2107,7 +2107,7 @@ It is also used to validate values saved in UserPreference.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: `Filter by category and/or name`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
