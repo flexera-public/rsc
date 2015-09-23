@@ -76,7 +76,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -275,7 +275,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -653,7 +653,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1137,7 +1137,7 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1563,7 +1563,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1799,7 +1799,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1892,7 +1892,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2183,7 +2183,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2665,7 +2665,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2817,7 +2817,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3037,7 +3037,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3259,7 +3259,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3358,7 +3358,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3890,7 +3890,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -4111,7 +4111,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -4196,7 +4196,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -4386,7 +4386,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "quantity[]",
+						Name:        "quantity",
 						Description: `At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.`,
 						Type:        "[]*Quantity",
 						Location:    metadata.PayloadParam,
@@ -4778,7 +4778,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "quantity[]",
+						Name:        "quantity",
 						Description: `At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.`,
 						Type:        "[]*Quantity",
 						Location:    metadata.PayloadParam,
@@ -4896,7 +4896,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "quantity[]",
+						Name:        "quantity",
 						Description: `At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.`,
 						Type:        "[]*Quantity",
 						Location:    metadata.PayloadParam,
@@ -4947,7 +4947,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -5110,7 +5110,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -5318,7 +5318,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -5475,7 +5475,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -5798,7 +5798,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -6002,7 +6002,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -6216,7 +6216,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -6399,7 +6399,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -6594,7 +6594,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -6777,7 +6777,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -7158,7 +7158,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -7291,7 +7291,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -7393,7 +7393,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -7513,7 +7513,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -7773,7 +7773,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -7913,7 +7913,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "asset_hrefs[]",
+						Name:        "asset_hrefs",
 						Description: `Hrefs of the assets that should be imported.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -7996,7 +7996,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "asset_hrefs[]",
+						Name:        "asset_hrefs",
 						Description: `Hrefs of the assets that should be imported.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -8185,7 +8185,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -8272,7 +8272,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "imported_cookbook_name[]",
+						Name:        "imported_cookbook_name",
 						Description: `A list of cookbook names that were imported by the repository.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -8604,7 +8604,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -8864,7 +8864,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -9085,7 +9085,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -9367,7 +9367,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "runnable_bindings[]",
+						Name:        "runnable_bindings",
 						Description: ``,
 						Type:        "[]*RunnableBindings",
 						Location:    metadata.PayloadParam,
@@ -9836,7 +9836,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -10548,7 +10548,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -11362,7 +11362,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -11951,7 +11951,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -12052,7 +12052,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_group_hrefs[]",
+						Name:        "account_group_hrefs",
 						Description: `List of hrefs of account groups to publish to.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -12069,7 +12069,7 @@ Optional parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "categories[]",
+						Name:        "categories",
 						Description: `List of Categories.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -12362,7 +12362,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -12652,7 +12652,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -12841,7 +12841,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -12963,7 +12963,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "resource_hrefs[]",
+						Name:        "resource_hrefs",
 						Description: `Hrefs of the resources for which tags are to be returned.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13076,7 +13076,7 @@ Optional parameters:
 						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts"},
 					},
 					&metadata.ActionParam{
-						Name:        "tags[]",
+						Name:        "tags",
 						Description: `The tags which must be present on the resource.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13133,7 +13133,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "resource_hrefs[]",
+						Name:        "resource_hrefs",
 						Description: `Hrefs of the resources for which the tags are to be added.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13141,7 +13141,7 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "tags[]",
+						Name:        "tags",
 						Description: `Tags to be added.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13188,7 +13188,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "resource_hrefs[]",
+						Name:        "resource_hrefs",
 						Description: `Hrefs of the resources for which tags are to be deleted.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13196,7 +13196,7 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "tags[]",
+						Name:        "tags",
 						Description: `Tags to be deleted.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13402,7 +13402,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -13745,7 +13745,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -14008,7 +14008,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -14259,7 +14259,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -14363,7 +14363,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,

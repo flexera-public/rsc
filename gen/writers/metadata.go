@@ -124,7 +124,7 @@ const actionMetadataTmpl = `&metadata.Action {
 				Payload: "{{.Payload.Name}}",{{end}}
 				APIParams: []*metadata.ActionParam{ {{range .Params}}
 					&metadata.ActionParam{
-						Name: "{{.QueryName}}",
+						Name: "{{.Name}}",
 						Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 						Type: "{{.Signature}}",
 						Location: {{location .}},
