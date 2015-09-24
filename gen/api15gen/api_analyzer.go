@@ -67,6 +67,9 @@ func (a *APIAnalyzer) Analyze() *gen.APIDescriptor {
 	return descriptor
 }
 
+// AnalyzeAliases goes through the aliases and copies the details from original actions to the
+// aliased actions. It skips the route field since we have the routes hard-coded in the
+// ParseRoute function.
 func (a *APIAnalyzer) AnalyzeAliases() {
 	for from, to := range aliases {
 		splits := strings.SplitN(from, "#", 2)
