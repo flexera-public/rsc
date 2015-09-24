@@ -71,7 +71,7 @@ Self-Service.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: `Filter by status, syntax is ["status==running"]`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -79,7 +79,7 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `An optional list of execution IDs to retrieve`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1215,7 +1215,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:  false,
 					},
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `List of execution IDs to delete`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1341,7 +1341,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `List of execution IDs to launch`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1374,7 +1374,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `List of execution IDs to start`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1407,7 +1407,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `List of execution IDs to stop`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1440,7 +1440,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `List of execution IDs to terminate`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1572,7 +1572,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `List of execution IDs to run`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1636,7 +1636,7 @@ available via the API/UI and are not distributed externally to users.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: `Filter by Execution`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1644,7 +1644,7 @@ available via the API/UI and are not distributed externally to users.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `The Notification IDs to return`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1725,7 +1725,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: `Filter by Execution ID or status`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1733,7 +1733,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `IDs of operations to filter on`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1907,7 +1907,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: `Filter by execution id or execution creator (user) id.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,

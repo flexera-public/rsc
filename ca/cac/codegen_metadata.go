@@ -881,7 +881,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_bill_filters",
+						Name:        "cloud_bill_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -897,7 +897,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filter_types",
+						Name:        "filter_types[]",
 						Description: `Restricts the filter options to the specified keys.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -985,7 +985,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "cloud_bill_filters",
+						Name:        "cloud_bill_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -1001,7 +1001,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "group",
+						Name:        "group[]",
 						Description: `The fields to group the results by.`,
 						Type:        "[][]string",
 						Location:    metadata.QueryParam,
@@ -1451,7 +1451,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -1475,7 +1475,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1566,7 +1566,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -1649,7 +1649,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -1764,7 +1764,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -1788,7 +1788,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1927,7 +1927,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filter_types",
+						Name:        "filter_types[]",
 						Description: `The filter types to get results for.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -1935,7 +1935,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -1959,7 +1959,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2727,7 +2727,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -2735,7 +2735,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "metrics",
+						Name:        "metrics[]",
 						Description: `The metrics to get results for. Descriptions of the individual metrics can be found in the Metrics media type.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2876,7 +2876,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "group",
+						Name:        "group[]",
 						Description: `The fields to group the results by.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2884,7 +2884,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -2900,7 +2900,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "metrics",
+						Name:        "metrics[]",
 						Description: `The metrics to get results for. Descriptions of the individual metrics can be found in the Metrics media type.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -2916,7 +2916,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3051,7 +3051,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"hour", "day", "week", "month"},
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -3067,7 +3067,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "metrics",
+						Name:        "metrics[]",
 						Description: `The metrics to get results for. Descriptions of the individual metrics can be found in the Metrics media type.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3235,7 +3235,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"hour", "day", "week", "month"},
 					},
 					&metadata.ActionParam{
-						Name:        "group",
+						Name:        "group[]",
 						Description: `The fields to group the results by.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3243,7 +3243,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -3267,7 +3267,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "metrics",
+						Name:        "metrics[]",
 						Description: `The metrics to get results for. Descriptions of the individual metrics can be found in the Metrics media type.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3283,7 +3283,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3341,7 +3341,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "instance_filters",
+						Name:        "instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -3389,7 +3389,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "instance_usage_period_filters",
+						Name:        "instance_usage_period_filters[]",
 						Description: `Filters the instance usages by instance key.`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -3961,7 +3961,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -3969,7 +3969,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "reserved_instance_filters",
+						Name:        "reserved_instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -4060,7 +4060,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "reserved_instance_filters",
+						Name:        "reserved_instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -4143,7 +4143,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "reserved_instance_filters",
+						Name:        "reserved_instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -4274,7 +4274,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -4282,7 +4282,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "reserved_instance_filters",
+						Name:        "reserved_instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,
@@ -4421,7 +4421,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filter_types",
+						Name:        "filter_types[]",
 						Description: `The filter types to get results for.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -4445,7 +4445,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "order",
+						Name:        "order[]",
 						Description: `The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -4453,7 +4453,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "reserved_instance_filters",
+						Name:        "reserved_instance_filters[]",
 						Description: `The filters to apply`,
 						Type:        "[]*Filter",
 						Location:    metadata.QueryParam,

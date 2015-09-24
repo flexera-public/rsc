@@ -319,7 +319,7 @@ Note: deleting a Schedule from Designer doesn't remove it from the applications 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `The IDs of the Schedules to delete`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -365,7 +365,7 @@ attribute inside of a CAT file.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `An optional list of template IDs to retrieve`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -514,7 +514,7 @@ attribute inside of a CAT file.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids",
+						Name:        "ids[]",
 						Description: `The IDs of the Template to delete`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
