@@ -3110,7 +3110,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -11426,7 +11426,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -11700,7 +11700,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -11780,7 +11780,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter",
+						Name:        "filter[]",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
