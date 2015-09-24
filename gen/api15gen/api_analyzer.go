@@ -11,6 +11,8 @@ import (
 	"bitbucket.org/pkg/inflect"
 )
 
+// aliases maps the alias resource action to their original actions. This is used to
+// build the metadata with correct parameters, etc.
 var aliases = map[string]string{
 	"Deployments#servers":               "Servers#index",
 	"ServerArrays#current_instances":    "Instances#index",
@@ -82,7 +84,6 @@ func (a *APIAnalyzer) AnalyzeAliases() {
 		fromAct["parameters"] = toAct["parameters"]
 		fromAct["status_code"] = toAct["status_code"]
 		fromAct["access_rules"] = toAct["access_rules"]
-		fromAct["route"] = toAct["route"]
 	}
 }
 
@@ -324,26 +325,43 @@ func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) 
 	// :(((( some routes are empty
 	var paths []string
 	var method string
-	bounds := routeRegexp.FindAllStringIndex(route, -1)
-	matches := make([]string, len(bounds))
-	prev := 0
-	for i, bound := range bounds {
-		matches[i] = route[prev:bound[0]]
-		prev = bound[1]
-	}
-	method = strings.TrimRight(matches[0][0:7], " ")
-	paths = make([]string, len(bounds))
-	j := 0
-	for _, r := range matches {
-		path := strings.TrimRight(r[7:], " ")
-		path = strings.TrimSuffix(path, "(.:format)?")
-		if isDeprecated(path) || isCustom(method, path) {
-			continue
+	switch moniker {
+	case "Deployments#servers":
+		method, paths = "GET", []string{"/api/deployments/:id/servers"}
+	case "ServerArrays#current_instances":
+		method, paths = "GET", []string{"/api/server_arrays/:id/current_instances"}
+	case "ServerArrays#launch":
+		method, paths = "POST", []string{"/api/server_arrays/:id/launch"}
+	case "ServerArrays#multi_run_executable":
+		method, paths = "POST", []string{"/api/server_arrays/:id/multi_run_executable"}
+	case "ServerArrays#multi_terminate":
+		method, paths = "POST", []string{"/api/server_arrays/:id/multi_terminate"}
+	case "Servers#launch":
+		method, paths = "POST", []string{"/api/servers/:id/launch"}
+	case "Servers#terminate":
+		method, paths = "POST", []string{"/api/servers/:id/terminate"}
+	default:
+		bounds := routeRegexp.FindAllStringIndex(route, -1)
+		matches := make([]string, len(bounds))
+		prev := 0
+		for i, bound := range bounds {
+			matches[i] = route[prev:bound[0]]
+			prev = bound[1]
 		}
-		paths[j] = path
-		j++
+		method = strings.TrimRight(matches[0][0:7], " ")
+		paths = make([]string, len(bounds))
+		j := 0
+		for _, r := range matches {
+			path := strings.TrimRight(r[7:], " ")
+			path = strings.TrimSuffix(path, "(.:format)?")
+			if isDeprecated(path) || isCustom(method, path) {
+				continue
+			}
+			paths[j] = path
+			j++
+		}
+		paths = paths[:j]
 	}
-	paths = paths[:j]
 	pathPatterns = make([]*gen.PathPattern, len(paths))
 	for i, p := range paths {
 		rx := routeVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(p), `/([^/]+)`)

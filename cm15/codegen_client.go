@@ -3151,8 +3151,7 @@ func (loc *DeploymentLocator) Lock() error {
 	return nil
 }
 
-// GET /api/servers
-// GET /api/deployments/:deployment_id/servers
+// GET /api/deployments/:id/servers
 //
 // Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
 // automatically be filtered by this deployment. See servers#index for details on other options and parameters.
@@ -10667,9 +10666,7 @@ func (loc *ServerLocator) Index(options rsapi.APIParams) ([]*Server, error) {
 	return res, err
 }
 
-// POST /api/clouds/:cloud_id/instances/:id/launch
-// POST /api/servers/:server_id/launch
-// POST /api/server_arrays/:server_array_id/launch
+// POST /api/servers/:id/launch
 //
 // Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
 // URL of this servers next_instance. See Instances#launch for details.
@@ -10762,8 +10759,7 @@ func (loc *ServerLocator) Show(options rsapi.APIParams) (*Server, error) {
 	return res, err
 }
 
-// POST /api/clouds/:cloud_id/instances/:id/terminate
-// POST /api/servers/:server_id/terminate
+// POST /api/servers/:id/terminate
 //
 // Terminates the current instance of this server. This function is equivalent to invoking the terminate action on the
 // URL of this servers current_instance. See Instances#terminate for details.
@@ -11026,9 +11022,7 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 	}
 }
 
-// GET /api/clouds/:cloud_id/instances
-// GET /api/clouds/:cloud_id/instances
-// GET /api/server_arrays/:server_array_id/current_instances
+// GET /api/server_arrays/:id/current_instances
 //
 // List the running instances belonging to the server array. See Instances#index for details.
 // This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
@@ -11164,9 +11158,7 @@ func (loc *ServerArrayLocator) Index(options rsapi.APIParams) ([]*ServerArray, e
 	return res, err
 }
 
-// POST /api/clouds/:cloud_id/instances/:id/launch
-// POST /api/servers/:server_id/launch
-// POST /api/server_arrays/:server_array_id/launch
+// POST /api/server_arrays/:id/launch
 //
 // Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
 // URL of this server_array's next_instance. See Instances#launch for details.
@@ -11214,8 +11206,7 @@ func (loc *ServerArrayLocator) Launch(options rsapi.APIParams) error {
 	return nil
 }
 
-// POST /api/clouds/:cloud_id/instances/multi_run_executable
-// POST /api/server_arrays/:server_array_id/multi_run_executable
+// POST /api/server_arrays/:id/multi_run_executable
 //
 // Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
 // (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
@@ -11275,8 +11266,7 @@ func (loc *ServerArrayLocator) MultiRunExecutable(options rsapi.APIParams) error
 	return nil
 }
 
-// POST /api/clouds/:cloud_id/instances/multi_terminate
-// POST /api/server_arrays/:server_array_id/multi_terminate
+// POST /api/server_arrays/:id/multi_terminate
 //
 // Terminate all instances of this array. This function is equivalent to invoking the "multi_terminate" action on the instances resource ( Instances#multi_terminate with
 // the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,

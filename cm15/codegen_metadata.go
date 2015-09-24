@@ -3084,14 +3084,8 @@ Optional parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/api/servers",
-						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/servers$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "GET",
 						Pattern:    "/api/deployments/%s/servers",
-						Variables:  []string{"deployment_id"},
+						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`^/api/deployments/([^/]+)/servers$`),
 					},
 				},
@@ -3116,7 +3110,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -10624,21 +10618,9 @@ Optional parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/api/clouds/%s/instances/%s/launch",
-						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/launch$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
 						Pattern:    "/api/servers/%s/launch",
-						Variables:  []string{"server_id"},
+						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/launch$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
-						Pattern:    "/api/server_arrays/%s/launch",
-						Variables:  []string{"server_array_id"},
-						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/launch$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -10763,14 +10745,8 @@ URL of this servers current_instance. See Instances#terminate for details.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/api/clouds/%s/instances/%s/terminate",
-						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/terminate$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
 						Pattern:    "/api/servers/%s/terminate",
-						Variables:  []string{"server_id"},
+						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/terminate$`),
 					},
 				},
@@ -11424,20 +11400,8 @@ Optional parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/api/clouds/%s/instances",
-						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "GET",
-						Pattern:    "/api/clouds/%s/instances",
-						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "GET",
 						Pattern:    "/api/server_arrays/%s/current_instances",
-						Variables:  []string{"server_array_id"},
+						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/current_instances$`),
 					},
 				},
@@ -11462,7 +11426,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -11579,20 +11543,8 @@ Optional parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/api/clouds/%s/instances/%s/launch",
-						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/launch$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
-						Pattern:    "/api/servers/%s/launch",
-						Variables:  []string{"server_id"},
-						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/launch$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
 						Pattern:    "/api/server_arrays/%s/launch",
-						Variables:  []string{"server_array_id"},
+						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/launch$`),
 					},
 				},
@@ -11682,14 +11634,8 @@ Optional parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/api/clouds/%s/instances/multi_run_executable",
-						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/multi_run_executable$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
 						Pattern:    "/api/server_arrays/%s/multi_run_executable",
-						Variables:  []string{"server_array_id"},
+						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/multi_run_executable$`),
 					},
 				},
@@ -11754,7 +11700,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
@@ -11808,14 +11754,8 @@ Optional parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/api/clouds/%s/instances/multi_terminate",
-						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/multi_terminate$`),
-					},
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
 						Pattern:    "/api/server_arrays/%s/multi_terminate",
-						Variables:  []string{"server_array_id"},
+						Variables:  []string{"id"},
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/multi_terminate$`),
 					},
 				},
@@ -11840,7 +11780,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "filter[]",
+						Name:        "filter",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
