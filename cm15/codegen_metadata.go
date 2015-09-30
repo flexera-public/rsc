@@ -9400,7 +9400,7 @@ Required parameters:
 						Description: `The ID of the RunnableBinding to update.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 				},
@@ -11111,7 +11111,7 @@ Required parameters:
 						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11160,7 +11160,7 @@ Required parameters:
 						Description: `Specifies the time when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11168,7 +11168,7 @@ Required parameters:
 						Description: `Specifies the day when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
 					},
@@ -11234,7 +11234,7 @@ Required parameters:
 						Description: `Instance allocation (should total 100%).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11274,7 +11274,7 @@ Required parameters:
 						Description: `Max instances (0 for unlimited).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11948,7 +11948,7 @@ Required parameters:
 						Description: `The updated maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11988,7 +11988,7 @@ Required parameters:
 						Description: `The updated time when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11996,7 +11996,7 @@ Required parameters:
 						Description: `The updated day when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
 					},
@@ -12005,7 +12005,7 @@ Required parameters:
 						Description: `Instance allocation (should total 100%).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -12013,7 +12013,7 @@ Required parameters:
 						Description: `Max instances (0 for unlimited).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{

@@ -129,6 +129,10 @@ func (p *ParamAnalyzer) Analyze() {
 					parent = a.ElemType
 				}
 				child = p.parseParam(path, param, child)
+				if !parent.Mandatory {
+					// Make required fields of optional hashes optional.
+					child.Mandatory = false
+				}
 				if _, ok = parent.Type.(*gen.EnumerableDataType); !ok {
 					o := parent.Type.(*gen.ObjectDataType)
 					o.Fields = appendSorted(o.Fields, child)
