@@ -11103,7 +11103,7 @@ Required parameters:
 						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11152,7 +11152,7 @@ Required parameters:
 						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11940,7 +11940,7 @@ Required parameters:
 						Description: `The updated minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11980,7 +11980,7 @@ Required parameters:
 						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{

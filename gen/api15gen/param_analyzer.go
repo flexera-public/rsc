@@ -116,6 +116,7 @@ func (p *ParamAnalyzer) Analyze() {
 			}
 			continue
 		}
+		var branch []*gen.ActionParam
 		for matches != nil {
 			param := params[path].(map[string]interface{})
 			parentPath := matches[1]
@@ -133,6 +134,7 @@ func (p *ParamAnalyzer) Analyze() {
 					// Make required fields of optional hashes optional.
 					child.Mandatory = false
 				}
+				branch = append(branch, child)
 				if _, ok = parent.Type.(*gen.EnumerableDataType); !ok {
 					o := parent.Type.(*gen.ObjectDataType)
 					o.Fields = appendSorted(o.Fields, child)
@@ -141,6 +143,7 @@ func (p *ParamAnalyzer) Analyze() {
 				break // No need to keep going back, we already have a parent
 			} else {
 				child = p.parseParam(path, param, child)
+				branch = append(branch, child)
 				p.parsed[path] = child
 				if isArrayChild {
 					// Generate array item as it's not listed explicitly in JSON
@@ -150,6 +153,7 @@ func (p *ParamAnalyzer) Analyze() {
 						&gen.ObjectDataType{typeName, []*gen.ActionParam{child}})
 					p.parsed[parentPath] = parent
 					child = parent
+					branch = append(branch, child)
 					parentPath = parentPath[:len(parentPath)-2]
 				}
 			}
@@ -168,6 +172,20 @@ func (p *ParamAnalyzer) Analyze() {
 			if _, ok := p.parsed[rootPath]; !ok {
 				p.parsed[rootPath] = p.parseParam(rootPath,
 					params[rootPath].(map[string]interface{}), child)
+			}
+			actionParam, _ := p.parsed[rootPath]
+			mandatory := actionParam.Mandatory
+			if len(branch) > 0 {
+				for i := len(branch) - 1; i >= 0; i-- {
+					p := branch[i]
+					if mandatory {
+						if !p.Mandatory {
+							mandatory = false
+						}
+					} else {
+						p.Mandatory = false
+					}
+				}
 			}
 		}
 	}
