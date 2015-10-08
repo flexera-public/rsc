@@ -6,7 +6,6 @@
       "description": "List all process variables",
       "name": "index",
       "metadata": {
-
       },
       "urls": [
         {
@@ -20,7 +19,6 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
-
           },
           "media_type": {
             "identifier": "text/plain"
@@ -32,7 +30,6 @@
       "description": "Retrieve process variable value",
       "name": "show",
       "metadata": {
-
       },
       "urls": [
         {
@@ -46,7 +43,6 @@
           "description": "Standard response for successful HTTP requests.",
           "status": 200,
           "headers": {
-
           },
           "media_type": {
             "identifier": "text/plain"
@@ -57,6 +53,5 @@
   ],
   "name": "Resources::Proc",
   "metadata": {
-
   }
 }

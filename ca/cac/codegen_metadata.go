@@ -302,7 +302,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "excluded_tag_types[]",
+						Name:        "excluded_tag_types",
 						Description: `Used by the Cloud Analytics UI to disable tag types in the tags module.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -310,7 +310,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filters[]",
+						Name:        "filters",
 						Description: `Filters used to create the snapshot`,
 						Type:        "[]*Filter",
 						Location:    metadata.PayloadParam,
@@ -335,7 +335,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "metrics[]",
+						Name:        "metrics",
 						Description: `Metrics that should be included in the snapshot.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -343,7 +343,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "module_states[]",
+						Name:        "module_states",
 						Description: `Used by the Cloud Analytics UI to store the state of the snapshot modules based on the state of the Analyze page modules.`,
 						Type:        "[]*ModuleState",
 						Location:    metadata.PayloadParam,
@@ -535,7 +535,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "additional_emails[]",
+						Name:        "additional_emails",
 						Description: `In addition to your email, the report will be sent to these additional email addresses.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -559,7 +559,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filters[]",
+						Name:        "filters",
 						Description: `Filters to use for the BudgetAlert.`,
 						Type:        "[]*Filter",
 						Location:    metadata.PayloadParam,
@@ -753,7 +753,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "additional_emails[]",
+						Name:        "additional_emails",
 						Description: `In addition to your email, the report will be sent to these additional email addresses.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -2261,7 +2261,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"24hours/day", "12hours/day", "9am-5pm, Mon-Fri", "1day/month", "Off (0 hours)", "Other"},
 					},
 					&metadata.ActionParam{
-						Name:        "patterns[]",
+						Name:        "patterns",
 						Description: `Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.`,
 						Type:        "[]*PatternParam",
 						Location:    metadata.PayloadParam,
@@ -2574,7 +2574,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"24hours/day", "12hours/day", "9am-5pm, Mon-Fri", "1day/month", "Off (0 hours)", "Other"},
 					},
 					&metadata.ActionParam{
-						Name:        "patterns[]",
+						Name:        "patterns",
 						Description: `Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.`,
 						Type:        "[]*PatternParam",
 						Location:    metadata.PayloadParam,
@@ -4937,7 +4937,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filters[]",
+						Name:        "filters",
 						Description: `Filters to use for the Scenario.`,
 						Type:        "[]*Filter",
 						Location:    metadata.PayloadParam,
@@ -5332,7 +5332,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "additional_emails[]",
+						Name:        "additional_emails",
 						Description: `In addition to your email, the report will be sent to these additional email addresses.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -5348,7 +5348,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filters[]",
+						Name:        "filters",
 						Description: `Filters to use for the ScheduledReport.`,
 						Type:        "[]*Filter",
 						Location:    metadata.PayloadParam,
@@ -5511,7 +5511,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "additional_emails[]",
+						Name:        "additional_emails",
 						Description: `In addition to your email, the report will be sent to these additional email addresses.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -5715,7 +5715,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "accounts[]",
+						Name:        "accounts",
 						Description: `List of accounts that the user has access to.`,
 						Type:        "[]*UserAccounts",
 						Location:    metadata.PayloadParam,
@@ -5882,7 +5882,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "accounts[]",
+						Name:        "accounts",
 						Description: `List of accounts that the user has access to.`,
 						Type:        "[]*UserAccounts",
 						Location:    metadata.PayloadParam,
@@ -6237,7 +6237,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "excluded_tag_types[]",
+						Name:        "excluded_tag_types",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -6245,7 +6245,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "filters[]",
+						Name:        "filters",
 						Description: ``,
 						Type:        "[]*Filter",
 						Location:    metadata.PayloadParam,
@@ -6270,7 +6270,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						ValidValues: []string{"open", "closed"},
 					},
 					&metadata.ActionParam{
-						Name:        "metrics[]",
+						Name:        "metrics",
 						Description: ``,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -6278,7 +6278,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "module_states[]",
+						Name:        "module_states",
 						Description: ``,
 						Type:        "[]*ModuleState",
 						Location:    metadata.PayloadParam,

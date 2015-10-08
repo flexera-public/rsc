@@ -1040,7 +1040,7 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "options[]",
+						Name:        "options",
 						Description: `The configuration options of the Execution. These are the values provided for the CloudApp parameters.`,
 						Type:        "[]*ConfigurationOption",
 						Location:    metadata.PayloadParam,
@@ -1056,7 +1056,7 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "scheduled_actions[]",
+						Name:        "scheduled_actions",
 						Description: `The inital ScheduledActions to apply to the Execution.`,
 						Type:        "[]*ScheduledActionParam",
 						Location:    metadata.PayloadParam,
@@ -1064,7 +1064,7 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "schedules[]",
+						Name:        "schedules",
 						Description: `The schedules available to the CloudApp`,
 						Type:        "[]*Schedule",
 						Location:    metadata.PayloadParam,
@@ -1498,7 +1498,7 @@ Note: using this option may leave cloud resources running that must manually be 
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "configuration_options[]",
+						Name:        "configuration_options",
 						Description: `The configuration options of the operation. These are the values provided for the CloudApp parameters that this operation depends on.`,
 						Type:        "[]*ConfigurationOption",
 						Location:    metadata.PayloadParam,
@@ -1580,7 +1580,7 @@ Note: using this option may leave cloud resources running that must manually be 
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "configuration_options[]",
+						Name:        "configuration_options",
 						Description: `The configuration options of the operation. These are the values provided for the CloudApp parameters that this operation depends on.`,
 						Type:        "[]*ConfigurationOption",
 						Location:    metadata.PayloadParam,
@@ -1867,7 +1867,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "options[]",
+						Name:        "options",
 						Description: `The configuration options of the operation. These are the values provided for the CloudAPP parameters that this operation depends on.`,
 						Type:        "[]*ConfigurationOption",
 						Location:    metadata.PayloadParam,

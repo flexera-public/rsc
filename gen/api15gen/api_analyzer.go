@@ -11,6 +11,18 @@ import (
 	"bitbucket.org/pkg/inflect"
 )
 
+// aliases maps the alias resource action to their original actions. This is used to
+// build the metadata with correct parameters, etc.
+var aliases = map[string]string{
+	"Deployments#servers":               "Servers#index",
+	"ServerArrays#current_instances":    "Instances#index",
+	"ServerArrays#launch":               "Instances#launch",
+	"ServerArrays#multi_run_executable": "Instances#multi_run_executable",
+	"ServerArrays#multi_terminate":      "Instances#multi_terminate",
+	"Servers#launch":                    "Instances#launch",
+	"Servers#terminate":                 "Instances#terminate",
+}
+
 // APIAnalyzer holds the analysis results.
 type APIAnalyzer struct {
 	// Raw resources as defined in API json metadata
@@ -35,6 +47,7 @@ func NewAPIAnalyzer(resources map[string]interface{}, attributeTypes map[string]
 // Analyze iterate through all resources and initializes the Resources and ParamTypes fields of
 // the APIAnalyzer struct accordingly.
 func (a *APIAnalyzer) Analyze() *gen.APIDescriptor {
+	a.AnalyzeAliases()
 	var descriptor = &gen.APIDescriptor{
 		Resources: make(map[string]*gen.Resource),
 		Types:     make(map[string]*gen.ObjectDataType),
@@ -52,6 +65,29 @@ func (a *APIAnalyzer) Analyze() *gen.APIDescriptor {
 	}
 	descriptor.FinalizeTypeNames(a.rawTypes)
 	return descriptor
+}
+
+// AnalyzeAliases goes through the aliases and copies the details from original actions to the
+// aliased actions. It skips the route field since we have the routes hard-coded in the
+// ParseRoute function.
+func (a *APIAnalyzer) AnalyzeAliases() {
+	for from, to := range aliases {
+		splits := strings.SplitN(from, "#", 2)
+		fromResName := splits[0]
+		fromActionName := splits[1]
+		splits = strings.SplitN(to, "#", 2)
+		toResName := splits[0]
+		toActionName := splits[1]
+
+		fromRes := a.rawResources[fromResName]
+		fromAct := fromRes.(map[string]interface{})["methods"].(map[string]interface{})[fromActionName].(map[string]interface{})
+
+		toRes := a.rawResources[toResName]
+		toAct := toRes.(map[string]interface{})["methods"].(map[string]interface{})[toActionName].(map[string]interface{})
+		fromAct["parameters"] = toAct["parameters"]
+		fromAct["status_code"] = toAct["status_code"]
+		fromAct["access_rules"] = toAct["access_rules"]
+	}
 }
 
 // AnalyzeResource analyzes the given resource and updates the Resources and ParamTypes analyzer

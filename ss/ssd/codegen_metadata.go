@@ -685,7 +685,7 @@ attribute inside of a CAT file.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "schedules[]",
+						Name:        "schedules",
 						Description: `Schedules available to users when launching the application`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,

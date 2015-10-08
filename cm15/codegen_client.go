@@ -3155,8 +3155,20 @@ func (loc *DeploymentLocator) Lock() error {
 //
 // Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
 // automatically be filtered by this deployment. See servers#index for details on other options and parameters.
-func (loc *DeploymentLocator) Servers() error {
+// Optional parameters:
+// filter
+// view
+func (loc *DeploymentLocator) Servers(options rsapi.APIParams) error {
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Deployment", "servers")
 	if err != nil {
@@ -10658,9 +10670,26 @@ func (loc *ServerLocator) Index(options rsapi.APIParams) ([]*Server, error) {
 //
 // Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
 // URL of this servers next_instance. See Instances#launch for details.
-func (loc *ServerLocator) Launch() error {
+// Optional parameters:
+// api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+// count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
+// inputs
+func (loc *ServerLocator) Launch(options rsapi.APIParams) error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var apiBehaviorOpt = options["api_behavior"]
+	if apiBehaviorOpt != nil {
+		p["api_behavior"] = apiBehaviorOpt
+	}
+	var countOpt = options["count"]
+	if countOpt != nil {
+		p["count"] = countOpt
+	}
+	var inputsOpt = options["inputs"]
+	if inputsOpt != nil {
+		p["inputs"] = inputsOpt
+	}
 	uri, err := loc.ActionPath("Server", "launch")
 	if err != nil {
 		return err
@@ -10998,9 +11027,21 @@ func (loc *ServerArrayLocator) Create(serverArray *ServerArrayParam) (*ServerArr
 // List the running instances belonging to the server array. See Instances#index for details.
 // This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
 // latter will include 'next_instance' as well.
-func (loc *ServerArrayLocator) CurrentInstances() ([]*Instance, error) {
+// Optional parameters:
+// filter
+// view
+func (loc *ServerArrayLocator) CurrentInstances(options rsapi.APIParams) ([]*Instance, error) {
 	var res []*Instance
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerArray", "current_instances")
 	if err != nil {
@@ -11121,9 +11162,26 @@ func (loc *ServerArrayLocator) Index(options rsapi.APIParams) ([]*ServerArray, e
 //
 // Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
 // URL of this server_array's next_instance. See Instances#launch for details.
-func (loc *ServerArrayLocator) Launch() error {
+// Optional parameters:
+// api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+// count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
+// inputs
+func (loc *ServerArrayLocator) Launch(options rsapi.APIParams) error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var apiBehaviorOpt = options["api_behavior"]
+	if apiBehaviorOpt != nil {
+		p["api_behavior"] = apiBehaviorOpt
+	}
+	var countOpt = options["count"]
+	if countOpt != nil {
+		p["count"] = countOpt
+	}
+	var inputsOpt = options["inputs"]
+	if inputsOpt != nil {
+		p["inputs"] = inputsOpt
+	}
 	uri, err := loc.ActionPath("ServerArray", "launch")
 	if err != nil {
 		return err
@@ -11153,9 +11211,37 @@ func (loc *ServerArrayLocator) Launch() error {
 // Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
 // (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
 // a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)
-func (loc *ServerArrayLocator) MultiRunExecutable() error {
+// Optional parameters:
+// filter
+// ignore_lock: Specifies the ability to ignore the lock(s) on the Instance(s).
+// inputs
+// recipe_name: The name of the recipe to be run.
+// right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
+func (loc *ServerArrayLocator) MultiRunExecutable(options rsapi.APIParams) error {
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
 	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var ignoreLockOpt = options["ignore_lock"]
+	if ignoreLockOpt != nil {
+		p["ignore_lock"] = ignoreLockOpt
+	}
+	var inputsOpt = options["inputs"]
+	if inputsOpt != nil {
+		p["inputs"] = inputsOpt
+	}
+	var recipeNameOpt = options["recipe_name"]
+	if recipeNameOpt != nil {
+		p["recipe_name"] = recipeNameOpt
+	}
+	var rightScriptHrefOpt = options["right_script_href"]
+	if rightScriptHrefOpt != nil {
+		p["right_script_href"] = rightScriptHrefOpt
+	}
 	uri, err := loc.ActionPath("ServerArray", "multi_run_executable")
 	if err != nil {
 		return err
@@ -11185,9 +11271,22 @@ func (loc *ServerArrayLocator) MultiRunExecutable() error {
 // Terminate all instances of this array. This function is equivalent to invoking the "multi_terminate" action on the instances resource ( Instances#multi_terminate with
 // the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,
 // invoke the action "terminate" directly on the instance (see Instances#terminate)
-func (loc *ServerArrayLocator) MultiTerminate() error {
+// Optional parameters:
+// filter
+// terminate_all: Specifies the ability to terminate all instances.
+func (loc *ServerArrayLocator) MultiTerminate(options rsapi.APIParams) error {
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
 	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var terminateAllOpt = options["terminate_all"]
+	if terminateAllOpt != nil {
+		p["terminate_all"] = terminateAllOpt
+	}
 	uri, err := loc.ActionPath("ServerArray", "multi_terminate")
 	if err != nil {
 		return err

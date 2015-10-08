@@ -3077,7 +3077,10 @@ Other actions such as adding servers or renaming the deployment are still allowe
 			&metadata.Action{
 				Name: "servers",
 				Description: `Lists the servers belonging to this deployment. This call is equivalent to servers#index call, where the servers returned will
-automatically be filtered by this deployment. See servers#index for details on other options and parameters.`,
+automatically be filtered by this deployment. See servers#index for details on other options and parameters.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -3086,8 +3089,44 @@ automatically be filtered by this deployment. See servers#index for details on o
 						Regexp:     regexp.MustCompile(`^/api/deployments/([^/]+)/servers$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "instance_detail"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "instance_detail"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -4386,7 +4425,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "quantity[]",
+						Name:        "quantity",
 						Description: `At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.`,
 						Type:        "[]*Quantity",
 						Location:    metadata.PayloadParam,
@@ -4778,7 +4817,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "quantity[]",
+						Name:        "quantity",
 						Description: `At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.`,
 						Type:        "[]*Quantity",
 						Location:    metadata.PayloadParam,
@@ -4896,7 +4935,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "quantity[]",
+						Name:        "quantity",
 						Description: `At least one name/value pair must be specified. Currently, a maximum of 2 name/value pairs is supported.`,
 						Type:        "[]*Quantity",
 						Location:    metadata.PayloadParam,
@@ -7913,7 +7952,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "asset_hrefs[]",
+						Name:        "asset_hrefs",
 						Description: `Hrefs of the assets that should be imported.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -7996,7 +8035,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "asset_hrefs[]",
+						Name:        "asset_hrefs",
 						Description: `Hrefs of the assets that should be imported.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -8272,7 +8311,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "imported_cookbook_name[]",
+						Name:        "imported_cookbook_name",
 						Description: `A list of cookbook names that were imported by the repository.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -9361,13 +9400,13 @@ Required parameters:
 						Description: `The ID of the RunnableBinding to update.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "runnable_bindings[]",
+						Name:        "runnable_bindings",
 						Description: ``,
 						Type:        "[]*RunnableBindings",
 						Location:    metadata.PayloadParam,
@@ -10571,7 +10610,11 @@ Optional parameters:
 			&metadata.Action{
 				Name: "launch",
 				Description: `Launches the "next" instance of this server. This function is equivalent to invoking the launch action on the
-URL of this servers next_instance. See Instances#launch for details.`,
+URL of this servers next_instance. See Instances#launch for details.
+Optional parameters:
+	api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+	count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
+	inputs`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
@@ -10580,8 +10623,76 @@ URL of this servers next_instance. See Instances#launch for details.`,
 						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/launch$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "inputs[][value]",
+						Description: `The value of that input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs[][name]",
+						Description: `The input name. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "api_behavior",
+						Description: `When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"async", "sync"},
+					},
+					&metadata.ActionParam{
+						Name:        "count",
+						Description: `For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "api_behavior",
+						Description: `When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"async", "sync"},
+					},
+					&metadata.ActionParam{
+						Name:        "count",
+						Description: `For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -10992,7 +11103,7 @@ Required parameters:
 						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11000,7 +11111,7 @@ Required parameters:
 						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11041,7 +11152,7 @@ Required parameters:
 						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11049,7 +11160,7 @@ Required parameters:
 						Description: `Specifies the time when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11057,7 +11168,7 @@ Required parameters:
 						Description: `Specifies the day when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
 					},
@@ -11123,7 +11234,7 @@ Required parameters:
 						Description: `Instance allocation (should total 100%).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11163,7 +11274,7 @@ Required parameters:
 						Description: `Max instances (0 for unlimited).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11282,7 +11393,10 @@ Required parameters:
 				Name: "current_instances",
 				Description: `List the running instances belonging to the server array. See Instances#index for details.
 This action is slightly different from invoking the index action on the Instances resource with the filter "parent_href == /api/server_arrays/XX" because the
-latter will include 'next_instance' as well.`,
+latter will include 'next_instance' as well.
+Optional parameters:
+	filter
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -11291,8 +11405,44 @@ latter will include 'next_instance' as well.`,
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/current_instances$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "extended", "full", "full_inputs_2_0", "tiny", "sensitive"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "extended", "full", "full_inputs_2_0", "tiny", "sensitive"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -11385,7 +11535,11 @@ Optional parameters:
 			&metadata.Action{
 				Name: "launch",
 				Description: `Launches a new instance in the server array with the configuration defined in the 'next_instance'. This function is equivalent to invoking the launch action on the
-URL of this server_array's next_instance. See Instances#launch for details.`,
+URL of this server_array's next_instance. See Instances#launch for details.
+Optional parameters:
+	api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
+	count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
+	inputs`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
@@ -11394,15 +11548,89 @@ URL of this server_array's next_instance. See Instances#launch for details.`,
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/launch$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "inputs[][value]",
+						Description: `The value of that input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs[][name]",
+						Description: `The input name. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "api_behavior",
+						Description: `When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"async", "sync"},
+					},
+					&metadata.ActionParam{
+						Name:        "count",
+						Description: `For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "api_behavior",
+						Description: `When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"async", "sync"},
+					},
+					&metadata.ActionParam{
+						Name:        "count",
+						Description: `For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
 			},
 
 			&metadata.Action{
 				Name: "multi_run_executable",
 				Description: `Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
 (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
-a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)`,
+a single instance, invoke the action "run_executable" directly on the instance (see Instances#run_executable)
+Optional parameters:
+	filter
+	ignore_lock: Specifies the ability to ignore the lock(s) on the Instance(s).
+	inputs
+	recipe_name: The name of the recipe to be run.
+	right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
@@ -11411,15 +11639,118 @@ a single instance, invoke the action "run_executable" directly on the instance (
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/multi_run_executable$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "right_script_href",
+						Description: `The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs[][value]",
+						Description: `The value of these inputs. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "inputs[][name]",
+						Description: `The name of inputs needed. This format is used for passing legacy 1.0-style Inputs. Will eventually be deprecated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "ignore_lock",
+						Description: `Specifies the ability to ignore the lock(s) on the Instance(s).`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "recipe_name",
+						Description: `The name of the recipe to be run.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "ignore_lock",
+						Description: `Specifies the ability to ignore the lock(s) on the Instance(s).`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "inputs",
+						Description: ``,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe_name",
+						Description: `The name of the recipe to be run.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script_href",
+						Description: `The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
 			},
 
 			&metadata.Action{
 				Name: "multi_terminate",
 				Description: `Terminate all instances of this array. This function is equivalent to invoking the "multi_terminate" action on the instances resource ( Instances#multi_terminate with
 the filter "parent_href == /api/server_arrays/XX"). To terminate a subset of the instances of the array, provide additional filters. To terminate a single instance,
-invoke the action "terminate" directly on the instance (see Instances#terminate)`,
+invoke the action "terminate" directly on the instance (see Instances#terminate)
+Optional parameters:
+	filter
+	terminate_all: Specifies the ability to terminate all instances.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
@@ -11428,8 +11759,44 @@ invoke the action "terminate" directly on the instance (see Instances#terminate)
 						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/multi_terminate$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "terminate_all",
+						Description: `Specifies the ability to terminate all instances.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "terminate_all",
+						Description: `Specifies the ability to terminate all instances.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -11573,7 +11940,7 @@ Required parameters:
 						Description: `The updated minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11581,7 +11948,7 @@ Required parameters:
 						Description: `The updated maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11613,7 +11980,7 @@ Required parameters:
 						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11621,7 +11988,7 @@ Required parameters:
 						Description: `The updated time when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11629,7 +11996,7 @@ Required parameters:
 						Description: `The updated day when an alert-based array resizes.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"},
 					},
@@ -11638,7 +12005,7 @@ Required parameters:
 						Description: `Instance allocation (should total 100%).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11646,7 +12013,7 @@ Required parameters:
 						Description: `Max instances (0 for unlimited).`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -12052,7 +12419,7 @@ Optional parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "account_group_hrefs[]",
+						Name:        "account_group_hrefs",
 						Description: `List of hrefs of account groups to publish to.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -12069,7 +12436,7 @@ Optional parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "categories[]",
+						Name:        "categories",
 						Description: `List of Categories.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -12963,7 +13330,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "resource_hrefs[]",
+						Name:        "resource_hrefs",
 						Description: `Hrefs of the resources for which tags are to be returned.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13076,7 +13443,7 @@ Optional parameters:
 						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts"},
 					},
 					&metadata.ActionParam{
-						Name:        "tags[]",
+						Name:        "tags",
 						Description: `The tags which must be present on the resource.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13133,7 +13500,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "resource_hrefs[]",
+						Name:        "resource_hrefs",
 						Description: `Hrefs of the resources for which the tags are to be added.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13141,7 +13508,7 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "tags[]",
+						Name:        "tags",
 						Description: `Tags to be added.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13188,7 +13555,7 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "resource_hrefs[]",
+						Name:        "resource_hrefs",
 						Description: `Hrefs of the resources for which tags are to be deleted.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
@@ -13196,7 +13563,7 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "tags[]",
+						Name:        "tags",
 						Description: `Tags to be deleted.`,
 						Type:        "[]string",
 						Location:    metadata.PayloadParam,
