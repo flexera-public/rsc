@@ -1,4 +1,4 @@
-package cm15
+package cm15 // import "gopkg.in/rightscale/rsc.v4/cm15"
 
 import "time"
 

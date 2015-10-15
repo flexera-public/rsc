@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cac
+package cac // import "gopkg.in/rightscale/rsc.v4/ca/cac"
 
 import (
 	"encoding/json"
@@ -15,8 +15,8 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v4/metadata"
+	"gopkg.in/rightscale/rsc.v4/rsapi"
 )
 
 // API Version
