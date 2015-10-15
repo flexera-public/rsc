@@ -3822,7 +3822,7 @@ type Instance struct {
 	CloudSpecificAttributes  map[string]interface{} `json:"cloud_specific_attributes,omitempty"`
 	CreatedAt                *RubyTime              `json:"created_at,omitempty"`
 	Description              string                 `json:"description,omitempty"`
-	InheritedSources         []string               `json:"inherited_sources,omitempty"`
+	InheritedSources         map[string]string      `json:"inherited_sources,omitempty"`
 	Inputs                   []map[string]string    `json:"inputs,omitempty"`
 	IpForwardingEnabled      bool                   `json:"ip_forwarding_enabled,omitempty"`
 	Links                    []map[string]string    `json:"links,omitempty"`

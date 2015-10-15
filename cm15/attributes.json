@@ -62,7 +62,7 @@
 	"id": "string",
 	"id#Cookbooks": "int",
 	"image_type": "string",
-	"inherited_sources": "[]string",
+	"inherited_sources": "map[string]string",
 	"inputs": "[]map[string]string",
 	"instance_tenancy": "string",
 	"instances_count": "int",

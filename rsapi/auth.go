@@ -480,7 +480,7 @@ func testAuth(auth Authenticator, client httpclient.HTTPClient, host string, ins
 	var req *http.Request
 	var err error
 	if instance {
-		req, err = http.NewRequest("GET", buildURL(host, "api/user_data"), nil)
+		req, err = http.NewRequest("GET", buildURL(host, "api/sessions/instance"), nil)
 	} else {
 		req, err = http.NewRequest("GET", buildURL(host, "api/sessions"), nil)
 	}
@@ -497,7 +497,7 @@ func testAuth(auth Authenticator, client httpclient.HTTPClient, host string, ins
 	}
 	if resp.StatusCode != 200 {
 		var body string
-		if b, err := ioutil.ReadAll(resp.Body); err != nil {
+		if b, err := ioutil.ReadAll(resp.Body); err == nil {
 			body = ": " + string(b)
 		}
 		return fmt.Errorf("%s%s", resp.Status, body)
