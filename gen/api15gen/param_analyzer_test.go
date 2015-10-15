@@ -4,7 +4,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
-	"gopkg.in/rightscale/rsc.v4/gen"
+	"gopkg.in/rightscale/rsc.v5/gen"
 )
 
 var _ = Describe("ParamAnalyzer", func() {

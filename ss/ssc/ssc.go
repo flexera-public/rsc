@@ -1,9 +1,9 @@
-package ssc // import "gopkg.in/rightscale/rsc.v4/ss/ssc"
+package ssc // import "gopkg.in/rightscale/rsc.v5/ss/ssc"
 
 import (
 	"net/http"
 
-	"gopkg.in/rightscale/rsc.v4/rsapi"
+	"gopkg.in/rightscale/rsc.v5/rsapi"
 )
 
 // API is the Self-Service catalog client.

@@ -1,4 +1,4 @@
-package text // import "gopkg.in/rightscale/rsc.v4/gen/writers/text"
+package text // import "gopkg.in/rightscale/rsc.v5/gen/writers/text"
 
 import (
 	"bytes"

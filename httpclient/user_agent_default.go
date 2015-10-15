@@ -1,6 +1,6 @@
 // +build !make
 
-package httpclient // import "gopkg.in/rightscale/rsc.v4/httpclient"
+package httpclient // import "gopkg.in/rightscale/rsc.v5/httpclient"
 
 // UA is the default user agent.
 // The value gets overridden by build scripts for release builds.

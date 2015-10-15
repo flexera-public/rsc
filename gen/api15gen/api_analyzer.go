@@ -1,4 +1,4 @@
-package main // import "gopkg.in/rightscale/rsc.v4/gen/api15gen"
+package main // import "gopkg.in/rightscale/rsc.v5/gen/api15gen"
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v4/gen"
+	"gopkg.in/rightscale/rsc.v5/gen"
 
 	"bitbucket.org/pkg/inflect"
 )

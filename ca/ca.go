@@ -1,13 +1,13 @@
-package ca // import "gopkg.in/rightscale/rsc.v4/ca"
+package ca // import "gopkg.in/rightscale/rsc.v5/ca"
 
 import (
 	"regexp"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v4/ca/cac"
-	"gopkg.in/rightscale/rsc.v4/cmd"
-	"gopkg.in/rightscale/rsc.v4/metadata"
-	"gopkg.in/rightscale/rsc.v4/rsapi"
+	"gopkg.in/rightscale/rsc.v5/ca/cac"
+	"gopkg.in/rightscale/rsc.v5/cmd"
+	"gopkg.in/rightscale/rsc.v5/metadata"
+	"gopkg.in/rightscale/rsc.v5/rsapi"
 )
 
 // Metadata synthetized from all CA APIs metadata

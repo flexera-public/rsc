@@ -1,7 +1,7 @@
 // This basic example illustrates how to setup a Self-Service client to make a simple
 // API call. The reference for the API can be found at
 // http://reference.rightscale.com/selfservice/manager/index.html#/
-package main // import "gopkg.in/rightscale/rsc.v4/ss/examples/basic"
+package main // import "gopkg.in/rightscale/rsc.v5/ss/examples/basic"
 
 import (
 	"flag"
@@ -12,10 +12,10 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"gopkg.in/rightscale/rsc.v4/httpclient"
-	"gopkg.in/rightscale/rsc.v4/rsapi"
-	"gopkg.in/rightscale/rsc.v4/ss"
-	"gopkg.in/rightscale/rsc.v4/ss/ssm"
+	"gopkg.in/rightscale/rsc.v5/httpclient"
+	"gopkg.in/rightscale/rsc.v5/rsapi"
+	"gopkg.in/rightscale/rsc.v5/ss"
+	"gopkg.in/rightscale/rsc.v5/ss/ssm"
 )
 
 // For testing

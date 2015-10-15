@@ -1,10 +1,10 @@
-package cm15 // import "gopkg.in/rightscale/rsc.v4/cm15"
+package cm15 // import "gopkg.in/rightscale/rsc.v5/cm15"
 
 import (
 	"fmt"
 	"net/http"
 
-	"gopkg.in/rightscale/rsc.v4/rsapi"
+	"gopkg.in/rightscale/rsc.v5/rsapi"
 )
 
 // BuildRequest builds a HTTP request from a resource name and href and an action name and

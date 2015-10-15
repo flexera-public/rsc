@@ -1,15 +1,15 @@
-package ss // import "gopkg.in/rightscale/rsc.v4/ss"
+package ss // import "gopkg.in/rightscale/rsc.v5/ss"
 
 import (
 	"path"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v4/cmd"
-	"gopkg.in/rightscale/rsc.v4/metadata"
-	"gopkg.in/rightscale/rsc.v4/rsapi"
-	"gopkg.in/rightscale/rsc.v4/ss/ssc"
-	"gopkg.in/rightscale/rsc.v4/ss/ssd"
-	"gopkg.in/rightscale/rsc.v4/ss/ssm"
+	"gopkg.in/rightscale/rsc.v5/cmd"
+	"gopkg.in/rightscale/rsc.v5/metadata"
+	"gopkg.in/rightscale/rsc.v5/rsapi"
+	"gopkg.in/rightscale/rsc.v5/ss/ssc"
+	"gopkg.in/rightscale/rsc.v5/ss/ssd"
+	"gopkg.in/rightscale/rsc.v5/ss/ssm"
 )
 
 // Metadata synthetized from all SS APIs metadata

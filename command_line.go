@@ -7,13 +7,13 @@ import (
 	"strings"
 
 	"gopkg.in/alecthomas/kingpin.v2"
-	"gopkg.in/rightscale/rsc.v4/ca"
-	"gopkg.in/rightscale/rsc.v4/cm15"
-	"gopkg.in/rightscale/rsc.v4/cm16"
-	"gopkg.in/rightscale/rsc.v4/cmd"
-	"gopkg.in/rightscale/rsc.v4/rl10"
-	"gopkg.in/rightscale/rsc.v4/rsapi"
-	"gopkg.in/rightscale/rsc.v4/ss"
+	"gopkg.in/rightscale/rsc.v5/ca"
+	"gopkg.in/rightscale/rsc.v5/cm15"
+	"gopkg.in/rightscale/rsc.v5/cm16"
+	"gopkg.in/rightscale/rsc.v5/cmd"
+	"gopkg.in/rightscale/rsc.v5/rl10"
+	"gopkg.in/rightscale/rsc.v5/rsapi"
+	"gopkg.in/rightscale/rsc.v5/ss"
 )
 
 // ParseCommandLine retrieves the command and top level flag values.
