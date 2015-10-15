@@ -1,3 +1,10 @@
+v5.0.0 / 2015-10-15
+-------------------
+* Fix issue with instance session auth
+* Fix optional command line parameters being required
+* Properly generate code and metadata for "aliased" CM 1.5 resource actions
+* [break] Fix name of array query parameters in metadata (add "[]" suffix)
+
 v4.0.1 / 2015-09-18
 -------------------
 * Support new TSS control actions in RL10 API
