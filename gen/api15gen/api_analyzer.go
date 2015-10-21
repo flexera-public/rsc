@@ -101,10 +101,13 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		description = d
 	}
 
-	// Compute attributes
+	// Compute attributes, mediatype identifier, and links
 	var attributes []*gen.Attribute
+	var identifier string
 	var atts map[string]interface{}
+	var links map[string]string
 	if m, ok := res["media_type"].(map[string]interface{}); ok {
+		// Compute attributes
 		atts = m["attributes"].(map[string]interface{})
 		attributes = make([]*gen.Attribute, len(atts))
 		for idx, n := range sortedKeys(atts) {
@@ -113,6 +116,20 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				at = a.attributeTypes[n]
 			}
 			attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), at}
+		}
+
+		// Compute mediatype identifier
+		contentTypes := m["content_types"].([]interface{})
+		if len(contentTypes) > 0 {
+			identifier = contentTypes[0].(string)
+		}
+
+		// Compute links
+		if l, ok := m["links"].(map[string]interface{}); ok {
+			links = make(map[string]string, len(l))
+			for n, d := range l {
+				links[n] = d.(string)
+			}
 		}
 	} else {
 		attributes = []*gen.Attribute{}
@@ -290,6 +307,8 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		Actions:     actions,
 		Attributes:  attributes,
 		LocatorFunc: LocatorFunc(attributes, name),
+		Identifier:  identifier,
+		Links:       links,
 	}
 }
 

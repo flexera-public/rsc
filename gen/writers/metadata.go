@@ -10,8 +10,9 @@ import (
 
 // MetadataWriter struct exposes methods to generate the go API client command line tool
 type MetadataWriter struct {
-	headerTmpl   *template.Template
-	resourceTmpl *template.Template
+	headerTmpl     *template.Template
+	resourceTmpl   *template.Template
+	identifierTmpl *template.Template
 }
 
 // NewMetadataWriter creates a new writer that generates metadata data structures.
@@ -33,9 +34,14 @@ func NewMetadataWriter() (*MetadataWriter, error) {
 	if err != nil {
 		return nil, err
 	}
+	identifierT, err := template.New("identifier-metadata").Funcs(funcMap).Parse(identifierMetadataTmpl)
+	if err != nil {
+		return nil, err
+	}
 	return &MetadataWriter{
-		headerTmpl:   headerT,
-		resourceTmpl: resourceT,
+		headerTmpl:     headerT,
+		resourceTmpl:   resourceT,
+		identifierTmpl: identifierT,
 	}, nil
 }
 
@@ -50,7 +56,11 @@ func (c *MetadataWriter) WriteMetadata(d *gen.APIDescriptor, w io.Writer) error 
 	for i, n := range d.ResourceNames {
 		resources[i] = d.Resources[n]
 	}
-	return c.resourceTmpl.Execute(w, resources)
+	err := c.resourceTmpl.Execute(w, resources)
+	if err != nil {
+		return err
+	}
+	return c.identifierTmpl.Execute(w, resources)
 }
 
 // Return code corresponding to param location
@@ -93,7 +103,10 @@ var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 		Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 		Actions: []*metadata.Action{ {{range .Actions}}
 		{{template "action" .}}{{end}}
-		},
+		},{{if .Links}}
+		Links: map[string]string{ {{range $name, $desc := .Links}}
+		  "{{$name}}": "{{$desc}}",{{end}}
+	    },{{end}}
 	},{{end}}
 }
 `
@@ -135,4 +148,10 @@ const actionMetadataTmpl = `&metadata.Action {
 					},{{end}}
 				},
 			},
+`
+
+const identifierMetadataTmpl = `
+var IdentifierResourceMap = map[string]string{ {{range .}}{{if .Identifier}}
+	"{{.Identifier}}": "{{.Name}}",{{end}}{{end}}
+}
 `

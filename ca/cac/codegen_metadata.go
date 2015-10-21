@@ -6322,3 +6322,5 @@ var GenMetadata = map[string]*metadata.Resource{
 		},
 	},
 }
+
+var IdentifierResourceMap = map[string]string{}

@@ -738,3 +738,5 @@ attribute inside of a CAT file.`,
 		},
 	},
 }
+
+var IdentifierResourceMap = map[string]string{}

@@ -166,12 +166,14 @@ func (d *APIDescriptor) uniqueTypeName(prefix string) string {
 
 // Resource is the data structure used to describe API resources.
 type Resource struct {
-	Name        string       // Resource name, e.g. "ServerArray"
-	ClientName  string       // Name of go client struct, e.g. "API"
-	Description string       // Resource description
-	Attributes  []*Attribute // Resource attributes
-	Actions     []*Action    // Resource actions, e.g. "index", "show", "update" ...
-	LocatorFunc string       // Source code for Locator factory method if any
+	Name        string            // Resource name, e.g. "ServerArray"
+	ClientName  string            // Name of go client struct, e.g. "API"
+	Description string            // Resource description
+	Attributes  []*Attribute      // Resource attributes
+	Actions     []*Action         // Resource actions, e.g. "index", "show", "update" ...
+	LocatorFunc string            // Source code for Locator factory method if any
+	Identifier  string            // The mediatype identifier of the resource
+	Links       map[string]string // The map resource links and their descriptions
 }
 
 // Attribute is the resource attributes used to generate resource type definition.

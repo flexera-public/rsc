@@ -2134,3 +2134,5 @@ It is also used to validate values saved in UserPreference.`,
 		},
 	},
 }
+
+var IdentifierResourceMap = map[string]string{}

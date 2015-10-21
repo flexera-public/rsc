@@ -2171,3 +2171,5 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 		},
 	},
 }
+
+var IdentifierResourceMap = map[string]string{}

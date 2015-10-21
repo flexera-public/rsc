@@ -11,6 +11,7 @@ type Resource struct {
 	Name        string
 	Description string
 	Actions     []*Action
+	Links       map[string]string
 }
 
 // ExtractVariables takes a resource href and extracts the variables (cloud_id, id etc.) that

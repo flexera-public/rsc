@@ -36,6 +36,11 @@ var GenMetadata = map[string]*metadata.Resource{
 				APIParams:    []*metadata.ActionParam{},
 			},
 		},
+		Links: map[string]string{
+			"cluster": "Href of the cluster the account belongs to",
+			"owner":   "Href of the owner",
+			"self":    "Href of itself",
+		},
 	},
 	"AccountGroup": &metadata.Resource{
 		Name:        "AccountGroup",
@@ -131,6 +136,10 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"account": "Associated account",
+			"self":    "Href of itself",
 		},
 	},
 	"Alert": &metadata.Resource{
@@ -414,6 +423,11 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"alert_spec": "Associated AlertSpec",
+			"instance":   "Associated running Instance",
+			"self":       "Href of itself",
 		},
 	},
 	"AlertSpec": &metadata.Resource{
@@ -864,6 +878,10 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"self":    "Href of itself",
+			"subject": "Associated subject. The subject can be a ServerTemplate, Server, Server Array, or a running Instance.",
+		},
 	},
 	"AuditEntry": &metadata.Resource{
 		Name:        "AuditEntry",
@@ -1270,6 +1288,11 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"auditee": "Href of the resource that this Audit Entry relates to.",
+			"detail":  "Href where the Audit Entry detail is available from.",
+			"self":    "Href of itself",
 		},
 	},
 	"Backup": &metadata.Resource{
@@ -1722,6 +1745,9 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"self": "Href of itself",
+		},
 	},
 	"ChildAccount": &metadata.Resource{
 		Name:        "ChildAccount",
@@ -1949,6 +1975,23 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"datacenters":                  "Associated datacenters",
+			"images":                       "Associated images",
+			"instance_types":               "Associated instance types",
+			"instances":                    "Associated instances",
+			"ip_address_bindings":          "Associated IP Address Bindings",
+			"ip_addresses":                 "Associated IP Addresses",
+			"recurring_volume_attachments": "Associated recurring volume attachments",
+			"security_groups":              "Associated security groups",
+			"self":                         "Href of itself",
+			"ssh_keys":                     "Associated ssh keys",
+			"subnets":                      "Associated subnets",
+			"volume_attachments":           "Associated volume attachments",
+			"volume_snapshots":             "Associated volume snapshots",
+			"volume_types":                 "Associated volume types",
+			"volumes":                      "Associated volumes",
+		},
 	},
 	"CloudAccount": &metadata.Resource{
 		Name:        "CloudAccount",
@@ -2051,6 +2094,11 @@ Required parameters:
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
 			},
+		},
+		Links: map[string]string{
+			"account": "Associated account",
+			"cloud":   "Associated cloud",
+			"self":    "Href of itself",
 		},
 	},
 	"Cookbook": &metadata.Resource{
@@ -2277,6 +2325,11 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cookbook_attachments": "Attachments for this Cookbook",
+			"repository":           "Href of associated Repository",
+			"self":                 "Href of itself",
 		},
 	},
 	"CookbookAttachment": &metadata.Resource{
@@ -2553,6 +2606,11 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cookbook":        "Href of the attached Cookbook",
+			"self":            "Href of itself",
+			"server_template": "Href of ServerTemplate",
+		},
 	},
 	"Credential": &metadata.Resource{
 		Name: "Credential",
@@ -2773,6 +2831,9 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"self": "Href of itself",
+		},
 	},
 	"Datacenter": &metadata.Resource{
 		Name: "Datacenter",
@@ -2873,6 +2934,10 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Associated cloud",
+			"self":  "Href of itself",
 		},
 	},
 	"Deployment": &metadata.Resource{
@@ -3235,6 +3300,14 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"alerts":        "Associated alerts",
+			"inputs":        "List of configuration inputs",
+			"lock_user":     "Href of the user who has locked this deployment",
+			"self":          "Href of itself",
+			"server_arrays": "Associated server arrays",
+			"servers":       "Associated servers",
+		},
 	},
 	"HealthCheck": &metadata.Resource{
 		Name:        "HealthCheck",
@@ -3355,6 +3428,9 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"self": "Href of itself",
+		},
 	},
 	"Image": &metadata.Resource{
 		Name: "Image",
@@ -3453,6 +3529,10 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Associated cloud",
+			"self":  "Href of itself",
 		},
 	},
 	"Input": &metadata.Resource{
@@ -4770,6 +4850,26 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"alerts":             "Associated alerts",
+			"cloud":              "Associated Cloud",
+			"datacenter":         "Associated datacenter",
+			"deployment":         "Associated Deployment",
+			"image":              "Associated image",
+			"inputs":             "List of configuration inputs",
+			"instance_type":      "Associated instance type",
+			"kernel_image":       "Associated kernel image",
+			"lock_user":          "Href of the user who has locked this instance",
+			"monitoring_metrics": "Associated monitoring metrics",
+			"multi_cloud_image":  "Associated multi cloud image",
+			"parent":             "Parent Object (Server/ServerArray)",
+			"placement_group":    "Associated placement group",
+			"ramdisk_image":      "Associated ramdisk image",
+			"self":               "Href of itself",
+			"server_template":    "Associated ServerTemplate",
+			"ssh_key":            "Associated ssh key",
+			"volume_attachments": "Associated volume attachments",
+		},
 	},
 	"InstanceCustomLodgement": &metadata.Resource{
 		Name:        "InstanceCustomLodgement",
@@ -4945,6 +5045,14 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"account":         "Associated account",
+			"cloud":           "Associated cloud",
+			"deployment":      "Associated deployment",
+			"instance":        "Associated instance",
+			"self":            "Href of itself",
+			"server_template": "Associated server template",
+		},
 	},
 	"InstanceType": &metadata.Resource{
 		Name:        "InstanceType",
@@ -5042,6 +5150,10 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Associated cloud",
+			"self":  "Href of itself",
 		},
 	},
 	"IpAddress": &metadata.Resource{
@@ -5218,6 +5330,12 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"deployment":          "Containing Deployment",
+			"ip_address_bindings": "Associated ip address bindings",
+			"network":             "Associated network",
+			"self":                "Href of itself",
+		},
 	},
 	"IpAddressBinding": &metadata.Resource{
 		Name: "IpAddressBinding",
@@ -5388,6 +5506,11 @@ Optional parameters:
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
 			},
+		},
+		Links: map[string]string{
+			"instance":   "Href of the Instance to which the IpAddress is bound",
+			"ip_address": "Href of the IpAddress bound to the Instance",
+			"self":       "Href of itself",
 		},
 	},
 	"MonitoringMetric": &metadata.Resource{
@@ -5649,6 +5772,10 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"data": "Href for getting raw monitoring data for the metric",
+			"self": "Href of itself",
 		},
 	},
 	"MultiCloudImage": &metadata.Resource{
@@ -5919,6 +6046,10 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"self":     "Href of itself",
+			"settings": "Associated multi cloud image settings",
+		},
 	},
 	"MultiCloudImageSetting": &metadata.Resource{
 		Name: "MultiCloudImageSetting",
@@ -6142,6 +6273,13 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":             "Associated cloud",
+			"image":             "Associated image",
+			"instance_type":     "Associated instance type",
+			"multi_cloud_image": "Associated multi cloud image",
+			"self":              "Href of itself",
+		},
 	},
 	"Network": &metadata.Resource{
 		Name:        "Network",
@@ -6332,6 +6470,11 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":               "Href of the Cloud the network is in",
+			"default_route_table": "The href of the RouteTable that is currently active",
+			"self":                "Href of itself",
+		},
 	},
 	"NetworkGateway": &metadata.Resource{
 		Name:        "NetworkGateway",
@@ -6514,6 +6657,11 @@ Required parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud":   "The cloud the NetworkGateway is in",
+			"network": "The href of the Network this NetworkGateway is attached to, if any",
+			"self":    "Href of itself",
 		},
 	},
 	"NetworkOptionGroup": &metadata.Resource{
@@ -6709,6 +6857,10 @@ Required parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Associated cloud.",
+			"self":  "This NetworkOptionGroup's href",
 		},
 	},
 	"NetworkOptionGroupAttachment": &metadata.Resource{
@@ -6907,6 +7059,12 @@ Required parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud":                "Associated Cloud",
+			"network":              "Network being attached with the NetworkOptionGroup",
+			"network_option_group": "NetworkOptionGroup being attached to a networking resource",
+			"self":                 "Href of itself",
 		},
 	},
 	"Oauth2": &metadata.Resource{
@@ -7223,6 +7381,11 @@ Optional parameters:
 				APIParams:    []*metadata.ActionParam{},
 			},
 		},
+		Links: map[string]string{
+			"account": "Href of the account to which this permission belongs",
+			"self":    "Href of itself",
+			"user":    "Href of the user to which this permission belongs",
+		},
 	},
 	"PlacementGroup": &metadata.Resource{
 		Name:        "PlacementGroup",
@@ -7387,6 +7550,10 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Href of the Cloud that this PlacementGroup belongs to",
+			"self":  "Href of itself",
+		},
 	},
 	"Preference": &metadata.Resource{
 		Name:        "Preference",
@@ -7493,6 +7660,9 @@ Required parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"self": "Href of itself",
 		},
 	},
 	"Publication": &metadata.Resource{
@@ -7609,6 +7779,10 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"lineage": "Href of Publication Lineage",
+			"self":    "Href of itself",
+		},
 	},
 	"PublicationLineage": &metadata.Resource{
 		Name: "PublicationLineage",
@@ -7652,6 +7826,9 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"self": "Href of itself",
 		},
 	},
 	"RecurringVolumeAttachment": &metadata.Resource{
@@ -7880,6 +8057,12 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud":    "Associated cloud",
+			"runnable": "Associated Server/ServerArray",
+			"self":     "Href of itself",
+			"storage":  "Associated Volume/VolumeSnapshot",
 		},
 	},
 	"Repository": &metadata.Resource{
@@ -8468,6 +8651,10 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"repository_assets": "Assets fetched from the repository",
+			"self":              "Href of itself",
+		},
 	},
 	"RepositoryAsset": &metadata.Resource{
 		Name: "RepositoryAsset",
@@ -8551,6 +8738,9 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"self": "Href of itself",
 		},
 	},
 	"RightScript": &metadata.Resource{
@@ -8759,6 +8949,10 @@ Required parameters:
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
 			},
+		},
+		Links: map[string]string{
+			"self":   "Href of itself",
+			"source": "Returns the RightScript source",
 		},
 	},
 	"Route": &metadata.Resource{
@@ -9009,6 +9203,12 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":       "The cloud that this Route is in.",
+			"next_hop":    "Href of the next_hop (only if next_hop_type isn't ip_string)",
+			"route_table": "The RouteTable that this Route belongs to.",
+			"self":        "Link to this Route.",
+		},
 	},
 	"RouteTable": &metadata.Resource{
 		Name:        "RouteTable",
@@ -9223,6 +9423,12 @@ Required parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud":   "Associated Cloud",
+			"network": "Associated Network",
+			"routes":  "Associated Routes",
+			"self":    "Href of itself",
 		},
 	},
 	"RunnableBinding": &metadata.Resource{
@@ -9453,6 +9659,11 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"right_script":    "Href of associated RightScript (only returned if RightScript executable)",
+			"self":            "Href of itself",
+			"server_template": "Href of associated ServerTemplate",
 		},
 	},
 	"Scheduler": &metadata.Resource{
@@ -9932,6 +10143,12 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":                "Associated cloud",
+			"network":              "Associated network",
+			"security_group_rules": "Associated security_group_rules",
+			"self":                 "Href of itself",
+		},
 	},
 	"SecurityGroupRule": &metadata.Resource{
 		Name:        "SecurityGroupRule",
@@ -10212,6 +10429,10 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"security_group": "Associated security group",
+			"self":           "Href of itself",
 		},
 	},
 	"Server": &metadata.Resource{
@@ -10938,6 +11159,14 @@ Required parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"alert_specs":      "Associated AlertSpecs",
+			"alerts":           "Associated Alerts",
+			"current_instance": "Associated current instance",
+			"deployment":       "Associated deployment",
+			"next_instance":    "Associated next instance",
+			"self":             "Href of itself",
 		},
 	},
 	"ServerArray": &metadata.Resource{
@@ -12080,6 +12309,14 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"alert_specs":       "Associated AlertSpecs",
+			"alerts":            "Associated Alerts",
+			"current_instances": "Associated current instances",
+			"deployment":        "Associated deployment",
+			"next_instance":     "Associated next instance",
+			"self":              "Href of itself",
+		},
 	},
 	"ServerTemplate": &metadata.Resource{
 		Name: "ServerTemplate",
@@ -12629,6 +12866,16 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"alert_specs":               "Associated AlertSpecs",
+			"cookbook_attachments":      "Attached Chef Cookbooks",
+			"default_multi_cloud_image": "The default MultiCloud Image",
+			"inputs":                    "List of configuration inputs",
+			"multi_cloud_images":        "Associated MultiCloud Images",
+			"publication":               "Associated privately shared Publication",
+			"runnable_bindings":         "Attached RightScripts and Chef Recipes",
+			"self":                      "Href of itself",
+		},
 	},
 	"ServerTemplateMultiCloudImage": &metadata.Resource{
 		Name: "ServerTemplateMultiCloudImage",
@@ -12801,6 +13048,11 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"multi_cloud_image": "Associated MultiCloud Image",
+			"self":              "Href of itself",
+			"server_template":   "Associated ServerTemplate",
+		},
 	},
 	"Session": &metadata.Resource{
 		Name: "Session",
@@ -12926,6 +13178,44 @@ curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/s
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
 			},
+		},
+		Links: map[string]string{
+			"account_groups":                     "Available AccountGroups",
+			"accounts":                           "Available Accounts",
+			"alert_specs":                        "Available AlertSpecs",
+			"alerts":                             "Available Alerts",
+			"audit_entries":                      "Available AuditEntries",
+			"backups":                            "Available Backups",
+			"child_accounts":                     "Available ChildAccounts",
+			"cloud_accounts":                     "Available CloudAccounts",
+			"cloud_flow_processes":               "Available Cloud Workflow processes",
+			"clouds":                             "Available Clouds",
+			"cookbooks":                          "Available Cookbooks",
+			"credentials":                        "Available Credentials",
+			"deployments":                        "Available Deployments",
+			"identity_providers":                 "Available IdentityProviders",
+			"multi_cloud_images":                 "Available MultiCloudImages",
+			"network_gateways":                   "Available NetworkGateways",
+			"network_option_group_attachments":   "Available NetworkOptionGroupAttachments",
+			"network_option_groups":              "Available NetworkOptionGroups",
+			"networks":                           "Available Networks",
+			"permissions":                        "Available Permissions",
+			"placement_groups":                   "Available PlacementGroups",
+			"preferences":                        "Available Preferences",
+			"publication_lineages":               "Available PublicationLineages",
+			"publications":                       "Available Publications",
+			"repositories":                       "Available Repositories",
+			"right_scripts":                      "Available RightScripts",
+			"route_tables":                       "Available RouteTables",
+			"routes":                             "Available Routes",
+			"security_group_rules":               "Available SecurityGroupRules",
+			"self":                               "Href of itself",
+			"server_arrays":                      "Available ServerArrays",
+			"server_template_multi_cloud_images": "Available ServerTemplateMultiCloudImages",
+			"server_templates":                   "Available ServerTemplates",
+			"servers":                            "Available Servers",
+			"tags":                               "Search for Tags",
+			"users":                              "Available Users",
 		},
 	},
 	"SshKey": &metadata.Resource{
@@ -13075,6 +13365,10 @@ Optional parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Associated cloud",
+			"self":  "Href of itself",
 		},
 	},
 	"Subnet": &metadata.Resource{
@@ -13296,6 +13590,13 @@ Required parameters:
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"datacenter":            "Href of the Datacenter the Subnet is in",
+			"effective_route_table": "Href of the RouteTable associated with the Subnet (may be inherited).",
+			"network":               "Href of the Network the Subnet is in",
+			"route_table":           "Href of the RouteTable explicitly associated with the Subnet, if any.",
+			"self":                  "Href of itself",
 		},
 	},
 	"Tag": &metadata.Resource{
@@ -13623,6 +13924,9 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"self": "Href of itself",
+		},
 	},
 	"User": &metadata.Resource{
 		Name: "User",
@@ -13928,6 +14232,10 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"identity_provider": "Associated identity provider",
+			"self":              "Href of itself",
+		},
 	},
 	"UserData": &metadata.Resource{
 		Name:        "UserData",
@@ -14204,6 +14512,17 @@ Required parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":                        "Associated cloud",
+			"current_volume_attachment":    "Associated volume attachment. Describes where the volume is attached to and the attachment parameters.",
+			"datacenter":                   "Associated datacenter/Zone",
+			"deployment":                   "Containing Deployment",
+			"parent_volume_snapshot":       "The volume snapshot from which the volume was created, if any",
+			"recurring_volume_attachments": "Associated recurring volume attachments",
+			"self":             "Href of itself",
+			"volume_snapshots": "Associated volume snapshots",
+			"volume_type":      "Associated volume type",
+		},
 	},
 	"VolumeAttachment": &metadata.Resource{
 		Name:        "VolumeAttachment",
@@ -14450,6 +14769,12 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":    "Associated cloud",
+			"instance": "Associated instance",
+			"self":     "Href of itself",
+			"volume":   "Associated volume",
+		},
 	},
 	"VolumeSnapshot": &metadata.Resource{
 		Name: "VolumeSnapshot",
@@ -14689,6 +15014,13 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":                        "Associated cloud",
+			"deployment":                   "Containing Deployment",
+			"parent_volume":                "The volume from which the snapshot was created.",
+			"recurring_volume_attachments": "Associated recurring volume attachments",
+			"self": "Href of itself",
+		},
 	},
 	"VolumeType": &metadata.Resource{
 		Name:        "VolumeType",
@@ -14787,5 +15119,67 @@ Optional parameters:
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Associated cloud",
+			"self":  "Href of itself",
+		},
 	},
+}
+
+var IdentifierResourceMap = map[string]string{
+	"application/vnd.rightscale.account":                           "Account",
+	"application/vnd.rightscale.account_group":                     "AccountGroup",
+	"application/vnd.rightscale.alert":                             "Alert",
+	"application/vnd.rightscale.alert_spec":                        "AlertSpec",
+	"application/vnd.rightscale.audit_entry":                       "AuditEntry",
+	"application/vnd.rightscale.backup":                            "Backup",
+	"application/vnd.rightscale.cloud":                             "Cloud",
+	"application/vnd.rightscale.cloud_account":                     "CloudAccount",
+	"application/vnd.rightscale.cookbook":                          "Cookbook",
+	"application/vnd.rightscale.cookbook_attachment":               "CookbookAttachment",
+	"application/vnd.rightscale.credential":                        "Credential",
+	"application/vnd.rightscale.datacenter":                        "Datacenter",
+	"application/vnd.rightscale.deployment":                        "Deployment",
+	"application/vnd.rightscale.identity_provider":                 "IdentityProvider",
+	"application/vnd.rightscale.image":                             "Image",
+	"application/vnd.rightscale.input":                             "Input",
+	"application/vnd.rightscale.instance":                          "Instance",
+	"application/vnd.rightscale.instance_custom_lodgement":         "InstanceCustomLodgement",
+	"application/vnd.rightscale.instance_type":                     "InstanceType",
+	"application/vnd.rightscale.ip_address":                        "IpAddress",
+	"application/vnd.rightscale.ip_address_binding":                "IpAddressBinding",
+	"application/vnd.rightscale.monitoring_metric":                 "MonitoringMetric",
+	"application/vnd.rightscale.multi_cloud_image":                 "MultiCloudImage",
+	"application/vnd.rightscale.multi_cloud_image_setting":         "MultiCloudImageSetting",
+	"application/vnd.rightscale.network":                           "Network",
+	"application/vnd.rightscale.network_gateway":                   "NetworkGateway",
+	"application/vnd.rightscale.network_option_group":              "NetworkOptionGroup",
+	"application/vnd.rightscale.network_option_group_attachment":   "NetworkOptionGroupAttachment",
+	"application/vnd.rightscale.permission":                        "Permission",
+	"application/vnd.rightscale.placement_group":                   "PlacementGroup",
+	"application/vnd.rightscale.preference":                        "Preference",
+	"application/vnd.rightscale.publication":                       "Publication",
+	"application/vnd.rightscale.publication_lineage":               "PublicationLineage",
+	"application/vnd.rightscale.recurring_volume_attachment":       "RecurringVolumeAttachment",
+	"application/vnd.rightscale.repository":                        "Repository",
+	"application/vnd.rightscale.repository_asset":                  "RepositoryAsset",
+	"application/vnd.rightscale.right_script":                      "RightScript",
+	"application/vnd.rightscale.route":                             "Route",
+	"application/vnd.rightscale.route_table":                       "RouteTable",
+	"application/vnd.rightscale.runnable_binding":                  "RunnableBinding",
+	"application/vnd.rightscale.security_group":                    "SecurityGroup",
+	"application/vnd.rightscale.security_group_rule":               "SecurityGroupRule",
+	"application/vnd.rightscale.server":                            "Server",
+	"application/vnd.rightscale.server_array":                      "ServerArray",
+	"application/vnd.rightscale.server_template":                   "ServerTemplate",
+	"application/vnd.rightscale.server_template_multi_cloud_image": "ServerTemplateMultiCloudImage",
+	"application/vnd.rightscale.session":                           "Session",
+	"application/vnd.rightscale.ssh_key":                           "SshKey",
+	"application/vnd.rightscale.subnet":                            "Subnet",
+	"application/vnd.rightscale.task":                              "Task",
+	"application/vnd.rightscale.user":                              "User",
+	"application/vnd.rightscale.volume":                            "Volume",
+	"application/vnd.rightscale.volume_attachment":                 "VolumeAttachment",
+	"application/vnd.rightscale.volume_snapshot":                   "VolumeSnapshot",
+	"application/vnd.rightscale.volume_type":                       "VolumeType",
 }
