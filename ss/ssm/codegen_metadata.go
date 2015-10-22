@@ -1598,6 +1598,10 @@ Note: using this option may leave cloud resources running that must manually be 
 				},
 			},
 		},
+		Links: map[string]string{
+			"latest_notifications": "",
+			"running_operations":   "",
+		},
 	},
 	"Notification": &metadata.Resource{
 		Name: "Notification",
@@ -1668,6 +1672,9 @@ available via the API/UI and are not distributed externally to users.`,
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
 			},
+		},
+		Links: map[string]string{
+			"execution": "",
 		},
 	},
 	"Operation": &metadata.Resource{
@@ -1876,6 +1883,9 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"execution": "",
 		},
 	},
 	"ScheduledAction": &metadata.Resource{
@@ -2168,6 +2178,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"execution": "",
 		},
 	},
 }

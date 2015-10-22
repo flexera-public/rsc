@@ -19,6 +19,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	hasHref := false
 	identifier := ""
 	attributes := []*gen.Attribute{}
+	links := map[string]string{}
 	m, ok := res["media_type"].(string)
 	if ok {
 		t, ok := a.RawTypes[m]
@@ -36,7 +37,27 @@ func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 					}
 					attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.Signature()}
 				}
+
+				// Extract links
+				if l, ok := attrs["links"].(map[string]interface{}); ok {
+					if ltype, ok := l["type"].(map[string]interface{}); ok {
+						if lattrs, ok := ltype["attributes"].(map[string]interface{}); ok {
+							links = make(map[string]string, len(lattrs))
+							for n, d := range lattrs {
+								if dm, ok := d.(map[string]interface{}); ok {
+									if desc, ok := dm["description"].(string); ok {
+										links[n] = desc
+									} else {
+										links[n] = "" // No description in Skeletor :(
+									}
+								}
+							}
+						}
+					}
+				}
 			}
+
+			// Extract media type identifier
 			if id, ok := t["identifier"]; ok { // Praxis
 				identifier = id.(string)
 			} else if id, ok := t["mime_type"]; ok { // Skeletor
@@ -46,6 +67,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	}
 	resource.Attributes = attributes
 	resource.Identifier = identifier
+	resource.Links = links
 	if hasHref {
 		resource.LocatorFunc = locatorFunc(name)
 	}

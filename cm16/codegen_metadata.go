@@ -260,6 +260,9 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Datacenter exists",
+		},
 	},
 	"Deployment": &metadata.Resource{
 		Name: "Deployment",
@@ -351,6 +354,9 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"account": "Link to the Account where the Deployment exists",
 		},
 	},
 	"Image": &metadata.Resource{
@@ -461,6 +467,9 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Image exists",
 		},
 	},
 	"Instance": &metadata.Resource{
@@ -624,6 +633,21 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"account":                    "Link to the Account where the Instance exist",
+			"cloud":                      "Link to the Cloud where the Instance exist",
+			"computed_image":             "Link to the computed Image for the Instance",
+			"computed_multi_cloud_image": "Link to the computed MultiCloudImage for the Instance",
+			"datacenter":                 "Link to the Datacenter where the Instance exist",
+			"deployment":                 "Link to the Deployment where the Instance exists",
+			"image":                      "Link to the Image used by the Instance",
+			"incarnator":                 "Incarnator of the Instance if there is one",
+			"instance_type":              "Link to the InstanceType of the Instance",
+			"multi_cloud_image":          "Link to the MultiCloudImage used by the Instance",
+			"security_groups":            "Link to the collection of SecurityGroups associated with the Instance",
+			"ssh_key":                    "Link to the SshKey used by the Instance",
+			"subnets":                    "Link to the collection of Subnets associated with the Instance",
+		},
 	},
 	"InstanceType": &metadata.Resource{
 		Name: "InstanceType",
@@ -715,6 +739,9 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud supporting the InstanceType",
+		},
 	},
 	"IpAddress": &metadata.Resource{
 		Name: "IpAddress",
@@ -802,6 +829,9 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the IpAddress exists",
 		},
 	},
 	"IpAddressBinding": &metadata.Resource{
@@ -891,6 +921,11 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud":      "Link to the Cloud where the IpAddressBinding exists",
+			"instance":   "Link to the Instance to which the IpAddressBinding is associated",
+			"ip_address": "Link to the IpAddress associated with the IpAddressBinding",
 		},
 	},
 	"MultiCloudImage": &metadata.Resource{
@@ -1046,6 +1081,9 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Network exists",
+		},
 	},
 	"NetworkInterface": &metadata.Resource{
 		Name: "NetworkInterface",
@@ -1122,6 +1160,9 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the NetworkInterface exists",
+		},
 	},
 	"NetworkInterfaceAttachment": &metadata.Resource{
 		Name: "NetworkInterfaceAttachment",
@@ -1197,6 +1238,9 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the NetworkInterfaceAttachment exists",
 		},
 	},
 	"SecurityGroup": &metadata.Resource{
@@ -1293,6 +1337,9 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the SecurityGroup exists",
+		},
 	},
 	"Server": &metadata.Resource{
 		Name: "Server",
@@ -1381,6 +1428,12 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"account":          "The Account to which the Server belongs",
+			"cloud":            "The Cloud where new instances of the Server will be created",
+			"current_instance": "Link to the current Instance of the Server",
+			"next_instance":    "Link to the next Instance of the Server",
+		},
 	},
 	"ServerArray": &metadata.Resource{
 		Name: "ServerArray",
@@ -1464,6 +1517,12 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"account":           "Link to the Account where the ServerArray exists",
+			"cloud":             "Link to the Cloud where the ServerArray exists",
+			"current_instances": "Link to the current Instance of the ServerArray",
+			"next_instance":     "Link to the next Instance of the ServerArray",
 		},
 	},
 	"ServerTemplate": &metadata.Resource{
@@ -1728,6 +1787,9 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Subnet exists",
 		},
 	},
 }
