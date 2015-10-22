@@ -108,7 +108,7 @@ func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						payloadParamNames = append(payloadParamNames, att.Name)
 						att.Location = gen.PayloadParam
 						params = append(params, att)
-						extracted := extractLeafParams(att, att.Name, make(map[string]*[]*gen.ActionParam))
+						extracted := extractLeafParams(att, att.Name, make(map[string]*[]*gen.ActionParam), !att.Mandatory)
 						for _, e := range extracted {
 							e.Location = gen.PayloadParam
 						}
@@ -291,7 +291,7 @@ func toPattern(verb, path string) *gen.PathPattern {
 }
 
 // Extract leaf parameters from given action param
-func extractLeafParams(a *gen.ActionParam, root string, seen map[string]*[]*gen.ActionParam) []*gen.ActionParam {
+func extractLeafParams(a *gen.ActionParam, root string, seen map[string]*[]*gen.ActionParam, parentNotMandatory bool) []*gen.ActionParam {
 	switch t := a.Type.(type) {
 	case *gen.BasicDataType, *gen.EnumerableDataType, *gen.UploadDataType:
 		dup := gen.ActionParam{
@@ -301,7 +301,7 @@ func extractLeafParams(a *gen.ActionParam, root string, seen map[string]*[]*gen.
 			VarName:     a.VarName,
 			Location:    a.Location,
 			Type:        a.Type,
-			Mandatory:   a.Mandatory,
+			Mandatory:   a.Mandatory && !parentNotMandatory, // yay for double negations!
 			NonBlank:    a.NonBlank,
 			Regexp:      a.Regexp,
 			ValidValues: a.ValidValues,
@@ -315,7 +315,7 @@ func extractLeafParams(a *gen.ActionParam, root string, seen map[string]*[]*gen.
 		if !ok {
 			eq = &[]*gen.ActionParam{}
 			seen[p.Name] = eq
-			*eq = extractLeafParams(p, root+"[]", seen)
+			*eq = extractLeafParams(p, root+"[]", seen, parentNotMandatory || !a.Mandatory)
 		}
 		return *eq
 	case *gen.ObjectDataType:
@@ -325,7 +325,7 @@ func extractLeafParams(a *gen.ActionParam, root string, seen map[string]*[]*gen.
 			if !ok {
 				eq = &[]*gen.ActionParam{}
 				seen[f.Name] = eq
-				*eq = extractLeafParams(f, fmt.Sprintf("%s[%s]", root, f.Name), seen)
+				*eq = extractLeafParams(f, fmt.Sprintf("%s[%s]", root, f.Name), seen, parentNotMandatory || !a.Mandatory)
 			}
 			params = append(params, *eq...)
 		}

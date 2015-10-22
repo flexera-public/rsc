@@ -199,7 +199,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The hour of day from 0 to 23.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -207,7 +207,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The minute from 0 to 59.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -215,7 +215,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `A RRULE string describing the recurrence rule.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -223,7 +223,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The hour of day from 0 to 23.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -231,7 +231,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The minute from 0 to 59.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -239,7 +239,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `A RRULE string describing the recurrence rule.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},
