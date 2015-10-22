@@ -17,6 +17,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 
 	// Attributes
 	hasHref := false
+	identifier := ""
 	attributes := []*gen.Attribute{}
 	m, ok := res["media_type"].(string)
 	if ok {
@@ -36,9 +37,15 @@ func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 					attributes[idx] = &gen.Attribute{n, inflect.Camelize(n), param.Signature()}
 				}
 			}
+			if id, ok := t["identifier"]; ok { // Praxis
+				identifier = id.(string)
+			} else if id, ok := t["mime_type"]; ok { // Skeletor
+				identifier = id.(string)
+			}
 		}
 	}
 	resource.Attributes = attributes
+	resource.Identifier = identifier
 	if hasHref {
 		resource.LocatorFunc = locatorFunc(name)
 	}

@@ -2135,4 +2135,10 @@ It is also used to validate values saved in UserPreference.`,
 	},
 }
 
-var IdentifierResourceMap = map[string]string{}
+var IdentifierResourceMap = map[string]string{
+	"application/vnd.rightscale.self_service.account_preference":   "AccountPreference",
+	"application/vnd.rightscale.self_service.application":          "Application",
+	"application/vnd.rightscale.self_service.notification_rule":    "NotificationRule",
+	"application/vnd.rightscale.self_service.user_preference":      "UserPreference",
+	"application/vnd.rightscale.self_service.user_preference_info": "UserPreferenceInfo",
+}

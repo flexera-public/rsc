@@ -2172,4 +2172,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 	},
 }
 
-var IdentifierResourceMap = map[string]string{}
+var IdentifierResourceMap = map[string]string{
+	"application/vnd.rightscale.self_service.execution":        "Execution",
+	"application/vnd.rightscale.self_service.notification":     "Notification",
+	"application/vnd.rightscale.self_service.operation":        "Operation",
+	"application/vnd.rightscale.self_service.scheduled_action": "ScheduledAction",
+}

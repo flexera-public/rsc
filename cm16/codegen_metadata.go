@@ -1732,4 +1732,24 @@ var GenMetadata = map[string]*metadata.Resource{
 	},
 }
 
-var IdentifierResourceMap = map[string]string{}
+var IdentifierResourceMap = map[string]string{
+	"application/vnd.rightscale.account":                      "Account",
+	"application/vnd.rightscale.cloud":                        "Cloud",
+	"application/vnd.rightscale.datacenter":                   "Datacenter",
+	"application/vnd.rightscale.deployment":                   "Deployment",
+	"application/vnd.rightscale.image":                        "Image",
+	"application/vnd.rightscale.instance":                     "Instance",
+	"application/vnd.rightscale.instance_type":                "InstanceType",
+	"application/vnd.rightscale.ip_address":                   "IpAddress",
+	"application/vnd.rightscale.ip_address_binding":           "IpAddressBinding",
+	"application/vnd.rightscale.multi_cloud_image":            "MultiCloudImage",
+	"application/vnd.rightscale.network":                      "Network",
+	"application/vnd.rightscale.network_interface":            "NetworkInterface",
+	"application/vnd.rightscale.network_interface_attachment": "NetworkInterfaceAttachment",
+	"application/vnd.rightscale.security_group":               "SecurityGroup",
+	"application/vnd.rightscale.server":                       "Server",
+	"application/vnd.rightscale.server_array":                 "ServerArray",
+	"application/vnd.rightscale.server_template":              "ServerTemplate",
+	"application/vnd.rightscale.ssh_key":                      "SshKey",
+	"application/vnd.rightscale.subnet":                       "Subnet",
+}

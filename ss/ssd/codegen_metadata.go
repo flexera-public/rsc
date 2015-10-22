@@ -739,4 +739,7 @@ attribute inside of a CAT file.`,
 	},
 }
 
-var IdentifierResourceMap = map[string]string{}
+var IdentifierResourceMap = map[string]string{
+	"application/vnd.rightscale.self_service.schedule": "Schedule",
+	"application/vnd.rightscale.self_service.template": "Template",
+}
