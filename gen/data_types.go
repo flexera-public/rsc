@@ -173,7 +173,7 @@ type Resource struct {
 	Actions     []*Action         // Resource actions, e.g. "index", "show", "update" ...
 	LocatorFunc string            // Source code for Locator factory method if any
 	Identifier  string            // The mediatype identifier of the resource
-	Links       map[string]string // The map resource links and their descriptions
+	Links       map[string]string // Map of resource links and their descriptions
 }
 
 // Attribute is the resource attributes used to generate resource type definition.

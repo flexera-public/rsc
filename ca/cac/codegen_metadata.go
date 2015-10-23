@@ -6323,4 +6323,5 @@ var GenMetadata = map[string]*metadata.Resource{
 	},
 }
 
+// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
 var IdentifierResourceMap = map[string]string{}

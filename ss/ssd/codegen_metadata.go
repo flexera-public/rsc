@@ -739,6 +739,7 @@ attribute inside of a CAT file.`,
 	},
 }
 
+// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
 var IdentifierResourceMap = map[string]string{
 	"application/vnd.rightscale.self_service.schedule": "Schedule",
 	"application/vnd.rightscale.self_service.template": "Template",

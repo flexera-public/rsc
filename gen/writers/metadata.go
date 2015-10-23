@@ -151,6 +151,7 @@ const actionMetadataTmpl = `&metadata.Action {
 `
 
 const identifierMetadataTmpl = `
+// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
 var IdentifierResourceMap = map[string]string{ {{range .}}{{if .Identifier}}
 	"{{.Identifier}}": "{{.Name}}",{{end}}{{end}}
 }

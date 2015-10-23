@@ -2185,6 +2185,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 	},
 }
 
+// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
 var IdentifierResourceMap = map[string]string{
 	"application/vnd.rightscale.self_service.execution":        "Execution",
 	"application/vnd.rightscale.self_service.notification":     "Notification",
