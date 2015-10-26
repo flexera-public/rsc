@@ -22,6 +22,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Resources in RightScale generally belong to accounts. Users can have
         any number of accounts, but when performing an action, a user is
         operating under a particular account.`,
+		Identifier: "application/vnd.rightscale.account",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -99,6 +100,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Clouds provide remote resources for things like storage and compute.
         You must have registered a cloud within your account in order to use
         it.`,
+		Identifier: "application/vnd.rightscale.cloud",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -177,6 +179,7 @@ var GenMetadata = map[string]*metadata.Resource{
         resources in isolated locations. A carefully designed system placed in
         multiple datacenters can provide fault tolerance when one datacenter
         has a problem.`,
+		Identifier: "application/vnd.rightscale.datacenter",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -268,6 +271,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "Deployment",
 		Description: `        Deployments provide a way to group resources that logically belong
         together.`,
+		Identifier: "application/vnd.rightscale.deployment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -363,6 +367,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "Image",
 		Description: `        Images define the initial Operating System and root disk contents
         for new instances.`,
+		Identifier: "application/vnd.rightscale.image",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -482,6 +487,7 @@ var GenMetadata = map[string]*metadata.Resource{
         the cloud. However, if an instance is not of type "next", it will
         generally represent an existing running (or provisioned) virtual
         machine existing in the cloud.`,
+		Identifier: "application/vnd.rightscale.instance",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -656,6 +662,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Combining all possible configurations of hardware into a smaller,
         well-known set of options makes instances easier to manage, and allows
         better allocation efficiency into physical hosts.`,
+		Identifier: "application/vnd.rightscale.instance_type",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -747,6 +754,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "IpAddress",
 		Description: `        An IpAddress provides an abstraction for IPv4 addresses bindable to
         Instance resources running in a Cloud.`,
+		Identifier: "application/vnd.rightscale.ip_address",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -839,6 +847,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        An IpAddressBinding represents an abstraction for binding an IpAddress
         to an instance. The IpAddress is bound immediately for a current
         instance, or on launch for a next instance.`,
+		Identifier: "application/vnd.rightscale.ip_address_binding",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -935,6 +944,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Each ServerTemplate can reference many MultiCloudImages that define
         which image should be used when a server is launched in a particular
         cloud.`,
+		Identifier: "application/vnd.rightscale.multi_cloud_image",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1010,6 +1020,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"Network": &metadata.Resource{
 		Name:        "Network",
 		Description: `        A Network is a logical grouping of network devices.`,
+		Identifier:  "application/vnd.rightscale.network",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1089,6 +1100,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "NetworkInterface",
 		Description: `        Just like their physical counterparts, NetworkInterfaces join other
         resources to a network.`,
+		Identifier: "application/vnd.rightscale.network_interface",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1168,6 +1180,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "NetworkInterfaceAttachment",
 		Description: `        NetworkInterfaceAttachments represent an attachment between a
         NetworkInterface and another resource.`,
+		Identifier: "application/vnd.rightscale.network_interface_attachment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1248,6 +1261,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Security Groups represent network security profiles that contain lists
         of firewall rules for different ports and source IP addresses, as well
         as trust relationships between security groups.`,
+		Identifier: "application/vnd.rightscale.security_group",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1357,6 +1371,7 @@ var GenMetadata = map[string]*metadata.Resource{
         next_instance association prepares the configuration for the next
         instance launch/start (therefore they have no effect until such
         operation is performed).`,
+		Identifier: "application/vnd.rightscale.server",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1447,6 +1462,7 @@ var GenMetadata = map[string]*metadata.Resource{
         array.  Changes to the next_instance association prepares the
         configuration for the next instance that is to be launched in the array
         and will therefore not affect any of the currently running instances.`,
+		Identifier: "application/vnd.rightscale.server_array",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1536,6 +1552,7 @@ var GenMetadata = map[string]*metadata.Resource{
         that is exposed by the "lineage" attribute. (NOTE: This attribute is
         merely a string to locate all revisions of a ServerTemplate and NOT a
         working URL)`,
+		Identifier: "application/vnd.rightscale.server_template",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1611,6 +1628,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"SshKey": &metadata.Resource{
 		Name:        "SshKey",
 		Description: `        Ssh Keys represent a created SSH Key that exists in the cloud.`,
+		Identifier:  "application/vnd.rightscale.ssh_key",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1699,6 +1717,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "Subnet",
 		Description: `        A Subnet is a logical grouping of network devices. An Instance can have
         many Subnets.`,
+		Identifier: "application/vnd.rightscale.subnet",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1792,27 +1811,4 @@ var GenMetadata = map[string]*metadata.Resource{
 			"cloud": "Link to the Cloud where the Subnet exists",
 		},
 	},
-}
-
-// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
-var IdentifierResourceMap = map[string]string{
-	"application/vnd.rightscale.account":                      "Account",
-	"application/vnd.rightscale.cloud":                        "Cloud",
-	"application/vnd.rightscale.datacenter":                   "Datacenter",
-	"application/vnd.rightscale.deployment":                   "Deployment",
-	"application/vnd.rightscale.image":                        "Image",
-	"application/vnd.rightscale.instance":                     "Instance",
-	"application/vnd.rightscale.instance_type":                "InstanceType",
-	"application/vnd.rightscale.ip_address":                   "IpAddress",
-	"application/vnd.rightscale.ip_address_binding":           "IpAddressBinding",
-	"application/vnd.rightscale.multi_cloud_image":            "MultiCloudImage",
-	"application/vnd.rightscale.network":                      "Network",
-	"application/vnd.rightscale.network_interface":            "NetworkInterface",
-	"application/vnd.rightscale.network_interface_attachment": "NetworkInterfaceAttachment",
-	"application/vnd.rightscale.security_group":               "SecurityGroup",
-	"application/vnd.rightscale.server":                       "Server",
-	"application/vnd.rightscale.server_array":                 "ServerArray",
-	"application/vnd.rightscale.server_template":              "ServerTemplate",
-	"application/vnd.rightscale.ssh_key":                      "SshKey",
-	"application/vnd.rightscale.subnet":                       "Subnet",
 }

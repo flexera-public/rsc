@@ -21,6 +21,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "Schedule",
 		Description: `A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
 Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.`,
+		Identifier: "application/vnd.rightscale.self_service.schedule",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -341,6 +342,7 @@ Publish your CAT to the Catalog where users can launch it, it must be uploaded t
 published to the Catalog.
 CAT files are uniquely identified by the name of the CloudApplication, which is specified as the "name"
 attribute inside of a CAT file.`,
+		Identifier: "application/vnd.rightscale.self_service.template",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -737,10 +739,4 @@ attribute inside of a CAT file.`,
 			},
 		},
 	},
-}
-
-// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
-var IdentifierResourceMap = map[string]string{
-	"application/vnd.rightscale.self_service.schedule": "Schedule",
-	"application/vnd.rightscale.self_service.template": "Template",
 }

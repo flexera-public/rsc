@@ -11,6 +11,7 @@ type Resource struct {
 	Name        string
 	Description string
 	Actions     []*Action
+	Identifier  string
 	Links       map[string]string
 }
 

@@ -13,9 +13,6 @@ import (
 // Metadata synthetized from all CA APIs metadata
 var GenMetadata map[string]*metadata.Resource
 
-// IdentifierResourceMap is a map of mediatype identifier and the resource name
-var IdentifierResourceMap map[string]string
-
 // API is the CA 1.0 common client to all cloud analytics APIs.
 type API struct {
 	*rsapi.API
@@ -64,11 +61,7 @@ func apiHostFromLogin(host string) string {
 // Initialize GenMetadata from each CA API generated metadata
 func setupMetadata() {
 	GenMetadata = map[string]*metadata.Resource{}
-	IdentifierResourceMap = map[string]string{}
 	for n, r := range cac.GenMetadata {
 		GenMetadata[n] = r
-	}
-	for n, r := range cac.IdentifierResourceMap {
-		IdentifierResourceMap[n] = r
 	}
 }

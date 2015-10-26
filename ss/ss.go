@@ -15,9 +15,6 @@ import (
 // Metadata synthetized from all SS APIs metadata
 var GenMetadata map[string]*metadata.Resource
 
-// IdentifierResourceMap is a map of mediatype identifier and the resource name
-var IdentifierResourceMap map[string]string
-
 // API is the Self-Service 1.0 common client to all self-service APIs.
 type API struct {
 	*rsapi.API
@@ -65,7 +62,6 @@ var pathFixupDone bool
 // Initialize GenMetadata from each SS API generated metadata
 func setupMetadata() {
 	GenMetadata = map[string]*metadata.Resource{}
-	IdentifierResourceMap = map[string]string{}
 	for n, r := range ssd.GenMetadata {
 		GenMetadata[n] = r
 		if pathFixupDone {
@@ -76,9 +72,6 @@ func setupMetadata() {
 				p.Pattern = path.Join("designer", p.Pattern)
 			}
 		}
-	}
-	for n, r := range ssd.IdentifierResourceMap {
-		IdentifierResourceMap[n] = r
 	}
 	for n, r := range ssc.GenMetadata {
 		GenMetadata[n] = r
@@ -91,9 +84,6 @@ func setupMetadata() {
 			}
 		}
 	}
-	for n, r := range ssc.IdentifierResourceMap {
-		IdentifierResourceMap[n] = r
-	}
 	for n, r := range ssm.GenMetadata {
 		GenMetadata[n] = r
 		if pathFixupDone {
@@ -104,9 +94,6 @@ func setupMetadata() {
 				p.Pattern = path.Join("manager", p.Pattern)
 			}
 		}
-	}
-	for n, r := range ssm.IdentifierResourceMap {
-		IdentifierResourceMap[n] = r
 	}
 	pathFixupDone = true
 }

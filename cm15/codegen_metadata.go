@@ -20,6 +20,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"Account": &metadata.Resource{
 		Name:        "Account",
 		Description: ``,
+		Identifier:  "application/vnd.rightscale.account",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -45,6 +46,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"AccountGroup": &metadata.Resource{
 		Name:        "AccountGroup",
 		Description: `An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.`,
+		Identifier:  "application/vnd.rightscale.account_group",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -145,6 +147,7 @@ Optional parameters:
 	"Alert": &metadata.Resource{
 		Name:        "Alert",
 		Description: `An Alert represents an AlertSpec bound to a running Instance.`,
+		Identifier:  "application/vnd.rightscale.alert",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "disable",
@@ -434,6 +437,7 @@ Optional parameters:
 		Name: "AlertSpec",
 		Description: `An AlertSpec defines the conditions under which an Alert is triggered and escalated.
 Condition sentence: if &lt;file&gt;.&lt;variable&gt; &lt;condition&gt; '&lt;threshold&gt;' for &lt;duration&gt; min then escalate to '&lt;escalation_name&gt;'.`,
+		Identifier: "application/vnd.rightscale.alert_spec",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -886,6 +890,7 @@ Required parameters:
 	"AuditEntry": &metadata.Resource{
 		Name:        "AuditEntry",
 		Description: `An Audit Entry can be used to track various activities of a resource.`,
+		Identifier:  "application/vnd.rightscale.audit_entry",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "append",
@@ -1298,6 +1303,7 @@ Optional parameters:
 	"Backup": &metadata.Resource{
 		Name:        "Backup",
 		Description: ``,
+		Identifier:  "application/vnd.rightscale.backup",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "cleanup",
@@ -1752,6 +1758,7 @@ Required parameters:
 	"ChildAccount": &metadata.Resource{
 		Name:        "ChildAccount",
 		Description: ``,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -1881,6 +1888,7 @@ Required parameters:
 	"Cloud": &metadata.Resource{
 		Name:        "Cloud",
 		Description: `Represents a Cloud (within the context of the account in the session).`,
+		Identifier:  "application/vnd.rightscale.cloud",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -1996,6 +2004,7 @@ Optional parameters:
 	"CloudAccount": &metadata.Resource{
 		Name:        "CloudAccount",
 		Description: `Represents a Cloud Account (An association between the account and a cloud).`,
+		Identifier:  "application/vnd.rightscale.cloud_account",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -2104,6 +2113,7 @@ Required parameters:
 	"Cookbook": &metadata.Resource{
 		Name:        "Cookbook",
 		Description: `Represents a given instance of a single cookbook.`,
+		Identifier:  "application/vnd.rightscale.cookbook",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "destroy",
@@ -2335,6 +2345,7 @@ Optional parameters:
 	"CookbookAttachment": &metadata.Resource{
 		Name:        "CookbookAttachment",
 		Description: `Cookbook Attachment is used to associate a particular cookbook with a ServerTemplate. A Cookbook Attachment must be in place before a recipe can be bound to a runlist using RunnableBinding.`,
+		Identifier:  "application/vnd.rightscale.cookbook_attachment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -2620,6 +2631,7 @@ when stored in the database and not generally shown in the UI or through the
 API. Credentials may then be used as inputs of type "Cred" in RightScripts
 or Chef recipes. NOTE: Credential values may be updated through the API, but
 values cannot be retrieved via the API.`,
+		Identifier: "application/vnd.rightscale.credential",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -2841,6 +2853,7 @@ Required parameters:
 While Datacenters in large public clouds might correspond to different physical buildings, with different power, 
 internet links...etc., Datacenters within the context of a private cloud might simply correspond to having different network providers.
 Spreading servers across distinct Datacenters helps minimize outages.`,
+		Identifier: "application/vnd.rightscale.datacenter",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -2943,6 +2956,7 @@ Optional parameters:
 	"Deployment": &metadata.Resource{
 		Name:        "Deployment",
 		Description: `Deployments represent logical groupings of related assets such as servers, server arrays, default configuration settings...etc.`,
+		Identifier:  "application/vnd.rightscale.deployment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "clone",
@@ -3312,6 +3326,7 @@ Required parameters:
 	"HealthCheck": &metadata.Resource{
 		Name:        "HealthCheck",
 		Description: ``,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -3334,6 +3349,7 @@ Required parameters:
 		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,
 and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
 To register an Identity Provider, contact your account manager.`,
+		Identifier: "application/vnd.rightscale.identity_provider",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -3436,6 +3452,7 @@ Optional parameters:
 		Name: "Image",
 		Description: `Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents 
 for a new Instance to have, and therefore it represents the basic starting point for creating a new one.`,
+		Identifier: "application/vnd.rightscale.image",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -3541,6 +3558,7 @@ Optional parameters:
 Inputs are variables defined in and used by RightScripts/Recipes. The two main attributes of an input are 'name' and 'value'. The 'name'
 identifies the input and the 'value', although a string encodes what type it is. It could be a text encoded as 'text:myvalue' or a credential
 encoded as 'cred:MY_CRED' or a key etc. Please see support.rightscale.com for more info on input hierarchies and their different types.`,
+		Identifier: "application/vnd.rightscale.input",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -3725,6 +3743,7 @@ to launch or start it.
 A "next" instance generally only exists in the RightScale realm, and usually doesn't have any corresponding representation
 existing in the cloud. However, if an instance is not of type "next", it will generally represent an existing running
 (or provisioned) virtual machine existing in the cloud.`,
+		Identifier: "application/vnd.rightscale.instance",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -4874,6 +4893,7 @@ Required parameters:
 	"InstanceCustomLodgement": &metadata.Resource{
 		Name:        "InstanceCustomLodgement",
 		Description: `An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#setcustomlodgement interface.`,
+		Identifier:  "application/vnd.rightscale.instance_custom_lodgement",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -5057,6 +5077,7 @@ Required parameters:
 	"InstanceType": &metadata.Resource{
 		Name:        "InstanceType",
 		Description: ``,
+		Identifier:  "application/vnd.rightscale.instance_type",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -5159,6 +5180,7 @@ Optional parameters:
 	"IpAddress": &metadata.Resource{
 		Name:        "IpAddress",
 		Description: `An IpAddress provides an abstraction for IPv4 addresses bindable to Instance resources running in a Cloud.`,
+		Identifier:  "application/vnd.rightscale.ip_address",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -5342,6 +5364,7 @@ Required parameters:
 		Description: `An IpAddressBinding represents an abstraction for binding an IpAddress to an instance.
 The IpAddress is bound immediately for a current instance, or on launch for a next instance.
 It also allows specifying port forwarding rules for that particular IpAddress and Instance pair.`,
+		Identifier: "application/vnd.rightscale.ip_address_binding",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -5516,6 +5539,7 @@ Optional parameters:
 	"MonitoringMetric": &metadata.Resource{
 		Name:        "MonitoringMetric",
 		Description: `A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.`,
+		Identifier:  "application/vnd.rightscale.monitoring_metric",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "data",
@@ -5783,6 +5807,7 @@ Optional parameters:
 		Description: `A MultiCloudImage is a RightScale component that functions as a pointer to machine images in specific clouds
 (e.g. AWS US-East, Rackspace). Each ServerTemplate can reference many MultiCloudImages that defines which
 image should be used when a server is launched in a particular cloud.`,
+		Identifier: "application/vnd.rightscale.multi_cloud_image",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "clone",
@@ -6055,6 +6080,7 @@ Required parameters:
 		Name: "MultiCloudImageSetting",
 		Description: `A MultiCloudImageSetting defines which
 settings should be used when a server is launched in a cloud.`,
+		Identifier: "application/vnd.rightscale.multi_cloud_image_setting",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6284,6 +6310,7 @@ Required parameters:
 	"Network": &metadata.Resource{
 		Name:        "Network",
 		Description: `A Network is a logical grouping of network devices.`,
+		Identifier:  "application/vnd.rightscale.network",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6479,6 +6506,7 @@ Required parameters:
 	"NetworkGateway": &metadata.Resource{
 		Name:        "NetworkGateway",
 		Description: `A NetworkGateway is an interface that allows traffic to be routed between networks.`,
+		Identifier:  "application/vnd.rightscale.network_gateway",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6672,6 +6700,7 @@ Keys correspond to the type of option to set, and values correspond
 to the value of the particular option being set.
 Option keys that are supported vary depending on cloud -- please consult
 your particular cloud's documentation for available option keys.`,
+		Identifier: "application/vnd.rightscale.network_option_group",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6873,6 +6902,7 @@ This resource describes the attachment details between a particular
 NetworkOptionGroup and Network.
 Amazon currently only supports attaching NetworkOptionGroups to Networks.
 Other clouds in the future may support attaching to Subnets.`,
+		Identifier: "application/vnd.rightscale.network_option_group_attachment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7092,6 +7122,7 @@ this cluster).
 For more information on how to use OAuth 2.0 with RightScale, refer to the following:
 http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
 http://tools.ietf.org/html/draft-ietf-oauth-v2-23`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7255,6 +7286,7 @@ Optional parameters:
 	"Permission": &metadata.Resource{
 		Name:        "Permission",
 		Description: ``,
+		Identifier:  "application/vnd.rightscale.permission",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7390,6 +7422,7 @@ Optional parameters:
 	"PlacementGroup": &metadata.Resource{
 		Name:        "PlacementGroup",
 		Description: ``,
+		Identifier:  "application/vnd.rightscale.placement_group",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7558,6 +7591,7 @@ Optional parameters:
 	"Preference": &metadata.Resource{
 		Name:        "Preference",
 		Description: `A Preference is a user and account-specific setting. Preferences are used in many part of the RightScale platform and can be used for custom purposes if desired.`,
+		Identifier:  "application/vnd.rightscale.preference",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "destroy",
@@ -7669,6 +7703,7 @@ Required parameters:
 		Name: "Publication",
 		Description: `A Publication is a revisioned component shared with a set of Account Groups.
 If shared with your account, it can be imported in to your account.`,
+		Identifier: "application/vnd.rightscale.publication",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "import",
@@ -7789,6 +7824,7 @@ Optional parameters:
 		Description: `A Publication Lineage contains lineage information for a Publication in the MultiCloudMarketplace.
 It is shared among all revisions of a Publication within the marketplace.
 Publication Lineages are different than lineages that exist within an account.`,
+		Identifier: "application/vnd.rightscale.publication_lineage",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "show",
@@ -7834,6 +7870,7 @@ Optional parameters:
 	"RecurringVolumeAttachment": &metadata.Resource{
 		Name:        "RecurringVolumeAttachment",
 		Description: `A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.`,
+		Identifier:  "application/vnd.rightscale.recurring_volume_attachment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -8069,6 +8106,7 @@ Optional parameters:
 		Name: "Repository",
 		Description: `A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.
 RightScale currently supports the following types of repositores: git, svn, and URLs of compressed files (tar, tgz, gzip).`,
+		Identifier: "application/vnd.rightscale.repository",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "cookbook_import",
@@ -8660,6 +8698,7 @@ Required parameters:
 		Name: "RepositoryAsset",
 		Description: `A RepositoryAsset represents an item discovered in a Repository. These assets represent only a view of the Repository
 the last time it was scraped. In order to use these assets, you must import them into your account.`,
+		Identifier: "application/vnd.rightscale.repository_asset",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -8751,6 +8790,7 @@ All revisions of
 a RightScript belong to a RightScript lineage that is exposed by the
 "lineage" attribute (NOTE: This attribute is merely a string to locate
 all revisions of a RightScript and NOT a working URL).`,
+		Identifier: "application/vnd.rightscale.right_script",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "commit",
@@ -8959,6 +8999,7 @@ Required parameters:
 		Name: "Route",
 		Description: `A Route defines how networking traffic should be routed from one
 destination to another. See nexthoptype for available endpoint targets.`,
+		Identifier: "application/vnd.rightscale.route",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -9213,6 +9254,7 @@ Required parameters:
 	"RouteTable": &metadata.Resource{
 		Name:        "RouteTable",
 		Description: `Grouped listing of Routes`,
+		Identifier:  "application/vnd.rightscale.route_table",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -9436,6 +9478,7 @@ Required parameters:
 		Description: `A RunnableBinding represents an item in a runlist of a ServerTemplate. These items could be
 RightScript or Chef recipes, and could be associated with any one of the three runlists of a 
 ServerTemplate (boot, operational, decommission).`,
+		Identifier: "application/vnd.rightscale.runnable_binding",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -9669,6 +9712,7 @@ Optional parameters:
 	"Scheduler": &metadata.Resource{
 		Name:        "Scheduler",
 		Description: `Provide RightLink with the ability to schedule script executions on instances`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "schedule_recipe",
@@ -9983,6 +10027,7 @@ Optional parameters:
 		Name: "SecurityGroup",
 		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
 trust relationships amongst different security groups.`,
+		Identifier: "application/vnd.rightscale.security_group",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -10153,6 +10198,7 @@ Optional parameters:
 	"SecurityGroupRule": &metadata.Resource{
 		Name:        "SecurityGroupRule",
 		Description: ``,
+		Identifier:  "application/vnd.rightscale.security_group_rule",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -10446,6 +10492,7 @@ Once a Server is launched/started a current_instance relationship will exist.
 Accessing the current_instance of a server results in immediate runtime modification of this running server.
 Changes to the next_instance association prepares the
 configuration for the next instance launch/start (therefore they have no effect until such operation is performed).`,
+		Identifier: "application/vnd.rightscale.server",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "clone",
@@ -11177,6 +11224,7 @@ But unlike a server which has a current_instance relationship, the server array 
 current_instances relationship that gives the information about
 all the running instances in the array. Changes to the next_instance association prepares the configuration for the next instance that is to be launched
 in the array and will therefore not affect any of the currently running instances.`,
+		Identifier: "application/vnd.rightscale.server_array",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "clone",
@@ -12325,6 +12373,7 @@ operational, and shutdown phases. A ServerTemplate is a description of how a new
 provisioned by your cloud provider.
 All revisions of a ServerTemplate belong to a ServerTemplate lineage that is exposed by the "lineage" attribute.
 (NOTE: This attribute is merely a string to locate all revisions of a ServerTemplate and NOT a working URL)`,
+		Identifier: "application/vnd.rightscale.server_template",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "clone",
@@ -12881,6 +12930,7 @@ Required parameters:
 		Name: "ServerTemplateMultiCloudImage",
 		Description: `This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively
 add/delete MultiCloudImages to ServerTemplates and make them the default one.`,
+		Identifier: "application/vnd.rightscale.server_template_multi_cloud_image",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -13063,6 +13113,7 @@ If the targeted host is the right one and the login is successful, it will retur
 If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
 If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
 Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".`,
+		Identifier: "application/vnd.rightscale.session",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "accounts",
@@ -13222,6 +13273,7 @@ curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/s
 		Name: "SshKey",
 		Description: `Ssh Keys represent a created SSH Key that exists in the cloud.
 An ssh key might also contain the private part of the key, and can be used to login to instances launched with it.`,
+		Identifier: "application/vnd.rightscale.ssh_key",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -13375,6 +13427,7 @@ Optional parameters:
 		Name: "Subnet",
 		Description: `A Subnet is a logical grouping of network devices. An Instance can have many
 Subnets.`,
+		Identifier: "application/vnd.rightscale.subnet",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -13604,6 +13657,7 @@ Required parameters:
 		Description: `A tag or machine tag is a useful way of attaching useful metadata to an object/resource.
 Tags are commonly used as an extra label or identifier.
 For example, you might want to add a tag to an EBS Snapshot or AMI so that you can find it more quickly.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "by_resource",
@@ -13880,6 +13934,7 @@ Required parameters:
 		Description: `Tasks represent processes that happen (or have happened) asynchronously within the context of an Instance.
 An example of a type of task is an operational script that runs in an instance.
 Task resources can be returned by certain API calls, such as Instances.run_executable, Backups.restore, and others.`,
+		Identifier: "application/vnd.rightscale.task",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "show",
@@ -13932,6 +13987,7 @@ Optional parameters:
 		Name: "User",
 		Description: `A User represents an individual RightScale user. Users must be given access to RightScale accounts in order to 
 access RightScale resources.`,
+		Identifier: "application/vnd.rightscale.user",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -14240,6 +14296,7 @@ Required parameters:
 	"UserData": &metadata.Resource{
 		Name:        "UserData",
 		Description: ``,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -14260,6 +14317,7 @@ Required parameters:
 	"Volume": &metadata.Resource{
 		Name:        "Volume",
 		Description: `A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).`,
+		Identifier:  "application/vnd.rightscale.volume",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -14527,6 +14585,7 @@ Required parameters:
 	"VolumeAttachment": &metadata.Resource{
 		Name:        "VolumeAttachment",
 		Description: `A VolumeAttachment represents a relationship between a volume and an instance.`,
+		Identifier:  "application/vnd.rightscale.volume_attachment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -14781,6 +14840,7 @@ Optional parameters:
 		Description: `A VolumeSnapshot represents a Cloud storage volume at a particular point in time. One can create a snapshot regardless of whether or not a volume is attached to an Instance. When a snapshot is created,
 various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
 Snapshots consist of a series of data blocks that are incrementally saved.`,
+		Identifier: "application/vnd.rightscale.volume_snapshot",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -15025,6 +15085,7 @@ Optional parameters:
 	"VolumeType": &metadata.Resource{
 		Name:        "VolumeType",
 		Description: `A VolumeType describes the type of volume, particularly the size.`,
+		Identifier:  "application/vnd.rightscale.volume_type",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -15124,63 +15185,4 @@ Optional parameters:
 			"self":  "Href of itself",
 		},
 	},
-}
-
-// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
-var IdentifierResourceMap = map[string]string{
-	"application/vnd.rightscale.account":                           "Account",
-	"application/vnd.rightscale.account_group":                     "AccountGroup",
-	"application/vnd.rightscale.alert":                             "Alert",
-	"application/vnd.rightscale.alert_spec":                        "AlertSpec",
-	"application/vnd.rightscale.audit_entry":                       "AuditEntry",
-	"application/vnd.rightscale.backup":                            "Backup",
-	"application/vnd.rightscale.cloud":                             "Cloud",
-	"application/vnd.rightscale.cloud_account":                     "CloudAccount",
-	"application/vnd.rightscale.cookbook":                          "Cookbook",
-	"application/vnd.rightscale.cookbook_attachment":               "CookbookAttachment",
-	"application/vnd.rightscale.credential":                        "Credential",
-	"application/vnd.rightscale.datacenter":                        "Datacenter",
-	"application/vnd.rightscale.deployment":                        "Deployment",
-	"application/vnd.rightscale.identity_provider":                 "IdentityProvider",
-	"application/vnd.rightscale.image":                             "Image",
-	"application/vnd.rightscale.input":                             "Input",
-	"application/vnd.rightscale.instance":                          "Instance",
-	"application/vnd.rightscale.instance_custom_lodgement":         "InstanceCustomLodgement",
-	"application/vnd.rightscale.instance_type":                     "InstanceType",
-	"application/vnd.rightscale.ip_address":                        "IpAddress",
-	"application/vnd.rightscale.ip_address_binding":                "IpAddressBinding",
-	"application/vnd.rightscale.monitoring_metric":                 "MonitoringMetric",
-	"application/vnd.rightscale.multi_cloud_image":                 "MultiCloudImage",
-	"application/vnd.rightscale.multi_cloud_image_setting":         "MultiCloudImageSetting",
-	"application/vnd.rightscale.network":                           "Network",
-	"application/vnd.rightscale.network_gateway":                   "NetworkGateway",
-	"application/vnd.rightscale.network_option_group":              "NetworkOptionGroup",
-	"application/vnd.rightscale.network_option_group_attachment":   "NetworkOptionGroupAttachment",
-	"application/vnd.rightscale.permission":                        "Permission",
-	"application/vnd.rightscale.placement_group":                   "PlacementGroup",
-	"application/vnd.rightscale.preference":                        "Preference",
-	"application/vnd.rightscale.publication":                       "Publication",
-	"application/vnd.rightscale.publication_lineage":               "PublicationLineage",
-	"application/vnd.rightscale.recurring_volume_attachment":       "RecurringVolumeAttachment",
-	"application/vnd.rightscale.repository":                        "Repository",
-	"application/vnd.rightscale.repository_asset":                  "RepositoryAsset",
-	"application/vnd.rightscale.right_script":                      "RightScript",
-	"application/vnd.rightscale.route":                             "Route",
-	"application/vnd.rightscale.route_table":                       "RouteTable",
-	"application/vnd.rightscale.runnable_binding":                  "RunnableBinding",
-	"application/vnd.rightscale.security_group":                    "SecurityGroup",
-	"application/vnd.rightscale.security_group_rule":               "SecurityGroupRule",
-	"application/vnd.rightscale.server":                            "Server",
-	"application/vnd.rightscale.server_array":                      "ServerArray",
-	"application/vnd.rightscale.server_template":                   "ServerTemplate",
-	"application/vnd.rightscale.server_template_multi_cloud_image": "ServerTemplateMultiCloudImage",
-	"application/vnd.rightscale.session":                           "Session",
-	"application/vnd.rightscale.ssh_key":                           "SshKey",
-	"application/vnd.rightscale.subnet":                            "Subnet",
-	"application/vnd.rightscale.task":                              "Task",
-	"application/vnd.rightscale.user":                              "User",
-	"application/vnd.rightscale.volume":                            "Volume",
-	"application/vnd.rightscale.volume_attachment":                 "VolumeAttachment",
-	"application/vnd.rightscale.volume_snapshot":                   "VolumeSnapshot",
-	"application/vnd.rightscale.volume_type":                       "VolumeType",
 }

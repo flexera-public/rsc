@@ -30,6 +30,7 @@ may result in undesired behavior since the Execution only refreshes certain info
 result of running an Operation on an Execution. For example, if a Server is replaced in CM
 instead of through Self-Service, the new Server's information won' be available in
 Self-Service.`,
+		Identifier: "application/vnd.rightscale.self_service.execution",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1608,6 +1609,7 @@ Note: using this option may leave cloud resources running that must manually be 
 		Description: `The Notification resource represents a system notification that an action has occurred. Generally
 these Notifications are the start and completion of Operations. Currently notifications are only
 available via the API/UI and are not distributed externally to users.`,
+		Identifier: "application/vnd.rightscale.self_service.notification",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1683,6 +1685,7 @@ available via the API/UI and are not distributed externally to users.`,
 When a CloudApp is launched, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language) in the Operations section
 While a CloudApp is running, users may launch any custom Operations as defined in the CAT.
 Once a CAT is Terminated, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language#Operations) in the Operations section`,
+		Identifier: "application/vnd.rightscale.self_service.operation",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1893,6 +1896,7 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 		Description: `ScheduledActions describe a set of timed occurrences for an action to be run (at most once per day).
 Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
 All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)`,
+		Identifier: "application/vnd.rightscale.self_service.scheduled_action",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2183,12 +2187,4 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 			"execution": "",
 		},
 	},
-}
-
-// IdentifierResourceMap is a map of all mediatype identifiers and their corresponding resource names.
-var IdentifierResourceMap = map[string]string{
-	"application/vnd.rightscale.self_service.execution":        "Execution",
-	"application/vnd.rightscale.self_service.notification":     "Notification",
-	"application/vnd.rightscale.self_service.operation":        "Operation",
-	"application/vnd.rightscale.self_service.scheduled_action": "ScheduledAction",
 }
