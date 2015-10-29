@@ -32,5 +32,5 @@ func (a *API) BuildRequest(resource, action, href string, params rsapi.APIParams
 		return nil, err
 	}
 	_, queryParams := rsapi.IdentifyParams(act, params)
-	return a.BuildHTTPRequest("GET", actionURL.Path, "1.0", queryParams, nil)
+	return a.BuildHTTPRequest("GET", actionURL.Path, "1.6", queryParams, nil)
 }
