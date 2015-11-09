@@ -11,6 +11,8 @@ type Resource struct {
 	Name        string
 	Description string
 	Actions     []*Action
+	Identifier  string
+	Links       map[string]string
 }
 
 // ExtractVariables takes a resource href and extracts the variables (cloud_id, id etc.) that
@@ -45,7 +47,7 @@ func (r *Resource) ExtractVariables(href string) ([]*PathVariable, error) {
 	return variables, nil
 }
 
-// GetAction returns the action with thengiven name, returns nil if none is found.
+// GetAction returns the action with the given name, returns nil if none is found.
 func (r *Resource) GetAction(name string) *Action {
 	for _, a := range r.Actions {
 		if a.Name == name {
@@ -53,6 +55,16 @@ func (r *Resource) GetAction(name string) *Action {
 		}
 	}
 	return nil
+}
+
+// HasLink returns whether the resource has a link with the given name.
+func (r *Resource) HasLink(name string) bool {
+	for n, _ := range r.Links {
+		if n == name {
+			return true
+		}
+	}
+	return false
 }
 
 // Find paths that match given href

@@ -22,6 +22,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `The AccountPreference resource stores preferences that apply account-wide, such as UI customization settings and other settings.
 The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
 to use in your own integration.`,
+		Identifier: "application/vnd.rightscale.self_service.account_preference",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -176,6 +177,7 @@ going through Designer. If an Application was created from Designer through the 
 resource in Designer.
 In the Self-Service portal, an Application is equivalent to an item in the Catalog. Most users have access to these Application resources
 and can launch them to create Executions in the Manager application.`,
+		Identifier: "application/vnd.rightscale.self_service.application",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1549,6 +1551,7 @@ and can launch them to create Executions in the Manager application.`,
         resources (described via a link-like syntax), a target which
         corresponds to a user (for now) and a minimum severity used to filter
         out events with lower severities.`,
+		Identifier: "application/vnd.rightscale.self_service.notification_rule",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1856,6 +1859,7 @@ and can launch them to create Executions in the Manager application.`,
 		Name: "UserPreference",
 		Description: `The UserPreference resource stores preferences on a per user basis, such as default notification preference.
 The Self-Service portal uses these preferences in the portal.`,
+		Identifier: "application/vnd.rightscale.self_service.user_preference",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -2083,6 +2087,7 @@ Values are validated with the corresponding UserPreferenceInfo.`,
 		Name: "UserPreferenceInfo",
 		Description: `The UserPreferenceInfo resource defines the available user preferences supported by the system.
 It is also used to validate values saved in UserPreference.`,
+		Identifier: "application/vnd.rightscale.self_service.user_preference_info",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

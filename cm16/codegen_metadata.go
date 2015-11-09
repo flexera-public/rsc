@@ -22,6 +22,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Resources in RightScale generally belong to accounts. Users can have
         any number of accounts, but when performing an action, a user is
         operating under a particular account.`,
+		Identifier: "application/vnd.rightscale.account",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -99,6 +100,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Clouds provide remote resources for things like storage and compute.
         You must have registered a cloud within your account in order to use
         it.`,
+		Identifier: "application/vnd.rightscale.cloud",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -177,6 +179,7 @@ var GenMetadata = map[string]*metadata.Resource{
         resources in isolated locations. A carefully designed system placed in
         multiple datacenters can provide fault tolerance when one datacenter
         has a problem.`,
+		Identifier: "application/vnd.rightscale.datacenter",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -260,11 +263,15 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Datacenter exists",
+		},
 	},
 	"Deployment": &metadata.Resource{
 		Name: "Deployment",
 		Description: `        Deployments provide a way to group resources that logically belong
         together.`,
+		Identifier: "application/vnd.rightscale.deployment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -352,11 +359,15 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"account": "Link to the Account where the Deployment exists",
+		},
 	},
 	"Image": &metadata.Resource{
 		Name: "Image",
 		Description: `        Images define the initial Operating System and root disk contents
         for new instances.`,
+		Identifier: "application/vnd.rightscale.image",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -462,6 +473,9 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Image exists",
+		},
 	},
 	"Instance": &metadata.Resource{
 		Name: "Instance",
@@ -473,6 +487,7 @@ var GenMetadata = map[string]*metadata.Resource{
         the cloud. However, if an instance is not of type "next", it will
         generally represent an existing running (or provisioned) virtual
         machine existing in the cloud.`,
+		Identifier: "application/vnd.rightscale.instance",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -624,6 +639,21 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"account":                    "Link to the Account where the Instance exist",
+			"cloud":                      "Link to the Cloud where the Instance exist",
+			"computed_image":             "Link to the computed Image for the Instance",
+			"computed_multi_cloud_image": "Link to the computed MultiCloudImage for the Instance",
+			"datacenter":                 "Link to the Datacenter where the Instance exist",
+			"deployment":                 "Link to the Deployment where the Instance exists",
+			"image":                      "Link to the Image used by the Instance",
+			"incarnator":                 "Incarnator of the Instance if there is one",
+			"instance_type":              "Link to the InstanceType of the Instance",
+			"multi_cloud_image":          "Link to the MultiCloudImage used by the Instance",
+			"security_groups":            "Link to the collection of SecurityGroups associated with the Instance",
+			"ssh_key":                    "Link to the SshKey used by the Instance",
+			"subnets":                    "Link to the collection of Subnets associated with the Instance",
+		},
 	},
 	"InstanceType": &metadata.Resource{
 		Name: "InstanceType",
@@ -632,6 +662,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Combining all possible configurations of hardware into a smaller,
         well-known set of options makes instances easier to manage, and allows
         better allocation efficiency into physical hosts.`,
+		Identifier: "application/vnd.rightscale.instance_type",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -715,11 +746,15 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud supporting the InstanceType",
+		},
 	},
 	"IpAddress": &metadata.Resource{
 		Name: "IpAddress",
 		Description: `        An IpAddress provides an abstraction for IPv4 addresses bindable to
         Instance resources running in a Cloud.`,
+		Identifier: "application/vnd.rightscale.ip_address",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -803,12 +838,16 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the IpAddress exists",
+		},
 	},
 	"IpAddressBinding": &metadata.Resource{
 		Name: "IpAddressBinding",
 		Description: `        An IpAddressBinding represents an abstraction for binding an IpAddress
         to an instance. The IpAddress is bound immediately for a current
         instance, or on launch for a next instance.`,
+		Identifier: "application/vnd.rightscale.ip_address_binding",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -892,6 +931,11 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud":      "Link to the Cloud where the IpAddressBinding exists",
+			"instance":   "Link to the Instance to which the IpAddressBinding is associated",
+			"ip_address": "Link to the IpAddress associated with the IpAddressBinding",
+		},
 	},
 	"MultiCloudImage": &metadata.Resource{
 		Name: "MultiCloudImage",
@@ -900,6 +944,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Each ServerTemplate can reference many MultiCloudImages that define
         which image should be used when a server is launched in a particular
         cloud.`,
+		Identifier: "application/vnd.rightscale.multi_cloud_image",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -975,6 +1020,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"Network": &metadata.Resource{
 		Name:        "Network",
 		Description: `        A Network is a logical grouping of network devices.`,
+		Identifier:  "application/vnd.rightscale.network",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1046,11 +1092,15 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Network exists",
+		},
 	},
 	"NetworkInterface": &metadata.Resource{
 		Name: "NetworkInterface",
 		Description: `        Just like their physical counterparts, NetworkInterfaces join other
         resources to a network.`,
+		Identifier: "application/vnd.rightscale.network_interface",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1122,11 +1172,15 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the NetworkInterface exists",
+		},
 	},
 	"NetworkInterfaceAttachment": &metadata.Resource{
 		Name: "NetworkInterfaceAttachment",
 		Description: `        NetworkInterfaceAttachments represent an attachment between a
         NetworkInterface and another resource.`,
+		Identifier: "application/vnd.rightscale.network_interface_attachment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1198,12 +1252,16 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the NetworkInterfaceAttachment exists",
+		},
 	},
 	"SecurityGroup": &metadata.Resource{
 		Name: "SecurityGroup",
 		Description: `        Security Groups represent network security profiles that contain lists
         of firewall rules for different ports and source IP addresses, as well
         as trust relationships between security groups.`,
+		Identifier: "application/vnd.rightscale.security_group",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1293,6 +1351,9 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the SecurityGroup exists",
+		},
 	},
 	"Server": &metadata.Resource{
 		Name: "Server",
@@ -1310,6 +1371,7 @@ var GenMetadata = map[string]*metadata.Resource{
         next_instance association prepares the configuration for the next
         instance launch/start (therefore they have no effect until such
         operation is performed).`,
+		Identifier: "application/vnd.rightscale.server",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1381,6 +1443,12 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"account":          "The Account to which the Server belongs",
+			"cloud":            "The Cloud where new instances of the Server will be created",
+			"current_instance": "Link to the current Instance of the Server",
+			"next_instance":    "Link to the next Instance of the Server",
+		},
 	},
 	"ServerArray": &metadata.Resource{
 		Name: "ServerArray",
@@ -1394,6 +1462,7 @@ var GenMetadata = map[string]*metadata.Resource{
         array.  Changes to the next_instance association prepares the
         configuration for the next instance that is to be launched in the array
         and will therefore not affect any of the currently running instances.`,
+		Identifier: "application/vnd.rightscale.server_array",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1465,6 +1534,12 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 			},
 		},
+		Links: map[string]string{
+			"account":           "Link to the Account where the ServerArray exists",
+			"cloud":             "Link to the Cloud where the ServerArray exists",
+			"current_instances": "Link to the current Instance of the ServerArray",
+			"next_instance":     "Link to the next Instance of the ServerArray",
+		},
 	},
 	"ServerTemplate": &metadata.Resource{
 		Name: "ServerTemplate",
@@ -1477,6 +1552,7 @@ var GenMetadata = map[string]*metadata.Resource{
         that is exposed by the "lineage" attribute. (NOTE: This attribute is
         merely a string to locate all revisions of a ServerTemplate and NOT a
         working URL)`,
+		Identifier: "application/vnd.rightscale.server_template",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1552,6 +1628,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"SshKey": &metadata.Resource{
 		Name:        "SshKey",
 		Description: `        Ssh Keys represent a created SSH Key that exists in the cloud.`,
+		Identifier:  "application/vnd.rightscale.ssh_key",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1640,6 +1717,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "Subnet",
 		Description: `        A Subnet is a logical grouping of network devices. An Instance can have
         many Subnets.`,
+		Identifier: "application/vnd.rightscale.subnet",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1728,6 +1806,9 @@ var GenMetadata = map[string]*metadata.Resource{
 					},
 				},
 			},
+		},
+		Links: map[string]string{
+			"cloud": "Link to the Cloud where the Subnet exists",
 		},
 	},
 }

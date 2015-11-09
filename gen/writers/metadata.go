@@ -91,9 +91,13 @@ var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
 		Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
+		Identifier: "{{.Identifier}}",
 		Actions: []*metadata.Action{ {{range .Actions}}
 		{{template "action" .}}{{end}}
-		},
+		},{{if .Links}}
+		Links: map[string]string{ {{range $name, $desc := .Links}}
+		  "{{$name}}": "{{$desc}}",{{end}}
+	    },{{end}}
 	},{{end}}
 }
 `

@@ -20,6 +20,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"DebugCookbookPath": &metadata.Resource{
 		Name:        "DebugCookbookPath",
 		Description: `Manipulate debug cookbook directory location`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -88,6 +89,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"Env": &metadata.Resource{
 		Name:        "Env",
 		Description: `Manipulate global script environment variables`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -172,6 +174,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"Proc": &metadata.Resource{
 		Name:        "Proc",
 		Description: `List of process variables, such as version, identity, and protocol_version`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -207,6 +210,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"Rl10": &metadata.Resource{
 		Name:        "Rl10",
 		Description: `Miscellaneous RightLink 10 local requests`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "upgrade",
@@ -375,6 +379,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"TSS": &metadata.Resource{
 		Name:        "TSS",
 		Description: `Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "get_hostname",
@@ -428,6 +433,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"TSSControl": &metadata.Resource{
 		Name:        "TSSControl",
 		Description: `Manipulate monitoring (TSS) settings`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
