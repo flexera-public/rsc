@@ -32,14 +32,14 @@ no dependency on any runtime library. Just download the correct version for your
 architecture and you're good to go.
 
 The latest stable versions can be download from:
-- MacOS X: `https://binaries.rightscale.com/rsbin/rsc/v4/rsc-darwin-amd64.tgz`
-- Windows: `https://binaries.rightscale.com/rsbin/rsc/v4/rsc-windows-amd64.zip`
-- Linux: `https://binaries.rightscale.com/rsbin/rsc/v4/rsc-linux-amd64.tgz`
-- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v4/rsc-linux-arm.tgz`
+- MacOS X: `https://binaries.rightscale.com/rsbin/rsc/v5/rsc-darwin-amd64.tgz`
+- Windows: `https://binaries.rightscale.com/rsbin/rsc/v5/rsc-windows-amd64.zip`
+- Linux: `https://binaries.rightscale.com/rsbin/rsc/v5/rsc-linux-amd64.tgz`
+- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v5/rsc-linux-arm.tgz`
 
 As an example the following downloads and runs the MacOS X version:
 ```
-$ curl https://binaries.rightscale.com/rsbin/rsc/v4/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
+$ curl https://binaries.rightscale.com/rsbin/rsc/v5/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
 rsc v5.0.0 - 2015-10-15 23:27:35 - d682468bc84e05fb4ad3d9153886725fad56c7f0
@@ -47,11 +47,11 @@ rsc v5.0.0 - 2015-10-15 23:27:35 - d682468bc84e05fb4ad3d9153886725fad56c7f0
 
 #### Versioning
 
-- To download the latest stable use the links with 'v4' in them.
-- To download a specific version, replace the 'v4' by the exact version, such as 'v5.0.0'.
-- All versions with the same major number (e.g. 'v4') are intended to be "upward" compatible.
-- The 'v4' links download a specific version, so `rsc --version` will print something like 'v5.0.0'
-  and not 'v4'.
+- To download the latest stable use the links with 'v5' in them.
+- To download a specific version, replace the 'v5' by the exact version, such as 'v5.0.0'.
+- All versions with the same major number (e.g. 'v5') are intended to be "upward" compatible.
+- The 'v5' links download a specific version, so `rsc --version` will print something like 'v5.0.0'
+  and not 'v5'.
 - The latest dev version is 'master'.
 
 ### Command Line
@@ -319,11 +319,11 @@ sub-package: package `cm15` for CM API 1.5, package `cm16`for CM API
 `rsc` uses gopkg.in for versioning, this means that you can download the released `rsc` packages
 as follows:
 ```
-go get gopkg.in/rightscale/rsc.v4
+go get gopkg.in/rightscale/rsc.v5
 ```
 and import then in your code with:
 ```go
-import "gopkg.in/rightscale/rsc.v4"
+import "gopkg.in/rightscale/rsc.v5"
 ```
 If you intend on contributing, just want to play around with the code or feel adventurous you can
 download and use the beelding edge version from github which corresponds to the master branch:
@@ -522,15 +522,15 @@ The following make targets are useful:
 
 #### Your own build of the latest release version
 
-The simple option is `go get gopkg.in/rightscale/rsc.v4`, this will use the checked-in
+The simple option is `go get gopkg.in/rightscale/rsc.v5`, this will use the checked-in
 code-generated files.
 
 The more involved option is:
 ```
 mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
-git clone https://github.com/rightscale/rsc.git rsc.v4
-cd rsc.v4
+git clone https://github.com/rightscale/rsc.git rsc.v5
+cd rsc.v5
 git checkout v5.0.0
 make depend
 make
