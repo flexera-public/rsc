@@ -35,6 +35,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("apiToken", "Instance API token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").Short('p').StringVar(&cmdLine.APIToken)
 	app.Flag("rl10", "Proxy requests through RightLink 10 agent, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").BoolVar(&cmdLine.RL10)
 	app.Flag("noAuth", "Make unauthenticated requests, used for testing").BoolVar(&cmdLine.NoAuth)
+	app.Flag("timeout", "Set the request timeout, defaults to 20s").Short('t').IntVar(&cmdLine.Timeout)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
 	app.Flag("xm", "Extract zero, one or more values using JSON:select and return newline separated list").StringVar(&cmdLine.ExtractSelector)
 	app.Flag("xj", "Extract zero, one or more values using JSON:select and return JSON").StringVar(&cmdLine.ExtractSelectorJSON)

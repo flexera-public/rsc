@@ -7,8 +7,10 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/httpclient"
 	"github.com/rightscale/rsc/log"
 	"gopkg.in/alecthomas/kingpin.v2"
 
@@ -46,6 +48,7 @@ func main() {
 			}
 		}
 	default:
+		httpclient.ResponseHeaderTimeout = time.Duration(cmdLine.Timeout) * time.Second
 		var client cmd.CommandClient
 		client, err = APIClient(topCommand, cmdLine)
 		if err == nil {
