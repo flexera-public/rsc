@@ -21,6 +21,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name: "Schedule",
 		Description: `A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
 Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.`,
+		Identifier: "application/vnd.rightscale.self_service.schedule",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -199,7 +200,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The hour of day from 0 to 23.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -207,7 +208,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The minute from 0 to 59.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -215,7 +216,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `A RRULE string describing the recurrence rule.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -223,7 +224,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The hour of day from 0 to 23.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -231,7 +232,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `The minute from 0 to 59.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -239,7 +240,7 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 						Description: `A RRULE string describing the recurrence rule.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},
@@ -341,6 +342,7 @@ Publish your CAT to the Catalog where users can launch it, it must be uploaded t
 published to the Catalog.
 CAT files are uniquely identified by the name of the CloudApplication, which is specified as the "name"
 attribute inside of a CAT file.`,
+		Identifier: "application/vnd.rightscale.self_service.template",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

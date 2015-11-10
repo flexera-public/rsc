@@ -4,8 +4,8 @@
 Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 
-v4.0.1
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v4.0.1)](https://travis-ci.org/rightscale/rsc)
+v5.0.0
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v5.0.0)](https://travis-ci.org/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
@@ -42,15 +42,15 @@ As an example the following downloads and runs the MacOS X version:
 $ curl https://binaries.rightscale.com/rsbin/rsc/v4/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v4.0.1 - 2015-09-18 22:58:19 - f2ecdb2262ecbec071d1232315e3817ebc180ff4
+rsc v5.0.0 - 2015-10-15 23:27:35 - d682468bc84e05fb4ad3d9153886725fad56c7f0
 ```
 
 #### Versioning
 
 - To download the latest stable use the links with 'v4' in them.
-- To download a specific version, replace the 'v4' by the exact version, such as 'v4.0.1'.
+- To download a specific version, replace the 'v4' by the exact version, such as 'v5.0.0'.
 - All versions with the same major number (e.g. 'v4') are intended to be "upward" compatible.
-- The 'v4' links download a specific version, so `rsc --version` will print something like 'v4.0.1'
+- The 'v4' links download a specific version, so `rsc --version` will print something like 'v5.0.0'
   and not 'v4'.
 - The latest dev version is 'master'.
 
@@ -118,7 +118,7 @@ is created by making an API request to the CM 1.5 APIs the resulting cookie can 
 calls against all the RightScale APIs enabled for the user.
 
 `rsc` supports basic authentication via the `--email` and `--password` flags. When using `rsc` as a
-Go package authentication is done once and the same cookie is used for all API requests made with 
+Go package authentication is done once and the same cookie is used for all API requests made with
 the same client. The package also takes care of refreshing the cookie before the session expires.
 
 Below is an example listing all clouds available in a given account using the `rsc` command line
@@ -195,7 +195,7 @@ rsc --rl10 cm15 index clouds
 
 The `setup` command can be used to create a configuration file that contains the host, account id,
 user email and password so that these don't need to be specified each time. All these settings or
-a subset may be stored (i.e. the password doesn't have to be stored if that's not desirable). 
+a subset may be stored (i.e. the password doesn't have to be stored if that's not desirable).
 
 By default the config file is created in `$HOME/.rsc`, the location can be overridden using the
 `--config` global flag. Multiple configs may be created to allow for different environments or
@@ -351,7 +351,7 @@ CM API 1.5 client that connects to `us-3.rightscale.com` using a OAuth
 refresh token for authentication and the default HTTP client:
 ```go
 // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
-refreshToken := "3e040efed9a83ac758f3b1cbdfa041b905742169" 
+refreshToken := "3e040efed9a83ac758f3b1cbdfa041b905742169"
 // Corresponding RightScale account ID
 accountID := 60073
 auth := rsapi.NewOAuthAuthenticator(refreshToken, accountID)
@@ -398,7 +398,7 @@ var cloudLocator = client.CloudLocator("/api/clouds/1")
 ```
 Locators expose one method for each action supported by the underlying collection or resource. For
 example the clouds collection locator `CloudLocator` exposes an `Index()` and a `Show()` method.
-Locator methods may return resources which are structs that expose the underlying resource 
+Locator methods may return resources which are structs that expose the underlying resource
 attributes. For example the `CloudLocator` `Index()` method returns an array of `Cloud` resource.
 A cloud resource is defined as:
 ```go
@@ -531,13 +531,13 @@ mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
 git clone https://github.com/rightscale/rsc.git rsc.v4
 cd rsc.v4
-git checkout v4.0.1
+git checkout v5.0.0
 make depend
 make
 ```
 ### Code generation
 
-Part of the `rsc` source code (the vast majority in terms of lines of code) is automatically 
+Part of the `rsc` source code (the vast majority in terms of lines of code) is automatically
 generated from API metadata. There are currently two code generators: `api15gen` consumes the
 RightScale CM API 1.5 metadata hosted [here](http://reference.rightscale.com/api1.5/api_data.json) and
 `praxisgen` consumes the metadata for any [praxis](http://praxis-framework.io/) application (for example

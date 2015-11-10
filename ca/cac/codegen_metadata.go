@@ -23,6 +23,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Deployments or ServerArrays. Users with the ` + `enterprise_manager` + ` permission in an account can create
         child accounts. This resource is not included in the public docs.
         The view ` + `full` + ` is not supported if the any of the user's accounts use IP Whitelisting.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -175,6 +176,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"AnalysisSnapshot": &metadata.Resource{
 		Name:        "AnalysisSnapshot",
 		Description: `AnalysisSnapshots can be used to generate unique links to share data using filters over a date range.`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -446,6 +448,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"AwsAccountGroupMembership": &metadata.Resource{
 		Name:        "AwsAccountGroupMembership",
 		Description: `Used by CM to present a user's consolidated billing groups`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -534,6 +537,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Enable you to set a monthly spend budget and be alerted via email when this is exceeded,
         based on either actual or forecasted spend. These emails include links to AnalysisSnapshots, which are
         generated automatically by us.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -962,6 +966,7 @@ var GenMetadata = map[string]*metadata.Resource{
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "filter_options",
@@ -1128,6 +1133,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "grouped_time_series",
@@ -1222,6 +1228,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 	"CurrentUser": &metadata.Resource{
 		Name:        "CurrentUser",
 		Description: `Represents the currently logged-in user. This resource is not included in the public docs.`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -1590,6 +1597,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2249,6 +2257,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "InstanceCombination",
 		Description: `InstanceCombinations represent instances that make-up a Scenario.
         Note that, when making create and update calls, a Pattern can only be applied to an InstanceCombination once.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -2898,6 +2907,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "overall",
@@ -3571,6 +3581,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -3634,6 +3645,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "Pattern",
 		Description: `Patterns describe operations in usage, and can be applied to InstanceCombinations in Scenarios to model changes in the cost.
         A pattern can only be applied to an InstanceCombination once.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -4081,6 +4093,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -4707,6 +4720,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 	"ReservedInstancePurchase": &metadata.Resource{
 		Name:        "ReservedInstancePurchase",
 		Description: `ReservedInstancePurchases can be applied to InstanceCombinations in Scenarios to model changes in the cost. These are not actually purchased in the cloud and are only used for cost simulation purposes.`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5029,6 +5043,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Description: `Scenarios can be used to model changes in cloud usage to forecast costs over a 3-year period.
         Use the forecast action to generate the results after you create a Scenario and add your InstanceCombinations,
         ReservedInstancePurchases and Patterns.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5428,6 +5443,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "ScheduledReport",
 		Description: `ScheduledReports are emailed to you, and include usage, cost, and the change from the previous reporting period.
         These emails include links to AnalysisSnapshots, which are generated automatically by us.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5809,6 +5825,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "TempInstancePrice",
 		Description: `This is a temporary API call that can be used by the Cloud Analytics UI until the
         Pricing Service is live, at which point this API call will be deleted. This is not included in the public docs.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -5830,6 +5847,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "User",
 		Description: `Users can have various permissions on multiple accounts. Users with admin permissions in an account
         can modify that account's users. This resource is not included in the public docs.`,
+		Identifier: "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6202,6 +6220,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 	"UserSetting": &metadata.Resource{
 		Name:        "UserSetting",
 		Description: `Used by the Cloud Analytics UI to keep track of various UI states.`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -6577,6 +6596,7 @@ The key is the ID of the table (i.e. ` + `instance_datatable` + `), the Set is t
 	"UtilizationReport": &metadata.Resource{
 		Name:        "UtilizationReport",
 		Description: `iTime project for showing instance utilization with costs. This is not included in the public docs.`,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
