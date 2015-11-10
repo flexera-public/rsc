@@ -213,13 +213,12 @@ api15gen:
 	cd gen/api15gen && go install
 
 praxisgen:
-	cd gen/praxisgen && go test && go install
+	cd gen/praxisgen && go install
 	@if ! which praxisgen >/dev/null; then \
 	  echo '*** Praxisgen got installed in a location that is not in your PATH ***'; \
 	  echo GOPATH=$$GOPATH ;\
 	  echo PATH=$$PATH ;\
 	fi
-	which praxisgen
 
 api15json:
 	mkdir -p rsapi15
