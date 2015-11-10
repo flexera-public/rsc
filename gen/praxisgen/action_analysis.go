@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"bitbucket.org/pkg/inflect"
 
@@ -167,7 +168,19 @@ func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						m := media.(map[string]interface{})
 						if name, ok := m["name"]; ok {
 							returnTypeName = toGoTypeName(name.(string), true)
-							a.descriptor.NeedJSON = true
+							// we should check that it doesnt exist
+							_, present := a.RawTypes[name.(string)]
+							if strings.HasSuffix(name.(string), "::Collection") && !present {
+								typedPrefix := strings.TrimSuffix(name.(string), "::Collection")
+
+								a.RawTypes[name.(string)] = map[string]interface{}{
+									"name": name.(string),
+									"type": map[string]interface{}{
+										"member_attribute": a.RawTypes[typedPrefix],
+									},
+								}
+							}
+
 							// Analyze return type to make sure it gets recorded
 							_, err := a.AnalyzeType(a.RawTypes[name.(string)], "return")
 							if err != nil {
