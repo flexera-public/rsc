@@ -7,6 +7,7 @@ import (
 	"bitbucket.org/pkg/inflect"
 
 	"github.com/rightscale/rsc/gen"
+	"strings"
 )
 
 // Regular expression that captures variables in a path
@@ -191,6 +192,31 @@ func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 									break
 								}
 							}
+						}
+					} else if payload, ok := resp["payload"]; ok {
+						m := payload.(map[string]interface{})
+						if nameObj, ok := m["name"]; ok {
+							name := nameObj.(string)
+							var typeToAnalyze string
+							_, rawTypeExists := a.RawTypes[name] // allow for *::Collection being in RawTypes
+							if strings.HasSuffix(name, "::Collection") && !rawTypeExists {
+								// handle ::Collection type specially
+								collectionOf := strings.TrimSuffix(name, "::Collection")
+								returnTypeName = "[]" + toGoTypeName(collectionOf, true)
+								typeToAnalyze = collectionOf
+							} else {
+								returnTypeName = toGoTypeName(name, true)
+								typeToAnalyze = name
+							}
+							a.descriptor.NeedJSON = true
+							// Analyze return type to make sure it gets recorded
+							_, err := a.AnalyzeType(a.RawTypes[typeToAnalyze], "return")
+							if err != nil {
+								return nil, err
+							}
+						} else {
+							// Default to string
+							returnTypeName = "string"
 						}
 					}
 				}
