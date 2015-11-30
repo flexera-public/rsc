@@ -1,0 +1,365 @@
+{
+  "name": "V2::MediaTypes::ProvisioningTemplate",
+  "family": "hash",
+  "id": "V2-MediaTypes-ProvisioningTemplate",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the ProvisioningTemplate",
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "description": "Href of the ProvisioningTemplate",
+      "example_definition": "#<Proc:0x007fdc7bb29cd8@/Users/james/rsgit/global_resource_service/design/v2/media_types/provisioning_template.rb:15>",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::ProvisioningTemplates",
+          "media_type_id": "V2-MediaTypes-ProvisioningTemplate",
+          "display_name": "ProvisioningTemplates"
+        }
+      }
+    },
+    "name": {
+      "description": "Name of the ProvisioningTemplate; should be unique within the IdentityProvider to avoid confusion.",
+      "example_definition": "My ProvisioningTemplate",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "description": {
+      "description": "Description of the ProvisioningTemplate",
+      "example_definition": "My ProvisioningTemplate description",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "description": "The string 'provisioning_template'",
+      "values": [
+        "provisioning_template"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "provisioning_rules": {
+      "description": "Provisioning rules for the ProvisioningTemplate",
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V2::MediaTypes::ProvisioningRule"
+          },
+          "type": {
+            "name": "V2::MediaTypes::ProvisioningRule",
+            "family": "hash",
+            "id": "V2-MediaTypes-ProvisioningRule",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        }
+      }
+    },
+    "xsl": {
+      "description": "XSL definition for the ProvisioningTemplate",
+      "example_definition": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::ProvisioningTemplate"
+      },
+      "type": {
+        "name": "V2::MediaTypes::ProvisioningTemplate::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-ProvisioningTemplate-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "provisioning_rules": {
+            "description": "ProvisioningRules belonging to the ProvisioningTemplate",
+            "options": {
+              "reference": "V2::MediaTypes::ProvisioningRule::ProvisioningRuleCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::ProvisioningRule::ProvisioningRuleCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-ProvisioningRule-ProvisioningRuleCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "provisioning_rules": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "provisioning_rules": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "timestamps": {
+        },
+        "provisioning_rules": {
+          "view": "default"
+        },
+        "xsl": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 615,
+        "href": "/grs/identity_providers/1/provisioning_templates/615",
+        "kind": "provisioning_template",
+        "name": "My ProvisioningTemplate",
+        "description": "My ProvisioningTemplate description",
+        "timestamps": {
+          "created_at": "2014-08-04T00:00:00+00:00",
+          "updated_at": "2017-04-30T00:00:00+00:00"
+        },
+        "provisioning_rules": [
+          {
+            "id": 255,
+            "href": "/grs/provisioning_rules/255",
+            "description": "Provisioning Rules for Project Leads",
+            "kind": "provisioning_rule",
+            "regex": "Project Lead",
+            "timestamps": {
+              "created_at": "2013-10-26T00:00:00+00:00",
+              "updated_at": "2016-07-22T00:00:00+00:00"
+            },
+            "links": {
+              "group": {
+                "id": 570,
+                "name": "admin",
+                "href": "/grs/groups/570",
+                "kind": "group"
+              },
+              "provisioning_template": {
+                "id": 293,
+                "href": "/grs/identity_providers/1/provisioning_templates/293",
+                "name": "My ProvisioningTemplate",
+                "kind": "provisioning_template"
+              }
+            }
+          },
+          {
+            "id": 505,
+            "href": "/grs/provisioning_rules/505",
+            "description": "Provisioning Rules for Project Leads",
+            "kind": "provisioning_rule",
+            "regex": "Project Lead",
+            "timestamps": {
+              "created_at": "2013-06-08T00:00:00+00:00",
+              "updated_at": "2016-03-04T00:00:00+00:00"
+            },
+            "links": {
+              "group": {
+                "id": 152,
+                "name": "admin",
+                "href": "/grs/groups/152",
+                "kind": "group"
+              },
+              "provisioning_template": {
+                "id": 719,
+                "href": "/grs/identity_providers/1/provisioning_templates/719",
+                "name": "My ProvisioningTemplate",
+                "kind": "provisioning_template"
+              }
+            }
+          }
+        ],
+        "xsl": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>",
+        "links": {
+          "provisioning_rules": {
+            "href": "/grs/provisioning_rules"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 615,
+        "href": "/grs/identity_providers/1/provisioning_templates/615",
+        "name": "My ProvisioningTemplate",
+        "kind": "provisioning_template"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.provisioning_template",
+  "description": "Represents a ProvisioningTemplate resource",
+  "display_name": "ProvisioningTemplate",
+  "example": {
+    "id": 615,
+    "href": "/grs/identity_providers/1/provisioning_templates/615",
+    "name": "My ProvisioningTemplate",
+    "description": "My ProvisioningTemplate description",
+    "kind": "provisioning_template",
+    "timestamps": {
+      "created_at": "2014-08-04T00:00:00+00:00",
+      "updated_at": "2017-04-30T00:00:00+00:00"
+    },
+    "provisioning_rules": [
+      {
+        "id": 255,
+        "href": "/grs/provisioning_rules/255",
+        "description": "Provisioning Rules for Project Leads",
+        "kind": "provisioning_rule",
+        "regex": "Project Lead",
+        "timestamps": {
+          "created_at": "2013-10-26T00:00:00+00:00",
+          "updated_at": "2016-07-22T00:00:00+00:00"
+        },
+        "links": {
+          "group": {
+            "id": 570,
+            "name": "admin",
+            "href": "/grs/groups/570",
+            "kind": "group"
+          },
+          "provisioning_template": {
+            "id": 293,
+            "href": "/grs/identity_providers/1/provisioning_templates/293",
+            "name": "My ProvisioningTemplate",
+            "kind": "provisioning_template"
+          }
+        }
+      },
+      {
+        "id": 505,
+        "href": "/grs/provisioning_rules/505",
+        "description": "Provisioning Rules for Project Leads",
+        "kind": "provisioning_rule",
+        "regex": "Project Lead",
+        "timestamps": {
+          "created_at": "2013-06-08T00:00:00+00:00",
+          "updated_at": "2016-03-04T00:00:00+00:00"
+        },
+        "links": {
+          "group": {
+            "id": 152,
+            "name": "admin",
+            "href": "/grs/groups/152",
+            "kind": "group"
+          },
+          "provisioning_template": {
+            "id": 719,
+            "href": "/grs/identity_providers/1/provisioning_templates/719",
+            "name": "My ProvisioningTemplate",
+            "kind": "provisioning_template"
+          }
+        }
+      }
+    ],
+    "xsl": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>",
+    "links": {
+      "provisioning_rules": {
+        "href": "/grs/provisioning_rules"
+      }
+    }
+  }
+}

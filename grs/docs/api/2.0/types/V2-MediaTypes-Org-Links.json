@@ -1,0 +1,134 @@
+{
+  "name": "V2::MediaTypes::Org::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-Org-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "parent_org": {
+      "description": "Href of the parent Org",
+      "options": {
+        "reference": "V2::MediaTypes::Org"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Org",
+        "family": "hash",
+        "id": "V2-MediaTypes-Org",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "child_orgs": {
+      "description": "Href of the child Orgs collection belonging to the Org",
+      "options": {
+        "reference": "V2::MediaTypes::Org::ChildOrgCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Org::ChildOrgCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-Org-ChildOrgCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    },
+    "projects": {
+      "description": "Href of the Projects collection belonging to the Org",
+      "options": {
+        "reference": "V2::MediaTypes::Project::OrgProjectCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Project::OrgProjectCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-Project-OrgProjectCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    },
+    "users": {
+      "description": "Href of the Users collection belonging to the Org",
+      "options": {
+        "reference": "V2::MediaTypes::User::OrgUserCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::User::OrgUserCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-User-OrgUserCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    },
+    "groups": {
+      "description": "Href of the Groups collection belonging to the Org",
+      "options": {
+        "reference": "V2::MediaTypes::Group::OrgGroupCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Group::OrgGroupCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-Group-OrgGroupCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "parent_org": {
+          "view": "link"
+        },
+        "child_orgs": {
+          "view": "link"
+        },
+        "projects": {
+          "view": "link"
+        },
+        "users": {
+          "view": "link"
+        },
+        "groups": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

@@ -1,0 +1,874 @@
+{
+  "description": "A Project represents a container for related resources. It\nbelongs to an Org and can contain many cloud, design, and\nother types of resources.\n",
+  "media_type": {
+    "name": "V2::MediaTypes::Project",
+    "family": "hash",
+    "id": "V2-MediaTypes-Project",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all Projects in an Org.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "ids": {
+              "description": "Comma-separated list of Project IDs",
+              "example_definition": "initech:finance:payroll,initech:marketing:campaigns,initech:it",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "initech:finance:payroll,initech:marketing:campaigns,initech:it",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "recurse": {
+              "description": "Flag indicating whether child orgs should be traversed and the\nprojects returned as well\n",
+              "values": [
+                true,
+                false
+              ],
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "family": "boolean",
+                "id": "Attributor-Boolean"
+              },
+              "example": true,
+              "source": "query"
+            },
+            "filter": {
+              "description": "Filter by attribute",
+              "example_definition": "org_href=/grs/orgs/acme:foo",
+              "type": {
+                "name": "QueryFilter",
+                "family": "any",
+                "id": null,
+                "filters": {
+                  "org_href": {
+                    "description": "Href of the Org by which to filter Projects",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  }
+                },
+                "options": {
+                  "description": "Filter by attribute",
+                  "example": "org_href=/grs/orgs/acme:foo"
+                }
+              },
+              "example": "org_href=/grs/orgs/acme:foo",
+              "source": "query"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+          "fields": "Oleron,Epeira,comparer",
+          "ids": "initech:finance:payroll,initech:marketing:campaigns,initech:it",
+          "view": "default",
+          "recurse": false,
+          "filter": "org_href=/grs/orgs/acme:foo"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Project::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-Project-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::Project"
+              },
+              "type": {
+                "name": "V2::MediaTypes::Project",
+                "family": "hash",
+                "id": "V2-MediaTypes-Project",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.project+json; type=collection",
+                "body": "[\n  {\n    \"id\": \"initech:staging\",\n    \"href\": \"/grs/projects/org1:project12\",\n    \"name\": \"staging\",\n    \"display_name\": \"Staging\",\n    \"description\": \"Staging environment for Initech CloudJanitor 8.0\",\n    \"kind\": \"project\",\n    \"timestamps\": {\n      \"created_at\": \"2013-03-01T00:00:00+00:00\",\n      \"updated_at\": \"2015-11-26T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"org\": {\n        \"id\": \"initech:finance\",\n        \"href\": \"/grs/orgs/initech:finance\",\n        \"kind\": \"org\"\n      }\n    }\n  },\n  {\n    \"id\": \"initech:staging\",\n    \"href\": \"/grs/projects/org1:project12\",\n    \"name\": \"staging\",\n    \"display_name\": \"Staging\",\n    \"description\": \"Staging environment for Initech CloudJanitor 8.0\",\n    \"kind\": \"project\",\n    \"timestamps\": {\n      \"created_at\": \"2013-06-01T00:00:00+00:00\",\n      \"updated_at\": \"2016-02-26T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"org\": {\n        \"id\": \"initech:finance\",\n        \"href\": \"/grs/orgs/initech:finance\",\n        \"kind\": \"org\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/projects",
+          "version": "2.0",
+          "example": "/grs/projects"
+        }
+      ]
+    },
+    {
+      "description": "Shows a single Project.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the Project to show",
+              "required": true,
+              "example_definition": "initech:finance",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech:finance",
+              "source": "url"
+            },
+            "org_id": {
+              "description": "Org ID",
+              "required": true,
+              "example_definition": "initech",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "org_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "Oleron,Epeira,comparer",
+          "id": "initech:finance",
+          "org_id": "initech",
+          "view": "default"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Project",
+            "family": "hash",
+            "id": "V2-MediaTypes-Project",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.project+json",
+                "body": "{\n  \"id\": \"initech:staging\",\n  \"href\": \"/grs/projects/org1:project12\",\n  \"name\": \"staging\",\n  \"display_name\": \"Staging\",\n  \"description\": \"Staging environment for Initech CloudJanitor 8.0\",\n  \"kind\": \"project\",\n  \"timestamps\": {\n    \"created_at\": \"2014-05-19T00:00:00+00:00\",\n    \"updated_at\": \"2017-02-12T00:00:00+00:00\"\n  },\n  \"links\": {\n    \"org\": {\n      \"id\": \"initech:finance\",\n      \"href\": \"/grs/orgs/initech:finance\",\n      \"kind\": \"org\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/projects/:id",
+          "version": "2.0",
+          "example": "/grs/projects/initech:finance?org_id=initech"
+        }
+      ]
+    },
+    {
+      "description": "Creates a new Project.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "description": "URL-friendly name for the Project. Only letters, numbers and basic\npunctuation are allowed. Used to construct Project ID. Must be\nunique among all Projects within the Org.\n",
+              "required": true,
+              "example_definition": "staging",
+              "options": {
+                "regexp": "(?-mix:^[\\w._-]+$)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "staging"
+            },
+            "display_name": {
+              "description": "Human-readable name for the Project; suitable for presentation in UIs",
+              "required": true,
+              "example_definition": "Staging",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Staging"
+            },
+            "description": {
+              "description": "Long-form description of the Project",
+              "example_definition": "Staging deployment of Initech CloudJanitor 8.0",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Staging deployment of Initech CloudJanitor 8.0"
+            },
+            "org": {
+              "description": "Org under which the Project must be created",
+              "required": true,
+              "type": {
+                "name": "Types::Reference",
+                "family": "hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "id": {
+                    "description": "Unique ID of the Org. ID is constructed from Org name and its parent Org ID, if any.",
+                    "example_definition": "initech:finance",
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "initech:finance"
+                  },
+                  "href": {
+                    "description": "Href of the Org",
+                    "example_definition": "/grs/orgs/initech:finance",
+                    "type": {
+                      "name": "Types::ApiHref",
+                      "family": "string",
+                      "id": null,
+                      "target_resource": {
+                        "name": "V2::Definitions::Orgs",
+                        "media_type_id": "V2-MediaTypes-Org",
+                        "display_name": "Orgs"
+                      }
+                    },
+                    "example": "/grs/orgs/initech:finance"
+                  },
+                  "kind": {
+                    "description": "The string 'org'",
+                    "values": [
+                      "org"
+                    ],
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "org"
+                  }
+                },
+                "requirements": [
+
+                ]
+              }
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "name",
+                "display_name",
+                "org"
+              ]
+            }
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"name\": \"staging\",\n  \"display_name\": \"Staging\",\n  \"description\": \"Staging deployment of Initech CloudJanitor 8.0\",\n  \"org\": {\n    \"id\": \"initech:finance\",\n    \"href\": \"/grs/orgs/initech:finance\",\n    \"kind\": \"org\"\n  }\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "name=staging&display_name=Staging&description=Staging+deployment+of+Initech+CloudJanitor+8.0&org=%7B%3Aid%3D%3E%22initech%3Afinance%22%2C+%3Ahref%3D%3E%22%2Fgrs%2Forgs%2Finitech%3Afinance%22%2C+%3Akind%3D%3E%22org%22%7D"
+          }
+        },
+        "example": {
+          "name": "staging",
+          "display_name": "Staging",
+          "description": "Staging deployment of Initech CloudJanitor 8.0",
+          "org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          }
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "action_not_implemented": {
+          "description": "The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/projects",
+          "version": "2.0",
+          "example": "/grs/projects"
+        }
+      ]
+    },
+    {
+      "description": "Updates a Project.",
+      "name": "update",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the Project to update",
+              "required": true,
+              "example_definition": "initech:staging",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech:staging",
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": "initech:staging"
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Project"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "display_name": {
+              "description": "Human-readable name for the Project; suitable for presentation in UIs",
+              "required": true,
+              "example_definition": "Staging",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Staging"
+            },
+            "name": {
+              "description": "URL-friendly name for the Project. Only letters, numbers and basic\npunctuation are allowed. Used to construct Project ID. Must be\nunique among all Projects within the Org.\n",
+              "required": true,
+              "example_definition": "project1",
+              "options": {
+                "regexp": "(?-mix:^[\\w._-]+$)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "project1"
+            },
+            "description": {
+              "description": "Long-form description of the Project",
+              "example_definition": "Staging deployment of Initech CloudJanitor 8.0",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Staging deployment of Initech CloudJanitor 8.0"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "display_name",
+                "name"
+              ]
+            }
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"display_name\": \"Staging\",\n  \"name\": \"project1\",\n  \"description\": \"Staging deployment of Initech CloudJanitor 8.0\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "display_name=Staging&name=project1&description=Staging+deployment+of+Initech+CloudJanitor+8.0"
+          }
+        },
+        "example": {
+          "display_name": "Staging",
+          "name": "project1",
+          "description": "Staging deployment of Initech CloudJanitor 8.0"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "action_not_implemented": {
+          "description": "The requested action is not implemented.\n",
+          "status": 400,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/grs/projects/:id",
+          "version": "2.0",
+          "example": "/grs/projects/initech:staging"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::Projects",
+  "display_name": "Projects",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

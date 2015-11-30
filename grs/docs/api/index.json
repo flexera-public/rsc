@@ -1,0 +1,140 @@
+{
+  "2.0": {
+    "AccessRules": {
+      "controller": "V2-Controllers-AccessRules",
+      "name": "V2::Controllers::AccessRules",
+      "media_type": "V2-MediaTypes-AccessRule"
+    },
+    "Groups": {
+      "controller": "V2-Controllers-Groups",
+      "name": "V2::Controllers::Groups",
+      "media_type": "V2-MediaTypes-Group"
+    },
+    "GroupUsers": {
+      "controller": "V2-Controllers-GroupUsers",
+      "name": "V2::Controllers::GroupUsers",
+      "parent": "V2-Controllers-Groups",
+      "media_type": "V2-MediaTypes-User"
+    },
+    "IdentityProviders": {
+      "controller": "V2-Controllers-IdentityProviders",
+      "name": "V2::Controllers::IdentityProviders",
+      "media_type": "V2-MediaTypes-IdentityProvider"
+    },
+    "Orgs": {
+      "controller": "V2-Controllers-Orgs",
+      "name": "V2::Controllers::Orgs",
+      "media_type": "V2-MediaTypes-Org"
+    },
+    "OrgGroups": {
+      "controller": "V2-Controllers-OrgGroups",
+      "name": "V2::Controllers::OrgGroups",
+      "parent": "V2-Controllers-Orgs",
+      "media_type": "V2-MediaTypes-Group"
+    },
+    "OrgProjects": {
+      "controller": "V2-Controllers-OrgProjects",
+      "name": "V2::Controllers::OrgProjects",
+      "parent": "V2-Controllers-Orgs",
+      "media_type": "V2-MediaTypes-Project"
+    },
+    "Users": {
+      "controller": "V2-Controllers-Users",
+      "name": "V2::Controllers::Users",
+      "media_type": "V2-MediaTypes-User"
+    },
+    "OrgRoles": {
+      "controller": "V2-Controllers-OrgRoles",
+      "name": "V2::Controllers::OrgRoles",
+      "parent": "V2-Controllers-Orgs",
+      "media_type": "V2-MediaTypes-Role"
+    },
+    "OrgUsers": {
+      "controller": "V2-Controllers-OrgUsers",
+      "name": "V2::Controllers::OrgUsers",
+      "parent": "V2-Controllers-Orgs",
+      "media_type": "V2-MediaTypes-User"
+    },
+    "Projects": {
+      "controller": "V2-Controllers-Projects",
+      "name": "V2::Controllers::Projects",
+      "media_type": "V2-MediaTypes-Project"
+    },
+    "ProvisioningRules": {
+      "controller": "V2-Controllers-ProvisioningRules",
+      "name": "V2::Controllers::ProvisioningRules",
+      "media_type": "V2-MediaTypes-ProvisioningRule"
+    },
+    "ProvisioningTemplates": {
+      "controller": "V2-Controllers-ProvisioningTemplates",
+      "name": "V2::Controllers::ProvisioningTemplates",
+      "parent": "V2-Controllers-IdentityProviders",
+      "media_type": "V2-MediaTypes-ProvisioningTemplate"
+    },
+    "ProvisioningTemplateRules": {
+      "controller": "V2-Controllers-ProvisioningTemplateRules",
+      "name": "V2::Controllers::ProvisioningTemplateRules",
+      "parent": "V2-Controllers-ProvisioningTemplates",
+      "media_type": "V2-MediaTypes-ProvisioningRule"
+    },
+    "UserGroups": {
+      "controller": "V2-Controllers-UserGroups",
+      "name": "V2::Controllers::UserGroups",
+      "parent": "V2-Controllers-Users",
+      "media_type": "V2-MediaTypes-Group"
+    },
+    "UserIdentities": {
+      "controller": "V2-Controllers-UserIdentities",
+      "name": "V2::Controllers::UserIdentities",
+      "media_type": "V2-MediaTypes-UserIdentity"
+    },
+    "UserOrgs": {
+      "controller": "V2-Controllers-UserOrgs",
+      "name": "V2::Controllers::UserOrgs",
+      "parent": "V2-Controllers-Users",
+      "media_type": "V2-MediaTypes-Org"
+    },
+    "UserUserIdentities": {
+      "controller": "V2-Controllers-UserUserIdentities",
+      "name": "V2::Controllers::UserUserIdentities",
+      "parent": "V2-Controllers-Users",
+      "media_type": "V2-MediaTypes-UserIdentity"
+    },
+    "FieldSelector": {
+      "kind": "Praxis-Extensions-FieldSelection-FieldSelector"
+    },
+    "ResourceTimestamps": {
+      "kind": "Types-ResourceTimestamps"
+    },
+    "ChildOrgCollectionSummary": {
+      "media_type": "V2-MediaTypes-Org-ChildOrgCollectionSummary"
+    },
+    "OrgProjectCollectionSummary": {
+      "media_type": "V2-MediaTypes-Project-OrgProjectCollectionSummary"
+    },
+    "OrgUserCollectionSummary": {
+      "media_type": "V2-MediaTypes-User-OrgUserCollectionSummary"
+    },
+    "OrgGroupCollectionSummary": {
+      "media_type": "V2-MediaTypes-Group-OrgGroupCollectionSummary"
+    },
+    "UserGroupCollectionSummary": {
+      "media_type": "V2-MediaTypes-Group-UserGroupCollectionSummary"
+    },
+    "UserOrgCollectionSummary": {
+      "media_type": "V2-MediaTypes-Org-UserOrgCollectionSummary"
+    },
+    "GroupUserCollectionSummary": {
+      "media_type": "V2-MediaTypes-User-GroupUserCollectionSummary"
+    },
+    "ProvisioningRuleCollectionSummary": {
+      "media_type": "V2-MediaTypes-ProvisioningRule-ProvisioningRuleCollectionSummary"
+    },
+    "ProvisioningTemplateCollectionSummary": {
+      "media_type": "V2-MediaTypes-ProvisioningTemplate-ProvisioningTemplateCollectionSummary"
+    },
+    "Privilege": {
+      "media_type": "V2-MediaTypes-Privilege"
+    }
+  }
+}

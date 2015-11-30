@@ -18,4 +18,7 @@
 // CA 1.0
 //go:generate praxisgen -metadata=ca/cac/docs/api -output=ca/cac -pkg=cac -target=1.0 -client=API
 
+// GRS 2.0
+//go:generate praxisgen -metadata=grs/docs/api -output=grs -pkg=grs -target=2.0 -client=API
+
 package main

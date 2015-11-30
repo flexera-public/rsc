@@ -1,0 +1,1022 @@
+{
+  "description": "Group sub-collection of a user",
+  "media_type": {
+    "name": "V2::MediaTypes::Group",
+    "family": "hash",
+    "id": "V2-MediaTypes-Group",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all Groups of which the User is a member.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "ids": {
+              "description": "Comma separated list of Group IDs",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "385,347",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "filter": {
+              "description": "Filter by attribute",
+              "example_definition": "org_id=MyOrgId",
+              "type": {
+                "name": "QueryFilter",
+                "family": "any",
+                "id": null,
+                "filters": {
+                  "org_id": {
+                    "description": "Org ID by which to filter Groups",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  },
+                  "name": {
+                    "description": "Name by which to filter Groups",
+                    "options": {
+                      "allow_match": "partial"
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  }
+                },
+                "options": {
+                  "description": "Filter by attribute",
+                  "example": "org_id=MyOrgId"
+                }
+              },
+              "example": "org_id=MyOrgId",
+              "source": "query"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "bortz,hawer,ambassy",
+          "ids": "882,637,766,226",
+          "view": "link",
+          "filter": "org_id=MyOrgId",
+          "user_id": 755
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Group::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-Group-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::Group"
+              },
+              "type": {
+                "name": "V2::MediaTypes::Group",
+                "family": "hash",
+                "id": "V2-MediaTypes-Group",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.group+json; type=collection",
+                "body": "[\n  {\n    \"id\": 677,\n    \"href\": \"/grs/groups/677\",\n    \"name\": \"admin\",\n    \"description\": \"Administration Department\",\n    \"kind\": \"group\",\n    \"timestamps\": {\n      \"created_at\": \"2013-10-25T00:00:00+00:00\",\n      \"updated_at\": \"2016-07-21T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"org\": {\n        \"id\": \"initech:finance\",\n        \"href\": \"/grs/orgs/initech:finance\",\n        \"kind\": \"org\"\n      },\n      \"users\": {\n        \"href\": \"/grs/groups/1/users\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/users/:user_id/groups",
+          "version": "2.0",
+          "example": "/grs/users/116/groups"
+        }
+      ]
+    },
+    {
+      "description": "Shows a Group of which the User is a member.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the Group to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "bortz,hawer,ambassy",
+          "id": 360,
+          "view": "link",
+          "user_id": 755
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Group",
+            "family": "hash",
+            "id": "V2-MediaTypes-Group",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.group+json",
+                "body": "{\n  \"id\": 375,\n  \"href\": \"/grs/groups/375\",\n  \"name\": \"admin\",\n  \"description\": \"Administration Department\",\n  \"kind\": \"group\",\n  \"timestamps\": {\n    \"created_at\": \"2013-12-23T00:00:00+00:00\",\n    \"updated_at\": \"2016-09-18T00:00:00+00:00\"\n  },\n  \"links\": {\n    \"org\": {\n      \"id\": \"initech:finance\",\n      \"href\": \"/grs/orgs/initech:finance\",\n      \"kind\": \"org\"\n    },\n    \"users\": {\n      \"href\": \"/grs/groups/1/users\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/users/:user_id/groups/:id",
+          "version": "2.0",
+          "example": "/grs/users/116/groups/606"
+        }
+      ]
+    },
+    {
+      "description": "Creates a Group membership for the User.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "user_id": 755
+        }
+      },
+      "payload": {
+        "description": "Group to which the User must be added",
+        "required": true,
+        "type": {
+          "name": "Types::Reference",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "Unique ID of the Group",
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606
+            },
+            "href": {
+              "description": "Href for the Group",
+              "example_definition": "#<Proc:0x007fdc7b96e358@/Users/james/rsgit/global_resource_service/design/v2/media_types/group.rb:15>",
+              "type": {
+                "name": "Types::ApiHref",
+                "family": "string",
+                "id": null,
+                "target_resource": {
+                  "name": "V2::Definitions::Groups",
+                  "media_type_id": "V2-MediaTypes-Group",
+                  "display_name": "Groups"
+                }
+              },
+              "example": "/grs/groups/606"
+            },
+            "kind": {
+              "description": "The string 'group'",
+              "values": [
+                "group"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "group"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"id\": 606,\n  \"href\": \"/grs/groups/606\",\n  \"kind\": \"group\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "id=606&href=%2Fgrs%2Fgroups%2F606&kind=group"
+          }
+        },
+        "example": {
+          "id": 360,
+          "href": "/grs/groups/360",
+          "kind": "group"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "conflict": {
+          "description": "The requested resource already exists.\n",
+          "status": 409,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/users/:user_id/groups",
+          "version": "2.0",
+          "example": "/grs/users/116/groups"
+        }
+      ]
+    },
+    {
+      "description": "Replaces the Group membership(s) for the User.",
+      "name": "replace",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "saml_only": {
+              "description": "Replace only SAML-based Groups, if set to true",
+              "type": {
+                "name": "Boolean",
+                "family": "boolean",
+                "id": "Attributor-Boolean"
+              },
+              "source": "query"
+            },
+            "org_href": {
+              "description": "Replace only the Groups that belongs to a given Org",
+              "example_definition": "/grs/orgs/MyOrg:org1",
+              "type": {
+                "name": "Types::ApiHref",
+                "family": "string",
+                "id": null,
+                "target_resource": {
+                  "name": "V2::Definitions::Orgs",
+                  "media_type_id": "V2-MediaTypes-Org",
+                  "display_name": "Orgs"
+                }
+              },
+              "example": "/grs/orgs/MyOrg:org1",
+              "source": "query"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "saml_only": true,
+          "org_href": "/grs/orgs/MyOrg:org1",
+          "user_id": 755
+        }
+      },
+      "payload": {
+        "description": "Group memberships to be replaced for the User",
+        "required": true,
+        "type": {
+          "name": "Collection",
+          "family": "array",
+          "id": null,
+          "options": {
+          },
+          "member_attribute": {
+            "type": {
+              "name": "Types::Reference",
+              "family": "hash",
+              "id": null,
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "attributes": {
+                "id": {
+                  "description": "Unique ID of the Group",
+                  "type": {
+                    "name": "Integer",
+                    "family": "numeric",
+                    "id": "Attributor-Integer"
+                  },
+                  "example": 439
+                },
+                "href": {
+                  "description": "Href for the Group",
+                  "example_definition": "#<Proc:0x007fdc7b96e358@/Users/james/rsgit/global_resource_service/design/v2/media_types/group.rb:15>",
+                  "type": {
+                    "name": "Types::ApiHref",
+                    "family": "string",
+                    "id": null,
+                    "target_resource": {
+                      "name": "V2::Definitions::Groups",
+                      "media_type_id": "V2-MediaTypes-Group",
+                      "display_name": "Groups"
+                    }
+                  },
+                  "example": "/grs/groups/439"
+                },
+                "kind": {
+                  "description": "The string 'group'",
+                  "values": [
+                    "group"
+                  ],
+                  "type": {
+                    "name": "String",
+                    "family": "string",
+                    "id": "Attributor-String"
+                  },
+                  "example": "group"
+                }
+              },
+              "requirements": [
+
+              ]
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "[\n  {\n    \"id\": 439,\n    \"href\": \"/grs/groups/439\",\n    \"kind\": \"group\"\n  }\n]"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "%7B%3Aid%3D%3E439%2C+%3Ahref%3D%3E%22%2Fgrs%2Fgroups%2F439%22%2C+%3Akind%3D%3E%22group%22%7D"
+          }
+        },
+        "example": [
+          {
+            "id": 725,
+            "href": "/grs/groups/725",
+            "kind": "group"
+          }
+        ]
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/grs/users/:user_id/groups",
+          "version": "2.0",
+          "example": "/grs/users/116/groups"
+        }
+      ]
+    },
+    {
+      "description": "Deletes one (or all) Group membership(s) for the User.",
+      "name": "delete",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the Group to delete",
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": 360,
+          "user_id": 755
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/grs/users/:user_id/groups(/:id)?",
+          "version": "2.0",
+          "example": "/grs/users/116/groups/606"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::UserGroups",
+  "parent": "V2-Definitions-Users",
+  "display_name": "UserGroups",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

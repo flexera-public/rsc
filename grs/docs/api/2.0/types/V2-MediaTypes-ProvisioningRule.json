@@ -1,0 +1,256 @@
+{
+  "name": "V2::MediaTypes::ProvisioningRule",
+  "family": "hash",
+  "id": "V2-MediaTypes-ProvisioningRule",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the ProvisioningRule",
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "description": "Href of the ProvisioningRule",
+      "example_definition": "#<Proc:0x007fdc7c3c4a00@/Users/james/rsgit/global_resource_service/design/v2/media_types/provisioning_rule.rb:14>",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::ProvisioningRules",
+          "media_type_id": "V2-MediaTypes-ProvisioningRule",
+          "display_name": "ProvisioningRules"
+        }
+      }
+    },
+    "description": {
+      "description": "Description of the ProvisioningRule",
+      "example_definition": "Provisioning Rules for Project Leads",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "description": "The string 'provisioning_rule'",
+      "values": [
+        "provisioning_rule"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "regex": {
+      "description": "Regex rules to decide if the Group is selected from the RPML output of the template",
+      "example_definition": "Project Lead",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::ProvisioningRule"
+      },
+      "type": {
+        "name": "V2::MediaTypes::ProvisioningRule::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-ProvisioningRule-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "group": {
+            "description": "Group to which the ProvisioningRule belongs",
+            "options": {
+              "reference": "V2::MediaTypes::Group"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Group",
+              "family": "hash",
+              "id": "V2-MediaTypes-Group",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          },
+          "provisioning_template": {
+            "description": "ProvisioningTemplate to which the ProvisioningRule belongs",
+            "options": {
+              "reference": "V2::MediaTypes::ProvisioningTemplate"
+            },
+            "type": {
+              "name": "V2::MediaTypes::ProvisioningTemplate",
+              "family": "hash",
+              "id": "V2-MediaTypes-ProvisioningTemplate",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "group": {
+                "view": "link"
+              },
+              "provisioning_template": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "group": {
+                "view": "link"
+              },
+              "provisioning_template": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "regex": {
+        },
+        "timestamps": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 161,
+        "href": "/grs/provisioning_rules/161",
+        "description": "Provisioning Rules for Project Leads",
+        "kind": "provisioning_rule",
+        "regex": "Project Lead",
+        "timestamps": {
+          "created_at": "2013-02-25T00:00:00+00:00",
+          "updated_at": "2015-11-22T00:00:00+00:00"
+        },
+        "links": {
+          "group": {
+            "id": 333,
+            "name": "admin",
+            "href": "/grs/groups/333",
+            "kind": "group"
+          },
+          "provisioning_template": {
+            "id": 514,
+            "href": "/grs/identity_providers/1/provisioning_templates/514",
+            "name": "My ProvisioningTemplate",
+            "kind": "provisioning_template"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 161,
+        "href": "/grs/provisioning_rules/161",
+        "kind": "provisioning_rule"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.provisioning_rule",
+  "description": "Represents a ProvisioningRule resource",
+  "display_name": "ProvisioningRule",
+  "example": {
+    "id": 161,
+    "href": "/grs/provisioning_rules/161",
+    "description": "Provisioning Rules for Project Leads",
+    "kind": "provisioning_rule",
+    "regex": "Project Lead",
+    "timestamps": {
+      "created_at": "2013-02-25T00:00:00+00:00",
+      "updated_at": "2015-11-22T00:00:00+00:00"
+    },
+    "links": {
+      "group": {
+        "id": 333,
+        "name": "admin",
+        "href": "/grs/groups/333",
+        "kind": "group"
+      },
+      "provisioning_template": {
+        "id": 514,
+        "href": "/grs/identity_providers/1/provisioning_templates/514",
+        "name": "My ProvisioningTemplate",
+        "kind": "provisioning_template"
+      }
+    }
+  }
+}

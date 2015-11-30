@@ -1,0 +1,46 @@
+{
+  "name": "V2::MediaTypes::Project::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-Project-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "org": {
+      "description": "Org to which the Project belongs",
+      "options": {
+        "reference": "V2::MediaTypes::Org"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Org",
+        "family": "hash",
+        "id": "V2-MediaTypes-Org",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "org": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

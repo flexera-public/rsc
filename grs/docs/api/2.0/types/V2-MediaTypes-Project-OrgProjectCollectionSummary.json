@@ -1,0 +1,45 @@
+{
+  "name": "V2::MediaTypes::Project::OrgProjectCollectionSummary",
+  "family": "hash",
+  "id": "V2-MediaTypes-Project-OrgProjectCollectionSummary",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "href": {
+      "description": "Href for the Project collection",
+      "example_definition": "/grs/orgs/org1/projects",
+      "type": {
+        "name": "URI",
+        "family": "string",
+        "id": "Attributor-URI"
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "link": {
+      "attributes": {
+        "href": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "href": "/grs/orgs/org1/projects"
+      }
+    }
+  },
+  "identifier": "",
+  "description": null,
+  "display_name": "OrgProjectCollectionSummary",
+  "example": {
+    "href": "/grs/orgs/org1/projects"
+  }
+}

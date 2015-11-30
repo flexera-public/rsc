@@ -1,0 +1,245 @@
+{
+  "name": "V2::MediaTypes::UserIdentity",
+  "family": "hash",
+  "id": "V2-MediaTypes-UserIdentity",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the UserIdentity",
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "description": "Href of the UserIdentity",
+      "example_definition": "#<Proc:0x007fdc7cbab598@/Users/james/rsgit/global_resource_service/design/v2/media_types/user_identity.rb:19>",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::UserIdentities",
+          "media_type_id": "V2-MediaTypes-UserIdentity",
+          "display_name": "UserIdentities"
+        }
+      }
+    },
+    "kind": {
+      "description": "The string 'user_identity'",
+      "values": [
+        "user_identity"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "principal_uid": {
+      "description": "Identifier that uniquely identifies the User within the context of the IdentityProvider",
+      "example_definition": "https://pgibbons.pip.verisignlabs.com/",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::UserIdentity"
+      },
+      "type": {
+        "name": "V2::MediaTypes::UserIdentity::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-UserIdentity-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "identity_provider": {
+            "description": "Href of the IdentityProvider of this UserIdentity",
+            "options": {
+              "reference": "V2::MediaTypes::IdentityProvider"
+            },
+            "type": {
+              "name": "V2::MediaTypes::IdentityProvider",
+              "family": "hash",
+              "id": "V2-MediaTypes-IdentityProvider",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          },
+          "user": {
+            "description": "Href of the User of this UserIdentity",
+            "options": {
+              "reference": "V2::MediaTypes::User"
+            },
+            "type": {
+              "name": "V2::MediaTypes::User",
+              "family": "hash",
+              "id": "V2-MediaTypes-User",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "identity_provider": {
+                "view": "link"
+              },
+              "user": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "identity_provider": {
+                "view": "link"
+              },
+              "user": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "timestamps": {
+        },
+        "principal_uid": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 451,
+        "href": "/grs/user_identities/451",
+        "kind": "user_identity",
+        "timestamps": {
+          "created_at": "2013-01-23T00:00:00+00:00",
+          "updated_at": "2015-10-20T00:00:00+00:00"
+        },
+        "principal_uid": "https://pgibbons.pip.verisignlabs.com/",
+        "links": {
+          "identity_provider": {
+            "id": 215,
+            "href": "/grs/identity_providers/215",
+            "kind": "identity_provider"
+          },
+          "user": {
+            "id": 98,
+            "href": "/grs/users/98",
+            "kind": "user",
+            "email": "bunk@groundlessly.com",
+            "first_name": "Valorie",
+            "last_name": "Kshlerin"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 451,
+        "href": "/grs/user_identities/451",
+        "kind": "user_identity"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.user_identity",
+  "description": "Represents a UserIdentity resource, which defines a relationship between\na User and an IdentityProvider.\n",
+  "display_name": "UserIdentity",
+  "example": {
+    "id": 451,
+    "href": "/grs/user_identities/451",
+    "kind": "user_identity",
+    "timestamps": {
+      "created_at": "2013-01-23T00:00:00+00:00",
+      "updated_at": "2015-10-20T00:00:00+00:00"
+    },
+    "principal_uid": "https://pgibbons.pip.verisignlabs.com/",
+    "links": {
+      "identity_provider": {
+        "id": 215,
+        "href": "/grs/identity_providers/215",
+        "kind": "identity_provider"
+      },
+      "user": {
+        "id": 98,
+        "href": "/grs/users/98",
+        "kind": "user",
+        "email": "bunk@groundlessly.com",
+        "first_name": "Valorie",
+        "last_name": "Kshlerin"
+      }
+    }
+  }
+}

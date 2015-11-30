@@ -1,0 +1,68 @@
+{
+  "name": "V2::MediaTypes::IdentityProvider::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-IdentityProvider-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "org": {
+      "description": "Org to which the IdentityProvider belongs",
+      "options": {
+        "reference": "V2::MediaTypes::Org"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Org",
+        "family": "hash",
+        "id": "V2-MediaTypes-Org",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "provisioning_templates": {
+      "description": "ProvisioningTemplates belonging to the IdentityProvider",
+      "options": {
+        "reference": "V2::MediaTypes::ProvisioningTemplate::ProvisioningTemplateCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::ProvisioningTemplate::ProvisioningTemplateCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-ProvisioningTemplate-ProvisioningTemplateCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "org": {
+          "view": "link"
+        },
+        "provisioning_templates": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

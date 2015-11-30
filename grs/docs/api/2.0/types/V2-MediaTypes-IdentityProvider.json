@@ -1,0 +1,624 @@
+{
+  "name": "V2::MediaTypes::IdentityProvider",
+  "family": "hash",
+  "id": "V2-MediaTypes-IdentityProvider",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the IdentityProvider",
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "description": "Href of the IdentityProvider",
+      "example_definition": "#<Proc:0x007fdc7c19be18@/Users/james/rsgit/global_resource_service/design/v2/media_types/identity_provider.rb:15>",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::IdentityProviders",
+          "media_type_id": "V2-MediaTypes-IdentityProvider",
+          "display_name": "IdentityProviders"
+        }
+      }
+    },
+    "name": {
+      "description": "User-friendly name of the IdentityProvider",
+      "example_definition": "Initech ADFS",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "description": {
+      "description": "Description of the IdentityProvider",
+      "example_definition": "Federation gateway for our Active Directory domain",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "description": "The string 'identity_provider'",
+      "values": [
+        "identity_provider"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "protocol_type": {
+      "description": "Identity management protocol supported by this provider",
+      "values": [
+        "OpenID",
+        "SAML 2.0"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "protocol_uid": {
+      "description": "Protocol-specific unique identifier (SAML EntityID or OpenID Provider URL)",
+      "example_definition": "https://adfs.initech.com/saml/metadata",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "discovery_hint": {
+      "description": "SSO Identifier (must be in the form of a domain name)",
+      "example_definition": "initech.com",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "protocol_details": {
+      "description": "Protocol-specific settings; keys vary depending on protocol_type",
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "family": "hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "Object",
+            "family": "any",
+            "id": "Attributor-Object"
+          }
+        },
+        "attributes": {
+          "sso_url": {
+            "description": "SAML URL that accepts AuthnRequests for SP-initiated login",
+            "example_definition": "https://initech-test.oktapreview.com/app/initech1234/xsf879xps/sso/saml",
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "sso_bindings": {
+            "description": "SAML bindings that URL can handle",
+            "example_definition": "[\"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST\"]",
+            "type": {
+              "name": "Collection",
+              "family": "array",
+              "id": null,
+              "options": {
+              },
+              "member_attribute": {
+                "type": {
+                  "name": "String",
+                  "family": "string",
+                  "id": "Attributor-String"
+                }
+              }
+            }
+          },
+          "compress_request": {
+            "default": false,
+            "type": {
+              "name": "Boolean",
+              "family": "boolean",
+              "id": "Attributor-Boolean"
+            }
+          },
+          "x509_cert": {
+            "description": "SAML certificate with which the provider will sign its assertion",
+            "example_definition": "-----BEGIN CERTIFICATE-----\\nMIIDpDCCAoygAwIBAgIGAU0vil/D...sa8EAf\\r\\n-----END CERTIFICATE-----\\n",
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "provider_url": {
+            "description": "OpenID provider URL (as obtained through discovery)",
+            "example_definition": "https://pip.verisignlabs.com/",
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          }
+        },
+        "requirements": [
+
+        ]
+      }
+    },
+    "default_provisioning_template": {
+      "description": "The default ProvisioningTemplate for the IdentityProvider",
+      "options": {
+        "reference": "V2::MediaTypes::ProvisioningTemplate"
+      },
+      "type": {
+        "name": "V2::MediaTypes::ProvisioningTemplate",
+        "family": "hash",
+        "id": "V2-MediaTypes-ProvisioningTemplate",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "email_domains": {
+      "description": "Internet email domains that this provider is allowed to vouch for",
+      "example_definition": "[\"initech.com\", \"initech.co.uk\"]",
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::IdentityProvider"
+      },
+      "type": {
+        "name": "V2::MediaTypes::IdentityProvider::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-IdentityProvider-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "org": {
+            "description": "Org to which the IdentityProvider belongs",
+            "options": {
+              "reference": "V2::MediaTypes::Org"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Org",
+              "family": "hash",
+              "id": "V2-MediaTypes-Org",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          },
+          "provisioning_templates": {
+            "description": "ProvisioningTemplates belonging to the IdentityProvider",
+            "options": {
+              "reference": "V2::MediaTypes::ProvisioningTemplate::ProvisioningTemplateCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::ProvisioningTemplate::ProvisioningTemplateCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-ProvisioningTemplate-ProvisioningTemplateCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "org": {
+                "view": "link"
+              },
+              "provisioning_templates": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "org": {
+                "view": "link"
+              },
+              "provisioning_templates": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "protocol_uid": {
+        },
+        "protocol_type": {
+        },
+        "protocol_details": {
+        },
+        "discovery_hint": {
+        },
+        "default_provisioning_template": {
+          "view": "default"
+        },
+        "email_domains": {
+        },
+        "timestamps": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 49,
+        "href": "/grs/identity_providers/49",
+        "name": "Initech ADFS",
+        "description": "Federation gateway for our Active Directory domain",
+        "kind": "identity_provider",
+        "protocol_uid": "https://adfs.initech.com/saml/metadata",
+        "protocol_type": "OpenID",
+        "protocol_details": {
+          "sso_url": "https://initech-test.oktapreview.com/app/initech1234/xsf879xps/sso/saml",
+          "sso_bindings": [
+            "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+          ],
+          "compress_request": false,
+          "x509_cert": "-----BEGIN CERTIFICATE-----\\nMIIDpDCCAoygAwIBAgIGAU0vil/D...sa8EAf\\r\\n-----END CERTIFICATE-----\\n",
+          "provider_url": "https://pip.verisignlabs.com/"
+        },
+        "discovery_hint": "initech.com",
+        "default_provisioning_template": {
+          "id": 847,
+          "href": "/grs/identity_providers/1/provisioning_templates/847",
+          "kind": "provisioning_template",
+          "name": "My ProvisioningTemplate",
+          "description": "My ProvisioningTemplate description",
+          "timestamps": {
+            "created_at": "2013-06-14T00:00:00+00:00",
+            "updated_at": "2016-03-10T00:00:00+00:00"
+          },
+          "provisioning_rules": [
+            {
+              "id": 540,
+              "href": "/grs/provisioning_rules/540",
+              "description": "Provisioning Rules for Project Leads",
+              "kind": "provisioning_rule",
+              "regex": "Project Lead",
+              "timestamps": {
+                "created_at": "2013-03-25T00:00:00+00:00",
+                "updated_at": "2015-12-20T00:00:00+00:00"
+              },
+              "links": {
+                "group": {
+                  "id": 819,
+                  "name": "admin",
+                  "href": "/grs/groups/819",
+                  "kind": "group"
+                },
+                "provisioning_template": {
+                  "id": 139,
+                  "href": "/grs/identity_providers/1/provisioning_templates/139",
+                  "name": "My ProvisioningTemplate",
+                  "kind": "provisioning_template"
+                }
+              }
+            },
+            {
+              "id": 310,
+              "href": "/grs/provisioning_rules/310",
+              "description": "Provisioning Rules for Project Leads",
+              "kind": "provisioning_rule",
+              "regex": "Project Lead",
+              "timestamps": {
+                "created_at": "2013-11-02T00:00:00+00:00",
+                "updated_at": "2016-07-29T00:00:00+00:00"
+              },
+              "links": {
+                "group": {
+                  "id": 856,
+                  "name": "admin",
+                  "href": "/grs/groups/856",
+                  "kind": "group"
+                },
+                "provisioning_template": {
+                  "id": 81,
+                  "href": "/grs/identity_providers/1/provisioning_templates/81",
+                  "name": "My ProvisioningTemplate",
+                  "kind": "provisioning_template"
+                }
+              }
+            },
+            {
+              "id": 805,
+              "href": "/grs/provisioning_rules/805",
+              "description": "Provisioning Rules for Project Leads",
+              "kind": "provisioning_rule",
+              "regex": "Project Lead",
+              "timestamps": {
+                "created_at": "2013-01-30T00:00:00+00:00",
+                "updated_at": "2015-10-27T00:00:00+00:00"
+              },
+              "links": {
+                "group": {
+                  "id": 886,
+                  "name": "admin",
+                  "href": "/grs/groups/886",
+                  "kind": "group"
+                },
+                "provisioning_template": {
+                  "id": 355,
+                  "href": "/grs/identity_providers/1/provisioning_templates/355",
+                  "name": "My ProvisioningTemplate",
+                  "kind": "provisioning_template"
+                }
+              }
+            }
+          ],
+          "xsl": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>",
+          "links": {
+            "provisioning_rules": {
+              "href": "/grs/provisioning_rules"
+            }
+          }
+        },
+        "email_domains": [
+          "initech.com",
+          "initech.co.uk"
+        ],
+        "timestamps": {
+          "created_at": "2013-11-09T00:00:00+00:00",
+          "updated_at": "2016-08-05T00:00:00+00:00"
+        },
+        "links": {
+          "org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "provisioning_templates": {
+            "href": "/grs/identity_providers/1/provisioning_templates"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 49,
+        "href": "/grs/identity_providers/49",
+        "kind": "identity_provider"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.identity_provider",
+  "description": "Represents an IdentityProvider resource",
+  "display_name": "IdentityProvider",
+  "example": {
+    "id": 49,
+    "href": "/grs/identity_providers/49",
+    "name": "Initech ADFS",
+    "description": "Federation gateway for our Active Directory domain",
+    "kind": "identity_provider",
+    "protocol_type": "OpenID",
+    "protocol_uid": "https://adfs.initech.com/saml/metadata",
+    "discovery_hint": "initech.com",
+    "protocol_details": {
+      "sso_url": "https://initech-test.oktapreview.com/app/initech1234/xsf879xps/sso/saml",
+      "sso_bindings": [
+        "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+      ],
+      "compress_request": false,
+      "x509_cert": "-----BEGIN CERTIFICATE-----\\nMIIDpDCCAoygAwIBAgIGAU0vil/D...sa8EAf\\r\\n-----END CERTIFICATE-----\\n",
+      "provider_url": "https://pip.verisignlabs.com/"
+    },
+    "default_provisioning_template": {
+      "id": 847,
+      "href": "/grs/identity_providers/1/provisioning_templates/847",
+      "kind": "provisioning_template",
+      "name": "My ProvisioningTemplate",
+      "description": "My ProvisioningTemplate description",
+      "timestamps": {
+        "created_at": "2013-06-14T00:00:00+00:00",
+        "updated_at": "2016-03-10T00:00:00+00:00"
+      },
+      "provisioning_rules": [
+        {
+          "id": 540,
+          "href": "/grs/provisioning_rules/540",
+          "description": "Provisioning Rules for Project Leads",
+          "kind": "provisioning_rule",
+          "regex": "Project Lead",
+          "timestamps": {
+            "created_at": "2013-03-25T00:00:00+00:00",
+            "updated_at": "2015-12-20T00:00:00+00:00"
+          },
+          "links": {
+            "group": {
+              "id": 819,
+              "name": "admin",
+              "href": "/grs/groups/819",
+              "kind": "group"
+            },
+            "provisioning_template": {
+              "id": 139,
+              "href": "/grs/identity_providers/1/provisioning_templates/139",
+              "name": "My ProvisioningTemplate",
+              "kind": "provisioning_template"
+            }
+          }
+        },
+        {
+          "id": 310,
+          "href": "/grs/provisioning_rules/310",
+          "description": "Provisioning Rules for Project Leads",
+          "kind": "provisioning_rule",
+          "regex": "Project Lead",
+          "timestamps": {
+            "created_at": "2013-11-02T00:00:00+00:00",
+            "updated_at": "2016-07-29T00:00:00+00:00"
+          },
+          "links": {
+            "group": {
+              "id": 856,
+              "name": "admin",
+              "href": "/grs/groups/856",
+              "kind": "group"
+            },
+            "provisioning_template": {
+              "id": 81,
+              "href": "/grs/identity_providers/1/provisioning_templates/81",
+              "name": "My ProvisioningTemplate",
+              "kind": "provisioning_template"
+            }
+          }
+        },
+        {
+          "id": 805,
+          "href": "/grs/provisioning_rules/805",
+          "description": "Provisioning Rules for Project Leads",
+          "kind": "provisioning_rule",
+          "regex": "Project Lead",
+          "timestamps": {
+            "created_at": "2013-01-30T00:00:00+00:00",
+            "updated_at": "2015-10-27T00:00:00+00:00"
+          },
+          "links": {
+            "group": {
+              "id": 886,
+              "name": "admin",
+              "href": "/grs/groups/886",
+              "kind": "group"
+            },
+            "provisioning_template": {
+              "id": 355,
+              "href": "/grs/identity_providers/1/provisioning_templates/355",
+              "name": "My ProvisioningTemplate",
+              "kind": "provisioning_template"
+            }
+          }
+        }
+      ],
+      "xsl": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>",
+      "links": {
+        "provisioning_rules": {
+          "href": "/grs/provisioning_rules"
+        }
+      }
+    },
+    "email_domains": [
+      "initech.com",
+      "initech.co.uk"
+    ],
+    "timestamps": {
+      "created_at": "2013-11-09T00:00:00+00:00",
+      "updated_at": "2016-08-05T00:00:00+00:00"
+    },
+    "links": {
+      "org": {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "kind": "org"
+      },
+      "provisioning_templates": {
+        "href": "/grs/identity_providers/1/provisioning_templates"
+      }
+    }
+  }
+}

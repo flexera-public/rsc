@@ -1,0 +1,1073 @@
+{
+  "description": "Represents a set of rules applied to Users or Groups for a\ngiven IdentityProvider.\n",
+  "media_type": {
+    "name": "V2::MediaTypes::ProvisioningTemplate",
+    "family": "hash",
+    "id": "V2-MediaTypes-ProvisioningTemplate",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all ProvisioningTemplates for an IdentityProvider.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "ids": {
+              "description": "Comma separated list of ProvisioningTemplate IDs",
+              "example_definition": "205297003,26587123,216295003",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "205297003,26587123,216295003",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "identity_provider_id": {
+              "description": "ID of the IdentityProvider to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 171,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "identity_provider_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "rabat,rebeck,fulcral",
+          "ids": "205297003,26587123,216295003",
+          "view": "default",
+          "identity_provider_id": 7
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::ProvisioningTemplate::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-ProvisioningTemplate-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::ProvisioningTemplate"
+              },
+              "type": {
+                "name": "V2::MediaTypes::ProvisioningTemplate",
+                "family": "hash",
+                "id": "V2-MediaTypes-ProvisioningTemplate",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.provisioning_template+json; type=collection",
+                "body": "[\n  {\n    \"id\": 767,\n    \"href\": \"/grs/identity_providers/1/provisioning_templates/767\",\n    \"kind\": \"provisioning_template\",\n    \"name\": \"My ProvisioningTemplate\",\n    \"description\": \"My ProvisioningTemplate description\",\n    \"timestamps\": {\n      \"created_at\": \"2014-08-09T00:00:00+00:00\",\n      \"updated_at\": \"2017-05-05T00:00:00+00:00\"\n    },\n    \"provisioning_rules\": [\n      {\n        \"id\": 817,\n        \"href\": \"/grs/provisioning_rules/817\",\n        \"description\": \"Provisioning Rules for Project Leads\",\n        \"kind\": \"provisioning_rule\",\n        \"regex\": \"Project Lead\",\n        \"timestamps\": {\n          \"created_at\": \"2014-07-05T00:00:00+00:00\",\n          \"updated_at\": \"2017-03-31T00:00:00+00:00\"\n        },\n        \"links\": {\n          \"group\": {\n            \"id\": 571,\n            \"name\": \"admin\",\n            \"href\": \"/grs/groups/571\",\n            \"kind\": \"group\"\n          },\n          \"provisioning_template\": {\n            \"id\": 748,\n            \"href\": \"/grs/identity_providers/1/provisioning_templates/748\",\n            \"name\": \"My ProvisioningTemplate\",\n            \"kind\": \"provisioning_template\"\n          }\n        }\n      }\n    ],\n    \"xsl\": \"<xsl:template path=\\\"Attribute/Name(rfc822email)\\\"><email><xsl:value/></email></xsl:template>\",\n    \"links\": {\n      \"provisioning_rules\": {\n        \"href\": \"/grs/provisioning_rules\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/identity_providers/:identity_provider_id/provisioning_templates",
+          "version": "2.0",
+          "example": "/grs/identity_providers/171/provisioning_templates"
+        }
+      ]
+    },
+    {
+      "description": "Shows a single ProvisioningTemplate for an IdentityProvider.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the ProvisioningTemplate to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "identity_provider_id": {
+              "description": "ID of the IdentityProvider to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 171,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "identity_provider_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "rabat,rebeck,fulcral",
+          "id": 746,
+          "view": "default",
+          "identity_provider_id": 7
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::ProvisioningTemplate",
+            "family": "hash",
+            "id": "V2-MediaTypes-ProvisioningTemplate",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.provisioning_template+json",
+                "body": "{\n  \"id\": 335,\n  \"href\": \"/grs/identity_providers/1/provisioning_templates/335\",\n  \"kind\": \"provisioning_template\",\n  \"name\": \"My ProvisioningTemplate\",\n  \"description\": \"My ProvisioningTemplate description\",\n  \"timestamps\": {\n    \"created_at\": \"2012-11-08T00:00:00+00:00\",\n    \"updated_at\": \"2015-08-05T00:00:00+00:00\"\n  },\n  \"provisioning_rules\": [\n    {\n      \"id\": 556,\n      \"href\": \"/grs/provisioning_rules/556\",\n      \"description\": \"Provisioning Rules for Project Leads\",\n      \"kind\": \"provisioning_rule\",\n      \"regex\": \"Project Lead\",\n      \"timestamps\": {\n        \"created_at\": \"2012-12-13T00:00:00+00:00\",\n        \"updated_at\": \"2015-09-09T00:00:00+00:00\"\n      },\n      \"links\": {\n        \"group\": {\n          \"id\": 642,\n          \"name\": \"admin\",\n          \"href\": \"/grs/groups/642\",\n          \"kind\": \"group\"\n        },\n        \"provisioning_template\": {\n          \"id\": 692,\n          \"href\": \"/grs/identity_providers/1/provisioning_templates/692\",\n          \"name\": \"My ProvisioningTemplate\",\n          \"kind\": \"provisioning_template\"\n        }\n      }\n    },\n    {\n      \"id\": 758,\n      \"href\": \"/grs/provisioning_rules/758\",\n      \"description\": \"Provisioning Rules for Project Leads\",\n      \"kind\": \"provisioning_rule\",\n      \"regex\": \"Project Lead\",\n      \"timestamps\": {\n        \"created_at\": \"2014-07-05T00:00:00+00:00\",\n        \"updated_at\": \"2017-03-31T00:00:00+00:00\"\n      },\n      \"links\": {\n        \"group\": {\n          \"id\": 690,\n          \"name\": \"admin\",\n          \"href\": \"/grs/groups/690\",\n          \"kind\": \"group\"\n        },\n        \"provisioning_template\": {\n          \"id\": 166,\n          \"href\": \"/grs/identity_providers/1/provisioning_templates/166\",\n          \"name\": \"My ProvisioningTemplate\",\n          \"kind\": \"provisioning_template\"\n        }\n      }\n    }\n  ],\n  \"xsl\": \"<xsl:template path=\\\"Attribute/Name(rfc822email)\\\"><email><xsl:value/></email></xsl:template>\",\n  \"links\": {\n    \"provisioning_rules\": {\n      \"href\": \"/grs/provisioning_rules\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/identity_providers/:identity_provider_id/provisioning_templates/:id",
+          "version": "2.0",
+          "example": "/grs/identity_providers/171/provisioning_templates/606"
+        }
+      ]
+    },
+    {
+      "description": "Creates a ProvisioningTemplate for an IdentityProvider.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "identity_provider_id": {
+              "description": "ID of the IdentityProvider to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 171,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "identity_provider_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "identity_provider_id": 7
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "description": {
+              "description": "Description of the ProvisioningTemplate",
+              "example_definition": "My Provisioning Template description",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "My Provisioning Template description"
+            },
+            "name": {
+              "description": "User-friendly name for the ProvisioningTemplate",
+              "required": true,
+              "example_definition": "My ProvisioningTemplate",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "My ProvisioningTemplate"
+            },
+            "xsl": {
+              "description": "XSL definition for ProvisioningTemplate",
+              "required": true,
+              "example_definition": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "name",
+                "xsl"
+              ]
+            }
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"description\": \"My Provisioning Template description\",\n  \"name\": \"My ProvisioningTemplate\",\n  \"xsl\": \"<xsl:template path=\\\"Attribute/Name(rfc822email)\\\"><email><xsl:value/></email></xsl:template>\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "description=My+Provisioning+Template+description&name=My+ProvisioningTemplate&xsl=%3Cxsl%3Atemplate+path%3D%22Attribute%2FName%28rfc822email%29%22%3E%3Cemail%3E%3Cxsl%3Avalue%2F%3E%3C%2Femail%3E%3C%2Fxsl%3Atemplate%3E"
+          }
+        },
+        "example": {
+          "description": "My Provisioning Template description",
+          "name": "My ProvisioningTemplate",
+          "xsl": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/identity_providers/:identity_provider_id/provisioning_templates",
+          "version": "2.0",
+          "example": "/grs/identity_providers/171/provisioning_templates"
+        }
+      ]
+    },
+    {
+      "description": "Updates a ProvisioningTemplate for an IdentityProvider.",
+      "name": "update",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the ProvisioningTemplate to be updated",
+              "required": true,
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "whitefisher",
+              "source": "url"
+            },
+            "identity_provider_id": {
+              "description": "ID of the IdentityProvider to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 171,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "identity_provider_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": "sigillaroid",
+          "identity_provider_id": 7
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "description": {
+              "description": "New description for the ProvisioningTemplate",
+              "example_definition": "MyProvisioning Template description",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "MyProvisioning Template description"
+            },
+            "name": {
+              "description": "New user-friendly name for the ProvisioningTemplate",
+              "example_definition": "My New ProvisioningTemplate",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "My New ProvisioningTemplate"
+            },
+            "xsl": {
+              "description": "New XSL definition for ProvisioningTemplate",
+              "example_definition": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"description\": \"MyProvisioning Template description\",\n  \"name\": \"My New ProvisioningTemplate\",\n  \"xsl\": \"<xsl:template path=\\\"Attribute/Name(rfc822email)\\\"><email><xsl:value/></email></xsl:template>\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "description=MyProvisioning+Template+description&name=My+New+ProvisioningTemplate&xsl=%3Cxsl%3Atemplate+path%3D%22Attribute%2FName%28rfc822email%29%22%3E%3Cemail%3E%3Cxsl%3Avalue%2F%3E%3C%2Femail%3E%3C%2Fxsl%3Atemplate%3E"
+          }
+        },
+        "example": {
+          "description": "MyProvisioning Template description",
+          "name": "My New ProvisioningTemplate",
+          "xsl": "<xsl:template path=\"Attribute/Name(rfc822email)\"><email><xsl:value/></email></xsl:template>"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/grs/identity_providers/:identity_provider_id/provisioning_templates/:id",
+          "version": "2.0",
+          "example": "/grs/identity_providers/171/provisioning_templates/whitefisher"
+        }
+      ]
+    },
+    {
+      "description": "Deletes a ProvisioningTemplate. This action deletes a\nProvisioningTemplate only if it does not have any ProvisioningRules.\nIf the ProvisioningTemplate has ProvisioningRules associated with it,\nthe ProvisioningRule associations must be deleted before trying to\ndelete the ProvisioningTemplate.\n",
+      "name": "delete",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the ProvisioningTemplate to delete",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "identity_provider_id": {
+              "description": "ID of the IdentityProvider to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 171,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "identity_provider_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": 746,
+          "identity_provider_id": 7
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/grs/identity_providers/:identity_provider_id/provisioning_templates/:id",
+          "version": "2.0",
+          "example": "/grs/identity_providers/171/provisioning_templates/606"
+        }
+      ]
+    },
+    {
+      "description": "Marks a ProvisioningTemplate as the default for the IdentityProvider.",
+      "name": "make_default",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningTemplate"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the ProvisioningTemplate to make default",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "identity_provider_id": {
+              "description": "ID of the IdentityProvider to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 171,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "identity_provider_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": 746,
+          "identity_provider_id": 7
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/grs/identity_providers/:identity_provider_id/provisioning_templates/:id/actions/make_default",
+          "version": "2.0",
+          "example": "/grs/identity_providers/171/provisioning_templates/606/actions/make_default"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::ProvisioningTemplates",
+  "parent": "V2-Definitions-IdentityProviders",
+  "display_name": "ProvisioningTemplates",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

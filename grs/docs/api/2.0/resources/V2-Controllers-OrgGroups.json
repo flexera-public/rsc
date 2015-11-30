@@ -1,0 +1,266 @@
+{
+  "description": "Group sub-collection of an Org.",
+  "media_type": {
+    "name": "V2::MediaTypes::Group",
+    "family": "hash",
+    "id": "V2-MediaTypes-Group",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all Groups in an Org.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Group"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "ids": {
+              "description": "Comma separated list of Group IDs",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "385,347",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "recurse": {
+              "description": "Flag indicating whether child Orgs should be traversed and their\nGroups returned as well\n",
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "family": "boolean",
+                "id": "Attributor-Boolean"
+              },
+              "example": true,
+              "source": "query"
+            },
+            "filter": {
+              "description": "Filter by attribute",
+              "example_definition": "name=myGroup,myOtherGroup",
+              "type": {
+                "name": "QueryFilter",
+                "family": "any",
+                "id": null,
+                "filters": {
+                  "name": {
+                    "description": "Name by which to filter Groups",
+                    "options": {
+                      "allow_match": "partial"
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  }
+                },
+                "options": {
+                  "description": "Filter by attribute",
+                  "example": "name=myGroup,myOtherGroup"
+                }
+              },
+              "example": "name=myGroup,myOtherGroup",
+              "source": "query"
+            },
+            "org_id": {
+              "description": "ID of the Org to show",
+              "required": true,
+              "example_definition": "initech",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech",
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "org_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "Uinta,moosey,endow",
+          "ids": "230,489",
+          "view": "default",
+          "recurse": true,
+          "filter": "name=myGroup,myOtherGroup",
+          "org_id": "initech"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Group::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-Group-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::Group"
+              },
+              "type": {
+                "name": "V2::MediaTypes::Group",
+                "family": "hash",
+                "id": "V2-MediaTypes-Group",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.group+json; type=collection",
+                "body": "[\n  {\n    \"id\": 677,\n    \"href\": \"/grs/groups/677\",\n    \"name\": \"admin\",\n    \"description\": \"Administration Department\",\n    \"kind\": \"group\",\n    \"timestamps\": {\n      \"created_at\": \"2013-10-25T00:00:00+00:00\",\n      \"updated_at\": \"2016-07-21T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"org\": {\n        \"id\": \"initech:finance\",\n        \"href\": \"/grs/orgs/initech:finance\",\n        \"kind\": \"org\"\n      },\n      \"users\": {\n        \"href\": \"/grs/groups/1/users\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/orgs/:org_id/groups",
+          "version": "2.0",
+          "example": "/grs/orgs/initech/groups"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::OrgGroups",
+  "parent": "V2-Definitions-Orgs",
+  "display_name": "OrgGroups",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

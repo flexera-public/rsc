@@ -1,0 +1,233 @@
+{
+  "info": {
+    "schema_version": "1.0",
+    "base_path": "/grs",
+    "version_with": [
+      "header",
+      "params"
+    ],
+    "consumes": [
+      "json",
+      "x-www-form-urlencoded"
+    ],
+    "produces": [
+      "json"
+    ]
+  },
+  "resources": {
+    "V2-Controllers-AccessRules": {
+      "name": "V2::Controllers::AccessRules",
+      "friendly_name": "AccessRules"
+    },
+    "V2-Controllers-Groups": {
+      "name": "V2::Controllers::Groups",
+      "friendly_name": "Groups"
+    },
+    "V2-Controllers-GroupUsers": {
+      "name": "V2::Controllers::GroupUsers",
+      "friendly_name": "GroupUsers"
+    },
+    "V2-Controllers-IdentityProviders": {
+      "name": "V2::Controllers::IdentityProviders",
+      "friendly_name": "IdentityProviders"
+    },
+    "V2-Controllers-Orgs": {
+      "name": "V2::Controllers::Orgs",
+      "friendly_name": "Orgs"
+    },
+    "V2-Controllers-OrgGroups": {
+      "name": "V2::Controllers::OrgGroups",
+      "friendly_name": "OrgGroups"
+    },
+    "V2-Controllers-OrgProjects": {
+      "name": "V2::Controllers::OrgProjects",
+      "friendly_name": "OrgProjects"
+    },
+    "V2-Controllers-Users": {
+      "name": "V2::Controllers::Users",
+      "friendly_name": "Users"
+    },
+    "V2-Controllers-OrgRoles": {
+      "name": "V2::Controllers::OrgRoles",
+      "friendly_name": "OrgRoles"
+    },
+    "V2-Controllers-OrgUsers": {
+      "name": "V2::Controllers::OrgUsers",
+      "friendly_name": "OrgUsers"
+    },
+    "V2-Controllers-Projects": {
+      "name": "V2::Controllers::Projects",
+      "friendly_name": "Projects"
+    },
+    "V2-Controllers-ProvisioningRules": {
+      "name": "V2::Controllers::ProvisioningRules",
+      "friendly_name": "ProvisioningRules"
+    },
+    "V2-Controllers-ProvisioningTemplates": {
+      "name": "V2::Controllers::ProvisioningTemplates",
+      "friendly_name": "ProvisioningTemplates"
+    },
+    "V2-Controllers-ProvisioningTemplateRules": {
+      "name": "V2::Controllers::ProvisioningTemplateRules",
+      "friendly_name": "ProvisioningTemplateRules"
+    },
+    "V2-Controllers-UserGroups": {
+      "name": "V2::Controllers::UserGroups",
+      "friendly_name": "UserGroups"
+    },
+    "V2-Controllers-UserIdentities": {
+      "name": "V2::Controllers::UserIdentities",
+      "friendly_name": "UserIdentities"
+    },
+    "V2-Controllers-UserOrgs": {
+      "name": "V2::Controllers::UserOrgs",
+      "friendly_name": "UserOrgs"
+    },
+    "V2-Controllers-UserUserIdentities": {
+      "name": "V2::Controllers::UserUserIdentities",
+      "friendly_name": "UserUserIdentities"
+    }
+  },
+  "schemas": {
+    "V2-MediaTypes-AccessRule": {
+      "name": "V2::MediaTypes::AccessRule",
+      "friendly_name": "AccessRule"
+    },
+    "V2-MediaTypes-AccessRule-Links": {
+      "name": "V2::MediaTypes::AccessRule::Links",
+      "friendly_name": "AccessRuleLinks"
+    },
+    "Attributor-URI": {
+      "name": "Attributor::URI",
+      "friendly_name": "URI"
+    },
+    "Praxis-Extensions-FieldSelection-FieldSelector": {
+      "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+      "friendly_name": "FieldSelector"
+    },
+    "Attributor-QueryFilter": {
+      "name": "Attributor::QueryFilter",
+      "friendly_name": "QueryFilter"
+    },
+    "V2-MediaTypes-Group": {
+      "name": "V2::MediaTypes::Group",
+      "friendly_name": "Group"
+    },
+    "V2-MediaTypes-User": {
+      "name": "V2::MediaTypes::User",
+      "friendly_name": "User"
+    },
+    "Attributor-TimeZone": {
+      "name": "Attributor::TimeZone",
+      "friendly_name": "TimeZone"
+    },
+    "Types-ResourceTimestamps": {
+      "name": "Types::ResourceTimestamps",
+      "friendly_name": "ResourceTimestamps"
+    },
+    "V2-MediaTypes-Org": {
+      "name": "V2::MediaTypes::Org",
+      "friendly_name": "Org"
+    },
+    "V2-MediaTypes-Org-Links": {
+      "name": "V2::MediaTypes::Org::Links",
+      "friendly_name": "OrgLinks"
+    },
+    "V2-MediaTypes-Org-ChildOrgCollectionSummary": {
+      "name": "V2::MediaTypes::Org::ChildOrgCollectionSummary",
+      "friendly_name": "ChildOrgCollectionSummary"
+    },
+    "V2-MediaTypes-Project-OrgProjectCollectionSummary": {
+      "name": "V2::MediaTypes::Project::OrgProjectCollectionSummary",
+      "friendly_name": "OrgProjectCollectionSummary"
+    },
+    "V2-MediaTypes-User-OrgUserCollectionSummary": {
+      "name": "V2::MediaTypes::User::OrgUserCollectionSummary",
+      "friendly_name": "OrgUserCollectionSummary"
+    },
+    "V2-MediaTypes-Group-OrgGroupCollectionSummary": {
+      "name": "V2::MediaTypes::Group::OrgGroupCollectionSummary",
+      "friendly_name": "OrgGroupCollectionSummary"
+    },
+    "V2-MediaTypes-User-Links": {
+      "name": "V2::MediaTypes::User::Links",
+      "friendly_name": "UserLinks"
+    },
+    "V2-MediaTypes-Group-UserGroupCollectionSummary": {
+      "name": "V2::MediaTypes::Group::UserGroupCollectionSummary",
+      "friendly_name": "UserGroupCollectionSummary"
+    },
+    "V2-MediaTypes-Org-UserOrgCollectionSummary": {
+      "name": "V2::MediaTypes::Org::UserOrgCollectionSummary",
+      "friendly_name": "UserOrgCollectionSummary"
+    },
+    "V2-MediaTypes-Group-Links": {
+      "name": "V2::MediaTypes::Group::Links",
+      "friendly_name": "GroupLinks"
+    },
+    "V2-MediaTypes-User-GroupUserCollectionSummary": {
+      "name": "V2::MediaTypes::User::GroupUserCollectionSummary",
+      "friendly_name": "GroupUserCollectionSummary"
+    },
+    "V2-MediaTypes-IdentityProvider": {
+      "name": "V2::MediaTypes::IdentityProvider",
+      "friendly_name": "IdentityProvider"
+    },
+    "V2-MediaTypes-ProvisioningTemplate": {
+      "name": "V2::MediaTypes::ProvisioningTemplate",
+      "friendly_name": "ProvisioningTemplate"
+    },
+    "V2-MediaTypes-ProvisioningRule": {
+      "name": "V2::MediaTypes::ProvisioningRule",
+      "friendly_name": "ProvisioningRule"
+    },
+    "V2-MediaTypes-ProvisioningRule-Links": {
+      "name": "V2::MediaTypes::ProvisioningRule::Links",
+      "friendly_name": "ProvisioningRuleLinks"
+    },
+    "V2-MediaTypes-ProvisioningTemplate-Links": {
+      "name": "V2::MediaTypes::ProvisioningTemplate::Links",
+      "friendly_name": "ProvisioningTemplateLinks"
+    },
+    "V2-MediaTypes-ProvisioningRule-ProvisioningRuleCollectionSummary": {
+      "name": "V2::MediaTypes::ProvisioningRule::ProvisioningRuleCollectionSummary",
+      "friendly_name": "ProvisioningRuleCollectionSummary"
+    },
+    "V2-MediaTypes-IdentityProvider-Links": {
+      "name": "V2::MediaTypes::IdentityProvider::Links",
+      "friendly_name": "IdentityProviderLinks"
+    },
+    "V2-MediaTypes-ProvisioningTemplate-ProvisioningTemplateCollectionSummary": {
+      "name": "V2::MediaTypes::ProvisioningTemplate::ProvisioningTemplateCollectionSummary",
+      "friendly_name": "ProvisioningTemplateCollectionSummary"
+    },
+    "V2-MediaTypes-Project": {
+      "name": "V2::MediaTypes::Project",
+      "friendly_name": "Project"
+    },
+    "V2-MediaTypes-Project-Links": {
+      "name": "V2::MediaTypes::Project::Links",
+      "friendly_name": "ProjectLinks"
+    },
+    "V2-MediaTypes-Role": {
+      "name": "V2::MediaTypes::Role",
+      "friendly_name": "Role"
+    },
+    "V2-MediaTypes-Privilege": {
+      "name": "V2::MediaTypes::Privilege",
+      "friendly_name": "Privilege"
+    },
+    "V2-MediaTypes-Role-Links": {
+      "name": "V2::MediaTypes::Role::Links",
+      "friendly_name": "RoleLinks"
+    },
+    "V2-MediaTypes-UserIdentity": {
+      "name": "V2::MediaTypes::UserIdentity",
+      "friendly_name": "UserIdentity"
+    },
+    "V2-MediaTypes-UserIdentity-Links": {
+      "name": "V2::MediaTypes::UserIdentity::Links",
+      "friendly_name": "UserIdentityLinks"
+    }
+  }
+}

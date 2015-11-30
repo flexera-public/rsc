@@ -1,0 +1,971 @@
+{
+  "description": "A relationship table that links ProvisioningTemplates to Groups",
+  "media_type": {
+    "name": "V2::MediaTypes::ProvisioningRule",
+    "family": "hash",
+    "id": "V2-MediaTypes-ProvisioningRule",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all ProvisioningRules.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "ids": {
+              "description": "Comma separated list of ProvisioningRule IDs",
+              "example_definition": "205297003,26587123,216295003",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "205297003,26587123,216295003",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "filter": {
+              "description": "Filter by attribute",
+              "example_definition": "group_href=/grs/groups/2",
+              "type": {
+                "name": "QueryFilter",
+                "family": "any",
+                "id": null,
+                "filters": {
+                  "group_href": {
+                    "description": "Href of the Group by which to filter ProvisioningRules",
+                    "example_definition": "/grs/groups/2",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  }
+                },
+                "options": {
+                  "description": "Filter by attribute",
+                  "example": "group_href=/grs/groups/2"
+                }
+              },
+              "example": "group_href=/grs/groups/2",
+              "source": "query"
+            },
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": null
+              },
+              "example": "links,id,href",
+              "source": "query"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+          "ids": "205297003,26587123,216295003",
+          "view": "default",
+          "filter": "group_href=/grs/groups/2",
+          "fields": "timestamps,id,links"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::ProvisioningRule::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-ProvisioningRule-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::ProvisioningRule"
+              },
+              "type": {
+                "name": "V2::MediaTypes::ProvisioningRule",
+                "family": "hash",
+                "id": "V2-MediaTypes-ProvisioningRule",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.provisioning_rule+json; type=collection",
+                "body": "[\n  {\n    \"id\": 224,\n    \"href\": \"/grs/provisioning_rules/224\",\n    \"description\": \"Provisioning Rules for Project Leads\",\n    \"kind\": \"provisioning_rule\",\n    \"regex\": \"Project Lead\",\n    \"timestamps\": {\n      \"created_at\": \"2013-09-15T00:00:00+00:00\",\n      \"updated_at\": \"2016-06-11T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"group\": {\n        \"id\": 63,\n        \"name\": \"admin\",\n        \"href\": \"/grs/groups/63\",\n        \"kind\": \"group\"\n      },\n      \"provisioning_template\": {\n        \"id\": 142,\n        \"href\": \"/grs/identity_providers/1/provisioning_templates/142\",\n        \"name\": \"My ProvisioningTemplate\",\n        \"kind\": \"provisioning_template\"\n      }\n    }\n  },\n  {\n    \"id\": 842,\n    \"href\": \"/grs/provisioning_rules/842\",\n    \"description\": \"Provisioning Rules for Project Leads\",\n    \"kind\": \"provisioning_rule\",\n    \"regex\": \"Project Lead\",\n    \"timestamps\": {\n      \"created_at\": \"2013-06-30T00:00:00+00:00\",\n      \"updated_at\": \"2016-03-26T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"group\": {\n        \"id\": 254,\n        \"name\": \"admin\",\n        \"href\": \"/grs/groups/254\",\n        \"kind\": \"group\"\n      },\n      \"provisioning_template\": {\n        \"id\": 63,\n        \"href\": \"/grs/identity_providers/1/provisioning_templates/63\",\n        \"name\": \"My ProvisioningTemplate\",\n        \"kind\": \"provisioning_template\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/provisioning_rules",
+          "version": "2.0",
+          "example": "/grs/provisioning_rules"
+        }
+      ]
+    },
+    {
+      "description": "Shows a single ProvisioningRule.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": null
+              },
+              "example": "links,id,href",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the ProvisioningRule to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "timestamps,id,links",
+          "id": 182,
+          "view": "default"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::ProvisioningRule",
+            "family": "hash",
+            "id": "V2-MediaTypes-ProvisioningRule",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.provisioning_rule+json",
+                "body": "{\n  \"id\": 496,\n  \"href\": \"/grs/provisioning_rules/496\",\n  \"description\": \"Provisioning Rules for Project Leads\",\n  \"kind\": \"provisioning_rule\",\n  \"regex\": \"Project Lead\",\n  \"timestamps\": {\n    \"created_at\": \"2014-04-26T00:00:00+00:00\",\n    \"updated_at\": \"2017-01-20T00:00:00+00:00\"\n  },\n  \"links\": {\n    \"group\": {\n      \"id\": 850,\n      \"name\": \"admin\",\n      \"href\": \"/grs/groups/850\",\n      \"kind\": \"group\"\n    },\n    \"provisioning_template\": {\n      \"id\": 312,\n      \"href\": \"/grs/identity_providers/1/provisioning_templates/312\",\n      \"name\": \"My ProvisioningTemplate\",\n      \"kind\": \"provisioning_template\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/provisioning_rules/:id",
+          "version": "2.0",
+          "example": "/grs/provisioning_rules/606"
+        }
+      ]
+    },
+    {
+      "description": "Creates a ProvisioningRule.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "description": {
+              "description": "Description of the ProvisioningRule",
+              "example_definition": "Provisioning Rules for Project Leads",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Provisioning Rules for Project Leads"
+            },
+            "regex": {
+              "description": "Regex for ProvisioningRule",
+              "required": true,
+              "example_definition": "Project Lead",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Project Lead"
+            },
+            "provisioning_template": {
+              "description": "ProvisioningTemplate to which the ProvisioningRule belongs",
+              "required": true,
+              "type": {
+                "name": "Types::Reference",
+                "family": "hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "id": {
+                    "description": "Unique ID of the ProvisioningTemplate",
+                    "type": {
+                      "name": "Integer",
+                      "family": "numeric",
+                      "id": "Attributor-Integer"
+                    },
+                    "example": 59
+                  },
+                  "href": {
+                    "description": "Href of the ProvisioningTemplate",
+                    "example_definition": "#<Proc:0x007fdc7bb29cd8@/Users/james/rsgit/global_resource_service/design/v2/media_types/provisioning_template.rb:15>",
+                    "type": {
+                      "name": "Types::ApiHref",
+                      "family": "string",
+                      "id": null,
+                      "target_resource": {
+                        "name": "V2::Definitions::ProvisioningTemplates",
+                        "media_type_id": "V2-MediaTypes-ProvisioningTemplate",
+                        "display_name": "ProvisioningTemplates"
+                      }
+                    },
+                    "example": "/grs/identity_providers/1/provisioning_templates/59"
+                  },
+                  "kind": {
+                    "description": "The string 'provisioning_template'",
+                    "values": [
+                      "provisioning_template"
+                    ],
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "provisioning_template"
+                  }
+                },
+                "requirements": [
+
+                ]
+              }
+            },
+            "group": {
+              "description": "Group to which the ProvisioningRule belongs",
+              "required": true,
+              "type": {
+                "name": "Types::Reference",
+                "family": "hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "id": {
+                    "description": "Unique ID of the Group",
+                    "type": {
+                      "name": "Integer",
+                      "family": "numeric",
+                      "id": "Attributor-Integer"
+                    },
+                    "example": 439
+                  },
+                  "href": {
+                    "description": "Href for the Group",
+                    "example_definition": "#<Proc:0x007fdc7b96e358@/Users/james/rsgit/global_resource_service/design/v2/media_types/group.rb:15>",
+                    "type": {
+                      "name": "Types::ApiHref",
+                      "family": "string",
+                      "id": null,
+                      "target_resource": {
+                        "name": "V2::Definitions::Groups",
+                        "media_type_id": "V2-MediaTypes-Group",
+                        "display_name": "Groups"
+                      }
+                    },
+                    "example": "/grs/groups/439"
+                  },
+                  "kind": {
+                    "description": "The string 'group'",
+                    "values": [
+                      "group"
+                    ],
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "group"
+                  }
+                },
+                "requirements": [
+
+                ]
+              }
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "regex",
+                "provisioning_template",
+                "group"
+              ]
+            }
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"description\": \"Provisioning Rules for Project Leads\",\n  \"regex\": \"Project Lead\",\n  \"provisioning_template\": {\n    \"id\": 59,\n    \"href\": \"/grs/identity_providers/1/provisioning_templates/59\",\n    \"kind\": \"provisioning_template\"\n  },\n  \"group\": {\n    \"id\": 439,\n    \"href\": \"/grs/groups/439\",\n    \"kind\": \"group\"\n  }\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "description=Provisioning+Rules+for+Project+Leads&regex=Project+Lead&provisioning_template=%7B%3Aid%3D%3E59%2C+%3Ahref%3D%3E%22%2Fgrs%2Fidentity_providers%2F1%2Fprovisioning_templates%2F59%22%2C+%3Akind%3D%3E%22provisioning_template%22%7D&group=%7B%3Aid%3D%3E439%2C+%3Ahref%3D%3E%22%2Fgrs%2Fgroups%2F439%22%2C+%3Akind%3D%3E%22group%22%7D"
+          }
+        },
+        "example": {
+          "description": "Provisioning Rules for Project Leads",
+          "regex": "Project Lead",
+          "provisioning_template": {
+            "id": 138,
+            "href": "/grs/identity_providers/1/provisioning_templates/138",
+            "kind": "provisioning_template"
+          },
+          "group": {
+            "id": 83,
+            "href": "/grs/groups/83",
+            "kind": "group"
+          }
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/provisioning_rules",
+          "version": "2.0",
+          "example": "/grs/provisioning_rules"
+        }
+      ]
+    },
+    {
+      "description": "Updates a ProvisioningRule.",
+      "name": "update",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the ProvisioningRule to update",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": 182
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "description": {
+              "description": "New description of the ProvisioningRule",
+              "example_definition": "Provisioning Rules for Team Leads",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Provisioning Rules for Team Leads"
+            },
+            "regex": {
+              "description": "New ProvisioningRule regex",
+              "example_definition": "Team Lead",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Team Lead"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"description\": \"Provisioning Rules for Team Leads\",\n  \"regex\": \"Team Lead\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "description=Provisioning+Rules+for+Team+Leads&regex=Team+Lead"
+          }
+        },
+        "example": {
+          "description": "Provisioning Rules for Team Leads",
+          "regex": "Team Lead"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/grs/provisioning_rules/:id",
+          "version": "2.0",
+          "example": "/grs/provisioning_rules/606"
+        }
+      ]
+    },
+    {
+      "description": "Deletes a ProvisioningRule.",
+      "name": "delete",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::ProvisioningRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the ProvisioningRule to delete",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": 182
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/grs/provisioning_rules/:id",
+          "version": "2.0",
+          "example": "/grs/provisioning_rules/606"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::ProvisioningRules",
+  "display_name": "ProvisioningRules",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "name": "V2::MediaTypes::User::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-User-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "groups": {
+      "description": "Href of the Groups collection of which the User is member",
+      "options": {
+        "reference": "V2::MediaTypes::Group::UserGroupCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Group::UserGroupCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-Group-UserGroupCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    },
+    "orgs": {
+      "description": "Href of the Orgs collection to which the User is affiliated",
+      "options": {
+        "reference": "V2::MediaTypes::Org::UserOrgCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Org::UserOrgCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-Org-UserOrgCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "groups": {
+          "view": "link"
+        },
+        "orgs": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

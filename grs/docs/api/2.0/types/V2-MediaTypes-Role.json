@@ -1,0 +1,238 @@
+{
+  "name": "V2::MediaTypes::Role",
+  "family": "hash",
+  "id": "V2-MediaTypes-Role",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the Role.",
+      "example_definition": 10,
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "name": {
+      "description": "Name for the role. Must be unique within the Org.",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "description": "The string 'role'",
+      "values": [
+        "role"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "privileges": {
+      "description": "Privileges granted by the Role.",
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V2::MediaTypes::Privilege"
+          },
+          "type": {
+            "name": "V2::MediaTypes::Privilege",
+            "family": "hash",
+            "id": "V2-MediaTypes-Privilege",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        }
+      }
+    },
+    "scopes": {
+      "description": "Kind(s) of API resource that can meaningfully act as a scope for this role",
+      "example_definition": [
+        "org",
+        "project",
+        "cm#deployment"
+      ],
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::Role"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Role::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-Role-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "org": {
+            "description": "Org to which the Role belongs",
+            "options": {
+              "reference": "V2::MediaTypes::Org"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Org",
+              "family": "hash",
+              "id": "V2-MediaTypes-Org",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "org": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "org": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "name": {
+        },
+        "privileges": {
+          "view": "id"
+        },
+        "timestamps": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 10,
+        "name": "viron",
+        "privileges": [
+          {
+            "id": "cm:server:launch"
+          }
+        ],
+        "timestamps": {
+          "created_at": "2013-05-11T00:00:00+00:00",
+          "updated_at": "2016-02-05T00:00:00+00:00"
+        },
+        "links": {
+          "org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          }
+        }
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.role",
+  "description": "Represents a Role resource.",
+  "display_name": "Role",
+  "example": {
+    "id": 10,
+    "name": "viron",
+    "kind": "role",
+    "timestamps": {
+      "created_at": "2013-05-11T00:00:00+00:00",
+      "updated_at": "2016-02-05T00:00:00+00:00"
+    },
+    "privileges": [
+      {
+        "id": "cm:server:launch",
+        "suite": "cm",
+        "resource": "server",
+        "action": "launch"
+      }
+    ],
+    "scopes": [
+      "org",
+      "project",
+      "cm#deployment"
+    ],
+    "links": {
+      "org": {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "kind": "org"
+      }
+    }
+  }
+}

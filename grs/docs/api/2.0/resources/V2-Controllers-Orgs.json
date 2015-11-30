@@ -1,0 +1,895 @@
+{
+  "description": "Represents an organizational unit. An Org may have a parent\nOrg and many child Orgs, thereby allowing a hierarchy of Orgs\nto be defined.\n",
+  "media_type": {
+    "name": "V2::MediaTypes::Org",
+    "family": "hash",
+    "id": "V2-MediaTypes-Org",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Shows a single Org.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the Org to show",
+              "required": true,
+              "example_definition": "initech",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech",
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "erbia,avidya,damine",
+          "id": "initech",
+          "view": "link"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Org",
+            "family": "hash",
+            "id": "V2-MediaTypes-Org",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.org+json",
+                "body": "{\n  \"id\": \"initech:finance\",\n  \"href\": \"/grs/orgs/initech:finance\",\n  \"name\": \"finance\",\n  \"display_name\": \"Finance\",\n  \"description\": \"Initech Finance Department\",\n  \"kind\": \"org\",\n  \"timestamps\": {\n    \"created_at\": \"2013-06-20T00:00:00+00:00\",\n    \"updated_at\": \"2016-03-16T00:00:00+00:00\"\n  },\n  \"links\": {\n    \"parent_org\": {\n      \"id\": \"initech:finance\",\n      \"href\": \"/grs/orgs/initech:finance\",\n      \"kind\": \"org\"\n    },\n    \"child_orgs\": {\n      \"href\": \"/grs/orgs/org1/child_orgs\"\n    },\n    \"projects\": {\n      \"href\": \"/grs/orgs/org1/projects\"\n    },\n    \"users\": {\n      \"href\": \"/grs/orgs/org1/users\"\n    },\n    \"groups\": {\n      \"href\": \"/grs/orgs/org1/groups\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/orgs/:id",
+          "version": "2.0",
+          "example": "/grs/orgs/initech"
+        }
+      ]
+    },
+    {
+      "description": "Creates an Org.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "description": "URL-friendly name for the Org. Only letters, numbers, and basic\npunctuation are allowed. This will be used to construct Org ID.\nName must be unique among all the children of the parent Org.\n",
+              "required": true,
+              "example_definition": "finance",
+              "options": {
+                "regexp": "(?-mix:^[\\w._-]+$)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "finance"
+            },
+            "display_name": {
+              "description": "Human-readable name for the Org; suitable for presentation in UIs",
+              "required": true,
+              "example_definition": "Finance",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Finance"
+            },
+            "description": {
+              "description": "Long-form description of the Org",
+              "example_definition": "Initech Finance Department",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Initech Finance Department"
+            },
+            "parent_org": {
+              "description": "Parent Org under which the new Org must be created",
+              "type": {
+                "name": "Types::Reference",
+                "family": "hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "id": {
+                    "description": "Unique ID of the Org. ID is constructed from Org name and its parent Org ID, if any.",
+                    "example_definition": "initech:finance",
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "initech:finance"
+                  },
+                  "href": {
+                    "description": "Href of the Org",
+                    "example_definition": "/grs/orgs/initech:finance",
+                    "type": {
+                      "name": "Types::ApiHref",
+                      "family": "string",
+                      "id": null,
+                      "target_resource": {
+                        "name": "V2::Definitions::Orgs",
+                        "media_type_id": "V2-MediaTypes-Org",
+                        "display_name": "Orgs"
+                      }
+                    },
+                    "example": "/grs/orgs/initech:finance"
+                  },
+                  "kind": {
+                    "description": "The string 'org'",
+                    "values": [
+                      "org"
+                    ],
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "org"
+                  }
+                },
+                "requirements": [
+
+                ]
+              }
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "name",
+                "display_name"
+              ]
+            }
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"name\": \"finance\",\n  \"display_name\": \"Finance\",\n  \"description\": \"Initech Finance Department\",\n  \"parent_org\": {\n    \"id\": \"initech:finance\",\n    \"href\": \"/grs/orgs/initech:finance\",\n    \"kind\": \"org\"\n  }\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "name=finance&display_name=Finance&description=Initech+Finance+Department&parent_org=%7B%3Aid%3D%3E%22initech%3Afinance%22%2C+%3Ahref%3D%3E%22%2Fgrs%2Forgs%2Finitech%3Afinance%22%2C+%3Akind%3D%3E%22org%22%7D"
+          }
+        },
+        "example": {
+          "name": "finance",
+          "display_name": "Finance",
+          "description": "Initech Finance Department",
+          "parent_org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          }
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "conflict": {
+          "description": "The requested resource already exists.\n",
+          "status": 409,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/orgs",
+          "version": "2.0",
+          "example": "/grs/orgs"
+        }
+      ]
+    },
+    {
+      "description": "Updates an Org.",
+      "name": "update",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the Org to be updated",
+              "required": true,
+              "example_definition": "initech",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech",
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": "initech"
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "description": "URL-friendly name for the Org. Only letters, numbers, and basic\npunctuation are allowed. This will be used to construct Org ID.\nName must be unique among all the children of the parent Org.\n",
+              "example_definition": "finance-dept",
+              "options": {
+                "regexp": "(?-mix:^[\\w._-]+$)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "finance-dept"
+            },
+            "display_name": {
+              "description": "Human-readable name for the Org; suitable for presentation in UIs",
+              "example_definition": "Finance Department",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Finance Department"
+            },
+            "description": {
+              "description": "Long-form description of the Org",
+              "example_definition": "Initech Finance Department",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Initech Finance Department"
+            },
+            "parent_org": {
+              "description": "Parent Org under which the new Org must be created. If this\nattribute is set to nil, the Org is set to be a top-level Org.\n",
+              "type": {
+                "name": "Types::Reference",
+                "family": "hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                },
+                "attributes": {
+                  "id": {
+                    "description": "Unique ID of the Org. ID is constructed from Org name and its parent Org ID, if any.",
+                    "example_definition": "initech:finance",
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "initech:finance"
+                  },
+                  "href": {
+                    "description": "Href of the Org",
+                    "example_definition": "/grs/orgs/initech:finance",
+                    "type": {
+                      "name": "Types::ApiHref",
+                      "family": "string",
+                      "id": null,
+                      "target_resource": {
+                        "name": "V2::Definitions::Orgs",
+                        "media_type_id": "V2-MediaTypes-Org",
+                        "display_name": "Orgs"
+                      }
+                    },
+                    "example": "/grs/orgs/initech:finance"
+                  },
+                  "kind": {
+                    "description": "The string 'org'",
+                    "values": [
+                      "org"
+                    ],
+                    "type": {
+                      "name": "String",
+                      "family": "string",
+                      "id": "Attributor-String"
+                    },
+                    "example": "org"
+                  }
+                },
+                "requirements": [
+
+                ]
+              }
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"name\": \"finance-dept\",\n  \"display_name\": \"Finance Department\",\n  \"description\": \"Initech Finance Department\",\n  \"parent_org\": {\n    \"id\": \"initech:finance\",\n    \"href\": \"/grs/orgs/initech:finance\",\n    \"kind\": \"org\"\n  }\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "name=finance-dept&display_name=Finance+Department&description=Initech+Finance+Department&parent_org=%7B%3Aid%3D%3E%22initech%3Afinance%22%2C+%3Ahref%3D%3E%22%2Fgrs%2Forgs%2Finitech%3Afinance%22%2C+%3Akind%3D%3E%22org%22%7D"
+          }
+        },
+        "example": {
+          "name": "finance-dept",
+          "display_name": "Finance Department",
+          "description": "Initech Finance Department",
+          "parent_org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          }
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "conflict": {
+          "description": "The requested resource already exists.\n",
+          "status": 409,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/grs/orgs/:id",
+          "version": "2.0",
+          "example": "/grs/orgs/initech"
+        }
+      ]
+    },
+    {
+      "description": "Lists all the child Orgs for an Org.",
+      "name": "child_orgs",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the Org for which to list children",
+              "required": true,
+              "example_definition": "initech",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech",
+              "source": "url"
+            },
+            "ids": {
+              "description": "Comma separated list of child Org IDs",
+              "example_definition": "finance,marketing",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "finance,marketing",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "recurse": {
+              "description": "Flag indicating whether child Orgs should be traversed and their\nchild Orgs returned as well\n",
+              "default": false,
+              "type": {
+                "name": "Boolean",
+                "family": "boolean",
+                "id": "Attributor-Boolean"
+              },
+              "example": true,
+              "source": "query"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "erbia,avidya,damine",
+          "id": "initech",
+          "ids": "finance,marketing",
+          "view": "link",
+          "recurse": false
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Org::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-Org-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::Org"
+              },
+              "type": {
+                "name": "V2::MediaTypes::Org",
+                "family": "hash",
+                "id": "V2-MediaTypes-Org",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.org+json; type=collection",
+                "body": "[\n  {\n    \"id\": \"initech:finance\",\n    \"href\": \"/grs/orgs/initech:finance\",\n    \"name\": \"finance\",\n    \"display_name\": \"Finance\",\n    \"description\": \"Initech Finance Department\",\n    \"kind\": \"org\",\n    \"timestamps\": {\n      \"created_at\": \"2012-12-26T00:00:00+00:00\",\n      \"updated_at\": \"2015-09-22T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"parent_org\": {\n        \"id\": \"initech:finance\",\n        \"href\": \"/grs/orgs/initech:finance\",\n        \"kind\": \"org\"\n      },\n      \"child_orgs\": {\n        \"href\": \"/grs/orgs/org1/child_orgs\"\n      },\n      \"projects\": {\n        \"href\": \"/grs/orgs/org1/projects\"\n      },\n      \"users\": {\n        \"href\": \"/grs/orgs/org1/users\"\n      },\n      \"groups\": {\n        \"href\": \"/grs/orgs/org1/groups\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/orgs/:id/child_orgs",
+          "version": "2.0",
+          "example": "/grs/orgs/initech/child_orgs"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::Orgs",
+  "display_name": "Orgs",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

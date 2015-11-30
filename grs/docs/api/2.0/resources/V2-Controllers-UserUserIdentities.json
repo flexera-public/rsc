@@ -1,0 +1,721 @@
+{
+  "description": "UserIdentity sub-collection of a User, which defines relationships between\nthe User and its IdentityProviders.\n",
+  "media_type": {
+    "name": "V2::MediaTypes::UserIdentity",
+    "family": "hash",
+    "id": "V2-MediaTypes-UserIdentity",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all UserIdentities for the given User.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::UserIdentity"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::UserIdentity"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "ids": {
+              "description": "Comma separated list of User IDs",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "385,347",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "filter": {
+              "description": "Filter by attribute",
+              "example_definition": "principal_uid=https://pgibbons.pip.verisignlabs.com/%26identity_provider_href=/grs/identity_providers/1",
+              "type": {
+                "name": "QueryFilter",
+                "family": "any",
+                "id": null,
+                "filters": {
+                  "principal_uid": {
+                    "description": "Principal UID by which to filter UserIdentities",
+                    "example_definition": "https://pgibbons.pip.verisignlabs.com/",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  },
+                  "identity_provider_href": {
+                    "description": "Href of the IdentityProvider by which to filter UserIdentities",
+                    "example_definition": "/grs/identity_providers/1",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  }
+                },
+                "options": {
+                  "description": "Filter by attribute",
+                  "example": "principal_uid=https://pgibbons.pip.verisignlabs.com/%26identity_provider_href=/grs/identity_providers/1"
+                }
+              },
+              "example": "principal_uid=https://pgibbons.pip.verisignlabs.com/%26identity_provider_href=/grs/identity_providers/1",
+              "source": "query"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "pyropen,porus,mungofa",
+          "ids": "881,246,595,663",
+          "view": "default",
+          "filter": "principal_uid=https://pgibbons.pip.verisignlabs.com/%26identity_provider_href=/grs/identity_providers/1",
+          "user_id": 401
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::UserIdentity::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-UserIdentity-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::UserIdentity"
+              },
+              "type": {
+                "name": "V2::MediaTypes::UserIdentity",
+                "family": "hash",
+                "id": "V2-MediaTypes-UserIdentity",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.user_identity+json; type=collection",
+                "body": "[\n  {\n    \"id\": 423,\n    \"href\": \"/grs/user_identities/423\",\n    \"kind\": \"user_identity\",\n    \"timestamps\": {\n      \"created_at\": \"2014-06-10T00:00:00+00:00\",\n      \"updated_at\": \"2017-03-06T00:00:00+00:00\"\n    },\n    \"principal_uid\": \"https://pgibbons.pip.verisignlabs.com/\",\n    \"links\": {\n      \"identity_provider\": {\n        \"id\": 782,\n        \"href\": \"/grs/identity_providers/782\",\n        \"kind\": \"identity_provider\"\n      },\n      \"user\": {\n        \"id\": 678,\n        \"href\": \"/grs/users/678\",\n        \"kind\": \"user\",\n        \"email\": \"corylin@redeceive.com\",\n        \"first_name\": \"Moses\",\n        \"last_name\": \"Miller\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/users/:user_id/identities",
+          "version": "2.0",
+          "example": "/grs/users/116/identities"
+        }
+      ]
+    },
+    {
+      "description": "Shows a UserIdentity for the given User.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::UserIdentity"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::UserIdentity"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the UserIdentity to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "pyropen,porus,mungofa",
+          "id": 806,
+          "view": "default",
+          "user_id": 401
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::UserIdentity",
+            "family": "hash",
+            "id": "V2-MediaTypes-UserIdentity",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.user_identity+json",
+                "body": "{\n  \"id\": 173,\n  \"href\": \"/grs/user_identities/173\",\n  \"kind\": \"user_identity\",\n  \"timestamps\": {\n    \"created_at\": \"2013-07-14T00:00:00+00:00\",\n    \"updated_at\": \"2016-04-09T00:00:00+00:00\"\n  },\n  \"principal_uid\": \"https://pgibbons.pip.verisignlabs.com/\",\n  \"links\": {\n    \"identity_provider\": {\n      \"id\": 75,\n      \"href\": \"/grs/identity_providers/75\",\n      \"kind\": \"identity_provider\"\n    },\n    \"user\": {\n      \"id\": 640,\n      \"href\": \"/grs/users/640\",\n      \"kind\": \"user\",\n      \"email\": \"Turkism@greyly.com\",\n      \"first_name\": \"Harriett\",\n      \"last_name\": \"Doyle\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/users/:user_id/identities/:id",
+          "version": "2.0",
+          "example": "/grs/users/116/identities/606"
+        }
+      ]
+    },
+    {
+      "description": "Replaces the UserIdentities for the given User.\nCurrently, only one identity per user is allowed, and the\nreplace action will fail if more than one identity is provided\nat a time. This restriction could be lifted in the future.\n",
+      "name": "replace",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::UserIdentity"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::UserIdentity"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "user_id": 401
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::UserIdentity"
+        },
+        "type": {
+          "name": "Collection",
+          "family": "array",
+          "id": null,
+          "options": {
+          },
+          "member_attribute": {
+            "options": {
+              "reference": "V2::MediaTypes::UserIdentity"
+            },
+            "type": {
+              "name": "Struct",
+              "family": "hash",
+              "id": null,
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "attributes": {
+                "principal_uid": {
+                  "description": "Identifier that uniquely identifies the User within the context of the IdentityProvider",
+                  "required": true,
+                  "example_definition": "https://pgibbons.pip.verisignlabs.com/",
+                  "type": {
+                    "name": "String",
+                    "family": "string",
+                    "id": "Attributor-String"
+                  },
+                  "example": "https://pgibbons.pip.verisignlabs.com/"
+                },
+                "identity_provider": {
+                  "description": "IdentityProvider of the UserIdentity",
+                  "required": true,
+                  "type": {
+                    "name": "Types::Reference",
+                    "family": "hash",
+                    "id": null,
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "family": "string",
+                        "id": "Attributor-Symbol"
+                      }
+                    },
+                    "attributes": {
+                      "id": {
+                        "description": "Unique ID of the IdentityProvider",
+                        "type": {
+                          "name": "Integer",
+                          "family": "numeric",
+                          "id": "Attributor-Integer"
+                        },
+                        "example": 243
+                      },
+                      "href": {
+                        "description": "Href of the IdentityProvider",
+                        "example_definition": "#<Proc:0x007fdc7c19be18@/Users/james/rsgit/global_resource_service/design/v2/media_types/identity_provider.rb:15>",
+                        "type": {
+                          "name": "Types::ApiHref",
+                          "family": "string",
+                          "id": null,
+                          "target_resource": {
+                            "name": "V2::Definitions::IdentityProviders",
+                            "media_type_id": "V2-MediaTypes-IdentityProvider",
+                            "display_name": "IdentityProviders"
+                          }
+                        },
+                        "example": "/grs/identity_providers/243"
+                      },
+                      "kind": {
+                        "description": "The string 'identity_provider'",
+                        "values": [
+                          "identity_provider"
+                        ],
+                        "type": {
+                          "name": "String",
+                          "family": "string",
+                          "id": "Attributor-String"
+                        },
+                        "example": "identity_provider"
+                      }
+                    },
+                    "requirements": [
+
+                    ]
+                  }
+                }
+              },
+              "requirements": [
+                {
+                  "type": "all",
+                  "attributes": [
+                    "principal_uid",
+                    "identity_provider"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "[\n  {\n    \"principal_uid\": \"https://pgibbons.pip.verisignlabs.com/\",\n    \"identity_provider\": {\n      \"id\": 243,\n      \"href\": \"/grs/identity_providers/243\",\n      \"kind\": \"identity_provider\"\n    }\n  }\n]"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "%7B%3Aprincipal_uid%3D%3E%22https%3A%2F%2Fpgibbons.pip.verisignlabs.com%2F%22%2C+%3Aidentity_provider%3D%3E%7B%3Aid%3D%3E243%2C+%3Ahref%3D%3E%22%2Fgrs%2Fidentity_providers%2F243%22%2C+%3Akind%3D%3E%22identity_provider%22%7D%7D"
+          }
+        },
+        "example": [
+          {
+            "principal_uid": "https://pgibbons.pip.verisignlabs.com/",
+            "identity_provider": {
+              "id": 931,
+              "href": "/grs/identity_providers/931",
+              "kind": "identity_provider"
+            }
+          },
+          {
+            "principal_uid": "https://pgibbons.pip.verisignlabs.com/",
+            "identity_provider": {
+              "id": 864,
+              "href": "/grs/identity_providers/864",
+              "kind": "identity_provider"
+            }
+          },
+          {
+            "principal_uid": "https://pgibbons.pip.verisignlabs.com/",
+            "identity_provider": {
+              "id": 921,
+              "href": "/grs/identity_providers/921",
+              "kind": "identity_provider"
+            }
+          }
+        ]
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "conflict": {
+          "description": "The requested resource already exists.\n",
+          "status": 409,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/grs/users/:user_id/identities",
+          "version": "2.0",
+          "example": "/grs/users/116/identities"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::UserUserIdentities",
+  "parent": "V2-Definitions-Users",
+  "display_name": "UserUserIdentities",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

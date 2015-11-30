@@ -1,0 +1,636 @@
+{
+  "name": "V2::MediaTypes::User",
+  "family": "hash",
+  "id": "V2-MediaTypes-User",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the User",
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "description": "Href of the User",
+      "example_definition": "#<Proc:0x007fdc7cc2df48@/Users/james/rsgit/global_resource_service/design/v2/media_types/user.rb:15>",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::Users",
+          "media_type_id": "V2-MediaTypes-User",
+          "display_name": "Users"
+        }
+      }
+    },
+    "kind": {
+      "description": "The string 'user'",
+      "values": [
+        "user"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "company": {
+      "description": "Company the to which the User belongs",
+      "example_definition": "RightScale Inc.",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "email": {
+      "description": "Email of the User. Must be unique.",
+      "example_definition": "(?-mix:\\w+@\\w+.com)",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "first_name": {
+      "description": "First name of the User",
+      "example_definition": "(?-mix:[:first_name:])",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "last_name": {
+      "description": "Last name of the User",
+      "example_definition": "(?-mix:[:last_name:])",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "phone": {
+      "description": "Phone number of the User",
+      "example_definition": "(?-mix:\\d\\d\\d-\\d\\d\\d-\\d\\d\\d\\d)",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "timezone_name": {
+      "description": "Timezone to which the User belongs",
+      "example_definition": "(?-mix:[:time_zone:])",
+      "type": {
+        "name": "TimeZone",
+        "family": "string",
+        "id": "Attributor-TimeZone"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "groups": {
+      "description": "Groups of which the User is member",
+      "type": {
+        "name": "V2::MediaTypes::Group::Collection",
+        "family": "array",
+        "id": "V2-MediaTypes-Group-Collection",
+        "anonymous": true,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V2::MediaTypes::Group"
+          },
+          "type": {
+            "name": "V2::MediaTypes::Group",
+            "family": "hash",
+            "id": "V2-MediaTypes-Group",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        }
+      }
+    },
+    "orgs": {
+      "description": "Orgs to which the User is affiliated",
+      "type": {
+        "name": "V2::MediaTypes::Org::Collection",
+        "family": "array",
+        "id": "V2-MediaTypes-Org-Collection",
+        "anonymous": true,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V2::MediaTypes::Org"
+          },
+          "type": {
+            "name": "V2::MediaTypes::Org",
+            "family": "hash",
+            "id": "V2-MediaTypes-Org",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::User"
+      },
+      "type": {
+        "name": "V2::MediaTypes::User::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-User-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "groups": {
+            "description": "Href of the Groups collection of which the User is member",
+            "options": {
+              "reference": "V2::MediaTypes::Group::UserGroupCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Group::UserGroupCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-Group-UserGroupCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          },
+          "orgs": {
+            "description": "Href of the Orgs collection to which the User is affiliated",
+            "options": {
+              "reference": "V2::MediaTypes::Org::UserOrgCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Org::UserOrgCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-Org-UserOrgCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "groups": {
+                "view": "link"
+              },
+              "orgs": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "groups": {
+                "view": "link"
+              },
+              "orgs": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "company": {
+        },
+        "email": {
+        },
+        "first_name": {
+        },
+        "last_name": {
+        },
+        "phone": {
+        },
+        "timezone_name": {
+        },
+        "timestamps": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 44,
+        "href": "/grs/users/44",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "redundancy@superordinary.com",
+        "first_name": "Damian",
+        "last_name": "Cummerata",
+        "phone": "862-981-6699",
+        "timezone_name": "America/Halifax",
+        "timestamps": {
+          "created_at": "2012-12-23T00:00:00+00:00",
+          "updated_at": "2015-09-19T00:00:00+00:00"
+        },
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      }
+    },
+    "extended": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "company": {
+        },
+        "email": {
+        },
+        "first_name": {
+        },
+        "last_name": {
+        },
+        "phone": {
+        },
+        "timezone_name": {
+        },
+        "timestamps": {
+        },
+        "groups": {
+          "view": "default"
+        },
+        "orgs": {
+          "view": "default"
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 44,
+        "href": "/grs/users/44",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "redundancy@superordinary.com",
+        "first_name": "Damian",
+        "last_name": "Cummerata",
+        "phone": "862-981-6699",
+        "timezone_name": "America/Halifax",
+        "timestamps": {
+          "created_at": "2012-12-23T00:00:00+00:00",
+          "updated_at": "2015-09-19T00:00:00+00:00"
+        },
+        "groups": [
+          {
+            "id": 477,
+            "href": "/grs/groups/477",
+            "name": "admin",
+            "description": "Administration Department",
+            "kind": "group",
+            "timestamps": {
+              "created_at": "2013-10-01T00:00:00+00:00",
+              "updated_at": "2016-06-27T00:00:00+00:00"
+            },
+            "links": {
+              "org": {
+                "id": "initech:finance",
+                "href": "/grs/orgs/initech:finance",
+                "kind": "org"
+              },
+              "users": {
+                "href": "/grs/groups/1/users"
+              }
+            }
+          },
+          {
+            "id": 240,
+            "href": "/grs/groups/240",
+            "name": "admin",
+            "description": "Administration Department",
+            "kind": "group",
+            "timestamps": {
+              "created_at": "2014-08-20T00:00:00+00:00",
+              "updated_at": "2017-05-16T00:00:00+00:00"
+            },
+            "links": {
+              "org": {
+                "id": "initech:finance",
+                "href": "/grs/orgs/initech:finance",
+                "kind": "org"
+              },
+              "users": {
+                "href": "/grs/groups/1/users"
+              }
+            }
+          }
+        ],
+        "orgs": [
+          {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "name": "finance",
+            "display_name": "Finance",
+            "description": "Initech Finance Department",
+            "kind": "org",
+            "timestamps": {
+              "created_at": "2013-03-30T00:00:00+00:00",
+              "updated_at": "2015-12-25T00:00:00+00:00"
+            },
+            "links": {
+              "parent_org": {
+                "id": "initech:finance",
+                "href": "/grs/orgs/initech:finance",
+                "kind": "org"
+              },
+              "child_orgs": {
+                "href": "/grs/orgs/org1/child_orgs"
+              },
+              "projects": {
+                "href": "/grs/orgs/org1/projects"
+              },
+              "users": {
+                "href": "/grs/orgs/org1/users"
+              },
+              "groups": {
+                "href": "/grs/orgs/org1/groups"
+              }
+            }
+          },
+          {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "name": "finance",
+            "display_name": "Finance",
+            "description": "Initech Finance Department",
+            "kind": "org",
+            "timestamps": {
+              "created_at": "2013-06-05T00:00:00+00:00",
+              "updated_at": "2016-03-01T00:00:00+00:00"
+            },
+            "links": {
+              "parent_org": {
+                "id": "initech:finance",
+                "href": "/grs/orgs/initech:finance",
+                "kind": "org"
+              },
+              "child_orgs": {
+                "href": "/grs/orgs/org1/child_orgs"
+              },
+              "projects": {
+                "href": "/grs/orgs/org1/projects"
+              },
+              "users": {
+                "href": "/grs/orgs/org1/users"
+              },
+              "groups": {
+                "href": "/grs/orgs/org1/groups"
+              }
+            }
+          }
+        ],
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "email": {
+        },
+        "first_name": {
+        },
+        "last_name": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 44,
+        "href": "/grs/users/44",
+        "kind": "user",
+        "email": "redundancy@superordinary.com",
+        "first_name": "Damian",
+        "last_name": "Cummerata"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.user",
+  "description": "Represents a User resource",
+  "display_name": "User",
+  "example": {
+    "id": 44,
+    "href": "/grs/users/44",
+    "kind": "user",
+    "company": "RightScale Inc.",
+    "email": "redundancy@superordinary.com",
+    "first_name": "Damian",
+    "last_name": "Cummerata",
+    "phone": "862-981-6699",
+    "timezone_name": "America/Halifax",
+    "timestamps": {
+      "created_at": "2012-12-23T00:00:00+00:00",
+      "updated_at": "2015-09-19T00:00:00+00:00"
+    },
+    "groups": [
+      {
+        "id": 477,
+        "href": "/grs/groups/477",
+        "name": "admin",
+        "description": "Administration Department",
+        "kind": "group",
+        "timestamps": {
+          "created_at": "2013-10-01T00:00:00+00:00",
+          "updated_at": "2016-06-27T00:00:00+00:00"
+        },
+        "links": {
+          "org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "users": {
+            "href": "/grs/groups/1/users"
+          }
+        }
+      },
+      {
+        "id": 240,
+        "href": "/grs/groups/240",
+        "name": "admin",
+        "description": "Administration Department",
+        "kind": "group",
+        "timestamps": {
+          "created_at": "2014-08-20T00:00:00+00:00",
+          "updated_at": "2017-05-16T00:00:00+00:00"
+        },
+        "links": {
+          "org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "users": {
+            "href": "/grs/groups/1/users"
+          }
+        }
+      }
+    ],
+    "orgs": [
+      {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "name": "finance",
+        "display_name": "Finance",
+        "description": "Initech Finance Department",
+        "kind": "org",
+        "timestamps": {
+          "created_at": "2013-03-30T00:00:00+00:00",
+          "updated_at": "2015-12-25T00:00:00+00:00"
+        },
+        "links": {
+          "parent_org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "child_orgs": {
+            "href": "/grs/orgs/org1/child_orgs"
+          },
+          "projects": {
+            "href": "/grs/orgs/org1/projects"
+          },
+          "users": {
+            "href": "/grs/orgs/org1/users"
+          },
+          "groups": {
+            "href": "/grs/orgs/org1/groups"
+          }
+        }
+      },
+      {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "name": "finance",
+        "display_name": "Finance",
+        "description": "Initech Finance Department",
+        "kind": "org",
+        "timestamps": {
+          "created_at": "2013-06-05T00:00:00+00:00",
+          "updated_at": "2016-03-01T00:00:00+00:00"
+        },
+        "links": {
+          "parent_org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "child_orgs": {
+            "href": "/grs/orgs/org1/child_orgs"
+          },
+          "projects": {
+            "href": "/grs/orgs/org1/projects"
+          },
+          "users": {
+            "href": "/grs/orgs/org1/users"
+          },
+          "groups": {
+            "href": "/grs/orgs/org1/groups"
+          }
+        }
+      }
+    ],
+    "links": {
+      "groups": {
+        "href": "/grs/users/1/groups"
+      },
+      "orgs": {
+        "href": "/grs/users/1/orgs"
+      }
+    }
+  }
+}

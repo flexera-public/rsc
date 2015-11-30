@@ -1,0 +1,194 @@
+{
+  "name": "V2::MediaTypes::AccessRule",
+  "family": "hash",
+  "id": "V2-MediaTypes-AccessRule",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the AccessRule",
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "description": "Href for the AccessRule ",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::AccessRules",
+          "media_type_id": "V2-MediaTypes-AccessRule",
+          "display_name": "AccessRules"
+        }
+      }
+    },
+    "kind": {
+      "description": "The string 'access_rule'",
+      "values": [
+        "access_rule"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "roles": {
+      "description": "List of roles associated with the AccessRule",
+      "example_definition": [
+        "observer",
+        "actor"
+      ],
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::AccessRule"
+      },
+      "type": {
+        "name": "V2::MediaTypes::AccessRule::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-AccessRule-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "scope": {
+            "description": "Target scope for which the AccessRule applies",
+            "example_definition": "/grs/projects/org1:project12",
+            "type": {
+              "name": "URI",
+              "family": "string",
+              "id": "Attributor-URI"
+            }
+          },
+          "principal": {
+            "description": "Principal to which the AccessRule belongs",
+            "example_definition": "/grs/groups/1",
+            "type": {
+              "name": "URI",
+              "family": "string",
+              "id": "Attributor-URI"
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "scope": {
+              },
+              "principal": {
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "scope": {
+              },
+              "principal": {
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "roles": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 244,
+        "href": "/grs/access_rules/779",
+        "kind": "access_rule",
+        "roles": [
+          "observer",
+          "actor"
+        ],
+        "links": {
+          "scope": "/grs/projects/org1:project12",
+          "principal": "/grs/groups/1"
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 244,
+        "href": "/grs/access_rules/779",
+        "kind": "access_rule"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.access_rule",
+  "description": "Represents an AccessRule resource",
+  "display_name": "AccessRule",
+  "example": {
+    "id": 244,
+    "href": "/grs/access_rules/779",
+    "kind": "access_rule",
+    "roles": [
+      "observer",
+      "actor"
+    ],
+    "links": {
+      "scope": "/grs/projects/org1:project12",
+      "principal": "/grs/groups/1"
+    }
+  }
+}

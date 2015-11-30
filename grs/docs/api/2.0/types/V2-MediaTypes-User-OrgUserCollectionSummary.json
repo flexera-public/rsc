@@ -1,0 +1,45 @@
+{
+  "name": "V2::MediaTypes::User::OrgUserCollectionSummary",
+  "family": "hash",
+  "id": "V2-MediaTypes-User-OrgUserCollectionSummary",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "href": {
+      "description": "Href of the Users collection belonging to the Org",
+      "example_definition": "/grs/orgs/org1/users",
+      "type": {
+        "name": "URI",
+        "family": "string",
+        "id": "Attributor-URI"
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "link": {
+      "attributes": {
+        "href": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "href": "/grs/orgs/org1/users"
+      }
+    }
+  },
+  "identifier": "",
+  "description": null,
+  "display_name": "OrgUserCollectionSummary",
+  "example": {
+    "href": "/grs/orgs/org1/users"
+  }
+}

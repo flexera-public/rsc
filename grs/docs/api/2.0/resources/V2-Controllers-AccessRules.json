@@ -1,0 +1,1022 @@
+{
+  "description": "Represents a set of access control statements that grant roles to\nprincipals (i.e. Users or Groups) within a given scope.\n",
+  "media_type": {
+    "name": "V2::MediaTypes::AccessRule",
+    "family": "hash",
+    "id": "V2-MediaTypes-AccessRule",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all AccessRules.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "scope_href": {
+              "description": "List only the AccessRules scoped to the reference scope.\nNOTE: The request params must have at least the 'scope\\_href',\nthe 'principal\\_href', or both.\n",
+              "example_definition": "/grs/projects/org1:project12",
+              "options": {
+                "path": "(?-mix:^\\/)"
+              },
+              "type": {
+                "name": "URI",
+                "family": "string",
+                "id": "Attributor-URI"
+              },
+              "example": "/grs/projects/org1:project12",
+              "source": "query"
+            },
+            "principal_href": {
+              "description": "List only the AccessRules associated directly with the referenced principal.\nNOTE: The request params must have at least the 'scope\\_href',\nthe 'principal\\_href', or both.\n",
+              "example_definition": "/grs/groups/1",
+              "options": {
+                "path": "(?-mix:^\\/)"
+              },
+              "type": {
+                "name": "URI",
+                "family": "string",
+                "id": "Attributor-URI"
+              },
+              "example": "/grs/groups/1",
+              "source": "query"
+            },
+            "ids": {
+              "description": "Comma separated list of AccessRule IDs",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "385,347",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "filter": {
+              "description": "Filter by attribute",
+              "example_definition": "roles=observer,actor&scope_href=/grs/projects/org1:project10&principal_href=/grs/groups/1",
+              "type": {
+                "name": "QueryFilter",
+                "family": "any",
+                "id": null,
+                "filters": {
+                  "roles": {
+                    "description": "Role name(s) by which to filter AccessRules",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  },
+                  "scope_href": {
+                    "description": "Href of the scope by which to filter AccessRules",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  },
+                  "principal_href": {
+                    "description": "Href of the principal by which to filter AccessRules",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  }
+                },
+                "options": {
+                  "description": "Filter by attribute",
+                  "example": "roles=observer,actor&scope_href=/grs/projects/org1:project10&principal_href=/grs/groups/1"
+                }
+              },
+              "example": "roles=observer,actor&scope_href=/grs/projects/org1:project10&principal_href=/grs/groups/1",
+              "source": "query"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+          "fields": "spread,shansa,juice",
+          "scope_href": "/grs/projects/org1:project12",
+          "principal_href": "/grs/groups/1",
+          "ids": "790,249,21",
+          "view": "default",
+          "filter": "roles=observer,actor&scope_href=/grs/projects/org1:project10&principal_href=/grs/groups/1"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::AccessRule::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-AccessRule-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::AccessRule"
+              },
+              "type": {
+                "name": "V2::MediaTypes::AccessRule",
+                "family": "hash",
+                "id": "V2-MediaTypes-AccessRule",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.access_rule+json; type=collection",
+                "body": "[\n  {\n    \"id\": 632,\n    \"href\": \"/grs/access_rules/667\",\n    \"kind\": \"access_rule\",\n    \"roles\": [\n      \"observer\",\n      \"actor\"\n    ],\n    \"links\": {\n      \"scope\": \"/grs/projects/org1:project12\",\n      \"principal\": \"/grs/groups/1\"\n    }\n  },\n  {\n    \"id\": 864,\n    \"href\": \"/grs/access_rules/866\",\n    \"kind\": \"access_rule\",\n    \"roles\": [\n      \"observer\",\n      \"actor\"\n    ],\n    \"links\": {\n      \"scope\": \"/grs/projects/org1:project12\",\n      \"principal\": \"/grs/groups/1\"\n    }\n  }\n]"
+              }
+            }
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/access_rules",
+          "version": "2.0",
+          "example": "/grs/access_rules"
+        }
+      ]
+    },
+    {
+      "description": "Shows a single AccessRule.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the AccessRule to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "spread,shansa,juice",
+          "id": 349,
+          "view": "default"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::AccessRule",
+            "family": "hash",
+            "id": "V2-MediaTypes-AccessRule",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.access_rule+json",
+                "body": "{\n  \"id\": 653,\n  \"href\": \"/grs/access_rules/820\",\n  \"kind\": \"access_rule\",\n  \"roles\": [\n    \"observer\",\n    \"actor\"\n  ],\n  \"links\": {\n    \"scope\": \"/grs/projects/org1:project12\",\n    \"principal\": \"/grs/groups/1\"\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/access_rules/:id",
+          "version": "2.0",
+          "example": "/grs/access_rules/606"
+        }
+      ]
+    },
+    {
+      "description": "Creates an AccessRule.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "roles": {
+              "description": "List of roles associated with the AccessRule",
+              "required": true,
+              "example_definition": [
+                "observer",
+                "actor"
+              ],
+              "type": {
+                "name": "Collection",
+                "family": "array",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "family": "string",
+                    "id": "Attributor-String"
+                  },
+                  "example": "observer"
+                }
+              }
+            },
+            "scope_href": {
+              "description": "Scope href to which the rule is scoped",
+              "required": true,
+              "example_definition": "/grs/projects/org1:project12",
+              "options": {
+                "path": "(?-mix:^\\/)"
+              },
+              "type": {
+                "name": "URI",
+                "family": "string",
+                "id": "Attributor-URI"
+              },
+              "example": "/grs/projects/org1:project12"
+            },
+            "principal_href": {
+              "description": "Principal (Group or User) href to which rule will apply",
+              "required": true,
+              "example_definition": "/grs/users/1",
+              "options": {
+                "path": "(?-mix:^\\/.*\\/(groups|users))"
+              },
+              "type": {
+                "name": "URI",
+                "family": "string",
+                "id": "Attributor-URI"
+              },
+              "example": "/grs/users/1"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "roles",
+                "scope_href",
+                "principal_href"
+              ]
+            }
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"roles\": [\n    \"observer\",\n    \"actor\"\n  ],\n  \"scope_href\": \"/grs/projects/org1:project12\",\n  \"principal_href\": \"/grs/users/1\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "roles=observer&roles=actor&scope_href=%2Fgrs%2Fprojects%2Forg1%3Aproject12&principal_href=%2Fgrs%2Fusers%2F1"
+          }
+        },
+        "example": {
+          "roles": [
+            "observer",
+            "actor"
+          ],
+          "scope_href": "/grs/projects/org1:project12",
+          "principal_href": "/grs/users/1"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "global_session_forbidden": {
+          "description": "The global session provided in the user's cookie is forbidden.\n",
+          "status": 403,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/access_rules",
+          "version": "2.0",
+          "example": "/grs/access_rules"
+        }
+      ]
+    },
+    {
+      "description": "Replaces all AccessRules for a given scope.",
+      "name": "replace",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "scope_href": {
+              "description": "Replace only the AccessRules scoped to the reference scope.\nNOTE: The request params must have at least the 'scope\\_href',\nthe 'principal\\_href', or both.\n",
+              "example_definition": "/grs/projects/org1:project12",
+              "options": {
+                "path": "(?-mix:^\\/)"
+              },
+              "type": {
+                "name": "URI",
+                "family": "string",
+                "id": "Attributor-URI"
+              },
+              "example": "/grs/projects/org1:project12",
+              "source": "query"
+            },
+            "principal_href": {
+              "description": "Replace only the AccessRules associated directly with the referenced principal.\nNOTE: The request params must have at least the 'scope\\_href',\nthe 'principal\\_href', or both.\n",
+              "example_definition": "/grs/groups/1",
+              "options": {
+                "path": "(?-mix:^\\/.*\\/(groups|users))"
+              },
+              "type": {
+                "name": "URI",
+                "family": "string",
+                "id": "Attributor-URI"
+              },
+              "example": "/grs/groups/1",
+              "source": "query"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+          "scope_href": "/grs/projects/org1:project12",
+          "principal_href": "/grs/groups/1"
+        }
+      },
+      "payload": {
+        "description": "Collection of AccessRules to be set",
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Collection",
+          "family": "array",
+          "id": null,
+          "options": {
+          },
+          "member_attribute": {
+            "options": {
+              "reference": "V2::MediaTypes::AccessRule"
+            },
+            "type": {
+              "name": "Struct",
+              "family": "hash",
+              "id": null,
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "attributes": {
+                "roles": {
+                  "description": "List of roles associated with the AccessRule",
+                  "required": true,
+                  "example_definition": [
+                    "observer",
+                    "actor"
+                  ],
+                  "type": {
+                    "name": "Collection",
+                    "family": "array",
+                    "id": null,
+                    "options": {
+                    },
+                    "member_attribute": {
+                      "type": {
+                        "name": "String",
+                        "family": "string",
+                        "id": "Attributor-String"
+                      },
+                      "example": "observer"
+                    }
+                  }
+                },
+                "scope_href": {
+                  "description": "Scope href to which rule will apply",
+                  "example_definition": "/grs/projects/org1:project12",
+                  "options": {
+                    "path": "(?-mix:^\\/)"
+                  },
+                  "type": {
+                    "name": "URI",
+                    "family": "string",
+                    "id": "Attributor-URI"
+                  },
+                  "example": "/grs/projects/org1:project12"
+                },
+                "principal_href": {
+                  "description": "Principal (Group or User) href to which rule will apply",
+                  "required": true,
+                  "example_definition": "/grs/groups/1",
+                  "options": {
+                    "path": "(?-mix:^\\/.*\\/(groups|users))"
+                  },
+                  "type": {
+                    "name": "URI",
+                    "family": "string",
+                    "id": "Attributor-URI"
+                  },
+                  "example": "/grs/groups/1"
+                }
+              },
+              "requirements": [
+                {
+                  "type": "all",
+                  "attributes": [
+                    "roles",
+                    "principal_href"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "[\n  {\n    \"roles\": [\n      \"observer\",\n      \"actor\"\n    ],\n    \"scope_href\": \"/grs/projects/org1:project12\",\n    \"principal_href\": \"/grs/groups/1\"\n  }\n]"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "%7B%3Aroles%3D%3E%5B%22observer%22%2C+%22actor%22%5D%2C+%3Ascope_href%3D%3E%22%2Fgrs%2Fprojects%2Forg1%3Aproject12%22%2C+%3Aprincipal_href%3D%3E%22%2Fgrs%2Fgroups%2F1%22%7D"
+          }
+        },
+        "example": [
+          {
+            "roles": [
+              "observer",
+              "actor"
+            ],
+            "scope_href": "/grs/projects/org1:project12",
+            "principal_href": "/grs/groups/1"
+          }
+        ]
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/grs/access_rules",
+          "version": "2.0",
+          "example": "/grs/access_rules"
+        }
+      ]
+    },
+    {
+      "description": "Deletes an AccessRule.",
+      "name": "delete",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::AccessRule"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the AccessRule to delete",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": 349
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::AccessRule",
+            "family": "hash",
+            "id": "V2-MediaTypes-AccessRule",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.access_rule+json",
+                "body": "{\n  \"id\": 653,\n  \"href\": \"/grs/access_rules/820\",\n  \"kind\": \"access_rule\",\n  \"roles\": [\n    \"observer\",\n    \"actor\"\n  ],\n  \"links\": {\n    \"scope\": \"/grs/projects/org1:project12\",\n    \"principal\": \"/grs/groups/1\"\n  }\n}"
+              }
+            }
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/grs/access_rules/:id",
+          "version": "2.0",
+          "example": "/grs/access_rules/606"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::AccessRules",
+  "display_name": "AccessRules",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

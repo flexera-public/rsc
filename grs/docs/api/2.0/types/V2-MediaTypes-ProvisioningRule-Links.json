@@ -1,0 +1,67 @@
+{
+  "name": "V2::MediaTypes::ProvisioningRule::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-ProvisioningRule-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "group": {
+      "description": "Group to which the ProvisioningRule belongs",
+      "options": {
+        "reference": "V2::MediaTypes::Group"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Group",
+        "family": "hash",
+        "id": "V2-MediaTypes-Group",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "provisioning_template": {
+      "description": "ProvisioningTemplate to which the ProvisioningRule belongs",
+      "options": {
+        "reference": "V2::MediaTypes::ProvisioningTemplate"
+      },
+      "type": {
+        "name": "V2::MediaTypes::ProvisioningTemplate",
+        "family": "hash",
+        "id": "V2-MediaTypes-ProvisioningTemplate",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "group": {
+          "view": "link"
+        },
+        "provisioning_template": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

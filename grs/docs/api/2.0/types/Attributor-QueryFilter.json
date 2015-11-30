@@ -1,0 +1,9 @@
+{
+  "name": "QueryFilter",
+  "family": "any",
+  "id": "Attributor-QueryFilter",
+  "filters": {
+  },
+  "options": null,
+  "example": "todo=todo"
+}

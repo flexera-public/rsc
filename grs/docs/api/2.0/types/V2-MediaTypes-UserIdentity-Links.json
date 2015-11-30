@@ -1,0 +1,67 @@
+{
+  "name": "V2::MediaTypes::UserIdentity::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-UserIdentity-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "identity_provider": {
+      "description": "Href of the IdentityProvider of this UserIdentity",
+      "options": {
+        "reference": "V2::MediaTypes::IdentityProvider"
+      },
+      "type": {
+        "name": "V2::MediaTypes::IdentityProvider",
+        "family": "hash",
+        "id": "V2-MediaTypes-IdentityProvider",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "user": {
+      "description": "Href of the User of this UserIdentity",
+      "options": {
+        "reference": "V2::MediaTypes::User"
+      },
+      "type": {
+        "name": "V2::MediaTypes::User",
+        "family": "hash",
+        "id": "V2-MediaTypes-User",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "identity_provider": {
+          "view": "link"
+        },
+        "user": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

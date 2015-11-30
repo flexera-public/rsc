@@ -1,0 +1,629 @@
+{
+  "name": "V2::MediaTypes::Org",
+  "family": "hash",
+  "id": "V2-MediaTypes-Org",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the Org. ID is constructed from Org name and its parent Org ID, if any.",
+      "example_definition": "initech:finance",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "name": {
+      "description": "URL-friendly name for the Org. Only letters, numbers, underscores\nand hyphens are allowed. Used to construct Org ID. Must be unique\namong all the children of the parent Org (or globally unique, for\ntop-level Orgs).\n",
+      "example_definition": "finance",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "display_name": {
+      "description": "Human-readable name for the Org; suitable for presentation in UIs",
+      "example_definition": "Finance",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "description": {
+      "description": "Long-form description of the Org",
+      "example_definition": "Initech Finance Department",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "href": {
+      "description": "Href of the Org",
+      "example_definition": "/grs/orgs/initech:finance",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::Orgs",
+          "media_type_id": "V2-MediaTypes-Org",
+          "display_name": "Orgs"
+        }
+      }
+    },
+    "kind": {
+      "description": "The string 'org'",
+      "values": [
+        "org"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "legacy": {
+      "type": {
+        "name": "Struct",
+        "family": "hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "account_url": {
+            "description": "URL of the Cloud Management API 1.5 Account that represents this Org",
+            "example_definition": "https://us-3.rightscale.com/api/accounts/12345",
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "account_id": {
+            "description": "ID of the Cloud Management API 1.5 Account that represents this Org",
+            "example_definition": 12345,
+            "type": {
+              "name": "Integer",
+              "family": "numeric",
+              "id": "Attributor-Integer"
+            }
+          }
+        },
+        "requirements": [
+
+        ]
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "users": {
+      "description": "Users affiliated with the Org",
+      "type": {
+        "name": "V2::MediaTypes::User::Collection",
+        "family": "array",
+        "id": "V2-MediaTypes-User-Collection",
+        "anonymous": true,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V2::MediaTypes::User"
+          },
+          "type": {
+            "name": "V2::MediaTypes::User",
+            "family": "hash",
+            "id": "V2-MediaTypes-User",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::Org"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Org::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-Org-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "parent_org": {
+            "description": "Href of the parent Org",
+            "options": {
+              "reference": "V2::MediaTypes::Org"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Org",
+              "family": "hash",
+              "id": "V2-MediaTypes-Org",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          },
+          "child_orgs": {
+            "description": "Href of the child Orgs collection belonging to the Org",
+            "options": {
+              "reference": "V2::MediaTypes::Org::ChildOrgCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Org::ChildOrgCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-Org-ChildOrgCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          },
+          "projects": {
+            "description": "Href of the Projects collection belonging to the Org",
+            "options": {
+              "reference": "V2::MediaTypes::Project::OrgProjectCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Project::OrgProjectCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-Project-OrgProjectCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          },
+          "users": {
+            "description": "Href of the Users collection belonging to the Org",
+            "options": {
+              "reference": "V2::MediaTypes::User::OrgUserCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::User::OrgUserCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-User-OrgUserCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          },
+          "groups": {
+            "description": "Href of the Groups collection belonging to the Org",
+            "options": {
+              "reference": "V2::MediaTypes::Group::OrgGroupCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Group::OrgGroupCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-Group-OrgGroupCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "parent_org": {
+                "view": "link"
+              },
+              "child_orgs": {
+                "view": "link"
+              },
+              "projects": {
+                "view": "link"
+              },
+              "users": {
+                "view": "link"
+              },
+              "groups": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "parent_org": {
+                "view": "link"
+              },
+              "child_orgs": {
+                "view": "link"
+              },
+              "projects": {
+                "view": "link"
+              },
+              "users": {
+                "view": "link"
+              },
+              "groups": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "display_name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "timestamps": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "name": "finance",
+        "display_name": "Finance",
+        "description": "Initech Finance Department",
+        "kind": "org",
+        "timestamps": {
+          "created_at": "2013-05-15T00:00:00+00:00",
+          "updated_at": "2016-02-09T00:00:00+00:00"
+        },
+        "links": {
+          "parent_org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "child_orgs": {
+            "href": "/grs/orgs/org1/child_orgs"
+          },
+          "projects": {
+            "href": "/grs/orgs/org1/projects"
+          },
+          "users": {
+            "href": "/grs/orgs/org1/users"
+          },
+          "groups": {
+            "href": "/grs/orgs/org1/groups"
+          }
+        }
+      }
+    },
+    "extended": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "display_name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "legacy": {
+        },
+        "timestamps": {
+        },
+        "users": {
+          "view": "default"
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "name": "finance",
+        "display_name": "Finance",
+        "description": "Initech Finance Department",
+        "kind": "org",
+        "legacy": {
+          "account_url": "https://us-3.rightscale.com/api/accounts/12345",
+          "account_id": 12345
+        },
+        "timestamps": {
+          "created_at": "2013-05-15T00:00:00+00:00",
+          "updated_at": "2016-02-09T00:00:00+00:00"
+        },
+        "users": [
+          {
+            "id": 331,
+            "href": "/grs/users/331",
+            "kind": "user",
+            "company": "RightScale Inc.",
+            "email": "sudder@overrigorously.com",
+            "first_name": "Brent",
+            "last_name": "Brakus",
+            "phone": "355-986-6631",
+            "timezone_name": "Hongkong",
+            "timestamps": {
+              "created_at": "2013-12-24T00:00:00+00:00",
+              "updated_at": "2016-09-19T00:00:00+00:00"
+            },
+            "links": {
+              "groups": {
+                "href": "/grs/users/1/groups"
+              },
+              "orgs": {
+                "href": "/grs/users/1/orgs"
+              }
+            }
+          },
+          {
+            "id": 2,
+            "href": "/grs/users/2",
+            "kind": "user",
+            "company": "RightScale Inc.",
+            "email": "Islamitish@robustfulness.com",
+            "first_name": "Nathanael",
+            "last_name": "Lindgren",
+            "phone": "707-406-6305",
+            "timezone_name": "Canada/Mountain",
+            "timestamps": {
+              "created_at": "2013-02-21T00:00:00+00:00",
+              "updated_at": "2015-11-18T00:00:00+00:00"
+            },
+            "links": {
+              "groups": {
+                "href": "/grs/users/1/groups"
+              },
+              "orgs": {
+                "href": "/grs/users/1/orgs"
+              }
+            }
+          },
+          {
+            "id": 799,
+            "href": "/grs/users/799",
+            "kind": "user",
+            "company": "RightScale Inc.",
+            "email": "Arivaipa@Gwendolen.com",
+            "first_name": "Jim",
+            "last_name": "Dach",
+            "phone": "609-806-9585",
+            "timezone_name": "Europe/Tallinn",
+            "timestamps": {
+              "created_at": "2014-07-13T00:00:00+00:00",
+              "updated_at": "2017-04-08T00:00:00+00:00"
+            },
+            "links": {
+              "groups": {
+                "href": "/grs/users/1/groups"
+              },
+              "orgs": {
+                "href": "/grs/users/1/orgs"
+              }
+            }
+          }
+        ],
+        "links": {
+          "parent_org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "child_orgs": {
+            "href": "/grs/orgs/org1/child_orgs"
+          },
+          "projects": {
+            "href": "/grs/orgs/org1/projects"
+          },
+          "users": {
+            "href": "/grs/orgs/org1/users"
+          },
+          "groups": {
+            "href": "/grs/orgs/org1/groups"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "kind": "org"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.org",
+  "description": "Represents an Org resource",
+  "display_name": "Org",
+  "example": {
+    "id": "initech:finance",
+    "name": "finance",
+    "display_name": "Finance",
+    "description": "Initech Finance Department",
+    "href": "/grs/orgs/initech:finance",
+    "kind": "org",
+    "legacy": {
+      "account_url": "https://us-3.rightscale.com/api/accounts/12345",
+      "account_id": 12345
+    },
+    "timestamps": {
+      "created_at": "2013-05-15T00:00:00+00:00",
+      "updated_at": "2016-02-09T00:00:00+00:00"
+    },
+    "users": [
+      {
+        "id": 331,
+        "href": "/grs/users/331",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "sudder@overrigorously.com",
+        "first_name": "Brent",
+        "last_name": "Brakus",
+        "phone": "355-986-6631",
+        "timezone_name": "Hongkong",
+        "timestamps": {
+          "created_at": "2013-12-24T00:00:00+00:00",
+          "updated_at": "2016-09-19T00:00:00+00:00"
+        },
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      },
+      {
+        "id": 2,
+        "href": "/grs/users/2",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "Islamitish@robustfulness.com",
+        "first_name": "Nathanael",
+        "last_name": "Lindgren",
+        "phone": "707-406-6305",
+        "timezone_name": "Canada/Mountain",
+        "timestamps": {
+          "created_at": "2013-02-21T00:00:00+00:00",
+          "updated_at": "2015-11-18T00:00:00+00:00"
+        },
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      },
+      {
+        "id": 799,
+        "href": "/grs/users/799",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "Arivaipa@Gwendolen.com",
+        "first_name": "Jim",
+        "last_name": "Dach",
+        "phone": "609-806-9585",
+        "timezone_name": "Europe/Tallinn",
+        "timestamps": {
+          "created_at": "2014-07-13T00:00:00+00:00",
+          "updated_at": "2017-04-08T00:00:00+00:00"
+        },
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      }
+    ],
+    "links": {
+      "parent_org": {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "kind": "org"
+      },
+      "child_orgs": {
+        "href": "/grs/orgs/org1/child_orgs"
+      },
+      "projects": {
+        "href": "/grs/orgs/org1/projects"
+      },
+      "users": {
+        "href": "/grs/orgs/org1/users"
+      },
+      "groups": {
+        "href": "/grs/orgs/org1/groups"
+      }
+    }
+  }
+}

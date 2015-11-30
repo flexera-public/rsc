@@ -1,0 +1,616 @@
+{
+  "description": "A User represents an individual RightScale user.\n",
+  "media_type": {
+    "name": "V2::MediaTypes::User",
+    "family": "hash",
+    "id": "V2-MediaTypes-User",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Shows a single User.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::User"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "niter,untenant,intext",
+          "id": 275,
+          "view": "default"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::User",
+            "family": "hash",
+            "id": "V2-MediaTypes-User",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.user+json",
+                "body": "{\n  \"id\": 353,\n  \"href\": \"/grs/users/353\",\n  \"kind\": \"user\",\n  \"company\": \"RightScale Inc.\",\n  \"email\": \"comedist@importable.com\",\n  \"first_name\": \"Aron\",\n  \"last_name\": \"Hintz\",\n  \"phone\": \"577-077-1878\",\n  \"timezone_name\": \"America/Aruba\",\n  \"timestamps\": {\n    \"created_at\": \"2013-06-22T00:00:00+00:00\",\n    \"updated_at\": \"2016-03-18T00:00:00+00:00\"\n  },\n  \"links\": {\n    \"groups\": {\n      \"href\": \"/grs/users/1/groups\"\n    },\n    \"orgs\": {\n      \"href\": \"/grs/users/1/orgs\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/users/:id",
+          "version": "2.0",
+          "example": "/grs/users/606"
+        }
+      ]
+    },
+    {
+      "description": "Creates a User.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::User"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "email": {
+              "description": "Email of the User",
+              "required": true,
+              "example_definition": "vegete@tanninlike.com",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "vegete@tanninlike.com"
+            },
+            "password": {
+              "description": "Password of the User",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "refloat"
+            },
+            "first_name": {
+              "description": "First name of the User",
+              "required": true,
+              "example_definition": "Deetta",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Deetta"
+            },
+            "last_name": {
+              "description": "Last name of the User",
+              "required": true,
+              "example_definition": "Hilpert",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Hilpert"
+            },
+            "company": {
+              "description": "Company to which the User belongs",
+              "example_definition": "RightScale Inc.",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "RightScale Inc."
+            },
+            "phone": {
+              "description": "Phone number of the User",
+              "example_definition": "531-192-2339",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "531-192-2339"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "email",
+                "first_name",
+                "last_name"
+              ]
+            }
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"email\": \"vegete@tanninlike.com\",\n  \"password\": \"refloat\",\n  \"first_name\": \"Deetta\",\n  \"last_name\": \"Hilpert\",\n  \"company\": \"RightScale Inc.\",\n  \"phone\": \"531-192-2339\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "email=vegete%40tanninlike.com&password=refloat&first_name=Deetta&last_name=Hilpert&company=RightScale+Inc.&phone=531-192-2339"
+          }
+        },
+        "example": {
+          "email": "vegete@tanninlike.com",
+          "password": "Calorite",
+          "first_name": "Deetta",
+          "last_name": "Hilpert",
+          "company": "RightScale Inc.",
+          "phone": "531-192-2339"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "conflict": {
+          "description": "The requested resource already exists.\n",
+          "status": 409,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/users",
+          "version": "2.0",
+          "example": "/grs/users"
+        }
+      ]
+    },
+    {
+      "description": "Updates a User.",
+      "name": "update",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::User"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the User to update",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": 275
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "email": {
+              "description": "New Email of the User",
+              "example_definition": "underlive@windbreaker.com",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "underlive@windbreaker.com"
+            },
+            "first_name": {
+              "description": "New first name of the User",
+              "example_definition": "Travis",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Travis"
+            },
+            "last_name": {
+              "description": "New last name of the User",
+              "example_definition": "Reynolds",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Reynolds"
+            },
+            "company": {
+              "description": "New company name to which the User belongs",
+              "example_definition": "RightScale Inc.",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "RightScale Inc."
+            },
+            "phone": {
+              "description": "New phone number for the user",
+              "example_definition": "350-797-2454",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "350-797-2454"
+            },
+            "timezone_name": {
+              "description": "New timezone to which the User belongs",
+              "example_definition": "US/Pacific-New",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "US/Pacific-New"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"email\": \"underlive@windbreaker.com\",\n  \"first_name\": \"Travis\",\n  \"last_name\": \"Reynolds\",\n  \"company\": \"RightScale Inc.\",\n  \"phone\": \"350-797-2454\",\n  \"timezone_name\": \"US/Pacific-New\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "email=underlive%40windbreaker.com&first_name=Travis&last_name=Reynolds&company=RightScale+Inc.&phone=350-797-2454&timezone_name=US%2FPacific-New"
+          }
+        },
+        "example": {
+          "email": "underlive@windbreaker.com",
+          "first_name": "Travis",
+          "last_name": "Reynolds",
+          "company": "RightScale Inc.",
+          "phone": "350-797-2454",
+          "timezone_name": "US/Pacific-New"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "conflict": {
+          "description": "The requested resource already exists.\n",
+          "status": 409,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/grs/users/:id",
+          "version": "2.0",
+          "example": "/grs/users/606"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::Users",
+  "display_name": "Users",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

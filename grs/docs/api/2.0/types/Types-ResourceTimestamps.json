@@ -1,0 +1,38 @@
+{
+  "name": "Types::ResourceTimestamps",
+  "family": "hash",
+  "id": "Types-ResourceTimestamps",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "created_at": {
+      "description": "When the resource was first created",
+      "type": {
+        "name": "DateTime",
+        "family": "temporal",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "updated_at": {
+      "description": "When the resource was last updated",
+      "example_definition": "#<Proc:0x007fdc7ba52d28@/Users/james/rsgit/global_resource_service/lib/types/resource_timestamps.rb:8>",
+      "type": {
+        "name": "DateTime",
+        "family": "temporal",
+        "id": "Attributor-DateTime"
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "example": {
+    "created_at": "2014-03-17T00:00:00+00:00",
+    "updated_at": "2016-12-11T00:00:00+00:00"
+  }
+}

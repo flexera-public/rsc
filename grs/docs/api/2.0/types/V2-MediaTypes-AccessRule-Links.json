@@ -1,0 +1,47 @@
+{
+  "name": "V2::MediaTypes::AccessRule::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-AccessRule-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "scope": {
+      "description": "Target scope for which the AccessRule applies",
+      "example_definition": "/grs/projects/org1:project12",
+      "type": {
+        "name": "URI",
+        "family": "string",
+        "id": "Attributor-URI"
+      }
+    },
+    "principal": {
+      "description": "Principal to which the AccessRule belongs",
+      "example_definition": "/grs/groups/1",
+      "type": {
+        "name": "URI",
+        "family": "string",
+        "id": "Attributor-URI"
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "scope": {
+        },
+        "principal": {
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

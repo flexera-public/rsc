@@ -1,0 +1,47 @@
+{
+  "name": "V2::MediaTypes::ProvisioningTemplate::Links",
+  "family": "hash",
+  "id": "V2-MediaTypes-ProvisioningTemplate-Links",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "provisioning_rules": {
+      "description": "ProvisioningRules belonging to the ProvisioningTemplate",
+      "options": {
+        "reference": "V2::MediaTypes::ProvisioningRule::ProvisioningRuleCollectionSummary"
+      },
+      "type": {
+        "name": "V2::MediaTypes::ProvisioningRule::ProvisioningRuleCollectionSummary",
+        "family": "hash",
+        "id": "V2-MediaTypes-ProvisioningRule-ProvisioningRuleCollectionSummary",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "anonymous": true
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "anonymous": true,
+  "views": {
+    "default": {
+      "attributes": {
+        "provisioning_rules": {
+          "view": "link"
+        }
+      },
+      "type": "standard"
+    }
+  }
+}

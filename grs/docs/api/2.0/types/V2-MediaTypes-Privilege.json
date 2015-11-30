@@ -1,0 +1,150 @@
+{
+  "name": "V2::MediaTypes::Privilege",
+  "family": "hash",
+  "id": "V2-MediaTypes-Privilege",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the Privilege.",
+      "example_definition": "cm:server:launch",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "suite": {
+      "description": "Suite of applications for the Privilege.",
+      "example_definition": "cm",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "resource": {
+      "description": "Resource covered by the Privilege.",
+      "example_definition": "server",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "action": {
+      "description": "Action allowed by the Privilege.",
+      "example_definition": "launch",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "scopes": {
+      "description": "Kind(s) of API resource that can meaningfully act as a scope for this privilege",
+      "example_definition": [
+        "org",
+        "project",
+        "cm#deployment"
+      ],
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "kind": {
+      "description": "The string 'privilege'",
+      "values": [
+        "privilege"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "suite": {
+        },
+        "resource": {
+        },
+        "action": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "cm:server:launch",
+        "suite": "cm",
+        "resource": "server",
+        "action": "launch"
+      }
+    },
+    "id": {
+      "attributes": {
+        "id": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": "cm:server:launch"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.privilege",
+  "description": "Represents a Privilege resource.",
+  "display_name": "Privilege",
+  "example": {
+    "id": "cm:server:launch",
+    "suite": "cm",
+    "resource": "server",
+    "action": "launch",
+    "scopes": [
+      "org",
+      "project",
+      "cm#deployment"
+    ],
+    "kind": "privilege",
+    "timestamps": {
+      "created_at": "2012-10-30T00:00:00+00:00",
+      "updated_at": "2015-07-27T00:00:00+00:00"
+    }
+  }
+}

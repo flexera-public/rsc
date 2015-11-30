@@ -1,0 +1,6 @@
+{
+  "name": "TimeZone",
+  "family": "string",
+  "id": "Attributor-TimeZone",
+  "example": "Asia/Omsk"
+}

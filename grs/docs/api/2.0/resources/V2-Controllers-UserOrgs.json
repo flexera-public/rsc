@@ -1,0 +1,1033 @@
+{
+  "description": "Org sub-collection of a user.",
+  "media_type": {
+    "name": "V2::MediaTypes::Org",
+    "family": "hash",
+    "id": "V2-MediaTypes-Org",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Lists all Orgs with which the User is affiliated.",
+      "name": "index",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "ids": {
+              "description": "Comma separated list of Org IDs",
+              "example_definition": "org1,parent1:org2,org3",
+              "type": {
+                "name": "CSV",
+                "family": "array",
+                "id": null,
+                "options": {
+                }
+              },
+              "example": "org1,parent1:org2,org3",
+              "source": "query"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "example_definition": "default",
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "filter": {
+              "description": "Filter by attribute",
+              "example_definition": "name=my_org&display_name=myOrg&legacy_account_id=12345",
+              "type": {
+                "name": "QueryFilter",
+                "family": "any",
+                "id": null,
+                "filters": {
+                  "name": {
+                    "description": "Name by which to filter Orgs",
+                    "options": {
+                      "allow_match": "partial"
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  },
+                  "display_name": {
+                    "description": "Display name by which to filter Orgs",
+                    "options": {
+                      "allow_match": "partial"
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  },
+                  "legacy_account_id": {
+                    "description": "ID of the CloudManagement API 1.5 Account by which to filter Orgs",
+                    "options": {
+                    },
+                    "type": {
+                      "name": "QueryFilter",
+                      "family": "any",
+                      "id": "Attributor-QueryFilter",
+                      "filters": {
+                      },
+                      "options": null
+                    }
+                  }
+                },
+                "options": {
+                  "description": "Filter by attribute",
+                  "example": "name=my_org&display_name=myOrg&legacy_account_id=12345"
+                }
+              },
+              "example": "name=my_org&display_name=myOrg&legacy_account_id=12345",
+              "source": "query"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "Lupid,Lunel,castock",
+          "ids": "org1,parent1:org2,org3",
+          "view": "default",
+          "filter": "name=my_org&display_name=myOrg&legacy_account_id=12345",
+          "user_id": 39
+        }
+      },
+      "responses": {
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Org::Collection",
+            "family": "array",
+            "id": "V2-MediaTypes-Org-Collection",
+            "anonymous": true,
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V2::MediaTypes::Org"
+              },
+              "type": {
+                "name": "V2::MediaTypes::Org",
+                "family": "hash",
+                "id": "V2-MediaTypes-Org",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.org+json; type=collection",
+                "body": "[\n  {\n    \"id\": \"initech:finance\",\n    \"href\": \"/grs/orgs/initech:finance\",\n    \"name\": \"finance\",\n    \"display_name\": \"Finance\",\n    \"description\": \"Initech Finance Department\",\n    \"kind\": \"org\",\n    \"timestamps\": {\n      \"created_at\": \"2012-12-26T00:00:00+00:00\",\n      \"updated_at\": \"2015-09-22T00:00:00+00:00\"\n    },\n    \"links\": {\n      \"parent_org\": {\n        \"id\": \"initech:finance\",\n        \"href\": \"/grs/orgs/initech:finance\",\n        \"kind\": \"org\"\n      },\n      \"child_orgs\": {\n        \"href\": \"/grs/orgs/org1/child_orgs\"\n      },\n      \"projects\": {\n        \"href\": \"/grs/orgs/org1/projects\"\n      },\n      \"users\": {\n        \"href\": \"/grs/orgs/org1/users\"\n      },\n      \"groups\": {\n        \"href\": \"/grs/orgs/org1/groups\"\n      }\n    }\n  }\n]"
+              }
+            }
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/users/:user_id/orgs",
+          "version": "2.0",
+          "example": "/grs/users/116/orgs"
+        }
+      ]
+    },
+    {
+      "description": "Shows an Org with which the User is affiliated.",
+      "name": "show",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "fields": {
+              "description": "Selection of fields to render.",
+              "type": {
+                "name": "Praxis::Extensions::FieldSelection::FieldSelector",
+                "family": "any",
+                "id": "Praxis-Extensions-FieldSelection-FieldSelector"
+              },
+              "example": "buchite,Blair,tickless",
+              "source": "query"
+            },
+            "id": {
+              "description": "ID of the Org to show",
+              "required": true,
+              "example_definition": "parent1:org2",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "parent1:org2",
+              "source": "url"
+            },
+            "view": {
+              "description": "The view to use to render this resource",
+              "values": [
+                "default",
+                "extended",
+                "link"
+              ],
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              },
+              "example": "default",
+              "source": "query"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "fields": "Lupid,Lunel,castock",
+          "id": "parent1:org2",
+          "view": "extended",
+          "user_id": 39
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V2::MediaTypes::Org",
+            "family": "hash",
+            "id": "V2-MediaTypes-Org",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.org+json",
+                "body": "{\n  \"id\": \"initech:finance\",\n  \"href\": \"/grs/orgs/initech:finance\",\n  \"name\": \"finance\",\n  \"display_name\": \"Finance\",\n  \"description\": \"Initech Finance Department\",\n  \"kind\": \"org\",\n  \"timestamps\": {\n    \"created_at\": \"2013-06-20T00:00:00+00:00\",\n    \"updated_at\": \"2016-03-16T00:00:00+00:00\"\n  },\n  \"links\": {\n    \"parent_org\": {\n      \"id\": \"initech:finance\",\n      \"href\": \"/grs/orgs/initech:finance\",\n      \"kind\": \"org\"\n    },\n    \"child_orgs\": {\n      \"href\": \"/grs/orgs/org1/child_orgs\"\n    },\n    \"projects\": {\n      \"href\": \"/grs/orgs/org1/projects\"\n    },\n    \"users\": {\n      \"href\": \"/grs/orgs/org1/users\"\n    },\n    \"groups\": {\n      \"href\": \"/grs/orgs/org1/groups\"\n    }\n  }\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled",
+        "field_selection"
+      ],
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/grs/users/:user_id/orgs/:id",
+          "version": "2.0",
+          "example": "/grs/users/116/orgs/parent1:org2"
+        }
+      ]
+    },
+    {
+      "description": "Creates an affiliation for a User to an Org.",
+      "name": "create",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "user_id": 39
+        }
+      },
+      "payload": {
+        "description": "Org to which the User must be added",
+        "required": true,
+        "type": {
+          "name": "Types::Reference",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "Unique ID of the Org. ID is constructed from Org name and its parent Org ID, if any.",
+              "example_definition": "initech:finance",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "initech:finance"
+            },
+            "href": {
+              "description": "Href of the Org",
+              "example_definition": "/grs/orgs/initech:finance",
+              "type": {
+                "name": "Types::ApiHref",
+                "family": "string",
+                "id": null,
+                "target_resource": {
+                  "name": "V2::Definitions::Orgs",
+                  "media_type_id": "V2-MediaTypes-Org",
+                  "display_name": "Orgs"
+                }
+              },
+              "example": "/grs/orgs/initech:finance"
+            },
+            "kind": {
+              "description": "The string 'org'",
+              "values": [
+                "org"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "org"
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"id\": \"initech:finance\",\n  \"href\": \"/grs/orgs/initech:finance\",\n  \"kind\": \"org\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "id=initech%3Afinance&href=%2Fgrs%2Forgs%2Finitech%3Afinance&kind=org"
+          }
+        },
+        "example": {
+          "id": "initech:finance",
+          "href": "/grs/orgs/initech:finance",
+          "kind": "org"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The request has been fulfilled and resulted in a new resource being created.",
+          "status": 201,
+          "headers": {
+          }
+        },
+        "conflict": {
+          "description": "The requested resource already exists.\n",
+          "status": 409,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/grs/users/:user_id/orgs",
+          "version": "2.0",
+          "example": "/grs/users/116/orgs"
+        }
+      ]
+    },
+    {
+      "description": "Replaces all Org affiliations for a User. If this action should delete\na previous Org affiliation, it will only do so if the User is not a\nmember of any Groups belonging to the Org. If the User is still a\nmember of Groups belonging to the to the Org, the Group membership must\nbe deleted before trying to delete the Org affiliation for a User via\nthe replace action.\n",
+      "name": "replace",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "user_id": 39
+        }
+      },
+      "payload": {
+        "description": "Org affiliations to be replaced with for the Users",
+        "required": true,
+        "type": {
+          "name": "Collection",
+          "family": "array",
+          "id": null,
+          "options": {
+          },
+          "member_attribute": {
+            "type": {
+              "name": "Types::Reference",
+              "family": "hash",
+              "id": null,
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "attributes": {
+                "id": {
+                  "description": "Unique ID of the Org. ID is constructed from Org name and its parent Org ID, if any.",
+                  "example_definition": "initech:finance",
+                  "type": {
+                    "name": "String",
+                    "family": "string",
+                    "id": "Attributor-String"
+                  },
+                  "example": "initech:finance"
+                },
+                "href": {
+                  "description": "Href of the Org",
+                  "example_definition": "/grs/orgs/initech:finance",
+                  "type": {
+                    "name": "Types::ApiHref",
+                    "family": "string",
+                    "id": null,
+                    "target_resource": {
+                      "name": "V2::Definitions::Orgs",
+                      "media_type_id": "V2-MediaTypes-Org",
+                      "display_name": "Orgs"
+                    }
+                  },
+                  "example": "/grs/orgs/initech:finance"
+                },
+                "kind": {
+                  "description": "The string 'org'",
+                  "values": [
+                    "org"
+                  ],
+                  "type": {
+                    "name": "String",
+                    "family": "string",
+                    "id": "Attributor-String"
+                  },
+                  "example": "org"
+                }
+              },
+              "requirements": [
+
+              ]
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "[\n  {\n    \"id\": \"initech:finance\",\n    \"href\": \"/grs/orgs/initech:finance\",\n    \"kind\": \"org\"\n  }\n]"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "%7B%3Aid%3D%3E%22initech%3Afinance%22%2C+%3Ahref%3D%3E%22%2Fgrs%2Forgs%2Finitech%3Afinance%22%2C+%3Akind%3D%3E%22org%22%7D"
+          }
+        },
+        "example": [
+          {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          }
+        ]
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/grs/users/:user_id/orgs",
+          "version": "2.0",
+          "example": "/grs/users/116/orgs"
+        }
+      ]
+    },
+    {
+      "description": "Deletes an Org affiliation for a User. This action deletes an Org\naffiliation only if the User is not a member of any Groups belonging\nto the Org. If the User is still a member of Groups belonging to the\nOrg, the Group membership must be deleted before trying to delete the\nOrg affiliation for a User.\n",
+      "name": "delete",
+      "metadata": {
+      },
+      "headers": {
+        "required": true,
+        "options": {
+          "allow_extra": false,
+          "case_insensitive_load": true,
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Hash",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "String",
+              "family": "string",
+              "id": "Attributor-String"
+            }
+          },
+          "attributes": {
+            "X-Api-Version": {
+              "values": [
+                "2.0"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "2.0"
+            },
+            "Authorization": {
+              "options": {
+                "regexp": "(?-mix:Bearer [\\w-]*)"
+              },
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "Failed to generate example for /Bearer [\\w-]*/ : Sorry, \"]*\" is too vague, try setting a range: \"]{0,3}\""
+            }
+          },
+          "requirements": [
+
+          ]
+        },
+        "example": {
+        }
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V2::MediaTypes::Org"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "description": "ID of the Org to delete",
+              "required": true,
+              "example_definition": "parent1:org2",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "parent1:org2",
+              "source": "url"
+            },
+            "user_id": {
+              "description": "ID of the User to show",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 116,
+              "source": "url"
+            }
+          },
+          "requirements": [
+            {
+              "type": "all",
+              "attributes": [
+                "id",
+                "user_id"
+              ]
+            }
+          ]
+        },
+        "example": {
+          "id": "parent1:org2",
+          "user_id": 39
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      },
+      "traits": [
+        "versionable",
+        "oauth_enabled"
+      ],
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/grs/users/:user_id/orgs/:id",
+          "version": "2.0",
+          "example": "/grs/users/116/orgs/parent1:org2"
+        }
+      ]
+    }
+  ],
+  "name": "V2::Definitions::UserOrgs",
+  "parent": "V2-Definitions-Users",
+  "display_name": "UserOrgs",
+  "metadata": {
+  },
+  "traits": [
+    "versionable",
+    "oauth_enabled"
+  ]
+}

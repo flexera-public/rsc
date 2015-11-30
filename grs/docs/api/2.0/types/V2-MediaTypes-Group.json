@@ -1,0 +1,465 @@
+{
+  "name": "V2::MediaTypes::Group",
+  "family": "hash",
+  "id": "V2-MediaTypes-Group",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "description": "Unique ID of the Group",
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "href": {
+      "description": "Href for the Group",
+      "example_definition": "#<Proc:0x007fdc7b96e358@/Users/james/rsgit/global_resource_service/design/v2/media_types/group.rb:15>",
+      "type": {
+        "name": "Types::ApiHref",
+        "family": "string",
+        "id": null,
+        "target_resource": {
+          "name": "V2::Definitions::Groups",
+          "media_type_id": "V2-MediaTypes-Group",
+          "display_name": "Groups"
+        }
+      }
+    },
+    "name": {
+      "description": "Group name that is unique within the Org",
+      "example_definition": "admin",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "description": {
+      "description": "Description of the Group",
+      "example_definition": "Administration Department",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "kind": {
+      "description": "The string 'group'",
+      "values": [
+        "group"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "users": {
+      "description": "Users belonging to the Group",
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V2::MediaTypes::User"
+          },
+          "type": {
+            "name": "V2::MediaTypes::User",
+            "family": "hash",
+            "id": "V2-MediaTypes-User",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        }
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Types::ResourceTimestamps",
+        "family": "hash",
+        "id": "Types-ResourceTimestamps",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        }
+      }
+    },
+    "links": {
+      "options": {
+        "reference": "V2::MediaTypes::Group"
+      },
+      "type": {
+        "name": "V2::MediaTypes::Group::Links",
+        "family": "hash",
+        "id": "V2-MediaTypes-Group-Links",
+        "key": {
+          "type": {
+            "name": "Symbol",
+            "family": "string",
+            "id": "Attributor-Symbol"
+          }
+        },
+        "attributes": {
+          "org": {
+            "description": "Org to which the Group belongs",
+            "options": {
+              "reference": "V2::MediaTypes::Org"
+            },
+            "type": {
+              "name": "V2::MediaTypes::Org",
+              "family": "hash",
+              "id": "V2-MediaTypes-Org",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              }
+            }
+          },
+          "users": {
+            "description": "Users belonging to the Group",
+            "options": {
+              "reference": "V2::MediaTypes::User::GroupUserCollectionSummary"
+            },
+            "type": {
+              "name": "V2::MediaTypes::User::GroupUserCollectionSummary",
+              "family": "hash",
+              "id": "V2-MediaTypes-User-GroupUserCollectionSummary",
+              "key": {
+                "type": {
+                  "name": "Symbol",
+                  "family": "string",
+                  "id": "Attributor-Symbol"
+                }
+              },
+              "anonymous": true
+            }
+          }
+        },
+        "requirements": [
+
+        ],
+        "anonymous": true,
+        "views": {
+          "master": {
+            "attributes": {
+              "org": {
+                "view": "link"
+              },
+              "users": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          },
+          "default": {
+            "attributes": {
+              "org": {
+                "view": "link"
+              },
+              "users": {
+                "view": "link"
+              }
+            },
+            "type": "standard"
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+
+  ],
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "timestamps": {
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 984,
+        "href": "/grs/groups/984",
+        "name": "admin",
+        "description": "Administration Department",
+        "kind": "group",
+        "timestamps": {
+          "created_at": "2014-12-28T00:00:00+00:00",
+          "updated_at": "2017-09-23T00:00:00+00:00"
+        },
+        "links": {
+          "org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "users": {
+            "href": "/grs/groups/1/users"
+          }
+        }
+      }
+    },
+    "extended": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "name": {
+        },
+        "description": {
+        },
+        "kind": {
+        },
+        "timestamps": {
+        },
+        "users": {
+          "view": "default"
+        },
+        "links": {
+          "view": "default"
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 984,
+        "href": "/grs/groups/984",
+        "name": "admin",
+        "description": "Administration Department",
+        "kind": "group",
+        "timestamps": {
+          "created_at": "2014-12-28T00:00:00+00:00",
+          "updated_at": "2017-09-23T00:00:00+00:00"
+        },
+        "users": [
+          {
+            "id": 730,
+            "href": "/grs/users/730",
+            "kind": "user",
+            "company": "RightScale Inc.",
+            "email": "sandwood@uncelebrating.com",
+            "first_name": "Edmond",
+            "last_name": "Buckridge",
+            "phone": "471-664-2733",
+            "timezone_name": "Etc/GMT+10",
+            "timestamps": {
+              "created_at": "2013-01-04T00:00:00+00:00",
+              "updated_at": "2015-10-01T00:00:00+00:00"
+            },
+            "links": {
+              "groups": {
+                "href": "/grs/users/1/groups"
+              },
+              "orgs": {
+                "href": "/grs/users/1/orgs"
+              }
+            }
+          },
+          {
+            "id": 800,
+            "href": "/grs/users/800",
+            "kind": "user",
+            "company": "RightScale Inc.",
+            "email": "controlment@unpartial.com",
+            "first_name": "Jonelle",
+            "last_name": "Gaylord",
+            "phone": "301-529-2740",
+            "timezone_name": "Etc/GMT+7",
+            "timestamps": {
+              "created_at": "2013-10-25T00:00:00+00:00",
+              "updated_at": "2016-07-21T00:00:00+00:00"
+            },
+            "links": {
+              "groups": {
+                "href": "/grs/users/1/groups"
+              },
+              "orgs": {
+                "href": "/grs/users/1/orgs"
+              }
+            }
+          },
+          {
+            "id": 161,
+            "href": "/grs/users/161",
+            "kind": "user",
+            "company": "RightScale Inc.",
+            "email": "recoin@Lapeirousia.com",
+            "first_name": "Julio",
+            "last_name": "Franecki",
+            "phone": "924-069-1028",
+            "timezone_name": "Singapore",
+            "timestamps": {
+              "created_at": "2014-11-07T00:00:00+00:00",
+              "updated_at": "2017-08-03T00:00:00+00:00"
+            },
+            "links": {
+              "groups": {
+                "href": "/grs/users/1/groups"
+              },
+              "orgs": {
+                "href": "/grs/users/1/orgs"
+              }
+            }
+          }
+        ],
+        "links": {
+          "org": {
+            "id": "initech:finance",
+            "href": "/grs/orgs/initech:finance",
+            "kind": "org"
+          },
+          "users": {
+            "href": "/grs/groups/1/users"
+          }
+        }
+      }
+    },
+    "link": {
+      "attributes": {
+        "id": {
+        },
+        "name": {
+        },
+        "href": {
+        },
+        "kind": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 984,
+        "name": "admin",
+        "href": "/grs/groups/984",
+        "kind": "group"
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.group",
+  "description": "Represents a Group resource",
+  "display_name": "Group",
+  "example": {
+    "id": 984,
+    "href": "/grs/groups/984",
+    "name": "admin",
+    "description": "Administration Department",
+    "kind": "group",
+    "users": [
+      {
+        "id": 730,
+        "href": "/grs/users/730",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "sandwood@uncelebrating.com",
+        "first_name": "Edmond",
+        "last_name": "Buckridge",
+        "phone": "471-664-2733",
+        "timezone_name": "Etc/GMT+10",
+        "timestamps": {
+          "created_at": "2013-01-04T00:00:00+00:00",
+          "updated_at": "2015-10-01T00:00:00+00:00"
+        },
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      },
+      {
+        "id": 800,
+        "href": "/grs/users/800",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "controlment@unpartial.com",
+        "first_name": "Jonelle",
+        "last_name": "Gaylord",
+        "phone": "301-529-2740",
+        "timezone_name": "Etc/GMT+7",
+        "timestamps": {
+          "created_at": "2013-10-25T00:00:00+00:00",
+          "updated_at": "2016-07-21T00:00:00+00:00"
+        },
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      },
+      {
+        "id": 161,
+        "href": "/grs/users/161",
+        "kind": "user",
+        "company": "RightScale Inc.",
+        "email": "recoin@Lapeirousia.com",
+        "first_name": "Julio",
+        "last_name": "Franecki",
+        "phone": "924-069-1028",
+        "timezone_name": "Singapore",
+        "timestamps": {
+          "created_at": "2014-11-07T00:00:00+00:00",
+          "updated_at": "2017-08-03T00:00:00+00:00"
+        },
+        "links": {
+          "groups": {
+            "href": "/grs/users/1/groups"
+          },
+          "orgs": {
+            "href": "/grs/users/1/orgs"
+          }
+        }
+      }
+    ],
+    "timestamps": {
+      "created_at": "2014-12-28T00:00:00+00:00",
+      "updated_at": "2017-09-23T00:00:00+00:00"
+    },
+    "links": {
+      "org": {
+        "id": "initech:finance",
+        "href": "/grs/orgs/initech:finance",
+        "kind": "org"
+      },
+      "users": {
+        "href": "/grs/groups/1/users"
+      }
+    }
+  }
+}
