@@ -121,7 +121,7 @@ const actionMetadataTmpl = `&metadata.Action {
 						Location: {{location .}},
 						Mandatory: {{.Mandatory}},
 						NonBlank: {{.NonBlank}},{{if .Regexp}}
-						Regexp: regexp.MustCompile("{{.Regexp}}"),{{end}}{{if .ValidValues}}
+						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),{{end}}{{if .ValidValues}}
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
 				},{{if .Payload}}
@@ -134,7 +134,7 @@ const actionMetadataTmpl = `&metadata.Action {
 						Location: {{location .}},
 						Mandatory: {{.Mandatory}},
 						NonBlank: {{.NonBlank}},{{if .Regexp}}
-						Regexp: regexp.MustCompile("{{.Regexp}}"),{{end}}{{if .ValidValues}}
+						Regexp: regexp.MustCompile(` + "`" + `{{.Regexp}}` + "`" + `),{{end}}{{if .ValidValues}}
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
 				},

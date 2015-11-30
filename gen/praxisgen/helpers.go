@@ -19,7 +19,8 @@ var (
 
 	// BuiltInTypes is the list of praxis built-in types for which there is no "type" member
 	// in the corresponding JSON.
-	BuiltInTypes = []string{"RsId", "IP", "QueryFilter", "Href", "Tag", "CSV"}
+	BuiltInTypes = []string{"RsId", "IP", "QueryFilter", "Href", "Tag", "CSV",
+		"Symbol", "Types::Reference", "Types::ApiHref"}
 )
 
 // Produce go type name from given ruby type name

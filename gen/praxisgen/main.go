@@ -86,10 +86,11 @@ func main() {
 			apiResources := make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
 			for name, resource := range resources {
 				// Skip built-in resources (?)
-				if strings.HasSuffix(name, " (*)") {
+				controller := resource["controller"]
+				if strings.HasSuffix(name, " (*)") || controller == nil {
 					continue
 				}
-				fileName := strings.Replace(fmt.Sprintf("%s.json", resource["controller"]), "::", "-", -1)
+				fileName := strings.Replace(fmt.Sprintf("%s.json", controller), "::", "-", -1)
 				resourcePath := path.Join(dirPath, version, "resources", fileName)
 				var resourceData map[string]interface{}
 				if err := unmarshal(resourcePath, &resourceData); err != nil {
