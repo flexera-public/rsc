@@ -14,6 +14,7 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"github.com/rightscale/rsc/grs"
 )
 
 // ParseCommandLine retrieves the command and top level flag values.
@@ -141,6 +142,9 @@ const (
 
 	// CaCommand is the command for CA client.
 	CaCommand = "ca"
+
+	// GrsCommand is the command for GRS 2.0 client.
+	GrsCommand = "grs"
 )
 
 // APIClient instantiates a client with the given name from command line arguments.
@@ -156,6 +160,8 @@ func APIClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error)
 		return rl10.FromCommandLine(cmdLine)
 	case CaCommand:
 		return ca.FromCommandLine(cmdLine)
+	case GrsCommand:
+		return grs.FromCommandLine(cmdLine)
 	default:
 		return nil, fmt.Errorf("No client for '%s'", name)
 	}
@@ -182,4 +188,8 @@ func RegisterClientCommands(app *kingpin.Application) {
 	caCmd := app.Command(CaCommand, ca.APIName)
 	registrar = rsapi.Registrar{APICmd: caCmd}
 	ca.RegisterCommands(&registrar)
+
+	grsCmd := app.Command(GrsCommand, grs.APIName)
+	registrar = rsapi.Registrar{APICmd: grsCmd}
+	grs.RegisterCommands(&registrar)
 }
