@@ -38,7 +38,12 @@ func toGoTypeName(name string, usePointer bool) string {
 		var typeName string
 		if strings.Contains(name, "::") {
 			elems := strings.Split(name, "::")
-			typeName = strings.Join(elems[2:len(elems)], "")
+			if elems[0] == "Types" {
+				elems = elems[1:]  // trim off "Types::" prefix
+			} else if elems[0] == "Praxis" || elems[1] == "MediaTypes" {
+				elems = elems[2:] // trim off prefixes like "Praxis::Extensions::" and "V2:MediaTypes"
+			}
+			typeName = strings.Join(elems, "")
 		} else {
 			typeName = name
 		}

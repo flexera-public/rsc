@@ -198,9 +198,9 @@ func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 						if nameObj, ok := m["name"]; ok {
 							name := nameObj.(string)
 							var typeToAnalyze string
-							_, rawTypeExists := a.RawTypes[name] // allow for *::Collection being in RawTypes
+							_, rawTypeExists := a.RawTypes[name] // allow for *::Collection being in RawTypes already
 							if strings.HasSuffix(name, "::Collection") && !rawTypeExists {
-								// handle ::Collection type specially
+								// handle ::Collection as a "virtual" type, not defined in RawTypes
 								collectionOf := strings.TrimSuffix(name, "::Collection")
 								returnTypeName = "[]" + toGoTypeName(collectionOf, true)
 								typeToAnalyze = collectionOf
