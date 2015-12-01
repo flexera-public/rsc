@@ -10,8 +10,10 @@
 package grs
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
@@ -78,7 +80,8 @@ func (api *API) AccessRuleLocator(href string) *AccessRuleLocator {
 // GET /grs/access_rules
 //
 // Lists all AccessRules.
-func (loc *AccessRuleLocator) Index(options rsapi.APIParams) error {
+func (loc *AccessRuleLocator) Index(options rsapi.APIParams) ([]*AccessRule, error) {
+	var res []*AccessRule
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -108,15 +111,15 @@ func (loc *AccessRuleLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AccessRule", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -125,15 +128,22 @@ func (loc *AccessRuleLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/access_rules/:id
 //
 // Shows a single AccessRule.
-func (loc *AccessRuleLocator) Show(options rsapi.APIParams) error {
+func (loc *AccessRuleLocator) Show(options rsapi.APIParams) (*AccessRule, error) {
+	var res *AccessRule
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -147,15 +157,15 @@ func (loc *AccessRuleLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AccessRule", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -164,9 +174,15 @@ func (loc *AccessRuleLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/access_rules
@@ -267,20 +283,21 @@ func (loc *AccessRuleLocator) Replace(payload []*PayloadStruct, options rsapi.AP
 // DELETE /grs/access_rules/:id
 //
 // Deletes an AccessRule.
-func (loc *AccessRuleLocator) Delete() error {
+func (loc *AccessRuleLocator) Delete() (*AccessRule, error) {
+	var res *AccessRule
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AccessRule", "delete")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -289,9 +306,15 @@ func (loc *AccessRuleLocator) Delete() error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  Group ******/
@@ -320,7 +343,8 @@ func (api *API) GroupLocator(href string) *GroupLocator {
 // GET /grs/groups
 //
 // Lists all Groups.
-func (loc *GroupLocator) Index(options rsapi.APIParams) error {
+func (loc *GroupLocator) Index(options rsapi.APIParams) ([]*Group, error) {
+	var res []*Group
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -338,15 +362,15 @@ func (loc *GroupLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Group", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -355,15 +379,22 @@ func (loc *GroupLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/groups/:id
 //
 // Shows a single Group.
-func (loc *GroupLocator) Show(options rsapi.APIParams) error {
+func (loc *GroupLocator) Show(options rsapi.APIParams) (*Group, error) {
+	var res *Group
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -377,15 +408,15 @@ func (loc *GroupLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Group", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -394,9 +425,15 @@ func (loc *GroupLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/groups
@@ -550,7 +587,8 @@ func (api *API) GroupUserLocator(href string) *GroupUserLocator {
 // GET /grs/groups/:group_id/users
 //
 // Lists all Users in a Group.
-func (loc *GroupUserLocator) Index(options rsapi.APIParams) error {
+func (loc *GroupUserLocator) Index(options rsapi.APIParams) ([]*User, error) {
+	var res []*User
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -572,15 +610,15 @@ func (loc *GroupUserLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("GroupUser", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -589,15 +627,22 @@ func (loc *GroupUserLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/groups/:group_id/users/:id
 //
 // Shows a User in a Group.
-func (loc *GroupUserLocator) Show(options rsapi.APIParams) error {
+func (loc *GroupUserLocator) Show(options rsapi.APIParams) (*User, error) {
+	var res *User
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -611,15 +656,15 @@ func (loc *GroupUserLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("GroupUser", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -628,9 +673,15 @@ func (loc *GroupUserLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/groups/:group_id/users
@@ -772,7 +823,8 @@ func (api *API) IdentityProviderLocator(href string) *IdentityProviderLocator {
 // GET /grs/identity_providers
 //
 // Lists all IdentityProviders.
-func (loc *IdentityProviderLocator) Index(options rsapi.APIParams) error {
+func (loc *IdentityProviderLocator) Index(options rsapi.APIParams) ([]*IdentityProvider, error) {
+	var res []*IdentityProvider
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -794,15 +846,15 @@ func (loc *IdentityProviderLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("IdentityProvider", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -811,15 +863,22 @@ func (loc *IdentityProviderLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/identity_providers/:id
 //
 // Shows a single IdentityProvider.
-func (loc *IdentityProviderLocator) Show(options rsapi.APIParams) error {
+func (loc *IdentityProviderLocator) Show(options rsapi.APIParams) (*IdentityProvider, error) {
+	var res *IdentityProvider
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -833,15 +892,15 @@ func (loc *IdentityProviderLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("IdentityProvider", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -850,9 +909,15 @@ func (loc *IdentityProviderLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  Org ******/
@@ -881,7 +946,8 @@ func (api *API) OrgLocator(href string) *OrgLocator {
 // GET /grs/orgs/:id
 //
 // Shows a single Org.
-func (loc *OrgLocator) Show(options rsapi.APIParams) error {
+func (loc *OrgLocator) Show(options rsapi.APIParams) (*Org, error) {
+	var res *Org
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -895,15 +961,15 @@ func (loc *OrgLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Org", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -912,9 +978,15 @@ func (loc *OrgLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/orgs
@@ -1021,7 +1093,8 @@ func (loc *OrgLocator) Update(options rsapi.APIParams) error {
 // GET /grs/orgs/:id/child_orgs
 //
 // Lists all the child Orgs for an Org.
-func (loc *OrgLocator) ChildOrgs(options rsapi.APIParams) error {
+func (loc *OrgLocator) ChildOrgs(options rsapi.APIParams) ([]*Org, error) {
+	var res []*Org
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1043,15 +1116,15 @@ func (loc *OrgLocator) ChildOrgs(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Org", "child_orgs")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1060,9 +1133,15 @@ func (loc *OrgLocator) ChildOrgs(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  OrgGroup ******/
@@ -1089,7 +1168,8 @@ func (api *API) OrgGroupLocator(href string) *OrgGroupLocator {
 // GET /grs/orgs/:org_id/groups
 //
 // Lists all Groups in an Org.
-func (loc *OrgGroupLocator) Index(options rsapi.APIParams) error {
+func (loc *OrgGroupLocator) Index(options rsapi.APIParams) ([]*Group, error) {
+	var res []*Group
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1115,15 +1195,15 @@ func (loc *OrgGroupLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("OrgGroup", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1132,9 +1212,15 @@ func (loc *OrgGroupLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  OrgProject ******/
@@ -1161,7 +1247,8 @@ func (api *API) OrgProjectLocator(href string) *OrgProjectLocator {
 // GET /grs/orgs/:org_id/projects
 //
 // Lists all Projects in an Org.
-func (loc *OrgProjectLocator) Index(options rsapi.APIParams) error {
+func (loc *OrgProjectLocator) Index(options rsapi.APIParams) ([]*Project, error) {
+	var res []*Project
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1187,15 +1274,15 @@ func (loc *OrgProjectLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("OrgProject", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1204,15 +1291,22 @@ func (loc *OrgProjectLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/orgs/:org_id/projects/:id
 //
 // Shows a single Project scoped to its parent Org.
-func (loc *OrgProjectLocator) Show(options rsapi.APIParams) error {
+func (loc *OrgProjectLocator) Show(options rsapi.APIParams) (*Project, error) {
+	var res *Project
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1230,15 +1324,15 @@ func (loc *OrgProjectLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("OrgProject", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1247,9 +1341,15 @@ func (loc *OrgProjectLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/orgs/:org_id/projects
@@ -1361,7 +1461,8 @@ func (api *API) OrgRoleLocator(href string) *OrgRoleLocator {
 // GET /grs/orgs/:org_id/roles
 //
 // No description provided for index.
-func (loc *OrgRoleLocator) Index(options rsapi.APIParams) error {
+func (loc *OrgRoleLocator) Index(options rsapi.APIParams) ([]*Role, error) {
+	var res []*Role
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1379,15 +1480,15 @@ func (loc *OrgRoleLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("OrgRole", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1396,9 +1497,15 @@ func (loc *OrgRoleLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  OrgUser ******/
@@ -1425,7 +1532,8 @@ func (api *API) OrgUserLocator(href string) *OrgUserLocator {
 // GET /grs/orgs/:org_id/users
 //
 // Lists all Users in an Org.
-func (loc *OrgUserLocator) Index(options rsapi.APIParams) error {
+func (loc *OrgUserLocator) Index(options rsapi.APIParams) ([]*User, error) {
+	var res []*User
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1451,15 +1559,15 @@ func (loc *OrgUserLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("OrgUser", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1468,15 +1576,22 @@ func (loc *OrgUserLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/orgs/:org_id/users/:id
 //
 // Shows a User in an Org.
-func (loc *OrgUserLocator) Show(options rsapi.APIParams) error {
+func (loc *OrgUserLocator) Show(options rsapi.APIParams) (*User, error) {
+	var res *User
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1490,15 +1605,15 @@ func (loc *OrgUserLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("OrgUser", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1507,9 +1622,15 @@ func (loc *OrgUserLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/orgs/:org_id/users
@@ -1655,7 +1776,8 @@ func (api *API) ProjectLocator(href string) *ProjectLocator {
 // GET /grs/projects
 //
 // Lists all Projects in an Org.
-func (loc *ProjectLocator) Index(options rsapi.APIParams) error {
+func (loc *ProjectLocator) Index(options rsapi.APIParams) ([]*Project, error) {
+	var res []*Project
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1681,15 +1803,15 @@ func (loc *ProjectLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Project", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1698,17 +1820,24 @@ func (loc *ProjectLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/projects/:id
 //
 // Shows a single Project.
-func (loc *ProjectLocator) Show(orgId string, options rsapi.APIParams) error {
+func (loc *ProjectLocator) Show(orgId string, options rsapi.APIParams) (*Project, error) {
+	var res *Project
 	if orgId == "" {
-		return fmt.Errorf("orgId is required")
+		return res, fmt.Errorf("orgId is required")
 	}
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
@@ -1725,15 +1854,15 @@ func (loc *ProjectLocator) Show(orgId string, options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Project", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1742,9 +1871,15 @@ func (loc *ProjectLocator) Show(orgId string, options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/projects
@@ -1869,7 +2004,8 @@ func (api *API) ProvisioningRuleLocator(href string) *ProvisioningRuleLocator {
 // GET /grs/provisioning_rules
 //
 // Lists all ProvisioningRules.
-func (loc *ProvisioningRuleLocator) Index(options rsapi.APIParams) error {
+func (loc *ProvisioningRuleLocator) Index(options rsapi.APIParams) ([]*ProvisioningRule, error) {
+	var res []*ProvisioningRule
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1891,15 +2027,15 @@ func (loc *ProvisioningRuleLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ProvisioningRule", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1908,15 +2044,22 @@ func (loc *ProvisioningRuleLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/provisioning_rules/:id
 //
 // Shows a single ProvisioningRule.
-func (loc *ProvisioningRuleLocator) Show(options rsapi.APIParams) error {
+func (loc *ProvisioningRuleLocator) Show(options rsapi.APIParams) (*ProvisioningRule, error) {
+	var res *ProvisioningRule
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -1930,15 +2073,15 @@ func (loc *ProvisioningRuleLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ProvisioningRule", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1947,9 +2090,15 @@ func (loc *ProvisioningRuleLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/provisioning_rules
@@ -2100,7 +2249,8 @@ func (api *API) ProvisioningTemplateLocator(href string) *ProvisioningTemplateLo
 // GET /grs/identity_providers/:identity_provider_id/provisioning_templates
 //
 // Lists all ProvisioningTemplates for an IdentityProvider.
-func (loc *ProvisioningTemplateLocator) Index(options rsapi.APIParams) error {
+func (loc *ProvisioningTemplateLocator) Index(options rsapi.APIParams) ([]*ProvisioningTemplate, error) {
+	var res []*ProvisioningTemplate
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -2118,15 +2268,15 @@ func (loc *ProvisioningTemplateLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ProvisioningTemplate", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -2135,15 +2285,22 @@ func (loc *ProvisioningTemplateLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/identity_providers/:identity_provider_id/provisioning_templates/:id
 //
 // Shows a single ProvisioningTemplate for an IdentityProvider.
-func (loc *ProvisioningTemplateLocator) Show(options rsapi.APIParams) error {
+func (loc *ProvisioningTemplateLocator) Show(options rsapi.APIParams) (*ProvisioningTemplate, error) {
+	var res *ProvisioningTemplate
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -2157,15 +2314,15 @@ func (loc *ProvisioningTemplateLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ProvisioningTemplate", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -2174,9 +2331,15 @@ func (loc *ProvisioningTemplateLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/identity_providers/:identity_provider_id/provisioning_templates
@@ -2360,7 +2523,8 @@ func (api *API) ProvisioningTemplateRuleLocator(href string) *ProvisioningTempla
 // GET /grs/identity_providers/:identity_provider_id/provisioning_templates/:provisioning_template_id/rules
 //
 // Lists all ProvisioningRules for the given ProvisioningTemplate.
-func (loc *ProvisioningTemplateRuleLocator) Index(options rsapi.APIParams) error {
+func (loc *ProvisioningTemplateRuleLocator) Index(options rsapi.APIParams) ([]*ProvisioningRule, error) {
+	var res []*ProvisioningRule
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -2382,15 +2546,15 @@ func (loc *ProvisioningTemplateRuleLocator) Index(options rsapi.APIParams) error
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ProvisioningTemplateRule", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -2399,15 +2563,22 @@ func (loc *ProvisioningTemplateRuleLocator) Index(options rsapi.APIParams) error
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/identity_providers/:identity_provider_id/provisioning_templates/:provisioning_template_id/rules/:id
 //
 // Shows a ProvisioningRule for the given ProvisioningTemplate.
-func (loc *ProvisioningTemplateRuleLocator) Show(options rsapi.APIParams) error {
+func (loc *ProvisioningTemplateRuleLocator) Show(options rsapi.APIParams) (*ProvisioningRule, error) {
+	var res *ProvisioningRule
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -2421,15 +2592,15 @@ func (loc *ProvisioningTemplateRuleLocator) Show(options rsapi.APIParams) error 
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ProvisioningTemplateRule", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -2438,9 +2609,15 @@ func (loc *ProvisioningTemplateRuleLocator) Show(options rsapi.APIParams) error 
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/identity_providers/:identity_provider_id/provisioning_templates/:provisioning_template_id/rules
@@ -2586,7 +2763,8 @@ func (api *API) UserLocator(href string) *UserLocator {
 // GET /grs/users/:id
 //
 // Shows a single User.
-func (loc *UserLocator) Show(options rsapi.APIParams) error {
+func (loc *UserLocator) Show(options rsapi.APIParams) (*User, error) {
+	var res *User
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -2600,15 +2778,15 @@ func (loc *UserLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("User", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -2617,9 +2795,15 @@ func (loc *UserLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/users
@@ -2763,7 +2947,8 @@ func (api *API) UserGroupLocator(href string) *UserGroupLocator {
 // GET /grs/users/:user_id/groups
 //
 // Lists all Groups of which the User is a member.
-func (loc *UserGroupLocator) Index(options rsapi.APIParams) error {
+func (loc *UserGroupLocator) Index(options rsapi.APIParams) ([]*Group, error) {
+	var res []*Group
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -2785,15 +2970,15 @@ func (loc *UserGroupLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserGroup", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -2802,15 +2987,22 @@ func (loc *UserGroupLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/users/:user_id/groups/:id
 //
 // Shows a Group of which the User is a member.
-func (loc *UserGroupLocator) Show(options rsapi.APIParams) error {
+func (loc *UserGroupLocator) Show(options rsapi.APIParams) (*Group, error) {
+	var res *Group
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -2824,15 +3016,15 @@ func (loc *UserGroupLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserGroup", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -2841,9 +3033,15 @@ func (loc *UserGroupLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/users/:user_id/groups
@@ -2996,7 +3194,8 @@ func (api *API) UserIdentityLocator(href string) *UserIdentityLocator {
 // GET /grs/user_identities
 //
 // Lists all UserIdentities.
-func (loc *UserIdentityLocator) Index(options rsapi.APIParams) error {
+func (loc *UserIdentityLocator) Index(options rsapi.APIParams) ([]*UserIdentity, error) {
+	var res []*UserIdentity
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -3018,15 +3217,15 @@ func (loc *UserIdentityLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserIdentity", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -3035,15 +3234,22 @@ func (loc *UserIdentityLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/user_identities/:id
 //
 // Shows a single UserIdentity.
-func (loc *UserIdentityLocator) Show(options rsapi.APIParams) error {
+func (loc *UserIdentityLocator) Show(options rsapi.APIParams) (*UserIdentity, error) {
+	var res *UserIdentity
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -3057,15 +3263,15 @@ func (loc *UserIdentityLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserIdentity", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -3074,9 +3280,15 @@ func (loc *UserIdentityLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 /******  UserOrg ******/
@@ -3103,7 +3315,8 @@ func (api *API) UserOrgLocator(href string) *UserOrgLocator {
 // GET /grs/users/:user_id/orgs
 //
 // Lists all Orgs with which the User is affiliated.
-func (loc *UserOrgLocator) Index(options rsapi.APIParams) error {
+func (loc *UserOrgLocator) Index(options rsapi.APIParams) ([]*Org, error) {
+	var res []*Org
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -3125,15 +3338,15 @@ func (loc *UserOrgLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserOrg", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -3142,15 +3355,22 @@ func (loc *UserOrgLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/users/:user_id/orgs/:id
 //
 // Shows an Org with which the User is affiliated.
-func (loc *UserOrgLocator) Show(options rsapi.APIParams) error {
+func (loc *UserOrgLocator) Show(options rsapi.APIParams) (*Org, error) {
+	var res *Org
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -3164,15 +3384,15 @@ func (loc *UserOrgLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserOrg", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -3181,9 +3401,15 @@ func (loc *UserOrgLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // POST /grs/users/:user_id/orgs
@@ -3328,7 +3554,8 @@ func (api *API) UserUserIdentityLocator(href string) *UserUserIdentityLocator {
 // GET /grs/users/:user_id/identities
 //
 // Lists all UserIdentities for the given User.
-func (loc *UserUserIdentityLocator) Index(options rsapi.APIParams) error {
+func (loc *UserUserIdentityLocator) Index(options rsapi.APIParams) ([]*UserIdentity, error) {
+	var res []*UserIdentity
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -3350,15 +3577,15 @@ func (loc *UserUserIdentityLocator) Index(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserUserIdentity", "index")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -3367,15 +3594,22 @@ func (loc *UserUserIdentityLocator) Index(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // GET /grs/users/:user_id/identities/:id
 //
 // Shows a UserIdentity for the given User.
-func (loc *UserUserIdentityLocator) Show(options rsapi.APIParams) error {
+func (loc *UserUserIdentityLocator) Show(options rsapi.APIParams) (*UserIdentity, error) {
+	var res *UserIdentity
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var fieldsOpt = options["fields"]
@@ -3389,15 +3623,15 @@ func (loc *UserUserIdentityLocator) Show(options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("UserUserIdentity", "show")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -3406,9 +3640,15 @@ func (loc *UserUserIdentityLocator) Show(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // PUT /grs/users/:user_id/identities
@@ -3451,3 +3691,231 @@ func (loc *UserUserIdentityLocator) Replace(payload []*PayloadStruct) error {
 }
 
 /****** Parameter Data Types ******/
+
+type AccessRuleLinks struct {
+	Principal string `json:"principal,omitempty"`
+	Scope     string `json:"scope,omitempty"`
+}
+
+type AccessRuleParam struct {
+	Href  string           `json:"href,omitempty"`
+	Id    int              `json:"id,omitempty"`
+	Kind  string           `json:"kind,omitempty"`
+	Links *AccessRuleLinks `json:"links,omitempty"`
+	Roles []string         `json:"roles,omitempty"`
+}
+
+type GroupLinks struct {
+	Org   *OrgParam                       `json:"org,omitempty"`
+	Users *UserGroupUserCollectionSummary `json:"users,omitempty"`
+}
+
+type GroupOrgGroupCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type GroupParam struct {
+	Description string              `json:"description,omitempty"`
+	Href        string              `json:"href,omitempty"`
+	Id          int                 `json:"id,omitempty"`
+	Kind        string              `json:"kind,omitempty"`
+	Links       *GroupLinks         `json:"links,omitempty"`
+	Name        string              `json:"name,omitempty"`
+	Timestamps  *ResourceTimestamps `json:"timestamps,omitempty"`
+	Users       []*UserParam        `json:"users,omitempty"`
+}
+
+type GroupUserGroupCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type IdentityProviderLinks struct {
+	Org                   *OrgParam                                                  `json:"org,omitempty"`
+	ProvisioningTemplates *ProvisioningTemplateProvisioningTemplateCollectionSummary `json:"provisioning_templates,omitempty"`
+}
+
+type IdentityProviderParam struct {
+	DefaultProvisioningTemplate *ProvisioningTemplateParam `json:"default_provisioning_template,omitempty"`
+	Description                 string                     `json:"description,omitempty"`
+	DiscoveryHint               string                     `json:"discovery_hint,omitempty"`
+	EmailDomains                []string                   `json:"email_domains,omitempty"`
+	Href                        string                     `json:"href,omitempty"`
+	Id                          int                        `json:"id,omitempty"`
+	Kind                        string                     `json:"kind,omitempty"`
+	Links                       *IdentityProviderLinks     `json:"links,omitempty"`
+	Name                        string                     `json:"name,omitempty"`
+	ProtocolDetails             map[string]interface{}     `json:"protocol_details,omitempty"`
+	ProtocolType                string                     `json:"protocol_type,omitempty"`
+	ProtocolUid                 string                     `json:"protocol_uid,omitempty"`
+	Timestamps                  *ResourceTimestamps        `json:"timestamps,omitempty"`
+}
+
+type OrgChildOrgCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type OrgLinks struct {
+	ChildOrgs *OrgChildOrgCollectionSummary       `json:"child_orgs,omitempty"`
+	Groups    *GroupOrgGroupCollectionSummary     `json:"groups,omitempty"`
+	ParentOrg *OrgParam                           `json:"parent_org,omitempty"`
+	Projects  *ProjectOrgProjectCollectionSummary `json:"projects,omitempty"`
+	Users     *UserOrgUserCollectionSummary       `json:"users,omitempty"`
+}
+
+type OrgParam struct {
+	Description string                            `json:"description,omitempty"`
+	DisplayName string                            `json:"display_name,omitempty"`
+	Href        string                            `json:"href,omitempty"`
+	Id          string                            `json:"id,omitempty"`
+	Kind        string                            `json:"kind,omitempty"`
+	Legacy      *ReturnGroupsLinksOrgLegacyStruct `json:"legacy,omitempty"`
+	Links       *OrgLinks                         `json:"links,omitempty"`
+	Name        string                            `json:"name,omitempty"`
+	Timestamps  *ResourceTimestamps               `json:"timestamps,omitempty"`
+	Users       []*UserParam                      `json:"users,omitempty"`
+}
+
+type OrgUserOrgCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type Privilege struct {
+	Action     string              `json:"action,omitempty"`
+	Id         string              `json:"id,omitempty"`
+	Kind       string              `json:"kind,omitempty"`
+	Resource   string              `json:"resource,omitempty"`
+	Scopes     []string            `json:"scopes,omitempty"`
+	Suite      string              `json:"suite,omitempty"`
+	Timestamps *ResourceTimestamps `json:"timestamps,omitempty"`
+}
+
+type ProjectLinks struct {
+	Org *OrgParam `json:"org,omitempty"`
+}
+
+type ProjectOrgProjectCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type ProjectParam struct {
+	Description string              `json:"description,omitempty"`
+	DisplayName string              `json:"display_name,omitempty"`
+	Href        string              `json:"href,omitempty"`
+	Id          string              `json:"id,omitempty"`
+	Kind        string              `json:"kind,omitempty"`
+	Legacy      *ReturnLegacyStruct `json:"legacy,omitempty"`
+	Links       *ProjectLinks       `json:"links,omitempty"`
+	Name        string              `json:"name,omitempty"`
+	Timestamps  *ResourceTimestamps `json:"timestamps,omitempty"`
+}
+
+type ProvisioningRuleLinks struct {
+	Group                *GroupParam                `json:"group,omitempty"`
+	ProvisioningTemplate *ProvisioningTemplateParam `json:"provisioning_template,omitempty"`
+}
+
+type ProvisioningRuleParam struct {
+	Description string                 `json:"description,omitempty"`
+	Href        string                 `json:"href,omitempty"`
+	Id          int                    `json:"id,omitempty"`
+	Kind        string                 `json:"kind,omitempty"`
+	Links       *ProvisioningRuleLinks `json:"links,omitempty"`
+	Regex       string                 `json:"regex,omitempty"`
+	Timestamps  *ResourceTimestamps    `json:"timestamps,omitempty"`
+}
+
+type ProvisioningRuleProvisioningRuleCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type ProvisioningTemplateLinks struct {
+	ProvisioningRules *ProvisioningRuleProvisioningRuleCollectionSummary `json:"provisioning_rules,omitempty"`
+}
+
+type ProvisioningTemplateParam struct {
+	Description       string                     `json:"description,omitempty"`
+	Href              string                     `json:"href,omitempty"`
+	Id                int                        `json:"id,omitempty"`
+	Kind              string                     `json:"kind,omitempty"`
+	Links             *ProvisioningTemplateLinks `json:"links,omitempty"`
+	Name              string                     `json:"name,omitempty"`
+	ProvisioningRules []*ProvisioningRuleParam   `json:"provisioning_rules,omitempty"`
+	Timestamps        *ResourceTimestamps        `json:"timestamps,omitempty"`
+	Xsl               string                     `json:"xsl,omitempty"`
+}
+
+type ProvisioningTemplateProvisioningTemplateCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type ResourceTimestamps struct {
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+}
+
+type ReturnGroupsLinksOrgLegacyStruct struct {
+	AccountId  int    `json:"account_id,omitempty"`
+	AccountUrl string `json:"account_url,omitempty"`
+}
+
+type ReturnLegacyStruct struct {
+	AccountId  int    `json:"account_id,omitempty"`
+	AccountUrl string `json:"account_url,omitempty"`
+}
+
+type Role struct {
+	Id         int                 `json:"id,omitempty"`
+	Kind       string              `json:"kind,omitempty"`
+	Links      *RoleLinks          `json:"links,omitempty"`
+	Name       string              `json:"name,omitempty"`
+	Privileges []*Privilege        `json:"privileges,omitempty"`
+	Scopes     []string            `json:"scopes,omitempty"`
+	Timestamps *ResourceTimestamps `json:"timestamps,omitempty"`
+}
+
+type RoleLinks struct {
+	Org *OrgParam `json:"org,omitempty"`
+}
+
+type UserGroupUserCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type UserIdentityLinks struct {
+	IdentityProvider *IdentityProviderParam `json:"identity_provider,omitempty"`
+	User             *UserParam             `json:"user,omitempty"`
+}
+
+type UserIdentityParam struct {
+	Href         string              `json:"href,omitempty"`
+	Id           int                 `json:"id,omitempty"`
+	Kind         string              `json:"kind,omitempty"`
+	Links        *UserIdentityLinks  `json:"links,omitempty"`
+	PrincipalUid string              `json:"principal_uid,omitempty"`
+	Timestamps   *ResourceTimestamps `json:"timestamps,omitempty"`
+}
+
+type UserLinks struct {
+	Groups *GroupUserGroupCollectionSummary `json:"groups,omitempty"`
+	Orgs   *OrgUserOrgCollectionSummary     `json:"orgs,omitempty"`
+}
+
+type UserOrgUserCollectionSummary struct {
+	Href string `json:"href,omitempty"`
+}
+
+type UserParam struct {
+	Company      string              `json:"company,omitempty"`
+	Email        string              `json:"email,omitempty"`
+	FirstName    string              `json:"first_name,omitempty"`
+	Groups       []*GroupParam       `json:"groups,omitempty"`
+	Href         string              `json:"href,omitempty"`
+	Id           int                 `json:"id,omitempty"`
+	Kind         string              `json:"kind,omitempty"`
+	LastName     string              `json:"last_name,omitempty"`
+	Links        *UserLinks          `json:"links,omitempty"`
+	Orgs         []*OrgParam         `json:"orgs,omitempty"`
+	Phone        string              `json:"phone,omitempty"`
+	Timestamps   *ResourceTimestamps `json:"timestamps,omitempty"`
+	TimezoneName string              `json:"timezone_name,omitempty"`
+}

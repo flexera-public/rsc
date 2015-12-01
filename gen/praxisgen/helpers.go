@@ -40,12 +40,15 @@ func toGoTypeName(name string, usePointer bool) string {
 			elems := strings.Split(name, "::")
 			if elems[0] == "Types" {
 				elems = elems[1:]  // trim off "Types::" prefix
-			} else if elems[0] == "Praxis" || elems[1] == "MediaTypes" {
-				elems = elems[2:] // trim off prefixes like "Praxis::Extensions::" and "V2:MediaTypes"
+			} else {
+				elems = elems[2:] // trim off prefixes like "Praxis::Extensions::", "V2:MediaTypes::", and "Service::MediaType::"
 			}
 			typeName = strings.Join(elems, "")
 		} else {
 			typeName = name
+		}
+		if typeName == "" {
+			panic("Ended up with an empty type name for: "+name)
 		}
 		if usePointer {
 			typeName = "*" + typeName

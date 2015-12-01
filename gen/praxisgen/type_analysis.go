@@ -63,8 +63,9 @@ func (a *APIAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		n = "Struct" // Assume inline struct (e.g. payload types)
 	}
 
-	if strings.HasSuffix(n, "::Collection") {
-		n = "Collection" // go down the "Collection" case
+	_, knownType := a.RawTypes[n]
+	if strings.HasSuffix(n, "::Collection") && !knownType {
+		n = "Collection" // force it match the "Collection" case, below
 	}
 
 	if strings.HasSuffix(n, "FileUpload") {
