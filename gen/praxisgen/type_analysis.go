@@ -62,6 +62,11 @@ func (a *APIAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 	if !ok {
 		n = "Struct" // Assume inline struct (e.g. payload types)
 	}
+
+	if strings.HasSuffix(n, "::Collection") {
+		n = "Collection" // go down the "Collection" case
+	}
+
 	if strings.HasSuffix(n, "FileUpload") {
 		// A little bit hacky but this is to make upload work with resticle
 		// The idea is that a type named "FileUpload" is assumed to define a multipart
