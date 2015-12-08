@@ -313,7 +313,22 @@ func (a *API) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 
 // Identify action resource if any
 // Return error if no resource could be identified
+//
+// This is a "subtle" algorithm...
+// We want to be able to:
+//
+// * Match a resource action on partial href, e.g. /clouds/1/instances/2 should be ok to invoke
+//   terminate (whose path has /terminate at the end)
+//
+// * If two resources have actions with different names but same path pattern then return the right
+//   one, e.g. both Deployment and Server have an action with path /deployments/1/servers/2 but it's
+//   called "servers" in the case of Deployment and "index" in the case of servers.
+//
+// * If more than one actions on different resources have the same name and match the href then we
+//   want to fail so we don't risk running the action on the wrong resource.
 func (a *API) parseResource(cmd, hrefPrefix string, commandValues ActionCommands) (*metadata.Resource, []*metadata.PathVariable, error) {
+	elems := strings.Split(cmd, " ")
+	actionName := elems[len(elems)-1]
 	flags := commandValues[cmd]
 	if flags == nil {
 		return nil, nil, fmt.Errorf("Invalid command line, try --help.")
@@ -324,19 +339,34 @@ func (a *API) parseResource(cmd, hrefPrefix string, commandValues ActionCommands
 	}
 
 	var vars []*metadata.PathVariable
-	var resource *metadata.Resource
+	var candidates []*metadata.Resource
 	for _, res := range a.Metadata {
-		var err error
-		if vars, err = res.ExtractVariables(href); err == nil {
-			resource = res
-			break
+		if v, err := res.ExtractVariables(href); err == nil {
+			vars = v
+			exact := false
+			for _, a := range res.Actions {
+				if a.Name == actionName && a.MatchHref(href) {
+					// We found an exact match!
+					candidates = []*metadata.Resource{res}
+					exact = true
+					break
+				}
+			}
+			if exact {
+				break
+			}
+			candidates = append(candidates, res)
 		}
 	}
-	if resource == nil {
+	if len(candidates) == 0 {
 		return nil, nil, fmt.Errorf("Invalid href '%s'. Try '%s %s actions'.", href,
 			os.Args[0], strings.Split(cmd, " ")[0])
 	}
-	return resource, vars, nil
+	if len(candidates) > 1 {
+		return nil, nil, fmt.Errorf("Invalid href '%s'. Multiple resources have an action '%s' that match this href. Try '%s %s actions' and specify a more complete href.",
+			href, actionName, os.Args[0], strings.Split(cmd, " ")[0])
+	}
+	return candidates[0], vars, nil
 }
 
 // Capture enumerable input key value

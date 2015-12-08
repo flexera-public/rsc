@@ -32,6 +32,16 @@ func (a *Action) PayloadParamNames() []string {
 	return a.paramsByLocation(PayloadParam)
 }
 
+// MatchHref returns true if the given href
+func (a *Action) MatchHref(href string) bool {
+	for _, pattern := range a.PathPatterns {
+		if pattern.Regexp.MatchString(href) || pattern.Regexp.MatchString(href+"/") {
+			return true
+		}
+	}
+	return false
+}
+
 // paramsByLocation is a helper method that returns the names of the parameters at the given
 // location (path, query string or payload).
 func (a *Action) paramsByLocation(loc Location) []string {
