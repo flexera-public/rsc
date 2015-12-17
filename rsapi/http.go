@@ -11,6 +11,8 @@ import (
 	"net/url"
 	"strconv"
 
+	"golang.org/x/net/context"
+
 	"github.com/rightscale/rsc/metadata"
 )
 
@@ -142,6 +144,22 @@ func (a *API) PerformRequest(req *http.Request) (*http.Response, error) {
 		}
 	}
 	resp, err := a.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, err
+}
+
+// PerformRequestWithContext performs everything the PerformRequest does but is also context-aware.
+func (a *API) PerformRequestWithContext(ctx context.Context, req *http.Request) (*http.Response, error) {
+	// Sign last so auth headers don't get printed or logged
+	if a.Auth != nil {
+		if err := a.Auth.Sign(req); err != nil {
+			return nil, err
+		}
+	}
+	resp, err := a.Client.DoWithContext(ctx, req)
 	if err != nil {
 		return nil, err
 	}
