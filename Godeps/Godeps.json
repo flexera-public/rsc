@@ -43,6 +43,10 @@
 			"Rev": "d04eebe26072b09f780b43c72c6df71b12b8d105"
 		},
 		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "66f0418ca41253f8d1a024eb9754e9441a8e79b9"
+		},
+		{
 			"ImportPath": "gopkg.in/alecthomas/kingpin.v2",
 			"Comment": "v2.0.12",
 			"Rev": "639879d6110b1b0409410c7b737ef0bb18325038"

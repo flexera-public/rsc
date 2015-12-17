@@ -16,6 +16,9 @@ import (
 	"strings"
 	"time"
 
+	"golang.org/x/net/context"
+	"golang.org/x/net/context/ctxhttp"
+
 	"github.com/rightscale/rsc/log"
 	"github.com/rightscale/rsc/recording"
 )
@@ -70,9 +73,17 @@ var (
 type (
 	// HTTPClient makes it easier to stub HTTP clients for testing.
 	HTTPClient interface {
+		// Do makes a regular http request and returns the response/error.
 		Do(req *http.Request) (*http.Response, error)
+
+		// DoWithContext performs a request and is context-aware.
+		DoWithContext(ctx context.Context, req *http.Request) (*http.Response, error)
+
 		// DoHidden prevents logging, useful for requests made during authorization.
 		DoHidden(req *http.Request) (*http.Response, error)
+
+		// DoHiddenWithContext prevents logging and performs a context-aware request.
+		DoHiddenWithContext(ctx context.Context, req *http.Request) (*http.Response, error)
 	}
 
 	// Format is the request/response dump format.
@@ -146,16 +157,24 @@ func (f Format) IsRecord() bool {
 // DoHidden is equivalent to Do with the exception that nothing gets logged unless DumpFormat is
 // set to Verbose.
 func (d *dumpClient) DoHidden(req *http.Request) (*http.Response, error) {
-	return d.doImp(req, true)
+	return d.doImp(req, true, nil)
 }
 
 // Do dumps the request, makes the request and dumps the response as specified by DumpFormat.
 func (d *dumpClient) Do(req *http.Request) (*http.Response, error) {
-	return d.doImp(req, false)
+	return d.doImp(req, false, nil)
+}
+
+func (d *dumpClient) DoWithContext(ctx context.Context, req *http.Request) (*http.Response, error) {
+	return d.doImp(req, true, ctx)
+}
+
+func (d *dumpClient) DoHiddenWithContext(ctx context.Context, req *http.Request) (*http.Response, error) {
+	return d.doImp(req, false, ctx)
 }
 
 // doImp actually performs the HTTP request logging according to the various settings.
-func (d *dumpClient) doImp(req *http.Request, hidden bool) (*http.Response, error) {
+func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) (*http.Response, error) {
 	if Insecure {
 		req.URL.Scheme = "http"
 	} else {
@@ -172,7 +191,13 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool) (*http.Response, erro
 		startedAt = time.Now()
 		reqBody = dumpRequest(req)
 	}
-	resp, err := d.Client.Do(req)
+	var resp *http.Response
+	var err error
+	if ctx == nil {
+		resp, err = d.Client.Do(req)
+	} else {
+		resp, err = ctxhttp.Do(ctx, d.Client, req)
+	}
 	if urlError, ok := err.(*url.Error); ok {
 		if urlError.Err.Error() == noRedirectError {
 			err = nil
