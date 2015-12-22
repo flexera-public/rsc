@@ -39,9 +39,13 @@ ACL=public-read
 # version for gopkg.in, e.g. v1, v2, ...
 GOPKG_VERS=v5
 # Dependencies not handled by Godep, i.e. that are used to build/test/upload this puppy
-DEPEND=golang.org/x/tools/cmd/cover github.com/onsi/ginkgo/ginkgo \
-			 github.com/rlmcpherson/s3gof3r/gof3r github.com/tools/godep \
-			 github.com/rogpeppe/govers
+DEPEND=golang.org/x/tools/cmd/cover \
+			github.com/onsi/ginkgo \
+			github.com/onsi/ginkgo/ginkgo \
+			github.com/golang/protobuf/proto \
+			github.com/rlmcpherson/s3gof3r/gof3r \
+			github.com/tools/godep \
+			github.com/rogpeppe/govers
 
 #=== below this line ideally remains unchanged, add new targets at the end  ===
 

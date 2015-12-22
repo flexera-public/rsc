@@ -29,6 +29,10 @@
 			"Rev": "ae0b1f8f8004be68d791a576e3d8e7648ab41449"
 		},
 		{
+			"ImportPath": "github.com/golang/protobuf/proto",
+			"Rev": "68415e7123da32b07eab49c96d2c4d6158360e9b"
+		},
+		{
 			"ImportPath": "github.com/onsi/ginkgo",
 			"Comment": "v1.1.0-33-g17ea479",
 			"Rev": "17ea479729ee427265ac1e913443018350946ddf"
