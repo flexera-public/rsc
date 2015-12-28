@@ -1,0 +1,212 @@
+{
+  "description": "TSS Custom Plugins",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Get plugins list",
+      "name": "get_exec",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/exec",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Add new TSS custom pligin",
+      "name": "post_exec",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/rll/tss/exec",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "executable": {
+              "required": true,
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "name": "bavaroy",
+          "executable": [
+            "microblast",
+            "bronchadenitis",
+            "phytomorphic"
+          ]
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Get TSS plugin info",
+      "name": "get_exec_name",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/exec/:name",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Update TSS custom pligin",
+      "name": "put_exec_name",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/exec/:name",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "executable": {
+              "required": true,
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "executable": [
+            "microblast",
+            "bronchadenitis",
+            "phytomorphic"
+          ]
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete TSS plugin info",
+      "name": "delete_exec_name",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/rll/tss/exec/:name",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources::TSSPlugins",
+  "metadata": {
+  }
+}

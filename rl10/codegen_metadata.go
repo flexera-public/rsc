@@ -503,7 +503,7 @@ var GenMetadata = map[string]*metadata.Resource{
 
 			&metadata.Action{
 				Name:        "put_control",
-				Description: `Control the TSS monitoring (deprecated, use the /rll/tss/control resource)`,
+				Description: `Control the TSS monitoring (deprecated, use the update action)`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",
@@ -548,6 +548,139 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 				},
+			},
+		},
+	},
+	"TSSPlugin": &metadata.Resource{
+		Name:        "TSSPlugin",
+		Description: `TSS Custom Plugins`,
+		Identifier:  "",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "get_exec",
+				Description: `Get plugins list`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/rll/tss/exec",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/exec`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "post_exec",
+				Description: `Add new TSS custom pligin`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/rll/tss/exec",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/tss/exec`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "executable[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "name",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "executable[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "name",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "get_exec_name",
+				Description: `Get TSS plugin info`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/rll/tss/exec/%s",
+						Variables:  []string{"name"},
+						Regexp:     regexp.MustCompile(`/rll/tss/exec/([^/]+)`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "put_exec_name",
+				Description: `Update TSS custom pligin`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/tss/exec/%s",
+						Variables:  []string{"name"},
+						Regexp:     regexp.MustCompile(`/rll/tss/exec/([^/]+)`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "executable[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "executable[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "delete_exec_name",
+				Description: `Delete TSS plugin info`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/rll/tss/exec/%s",
+						Variables:  []string{"name"},
+						Regexp:     regexp.MustCompile(`/rll/tss/exec/([^/]+)`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 		},
 	},

@@ -84,7 +84,7 @@
           }
         },
         "example": {
-          "name": "embellishes"
+          "name": "unnamableness"
         }
       },
       "payload": {
@@ -93,7 +93,7 @@
           "name": "String",
           "id": "Attributor-String"
         },
-        "example": "attention"
+        "example": "postmediastinal"
       },
       "responses": {
         "ok": {

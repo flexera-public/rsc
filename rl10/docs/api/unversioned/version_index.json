@@ -22,6 +22,10 @@
       "name": "Resources::TSS",
       "friendly_name": "TSS"
     },
+    "Resources-TSSPlugins": {
+      "name": "Resources::TSSPlugins",
+      "friendly_name": "TSSPlugins"
+    },
     "Resources-TSSControl": {
       "name": "Resources::TSSControl",
       "friendly_name": "TSSControl"
