@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/rightscale/rsc",
-	"GoVersion": "go1.4.2",
+	"GoVersion": "go1.5.1",
 	"Deps": [
 		{
 			"ImportPath": "bitbucket.org/pkg/inflect",
@@ -29,18 +29,26 @@
 			"Rev": "ae0b1f8f8004be68d791a576e3d8e7648ab41449"
 		},
 		{
+			"ImportPath": "github.com/golang/protobuf/proto",
+			"Rev": "68415e7123da32b07eab49c96d2c4d6158360e9b"
+		},
+		{
 			"ImportPath": "github.com/onsi/ginkgo",
 			"Comment": "v1.1.0-33-g17ea479",
 			"Rev": "17ea479729ee427265ac1e913443018350946ddf"
 		},
 		{
 			"ImportPath": "github.com/onsi/gomega",
-			"Comment": "v1.0-28-g8adf9e1",
-			"Rev": "8adf9e1730c55cdc590de7d49766cb2acc88d8f2"
+			"Comment": "v1.0-75-g0fe2044",
+			"Rev": "0fe204460da2c8fa1babcaac196e694de8f1aaa1"
 		},
 		{
 			"ImportPath": "github.com/rightscale/go-jsonselect",
 			"Rev": "d04eebe26072b09f780b43c72c6df71b12b8d105"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "66f0418ca41253f8d1a024eb9754e9441a8e79b9"
 		},
 		{
 			"ImportPath": "gopkg.in/alecthomas/kingpin.v2",

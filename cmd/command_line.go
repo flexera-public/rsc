@@ -27,6 +27,7 @@ type CommandLine struct {
 	Dump                string // Whether to dump raw HTTP request and response to stdout (values are empty string - don't dump, "debug" or "json")
 	Verbose             bool   // Whether to dump auth requests and sensitive headers
 	Pretty              bool   // Whether to display response body or extract values using pretty printer
+	Timeout             int    // Request timeout in seconds
 	ShowHelp            bool   // Whether to show help for action flags
 }
 
