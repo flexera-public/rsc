@@ -1,5 +1,5 @@
 {
-  "description": "Enables you to get details of existing AWS ReservedInstances and some metrics about their utilization.",
+  "description": "Enables you to get details of existing AWS ReservedInstances and some metrics about their utilization.\n\nBoth HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number\nof filters applied it is possible that the URL may exceed the maximum length. If the URL length is over\n2,083 characters we recommend using a POST request with the parameters in the body.\n",
   "media_type": "V1-MediaTypes-ReservedInstance",
   "actions": [
     {
@@ -12,6 +12,11 @@
           "verb": "GET",
           "path": "/api/reserved_instances",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/reserved_instances",
+          "version": "1.0"
         }
       ],
       "params": {
@@ -20,22 +25,16 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -625,6 +624,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -634,6 +634,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -643,6 +644,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -650,27 +652,26 @@
             "reserved_instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "reserved_instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "reserved_instance:offering_type",
-                    "value": "Heavy Utilization"
-                  }
-                ]
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "reserved_instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "reserved_instance:offering_type",
+                  "value": "Heavy Utilization"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -680,14 +681,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -700,8 +702,8 @@
                   "values": [
                     "reservation_uid",
                     "-reservation_uid",
-                    "rs_account_name",
-                    "-rs_account_name",
+                    "account_name",
+                    "-account_name",
                     "cloud_vendor_name",
                     "-cloud_vendor_name",
                     "cloud_name",
@@ -725,6 +727,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -732,8 +735,8 @@
                   "values": [
                     "reservation_uid",
                     "-reservation_uid",
-                    "rs_account_name",
-                    "-rs_account_name",
+                    "account_name",
+                    "-account_name",
                     "cloud_vendor_name",
                     "-cloud_vendor_name",
                     "cloud_name",
@@ -755,6 +758,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -765,6 +769,7 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -773,6 +778,7 @@
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -780,7 +786,6 @@
           }
         },
         "example": {
-          "view": "engender",
           "timezone": "Africa/Niamey",
           "start_time": "2014-08-29T00:00:00+00:00",
           "end_time": "2014-08-23T00:00:00+00:00",
@@ -788,22 +793,30 @@
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:offering_type",
-              "value": "Heavy Utilization"
+              "value": "Heavy Utilization",
+              "label": null,
+              "tag_resource_type": null
             }
           ],
           "order": [
@@ -833,15 +846,28 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::ReservedInstance",
-            "id": "V1-MediaTypes-ReservedInstance",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::ReservedInstance::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-ReservedInstance-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::ReservedInstance"
+              },
+              "type": {
+                "name": "V1::MediaTypes::ReservedInstance",
+                "family": "hash",
+                "id": "V1-MediaTypes-ReservedInstance",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -856,6 +882,11 @@
           "verb": "GET",
           "path": "/api/reserved_instances/actions/count",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/reserved_instances/actions/count",
+          "version": "1.0"
         }
       ],
       "params": {
@@ -864,10 +895,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -1461,6 +1494,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -1470,6 +1504,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -1479,6 +1514,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -1486,27 +1522,26 @@
             "reserved_instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "reserved_instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "reserved_instance:offering_type",
-                    "value": "Heavy Utilization"
-                  }
-                ]
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "reserved_instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "reserved_instance:offering_type",
+                  "value": "Heavy Utilization"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -1516,14 +1551,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -1539,22 +1575,30 @@
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:offering_type",
-              "value": "Heavy Utilization"
+              "value": "Heavy Utilization",
+              "label": null,
+              "tag_resource_type": null
             }
           ]
         }
@@ -1593,6 +1637,11 @@
           "verb": "GET",
           "path": "/api/reserved_instances/actions/exist",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/reserved_instances/actions/exist",
+          "version": "1.0"
         }
       ],
       "params": {
@@ -1601,10 +1650,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -2198,6 +2249,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -2207,6 +2259,7 @@
               "required": false,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -2216,6 +2269,7 @@
               "required": false,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -2223,27 +2277,26 @@
             "reserved_instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "reserved_instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "reserved_instance:offering_type",
-                    "value": "Heavy Utilization"
-                  }
-                ]
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "reserved_instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "reserved_instance:offering_type",
+                  "value": "Heavy Utilization"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -2253,14 +2306,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -2276,22 +2330,30 @@
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:offering_type",
-              "value": "Heavy Utilization"
+              "value": "Heavy Utilization",
+              "label": null,
+              "tag_resource_type": null
             }
           ]
         }
@@ -2330,6 +2392,11 @@
           "verb": "GET",
           "path": "/api/reserved_instances/actions/export",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/reserved_instances/actions/export",
+          "version": "1.0"
         }
       ],
       "params": {
@@ -2338,22 +2405,16 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -2943,6 +3004,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -2952,6 +3014,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -2961,6 +3024,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -2968,27 +3032,26 @@
             "reserved_instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "reserved_instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "reserved_instance:offering_type",
-                    "value": "Heavy Utilization"
-                  }
-                ]
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "reserved_instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "reserved_instance:offering_type",
+                  "value": "Heavy Utilization"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -2998,14 +3061,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -3018,8 +3082,8 @@
                   "values": [
                     "reservation_uid",
                     "-reservation_uid",
-                    "rs_account_name",
-                    "-rs_account_name",
+                    "account_name",
+                    "-account_name",
                     "cloud_vendor_name",
                     "-cloud_vendor_name",
                     "cloud_name",
@@ -3043,6 +3107,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3050,8 +3115,8 @@
                   "values": [
                     "reservation_uid",
                     "-reservation_uid",
-                    "rs_account_name",
-                    "-rs_account_name",
+                    "account_name",
+                    "-account_name",
                     "cloud_vendor_name",
                     "-cloud_vendor_name",
                     "cloud_name",
@@ -3073,6 +3138,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -3083,6 +3149,7 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -3091,6 +3158,7 @@
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -3098,7 +3166,6 @@
           }
         },
         "example": {
-          "view": "engender",
           "timezone": "Africa/Niamey",
           "start_time": "2014-08-29T00:00:00+00:00",
           "end_time": "2014-08-23T00:00:00+00:00",
@@ -3106,22 +3173,30 @@
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:offering_type",
-              "value": "Heavy Utilization"
+              "value": "Heavy Utilization",
+              "label": null,
+              "tag_resource_type": null
             }
           ],
           "order": [
@@ -3170,6 +3245,11 @@
           "verb": "GET",
           "path": "/api/reserved_instances/actions/filter_options",
           "version": "1.0"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/reserved_instances/actions/filter_options",
+          "version": "1.0"
         }
       ],
       "params": {
@@ -3178,22 +3258,16 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -3783,6 +3857,7 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -3792,6 +3867,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -3801,6 +3877,7 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
               "source": "query"
@@ -3808,27 +3885,26 @@
             "reserved_instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "reserved_instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "reserved_instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "reserved_instance:offering_type",
-                    "value": "Heavy Utilization"
-                  }
-                ]
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "reserved_instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "reserved_instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "reserved_instance:offering_type",
+                  "value": "Heavy Utilization"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3838,14 +3914,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -3858,8 +3935,8 @@
                   "values": [
                     "reservation_uid",
                     "-reservation_uid",
-                    "rs_account_name",
-                    "-rs_account_name",
+                    "account_name",
+                    "-account_name",
                     "cloud_vendor_name",
                     "-cloud_vendor_name",
                     "cloud_name",
@@ -3883,6 +3960,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3890,8 +3968,8 @@
                   "values": [
                     "reservation_uid",
                     "-reservation_uid",
-                    "rs_account_name",
-                    "-rs_account_name",
+                    "account_name",
+                    "-account_name",
                     "cloud_vendor_name",
                     "-cloud_vendor_name",
                     "cloud_name",
@@ -3913,6 +3991,7 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -3923,6 +4002,7 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -3931,6 +4011,7 @@
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "query"
@@ -3946,12 +4027,14 @@
                     "reserved_instance:datacenter_key",
                     "reserved_instance:instance_type_key",
                     "reserved_instance:platform",
-                    "reserved_instance:state"
+                    "reserved_instance:state",
+                    "reserved_instance:offering_type"
                   ]
                 }
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3963,10 +4046,12 @@
                     "reserved_instance:datacenter_key",
                     "reserved_instance:instance_type_key",
                     "reserved_instance:platform",
-                    "reserved_instance:state"
+                    "reserved_instance:state",
+                    "reserved_instance:offering_type"
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -3978,6 +4063,7 @@
               "required": false,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -3985,7 +4071,6 @@
           }
         },
         "example": {
-          "view": "engender",
           "timezone": "Africa/Niamey",
           "start_time": "2014-08-29T00:00:00+00:00",
           "end_time": "2014-08-23T00:00:00+00:00",
@@ -3993,22 +4078,30 @@
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "reserved_instance:offering_type",
-              "value": "Heavy Utilization"
+              "value": "Heavy Utilization",
+              "label": null,
+              "tag_resource_type": null
             }
           ],
           "order": [
@@ -4042,15 +4135,28 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::Filter",
-            "id": "V1-MediaTypes-Filter",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::Filter::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Filter-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Filter"
+              },
+              "type": {
+                "name": "V1::MediaTypes::Filter",
+                "family": "hash",
+                "id": "V1-MediaTypes-Filter",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4058,5 +4164,8 @@
   ],
   "name": "V1::ApiResources::ReservedInstances",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

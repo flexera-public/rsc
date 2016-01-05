@@ -10,7 +10,6 @@
 package cac
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"time"
@@ -60,6 +59,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 // Accounts act as a container for clouds credentials and other RightScale concepts such as
 // Deployments or ServerArrays. Users with the `enterprise_manager` permission in an account can create
 // child accounts. This resource is not included in the public docs.
+// The view `full` is not supported if the any of the user's accounts use IP Whitelisting.
 type Account struct {
 }
 
@@ -81,14 +81,25 @@ func (api *API) AccountLocator(href string) *AccountLocator {
 // POST /api/accounts
 //
 // Create a new child account.
-func (loc *AccountLocator) Create(options rsapi.APIParams) (*AccountLocator, error) {
+func (loc *AccountLocator) Create(masterAccountId int, name string, options rsapi.APIParams) (*AccountLocator, error) {
 	var res *AccountLocator
+	if name == "" {
+		return res, fmt.Errorf("name is required")
+	}
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
 	var p rsapi.APIParams
-	p = rsapi.APIParams{}
-	var dunnoOpt = options["dunno"]
-	if dunnoOpt != nil {
-		p["dunno"] = dunnoOpt
+	p = rsapi.APIParams{
+		"master_account_id": masterAccountId,
+		"name":              name,
+	}
+	var shardIdOpt = options["shard_id"]
+	if shardIdOpt != nil {
+		p["shard_id"] = shardIdOpt
 	}
 	uri, err := loc.ActionPath("Account", "create")
 	if err != nil {
@@ -122,8 +133,8 @@ func (loc *AccountLocator) Create(options rsapi.APIParams) (*AccountLocator, err
 // GET /api/accounts
 //
 // List all accounts.
-func (loc *AccountLocator) Index(options rsapi.APIParams) (*Account, error) {
-	var res *Account
+func (loc *AccountLocator) Index(options rsapi.APIParams) (*AccountCollection, error) {
+	var res *AccountCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -335,6 +346,148 @@ func (loc *AnalysisSnapshotLocator) Show(options rsapi.APIParams) (*AnalysisSnap
 	return res, err
 }
 
+/******  AwsAccountGroupMembership ******/
+
+// Used by CM to present a user's consolidated billing groups
+type AwsAccountGroupMembership struct {
+}
+
+//===== Locator
+
+// AwsAccountGroupMembershipLocator exposes the AwsAccountGroupMembership resource actions.
+type AwsAccountGroupMembershipLocator struct {
+	Href
+	api *API
+}
+
+// AwsAccountGroupMembershipLocator builds a locator from the given href.
+func (api *API) AwsAccountGroupMembershipLocator(href string) *AwsAccountGroupMembershipLocator {
+	return &AwsAccountGroupMembershipLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /api/aws_account_group_memberships
+//
+// Lists the AWS account group memberships
+func (loc *AwsAccountGroupMembershipLocator) Index(options rsapi.APIParams) (*AwsAccountGroupMembershipCollection, error) {
+	var res *AwsAccountGroupMembershipCollection
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filtersOpt = options["filters"]
+	if filtersOpt != nil {
+		params["filters"] = filtersOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("AwsAccountGroupMembership", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /api/aws_account_group_memberships/aws_cloudwatch_latest_sync_at
+//
+// No description provided for aws_cloudwatch_latest_sync_at.
+func (loc *AwsAccountGroupMembershipLocator) AwsCloudwatchLatestSyncAt(options rsapi.APIParams) (string, error) {
+	var res string
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filtersOpt = options["filters"]
+	if filtersOpt != nil {
+		params["filters"] = filtersOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("AwsAccountGroupMembership", "aws_cloudwatch_latest_sync_at")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// GET /api/aws_account_group_memberships/:id
+//
+// Show the details of a single AWS account group membership
+func (loc *AwsAccountGroupMembershipLocator) Show() (*AwsAccountGroupMembership, error) {
+	var res *AwsAccountGroupMembership
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("AwsAccountGroupMembership", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
 /******  BudgetAlert ******/
 
 // Enable you to set a monthly spend budget and be alerted via email when this is exceeded,
@@ -432,8 +585,8 @@ func (loc *BudgetAlertLocator) Create(budget *BudgetStruct, frequency string, na
 // GET /api/budget_alerts
 //
 // List all BudgetAlerts.
-func (loc *BudgetAlertLocator) Index(options rsapi.APIParams) (*BudgetAlert, error) {
-	var res *BudgetAlert
+func (loc *BudgetAlertLocator) Index(options rsapi.APIParams) (*BudgetAlertCollection, error) {
+	var res *BudgetAlertCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -613,6 +766,9 @@ func (loc *BudgetAlertLocator) Destroy() error {
 /******  CloudBill ******/
 
 // Enables you to get details about cloud bills. Only Amazon Web Services is supported for now.
+// Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
+// of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
+// 2,083 characters we recommend using a POST request with the parameters in the body.
 type CloudBill struct {
 }
 
@@ -632,10 +788,11 @@ func (api *API) CloudBillLocator(href string) *CloudBillLocator {
 //===== Actions
 
 // GET /api/cloud_bills/actions/filter_options
+// POST /api/cloud_bills/actions/filter_options
 //
 // Gets the filter options which can be used for filtering the cloud bill breakdown calls.
-func (loc *CloudBillLocator) FilterOptions(endTime *time.Time, filterTypes []string, startTime *time.Time, options rsapi.APIParams) (*Filter, error) {
-	var res *Filter
+func (loc *CloudBillLocator) FilterOptions(endTime *time.Time, filterTypes []string, startTime *time.Time, options rsapi.APIParams) (*FilterCollection, error) {
+	var res *FilterCollection
 	if len(filterTypes) == 0 {
 		return res, fmt.Errorf("filterTypes is required")
 	}
@@ -648,10 +805,6 @@ func (loc *CloudBillLocator) FilterOptions(endTime *time.Time, filterTypes []str
 	var cloudBillFiltersOpt = options["cloud_bill_filters"]
 	if cloudBillFiltersOpt != nil {
 		params["cloud_bill_filters[]"] = cloudBillFiltersOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("CloudBill", "filter_options")
@@ -684,9 +837,58 @@ func (loc *CloudBillLocator) FilterOptions(endTime *time.Time, filterTypes []str
 	return res, err
 }
 
+// GET /api/cloud_bills/actions/export
+// POST /api/cloud_bills/actions/export
+//
+// Exports the cloud bills for the time range given, along with the instance data for non-AWS providers, with columns for each account tag.
+func (loc *CloudBillLocator) Export(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (string, error) {
+	var res string
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
+		"end_time":   endTime,
+		"start_time": startTime,
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("CloudBill", "export")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
 /******  CloudBillMetric ******/
 
 // Enables you to get breakdowns of your cloud bill costs. Only Amazon Web Services is supported for now.
+// Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
+// of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
+// 2,083 characters we recommend using a POST request with the parameters in the body.
 type CloudBillMetric struct {
 }
 
@@ -706,12 +908,13 @@ func (api *API) CloudBillMetricLocator(href string) *CloudBillMetricLocator {
 //===== Actions
 
 // GET /api/cloud_bill_metrics/actions/grouped_time_series
+// POST /api/cloud_bill_metrics/actions/grouped_time_series
 //
 // Calculates the time series of costs for cloud bills in a time period grouped into monthly
 // time buckets and groups them into specified breakdown categories, e.g. show me cost of my
 // cloud bills per month during the last year grouped by product.
-func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime *time.Time, group [][]string, startTime *time.Time, options rsapi.APIParams) (*TimeSeriesMetricsResult, error) {
-	var res *TimeSeriesMetricsResult
+func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime *time.Time, group [][]string, startTime *time.Time, options rsapi.APIParams) (*TimeSeriesMetricsResultCollection, error) {
+	var res *TimeSeriesMetricsResultCollection
 	if len(group) == 0 {
 		return res, fmt.Errorf("group is required")
 	}
@@ -724,10 +927,6 @@ func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime *time.Time, group [
 	var cloudBillFiltersOpt = options["cloud_bill_filters"]
 	if cloudBillFiltersOpt != nil {
 		params["cloud_bill_filters[]"] = cloudBillFiltersOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("CloudBillMetric", "grouped_time_series")
@@ -861,6 +1060,10 @@ func (loc *CurrentUserLocator) Update(password string, options rsapi.APIParams) 
 	if newPasswordOpt != nil {
 		p["new_password"] = newPasswordOpt
 	}
+	var newPasswordConfirmationOpt = options["new_password_confirmation"]
+	if newPasswordConfirmationOpt != nil {
+		p["new_password_confirmation"] = newPasswordConfirmationOpt
+	}
 	var phoneOpt = options["phone"]
 	if phoneOpt != nil {
 		p["phone"] = phoneOpt
@@ -990,14 +1193,19 @@ func (loc *CurrentUserLocator) OnboardingStatus(options rsapi.APIParams) (*UserO
 	return res, err
 }
 
-// GET /api/current_user/actions/environment
+// GET /api/current_user/actions/connected_cloud_vendors
 //
-// Gets various environment settings.
-func (loc *CurrentUserLocator) Environment() (*UserEnvironment, error) {
-	var res *UserEnvironment
+// Returns the connected cloud vendor accounts for all of the user's accounts, along with any connection errors.
+func (loc *CurrentUserLocator) ConnectedCloudVendors(options rsapi.APIParams) (*AccountCloudVendorCollection, error) {
+	var res *AccountCloudVendorCollection
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
 	var p rsapi.APIParams
-	uri, err := loc.ActionPath("CurrentUser", "environment")
+	uri, err := loc.ActionPath("CurrentUser", "connected_cloud_vendors")
 	if err != nil {
 		return res, err
 	}
@@ -1030,6 +1238,9 @@ func (loc *CurrentUserLocator) Environment() (*UserEnvironment, error) {
 /******  Instance ******/
 
 // Enables you to get instance details, including the cost of individual instances.
+// Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
+// of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
+// 2,083 characters we recommend using a POST request with the parameters in the body.
 type Instance struct {
 }
 
@@ -1049,10 +1260,11 @@ func (api *API) InstanceLocator(href string) *InstanceLocator {
 //===== Actions
 
 // GET /api/instances
+// POST /api/instances
 //
 // Gets instances that overlap with the requested time period.
-func (loc *InstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*Instance, error) {
-	var res *Instance
+func (loc *InstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*InstanceCollection, error) {
+	var res *InstanceCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
 		"end_time":   endTime,
@@ -1114,6 +1326,7 @@ func (loc *InstanceLocator) Index(endTime *time.Time, startTime *time.Time, opti
 }
 
 // GET /api/instances/actions/count
+// POST /api/instances/actions/count
 //
 // Gets the count of instances that overlap with the requested time period.
 func (loc *InstanceLocator) Count(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (string, error) {
@@ -1163,6 +1376,7 @@ func (loc *InstanceLocator) Count(endTime *time.Time, startTime *time.Time, opti
 }
 
 // GET /api/instances/actions/exist
+// POST /api/instances/actions/exist
 //
 // Checks if any instances overlap with the requested time period.
 func (loc *InstanceLocator) Exist(options rsapi.APIParams) (string, error) {
@@ -1217,6 +1431,7 @@ func (loc *InstanceLocator) Exist(options rsapi.APIParams) (string, error) {
 }
 
 // GET /api/instances/actions/export
+// POST /api/instances/actions/export
 //
 // Exports the instances that overlap with the requested time period in CSV format.
 func (loc *InstanceLocator) Export(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (string, error) {
@@ -1282,10 +1497,11 @@ func (loc *InstanceLocator) Export(endTime *time.Time, startTime *time.Time, opt
 }
 
 // GET /api/instances/actions/filter_options
+// POST /api/instances/actions/filter_options
 //
 // Gets the filter options for instances that overlap with the requested time period.
-func (loc *InstanceLocator) FilterOptions(endTime *time.Time, filterTypes []string, startTime *time.Time, options rsapi.APIParams) (*Filter, error) {
-	var res *Filter
+func (loc *InstanceLocator) FilterOptions(endTime *time.Time, filterTypes []string, startTime *time.Time, options rsapi.APIParams) (*FilterCollection, error) {
+	var res *FilterCollection
 	if len(filterTypes) == 0 {
 		return res, fmt.Errorf("filterTypes is required")
 	}
@@ -1318,10 +1534,6 @@ func (loc *InstanceLocator) FilterOptions(endTime *time.Time, filterTypes []stri
 	var timezoneOpt = options["timezone"]
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Instance", "filter_options")
@@ -1647,7 +1859,10 @@ func (loc *InstanceCombinationLocator) ReservedInstancePrices(options rsapi.APIP
 
 /******  InstanceMetric ******/
 
-// Enables you to get aggregated metrics from instances, such as total_cost or lowest_instance_count.
+// Enables you to get aggregated metrics from instances, such as `total_cost` or `lowest_instance_count`.
+// Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
+// of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
+// 2,083 characters we recommend using a POST request with the parameters in the body.
 type InstanceMetric struct {
 }
 
@@ -1667,6 +1882,7 @@ func (api *API) InstanceMetricLocator(href string) *InstanceMetricLocator {
 //===== Actions
 
 // GET /api/instance_metrics/actions/overall
+// POST /api/instance_metrics/actions/overall
 //
 // Calculates the overall metrics for instance usages in a time period, e.g. show me the
 // total cost of all my instances during the last month.
@@ -1688,10 +1904,6 @@ func (loc *InstanceMetricLocator) Overall(endTime *time.Time, metrics []string, 
 	var timezoneOpt = options["timezone"]
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceMetric", "overall")
@@ -1725,12 +1937,13 @@ func (loc *InstanceMetricLocator) Overall(endTime *time.Time, metrics []string, 
 }
 
 // GET /api/instance_metrics/actions/grouped_overall
+// POST /api/instance_metrics/actions/grouped_overall
 //
 // Calculates the overall metrics for instance usages in a time period and groups them into
 // specified breakdown categories, e.g. show me the total cost of all my instances during the
 // last month grouped by different accounts.
-func (loc *InstanceMetricLocator) GroupedOverall(endTime *time.Time, group []string, metrics []string, startTime *time.Time, options rsapi.APIParams) (*MetricsResult, error) {
-	var res *MetricsResult
+func (loc *InstanceMetricLocator) GroupedOverall(endTime *time.Time, group []string, metrics []string, startTime *time.Time, options rsapi.APIParams) (*MetricsResultCollection, error) {
+	var res *MetricsResultCollection
 	if len(group) == 0 {
 		return res, fmt.Errorf("group is required")
 	}
@@ -1764,10 +1977,6 @@ func (loc *InstanceMetricLocator) GroupedOverall(endTime *time.Time, group []str
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
 	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
-	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceMetric", "grouped_overall")
 	if err != nil {
@@ -1800,12 +2009,13 @@ func (loc *InstanceMetricLocator) GroupedOverall(endTime *time.Time, group []str
 }
 
 // GET /api/instance_metrics/actions/time_series
+// POST /api/instance_metrics/actions/time_series
 //
 // Calculates the metrics time series for instance usages in a time period allowing different
 // time buckets (hour, 3 days, month, etc.), e.g. show me the lowest instance count of my
 // instances per day during the last month.
-func (loc *InstanceMetricLocator) TimeSeries(endTime *time.Time, granularity string, metrics []string, startTime *time.Time, options rsapi.APIParams) (*TimeSeriesMetricsResult, error) {
-	var res *TimeSeriesMetricsResult
+func (loc *InstanceMetricLocator) TimeSeries(endTime *time.Time, granularity string, metrics []string, startTime *time.Time, options rsapi.APIParams) (*TimeSeriesMetricsResultCollection, error) {
+	var res *TimeSeriesMetricsResultCollection
 	if granularity == "" {
 		return res, fmt.Errorf("granularity is required")
 	}
@@ -1830,10 +2040,6 @@ func (loc *InstanceMetricLocator) TimeSeries(endTime *time.Time, granularity str
 	var timezoneOpt = options["timezone"]
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceMetric", "time_series")
@@ -1867,13 +2073,14 @@ func (loc *InstanceMetricLocator) TimeSeries(endTime *time.Time, granularity str
 }
 
 // GET /api/instance_metrics/actions/grouped_time_series
+// POST /api/instance_metrics/actions/grouped_time_series
 //
 // Calculates the metrics time series for instance usages in a time period allowing different
 // time buckets (hour, 3 days, month, etc.) and groups them into specified breakdown
 // categories, e.g. show me the lowest instance count of my instances per day during the last
 // month grouped by accounts.
-func (loc *InstanceMetricLocator) GroupedTimeSeries(endTime *time.Time, granularity string, group []string, metrics []string, startTime *time.Time, options rsapi.APIParams) (*TimeSeriesMetricsResult, error) {
-	var res *TimeSeriesMetricsResult
+func (loc *InstanceMetricLocator) GroupedTimeSeries(endTime *time.Time, granularity string, group []string, metrics []string, startTime *time.Time, options rsapi.APIParams) (*TimeSeriesMetricsResultCollection, error) {
+	var res *TimeSeriesMetricsResultCollection
 	if granularity == "" {
 		return res, fmt.Errorf("granularity is required")
 	}
@@ -1915,10 +2122,6 @@ func (loc *InstanceMetricLocator) GroupedTimeSeries(endTime *time.Time, granular
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
 	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
-	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceMetric", "grouped_time_series")
 	if err != nil {
@@ -1951,6 +2154,7 @@ func (loc *InstanceMetricLocator) GroupedTimeSeries(endTime *time.Time, granular
 }
 
 // GET /api/instance_metrics/actions/current_count
+// POST /api/instance_metrics/actions/current_count
 //
 // Returns the count of currently running instances.
 func (loc *InstanceMetricLocator) CurrentCount(options rsapi.APIParams) (string, error) {
@@ -1997,6 +2201,9 @@ func (loc *InstanceMetricLocator) CurrentCount(options rsapi.APIParams) (string,
 // Enables you to get usage period details from instances. An instance can have many usage periods, which can
 // be caused by stop/start actions or changes to the instance type etc. InstanceUsagePeriods are used internally to
 // calculate aggregate InstanceMetrics.
+// Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
+// of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
+// 2,083 characters we recommend using a POST request with the parameters in the body.
 type InstanceUsagePeriod struct {
 }
 
@@ -2016,10 +2223,11 @@ func (api *API) InstanceUsagePeriodLocator(href string) *InstanceUsagePeriodLoca
 //===== Actions
 
 // GET /api/instance_usage_periods
+// POST /api/instance_usage_periods
 //
 // Gets the instance usage periods of instances.
-func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filter, options rsapi.APIParams) (*InstanceUsagePeriod, error) {
-	var res *InstanceUsagePeriod
+func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filter, options rsapi.APIParams) (*InstanceUsagePeriodCollection, error) {
+	var res *InstanceUsagePeriodCollection
 	if len(instanceUsagePeriodFilters) == 0 {
 		return res, fmt.Errorf("instanceUsagePeriodFilters is required")
 	}
@@ -2027,9 +2235,9 @@ func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filte
 	params = rsapi.APIParams{
 		"instance_usage_period_filters[]": instanceUsagePeriodFilters,
 	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
+	var timezoneOpt = options["timezone"]
+	if timezoneOpt != nil {
+		params["timezone"] = timezoneOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceUsagePeriod", "index")
@@ -2155,8 +2363,8 @@ func (loc *PatternLocator) Create(months string, name string, operation string, 
 // GET /api/patterns
 //
 // List all Patterns.
-func (loc *PatternLocator) Index(options rsapi.APIParams) (*Pattern, error) {
-	var res *Pattern
+func (loc *PatternLocator) Index(options rsapi.APIParams) (*PatternCollection, error) {
+	var res *PatternCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -2385,6 +2593,9 @@ func (loc *PatternLocator) CreateDefaults(options rsapi.APIParams) (*Pattern, er
 /******  ReservedInstance ******/
 
 // Enables you to get details of existing AWS ReservedInstances and some metrics about their utilization.
+// Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
+// of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
+// 2,083 characters we recommend using a POST request with the parameters in the body.
 type ReservedInstance struct {
 }
 
@@ -2404,10 +2615,11 @@ func (api *API) ReservedInstanceLocator(href string) *ReservedInstanceLocator {
 //===== Actions
 
 // GET /api/reserved_instances
+// POST /api/reserved_instances
 //
 // Gets Reserved Instances that overlap with the requested time period.
-func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*ReservedInstance, error) {
-	var res *ReservedInstance
+func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*ReservedInstanceCollection, error) {
+	var res *ReservedInstanceCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
 		"end_time":   endTime,
@@ -2432,10 +2644,6 @@ func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Ti
 	var timezoneOpt = options["timezone"]
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ReservedInstance", "index")
@@ -2469,6 +2677,7 @@ func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Ti
 }
 
 // GET /api/reserved_instances/actions/count
+// POST /api/reserved_instances/actions/count
 //
 // Gets the count of Reserved Instances that overlap with the requested time period.
 func (loc *ReservedInstanceLocator) Count(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (string, error) {
@@ -2518,6 +2727,7 @@ func (loc *ReservedInstanceLocator) Count(endTime *time.Time, startTime *time.Ti
 }
 
 // GET /api/reserved_instances/actions/exist
+// POST /api/reserved_instances/actions/exist
 //
 // Checks if any Reserved Instances overlap with the requested time period.
 func (loc *ReservedInstanceLocator) Exist(options rsapi.APIParams) (string, error) {
@@ -2572,6 +2782,7 @@ func (loc *ReservedInstanceLocator) Exist(options rsapi.APIParams) (string, erro
 }
 
 // GET /api/reserved_instances/actions/export
+// POST /api/reserved_instances/actions/export
 //
 // Exports the Reserved Instances that overlap with the requested time period in CSV format.
 func (loc *ReservedInstanceLocator) Export(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (string, error) {
@@ -2600,10 +2811,6 @@ func (loc *ReservedInstanceLocator) Export(endTime *time.Time, startTime *time.T
 	var timezoneOpt = options["timezone"]
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ReservedInstance", "export")
@@ -2637,10 +2844,11 @@ func (loc *ReservedInstanceLocator) Export(endTime *time.Time, startTime *time.T
 }
 
 // GET /api/reserved_instances/actions/filter_options
+// POST /api/reserved_instances/actions/filter_options
 //
 // Gets the filter options for Reserved Instances that overlap with the requested time period.
-func (loc *ReservedInstanceLocator) FilterOptions(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*Filter, error) {
-	var res *Filter
+func (loc *ReservedInstanceLocator) FilterOptions(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*FilterCollection, error) {
+	var res *FilterCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
 		"end_time":   endTime,
@@ -2673,10 +2881,6 @@ func (loc *ReservedInstanceLocator) FilterOptions(endTime *time.Time, startTime 
 	var timezoneOpt = options["timezone"]
 	if timezoneOpt != nil {
 		params["timezone"] = timezoneOpt
-	}
-	var viewOpt = options["view"]
-	if viewOpt != nil {
-		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ReservedInstance", "filter_options")
@@ -2733,7 +2937,7 @@ func (api *API) ReservedInstancePurchaseLocator(href string) *ReservedInstancePu
 // POST /api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases
 //
 // Create a new ReservedInstancePurchase. This is not actually purchased in the cloud and is only used for cost simulation purposes.
-func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int, offeringType string, quantity int, startDate *time.Time, options rsapi.APIParams) (*ReservedInstancePurchaseLocator, error) {
+func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int, offeringType string, quantity int, startAt *time.Time, options rsapi.APIParams) (*ReservedInstancePurchaseLocator, error) {
 	var res *ReservedInstancePurchaseLocator
 	if offeringType == "" {
 		return res, fmt.Errorf("offeringType is required")
@@ -2750,7 +2954,7 @@ func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int,
 		"duration":      duration,
 		"offering_type": offeringType,
 		"quantity":      quantity,
-		"start_date":    startDate,
+		"start_at":      startAt,
 	}
 	uri, err := loc.ActionPath("ReservedInstancePurchase", "create")
 	if err != nil {
@@ -2784,8 +2988,8 @@ func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int,
 // GET /api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases
 //
 // List all ReservedInstancePurchases for the InstanceCombination.
-func (loc *ReservedInstancePurchaseLocator) Index(options rsapi.APIParams) (*ReservedInstancePurchase, error) {
-	var res *ReservedInstancePurchase
+func (loc *ReservedInstancePurchaseLocator) Index(options rsapi.APIParams) (*ReservedInstancePurchaseCollection, error) {
+	var res *ReservedInstancePurchaseCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -2894,9 +3098,9 @@ func (loc *ReservedInstancePurchaseLocator) Update(options rsapi.APIParams) (*Re
 	if quantityOpt != nil {
 		p["quantity"] = quantityOpt
 	}
-	var startDateOpt = options["start_date"]
-	if startDateOpt != nil {
-		p["start_date"] = startDateOpt
+	var startAtOpt = options["start_at"]
+	if startAtOpt != nil {
+		p["start_at"] = startAtOpt
 	}
 	uri, err := loc.ActionPath("ReservedInstancePurchase", "update")
 	if err != nil {
@@ -3048,8 +3252,8 @@ func (loc *ScenarioLocator) Create(snapshotTimestamp *time.Time, options rsapi.A
 // GET /api/scenarios
 //
 // List all Scenarios.
-func (loc *ScenarioLocator) Index(options rsapi.APIParams) (*Scenario, error) {
-	var res *Scenario
+func (loc *ScenarioLocator) Index(options rsapi.APIParams) (*ScenarioCollection, error) {
+	var res *ScenarioCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var includeNonPersistedOpt = options["include_non_persisted"]
@@ -3354,8 +3558,8 @@ func (loc *ScheduledReportLocator) Create(frequency string, name string, options
 // GET /api/scheduled_reports
 //
 // List all ScheduledReports.
-func (loc *ScheduledReportLocator) Index(options rsapi.APIParams) (*ScheduledReport, error) {
-	var res *ScheduledReport
+func (loc *ScheduledReportLocator) Index(options rsapi.APIParams) (*ScheduledReportCollection, error) {
+	var res *ScheduledReportCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -3702,8 +3906,8 @@ func (loc *UserLocator) Create(accounts []*UserAccounts, email string, options r
 // GET /api/users
 //
 // List all users.
-func (loc *UserLocator) Index(options rsapi.APIParams) (*User, error) {
-	var res *User
+func (loc *UserLocator) Index(options rsapi.APIParams) (*UserCollection, error) {
+	var res *UserCollection
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -3831,24 +4035,52 @@ func (loc *UserLocator) Update(options rsapi.APIParams) (*User, error) {
 	return res, err
 }
 
+// DELETE /api/users/:id
+//
+// Remove a users access to all RightScale accounts
+func (loc *UserLocator) Delete() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("User", "delete")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // POST /api/users/actions/invite
 //
 // Invites a user to the requested account and gives them the required permissions
 // so they can add/edit cloud credentials, the user is created if they don't already exist.
 // This is used during new user onboarding as the user who signs-up might not be the person who has
 // the cloud credentials required to connect their clouds to RightScale.
-func (loc *UserLocator) Invite(options rsapi.APIParams) (*User, error) {
+func (loc *UserLocator) Invite(accountId int, email string, options rsapi.APIParams) (*User, error) {
 	var res *User
+	if email == "" {
+		return res, fmt.Errorf("email is required")
+	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
-	p = rsapi.APIParams{}
-	var accountIdOpt = options["account_id"]
-	if accountIdOpt != nil {
-		p["account_id"] = accountIdOpt
-	}
-	var emailOpt = options["email"]
-	if emailOpt != nil {
-		p["email"] = emailOpt
+	p = rsapi.APIParams{
+		"account_id": accountId,
+		"email":      email,
 	}
 	var messageOpt = options["message"]
 	if messageOpt != nil {
@@ -3980,9 +4212,9 @@ func (loc *UserSettingLocator) Update(options rsapi.APIParams) (*UserSetting, er
 	if granularityOpt != nil {
 		p["granularity"] = granularityOpt
 	}
-	var mainMenuVisibilityOpt = options["main_menu_visibility"]
-	if mainMenuVisibilityOpt != nil {
-		p["main_menu_visibility"] = mainMenuVisibilityOpt
+	var mainMenuVisibleOpt = options["main_menu_visible"]
+	if mainMenuVisibleOpt != nil {
+		p["main_menu_visible"] = mainMenuVisibleOpt
 	}
 	var metricsOpt = options["metrics"]
 	if metricsOpt != nil {
@@ -4038,13 +4270,77 @@ func (loc *UserSettingLocator) Update(options rsapi.APIParams) (*UserSetting, er
 	return res, err
 }
 
+/******  UtilizationReport ******/
+
+// iTime project for showing instance utilization with costs. This is not included in the public docs.
+type UtilizationReport struct {
+}
+
+//===== Locator
+
+// UtilizationReportLocator exposes the UtilizationReport resource actions.
+type UtilizationReportLocator struct {
+	Href
+	api *API
+}
+
+// UtilizationReportLocator builds a locator from the given href.
+func (api *API) UtilizationReportLocator(href string) *UtilizationReportLocator {
+	return &UtilizationReportLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /api/utilization_report
+//
+// Returns an array of instances with their utilization and cost.
+func (loc *UtilizationReportLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (string, error) {
+	var res string
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
+		"end_time":   endTime,
+		"start_time": startTime,
+	}
+	var instanceFiltersOpt = options["instance_filters"]
+	if instanceFiltersOpt != nil {
+		params["instance_filters[]"] = instanceFiltersOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("UtilizationReport", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
 /****** Parameter Data Types ******/
 
 type AccountParam struct {
 	CloudAccounts                             []*CloudAccount `json:"cloud_accounts,omitempty"`
 	CloudAnalyticsEnabled                     bool            `json:"cloud_analytics_enabled,omitempty"`
-	EnterpriseId                              int             `json:"enterprise_id,omitempty"`
-	EnterpriseName                            string          `json:"enterprise_name,omitempty"`
 	ExpiresIn                                 int             `json:"expires_in,omitempty"`
 	Href                                      string          `json:"href,omitempty"`
 	Id                                        int             `json:"id,omitempty"`
@@ -4053,8 +4349,6 @@ type AccountParam struct {
 	Kind                                      string          `json:"kind,omitempty"`
 	Name                                      string          `json:"name,omitempty"`
 	OwnerId                                   int             `json:"owner_id,omitempty"`
-	ParentAccountId                           int             `json:"parent_account_id,omitempty"`
-	ParentAccountName                         string          `json:"parent_account_name,omitempty"`
 	PlanCode                                  string          `json:"plan_code,omitempty"`
 	ShardId                                   int             `json:"shard_id,omitempty"`
 	UserHasActor                              bool            `json:"user_has_actor,omitempty"`
@@ -4081,6 +4375,19 @@ type AnalysisSnapshotParam struct {
 	Uuid                        string         `json:"uuid,omitempty"`
 }
 
+type AwsAccountGroupMembershipParam struct {
+	AwsAccountNumber        string                   `json:"aws_account_number,omitempty"`
+	CreatedAt               *time.Time               `json:"created_at,omitempty"`
+	DeletedAt               *time.Time               `json:"deleted_at,omitempty"`
+	Id                      int                      `json:"id,omitempty"`
+	Links                   []map[string]interface{} `json:"links,omitempty"`
+	Name                    string                   `json:"name,omitempty"`
+	PendingAwsAccountNumber string                   `json:"pending_aws_account_number,omitempty"`
+	PendingReason           string                   `json:"pending_reason,omitempty"`
+	State                   string                   `json:"state,omitempty"`
+	UpdatedAt               *time.Time               `json:"updated_at,omitempty"`
+}
+
 type BudgetAlertParam struct {
 	AdditionalEmails []string            `json:"additional_emails,omitempty"`
 	AttachCsv        bool                `json:"attach_csv,omitempty"`
@@ -4102,10 +4409,11 @@ type BudgetStruct struct {
 }
 
 type CloudAccount struct {
-	CloudId   int    `json:"cloud_id,omitempty"`
-	CloudName string `json:"cloud_name,omitempty"`
-	CloudType string `json:"cloud_type,omitempty"`
-	Kind      string `json:"kind,omitempty"`
+	CloudId         int    `json:"cloud_id,omitempty"`
+	CloudName       string `json:"cloud_name,omitempty"`
+	CloudType       string `json:"cloud_type,omitempty"`
+	CloudVendorName string `json:"cloud_vendor_name,omitempty"`
+	Kind            string `json:"kind,omitempty"`
 }
 
 type CurrentUserParam struct {
@@ -4141,6 +4449,7 @@ type InstanceCombinationLinks struct {
 }
 
 type InstanceCombinationParam struct {
+	AssumeSustainedUse        bool                             `json:"assume_sustained_use,omitempty"`
 	CloudName                 string                           `json:"cloud_name,omitempty"`
 	CloudVendorName           string                           `json:"cloud_vendor_name,omitempty"`
 	CreatedAt                 *time.Time                       `json:"created_at,omitempty"`
@@ -4158,53 +4467,6 @@ type InstanceCombinationParam struct {
 	ReservedInstancePurchases []*ReservedInstancePurchaseParam `json:"reserved_instance_purchases,omitempty"`
 	Scenario                  *ScenarioParam                   `json:"scenario,omitempty"`
 	UpdatedAt                 *time.Time                       `json:"updated_at,omitempty"`
-}
-
-type InstanceParam struct {
-	AccountId                         int        `json:"account_id,omitempty"`
-	AccountName                       string     `json:"account_name,omitempty"`
-	CloudId                           int        `json:"cloud_id,omitempty"`
-	CloudName                         string     `json:"cloud_name,omitempty"`
-	CloudVendorName                   string     `json:"cloud_vendor_name,omitempty"`
-	DatacenterKey                     string     `json:"datacenter_key,omitempty"`
-	DatacenterName                    string     `json:"datacenter_name,omitempty"`
-	DeploymentId                      int        `json:"deployment_id,omitempty"`
-	DeploymentName                    string     `json:"deployment_name,omitempty"`
-	EstimatedCostForPeriod            float64    `json:"estimated_cost_for_period,omitempty"`
-	EstimatedManagedRcuCountForPeriod float64    `json:"estimated_managed_rcu_count_for_period,omitempty"`
-	IncarnatorId                      int        `json:"incarnator_id,omitempty"`
-	IncarnatorType                    string     `json:"incarnator_type,omitempty"`
-	InstanceEndAt                     *time.Time `json:"instance_end_at,omitempty"`
-	InstanceKey                       string     `json:"instance_key,omitempty"`
-	InstanceName                      string     `json:"instance_name,omitempty"`
-	InstanceRsid                      string     `json:"instance_rsid,omitempty"`
-	InstanceStartAt                   *time.Time `json:"instance_start_at,omitempty"`
-	InstanceTypeKey                   string     `json:"instance_type_key,omitempty"`
-	InstanceTypeName                  string     `json:"instance_type_name,omitempty"`
-	InstanceUid                       string     `json:"instance_uid,omitempty"`
-	Kind                              string     `json:"kind,omitempty"`
-	Platform                          string     `json:"platform,omitempty"`
-	ProvisionedByUserEmail            string     `json:"provisioned_by_user_email,omitempty"`
-	ProvisionedByUserId               int        `json:"provisioned_by_user_id,omitempty"`
-	ServerTemplateId                  int        `json:"server_template_id,omitempty"`
-	ServerTemplateName                string     `json:"server_template_name,omitempty"`
-	State                             string     `json:"state,omitempty"`
-	Tags                              []*Tag     `json:"tags,omitempty"`
-	TotalUsageHours                   float64    `json:"total_usage_hours,omitempty"`
-}
-
-type InstanceUsagePeriodParam struct {
-	EstimatedCost            float64    `json:"estimated_cost,omitempty"`
-	EstimatedManagedRcuCount float64    `json:"estimated_managed_rcu_count,omitempty"`
-	HourlyPrice              float64    `json:"hourly_price,omitempty"`
-	InstanceKey              string     `json:"instance_key,omitempty"`
-	InstanceTypeName         string     `json:"instance_type_name,omitempty"`
-	Kind                     string     `json:"kind,omitempty"`
-	PricingType              string     `json:"pricing_type,omitempty"`
-	RcuRate                  float64    `json:"rcu_rate,omitempty"`
-	ReservationUid           string     `json:"reservation_uid,omitempty"`
-	UsageEndAt               *time.Time `json:"usage_end_at,omitempty"`
-	UsageStartAt             *time.Time `json:"usage_start_at,omitempty"`
 }
 
 type Metrics struct {
@@ -4254,31 +4516,6 @@ type PatternParam struct {
 	Years     string           `json:"years,omitempty"`
 }
 
-type ReservedInstanceParam struct {
-	AccountId             int        `json:"account_id,omitempty"`
-	AccountName           string     `json:"account_name,omitempty"`
-	CloudId               int        `json:"cloud_id,omitempty"`
-	CloudName             string     `json:"cloud_name,omitempty"`
-	CloudVendorName       string     `json:"cloud_vendor_name,omitempty"`
-	CostSaved             float64    `json:"cost_saved,omitempty"`
-	DatacenterKey         string     `json:"datacenter_key,omitempty"`
-	DatacenterName        string     `json:"datacenter_name,omitempty"`
-	Duration              int        `json:"duration,omitempty"`
-	EndTime               *time.Time `json:"end_time,omitempty"`
-	InstanceCount         int        `json:"instance_count,omitempty"`
-	InstanceTypeKey       string     `json:"instance_type_key,omitempty"`
-	InstanceTypeName      string     `json:"instance_type_name,omitempty"`
-	Kind                  string     `json:"kind,omitempty"`
-	OfferingType          string     `json:"offering_type,omitempty"`
-	Platform              string     `json:"platform,omitempty"`
-	ReservationUid        string     `json:"reservation_uid,omitempty"`
-	StartTime             *time.Time `json:"start_time,omitempty"`
-	State                 string     `json:"state,omitempty"`
-	Tenancy               string     `json:"tenancy,omitempty"`
-	UnusedRecurringCost   float64    `json:"unused_recurring_cost,omitempty"`
-	UtilizationPercentage float64    `json:"utilization_percentage,omitempty"`
-}
-
 type ReservedInstancePurchaseLinks struct {
 	InstanceCombination *InstanceCombinationParam `json:"instance_combination,omitempty"`
 }
@@ -4294,7 +4531,7 @@ type ReservedInstancePurchaseParam struct {
 	Links               *ReservedInstancePurchaseLinks `json:"links,omitempty"`
 	OfferingType        string                         `json:"offering_type,omitempty"`
 	Quantity            int                            `json:"quantity,omitempty"`
-	StartDate           *time.Time                     `json:"start_date,omitempty"`
+	StartAt             *time.Time                     `json:"start_at,omitempty"`
 	UpdatedAt           *time.Time                     `json:"updated_at,omitempty"`
 }
 
@@ -4303,39 +4540,7 @@ type ReturnBudgetStruct struct {
 	Period string  `json:"period,omitempty"`
 }
 
-type ReturnCurrentUserStruct struct {
-	BetaEnabled                          bool       `json:"beta_enabled,omitempty"`
-	CanSeeCostAndRcuMetrics              bool       `json:"can_see_cost_and_rcu_metrics,omitempty"`
-	CanSeeManagedRcus                    bool       `json:"can_see_managed_rcus,omitempty"`
-	CanSeeUnmanagedRcus                  bool       `json:"can_see_unmanaged_rcus,omitempty"`
-	Company                              string     `json:"company,omitempty"`
-	Email                                string     `json:"email,omitempty"`
-	FirstLoginAt                         *time.Time `json:"first_login_at,omitempty"`
-	FirstName                            string     `json:"first_name,omitempty"`
-	HasAdminOnAnyAccount                 bool       `json:"has_admin_on_any_account,omitempty"`
-	HasCloudAnalyticsEnabledAccounts     bool       `json:"has_cloud_analytics_enabled_accounts,omitempty"`
-	HasNonIpWhitelistedAccountsWithAdmin bool       `json:"has_non_ip_whitelisted_accounts_with_admin,omitempty"`
-	HasOnlyExpiredAccounts               bool       `json:"has_only_expired_accounts,omitempty"`
-	Id                                   int        `json:"id,omitempty"`
-	IsCloudAnalyticsOnly                 bool       `json:"is_cloud_analytics_only,omitempty"`
-	IsRightscaleEmployee                 bool       `json:"is_rightscale_employee,omitempty"`
-	IsSelfserviceUser                    bool       `json:"is_selfservice_user,omitempty"`
-	IsTeamUser                           bool       `json:"is_team_user,omitempty"`
-	LastName                             string     `json:"last_name,omitempty"`
-	NotificationMessage                  string     `json:"notification_message,omitempty"`
-	Phone                                string     `json:"phone,omitempty"`
-	SelfserviceUrl                       string     `json:"selfservice_url,omitempty"`
-	Timezone                             string     `json:"timezone,omitempty"`
-	TimezoneOffsetSeconds                int        `json:"timezone_offset_seconds,omitempty"`
-	TrialEndDate                         *time.Time `json:"trial_end_date,omitempty"`
-}
-
-type ReturnGoogleAnalyticsStruct struct {
-	AccountId  string `json:"account_id,omitempty"`
-	DomainName string `json:"domain_name,omitempty"`
-}
-
-type ReturnUserSettingsDateRangeStruct struct {
+type ReturnDateRangeStruct struct {
 	EndTime      *time.Time `json:"end_time,omitempty"`
 	IsComparison bool       `json:"is_comparison,omitempty"`
 	StartTime    *time.Time `json:"start_time,omitempty"`
@@ -4370,13 +4575,6 @@ type ScheduledReportParam struct {
 	UpdatedAt        *time.Time `json:"updated_at,omitempty"`
 }
 
-type Tag struct {
-	Key          string `json:"key,omitempty"`
-	Kind         string `json:"kind,omitempty"`
-	ResourceType string `json:"resource_type,omitempty"`
-	Value        string `json:"value,omitempty"`
-}
-
 type TimeSeriesMetricsResult struct {
 	Kind      string           `json:"kind,omitempty"`
 	Results   []*MetricsResult `json:"results,omitempty"`
@@ -4391,17 +4589,6 @@ type UserAccounts struct {
 	CloudAnalyticsEnabled               bool     `json:"cloud_analytics_enabled,omitempty"`
 	Kind                                string   `json:"kind,omitempty"`
 	Permissions                         []string `json:"permissions,omitempty"`
-}
-
-type UserEnvironment struct {
-	AnalyticsUiSha     string                       `json:"analytics_ui_sha,omitempty"`
-	CloudManagementUrl string                       `json:"cloud_management_url,omitempty"`
-	CurrentUser        *ReturnCurrentUserStruct     `json:"current_user,omitempty"`
-	Environment        string                       `json:"environment,omitempty"`
-	GoogleAnalytics    *ReturnGoogleAnalyticsStruct `json:"google_analytics,omitempty"`
-	Kind               string                       `json:"kind,omitempty"`
-	UseLocalAssets     bool                         `json:"use_local_assets,omitempty"`
-	UserSettings       *UserSettingParam            `json:"user_settings,omitempty"`
 }
 
 type UserOnboardingStatus struct {
@@ -4423,17 +4610,17 @@ type UserParam struct {
 }
 
 type UserSettingParam struct {
-	DateRange                *ReturnUserSettingsDateRangeStruct `json:"date_range,omitempty"`
-	DismissedDialogs         map[string]interface{}             `json:"dismissed_dialogs,omitempty"`
-	ExcludedTagTypes         []string                           `json:"excluded_tag_types,omitempty"`
-	Filters                  []*Filter                          `json:"filters,omitempty"`
-	Granularity              string                             `json:"granularity,omitempty"`
-	Kind                     string                             `json:"kind,omitempty"`
-	MainMenuVisibility       string                             `json:"main_menu_visibility,omitempty"`
-	Metrics                  []string                           `json:"metrics,omitempty"`
-	ModuleStates             []*ModuleState                     `json:"module_states,omitempty"`
-	OnboardingStatus         string                             `json:"onboarding_status,omitempty"`
-	SelectedCloudVendorNames map[string]interface{}             `json:"selected_cloud_vendor_names,omitempty"`
-	Sorting                  map[string]interface{}             `json:"sorting,omitempty"`
-	TableColumnVisibility    map[string]interface{}             `json:"table_column_visibility,omitempty"`
+	DateRange                *ReturnDateRangeStruct `json:"date_range,omitempty"`
+	DismissedDialogs         []string               `json:"dismissed_dialogs,omitempty"`
+	ExcludedTagTypes         []string               `json:"excluded_tag_types,omitempty"`
+	Filters                  []*Filter              `json:"filters,omitempty"`
+	Granularity              string                 `json:"granularity,omitempty"`
+	Kind                     string                 `json:"kind,omitempty"`
+	MainMenuVisible          bool                   `json:"main_menu_visible,omitempty"`
+	Metrics                  []string               `json:"metrics,omitempty"`
+	ModuleStates             []*ModuleState         `json:"module_states,omitempty"`
+	OnboardingStatus         string                 `json:"onboarding_status,omitempty"`
+	SelectedCloudVendorNames []string               `json:"selected_cloud_vendor_names,omitempty"`
+	Sorting                  map[string]interface{} `json:"sorting,omitempty"`
+	TableColumnVisibility    map[string]interface{} `json:"table_column_visibility,omitempty"`
 }

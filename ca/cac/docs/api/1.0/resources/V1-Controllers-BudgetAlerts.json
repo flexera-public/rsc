@@ -20,10 +20,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,6 +34,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -48,10 +51,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -61,6 +66,7 @@
               "example_definition": "My budget alert",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -69,10 +75,12 @@
               "required": true,
               "type": {
                 "name": "Struct",
+                "family": "hash",
                 "id": null,
                 "key": {
                   "type": {
                     "name": "Symbol",
+                    "family": "string",
                     "id": "Attributor-Symbol"
                   }
                 },
@@ -81,6 +89,7 @@
                     "description": "Budget amount in US Dollars.",
                     "type": {
                       "name": "Float",
+                      "family": "numeric",
                       "id": "Attributor-Float"
                     }
                   },
@@ -91,6 +100,7 @@
                     ],
                     "type": {
                       "name": "String",
+                      "family": "string",
                       "id": "Attributor-String"
                     }
                   }
@@ -106,6 +116,7 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -119,25 +130,26 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
             "additional_emails": {
               "description": "In addition to your email, the report will be sent to these additional email addresses.",
               "example_definition": [
-                [
-                  "john.smith@example.com",
-                  "joe.bloggs@example.org"
-                ]
+                "john.smith@example.com",
+                "joe.bloggs@example.org"
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
                 "member_attribute": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -148,6 +160,7 @@
               "default": false,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             },
@@ -155,6 +168,7 @@
               "description": "Filters to use for the BudgetAlert.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -164,14 +178,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
@@ -194,15 +209,15 @@
           "filters": [
             {
               "kind": "ca#filter",
-              "type": "tag:key",
+              "type": "cloud_bill:product_category",
               "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "instances"
             },
             {
               "kind": "ca#filter",
-              "type": "cloud_bill:cloud_vendor_account_id",
-              "value": "1",
+              "type": "reserved_instance:offering_type",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "deployments"
             }
@@ -229,14 +244,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::BudgetAlert",
+            "family": "hash",
             "id": "V1-MediaTypes-BudgetAlert",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -259,10 +275,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -271,6 +289,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -300,15 +319,28 @@
           "headers": {
           },
           "media_type": {
-            "name": "V1::MediaTypes::BudgetAlert",
-            "id": "V1-MediaTypes-BudgetAlert",
-            "key": {
-              "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
-              }
+            "name": "V1::MediaTypes::BudgetAlert::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-BudgetAlert-Collection",
+            "options": {
             },
-            "attributes": null
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::BudgetAlert"
+              },
+              "type": {
+                "name": "V1::MediaTypes::BudgetAlert",
+                "family": "hash",
+                "id": "V1-MediaTypes-BudgetAlert",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -331,10 +363,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -343,6 +377,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -351,6 +386,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -382,14 +418,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::BudgetAlert",
+            "family": "hash",
             "id": "V1-MediaTypes-BudgetAlert",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -418,10 +455,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -430,6 +469,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -438,6 +478,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -455,10 +496,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -467,6 +510,7 @@
               "example_definition": "My budget alert",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -474,10 +518,12 @@
               "description": "Budget for the alert.",
               "type": {
                 "name": "Struct",
+                "family": "hash",
                 "id": null,
                 "key": {
                   "type": {
                     "name": "Symbol",
+                    "family": "string",
                     "id": "Attributor-Symbol"
                   }
                 },
@@ -486,6 +532,7 @@
                     "description": "Budget amount in US Dollars.",
                     "type": {
                       "name": "Float",
+                      "family": "numeric",
                       "id": "Attributor-Float"
                     }
                   },
@@ -496,6 +543,7 @@
                     ],
                     "type": {
                       "name": "String",
+                      "family": "string",
                       "id": "Attributor-String"
                     }
                   }
@@ -505,19 +553,19 @@
             "additional_emails": {
               "description": "In addition to your email, the report will be sent to these additional email addresses.",
               "example_definition": [
-                [
-                  "john.smith@example.com",
-                  "joe.bloggs@example.org"
-                ]
+                "john.smith@example.com",
+                "joe.bloggs@example.org"
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
                 "member_attribute": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -531,6 +579,7 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -543,6 +592,7 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
@@ -550,6 +600,7 @@
               "description": "Whether the emails should include a CSV attachement of the instance data.",
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             }
@@ -590,14 +641,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::BudgetAlert",
+            "family": "hash",
             "id": "V1-MediaTypes-BudgetAlert",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         },
         "not_found": {
@@ -626,10 +678,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -638,6 +692,7 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
               "source": "url"
@@ -678,5 +733,8 @@
   ],
   "name": "V1::ApiResources::BudgetAlerts",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

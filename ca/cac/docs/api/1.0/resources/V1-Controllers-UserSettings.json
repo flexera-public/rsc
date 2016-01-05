@@ -20,10 +20,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,6 +34,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -62,14 +65,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::UserSetting",
+            "family": "hash",
             "id": "V1-MediaTypes-UserSetting",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -92,10 +96,12 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -104,6 +110,7 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
               "source": "query"
@@ -120,46 +127,68 @@
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "date_range": {
+              "description": "Date range used for displaying the Analyze Page",
               "type": {
                 "name": "Struct",
+                "family": "hash",
                 "id": null,
                 "key": {
                   "type": {
                     "name": "Symbol",
+                    "family": "string",
                     "id": "Attributor-Symbol"
                   }
                 },
                 "attributes": {
                   "type": {
+                    "description": "The date picker can operate in dynamic mode with one of these options:\n\n* Since Yesterday\n* This Week\n* This Month\n* This Year\n* Last 7 Days\n* Last 30 Days\n* Last 3 Months\n\nin which case `start_time` and `end_time` are ignored and the exact date range is computed automatically each day.\n\nIf this is set to `Custom`, than the date range will be between `start_time` and `end_time`.\n",
+                    "values": [
+                      "Since Yesterday",
+                      "This Week",
+                      "This Month",
+                      "This Year",
+                      "Last 7 Days",
+                      "Last 30 Days",
+                      "Last 3 Months",
+                      "Custom"
+                    ],
+                    "example_definition": "Custom",
                     "type": {
                       "name": "String",
+                      "family": "string",
                       "id": "Attributor-String"
                     }
                   },
                   "start_time": {
                     "type": {
                       "name": "DateTime",
+                      "family": "temporal",
                       "id": "Attributor-DateTime"
                     }
                   },
                   "end_time": {
                     "type": {
                       "name": "DateTime",
+                      "family": "temporal",
                       "id": "Attributor-DateTime"
                     }
                   },
                   "is_comparison": {
+                    "description": "Set the Analyze page to comparison mode, where it will show the top graph with an additional data set for the previous period.",
                     "type": {
                       "name": "Boolean",
+                      "family": "boolean",
                       "id": "Attributor-Boolean"
                     }
                   }
@@ -167,14 +196,24 @@
               }
             },
             "granularity": {
+              "description": "The granularity of the top chart on the Analyze page",
+              "values": [
+                "hour",
+                "day",
+                "week",
+                "month"
+              ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
             "module_states": {
+              "description": "These are the modules displayed on the Analyze Page.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -184,21 +223,24 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::ModuleState",
+                    "family": "hash",
                     "id": "V1-MediaTypes-ModuleState",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             },
             "filters": {
+              "description": "Filters the user has currently *applied* on the Analyze Page",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -208,35 +250,70 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             },
             "selected_cloud_vendor_names": {
+              "description": "These are the cloud vendor filters that are applied on the instance combination edit page in Scenario Builder.",
               "options": {
-                "allow_extra": false
+                "member_options": {
+                  "values": [
+                    "Amazon Web Services",
+                    "Eucalyptus",
+                    "Rackspace",
+                    "CloudStack",
+                    "OpenStack",
+                    "SoftLayer",
+                    "Sunrise",
+                    "Google",
+                    "Microsoft Azure",
+                    "HP",
+                    "Blue Skies",
+                    "VMware",
+                    "Datapipe",
+                    "IDC Frontier",
+                    "Logicworks"
+                  ]
+                }
               },
               "type": {
-                "name": "Hash",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
-                "key": {
+                "options": {
+                },
+                "member_attribute": {
+                  "values": [
+                    "Amazon Web Services",
+                    "Eucalyptus",
+                    "Rackspace",
+                    "CloudStack",
+                    "OpenStack",
+                    "SoftLayer",
+                    "Sunrise",
+                    "Google",
+                    "Microsoft Azure",
+                    "HP",
+                    "Blue Skies",
+                    "VMware",
+                    "Datapipe",
+                    "IDC Frontier",
+                    "Logicworks"
+                  ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
-                },
-                "value": {
-                  "type": {
-                    "name": "Boolean",
-                    "id": "Attributor-Boolean"
                   }
                 }
               }
@@ -261,7 +338,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -282,54 +360,82 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
               }
             },
             "onboarding_status": {
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              }
-            },
-            "main_menu_visibility": {
               "values": [
-                "open",
-                "closed"
+                "not_seen",
+                "no_clouds",
+                "with_clouds",
+                "onboard",
+                "all_accounts_expired"
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               }
             },
+            "main_menu_visible": {
+              "description": "Whether or not the left hand menu is visible or collapsed",
+              "type": {
+                "name": "Boolean",
+                "family": "boolean",
+                "id": "Attributor-Boolean"
+              }
+            },
             "sorting": {
+              "description": "Stores how sortable items (mainly tables) are sorted.\nThe key of the hash is the identifier of the table.\n",
               "options": {
                 "allow_extra": false
               },
               "type": {
                 "name": "Hash",
+                "family": "hash",
                 "id": null,
                 "key": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 },
                 "value": {
                   "type": {
-                    "name": "Hash",
+                    "name": "Struct",
+                    "family": "hash",
                     "id": null,
                     "key": {
                       "type": {
-                        "name": "String",
-                        "id": "Attributor-String"
+                        "name": "Symbol",
+                        "family": "string",
+                        "id": "Attributor-Symbol"
                       }
                     },
-                    "value": {
-                      "type": {
-                        "name": "String",
-                        "id": "Attributor-String"
+                    "attributes": {
+                      "attribute": {
+                        "description": "The attribute of the collection on which to sort",
+                        "type": {
+                          "name": "String",
+                          "family": "string",
+                          "id": "Attributor-String"
+                        }
+                      },
+                      "direction": {
+                        "description": "Sort direction",
+                        "values": [
+                          "desc",
+                          "asc"
+                        ],
+                        "type": {
+                          "name": "String",
+                          "family": "string",
+                          "id": "Attributor-String"
+                        }
                       }
                     }
                   }
@@ -337,32 +443,33 @@
               }
             },
             "table_column_visibility": {
+              "description": "Table columns that are hidden. Currently this is only supported in the instance datatable.\n\nThe key is the ID of the table (i.e. `instance_datatable`), the Set is the visible columns.\n",
               "options": {
                 "allow_extra": false
               },
               "type": {
                 "name": "Hash",
+                "family": "hash",
                 "id": null,
                 "key": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 },
                 "value": {
                   "type": {
-                    "name": "Hash",
+                    "name": "V1::Types::Set",
+                    "family": "hash",
                     "id": null,
-                    "key": {
+                    "options": {
+                    },
+                    "member_attribute": {
                       "type": {
                         "name": "String",
+                        "family": "string",
                         "id": "Attributor-String"
-                      }
-                    },
-                    "value": {
-                      "type": {
-                        "name": "Boolean",
-                        "id": "Attributor-Boolean"
                       }
                     }
                   }
@@ -370,35 +477,34 @@
               }
             },
             "dismissed_dialogs": {
-              "options": {
-                "allow_extra": false
-              },
+              "description": "Dialogs, popups, alerts and messages that the user has dismissed.\n",
               "type": {
-                "name": "Hash",
-                "id": null,
-                "key": {
-                  "type": {
-                    "name": "String",
-                    "id": "Attributor-String"
-                  }
-                },
-                "value": {
-                  "type": {
-                    "name": "Boolean",
-                    "id": "Attributor-Boolean"
-                  }
-                }
-              }
-            },
-            "excluded_tag_types": {
-              "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
                 "member_attribute": {
                   "type": {
                     "name": "String",
+                    "family": "string",
+                    "id": "Attributor-String"
+                  }
+                }
+              }
+            },
+            "excluded_tag_types": {
+              "description": "Tag types that are not displayed in the Tags module on the analyze page",
+              "type": {
+                "name": "V1::Types::Set",
+                "family": "hash",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
                   }
                 }
@@ -408,12 +514,12 @@
         },
         "example": {
           "date_range": {
-            "type": "firesideship",
+            "type": "Custom",
             "start_time": "2012-10-30T00:00:00+00:00",
             "end_time": "2013-05-27T00:00:00+00:00",
             "is_comparison": true
           },
-          "granularity": "punningly",
+          "granularity": "day",
           "module_states": [
             {
               "kind": "ca#module_state",
@@ -440,55 +546,57 @@
             },
             {
               "kind": "ca#filter",
-              "type": "reserved_instance:cloud_id",
-              "value": "1",
+              "type": "instance_usage_period:instance_key",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "deployments"
             }
           ],
           "selected_cloud_vendor_names": {
-            "Polypomorpha": true,
-            "contagion": true
+            "Eucalyptus": true,
+            "Google": true
           },
-          "metrics": [
-            "reserved_instance_recurring_cost",
-            "highest_instance_count"
-          ],
-          "onboarding_status": "Palaemonidae",
-          "main_menu_visibility": "open",
+          "metrics": {
+            "reserved_instance_recurring_cost": true,
+            "highest_instance_count": true
+          },
+          "onboarding_status": "no_clouds",
+          "main_menu_visible": true,
           "sorting": {
             "Almon": {
-              "Carlisle": "psalterion"
+              "attribute": "acroesthesia",
+              "direction": "asc"
             },
-            "demand": {
-              "slackly": "arghool",
-              "clankety": "arachnid",
-              "kelpie": "feaze"
+            "chironym": {
+              "attribute": "napoleonite",
+              "direction": "asc"
             }
           },
           "table_column_visibility": {
             "sincaline": {
-              "razzia": false,
-              "violative": true
+              "[\"telpath\", true]": true,
+              "[\"electrotypist\", true]": true
             },
-            "theetsee": {
-              "surprisable": true,
-              "snug": true,
-              "solidly": false
+            "precipitously": {
+              "[\"glossarian\", true]": true,
+              "[\"chronodeik\", true]": true,
+              "[\"disinfect\", true]": true
             },
-            "springing": {
-              "reasonlessly": false
+            "rebring": {
+              "[\"trivialness\", true]": true,
+              "[\"solatia\", true]": true,
+              "[\"unthistle\", true]": true
             }
           },
           "dismissed_dialogs": {
-            "Pickwickianism": true,
-            "billposting": true,
-            "tricentenary": true
+            "sertule": true,
+            "physicotherapy": true,
+            "turgescence": true
           },
-          "excluded_tag_types": [
-            "percribrate",
-            "prostemmate"
-          ]
+          "excluded_tag_types": {
+            "percribrate": true,
+            "prostemmate": true
+          }
         }
       },
       "responses": {
@@ -511,14 +619,15 @@
           },
           "media_type": {
             "name": "V1::MediaTypes::UserSetting",
+            "family": "hash",
             "id": "V1-MediaTypes-UserSetting",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -526,5 +635,8 @@
   ],
   "name": "V1::ApiResources::UserSettings",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

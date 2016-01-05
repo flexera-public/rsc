@@ -1,0 +1,105 @@
+{
+  "name": "V1::MediaTypes::CloudVendor",
+  "family": "hash",
+  "id": "V1-MediaTypes-CloudVendor",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#cloud_vendor"
+      ],
+      "default": "ca#cloud_vendor",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "name": {
+      "values": [
+        "Amazon Web Services",
+        "Eucalyptus",
+        "Rackspace",
+        "CloudStack",
+        "OpenStack",
+        "SoftLayer",
+        "Sunrise",
+        "Google",
+        "Microsoft Azure",
+        "HP",
+        "Blue Skies",
+        "VMware",
+        "Datapipe",
+        "IDC Frontier",
+        "Logicworks"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "connection_errors": {
+      "description": "A list of connection errors. If empty, there are no known errors.",
+      "options": {
+        "member_options": {
+          "values": [
+            "cloudwatch_not_enabled"
+          ]
+        }
+      },
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "values": [
+            "cloudwatch_not_enabled"
+          ],
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "name": {
+        },
+        "connection_errors": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#cloud_vendor",
+        "name": "Logicworks",
+        "connection_errors": [
+          "cloudwatch_not_enabled"
+        ]
+      }
+    }
+  },
+  "identifier": "",
+  "description": "Details of a single cloud vendor connection.",
+  "example": {
+    "kind": "ca#cloud_vendor",
+    "name": "Logicworks",
+    "connection_errors": [
+      "cloudwatch_not_enabled"
+    ]
+  }
+}

@@ -25,5 +25,8 @@
   ],
   "name": "V0::ApiResources::Session",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

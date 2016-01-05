@@ -1,0 +1,288 @@
+{
+  "description": "Used by CM to present a user's consolidated billing groups",
+  "actions": [
+    {
+      "description": "Lists the AWS account group memberships",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/aws_account_group_memberships",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "filters": {
+              "description": "Restricts the results.",
+              "required": false,
+              "example_definition": {
+                "member_account_href": "/api/accounts/2",
+                "payer_account_href": "/api/accounts/1"
+              },
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "family": "hash",
+                "id": "Attributor-Hash",
+                "key": {
+                  "type": {
+                    "name": "Object",
+                    "family": "any",
+                    "id": "Attributor-Object"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "Object",
+                    "family": "any",
+                    "id": "Attributor-Object"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "filters": {
+            "member_account_href": "/api/accounts/2",
+            "payer_account_href": "/api/accounts/1"
+          }
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::AwsAccountGroupMembership::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-AwsAccountGroupMembership-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::AwsAccountGroupMembership"
+              },
+              "type": {
+                "name": "V1::MediaTypes::AwsAccountGroupMembership",
+                "family": "hash",
+                "id": "V1-MediaTypes-AwsAccountGroupMembership",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": null,
+      "name": "aws_cloudwatch_latest_sync_at",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/aws_account_group_memberships/aws_cloudwatch_latest_sync_at",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "filters": {
+              "description": "Restricts the results.",
+              "required": false,
+              "example_definition": {
+                "member_account_href": "/api/accounts/2",
+                "payer_account_href": "/api/accounts/1"
+              },
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "family": "hash",
+                "id": "Attributor-Hash",
+                "key": {
+                  "type": {
+                    "name": "Object",
+                    "family": "any",
+                    "id": "Attributor-Object"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "Object",
+                    "family": "any",
+                    "id": "Attributor-Object"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "filters": {
+            "member_account_href": "/api/accounts/2",
+            "payer_account_href": "/api/accounts/1"
+          }
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "application/json"
+          }
+        }
+      }
+    },
+    {
+      "description": "Show the details of a single AWS account group membership",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/aws_account_group_memberships/:id",
+          "version": "1.0"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 880
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "name": "V1::MediaTypes::AwsAccountGroupMembership",
+            "family": "hash",
+            "id": "V1-MediaTypes-AwsAccountGroupMembership",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "V1::ApiResources::AwsAccountGroupMemberships",
+  "metadata": {
+  },
+  "traits": [
+
+  ]
+}

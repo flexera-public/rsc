@@ -41,5 +41,8 @@
   ],
   "name": "V1::ApiResources::TempInstancePrices",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }
