@@ -61,14 +61,9 @@ func NewOAuthAuthenticator(token string, accountID int) Authenticator {
 // NewTokenAuthenticator returns an authenticator that use an oauth access token to do authentication.
 // This is useful if the oauth handshake has already happened.
 // Use the OAuthAuthenticator to use a refresh token and have the authenticator do the handshake.
-func NewTokenAuthenticator(token string) Authenticator {
-	return &tokenAuthenticator{token: token}
-}
-
-// NewTokenAuthenticatorWithAccountID returns an authenticator that uses an oauth access token to do authentication.
-// This is similar to NewTokenAuthenticator but also accepts the account ID and sets the account ID
-// in the X-Account header.
-func NewTokenAuthenticatorWithAccountID(token string, accountID int) Authenticator {
+// Specifying the accountID is only required if the API requires the "X-Account" header to be set
+// (this is true of CM 1.6 at the moment).
+func NewTokenAuthenticator(token string, accountID int) Authenticator {
 	return &tokenAuthenticator{token: token, accountID: accountID}
 }
 
