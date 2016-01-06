@@ -273,12 +273,13 @@ func (a *APIAnalyzer) ParseUrls(urls interface{}) ([]*gen.PathPattern, error) {
 
 // Create path pattern from HTTP verb and request path
 func toPattern(verb, path string) *gen.PathPattern {
+	rx := pathVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(path), `/([^/]+)`)
+	rx = fmt.Sprintf("^%s$", rx)
 	pattern := gen.PathPattern{
 		HTTPMethod: verb,
 		Path:       path,
 		Pattern:    pathVariablesRegexp.ReplaceAllLiteralString(path, "/%s"),
-		Regexp: pathVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(path),
-			`/([^/]+)`),
+		Regexp:     rx,
 	}
 	matches := pathVariablesRegexp.FindAllStringSubmatch(path, -1)
 	if len(matches) > 0 {
