@@ -58,11 +58,13 @@ func NewOAuthAuthenticator(token string, accountID int) Authenticator {
 	}
 }
 
-// NewTokenAuthenticator returns a authenticator that use a oauth access token to do authentication.
+// NewTokenAuthenticator returns an authenticator that use an oauth access token to do authentication.
 // This is useful if the oauth handshake has already happened.
 // Use the OAuthAuthenticator to use a refresh token and have the authenticator do the handshake.
-func NewTokenAuthenticator(token string) Authenticator {
-	return &tokenAuthenticator{token: token}
+// Specifying the accountID is only required if the API requires the "X-Account" header to be set
+// (this is true of CM 1.6 at the moment).
+func NewTokenAuthenticator(token string, accountID int) Authenticator {
+	return &tokenAuthenticator{token: token, accountID: accountID}
 }
 
 // NewSSAuthenticator returns an authenticator that wraps another one and adds the logic needed to
@@ -250,13 +252,17 @@ func (s *oAuthSigner) CanAuthenticate(host string) error {
 
 // OAuth access token authenticator
 type tokenAuthenticator struct {
-	token string
-	host  string // Only used by CanAuthenticate
+	token     string
+	host      string // Only used by CanAuthenticate
+	accountID int    // Optional - but if provided, it will be set in the X-Account header
 }
 
 // Sign sets the OAuth authorization header
 func (t *tokenAuthenticator) Sign(r *http.Request) error {
 	r.Header.Set("Authorization", "Bearer "+t.token)
+	if t.accountID != 0 {
+		r.Header.Set("X-Account", strconv.Itoa(t.accountID))
+	}
 	return nil
 }
 
