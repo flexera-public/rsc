@@ -35,14 +35,14 @@ module Resources
       prefix '/rll/tss'
     end
 
-    action :get_exec do
-      description 'Get plugins list'
+    action :index do
+      description 'Get TSS plugins list'
       routing { get '/exec' }
       response :ok
     end
 
-    action :post_exec do
-      description 'Add new TSS custom pligin'
+    action :create do
+      description 'Add new TSS custom plugin'
       routing { post '/exec' }
       params do
         attribute :name, String, required: true
@@ -51,13 +51,13 @@ module Resources
       response :ok
     end
 
-    action :get_exec_name do
+    action :show do
       description 'Get TSS plugin info'
       routing { get '/exec/:name' }
       response :ok
     end
 
-    action :put_exec_name do
+    action :update do
       description 'Update TSS custom pligin'
       routing { put '/exec/:name' }
       params do
@@ -66,7 +66,7 @@ module Resources
       response :ok
     end
 
-    action :delete_exec_name do
+    action :destroy do
       description 'Delete TSS plugin info'
       routing { delete '/exec/:name' }
       response :ok

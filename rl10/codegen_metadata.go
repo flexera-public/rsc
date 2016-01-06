@@ -557,8 +557,8 @@ var GenMetadata = map[string]*metadata.Resource{
 		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
-				Name:        "get_exec",
-				Description: `Get plugins list`,
+				Name:        "index",
+				Description: `Get TSS plugins list`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -572,8 +572,8 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "post_exec",
-				Description: `Add new TSS custom pligin`,
+				Name:        "create",
+				Description: `Add new TSS custom plugin`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
@@ -621,7 +621,7 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "get_exec_name",
+				Name:        "show",
 				Description: `Get TSS plugin info`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
@@ -636,7 +636,7 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "put_exec_name",
+				Name:        "update",
 				Description: `Update TSS custom pligin`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
@@ -669,7 +669,7 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
-				Name:        "delete_exec_name",
+				Name:        "destroy",
 				Description: `Delete TSS plugin info`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{

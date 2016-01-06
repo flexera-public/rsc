@@ -886,12 +886,12 @@ func (api *API) TSSPluginLocator(href string) *TSSPluginLocator {
 
 // GET /rll/tss/exec
 //
-// Get plugins list
-func (loc *TSSPluginLocator) GetExec() (string, error) {
+// Get TSS plugins list
+func (loc *TSSPluginLocator) Index() (string, error) {
 	var res string
 	var params rsapi.APIParams
 	var p rsapi.APIParams
-	uri, err := loc.ActionPath("TSSPlugin", "get_exec")
+	uri, err := loc.ActionPath("TSSPlugin", "index")
 	if err != nil {
 		return res, err
 	}
@@ -923,8 +923,8 @@ func (loc *TSSPluginLocator) GetExec() (string, error) {
 
 // POST /rll/tss/exec
 //
-// Add new TSS custom pligin
-func (loc *TSSPluginLocator) PostExec(executable []string, name string) (string, error) {
+// Add new TSS custom plugin
+func (loc *TSSPluginLocator) Create(executable []string, name string) (string, error) {
 	var res string
 	if len(executable) == 0 {
 		return res, fmt.Errorf("executable is required")
@@ -938,7 +938,7 @@ func (loc *TSSPluginLocator) PostExec(executable []string, name string) (string,
 		"name":         name,
 	}
 	var p rsapi.APIParams
-	uri, err := loc.ActionPath("TSSPlugin", "post_exec")
+	uri, err := loc.ActionPath("TSSPlugin", "create")
 	if err != nil {
 		return res, err
 	}
@@ -971,11 +971,11 @@ func (loc *TSSPluginLocator) PostExec(executable []string, name string) (string,
 // GET /rll/tss/exec/:name
 //
 // Get TSS plugin info
-func (loc *TSSPluginLocator) GetExecName() (string, error) {
+func (loc *TSSPluginLocator) Show() (string, error) {
 	var res string
 	var params rsapi.APIParams
 	var p rsapi.APIParams
-	uri, err := loc.ActionPath("TSSPlugin", "get_exec_name")
+	uri, err := loc.ActionPath("TSSPlugin", "show")
 	if err != nil {
 		return res, err
 	}
@@ -1008,7 +1008,7 @@ func (loc *TSSPluginLocator) GetExecName() (string, error) {
 // PUT /rll/tss/exec/:name
 //
 // Update TSS custom pligin
-func (loc *TSSPluginLocator) PutExecName(executable []string) (string, error) {
+func (loc *TSSPluginLocator) Update(executable []string) (string, error) {
 	var res string
 	if len(executable) == 0 {
 		return res, fmt.Errorf("executable is required")
@@ -1018,7 +1018,7 @@ func (loc *TSSPluginLocator) PutExecName(executable []string) (string, error) {
 		"executable[]": executable,
 	}
 	var p rsapi.APIParams
-	uri, err := loc.ActionPath("TSSPlugin", "put_exec_name")
+	uri, err := loc.ActionPath("TSSPlugin", "update")
 	if err != nil {
 		return res, err
 	}
@@ -1051,11 +1051,11 @@ func (loc *TSSPluginLocator) PutExecName(executable []string) (string, error) {
 // DELETE /rll/tss/exec/:name
 //
 // Delete TSS plugin info
-func (loc *TSSPluginLocator) DeleteExecName() (string, error) {
+func (loc *TSSPluginLocator) Destroy() (string, error) {
 	var res string
 	var params rsapi.APIParams
 	var p rsapi.APIParams
-	uri, err := loc.ActionPath("TSSPlugin", "delete_exec_name")
+	uri, err := loc.ActionPath("TSSPlugin", "destroy")
 	if err != nil {
 		return res, err
 	}

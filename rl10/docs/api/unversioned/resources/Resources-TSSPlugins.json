@@ -3,8 +3,8 @@
   "media_type": "Praxis-SimpleMediaType",
   "actions": [
     {
-      "description": "Get plugins list",
-      "name": "get_exec",
+      "description": "Get TSS plugins list",
+      "name": "index",
       "metadata": {
       },
       "urls": [
@@ -27,8 +27,8 @@
       }
     },
     {
-      "description": "Add new TSS custom pligin",
-      "name": "post_exec",
+      "description": "Add new TSS custom plugin",
+      "name": "create",
       "metadata": {
       },
       "urls": [
@@ -98,7 +98,7 @@
     },
     {
       "description": "Get TSS plugin info",
-      "name": "get_exec_name",
+      "name": "show",
       "metadata": {
       },
       "urls": [
@@ -122,7 +122,7 @@
     },
     {
       "description": "Update TSS custom pligin",
-      "name": "put_exec_name",
+      "name": "update",
       "metadata": {
       },
       "urls": [
@@ -183,7 +183,7 @@
     },
     {
       "description": "Delete TSS plugin info",
-      "name": "delete_exec_name",
+      "name": "destroy",
       "metadata": {
       },
       "urls": [
