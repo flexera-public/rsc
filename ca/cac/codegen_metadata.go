@@ -32,7 +32,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/accounts",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/accounts`),
+						Regexp:     regexp.MustCompile(`^/api/accounts$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -65,7 +65,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/accounts",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/accounts`),
+						Regexp:     regexp.MustCompile(`^/api/accounts$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -98,7 +98,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/accounts/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/accounts/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/accounts/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -137,7 +137,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/analysis_snapshots",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/analysis_snapshots`),
+						Regexp:     regexp.MustCompile(`^/api/analysis_snapshots$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -371,7 +371,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/analysis_snapshots/%s",
 						Variables:  []string{"uuid"},
-						Regexp:     regexp.MustCompile(`/api/analysis_snapshots/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/analysis_snapshots/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -412,7 +412,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/budget_alerts",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/budget_alerts`),
+						Regexp:     regexp.MustCompile(`^/api/budget_alerts$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -607,7 +607,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/budget_alerts",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/budget_alerts`),
+						Regexp:     regexp.MustCompile(`^/api/budget_alerts$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -640,7 +640,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/budget_alerts/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/budget_alerts/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/budget_alerts/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -673,7 +673,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/budget_alerts/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/budget_alerts/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/budget_alerts/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -817,7 +817,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "DELETE",
 						Pattern:    "/api/budget_alerts/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/budget_alerts/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/budget_alerts/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -838,7 +838,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/cloud_bills/actions/filter_options",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/cloud_bills/actions/filter_options`),
+						Regexp:     regexp.MustCompile(`^/api/cloud_bills/actions/filter_options$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -943,7 +943,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/cloud_bill_metrics/actions/grouped_time_series",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/cloud_bill_metrics/actions/grouped_time_series`),
+						Regexp:     regexp.MustCompile(`^/api/cloud_bill_metrics/actions/grouped_time_series$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1046,7 +1046,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/current_user",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/current_user`),
+						Regexp:     regexp.MustCompile(`^/api/current_user$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1079,7 +1079,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/current_user",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/current_user`),
+						Regexp:     regexp.MustCompile(`^/api/current_user$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1243,7 +1243,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/current_user/actions/cloud_accounts",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/current_user/actions/cloud_accounts`),
+						Regexp:     regexp.MustCompile(`^/api/current_user/actions/cloud_accounts$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1324,7 +1324,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/current_user/actions/onboarding_status",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/current_user/actions/onboarding_status`),
+						Regexp:     regexp.MustCompile(`^/api/current_user/actions/onboarding_status$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1357,7 +1357,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/current_user/actions/environment",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/current_user/actions/environment`),
+						Regexp:     regexp.MustCompile(`^/api/current_user/actions/environment$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1378,7 +1378,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instances",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instances`),
+						Regexp:     regexp.MustCompile(`^/api/instances$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1525,7 +1525,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/count",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instances/actions/count`),
+						Regexp:     regexp.MustCompile(`^/api/instances/actions/count$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1608,7 +1608,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/exist",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instances/actions/exist`),
+						Regexp:     regexp.MustCompile(`^/api/instances/actions/exist$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1691,7 +1691,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/export",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instances/actions/export`),
+						Regexp:     regexp.MustCompile(`^/api/instances/actions/export$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1838,7 +1838,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instances/actions/filter_options",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instances/actions/filter_options`),
+						Regexp:     regexp.MustCompile(`^/api/instances/actions/filter_options$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2024,7 +2024,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/scenarios/%s/instance_combinations",
 						Variables:  []string{"scenario_id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2304,7 +2304,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s",
 						Variables:  []string{"scenario_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2337,7 +2337,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s",
 						Variables:  []string{"scenario_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2617,7 +2617,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "DELETE",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s",
 						Variables:  []string{"scenario_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -2632,7 +2632,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/actions/reserved_instance_prices",
 						Variables:  []string{"scenario_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/actions/reserved_instance_prices`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)/actions/reserved_instance_prices$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2672,7 +2672,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/overall",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/overall`),
+						Regexp:     regexp.MustCompile(`^/api/instance_metrics/actions/overall$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2789,7 +2789,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/grouped_overall",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/grouped_overall`),
+						Regexp:     regexp.MustCompile(`^/api/instance_metrics/actions/grouped_overall$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2970,7 +2970,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/time_series",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/time_series`),
+						Regexp:     regexp.MustCompile(`^/api/instance_metrics/actions/time_series$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3122,7 +3122,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/grouped_time_series",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/grouped_time_series`),
+						Regexp:     regexp.MustCompile(`^/api/instance_metrics/actions/grouped_time_series$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3335,7 +3335,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_metrics/actions/current_count",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instance_metrics/actions/current_count`),
+						Regexp:     regexp.MustCompile(`^/api/instance_metrics/actions/current_count$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3376,7 +3376,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_usage_periods",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/instance_usage_periods`),
+						Regexp:     regexp.MustCompile(`^/api/instance_usage_periods$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3432,7 +3432,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/patterns",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/patterns`),
+						Regexp:     regexp.MustCompile(`^/api/patterns$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3593,7 +3593,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/patterns",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/patterns`),
+						Regexp:     regexp.MustCompile(`^/api/patterns$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3626,7 +3626,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/patterns/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/patterns/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/patterns/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3659,7 +3659,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/patterns/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/patterns/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/patterns/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3820,7 +3820,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "DELETE",
 						Pattern:    "/api/patterns/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/patterns/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/patterns/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -3838,7 +3838,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/patterns/actions/create_defaults",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/patterns/actions/create_defaults`),
+						Regexp:     regexp.MustCompile(`^/api/patterns/actions/create_defaults$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -3877,7 +3877,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/reserved_instances`),
+						Regexp:     regexp.MustCompile(`^/api/reserved_instances$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4024,7 +4024,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/count",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/count`),
+						Regexp:     regexp.MustCompile(`^/api/reserved_instances/actions/count$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4107,7 +4107,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/exist",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/exist`),
+						Regexp:     regexp.MustCompile(`^/api/reserved_instances/actions/exist$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4190,7 +4190,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/export",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/export`),
+						Regexp:     regexp.MustCompile(`^/api/reserved_instances/actions/export$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4337,7 +4337,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/reserved_instances/actions/filter_options",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/reserved_instances/actions/filter_options`),
+						Regexp:     regexp.MustCompile(`^/api/reserved_instances/actions/filter_options$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4522,7 +4522,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases",
 						Variables:  []string{"scenario_id", "instance_combination_id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4639,7 +4639,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases",
 						Variables:  []string{"scenario_id", "instance_combination_id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4672,7 +4672,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases/%s",
 						Variables:  []string{"scenario_id", "instance_combination_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4705,7 +4705,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases/%s",
 						Variables:  []string{"scenario_id", "instance_combination_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -4822,7 +4822,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "DELETE",
 						Pattern:    "/api/scenarios/%s/instance_combinations/%s/reserved_instance_purchases/%s",
 						Variables:  []string{"scenario_id", "instance_combination_id", "id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/instance_combinations/([^/]+)/reserved_instance_purchases/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -4845,7 +4845,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/scenarios",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/scenarios`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5009,7 +5009,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/scenarios`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5058,7 +5058,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5091,7 +5091,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/scenarios/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5188,7 +5188,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "DELETE",
 						Pattern:    "/api/scenarios/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -5205,7 +5205,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scenarios/%s/actions/forecast",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/scenarios/([^/]+)/actions/forecast`),
+						Regexp:     regexp.MustCompile(`^/api/scenarios/([^/]+)/actions/forecast$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5245,7 +5245,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/scheduled_reports",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/scheduled_reports`),
+						Regexp:     regexp.MustCompile(`^/api/scheduled_reports$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5401,7 +5401,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scheduled_reports",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/scheduled_reports`),
+						Regexp:     regexp.MustCompile(`^/api/scheduled_reports$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5434,7 +5434,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/scheduled_reports/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/scheduled_reports/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scheduled_reports/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5467,7 +5467,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/scheduled_reports/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/scheduled_reports/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scheduled_reports/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5572,7 +5572,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "DELETE",
 						Pattern:    "/api/scheduled_reports/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/scheduled_reports/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/scheduled_reports/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -5587,7 +5587,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/scheduled_reports/actions/create_defaults",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/scheduled_reports/actions/create_defaults`),
+						Regexp:     regexp.MustCompile(`^/api/scheduled_reports/actions/create_defaults$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5627,7 +5627,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/temp_instance_prices",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/temp_instance_prices`),
+						Regexp:     regexp.MustCompile(`^/api/temp_instance_prices$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -5650,7 +5650,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/users",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/users`),
+						Regexp:     regexp.MustCompile(`^/api/users$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5758,7 +5758,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/users",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/users`),
+						Regexp:     regexp.MustCompile(`^/api/users$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5791,7 +5791,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/users/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/users/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/users/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5825,7 +5825,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/users/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`/api/users/([^/]+)`),
+						Regexp:     regexp.MustCompile(`^/api/users/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5920,7 +5920,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "POST",
 						Pattern:    "/api/users/actions/invite",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/users/actions/invite`),
+						Regexp:     regexp.MustCompile(`^/api/users/actions/invite$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -5991,7 +5991,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/user_settings",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/user_settings`),
+						Regexp:     regexp.MustCompile(`^/api/user_settings$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -6024,7 +6024,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "PATCH",
 						Pattern:    "/api/user_settings",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/api/user_settings`),
+						Regexp:     regexp.MustCompile(`^/api/user_settings$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
