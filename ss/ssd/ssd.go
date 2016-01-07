@@ -1,9 +1,9 @@
-package ssd
+package ssd // import "gopkg.in/rightscale/rsc.v5/ss/ssd"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v5/rsapi"
 )
 
 // API is the Self-Service designer client.

@@ -7,12 +7,12 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cac
+package cac // import "gopkg.in/rightscale/rsc.v5/ca/cac"
 
 import (
 	"regexp"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v5/metadata"
 )
 
 // Consists of a map of resource name to resource metadata.
