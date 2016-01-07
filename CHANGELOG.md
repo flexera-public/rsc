@@ -1,3 +1,10 @@
+v5.0.1 / 2016-01-07
+-------------------
+* Update gomega to fix HasOccurred
+* Fix ambiguous handling of some command line arguments
+* Add --timeout flag
+* Add link information to resource metadata
+
 v5.0.0 / 2015-10-15
 -------------------
 * Fix issue with instance session auth
