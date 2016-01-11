@@ -58,7 +58,7 @@ module Resources
     end
 
     action :update do
-      description 'Update TSS custom pligin'
+      description 'Update TSS custom plugin'
       routing { put '/exec/:name' }
       params do
         attribute :executable, Attributor::Collection.of(String), required: true

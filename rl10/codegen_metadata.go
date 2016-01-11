@@ -637,7 +637,7 @@ var GenMetadata = map[string]*metadata.Resource{
 
 			&metadata.Action{
 				Name:        "update",
-				Description: `Update TSS custom pligin`,
+				Description: `Update TSS custom plugin`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",

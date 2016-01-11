@@ -1007,7 +1007,7 @@ func (loc *TSSPluginLocator) Show() (string, error) {
 
 // PUT /rll/tss/exec/:name
 //
-// Update TSS custom pligin
+// Update TSS custom plugin
 func (loc *TSSPluginLocator) Update(executable []string) (string, error) {
 	var res string
 	if len(executable) == 0 {
