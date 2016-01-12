@@ -274,7 +274,7 @@ func (a *APIAnalyzer) ParseUrls(urls interface{}) ([]*gen.PathPattern, error) {
 // Create path pattern from HTTP verb and request path
 func toPattern(verb, path string) *gen.PathPattern {
 	rx := pathVariablesRegexp.ReplaceAllLiteralString(regexp.QuoteMeta(path), `/([^/]+)`)
-	rx = fmt.Sprintf("^%s$", rx)
+	rx = fmt.Sprintf("%s$", rx)
 	pattern := gen.PathPattern{
 		HTTPMethod: verb,
 		Path:       path,

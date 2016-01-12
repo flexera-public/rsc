@@ -32,7 +32,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/accounts",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/accounts$`),
+						Regexp:     regexp.MustCompile(`/api/accounts$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -67,7 +67,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/accounts/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/accounts/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/accounts/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -110,7 +110,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/clouds$`),
+						Regexp:     regexp.MustCompile(`/api/clouds$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -145,7 +145,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -189,13 +189,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/datacenters",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/datacenters$`),
+						Regexp:     regexp.MustCompile(`/api/datacenters$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/datacenters",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/datacenters$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/datacenters$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -230,13 +230,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/datacenters/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/datacenters/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/datacenters/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/datacenters/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/datacenters/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/datacenters/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -281,7 +281,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/deployments",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/deployments$`),
+						Regexp:     regexp.MustCompile(`/api/deployments$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -332,7 +332,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/deployments/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/deployments/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/deployments/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -377,7 +377,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/images",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/images$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/images$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -440,13 +440,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/images/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/images/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/images/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/images/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/images/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/images/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -497,13 +497,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instances",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/instances$`),
+						Regexp:     regexp.MustCompile(`/api/instances$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -606,13 +606,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instances/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/instances/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/instances/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -672,13 +672,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_types",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/instance_types$`),
+						Regexp:     regexp.MustCompile(`/api/instance_types$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instance_types",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instance_types$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instance_types$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -713,13 +713,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/instance_types/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/instance_types/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/instance_types/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instance_types/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instance_types/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instance_types/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -764,13 +764,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/ip_addresses",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/ip_addresses$`),
+						Regexp:     regexp.MustCompile(`/api/ip_addresses$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_addresses",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/ip_addresses$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -805,13 +805,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/ip_addresses/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/ip_addresses/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/ip_addresses/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_addresses/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/ip_addresses/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_addresses/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -857,13 +857,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/ip_address_bindings",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/ip_address_bindings$`),
+						Regexp:     regexp.MustCompile(`/api/ip_address_bindings$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_address_bindings",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/ip_address_bindings$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -898,13 +898,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/ip_address_bindings/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/ip_address_bindings/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/ip_address_bindings/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ip_address_bindings/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/ip_address_bindings/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ip_address_bindings/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -954,7 +954,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/multi_cloud_images",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images$`),
+						Regexp:     regexp.MustCompile(`/api/multi_cloud_images$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -989,7 +989,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/multi_cloud_images/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/multi_cloud_images/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1030,7 +1030,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/networks",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/networks$`),
+						Regexp:     regexp.MustCompile(`/api/networks$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1065,7 +1065,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/networks/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/networks/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/networks/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1110,7 +1110,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/network_interfaces",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/network_interfaces$`),
+						Regexp:     regexp.MustCompile(`/api/network_interfaces$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1145,7 +1145,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/network_interfaces/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/network_interfaces/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/network_interfaces/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1190,7 +1190,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/network_interface_attachments",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/network_interface_attachments$`),
+						Regexp:     regexp.MustCompile(`/api/network_interface_attachments$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1225,7 +1225,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/network_interface_attachments/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/network_interface_attachments/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/network_interface_attachments/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1271,19 +1271,19 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/security_groups",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/security_groups$`),
+						Regexp:     regexp.MustCompile(`/api/security_groups$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/security_groups",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/security_groups$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/security_groups$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances/%s/security_groups",
 						Variables:  []string{"cloud_id", "instance_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/security_groups$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/security_groups$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1318,13 +1318,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/security_groups/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/security_groups/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/security_groups/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/security_groups/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/security_groups/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/security_groups/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1381,7 +1381,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/servers",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/servers$`),
+						Regexp:     regexp.MustCompile(`/api/servers$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1416,7 +1416,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/servers/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/servers/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1472,7 +1472,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/server_arrays",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/server_arrays$`),
+						Regexp:     regexp.MustCompile(`/api/server_arrays$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1507,7 +1507,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/server_arrays/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/server_arrays/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1562,7 +1562,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/server_templates",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/server_templates$`),
+						Regexp:     regexp.MustCompile(`/api/server_templates$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1597,7 +1597,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/server_templates/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/server_templates/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/server_templates/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1638,13 +1638,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/ssh_keys",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/ssh_keys$`),
+						Regexp:     regexp.MustCompile(`/api/ssh_keys$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ssh_keys",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/ssh_keys$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1679,13 +1679,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/ssh_keys/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/ssh_keys/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/ssh_keys/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/ssh_keys/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/ssh_keys/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/ssh_keys/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1727,19 +1727,19 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/subnets",
 						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/subnets$`),
+						Regexp:     regexp.MustCompile(`/api/subnets$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/subnets",
 						Variables:  []string{"cloud_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/subnets$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/subnets$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/instances/%s/subnets",
 						Variables:  []string{"cloud_id", "instance_id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/subnets$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/instances/([^/]+)/subnets$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1774,13 +1774,13 @@ var GenMetadata = map[string]*metadata.Resource{
 						HTTPMethod: "GET",
 						Pattern:    "/api/subnets/%s",
 						Variables:  []string{"id"},
-						Regexp:     regexp.MustCompile(`^/api/subnets/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/subnets/([^/]+)$`),
 					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/clouds/%s/subnets/%s",
 						Variables:  []string{"cloud_id", "id"},
-						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/subnets/([^/]+)$`),
+						Regexp:     regexp.MustCompile(`/api/clouds/([^/]+)/subnets/([^/]+)$`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
