@@ -552,6 +552,7 @@ func (api *API) AlertSpecLocator(href string) *AlertSpecLocator {
 
 //===== Actions
 
+// POST /api/clouds/:cloud_id/instances/:instance_id/alert_specs
 // POST /api/servers/:server_id/alert_specs
 // POST /api/server_arrays/:server_array_id/alert_specs
 // POST /api/server_templates/:server_template_id/alert_specs
@@ -599,6 +600,7 @@ func (loc *AlertSpecLocator) Create(alertSpec *AlertSpecParam) (*AlertSpecLocato
 	}
 }
 
+// DELETE /api/clouds/:cloud_id/instances/:instance_id/alert_specs/:id
 // DELETE /api/servers/:server_id/alert_specs/:id
 // DELETE /api/server_arrays/:server_array_id/alert_specs/:id
 // DELETE /api/server_templates/:server_template_id/alert_specs/:id
@@ -632,6 +634,7 @@ func (loc *AlertSpecLocator) Destroy() error {
 	return nil
 }
 
+// GET /api/clouds/:cloud_id/instances/:instance_id/alert_specs
 // GET /api/servers/:server_id/alert_specs
 // GET /api/server_arrays/:server_array_id/alert_specs
 // GET /api/server_templates/:server_template_id/alert_specs
@@ -690,6 +693,7 @@ func (loc *AlertSpecLocator) Index(options rsapi.APIParams) ([]*AlertSpec, error
 	return res, err
 }
 
+// GET /api/clouds/:cloud_id/instances/:instance_id/alert_specs/:id
 // GET /api/servers/:server_id/alert_specs/:id
 // GET /api/server_arrays/:server_array_id/alert_specs/:id
 // GET /api/server_templates/:server_template_id/alert_specs/:id
@@ -737,6 +741,7 @@ func (loc *AlertSpecLocator) Show(options rsapi.APIParams) (*AlertSpec, error) {
 	return res, err
 }
 
+// PUT /api/clouds/:cloud_id/instances/:instance_id/alert_specs/:id
 // PUT /api/servers/:server_id/alert_specs/:id
 // PUT /api/server_arrays/:server_array_id/alert_specs/:id
 // PUT /api/server_templates/:server_template_id/alert_specs/:id
@@ -930,21 +935,20 @@ func (loc *AuditEntryLocator) Create(auditEntry *AuditEntryParam, options rsapi.
 //
 // shows the details of a given AuditEntry.
 // Note that the media type of the response is simply text.
-func (loc *AuditEntryLocator) Detail() (string, error) {
-	var res string
+func (loc *AuditEntryLocator) Detail() error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AuditEntry", "detail")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -953,15 +957,9 @@ func (loc *AuditEntryLocator) Detail() (string, error) {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	res = string(respBody)
-	return res, err
+	return nil
 }
 
 // GET /api/audit_entries
@@ -1257,8 +1255,8 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi
 
 // POST /api/backups
 //
-// Takes in an array of volumeattachmenthrefs and takes a snapshot of each.
-// The volumeattachmenthrefs must belong to the same instance.
+// Takes in an array of volume_attachment_hrefs and takes a snapshot of each.
+// The volume_attachment_hrefs must belong to the same instance.
 // Required parameters:
 // backup
 func (loc *BackupLocator) Create(backup *BackupParam) (*BackupLocator, error) {
@@ -1829,7 +1827,7 @@ func (api *API) CloudAccountLocator(href string) *CloudAccountLocator {
 //
 // Create a CloudAccount by passing in the respective credentials for each cloud.
 // For more information on the specific parameters for each cloud, refer to the following:
-// http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
+// http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create
 // Required parameters:
 // cloud_account
 func (loc *CloudAccountLocator) Create(cloudAccount *CloudAccountParam) (*CloudAccountLocator, error) {
@@ -2706,7 +2704,7 @@ func (loc *CredentialLocator) Index(options rsapi.APIParams) ([]*Credential, err
 
 // GET /api/credentials/:id
 //
-// Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.
+// Show information about a single Credential. Credential values may be retrieved using the "sensitive" view by users with "admin" role only.
 // Optional parameters:
 // view
 func (loc *CredentialLocator) Show(options rsapi.APIParams) (*Credential, error) {
@@ -3827,6 +3825,8 @@ type Instance struct {
 	IpForwardingEnabled      bool                   `json:"ip_forwarding_enabled,omitempty"`
 	Links                    []map[string]string    `json:"links,omitempty"`
 	Locked                   bool                   `json:"locked,omitempty"`
+	MonitoringCollectorHttp  string                 `json:"monitoring_collector_http,omitempty"`
+	MonitoringCollectorUdp   string                 `json:"monitoring_collector_udp,omitempty"`
 	MonitoringId             string                 `json:"monitoring_id,omitempty"`
 	MonitoringServer         string                 `json:"monitoring_server,omitempty"`
 	Name                     string                 `json:"name,omitempty"`
@@ -3927,9 +3927,9 @@ func (loc *InstanceLocator) Create(instance *InstanceParam, options rsapi.APIPar
 // Lists instances of a given cloud, server array.
 // Using the available filters, it is possible to craft powerful queries about which instances to retrieve.
 // For example, one can easily list:
-// instances that have names that contain "app"
-// all instances of a given deployment
-// instances belonging to a given server array (i.e., have the same parent_url)
+// * instances that have names that contain "app"
+// * all instances of a given deployment
+// * instances belonging to a given server array (i.e., have the same parent_url)
 // To see the instances of a server array including the next_instance, use the URL "/api/clouds/:cloud_id/instances" with the filter "parent_href==/api/server_arrays/XX". To list only the running
 // instances of a server array, use the URL "/api/server_arrays/:server_array_id/current_instances"
 // The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
@@ -4511,7 +4511,7 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 
 /******  InstanceCustomLodgement ******/
 
-// An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#setcustomlodgement interface.
+// An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#set_custom_lodgement interface.
 type InstanceCustomLodgement struct {
 	AccountOwner                         string                   `json:"account_owner,omitempty"`
 	Actions                              []map[string]string      `json:"actions,omitempty"`
@@ -5364,13 +5364,12 @@ func (api *API) MonitoringMetricLocator(href string) *MonitoringMetricLocator {
 // Required parameters:
 // end: An integer number of seconds from current time. e.g. -150 or 0
 // start: An integer number of seconds from current time. e.g. -300
-func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]interface{}, error) {
-	var res map[string]interface{}
+func (loc *MonitoringMetricLocator) Data(end string, start string) error {
 	if end == "" {
-		return res, fmt.Errorf("end is required")
+		return fmt.Errorf("end is required")
 	}
 	if start == "" {
-		return res, fmt.Errorf("start is required")
+		return fmt.Errorf("start is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -5380,15 +5379,15 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]i
 	}
 	uri, err := loc.ActionPath("MonitoringMetric", "data")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -5397,15 +5396,9 @@ func (loc *MonitoringMetricLocator) Data(end string, start string) (map[string]i
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/monitoring_metrics
@@ -7039,11 +7032,11 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 // OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
 // browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
 // endpoint supports the following OAuth 2.0 operations:
-// refresh_token - for end-user login using a previously-negotiated OAuth grant
-// client_credentials - for instance login using API credentials transmitted via user-data
+// * refresh_token - for end-user login using a previously-negotiated OAuth grant
+// * client_credentials - for instance login using API credentials transmitted via user-data
 // RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
-// clients MUST transmit an X-Api-Version header with every OAuth request
-// clients MAY transmit an account_id parameter as part of their POST form data
+// * clients MUST transmit an X-Api-Version header with every OAuth request
+// * clients MAY transmit an account_id parameter as part of their POST form data
 // If you choose to post an account_id, then the API may respond with a 301 redirect if your account
 // is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
 // elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
@@ -7079,10 +7072,10 @@ func (api *API) Oauth2Locator(href string) *Oauth2Locator {
 // your account is hosted in another RightScale cluster.
 // The request parameters and response format are all as per the OAuth 2.0
 // Internet Draft standard v23. In brief:
-// Successful responses include an access token, an expires-in timestamp, and a token type
-// The token type is always "bearer"
-// To use a bearer token, include header "Authorization: Bearer " with your API requests
-// The client must refresh the access token before it expires
+// - Successful responses include an access token, an expires-in timestamp, and a token type
+// - The token type is always "bearer"
+// - To use a bearer token, include header "Authorization: Bearer " with your API requests
+// - The client must refresh the access token before it expires
 // # Example Request using Curl (with prettified response):
 // curl -i -H X-API-Version:1.5 -x POST https://my.rightscale.com/api/oauth2 -d "grant_type=refresh_token" -d "refresh_token=abcd1234deadbeef"
 // {
@@ -7208,7 +7201,7 @@ func (api *API) PermissionLocator(href string) *PermissionLocator {
 // For more information about the roles available and the privileges
 // they confer, please refer to the following page of the RightScale
 // support portal:
-// http://support.rightscale.com/15-References/Lists/ListofUser_Roles
+// http://support.rightscale.com/15-References/Lists/List_of_User_Roles
 // Required parameters:
 // permission
 func (loc *PermissionLocator) Create(permission *PermissionParam) (*PermissionLocator, error) {
@@ -8344,13 +8337,12 @@ func (loc *RepositoryLocator) CookbookImport(assetHrefs []string, options rsapi.
 // Required parameters:
 // asset_hrefs: Hrefs of the assets that should be imported.
 // namespace: The namespace to import into.
-func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespace string) ([]map[string]interface{}, error) {
-	var res []map[string]interface{}
+func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespace string) error {
 	if len(assetHrefs) == 0 {
-		return res, fmt.Errorf("assetHrefs is required")
+		return fmt.Errorf("assetHrefs is required")
 	}
 	if namespace == "" {
-		return res, fmt.Errorf("namespace is required")
+		return fmt.Errorf("namespace is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -8360,15 +8352,15 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 	}
 	uri, err := loc.ActionPath("Repository", "cookbook_import_preview")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -8377,15 +8369,9 @@ func (loc *RepositoryLocator) CookbookImportPreview(assetHrefs []string, namespa
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // POST /api/repositories
@@ -8568,8 +8554,7 @@ func (loc *RepositoryLocator) Refetch(options rsapi.APIParams) error {
 // action on a ServerTemplate.
 // Optional parameters:
 // imported_cookbook_name: A list of cookbook names that were imported by the repository.
-func (loc *RepositoryLocator) Resolve(options rsapi.APIParams) ([]*Repository, error) {
-	var res []*Repository
+func (loc *RepositoryLocator) Resolve(options rsapi.APIParams) error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{}
@@ -8579,15 +8564,15 @@ func (loc *RepositoryLocator) Resolve(options rsapi.APIParams) ([]*Repository, e
 	}
 	uri, err := loc.ActionPath("Repository", "resolve")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -8596,15 +8581,9 @@ func (loc *RepositoryLocator) Resolve(options rsapi.APIParams) ([]*Repository, e
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // GET /api/repositories/:id
@@ -8912,6 +8891,50 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	return nil
 }
 
+// POST /api/right_scripts
+//
+// No description provided for create.
+// Required parameters:
+// right_script
+func (loc *RightScriptLocator) Create(rightScript *RightScriptParam2) (*RightScriptLocator, error) {
+	var res *RightScriptLocator
+	if rightScript == nil {
+		return res, fmt.Errorf("rightScript is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"right_script": rightScript,
+	}
+	uri, err := loc.ActionPath("RightScript", "create")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RightScriptLocator{Href(location), loc.api}, nil
+	}
+}
+
 // GET /api/right_scripts
 //
 // Lists RightScripts.
@@ -9039,7 +9062,7 @@ func (loc *RightScriptLocator) ShowSource() error {
 // Updates RightScript name/description
 // Required parameters:
 // right_script
-func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
+func (loc *RightScriptLocator) Update(rightScript *RightScriptParam3) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
 	}
@@ -9105,7 +9128,7 @@ func (loc *RightScriptLocator) UpdateSource() error {
 /******  Route ******/
 
 // A Route defines how networking traffic should be routed from one
-// destination to another. See nexthoptype for available endpoint targets.
+// destination to another. See next_hop_type for available endpoint targets.
 type Route struct {
 	CreatedAt            *RubyTime           `json:"created_at,omitempty"`
 	Description          string              `json:"description,omitempty"`
@@ -9831,171 +9854,6 @@ func (loc *RunnableBindingLocator) Show(options rsapi.APIParams) (*RunnableBindi
 	return res, err
 }
 
-/******  Scheduler ******/
-
-// Provide RightLink with the ability to schedule script executions on instances
-type Scheduler struct {
-}
-
-//===== Locator
-
-// SchedulerLocator exposes the Scheduler resource actions.
-type SchedulerLocator struct {
-	Href
-	api *API
-}
-
-// SchedulerLocator builds a locator from the given href.
-func (api *API) SchedulerLocator(href string) *SchedulerLocator {
-	return &SchedulerLocator{Href(href), api}
-}
-
-//===== Actions
-
-// POST /api/right_net/scheduler/schedule_recipe
-//
-// Schedules a chef recipe for execution on the current instance
-// Optional parameters:
-// arguments: Serialized recipe execution arguments values keyed by name
-// audit_id: Optional, reuse audit if specified
-// audit_period: RunlistPolicy audit period
-// formal_values: Formal input parameter values
-// policy: RunlistPolicy policy name
-// recipe: Chef recipe name, overridden by recipe_id
-// recipe_id: ServerTemplateChefRecipe ID
-// thread: RunlistPolicy thread name
-func (loc *SchedulerLocator) ScheduleRecipe(options rsapi.APIParams) error {
-	var params rsapi.APIParams
-	var p rsapi.APIParams
-	p = rsapi.APIParams{}
-	var argumentsOpt = options["arguments"]
-	if argumentsOpt != nil {
-		p["arguments"] = argumentsOpt
-	}
-	var auditIdOpt = options["audit_id"]
-	if auditIdOpt != nil {
-		p["audit_id"] = auditIdOpt
-	}
-	var auditPeriodOpt = options["audit_period"]
-	if auditPeriodOpt != nil {
-		p["audit_period"] = auditPeriodOpt
-	}
-	var formalValuesOpt = options["formal_values"]
-	if formalValuesOpt != nil {
-		p["formal_values"] = formalValuesOpt
-	}
-	var policyOpt = options["policy"]
-	if policyOpt != nil {
-		p["policy"] = policyOpt
-	}
-	var recipeOpt = options["recipe"]
-	if recipeOpt != nil {
-		p["recipe"] = recipeOpt
-	}
-	var recipeIdOpt = options["recipe_id"]
-	if recipeIdOpt != nil {
-		p["recipe_id"] = recipeIdOpt
-	}
-	var threadOpt = options["thread"]
-	if threadOpt != nil {
-		p["thread"] = threadOpt
-	}
-	uri, err := loc.ActionPath("Scheduler", "schedule_recipe")
-	if err != nil {
-		return err
-	}
-	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
-	if err != nil {
-		return err
-	}
-	resp, err := loc.api.PerformRequest(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		respBody, _ := ioutil.ReadAll(resp.Body)
-		sr := string(respBody)
-		if sr != "" {
-			sr = ": " + sr
-		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
-	}
-	return nil
-}
-
-// POST /api/right_net/scheduler/schedule_right_script
-//
-// Schedules a RightScript for execution on the current instance
-// Optional parameters:
-// arguments: Serialized script execution arguments values keyed by name
-// audit_id: Optional, reuse audit if specified
-// audit_period: RunlistPolicy audit period
-// formal_values: Formal input parameter values
-// policy: RunlistPolicy policy name
-// right_script: RightScript name, overridden by right_script_id
-// right_script_id: RightScript ID
-// thread: RunlistPolicy thread name
-func (loc *SchedulerLocator) ScheduleRightScript(options rsapi.APIParams) error {
-	var params rsapi.APIParams
-	var p rsapi.APIParams
-	p = rsapi.APIParams{}
-	var argumentsOpt = options["arguments"]
-	if argumentsOpt != nil {
-		p["arguments"] = argumentsOpt
-	}
-	var auditIdOpt = options["audit_id"]
-	if auditIdOpt != nil {
-		p["audit_id"] = auditIdOpt
-	}
-	var auditPeriodOpt = options["audit_period"]
-	if auditPeriodOpt != nil {
-		p["audit_period"] = auditPeriodOpt
-	}
-	var formalValuesOpt = options["formal_values"]
-	if formalValuesOpt != nil {
-		p["formal_values"] = formalValuesOpt
-	}
-	var policyOpt = options["policy"]
-	if policyOpt != nil {
-		p["policy"] = policyOpt
-	}
-	var rightScriptOpt = options["right_script"]
-	if rightScriptOpt != nil {
-		p["right_script"] = rightScriptOpt
-	}
-	var rightScriptIdOpt = options["right_script_id"]
-	if rightScriptIdOpt != nil {
-		p["right_script_id"] = rightScriptIdOpt
-	}
-	var threadOpt = options["thread"]
-	if threadOpt != nil {
-		p["thread"] = threadOpt
-	}
-	uri, err := loc.ActionPath("Scheduler", "schedule_right_script")
-	if err != nil {
-		return err
-	}
-	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
-	if err != nil {
-		return err
-	}
-	resp, err := loc.api.PerformRequest(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		respBody, _ := ioutil.ReadAll(resp.Body)
-		sr := string(respBody)
-		if sr != "" {
-			sr = ": " + sr
-		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
-	}
-	return nil
-}
-
 /******  SecurityGroup ******/
 
 // Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
@@ -10251,10 +10109,10 @@ func (api *API) SecurityGroupRuleLocator(href string) *SecurityGroupRuleLocator 
 //
 // Create a security group rule for a security group.
 // The following flavors are supported:
-// group-based TCP/UDP
-// group-based ICMP
-// CIDR-based TCP/UDP
-// CIDR-based ICMP
+// 1. group-based TCP/UDP
+// 2. group-based ICMP
+// 3. CIDR-based TCP/UDP
+// 4. CIDR-based ICMP
 // Required parameters:
 // security_group_rule
 func (loc *SecurityGroupRuleLocator) Create(securityGroupRule *SecurityGroupRuleParam) (*SecurityGroupRuleLocator, error) {
@@ -10610,14 +10468,88 @@ func (loc *ServerLocator) Destroy() error {
 	return nil
 }
 
+// POST /api/servers/:id/disable_runnable_bindings
+//
+// Disables a list of runnable bindings associated with a given server.
+// Optional parameters:
+// runnable_binding_hrefs: List of Runnable Bindings.
+func (loc *ServerLocator) DisableRunnableBindings(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var runnableBindingHrefsOpt = options["runnable_binding_hrefs"]
+	if runnableBindingHrefsOpt != nil {
+		p["runnable_binding_hrefs"] = runnableBindingHrefsOpt
+	}
+	uri, err := loc.ActionPath("Server", "disable_runnable_bindings")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// POST /api/servers/:id/enable_runnable_bindings
+//
+// Enables a list of runnable bindings associated with a given server.
+// Optional parameters:
+// runnable_binding_hrefs: List of Runnable Bindings.
+func (loc *ServerLocator) EnableRunnableBindings(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var runnableBindingHrefsOpt = options["runnable_binding_hrefs"]
+	if runnableBindingHrefsOpt != nil {
+		p["runnable_binding_hrefs"] = runnableBindingHrefsOpt
+	}
+	uri, err := loc.ActionPath("Server", "enable_runnable_bindings")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // GET /api/servers
 // GET /api/deployments/:deployment_id/servers
 //
 // Lists servers.
 // By using the available filters, it is possible to retrieve servers that have common characteristics.
 // For example, one can list:
-// servers that have names that contain "app_server"
-// all servers of a given deployment
+// * servers that have names that contain "app_server"
+// * all servers of a given deployment
 // For more filters, please see the 'index' action on 'Instances' resource as most of the attributes belong to
 // a 'current_instance' than to a server.
 // Optional parameters:
@@ -11104,14 +11036,88 @@ func (loc *ServerArrayLocator) Destroy() error {
 	return nil
 }
 
+// POST /api/server_arrays/:id/disable_runnable_bindings
+//
+// Disables a list of runnable bindings associated with a given server.
+// Optional parameters:
+// runnable_binding_hrefs: List of Runnable Bindings.
+func (loc *ServerArrayLocator) DisableRunnableBindings(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var runnableBindingHrefsOpt = options["runnable_binding_hrefs"]
+	if runnableBindingHrefsOpt != nil {
+		p["runnable_binding_hrefs"] = runnableBindingHrefsOpt
+	}
+	uri, err := loc.ActionPath("ServerArray", "disable_runnable_bindings")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// POST /api/server_arrays/:id/enable_runnable_bindings
+//
+// Enables a list of runnable bindings associated with a given server.
+// Optional parameters:
+// runnable_binding_hrefs: List of Runnable Bindings.
+func (loc *ServerArrayLocator) EnableRunnableBindings(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var runnableBindingHrefsOpt = options["runnable_binding_hrefs"]
+	if runnableBindingHrefsOpt != nil {
+		p["runnable_binding_hrefs"] = runnableBindingHrefsOpt
+	}
+	uri, err := loc.ActionPath("ServerArray", "enable_runnable_bindings")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // GET /api/server_arrays
 // GET /api/deployments/:deployment_id/server_arrays
 //
 // Lists server arrays.
 // By using the available filters, it is possible to retrieve server arrays that have common characteristics.
 // For example, one can list:
-// arrays that have names that contain "my_server_array"
-// all arrays of a given deployment
+// * arrays that have names that contain "my_server_array"
+// * all arrays of a given deployment
 // Optional parameters:
 // filter
 // view
@@ -11602,21 +11608,20 @@ func (loc *ServerTemplateLocator) Destroy() error {
 // Identifies RightScripts attached to the resource that differ from their HEAD.
 // If the attached revision of the RightScript is the HEAD, then this will indicate
 // a difference between it and the latest committed revision in the same lineage.
-func (loc *ServerTemplateLocator) DetectChangesInHead() ([]map[string]interface{}, error) {
-	var res []map[string]interface{}
+func (loc *ServerTemplateLocator) DetectChangesInHead() error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerTemplate", "detect_changes_in_head")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -11625,15 +11630,9 @@ func (loc *ServerTemplateLocator) DetectChangesInHead() ([]map[string]interface{
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // GET /api/server_templates
@@ -11753,21 +11752,20 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 // Version constraints on missing dependencies and the state of the Chef Recipes;
 // whether or not the cookbook or recipe itself could be found among the
 // attachments, will also be reported.
-func (loc *ServerTemplateLocator) Resolve() ([]map[string]interface{}, error) {
-	var res []map[string]interface{}
+func (loc *ServerTemplateLocator) Resolve() error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerTemplate", "resolve")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -11776,15 +11774,9 @@ func (loc *ServerTemplateLocator) Resolve() ([]map[string]interface{}, error) {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // GET /api/server_templates/:id
@@ -12165,11 +12157,11 @@ func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.APIParams) (
 /******  Session ******/
 
 // The sessions resource is in charge of creating API sessions that are bound to a given account. The sequence for login into the API is the following:
-// Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
-// If the targeted host is not appropriate for the specific account being accessed it will return a 302 http code with a URL with which the client must retry the same POST request.
-// If the targeted host is the right one and the login is successful, it will return a 204 http code, along with two cookies that will need to be saved and passed in any subsequent API request.
-// If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
-// If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
+// * Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
+// * If the targeted host is not appropriate for the specific account being accessed it will return a 302 http code with a URL with which the client must retry the same POST request.
+// * If the targeted host is the right one and the login is successful, it will return a 204 http code, along with two cookies that will need to be saved and passed in any subsequent API request.
+// * If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
+// * If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
 // Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".
 type Session struct {
 	Actions []map[string]string `json:"actions,omitempty"`
@@ -12217,8 +12209,7 @@ func (api *API) SessionLocator(href string) *SessionLocator {
 // email: The email to login with if not using existing session.
 // password: The corresponding password.
 // view: Extended view shows account permissions and products
-func (loc *SessionLocator) Accounts(options rsapi.APIParams) ([]*Account, error) {
-	var res []*Account
+func (loc *SessionLocator) Accounts(options rsapi.APIParams) error {
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -12237,15 +12228,15 @@ func (loc *SessionLocator) Accounts(options rsapi.APIParams) ([]*Account, error)
 	}
 	uri, err := loc.ActionPath("Session", "accounts")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -12254,15 +12245,9 @@ func (loc *SessionLocator) Accounts(options rsapi.APIParams) ([]*Account, error)
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // GET /api/sessions
@@ -12271,9 +12256,16 @@ func (loc *SessionLocator) Accounts(options rsapi.APIParams) ([]*Account, error)
 // features are available within its privileges.
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
-func (loc *SessionLocator) Index() ([]*Session, error) {
+// Optional parameters:
+// view: Whoami view provides links to the logged-in principal and the account being accessed
+func (loc *SessionLocator) Index(options rsapi.APIParams) ([]*Session, error) {
 	var res []*Session
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Session", "index")
 	if err != nil {
@@ -12311,21 +12303,20 @@ func (loc *SessionLocator) Index() ([]*Session, error) {
 // This call can be used by an instance to get it's own details.
 // Example Request using Curl:
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions/instance
-func (loc *SessionLocator) IndexInstanceSession() (*Instance, error) {
-	var res *Instance
+func (loc *SessionLocator) IndexInstanceSession() error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Session", "index_instance_session")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -12334,15 +12325,9 @@ func (loc *SessionLocator) IndexInstanceSession() (*Instance, error) {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 /******  SshKey ******/
@@ -12353,6 +12338,7 @@ type SshKey struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Material    string              `json:"material,omitempty"`
+	Name        string              `json:"name,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 }
 
@@ -12815,10 +12801,9 @@ func (api *API) TagLocator(href string) *TagLocator {
 // The hrefs can belong to various resource types and the tags for a non-existent href will be empty.
 // Required parameters:
 // resource_hrefs: Hrefs of the resources for which tags are to be returned.
-func (loc *TagLocator) ByResource(resourceHrefs []string) ([]map[string]interface{}, error) {
-	var res []map[string]interface{}
+func (loc *TagLocator) ByResource(resourceHrefs []string) error {
 	if len(resourceHrefs) == 0 {
-		return res, fmt.Errorf("resourceHrefs is required")
+		return fmt.Errorf("resourceHrefs is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -12827,15 +12812,15 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]map[string]interfac
 	}
 	uri, err := loc.ActionPath("Tag", "by_resource")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -12844,15 +12829,9 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]map[string]interfac
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // POST /api/tags/by_tag
@@ -12877,13 +12856,12 @@ func (loc *TagLocator) ByResource(resourceHrefs []string) ([]map[string]interfac
 // include_tags_with_prefix: If included, all tags matching this prefix will be returned. If not included, no tags will be returned.
 // match_all: If set to 'true', resources having all the tags specified in the 'tags' parameter are returned. Otherwise, resources having any of the tags are returned.
 // with_deleted: If set to 'true', tags for deleted resources will also be returned. Default value is 'false'.
-func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.APIParams) ([]map[string]interface{}, error) {
-	var res []map[string]interface{}
+func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.APIParams) error {
 	if resourceType == "" {
-		return res, fmt.Errorf("resourceType is required")
+		return fmt.Errorf("resourceType is required")
 	}
 	if len(tags) == 0 {
-		return res, fmt.Errorf("tags is required")
+		return fmt.Errorf("tags is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -12905,15 +12883,15 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.A
 	}
 	uri, err := loc.ActionPath("Tag", "by_tag")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -12922,15 +12900,9 @@ func (loc *TagLocator) ByTag(resourceType string, tags []string, options rsapi.A
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
+	return nil
 }
 
 // POST /api/tags/multi_add
@@ -13110,8 +13082,6 @@ func (loc *TaskLocator) Show(options rsapi.APIParams) (*Task, error) {
 
 /******  User ******/
 
-// A User represents an individual RightScale user. Users must be given access to RightScale accounts in order to
-// access RightScale resources.
 type User struct {
 	Actions      []map[string]string `json:"actions,omitempty"`
 	Company      string              `json:"company,omitempty"`
@@ -13293,24 +13263,23 @@ func (loc *UserLocator) Show() (*User, error) {
 
 // PUT /api/users/:id
 //
-// Update a user's contact information, change her password, or update SSO her settings. In order
-// to update a user record, one of the following criteria must be met:
-// You're logged in AS the user being modified and you provide a valid current_password.
-// You're an admin and the user is linked to your enterprise SSO provider
-// You're an admin and the user's email matches the email_domain of your enterprise SSO provider
-// In other words: you can update yourself if you know your own password; you can update
-// yourself or others if they're linked to your SSO providers, and you can update any user
-// if her email address is known to belong to your organization.
+// Update a user's contact information, change their password, or update their SSO settings.
+// In order to update a user record, one of the following criteria must be met:
+// 1. You've authenticated and are the user being modified, and you provide a valid current_password.
+// 2. You're an admin and the user is linked to your enterprise SSO provider.
+// 3. You're an admin and the user's email matches the email_domain of your enterprise SSO provider.
+// In other words: you can update yourself if you know your own password, you can update
+// yourself or others if you're an admin and they're linked to your SSO provider, and you can update any user
+// if you're an admin and their email address is known to belong to your organization.
 // For information about enabling canonical email domain ownership for your enterprise, please
 // talk to your RightScale account manager or contact our support team.
 // To update a user's contact information, simply pass the desired values for email, first_name,
 // and so forth.
-// To update a user's password, provide a valid current_password and specify the desired
-// new_password.
-// To update a user's SSO information, you may provide a just a principal_uid (to maintain the
+// To update a user's password, provide the desired new_password.
+// To set or update a user's SSO information, you may provide a just a principal_uid (to maintain the
 // user's existing identity provider) or you may provide an identity_provider_href and a
 // principal_uid (to switch identity providers as well as specify a new user identity).
-// In the context of SAML. principal_uid is equivalent to the SAML NameID or Subject claim;
+// In the context of SAML, principal_uid is equivalent to the SAML NameID or Subject claim.
 // RightScale cannot predict or influence the NameID value that your SAML IdP will send to us for
 // Required parameters:
 // user
@@ -13408,17 +13377,19 @@ func (loc *UserDataLocator) Show() (map[string]interface{}, error) {
 
 // A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).
 type Volume struct {
-	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
-	Description string              `json:"description,omitempty"`
-	Iops        string              `json:"iops,omitempty"`
-	Links       []map[string]string `json:"links,omitempty"`
-	Name        string              `json:"name,omitempty"`
-	ResourceUid string              `json:"resource_uid,omitempty"`
-	Size        int                 `json:"size,omitempty"`
-	Status      string              `json:"status,omitempty"`
-	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
-	VolumeType  string              `json:"volume_type,omitempty"`
+	Actions                 []map[string]string    `json:"actions,omitempty"`
+	CloudSpecificAttributes map[string]interface{} `json:"cloud_specific_attributes,omitempty"`
+	CreatedAt               *RubyTime              `json:"created_at,omitempty"`
+	Description             string                 `json:"description,omitempty"`
+	Iops                    string                 `json:"iops,omitempty"`
+	Links                   []map[string]string    `json:"links,omitempty"`
+	Name                    string                 `json:"name,omitempty"`
+	PlacementGroup          `json:"placement_group,omitempty"`
+	ResourceUid             string    `json:"resource_uid,omitempty"`
+	Size                    int       `json:"size,omitempty"`
+	Status                  string    `json:"status,omitempty"`
+	UpdatedAt               *RubyTime `json:"updated_at,omitempty"`
+	VolumeType              string    `json:"volume_type,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -13917,25 +13888,60 @@ func (api *API) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 
 //===== Actions
 
+// POST /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots/:id/copy
+// POST /api/clouds/:cloud_id/volume_snapshots/:id/copy
+//
+// No description provided for copy.
+// Required parameters:
+// volume_snapshot_copy
+func (loc *VolumeSnapshotLocator) Copy(volumeSnapshotCopy *VolumeSnapshotCopy) error {
+	if volumeSnapshotCopy == nil {
+		return fmt.Errorf("volumeSnapshotCopy is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"volume_snapshot_copy": volumeSnapshotCopy,
+	}
+	uri, err := loc.ActionPath("VolumeSnapshot", "copy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
 // POST /api/clouds/:cloud_id/volume_snapshots
 //
 // Creates a new volume_snapshot.
-// Optional parameters:
+// Required parameters:
 // volume_snapshot
-// volume_snapshot_copy
-func (loc *VolumeSnapshotLocator) Create(options rsapi.APIParams) (*VolumeSnapshotLocator, error) {
+func (loc *VolumeSnapshotLocator) Create(volumeSnapshot *VolumeSnapshotParam) (*VolumeSnapshotLocator, error) {
 	var res *VolumeSnapshotLocator
+	if volumeSnapshot == nil {
+		return res, fmt.Errorf("volumeSnapshot is required")
+	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
-	p = rsapi.APIParams{}
-	var volumeSnapshotOpt = options["volume_snapshot"]
-	if volumeSnapshotOpt != nil {
-		p["volume_snapshot"] = volumeSnapshotOpt
-	}
-	var volumeSnapshotCopyOpt = options["volume_snapshot_copy"]
-	if volumeSnapshotCopyOpt != nil {
-		p["volume_snapshot_copy"] = volumeSnapshotCopyOpt
+	p = rsapi.APIParams{
+		"volume_snapshot": volumeSnapshot,
 	}
 	uri, err := loc.ActionPath("VolumeSnapshot", "create")
 	if err != nil {
@@ -14258,6 +14264,11 @@ type AlertSpecificParams struct {
 	VotersTagPredicate string `json:"voters_tag_predicate,omitempty"`
 }
 
+type AllowedInstanceHrefs struct {
+	Add    []string `json:"add,omitempty"`
+	Remove []string `json:"remove,omitempty"`
+}
+
 type AssetPaths struct {
 	Cookbooks []string `json:"cookbooks,omitempty"`
 }
@@ -14315,11 +14326,19 @@ type CloudAccountParam struct {
 
 type CloudSpecificAttributes struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	CreateBootVolume              string `json:"create_boot_volume,omitempty"`
+	DeleteBootVolume              string `json:"delete_boot_volume,omitempty"`
 	DiskGb                        int    `json:"disk_gb,omitempty"`
 	EbsOptimized                  string `json:"ebs_optimized,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	KeepAliveId                   string `json:"keep_alive_id,omitempty"`
+	KeepAliveUrl                  string `json:"keep_alive_url,omitempty"`
+	LocalSsdCount                 string `json:"local_ssd_count,omitempty"`
+	LocalSsdInterface             string `json:"local_ssd_interface,omitempty"`
+	MaxSpotPrice                  string `json:"max_spot_price,omitempty"`
 	MemoryMb                      int    `json:"memory_mb,omitempty"`
 	NumCores                      int    `json:"num_cores,omitempty"`
+	PricingType                   string `json:"pricing_type,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
@@ -14327,10 +14346,18 @@ type CloudSpecificAttributes struct {
 
 type CloudSpecificAttributes2 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	CreateBootVolume              string `json:"create_boot_volume,omitempty"`
+	DeleteBootVolume              string `json:"delete_boot_volume,omitempty"`
 	DiskGb                        int    `json:"disk_gb,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	KeepAliveId                   string `json:"keep_alive_id,omitempty"`
+	KeepAliveUrl                  string `json:"keep_alive_url,omitempty"`
+	LocalSsdCount                 string `json:"local_ssd_count,omitempty"`
+	LocalSsdInterface             string `json:"local_ssd_interface,omitempty"`
+	MaxSpotPrice                  string `json:"max_spot_price,omitempty"`
 	MemoryMb                      int    `json:"memory_mb,omitempty"`
 	NumCores                      int    `json:"num_cores,omitempty"`
+	PricingType                   string `json:"pricing_type,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
@@ -14338,7 +14365,18 @@ type CloudSpecificAttributes2 struct {
 
 type CloudSpecificAttributes3 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	CreateBootVolume              string `json:"create_boot_volume,omitempty"`
+	DeleteBootVolume              string `json:"delete_boot_volume,omitempty"`
+	DiskGb                        int    `json:"disk_gb,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	KeepAliveId                   string `json:"keep_alive_id,omitempty"`
+	KeepAliveUrl                  string `json:"keep_alive_url,omitempty"`
+	LocalSsdCount                 string `json:"local_ssd_count,omitempty"`
+	LocalSsdInterface             string `json:"local_ssd_interface,omitempty"`
+	MaxSpotPrice                  string `json:"max_spot_price,omitempty"`
+	MemoryMb                      int    `json:"memory_mb,omitempty"`
+	NumCores                      int    `json:"num_cores,omitempty"`
+	PricingType                   string `json:"pricing_type,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
@@ -14346,13 +14384,26 @@ type CloudSpecificAttributes3 struct {
 
 type CloudSpecificAttributes4 struct {
 	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
+	CreateBootVolume              string `json:"create_boot_volume,omitempty"`
+	DeleteBootVolume              string `json:"delete_boot_volume,omitempty"`
 	DiskGb                        int    `json:"disk_gb,omitempty"`
 	IamInstanceProfile            string `json:"iam_instance_profile,omitempty"`
+	KeepAliveId                   string `json:"keep_alive_id,omitempty"`
+	KeepAliveUrl                  string `json:"keep_alive_url,omitempty"`
+	LocalSsdCount                 string `json:"local_ssd_count,omitempty"`
+	LocalSsdInterface             string `json:"local_ssd_interface,omitempty"`
+	MaxSpotPrice                  string `json:"max_spot_price,omitempty"`
 	MemoryMb                      int    `json:"memory_mb,omitempty"`
 	NumCores                      int    `json:"num_cores,omitempty"`
+	PricingType                   string `json:"pricing_type,omitempty"`
 	RootVolumePerformance         string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid             string `json:"root_volume_type_uid,omitempty"`
+}
+
+type CloudSpecificAttributes5 struct {
+	CreateBootVolume string `json:"create_boot_volume,omitempty"`
+	DeleteBootVolume string `json:"delete_boot_volume,omitempty"`
 }
 
 type CookbookAttachmentParam struct {
@@ -14414,6 +14465,7 @@ type InstanceParam struct {
 	DeploymentHref           string                   `json:"deployment_href,omitempty"`
 	ImageHref                string                   `json:"image_href,omitempty"`
 	InstanceTypeHref         string                   `json:"instance_type_href,omitempty"`
+	IpForwardingEnabled      string                   `json:"ip_forwarding_enabled,omitempty"`
 	KernelImageHref          string                   `json:"kernel_image_href,omitempty"`
 	Name                     string                   `json:"name,omitempty"`
 	PlacementGroupHref       string                   `json:"placement_group_href,omitempty"`
@@ -14435,6 +14487,7 @@ type InstanceParam2 struct {
 	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
 	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
 	Name                     string                    `json:"name,omitempty"`
+	PrivateIpAddress         string                    `json:"private_ip_address,omitempty"`
 	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
 	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
 	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
@@ -14475,6 +14528,7 @@ type InstanceParam4 struct {
 	KernelImageHref          string                    `json:"kernel_image_href,omitempty"`
 	MultiCloudImageHref      string                    `json:"multi_cloud_image_href,omitempty"`
 	PlacementGroupHref       string                    `json:"placement_group_href,omitempty"`
+	PrivateIpAddress         string                    `json:"private_ip_address,omitempty"`
 	RamdiskImageHref         string                    `json:"ramdisk_image_href,omitempty"`
 	SecurityGroupHrefs       []string                  `json:"security_group_hrefs,omitempty"`
 	ServerTemplateHref       string                    `json:"server_template_href,omitempty"`
@@ -14484,6 +14538,10 @@ type InstanceParam4 struct {
 }
 
 type InstanceParam5 struct {
+	CloudSpecificAttributes *CloudSpecificAttributes5 `json:"cloud_specific_attributes,omitempty"`
+}
+
+type InstanceParam6 struct {
 	Href                string                 `json:"href,omitempty"`
 	Inputs              map[string]interface{} `json:"inputs,omitempty"`
 	MultiCloudImageHref string                 `json:"multi_cloud_image_href,omitempty"`
@@ -14658,6 +14716,13 @@ type RightScriptParam struct {
 type RightScriptParam2 struct {
 	Description string `json:"description,omitempty"`
 	Name        string `json:"name,omitempty"`
+	Source      string `json:"source,omitempty"`
+}
+
+type RightScriptParam3 struct {
+	Description string `json:"description,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Source      string `json:"source,omitempty"`
 }
 
 type RouteParam struct {
@@ -14764,17 +14829,18 @@ type ServerParam struct {
 }
 
 type ServerParam2 struct {
-	AutomaticInstanceStoreMapping string `json:"automatic_instance_store_mapping,omitempty"`
-	Description                   string `json:"description,omitempty"`
-	Name                          string `json:"name,omitempty"`
-	Optimized                     string `json:"optimized,omitempty"`
-	RootVolumeSize                string `json:"root_volume_size,omitempty"`
+	AutomaticInstanceStoreMapping string          `json:"automatic_instance_store_mapping,omitempty"`
+	Description                   string          `json:"description,omitempty"`
+	Instance                      *InstanceParam5 `json:"instance,omitempty"`
+	Name                          string          `json:"name,omitempty"`
+	Optimized                     string          `json:"optimized,omitempty"`
+	RootVolumeSize                string          `json:"root_volume_size,omitempty"`
 }
 
 type ServerParam3 struct {
 	DeploymentHref string          `json:"deployment_href,omitempty"`
 	Description    string          `json:"description,omitempty"`
-	Instance       *InstanceParam5 `json:"instance,omitempty"`
+	Instance       *InstanceParam6 `json:"instance,omitempty"`
 	Name           string          `json:"name,omitempty"`
 }
 
@@ -14843,6 +14909,7 @@ type VolumeParam struct {
 	DeploymentHref           string `json:"deployment_href,omitempty"`
 	Description              string `json:"description,omitempty"`
 	Encrypted                string `json:"encrypted,omitempty"`
+	ImageHref                string `json:"image_href,omitempty"`
 	Iops                     string `json:"iops,omitempty"`
 	Name                     string `json:"name,omitempty"`
 	ParentVolumeSnapshotHref string `json:"parent_volume_snapshot_href,omitempty"`
@@ -14852,14 +14919,14 @@ type VolumeParam struct {
 }
 
 type VolumeParam2 struct {
-	Name string `json:"name,omitempty"`
+	AllowedInstanceHrefs *AllowedInstanceHrefs `json:"allowed_instance_hrefs,omitempty"`
+	Name                 string                `json:"name,omitempty"`
 }
 
 type VolumeSnapshotCopy struct {
-	CloudHref          string `json:"cloud_href,omitempty"`
-	Description        string `json:"description,omitempty"`
-	Name               string `json:"name,omitempty"`
-	VolumeSnapshotHref string `json:"volume_snapshot_href,omitempty"`
+	CloudHref   string `json:"cloud_href,omitempty"`
+	Description string `json:"description,omitempty"`
+	Name        string `json:"name,omitempty"`
 }
 
 type VolumeSnapshotParam struct {

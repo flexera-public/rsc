@@ -80,6 +80,8 @@
 	"memory": "string",
 	"message": "string",
 	"metadata": "string",
+    "monitoring_collector_http": "string",
+    "monitoring_collector_udp": "string",
 	"monitoring_id": "string",
 	"monitoring_server": "string",
 	"name": "string",

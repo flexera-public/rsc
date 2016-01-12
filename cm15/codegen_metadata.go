@@ -45,7 +45,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	},
 	"AccountGroup": &metadata.Resource{
 		Name:        "AccountGroup",
-		Description: `An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.`,
+		Description: ` An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.`,
 		Identifier:  "application/vnd.rightscale.account_group",
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -447,6 +447,12 @@ Required parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
+						Pattern:    "/api/clouds/%s/instances/%s/alert_specs",
+						Variables:  []string{"cloud_id", "instance_id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/alert_specs$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
 						Pattern:    "/api/servers/%s/alert_specs",
 						Variables:  []string{"server_id"},
 						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/alert_specs$`),
@@ -580,6 +586,12 @@ Required parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
+						Pattern:    "/api/clouds/%s/instances/%s/alert_specs/%s",
+						Variables:  []string{"cloud_id", "instance_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/alert_specs/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/servers/%s/alert_specs/%s",
 						Variables:  []string{"server_id", "id"},
 						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/alert_specs/([^/]+)$`),
@@ -615,6 +627,12 @@ Optional parameters:
 	view
 	with_inherited: Flag indicating whether or not to include AlertSpecs from the ServerTemplate in the index.`,
 				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/clouds/%s/instances/%s/alert_specs",
+						Variables:  []string{"cloud_id", "instance_id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/alert_specs$`),
+					},
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
 						Pattern:    "/api/servers/%s/alert_specs",
@@ -708,6 +726,12 @@ Optional parameters:
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
+						Pattern:    "/api/clouds/%s/instances/%s/alert_specs/%s",
+						Variables:  []string{"cloud_id", "instance_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/alert_specs/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
 						Pattern:    "/api/servers/%s/alert_specs/%s",
 						Variables:  []string{"server_id", "id"},
 						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/alert_specs/([^/]+)$`),
@@ -761,6 +785,12 @@ Optional parameters:
 Required parameters:
 	alert_spec`,
 				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/api/clouds/%s/instances/%s/alert_specs/%s",
+						Variables:  []string{"cloud_id", "instance_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/alert_specs/([^/]+)$`),
+					},
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",
 						Pattern:    "/api/servers/%s/alert_specs/%s",
@@ -1467,8 +1497,8 @@ Optional parameters:
 
 			&metadata.Action{
 				Name: "create",
-				Description: `Takes in an array of volumeattachmenthrefs and takes a snapshot of each.
-The volumeattachmenthrefs must belong to the same instance.
+				Description: `Takes in an array of volume_attachment_hrefs and takes a snapshot of each.
+The volume_attachment_hrefs must belong to the same instance.
 Required parameters:
 	backup`,
 				PathPatterns: []*metadata.PathPattern{
@@ -1948,7 +1978,7 @@ Optional parameters:
 
 			&metadata.Action{
 				Name: "show",
-				Description: `Show information about a single cloud. 
+				Description: `Show information about a single cloud.
 Optional parameters:
 	view`,
 				PathPatterns: []*metadata.PathPattern{
@@ -2010,7 +2040,7 @@ Optional parameters:
 				Name: "create",
 				Description: `Create a CloudAccount by passing in the respective credentials for each cloud.
 For more information on the specific parameters for each cloud, refer to the following:
-http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create_Cloud_Accounts
+http://support.rightscale.com/12-Guides/RightScale_API_1.5/Examples/Cloud_Accounts/Create
 Required parameters:
 	cloud_account`,
 				PathPatterns: []*metadata.PathPattern{
@@ -2757,7 +2787,7 @@ Optional parameters:
 
 			&metadata.Action{
 				Name: "show",
-				Description: `Show information about a single Credential. NOTE: Credential values may be updated through the API, but values cannot be retrieved via the API.
+				Description: `Show information about a single Credential. Credential values may be retrieved using the "sensitive" view by users with "admin" role only.
 Optional parameters:
 	view`,
 				PathPatterns: []*metadata.PathPattern{
@@ -2849,8 +2879,8 @@ Required parameters:
 	},
 	"Datacenter": &metadata.Resource{
 		Name: "Datacenter",
-		Description: `Datacenters represent isolated facilities within a cloud. The level and type of isolation is cloud dependent. 
-While Datacenters in large public clouds might correspond to different physical buildings, with different power, 
+		Description: `Datacenters represent isolated facilities within a cloud. The level and type of isolation is cloud dependent.
+While Datacenters in large public clouds might correspond to different physical buildings, with different power,
 internet links...etc., Datacenters within the context of a private cloud might simply correspond to having different network providers.
 Spreading servers across distinct Datacenters helps minimize outages.`,
 		Identifier: "application/vnd.rightscale.datacenter",
@@ -3450,7 +3480,7 @@ Optional parameters:
 	},
 	"Image": &metadata.Resource{
 		Name: "Image",
-		Description: `Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents 
+		Description: `Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents
 for a new Instance to have, and therefore it represents the basic starting point for creating a new one.`,
 		Identifier: "application/vnd.rightscale.image",
 		Actions: []*metadata.Action{
@@ -3779,14 +3809,6 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
-						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
 						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
 						Type:        "string",
@@ -3795,8 +3817,66 @@ Optional parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
+						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][local_ssd_interface]",
+						Description: `The type of SSD(s) to be created. Supported by GCE cloud only`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][local_ssd_count]",
+						Description: `Additional local SSDs. Supported by GCE cloud only`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3812,8 +3892,25 @@ Optional parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][keep_alive_id]",
+						Description: `The id of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][pricing_type]",
+						Description: `Specify whether or not you want to utilize 'fixed' (on-demand) or 'spot' pricing. Defaults to 'fixed' and only applies to clouds which support spot instances. Can only be set on when creating a new Instance, Server, or ServerArray, or when updating a Server or ServerArray's next_instance.WARNING:  By using spot pricing, you acknowledge that your instance/server/array may not be able to be launched (and arrays may be unable to grow) as newly launched instances might be stuck in bidding, and/or existing instances may be terminated at any time, due to the cloud's spot pricing changes and availability.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"fixed", "spot"},
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][memory_mb]",
-						Description: `The memory size in MB. Only available on UCA clouds.`,
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3821,7 +3918,7 @@ Optional parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][num_cores]",
-						Description: `The number of CPU cores. Only available on UCA clouds.`,
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3829,7 +3926,7 @@ Optional parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][disk_gb]",
-						Description: `The local disk space. Only available on UCA clouds.`,
+						Description: `The size of root disk. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3838,6 +3935,15 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "instance[associate_public_ip_address]",
 						Description: `Specify whether or not you want a public IP assigned when this Instance is launched. Only applies to Network-enabled Instances. If this is not specified, it will default to true.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[ip_forwarding_enabled]",
+						Description: `Allows this Instance to send and receive network traffic when the source and destination IP addresses do not match the IP address of this Instance.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3861,19 +3967,19 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[instance_type_href]",
-						Description: `The href of the instance type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[ramdisk_image_href]",
 						Description: `The href of the ramdisk image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[instance_type_href]",
+						Description: `The href of the instance type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -3885,16 +3991,16 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
+						Name:        "instance[deployment_href]",
+						Description: `The href of the deployment to which the Instance will be added.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[deployment_href]",
-						Description: `The href of the deployment to which the Instance will be added.`,
+						Name:        "instance[datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3976,9 +4082,9 @@ Optional parameters:
 				Description: `Lists instances of a given cloud, server array.
 Using the available filters, it is possible to craft powerful queries about which instances to retrieve.
 For example, one can easily list:
-instances that have names that contain "app"
-all instances of a given deployment
-instances belonging to a given server array (i.e., have the same parent_url)
+* instances that have names that contain "app"
+* all instances of a given deployment
+* instances belonging to a given server array (i.e., have the same parent_url)
 To see the instances of a server array including the next_instance, use the URL "/api/clouds/:cloud_id/instances" with the filter "parent_href==/api/server_arrays/XX". To list only the running
 instances of a server array, use the URL "/api/server_arrays/:server_array_id/current_instances"
 The 'full_inputs_2_0' view is for retrieving inputs in 2.0 serialization (for more
@@ -4687,6 +4793,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
+						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
 						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
 						Type:        "string",
@@ -4695,12 +4809,30 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
-						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Name:        "instance[cloud_specific_attributes][local_ssd_interface]",
+						Description: `The type of SSD(s) to be created. Supported by GCE cloud only`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_size]",
@@ -4711,16 +4843,57 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][memory_mb]",
-						Description: `The memory size in MB. Only available on UCA clouds.`,
+						Name:        "instance[cloud_specific_attributes][local_ssd_count]",
+						Description: `Additional local SSDs. Supported by GCE cloud only`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][keep_alive_id]",
+						Description: `The id of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][pricing_type]",
+						Description: `Specify whether or not you want to utilize 'fixed' (on-demand) or 'spot' pricing. Defaults to 'fixed' and only applies to clouds which support spot instances. Can only be set on when creating a new Instance, Server, or ServerArray, or when updating a Server or ServerArray's next_instance.WARNING:  By using spot pricing, you acknowledge that your instance/server/array may not be able to be launched (and arrays may be unable to grow) as newly launched instances might be stuck in bidding, and/or existing instances may be terminated at any time, due to the cloud's spot pricing changes and availability.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"fixed", "spot"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][num_cores]",
-						Description: `The number of CPU cores. Only available on UCA clouds.`,
+						Name:        "instance[cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4728,7 +4901,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][disk_gb]",
-						Description: `The local disk space. Only available on UCA clouds.`,
+						Description: `The size of root disk. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4793,6 +4966,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[private_ip_address]",
+						Description: `The private ip address for the instance`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[kernel_image_href]",
 						Description: `The href of the updated kernel image for the Instance.`,
 						Type:        "string",
@@ -4801,16 +4982,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[datacenter_href]",
-						Description: `The href of the updated Datacenter / Zone for the Instance.`,
+						Name:        "instance[deployment_href]",
+						Description: `The href of the updated Deployment for the Instance. This is only supported for Instances that are not associated with a Server or ServerArray.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[deployment_href]",
-						Description: `The href of the updated Deployment for the Instance. This is only supported for Instances that are not associated with a Server or ServerArray.`,
+						Name:        "instance[datacenter_href]",
+						Description: `The href of the updated Datacenter / Zone for the Instance.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4870,6 +5051,7 @@ Required parameters:
 			},
 		},
 		Links: map[string]string{
+			"alert_specs":        "Associated alert specs",
 			"alerts":             "Associated alerts",
 			"cloud":              "Associated Cloud",
 			"datacenter":         "Associated datacenter",
@@ -4892,7 +5074,7 @@ Required parameters:
 	},
 	"InstanceCustomLodgement": &metadata.Resource{
 		Name:        "InstanceCustomLodgement",
-		Description: `An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#setcustomlodgement interface.`,
+		Description: `An InstanceCustomLodgement represents a way to create custom reports about a specific instance with a user defined quantity.  Replaces the legacy Instances#set_custom_lodgement interface.`,
 		Identifier:  "application/vnd.rightscale.instance_custom_lodgement",
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -7110,11 +7292,11 @@ still required when interacting with the OAuth endpoint.
 OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
 browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
 endpoint supports the following OAuth 2.0 operations:
-refresh_token - for end-user login using a previously-negotiated OAuth grant
-client_credentials - for instance login using API credentials transmitted via user-data
+ * refresh_token - for end-user login using a previously-negotiated OAuth grant
+ * client_credentials - for instance login using API credentials transmitted via user-data
 RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
-clients MUST transmit an X-Api-Version header with every OAuth request
-clients MAY transmit an account_id parameter as part of their POST form data
+ * clients MUST transmit an X-Api-Version header with every OAuth request
+ * clients MAY transmit an account_id parameter as part of their POST form data
 If you choose to post an account_id, then the API may respond with a 301 redirect if your account
 is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
 elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
@@ -7134,10 +7316,10 @@ may respond with a 301 Moved Permanently if you include an account_id parameter 
 your account is hosted in another RightScale cluster.
 The request parameters and response format are all as per the OAuth 2.0
 Internet Draft standard v23. In brief:
-Successful responses include an access token, an expires-in timestamp, and a token type
-The token type is always "bearer"
-To use a bearer token, include header "Authorization: Bearer " with your API requests
-The client must refresh the access token before it expires
+ - Successful responses include an access token, an expires-in timestamp, and a token type
+ - The token type is always "bearer"
+ - To use a bearer token, include header "Authorization: Bearer " with your API requests
+ - The client must refresh the access token before it expires
 # Example Request using Curl (with prettified response):
 curl -i -H X-API-Version:1.5 -x POST https://my.rightscale.com/api/oauth2 -d "grant_type=refresh_token" -d "refresh_token=abcd1234deadbeef"
 {
@@ -7293,13 +7475,13 @@ Optional parameters:
 				Description: `Create a permission, thereby granting some user a particular role
 with respect to the current account.
 The 'observer' role has a special status; it must be granted before
-a user is eligible for any other permission in a given account. 
-When provisioning users, always create the observer permission FIRST; 
+a user is eligible for any other permission in a given account.
+When provisioning users, always create the observer permission FIRST;
 creating any other permission before it will result in an error.
 For more information about the roles available and the privileges
 they confer, please refer to the following page of the RightScale
 support portal:
-  http://support.rightscale.com/15-References/Lists/ListofUser_Roles
+  http://support.rightscale.com/15-References/Lists/List_of_User_Roles
 Required parameters:
 	permission`,
 				PathPatterns: []*metadata.PathPattern{
@@ -8828,6 +9010,57 @@ Required parameters:
 			},
 
 			&metadata.Action{
+				Name: "create",
+				Description: `No description provided for create.
+Required parameters:
+	right_script`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/right_scripts",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/right_scripts$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "right_script[description]",
+						Description: `The description of the RightScript to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script[source]",
+						Description: `The script source to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script[name]",
+						Description: `The name of the RightScript to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "right_script",
+						Description: ``,
+						Type:        "*RightScriptParam2",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name: "index",
 				Description: `Lists RightScripts.
 Optional parameters:
@@ -8955,6 +9188,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "right_script[source]",
+						Description: `The script source to be updated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "right_script[name]",
 						Description: `The new name for the RightScript`,
 						Type:        "string",
@@ -8967,7 +9208,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "right_script",
 						Description: ``,
-						Type:        "*RightScriptParam2",
+						Type:        "*RightScriptParam3",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -8998,7 +9239,7 @@ Required parameters:
 	"Route": &metadata.Resource{
 		Name: "Route",
 		Description: `A Route defines how networking traffic should be routed from one
-destination to another. See nexthoptype for available endpoint targets.`,
+destination to another. See next_hop_type for available endpoint targets.`,
 		Identifier: "application/vnd.rightscale.route",
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -9476,7 +9717,7 @@ Required parameters:
 	"RunnableBinding": &metadata.Resource{
 		Name: "RunnableBinding",
 		Description: `A RunnableBinding represents an item in a runlist of a ServerTemplate. These items could be
-RightScript or Chef recipes, and could be associated with any one of the three runlists of a 
+RightScript or Chef recipes, and could be associated with any one of the three runlists of a
 ServerTemplate (boot, operational, decommission).`,
 		Identifier: "application/vnd.rightscale.runnable_binding",
 		Actions: []*metadata.Action{
@@ -9709,320 +9950,6 @@ Optional parameters:
 			"server_template": "Href of associated ServerTemplate",
 		},
 	},
-	"Scheduler": &metadata.Resource{
-		Name:        "Scheduler",
-		Description: `Provide RightLink with the ability to schedule script executions on instances`,
-		Identifier:  "",
-		Actions: []*metadata.Action{
-			&metadata.Action{
-				Name: "schedule_recipe",
-				Description: `Schedules a chef recipe for execution on the current instance
-Optional parameters:
-	arguments: Serialized recipe execution arguments values keyed by name
-	audit_id: Optional, reuse audit if specified
-	audit_period: RunlistPolicy audit period
-	formal_values: Formal input parameter values
-	policy: RunlistPolicy policy name
-	recipe: Chef recipe name, overridden by recipe_id
-	recipe_id: ServerTemplateChefRecipe ID
-	thread: RunlistPolicy thread name`,
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
-						Pattern:    "/api/right_net/scheduler/schedule_recipe",
-						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_recipe$`),
-					},
-				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe_id",
-						Description: `ServerTemplateChefRecipe ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized recipe execution arguments values keyed by name`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe",
-						Description: `Chef recipe name, overridden by recipe_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-				APIParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized recipe execution arguments values keyed by name`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe",
-						Description: `Chef recipe name, overridden by recipe_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe_id",
-						Description: `ServerTemplateChefRecipe ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-			},
-
-			&metadata.Action{
-				Name: "schedule_right_script",
-				Description: `Schedules a RightScript for execution on the current instance
-Optional parameters:
-	arguments: Serialized script execution arguments values keyed by name
-	audit_id: Optional, reuse audit if specified
-	audit_period: RunlistPolicy audit period
-	formal_values: Formal input parameter values
-	policy: RunlistPolicy policy name
-	right_script: RightScript name, overridden by right_script_id
-	right_script_id: RightScript ID
-	thread: RunlistPolicy thread name`,
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
-						Pattern:    "/api/right_net/scheduler/schedule_right_script",
-						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_right_script$`),
-					},
-				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "right_script_id",
-						Description: `RightScript ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "right_script",
-						Description: `RightScript name, overridden by right_script_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized script execution arguments values keyed by name`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-				APIParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized script execution arguments values keyed by name`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "right_script",
-						Description: `RightScript name, overridden by right_script_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "right_script_id",
-						Description: `RightScript ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-			},
-		},
-	},
 	"SecurityGroup": &metadata.Resource{
 		Name: "SecurityGroup",
 		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
@@ -10204,10 +10131,10 @@ Optional parameters:
 				Name: "create",
 				Description: `Create a security group rule for a security group.
 The following flavors are supported:
-group-based TCP/UDP
-group-based ICMP
-CIDR-based TCP/UDP
-CIDR-based ICMP
+1. group-based TCP/UDP
+2. group-based ICMP
+3. CIDR-based TCP/UDP
+4. CIDR-based ICMP
 Required parameters:
 	security_group_rule`,
 				PathPatterns: []*metadata.PathPattern{
@@ -10547,6 +10474,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][iam_instance_profile]",
+						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][root_volume_type_uid]",
 						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
 						Type:        "string",
@@ -10555,12 +10490,30 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][iam_instance_profile]",
-						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Name:        "server[instance][cloud_specific_attributes][local_ssd_interface]",
+						Description: `The type of SSD(s) to be created. Supported by GCE cloud only`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][root_volume_size]",
@@ -10571,16 +10524,57 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][num_cores]",
-						Description: `The number of CPU cores. Only available on UCA clouds.`,
+						Name:        "server[instance][cloud_specific_attributes][local_ssd_count]",
+						Description: `Additional local SSDs. Supported by GCE cloud only`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][keep_alive_id]",
+						Description: `The id of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][pricing_type]",
+						Description: `Specify whether or not you want to utilize 'fixed' (on-demand) or 'spot' pricing. Defaults to 'fixed' and only applies to clouds which support spot instances. Can only be set on when creating a new Instance, Server, or ServerArray, or when updating a Server or ServerArray's next_instance.WARNING:  By using spot pricing, you acknowledge that your instance/server/array may not be able to be launched (and arrays may be unable to grow) as newly launched instances might be stuck in bidding, and/or existing instances may be terminated at any time, due to the cloud's spot pricing changes and availability.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"fixed", "spot"},
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][memory_mb]",
-						Description: `The memory size in MB. Only available on UCA clouds.`,
+						Name:        "server[instance][cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -10588,7 +10582,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][disk_gb]",
-						Description: `The local disk space. Only available on UCA clouds.`,
+						Description: `The size of root disk. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -10621,11 +10615,11 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][security_group_hrefs][]",
-						Description: `The hrefs of the security groups.`,
-						Type:        "[]string",
+						Name:        "server[instance][server_template_href]",
+						Description: `The href of the Server Template.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   false,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -10637,17 +10631,9 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][server_template_href]",
-						Description: `The href of the Server Template.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "server[instance][instance_type_href]",
-						Description: `The href of the Instance Type.`,
-						Type:        "string",
+						Name:        "server[instance][security_group_hrefs][]",
+						Description: `The hrefs of the security groups.`,
+						Type:        "[]string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -10655,6 +10641,22 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[instance][ramdisk_image_href]",
 						Description: `The href of the Ramdisk Image.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][private_ip_address]",
+						Description: `The private ip address for the instance`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][instance_type_href]",
+						Description: `The href of the Instance Type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -10808,12 +10810,82 @@ Required parameters:
 			},
 
 			&metadata.Action{
+				Name: "disable_runnable_bindings",
+				Description: `Disables a list of runnable bindings associated with a given server.
+Optional parameters:
+	runnable_binding_hrefs: List of Runnable Bindings.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/servers/%s/disable_runnable_bindings",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/disable_runnable_bindings$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs[]",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name: "enable_runnable_bindings",
+				Description: `Enables a list of runnable bindings associated with a given server.
+Optional parameters:
+	runnable_binding_hrefs: List of Runnable Bindings.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/servers/%s/enable_runnable_bindings",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/enable_runnable_bindings$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs[]",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name: "index",
 				Description: `Lists servers.
 By using the available filters, it is possible to retrieve servers that have common characteristics.
 For example, one can list:
-servers that have names that contain "app_server"
-all servers of a given deployment
+* servers that have names that contain "app_server"
+* all servers of a given deployment
 For more filters, please see the 'index' action on 'Instances' resource as most of the attributes belong to
 a 'current_instance' than to a server.
 Optional parameters:
@@ -11063,6 +11135,24 @@ Required parameters:
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
 					&metadata.ActionParam{
 						Name:        "server[automatic_instance_store_mapping]",
 						Description: `A flag indicating whether instance store mapping should be enabled. Not supported in all Clouds.`,
@@ -11336,14 +11426,6 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][root_volume_type_uid]",
-						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][iam_instance_profile]",
 						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
 						Type:        "string",
@@ -11352,12 +11434,111 @@ Required parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][root_volume_type_uid]",
+						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_interface]",
+						Description: `The type of SSD(s) to be created. Supported by GCE cloud only`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_count]",
+						Description: `Additional local SSDs. Supported by GCE cloud only`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][keep_alive_id]",
+						Description: `The id of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][pricing_type]",
+						Description: `Specify whether or not you want to utilize 'fixed' (on-demand) or 'spot' pricing. Defaults to 'fixed' and only applies to clouds which support spot instances. Can only be set on when creating a new Instance, Server, or ServerArray, or when updating a Server or ServerArray's next_instance.WARNING:  By using spot pricing, you acknowledge that your instance/server/array may not be able to be launched (and arrays may be unable to grow) as newly launched instances might be stuck in bidding, and/or existing instances may be terminated at any time, due to the cloud's spot pricing changes and availability.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"fixed", "spot"},
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][disk_gb]",
+						Description: `The size of root disk. Supported by UCA cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][pacing][resize_calm_time]",
@@ -11409,8 +11590,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][bounds][max_count]",
-						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
+						Name:        "server_array[datacenter_policy][][datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11425,8 +11606,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[datacenter_policy][][datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
+						Name:        "server_array[elasticity_params][bounds][max_count]",
+						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11475,14 +11656,6 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][server_template_href]",
-						Description: `The ServerTemplate that will be used to create the worker instances in the server array.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][placement_group_href]",
 						Description: `The href of the Placement Group.`,
 						Type:        "string",
@@ -11491,16 +11664,24 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][ramdisk_image_href]",
-						Description: `The href of the Ramdisk Image.`,
+						Name:        "server_array[instance][server_template_href]",
+						Description: `The ServerTemplate that will be used to create the worker instances in the server array.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][instance_type_href]",
+						Description: `The href of the Instance Type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][instance_type_href]",
-						Description: `The href of the Instance Type.`,
+						Name:        "server_array[instance][ramdisk_image_href]",
+						Description: `The href of the Ramdisk Image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11579,19 +11760,19 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_href]",
-						Description: `The href of the Cloud that the array will be associated with.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][image_href]",
 						Description: `The href of the Image to be used.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_href]",
+						Description: `The href of the Cloud that the array will be associated with.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -11744,12 +11925,82 @@ Optional parameters:
 			},
 
 			&metadata.Action{
+				Name: "disable_runnable_bindings",
+				Description: `Disables a list of runnable bindings associated with a given server.
+Optional parameters:
+	runnable_binding_hrefs: List of Runnable Bindings.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/server_arrays/%s/disable_runnable_bindings",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/disable_runnable_bindings$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs[]",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name: "enable_runnable_bindings",
+				Description: `Enables a list of runnable bindings associated with a given server.
+Optional parameters:
+	runnable_binding_hrefs: List of Runnable Bindings.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/server_arrays/%s/enable_runnable_bindings",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/enable_runnable_bindings$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs[]",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "runnable_binding_hrefs",
+						Description: `List of Runnable Bindings.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name: "index",
 				Description: `Lists server arrays.
 By using the available filters, it is possible to retrieve server arrays that have common characteristics.
 For example, one can list:
-arrays that have names that contain "my_server_array"
-all arrays of a given deployment
+* arrays that have names that contain "my_server_array"
+* all arrays of a given deployment
 Optional parameters:
 	filter
 	view`,
@@ -13107,11 +13358,11 @@ Optional parameters:
 	"Session": &metadata.Resource{
 		Name: "Session",
 		Description: `The sessions resource is in charge of creating API sessions that are bound to a given account. The sequence for login into the API is the following:
-Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
-If the targeted host is not appropriate for the specific account being accessed it will return a 302 http code with a URL with which the client must retry the same POST request.
-If the targeted host is the right one and the login is successful, it will return a 204 http code, along with two cookies that will need to be saved and passed in any subsequent API request.
-If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
-If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
+* Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
+* If the targeted host is not appropriate for the specific account being accessed it will return a 302 http code with a URL with which the client must retry the same POST request.
+* If the targeted host is the right one and the login is successful, it will return a 204 http code, along with two cookies that will need to be saved and passed in any subsequent API request.
+* If there is an authentication or authorization problem with the POST request an error (typically 401 or 422 ) may be returned at any point in the above sequence.
+* If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
 Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".`,
 		Identifier: "application/vnd.rightscale.session",
 		Actions: []*metadata.Action{
@@ -13199,7 +13450,9 @@ Optional parameters:
 				Description: `Returns a list of root resources so an authenticated session can use them as a starting point or a way to know what
 features are available within its privileges.
 Example Request using Curl:
-curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions`,
+curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
+Optional parameters:
+	view: Whoami view provides links to the logged-in principal and the account being accessed`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -13208,8 +13461,28 @@ curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/s
 						Regexp:     regexp.MustCompile(`^/api/sessions$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `Whoami view provides links to the logged-in principal and the account being accessed`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "whoami"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `Whoami view provides links to the logged-in principal and the account being accessed`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "whoami"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -13231,6 +13504,7 @@ curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/s
 			},
 		},
 		Links: map[string]string{
+			"account":                            "The account currently being accessed",
 			"account_groups":                     "Available AccountGroups",
 			"accounts":                           "Available Accounts",
 			"alert_specs":                        "Available AlertSpecs",
@@ -13245,6 +13519,7 @@ curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/s
 			"credentials":                        "Available Credentials",
 			"deployments":                        "Available Deployments",
 			"identity_providers":                 "Available IdentityProviders",
+			"instance":                           "The currently logged-in instance",
 			"multi_cloud_images":                 "Available MultiCloudImages",
 			"network_gateways":                   "Available NetworkGateways",
 			"network_option_group_attachments":   "Available NetworkOptionGroupAttachments",
@@ -13266,6 +13541,7 @@ curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/s
 			"server_templates":                   "Available ServerTemplates",
 			"servers":                            "Available Servers",
 			"tags":                               "Search for Tags",
+			"user":                               "The currently logged-in user",
 			"users":                              "Available Users",
 		},
 	},
@@ -13347,7 +13623,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"resource_uid"},
+						ValidValues: []string{"name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -13367,7 +13643,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"resource_uid"},
+						ValidValues: []string{"name", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -13984,10 +14260,9 @@ Optional parameters:
 		},
 	},
 	"User": &metadata.Resource{
-		Name: "User",
-		Description: `A User represents an individual RightScale user. Users must be given access to RightScale accounts in order to 
-access RightScale resources.`,
-		Identifier: "application/vnd.rightscale.user",
+		Name:        "User",
+		Description: ``,
+		Identifier:  "application/vnd.rightscale.user",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -14157,24 +14432,23 @@ Optional parameters:
 
 			&metadata.Action{
 				Name: "update",
-				Description: `Update a user's contact information, change her password, or update SSO her settings. In order
-to update a user record, one of the following criteria must be met:
-You're logged in AS the user being modified and you provide a valid current_password.
-You're an admin and the user is linked to your enterprise SSO provider
-You're an admin and the user's email matches the email_domain of your enterprise SSO provider
-In other words: you can update yourself if you know your own password; you can update
-yourself or others if they're linked to your SSO providers, and you can update any user
-if her email address is known to belong to your organization.
+				Description: `Update a user's contact information, change their password, or update their SSO settings.
+In order to update a user record, one of the following criteria must be met:
+1. You've authenticated and are the user being modified, and you provide a valid current_password.
+2. You're an admin and the user is linked to your enterprise SSO provider.
+3. You're an admin and the user's email matches the email_domain of your enterprise SSO provider.
+In other words: you can update yourself if you know your own password, you can update
+yourself or others if you're an admin and they're linked to your SSO provider, and you can update any user
+if you're an admin and their email address is known to belong to your organization.
 For information about enabling canonical email domain ownership for your enterprise, please
 talk to your RightScale account manager or contact our support team.
 To update a user's contact information, simply pass the desired values for email, first_name,
 and so forth.
-To update a user's password, provide a valid current_password and specify the desired
-new_password.
-To update a user's SSO information, you may provide a just a principal_uid (to maintain the
+To update a user's password, provide the desired new_password.
+To set or update a user's SSO information, you may provide a just a principal_uid (to maintain the
 user's existing identity provider) or you may provide an identity_provider_href and a
 principal_uid (to switch identity providers as well as specify a new user identity).
-In the context of SAML. principal_uid is equivalent to the SAML NameID or Subject claim;
+In the context of SAML, principal_uid is equivalent to the SAML NameID or Subject claim.
 RightScale cannot predict or influence the NameID value that your SAML IdP will send to us for
 Required parameters:
 	user`,
@@ -14343,7 +14617,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "volume[placement_group_href]",
-						Description: `The href of the Placement Group.`,
+						Description: `The href of the Placement Group. This option can not be used in combination with parent_volume_snapshot_href.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14358,14 +14632,6 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "volume[deployment_href]",
-						Description: `The href of the Deployment that owns this Volume.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "volume[datacenter_href]",
 						Description: `The href of the Datacenter / Zone that the Volume will be in. This parameter is required for non-OpenStack clouds.`,
 						Type:        "string",
@@ -14374,8 +14640,24 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "volume[deployment_href]",
+						Description: `The href of the Deployment that owns this Volume.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "volume[description]",
 						Description: `The description of the Volume to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "volume[image_href]",
+						Description: `The href of the Image that should be used as a source`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14550,11 +14832,27 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "volume[allowed_instance_hrefs][remove][]",
+						Description: `Hrefs for instances to remove from allowed list.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "volume[allowed_instance_hrefs][add][]",
+						Description: `Hrefs for instances to add into allowed list.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "volume[name]",
 						Description: `The new name for the Volume.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 				},
@@ -14575,7 +14873,9 @@ Required parameters:
 			"current_volume_attachment":    "Associated volume attachment. Describes where the volume is attached to and the attachment parameters.",
 			"datacenter":                   "Associated datacenter/Zone",
 			"deployment":                   "Containing Deployment",
+			"image":                        "Associated image",
 			"parent_volume_snapshot":       "The volume snapshot from which the volume was created, if any",
+			"placement_group":              "Associated placement group",
 			"recurring_volume_attachments": "Associated recurring volume attachments",
 			"self":             "Href of itself",
 			"volume_snapshots": "Associated volume snapshots",
@@ -14843,11 +15143,67 @@ Snapshots consist of a series of data blocks that are incrementally saved.`,
 		Identifier: "application/vnd.rightscale.volume_snapshot",
 		Actions: []*metadata.Action{
 			&metadata.Action{
+				Name: "copy",
+				Description: `No description provided for copy.
+Required parameters:
+	volume_snapshot_copy`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/clouds/%s/volumes/%s/volume_snapshots/%s/copy",
+						Variables:  []string{"cloud_id", "volume_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/volumes/([^/]+)/volume_snapshots/([^/]+)/copy$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/clouds/%s/volume_snapshots/%s/copy",
+						Variables:  []string{"cloud_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/volume_snapshots/([^/]+)/copy$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "volume_snapshot_copy[description]",
+						Description: `The description of the Volume Snapshot to be copied.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "volume_snapshot_copy[cloud_href]",
+						Description: `The href of the destination cloud.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "volume_snapshot_copy[name]",
+						Description: `The name of the Volume Snapshot to be copied.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "volume_snapshot_copy",
+						Description: ``,
+						Type:        "*VolumeSnapshotCopy",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name: "create",
 				Description: `Creates a new volume_snapshot.
-Optional parameters:
-	volume_snapshot
-	volume_snapshot_copy`,
+Required parameters:
+	volume_snapshot`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
@@ -14864,24 +15220,8 @@ Optional parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "volume_snapshot_copy[volume_snapshot_href]",
-						Description: `The href of source volume snapshot.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "volume_snapshot[parent_volume_href]",
 						Description: `The href of the Volume from which the Volume Snapshot will be created.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "volume_snapshot_copy[description]",
-						Description: `The description of the Volume Snapshot to be copied.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14896,24 +15236,8 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "volume_snapshot_copy[cloud_href]",
-						Description: `The href of the destination cloud.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "volume_snapshot[description]",
 						Description: `The description for the Volume Snapshot to be created.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "volume_snapshot_copy[name]",
-						Description: `The name of the Volume Snapshot to be copied.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14924,7 +15248,7 @@ Optional parameters:
 						Description: `The name for the Volume Snapshot to be created.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   false,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 				},
@@ -14934,15 +15258,7 @@ Optional parameters:
 						Description: ``,
 						Type:        "*VolumeSnapshotParam",
 						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "volume_snapshot_copy",
-						Description: ``,
-						Type:        "*VolumeSnapshotCopy",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 				},
