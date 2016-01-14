@@ -41,7 +41,7 @@ func main() {
 	case "json":
 		var b []byte
 		b, err = ioutil.ReadAll(os.Stdin)
-		if err != nil {
+		if err == nil {
 			resp = CreateJSONResponse(b)
 		}
 	default:
