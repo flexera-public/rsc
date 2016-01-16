@@ -42,10 +42,7 @@ func main() {
 		var b []byte
 		b, err = ioutil.ReadAll(os.Stdin)
 		if err == nil {
-			resp = &http.Response{
-				StatusCode: 200,
-				Body:       ioutil.NopCloser(bytes.NewBuffer(b)),
-			}
+			resp = CreateJSONResponse(b)
 		}
 	default:
 		httpclient.ResponseHeaderTimeout = time.Duration(cmdLine.Timeout) * time.Second
@@ -129,4 +126,15 @@ func runCommand(client cmd.CommandClient, cmdLine *cmd.CommandLine) (resp *http.
 		resp, err = client.RunCommand(cmdLine.Command)
 	}
 	return
+}
+
+// Constructs an http response from JSON input from Stdin
+func CreateJSONResponse(b []byte) (resp *http.Response) {
+	// Remove UTF-8 Byte Order Mark if it exists
+	b = bytes.TrimPrefix(b, []byte{0xef, 0xbb, 0xbf})
+	resp = &http.Response{
+		StatusCode: 200,
+		Body:       ioutil.NopCloser(bytes.NewBuffer(b)),
+	}
+	return resp
 }
