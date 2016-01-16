@@ -158,6 +158,12 @@ rsc --host us-3.rightscale.com --key 1234567890 \
 "i-4e9a80b5"
 ```
 
+- Find an instance's self-href:
+```
+$ sudo rsc --rl10 --x1 'object:has(.rel:val("self")).href' cm15 index_instance_session sessions/instance
+/api/clouds/6/instances/DCNNNIF149566
+```
+
 - Find an instance's server href:
 ```
 $ rsc --host us-3.rightscale.com --key 1234567890 \
