@@ -59,7 +59,7 @@ var (
 	// time to wait in seconds for a server's response headers after fully
 	// writing the request (including its body, if any). This
 	// time does not include the time to read the response body.
-	ResponseHeaderTimeout = 20 * time.Second
+	ResponseHeaderTimeout = 300 * time.Second
 
 	// HiddenHeaders lists headers that should not be logged unless DumpFormat is Verbose.
 	HiddenHeaders = map[string]bool{"Authorization": true, "Cookie": true}
