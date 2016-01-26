@@ -196,7 +196,7 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 	if ctx == nil {
 		resp, err = d.Client.Do(req)
 	} else {
-		resp, err = ctxhttp.Do(ctx, d.Client, req)
+		resp, err = ctxhttp.Do(ctx, d.getClientWithoutTimeout(), req)
 	}
 	if urlError, ok := err.(*url.Error); ok {
 		if urlError.Err.Error() == noRedirectError {
@@ -212,6 +212,15 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 	log.Info("completed", "id", id, "status", resp.Status, "time", time.Since(startedAt).String())
 
 	return resp, nil
+}
+
+// getClientWithoutTimeout returns a modified client that doesn't have the ResponseHeaderTimeout field set
+// in its Transport.
+func (d *dumpClient) getClientWithoutTimeout() *http.Client {
+	// Get a copy of the client and modify as multiple concurrent go routines can be using this client.
+	client := *d.Client
+	client.Transport = &http.Transport{Proxy: http.ProxyFromEnvironment}
+	return &client
 }
 
 // Dump request if needed.
