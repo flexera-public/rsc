@@ -921,21 +921,17 @@ func (loc *TSSPluginLocator) Index() (string, error) {
 	return res, err
 }
 
-// POST /rll/tss/exec
+// PUT /rll/tss/exec/:name
 //
 // Add new TSS custom plugin
-func (loc *TSSPluginLocator) Create(executable []string, name string) (string, error) {
+func (loc *TSSPluginLocator) Create(executable []string) (string, error) {
 	var res string
 	if len(executable) == 0 {
 		return res, fmt.Errorf("executable is required")
 	}
-	if name == "" {
-		return res, fmt.Errorf("name is required")
-	}
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
 		"executable[]": executable,
-		"name":         name,
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("TSSPlugin", "create")

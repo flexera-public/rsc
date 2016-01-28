@@ -576,10 +576,10 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Add new TSS custom plugin`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "POST",
-						Pattern:    "/rll/tss/exec",
-						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`/rll/tss/exec`),
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/tss/exec/%s",
+						Variables:  []string{"name"},
+						Regexp:     regexp.MustCompile(`/rll/tss/exec/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -591,28 +591,12 @@ var GenMetadata = map[string]*metadata.Resource{
 						Mandatory:   true,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "name",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "executable[]",
 						Description: ``,
 						Type:        "[]string",
-						Location:    metadata.QueryParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "name",
-						Description: ``,
-						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,

@@ -76,7 +76,7 @@
           }
         },
         "example": {
-          "tss_id": "monotheism",
+          "tss_id": "houseflies",
           "enable_monitoring": "extra"
         }
       },
@@ -135,7 +135,7 @@
           }
         },
         "example": {
-          "tss_id": "monotheism",
+          "tss_id": "houseflies",
           "enable_monitoring": "all"
         }
       },

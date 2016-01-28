@@ -60,7 +60,7 @@
           }
         },
         "example": {
-          "path": "contendress"
+          "path": "existing"
         }
       },
       "responses": {

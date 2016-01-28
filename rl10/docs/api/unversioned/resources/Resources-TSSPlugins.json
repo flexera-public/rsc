@@ -33,8 +33,8 @@
       },
       "urls": [
         {
-          "verb": "POST",
-          "path": "/rll/tss/exec",
+          "verb": "PUT",
+          "path": "/rll/tss/exec/:name",
           "version": "n/a"
         }
       ],
@@ -49,14 +49,6 @@
             }
           },
           "attributes": {
-            "name": {
-              "required": true,
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "executable": {
               "required": true,
               "type": {
@@ -76,11 +68,10 @@
           }
         },
         "example": {
-          "name": "bavaroy",
           "executable": [
-            "microblast",
-            "bronchadenitis",
-            "phytomorphic"
+            "reactive",
+            "canyons",
+            "Tosca"
           ]
         }
       },
@@ -163,9 +154,9 @@
         },
         "example": {
           "executable": [
-            "microblast",
-            "bronchadenitis",
-            "phytomorphic"
+            "reactive",
+            "canyons",
+            "Tosca"
           ]
         }
       },

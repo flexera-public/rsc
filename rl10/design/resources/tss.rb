@@ -43,9 +43,8 @@ module Resources
 
     action :create do
       description 'Add new TSS custom plugin'
-      routing { post '/exec' }
+      routing { put '/exec/:name' }
       params do
-        attribute :name, String, required: true
         attribute :executable, Attributor::Collection.of(String), required: true
       end
       response :ok
