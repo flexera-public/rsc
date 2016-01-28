@@ -52,6 +52,14 @@
             "executable": {
               "required": true,
               "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "arguments": {
+              "required": false,
+              "type": {
                 "name": "Collection",
                 "id": null,
                 "options": {
@@ -68,10 +76,11 @@
           }
         },
         "example": {
-          "executable": [
-            "reactive",
-            "canyons",
-            "Tosca"
+          "executable": "Montenegrin",
+          "arguments": [
+            "escarpments",
+            "capsized",
+            "uncompleted"
           ]
         }
       },
@@ -137,6 +146,14 @@
             "executable": {
               "required": true,
               "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "arguments": {
+              "required": false,
+              "type": {
                 "name": "Collection",
                 "id": null,
                 "options": {
@@ -153,10 +170,11 @@
           }
         },
         "example": {
-          "executable": [
-            "reactive",
-            "canyons",
-            "Tosca"
+          "executable": "Montenegrin",
+          "arguments": [
+            "escarpments",
+            "capsized",
+            "uncompleted"
           ]
         }
       },
@@ -185,13 +203,10 @@
         }
       ],
       "responses": {
-        "ok": {
-          "description": "Standard response for successful HTTP requests.",
-          "status": 200,
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
           "headers": {
-          },
-          "media_type": {
-            "identifier": "text/plain"
           }
         }
       }

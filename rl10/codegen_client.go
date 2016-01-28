@@ -924,14 +924,18 @@ func (loc *TSSPluginLocator) Index() (string, error) {
 // PUT /rll/tss/exec/:name
 //
 // Add new TSS custom plugin
-func (loc *TSSPluginLocator) Create(executable []string) (string, error) {
+func (loc *TSSPluginLocator) Create(executable string, options rsapi.APIParams) (string, error) {
 	var res string
-	if len(executable) == 0 {
+	if executable == "" {
 		return res, fmt.Errorf("executable is required")
 	}
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
-		"executable[]": executable,
+		"executable": executable,
+	}
+	var argumentsOpt = options["arguments"]
+	if argumentsOpt != nil {
+		params["arguments[]"] = argumentsOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("TSSPlugin", "create")
@@ -1004,14 +1008,18 @@ func (loc *TSSPluginLocator) Show() (string, error) {
 // PUT /rll/tss/exec/:name
 //
 // Update TSS custom plugin
-func (loc *TSSPluginLocator) Update(executable []string) (string, error) {
+func (loc *TSSPluginLocator) Update(executable string, options rsapi.APIParams) (string, error) {
 	var res string
-	if len(executable) == 0 {
+	if executable == "" {
 		return res, fmt.Errorf("executable is required")
 	}
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
-		"executable[]": executable,
+		"executable": executable,
+	}
+	var argumentsOpt = options["arguments"]
+	if argumentsOpt != nil {
+		params["arguments[]"] = argumentsOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("TSSPlugin", "update")
@@ -1047,21 +1055,20 @@ func (loc *TSSPluginLocator) Update(executable []string) (string, error) {
 // DELETE /rll/tss/exec/:name
 //
 // Delete TSS plugin info
-func (loc *TSSPluginLocator) Destroy() (string, error) {
-	var res string
+func (loc *TSSPluginLocator) Destroy() error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("TSSPlugin", "destroy")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1070,15 +1077,9 @@ func (loc *TSSPluginLocator) Destroy() (string, error) {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	res = string(respBody)
-	return res, err
+	return nil
 }
 
 /****** Parameter Data Types ******/

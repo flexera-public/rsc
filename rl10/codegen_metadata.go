@@ -584,9 +584,17 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "executable[]",
+						Name:        "arguments[]",
 						Description: ``,
 						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "executable",
+						Description: ``,
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -594,9 +602,17 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "executable[]",
+						Name:        "arguments[]",
 						Description: ``,
 						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "executable",
+						Description: ``,
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -632,9 +648,17 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "executable[]",
+						Name:        "arguments[]",
 						Description: ``,
 						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "executable",
+						Description: ``,
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -642,9 +666,17 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "executable[]",
+						Name:        "arguments[]",
 						Description: ``,
 						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "executable",
+						Description: ``,
+						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   true,
 						NonBlank:    false,

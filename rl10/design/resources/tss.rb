@@ -45,7 +45,8 @@ module Resources
       description 'Add new TSS custom plugin'
       routing { put '/exec/:name' }
       params do
-        attribute :executable, Attributor::Collection.of(String), required: true
+        attribute :executable, String, required: true
+        attribute :arguments, Attributor::Collection.of(String), required: false
       end
       response :ok
     end
@@ -60,7 +61,8 @@ module Resources
       description 'Update TSS custom plugin'
       routing { put '/exec/:name' }
       params do
-        attribute :executable, Attributor::Collection.of(String), required: true
+        attribute :executable, String, required: true
+        attribute :arguments, Attributor::Collection.of(String), required: false
       end
       response :ok
     end
@@ -68,7 +70,7 @@ module Resources
     action :destroy do
       description 'Delete TSS plugin info'
       routing { delete '/exec/:name' }
-      response :ok
+      response :no_content
     end
 
   end
