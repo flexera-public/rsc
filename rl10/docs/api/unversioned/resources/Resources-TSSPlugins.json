@@ -179,13 +179,10 @@
         }
       },
       "responses": {
-        "ok": {
-          "description": "Standard response for successful HTTP requests.",
-          "status": 200,
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
           "headers": {
-          },
-          "media_type": {
-            "identifier": "text/plain"
           }
         }
       }

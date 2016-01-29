@@ -1008,10 +1008,9 @@ func (loc *TSSPluginLocator) Show() (string, error) {
 // PUT /rll/tss/exec/:name
 //
 // Update TSS custom plugin
-func (loc *TSSPluginLocator) Update(executable string, options rsapi.APIParams) (string, error) {
-	var res string
+func (loc *TSSPluginLocator) Update(executable string, options rsapi.APIParams) error {
 	if executable == "" {
-		return res, fmt.Errorf("executable is required")
+		return fmt.Errorf("executable is required")
 	}
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
@@ -1024,15 +1023,15 @@ func (loc *TSSPluginLocator) Update(executable string, options rsapi.APIParams) 
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("TSSPlugin", "update")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1041,15 +1040,9 @@ func (loc *TSSPluginLocator) Update(executable string, options rsapi.APIParams) 
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	res = string(respBody)
-	return res, err
+	return nil
 }
 
 // DELETE /rll/tss/exec/:name

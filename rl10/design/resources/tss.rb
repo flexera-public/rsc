@@ -64,7 +64,7 @@ module Resources
         attribute :executable, String, required: true
         attribute :arguments, Attributor::Collection.of(String), required: false
       end
-      response :ok
+      response :no_content
     end
 
     action :destroy do
