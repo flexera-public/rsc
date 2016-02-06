@@ -1,3 +1,11 @@
+v5.0.2 / 2016-02-05
+-------------------
+* Using TokenAuthenticator now sends the account ID in the X-Account header for all requests
+* Handle Unicode byte order mark in JSON input since Windows PowerShell variables can include them
+* Do not use a timeout when the request is associated with a context
+* Support new custom monitoring plugin actions in RL10 API
+* Increase the default timeout for the rsc command line client to 5 minutes (300 seconds)
+
 v5.0.1 / 2016-01-07
 -------------------
 * Update gomega to fix HasOccurred
