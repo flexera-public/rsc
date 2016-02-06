@@ -1,0 +1,215 @@
+{
+  "description": "TSS Custom Plugins",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Get TSS plugins list",
+      "name": "index",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/exec",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Add new TSS custom plugin",
+      "name": "create",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/exec/:name",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "executable": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "arguments": {
+              "required": false,
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "executable": "Montenegrin",
+          "arguments": [
+            "escarpments",
+            "capsized",
+            "uncompleted"
+          ]
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Get TSS plugin info",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/exec/:name",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Update TSS custom plugin",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/exec/:name",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "executable": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "arguments": {
+              "required": false,
+              "type": {
+                "name": "Collection",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "executable": "Montenegrin",
+          "arguments": [
+            "escarpments",
+            "capsized",
+            "uncompleted"
+          ]
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        }
+      }
+    },
+    {
+      "description": "Delete TSS plugin info",
+      "name": "destroy",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/rll/tss/exec/:name",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources::TSSPlugins",
+  "metadata": {
+  }
+}

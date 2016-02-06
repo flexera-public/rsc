@@ -25,6 +25,56 @@ module Resources
     end
   end
 
+  class TSSPlugins
+    include Praxis::ResourceDefinition
+
+    description 'TSS Custom Plugins'
+    media_type 'text/plain'
+
+    routing do
+      prefix '/rll/tss'
+    end
+
+    action :index do
+      description 'Get TSS plugins list'
+      routing { get '/exec' }
+      response :ok
+    end
+
+    action :create do
+      description 'Add new TSS custom plugin'
+      routing { put '/exec/:name' }
+      params do
+        attribute :executable, String, required: true
+        attribute :arguments, Attributor::Collection.of(String), required: false
+      end
+      response :ok
+    end
+
+    action :show do
+      description 'Get TSS plugin info'
+      routing { get '/exec/:name' }
+      response :ok
+    end
+
+    action :update do
+      description 'Update TSS custom plugin'
+      routing { put '/exec/:name' }
+      params do
+        attribute :executable, String, required: true
+        attribute :arguments, Attributor::Collection.of(String), required: false
+      end
+      response :no_content
+    end
+
+    action :destroy do
+      description 'Delete TSS plugin info'
+      routing { delete '/exec/:name' }
+      response :no_content
+    end
+
+  end
+
   class TSSControl
     include Praxis::ResourceDefinition
 

@@ -819,7 +819,7 @@ func (loc *TSSControlLocator) Update(options rsapi.APIParams) (string, error) {
 
 // PUT /rll/tss/control
 //
-// Control the TSS monitoring (deprecated, use the /rll/tss/control resource)
+// Control the TSS monitoring (deprecated, use the update action)
 func (loc *TSSControlLocator) PutControl(options rsapi.APIParams) (string, error) {
 	var res string
 	var params rsapi.APIParams
@@ -861,6 +861,218 @@ func (loc *TSSControlLocator) PutControl(options rsapi.APIParams) (string, error
 	}
 	res = string(respBody)
 	return res, err
+}
+
+/******  TSSPlugin ******/
+
+// TSS Custom Plugins
+type TSSPlugin struct {
+}
+
+//===== Locator
+
+// TSSPluginLocator exposes the TSSPlugin resource actions.
+type TSSPluginLocator struct {
+	Href
+	api *API
+}
+
+// TSSPluginLocator builds a locator from the given href.
+func (api *API) TSSPluginLocator(href string) *TSSPluginLocator {
+	return &TSSPluginLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /rll/tss/exec
+//
+// Get TSS plugins list
+func (loc *TSSPluginLocator) Index() (string, error) {
+	var res string
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSPlugin", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/tss/exec/:name
+//
+// Add new TSS custom plugin
+func (loc *TSSPluginLocator) Create(executable string, options rsapi.APIParams) (string, error) {
+	var res string
+	if executable == "" {
+		return res, fmt.Errorf("executable is required")
+	}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
+		"executable": executable,
+	}
+	var argumentsOpt = options["arguments"]
+	if argumentsOpt != nil {
+		params["arguments[]"] = argumentsOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSPlugin", "create")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// GET /rll/tss/exec/:name
+//
+// Get TSS plugin info
+func (loc *TSSPluginLocator) Show() (string, error) {
+	var res string
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSPlugin", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/tss/exec/:name
+//
+// Update TSS custom plugin
+func (loc *TSSPluginLocator) Update(executable string, options rsapi.APIParams) error {
+	if executable == "" {
+		return fmt.Errorf("executable is required")
+	}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
+		"executable": executable,
+	}
+	var argumentsOpt = options["arguments"]
+	if argumentsOpt != nil {
+		params["arguments[]"] = argumentsOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSPlugin", "update")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// DELETE /rll/tss/exec/:name
+//
+// Delete TSS plugin info
+func (loc *TSSPluginLocator) Destroy() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("TSSPlugin", "destroy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
 }
 
 /****** Parameter Data Types ******/

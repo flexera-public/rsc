@@ -93,7 +93,7 @@
       }
     },
     {
-      "description": "Control the TSS monitoring (deprecated, use the /rll/tss/control resource)",
+      "description": "Control the TSS monitoring (deprecated, use the update action)",
       "name": "put_control",
       "metadata": {
       },
