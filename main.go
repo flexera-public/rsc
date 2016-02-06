@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/httpclient"
-	"github.com/rightscale/rsc/log"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"gopkg.in/rightscale/rsc.v5/cmd"
+	"gopkg.in/rightscale/rsc.v5/httpclient"
+	"gopkg.in/rightscale/rsc.v5/log"
 
 	// phoney reference to make Godep pull this in for the code generators
 	_ "bitbucket.org/pkg/inflect"
