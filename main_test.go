@@ -52,7 +52,8 @@ var _ = Describe("Main", func() {
 
 	Context("retry option", func() {
 		var app = kingpin.New("rsc", "rsc - tests")
-		var cmdLine = cmd.CommandLine{Retry: 6}
+		var retries = 6
+		var cmdLine = cmd.CommandLine{Retry: retries}
 		It("retries if error on API call occurs", func() {
 			counter := 0
 			doAPIRequest = func(string, *cmd.CommandLine) (*http.Response, error) {
@@ -60,7 +61,7 @@ var _ = Describe("Main", func() {
 				return nil, errors.New("test")
 			}
 			ExecuteCommand(app, &cmdLine)
-			Ω(counter).Should(Equal(6))
+			Ω(counter).Should(Equal(1 + retries))
 		})
 
 		It("doesn't retries more than necessary", func() {
@@ -75,7 +76,7 @@ var _ = Describe("Main", func() {
 			}
 			_, err := ExecuteCommand(app, &cmdLine)
 			Ω(err).ShouldNot(HaveOccurred())
-			Ω(counter).ShouldNot(Equal(6))
+			Ω(counter).Should(BeNumerically("<", 1+retries))
 		})
 	})
 
