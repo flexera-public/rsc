@@ -119,6 +119,7 @@ func ExecuteCommand(app *kingpin.Application, cmdLine *cmd.CommandLine) (resp *h
 			resp = CreateJSONResponse(b)
 		}
 	default:
+		// retry any failed API response as specified by the retry flag
 		for i := 0; i < cmdLine.Retry+1; i++ {
 			resp, err = doAPIRequest(topCommand, cmdLine)
 			if err == nil {

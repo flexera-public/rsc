@@ -64,7 +64,7 @@ var _ = Describe("Main", func() {
 			Ω(counter).Should(Equal(1 + retries))
 		})
 
-		It("doesn't retries more than necessary", func() {
+		It("doesn't retry more than necessary", func() {
 			counter := 0
 			doAPIRequest = func(string, *cmd.CommandLine) (*http.Response, error) {
 				counter += 1
