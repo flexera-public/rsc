@@ -26,7 +26,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	// 2. Parse flags
 	cmdLine := cmd.CommandLine{}
 	app.Flag("config", "path to rsc config file").Short('c').Default(path.Join(os.Getenv("HOME"), ".rsc")).StringVar(&cmdLine.ConfigPath)
-	app.Flag("retry", "number that rsc would retry on non-successful API response").Short('R').Default("0").IntVar(&cmdLine.Retry)
+	app.Flag("retry", "Number of retry attempts for non-successful API responses including authentication requests and response timeouts").Short('R').Default("0").IntVar(&cmdLine.Retry)
 	app.Flag("account", "RightScale account ID").Short('a').IntVar(&cmdLine.Account)
 	app.Flag("host", "RightScale login endpoint (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)
 	app.Flag("email", "Login email, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").StringVar(&cmdLine.Username)
