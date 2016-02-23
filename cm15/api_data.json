@@ -519,6 +519,12 @@
             "description": "The client secret (only needed for confidential clients).",
             "mandatory": false,
             "non_blank": true
+          },
+          "global_session": {
+            "class": "String",
+            "description": "The client's global session cookie",
+            "mandatory": false,
+            "non_blank": true
           }
         },
         "status_code": "200 OK",

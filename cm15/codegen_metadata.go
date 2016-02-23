@@ -7151,6 +7151,7 @@ Optional parameters:
 	account_id: The client's account ID (only needed for instance agent clients).
 	client_id: The client ID (only needed for confidential clients).
 	client_secret: The client secret (only needed for confidential clients).
+	global_session: The client's global session cookie
 	r_s_version: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
 	refresh_token: The refresh token obtained from OAuth grant.
 	right_link_version: The RightLink gem version the client conforms to (only needed for instance agent clients).`,
@@ -7172,8 +7173,8 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "client_secret",
-						Description: `The client secret (only needed for confidential clients).`,
+						Name:        "global_session",
+						Description: `The client's global session cookie`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -7188,16 +7189,16 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "r_s_version",
-						Description: `The RightAgent protocol version the client conforms to (only needed for instance agent clients).`,
-						Type:        "int",
+						Name:        "client_secret",
+						Description: `The client secret (only needed for confidential clients).`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "account_id",
-						Description: `The client's account ID (only needed for instance agent clients).`,
+						Name:        "r_s_version",
+						Description: `The RightAgent protocol version the client conforms to (only needed for instance agent clients).`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -7211,6 +7212,14 @@ Optional parameters:
 						Mandatory:   true,
 						NonBlank:    true,
 						ValidValues: []string{"refresh_token"},
+					},
+					&metadata.ActionParam{
+						Name:        "account_id",
+						Description: `The client's account ID (only needed for instance agent clients).`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "client_id",
@@ -7241,6 +7250,14 @@ Optional parameters:
 					&metadata.ActionParam{
 						Name:        "client_secret",
 						Description: `The client secret (only needed for confidential clients).`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "global_session",
+						Description: `The client's global session cookie`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,

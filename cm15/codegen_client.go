@@ -7096,6 +7096,7 @@ func (api *API) Oauth2Locator(href string) *Oauth2Locator {
 // account_id: The client's account ID (only needed for instance agent clients).
 // client_id: The client ID (only needed for confidential clients).
 // client_secret: The client secret (only needed for confidential clients).
+// global_session: The client's global session cookie
 // r_s_version: The RightAgent protocol version the client conforms to (only needed for instance agent clients).
 // refresh_token: The refresh token obtained from OAuth grant.
 // right_link_version: The RightLink gem version the client conforms to (only needed for instance agent clients).
@@ -7120,6 +7121,10 @@ func (loc *Oauth2Locator) Create(grantType string, options rsapi.APIParams) (map
 	var clientSecretOpt = options["client_secret"]
 	if clientSecretOpt != nil {
 		p["client_secret"] = clientSecretOpt
+	}
+	var globalSessionOpt = options["global_session"]
+	if globalSessionOpt != nil {
+		p["global_session"] = globalSessionOpt
 	}
 	var rsVersionOpt = options["r_s_version"]
 	if rsVersionOpt != nil {
