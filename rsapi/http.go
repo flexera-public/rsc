@@ -23,6 +23,43 @@ type FileUpload struct {
 	Reader   io.Reader // Backing reader
 }
 
+// SourceUpload represents a payload for /api/right_scripts/:id/update_source
+// It's needed as this one API call has unique properties -- it's content type is
+// text/plain only, and body of the HTTP call is the script body rather than a properly
+// formatted form request :(
+type SourceUpload struct {
+	Reader io.Reader
+}
+
+// This will take a hash (or multi-level hash) of APIParams and extract
+// out all the multipart file uploads and put them in an array. The recursion
+// is needed as CM API 1.5 and SS both use this, but SS has all its params
+// on the top level while CM API 1.5 has the resource name on the top level
+// with the params being one level down the tree.
+func extractUploads(payload *APIParams) (uploads []*FileUpload) {
+	for k, v := range *payload {
+		if mpart, ok := v.(*FileUpload); ok {
+			uploads = append(uploads, mpart)
+			delete(*payload, k)
+		} else if child_params, ok := v.(APIParams); ok {
+			child_uploads := extractUploads(&child_params)
+			uploads = append(uploads, child_uploads...)
+		}
+	}
+	return uploads
+}
+
+func extractSourceUpload(payload *APIParams) *SourceUpload {
+	var sourceUpload *SourceUpload
+	for k, v := range *payload {
+		if mpart, ok := v.(*SourceUpload); ok {
+			sourceUpload = mpart
+			delete(*payload, k)
+		}
+	}
+	return sourceUpload
+}
+
 // BuildHTTPRequest creates a http.Request given all its parts.
 // If any member of the Payload field is of type io.Reader then the resulting request has a
 // multipart body where each member of type io.Reader is mapped to a single part and all other
@@ -68,16 +105,13 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 	var jsonBytes []byte
 	var body io.Reader
 	var isMultipart bool
+	var isSourceUpload bool
 	var boundary string
 	if payload != nil {
 		var fields io.Reader
-		var uploads []*FileUpload
-		for k, v := range payload {
-			if mpart, ok := v.(*FileUpload); ok {
-				uploads = append(uploads, mpart)
-				delete(payload, k)
-			}
-		}
+		uploads := extractUploads(&payload)
+		sourceUpload := extractSourceUpload(&payload)
+
 		if len(payload) > 0 {
 			var err error
 			if jsonBytes, err = json.Marshal(payload); err != nil {
@@ -90,13 +124,30 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 			var buffer bytes.Buffer
 			w := multipart.NewWriter(&buffer)
 			if len(payload) > 0 {
-				p, err := w.CreateFormField("payload")
-				if err != nil {
-					return nil, fmt.Errorf("failed to create multipart payload: %s", err.Error())
-				}
-				_, err = io.Copy(p, fields)
-				if err != nil {
-					return nil, fmt.Errorf("failed to copy multipart payload: %s", err.Error())
+				// Handle payload params. Each payload param gets its own multipart
+				// form section with the section name being the variable name and
+				// section contents being the variable contents.
+				for k, v := range payload {
+					if children, ok := v.(APIParams); ok {
+						for k2, v2 := range children {
+							if v2s, ok := v2.(string); ok {
+								compound_key := fmt.Sprintf("%s[%s]", k, k2)
+								err := w.WriteField(compound_key, v2s)
+								if err != nil {
+									return nil, fmt.Errorf("failed to create multipart form section: %s", err.Error())
+								}
+							} else {
+								return nil, fmt.Errorf("unknown type for multipart form section for %#v", v2)
+							}
+						}
+					} else if vs, ok := v.(string); ok {
+						err := w.WriteField(k, vs)
+						if err != nil {
+							return nil, fmt.Errorf("failed to create multipart form section: %s", err.Error())
+						}
+					} else {
+						return nil, fmt.Errorf("unknown type for multipart form section for %#v", v)
+					}
 				}
 			}
 			for _, u := range uploads {
@@ -114,6 +165,9 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 			}
 			boundary = w.Boundary()
 			body = &buffer
+		} else if sourceUpload != nil {
+			isSourceUpload = true
+			body = sourceUpload.Reader
 		} else {
 			body = fields
 		}
@@ -127,6 +181,8 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 	}
 	if isMultipart {
 		req.Header.Set("Content-Type", fmt.Sprintf("multipart/form-data; boundary=%s", boundary))
+	} else if isSourceUpload {
+		req.Header.Set("Content-Type", "text/plain")
 	} else {
 		req.Header.Set("Content-Type", "application/json")
 	}
