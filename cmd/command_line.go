@@ -29,7 +29,7 @@ type CommandLine struct {
 	Pretty              bool   // Whether to display response body or extract values using pretty printer
 	Timeout             int    // Request timeout in seconds
 	ShowHelp            bool   // Whether to show help for action flags
-	Retry               int    // Number that rsc would retry on non-successful API response
+	Retry               int    //  Number of retry attempts for non-successful API responses (500, 503, and timeouts only)
 }
 
 // CommandClient is the common interface between rsc package and API client packages.
