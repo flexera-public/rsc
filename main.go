@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
 	"strings"
@@ -122,7 +123,7 @@ func ExecuteCommand(app *kingpin.Application, cmdLine *cmd.CommandLine) (resp *h
 		// retry any failed API response as specified by the retry flag
 		for i := 0; i < cmdLine.Retry+1; i++ {
 			resp, err = doAPIRequest(topCommand, cmdLine)
-			if err == nil {
+			if !shouldRetry(resp, err) {
 				break
 			}
 		}
@@ -140,6 +141,20 @@ func CreateJSONResponse(b []byte) (resp *http.Response) {
 		Body:       ioutil.NopCloser(bytes.NewBuffer(b)),
 	}
 	return resp
+}
+
+func shouldRetry(resp *http.Response, err error) bool {
+	if err != nil {
+		if neterr, ok := err.(net.Error); ok && neterr.Timeout() {
+			return true
+		}
+	}
+	if resp != nil {
+		if resp.StatusCode >= 500 {
+			return true
+		}
+	}
+	return false
 }
 
 var doAPIRequest = func(command string, cmdLine *cmd.CommandLine) (resp *http.Response, err error) {

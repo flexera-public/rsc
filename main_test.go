@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -12,6 +11,12 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
+
+type timeoutError struct{ error }
+
+func (e *timeoutError) Error() string   { return "i/o timeout" }
+func (e *timeoutError) Timeout() bool   { return true }
+func (e *timeoutError) Temporary() bool { return true }
 
 var _ = Describe("Main", func() {
 
@@ -58,7 +63,7 @@ var _ = Describe("Main", func() {
 			counter := 0
 			doAPIRequest = func(string, *cmd.CommandLine) (*http.Response, error) {
 				counter += 1
-				return nil, errors.New("test")
+				return nil, &timeoutError{}
 			}
 			ExecuteCommand(app, &cmdLine)
 			Ω(counter).Should(Equal(1 + retries))
@@ -69,7 +74,7 @@ var _ = Describe("Main", func() {
 			doAPIRequest = func(string, *cmd.CommandLine) (*http.Response, error) {
 				counter += 1
 				if counter < 3 {
-					return nil, errors.New("test")
+					return &http.Response{StatusCode: 503}, nil
 				} else {
 					return nil, nil
 				}

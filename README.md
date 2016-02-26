@@ -82,8 +82,8 @@ The list of global flags is:
   --version        Show application version.
   -c, --config="/home/raphael/.rsc"
                    path to rsc config file
-  -R, --retry=0    Number of retry attempts for non-successful API responses including failed authentication requests and response timeouts
-  -a, --account=ACCOUNT
+  -R, --retry=0    Number of retry attempts for non-successful(due to timeouts or server errors) API responses
+  -a, --account=ACCOUNT  
                    RightScale account ID
   -h, --host=HOST  RightScale login endpoint (e.g. 'us-3.rightscale.com')
   --email=EMAIL    Login email, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
