@@ -88,9 +88,7 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			coerced = &payloadParams
 		}
 		switch param.Type {
-		case "string":
-			*coerced = append(*coerced, APIParams{name: value})
-		case "[]string", "interface{}":
+		case "string", "[]string", "interface{}":
 			*coerced = append(*coerced, APIParams{name: value})
 		case "int", "[]int":
 			val, err := strconv.Atoi(value)
