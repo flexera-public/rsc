@@ -80,18 +80,19 @@ The list of global flags is:
 ```
   --help           Show help.
   --version        Show application version.
-  -c, --config="/home/raphael/.rsc"  
+  -c, --config="/home/raphael/.rsc"
                    path to rsc config file
+  -R, --retry=0    Number of retry attempts for non-successful API responses (500, 503, and timeouts only)
   -a, --account=ACCOUNT  
                    RightScale account ID
   -h, --host=HOST  RightScale login endpoint (e.g. 'us-3.rightscale.com')
   --email=EMAIL    Login email, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
   --pwd=PWD        Login password, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
-  -r, --refreshToken=REFRESHTOKEN  
+  -r, --refreshToken=REFRESHTOKEN
                    OAuth refresh token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
-  -s, --accessToken=ACCESSTOKEN  
+  -s, --accessToken=ACCESSTOKEN
                    OAuth access token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
-  -p, --apiToken=APITOKEN  
+  -p, --apiToken=APITOKEN
                    Instance API token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
   --rl10           Proxy requests through RightLink 10 agent, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
   --noAuth         Make unauthenticated requests, used for testing

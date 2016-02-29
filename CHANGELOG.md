@@ -1,3 +1,7 @@
+Unreleased changes
+------------------
+* Add --retry flag. Specifies number of retry attempts for non-successful API responses(500, 503, and timeouts only)
+
 v5.0.2 / 2016-02-05
 -------------------
 * Using TokenAuthenticator now sends the account ID in the X-Account header for all requests

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
 	"strings"
@@ -30,30 +31,7 @@ func main() {
 		PrintFatal(line + ": " + err.Error())
 	}
 
-	// Execute appropriate command
-	app.Writer(errOut)
-	log.Interactive()
-	var resp *http.Response
-	topCommand := strings.Split(cmdLine.Command, " ")[0]
-	switch topCommand {
-	case "setup":
-		err = CreateConfig(cmdLine.ConfigPath)
-	case "json":
-		var b []byte
-		b, err = ioutil.ReadAll(os.Stdin)
-		if err == nil {
-			resp = CreateJSONResponse(b)
-		}
-	default:
-		httpclient.ResponseHeaderTimeout = time.Duration(cmdLine.Timeout) * time.Second
-		var client cmd.CommandClient
-		client, err = APIClient(topCommand, cmdLine)
-		if err == nil {
-			resp, err = runCommand(client, cmdLine)
-		}
-	}
-
-	// Handle command results
+	resp, err := ExecuteCommand(app, cmdLine)
 	if err != nil {
 		PrintFatal(err.Error())
 	}
@@ -128,6 +106,32 @@ func runCommand(client cmd.CommandClient, cmdLine *cmd.CommandLine) (resp *http.
 	return
 }
 
+func ExecuteCommand(app *kingpin.Application, cmdLine *cmd.CommandLine) (resp *http.Response, err error) {
+	app.Writer(errOut)
+	log.Interactive()
+	topCommand := strings.Split(cmdLine.Command, " ")[0]
+	switch topCommand {
+	case "setup":
+		err = CreateConfig(cmdLine.ConfigPath)
+	case "json":
+		var b []byte
+		b, err = ioutil.ReadAll(os.Stdin)
+		if err == nil {
+			resp = CreateJSONResponse(b)
+		}
+	default:
+		// retry any failed API response as specified by the retry flag
+		for i := 0; i < cmdLine.Retry+1; i++ {
+			resp, err = doAPIRequest(topCommand, cmdLine)
+			if !shouldRetry(resp, err) {
+				break
+			}
+		}
+	}
+
+	return resp, err
+}
+
 // Constructs an http response from JSON input from Stdin
 func CreateJSONResponse(b []byte) (resp *http.Response) {
 	// Remove UTF-8 Byte Order Mark if it exists
@@ -137,4 +141,30 @@ func CreateJSONResponse(b []byte) (resp *http.Response) {
 		Body:       ioutil.NopCloser(bytes.NewBuffer(b)),
 	}
 	return resp
+}
+
+func shouldRetry(resp *http.Response, err error) bool {
+	if err != nil {
+		if neterr, ok := err.(net.Error); ok && neterr.Timeout() {
+			return true
+		}
+	}
+	if resp != nil {
+		if resp.StatusCode == 500 || resp.StatusCode == 503 {
+			return true
+		}
+	}
+	return false
+}
+
+var doAPIRequest = func(command string, cmdLine *cmd.CommandLine) (resp *http.Response, err error) {
+	httpclient.ResponseHeaderTimeout = time.Duration(cmdLine.Timeout) * time.Second
+	client, err := APIClient(command, cmdLine)
+	if err == nil {
+		resp, err = runCommand(client, cmdLine)
+		if err == nil {
+			return resp, err
+		}
+	}
+	return nil, err
 }
