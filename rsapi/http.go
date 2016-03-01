@@ -60,6 +60,34 @@ func extractSourceUpload(payload *APIParams) *SourceUpload {
 	return sourceUpload
 }
 
+// Handle payload params. Each payload param gets its own multipart
+// form section with the section name being the variable name and
+// section contents being the variable contents. Handle recursion as well.
+func writeMultipartParams(w *multipart.Writer, payload APIParams, prefix string) error {
+	for k, v := range payload {
+		fieldName := k
+		if prefix != "" {
+			fieldName = fmt.Sprintf("%s[%s]", prefix, k)
+		}
+		// Add more types as needed. These two cover both CM15 and SS.
+		switch v.(type) {
+		case string:
+			err := w.WriteField(fieldName, v.(string))
+			if err != nil {
+				return err
+			}
+		case APIParams:
+			err := writeMultipartParams(w, v.(APIParams), fieldName)
+			if err != nil {
+				return err
+			}
+		default:
+			return fmt.Errorf("Unknown type for multipart form section %s: %#v", fieldName, v)
+		}
+	}
+	return nil
+}
+
 // BuildHTTPRequest creates a http.Request given all its parts.
 // If any member of the Payload field is of type io.Reader then the resulting request has a
 // multipart body where each member of type io.Reader is mapped to a single part and all other
@@ -124,30 +152,9 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 			var buffer bytes.Buffer
 			w := multipart.NewWriter(&buffer)
 			if len(payload) > 0 {
-				// Handle payload params. Each payload param gets its own multipart
-				// form section with the section name being the variable name and
-				// section contents being the variable contents.
-				for k, v := range payload {
-					if children, ok := v.(APIParams); ok {
-						for k2, v2 := range children {
-							if v2s, ok := v2.(string); ok {
-								compound_key := fmt.Sprintf("%s[%s]", k, k2)
-								err := w.WriteField(compound_key, v2s)
-								if err != nil {
-									return nil, fmt.Errorf("failed to create multipart form section: %s", err.Error())
-								}
-							} else {
-								return nil, fmt.Errorf("unknown type for multipart form section for %#v", v2)
-							}
-						}
-					} else if vs, ok := v.(string); ok {
-						err := w.WriteField(k, vs)
-						if err != nil {
-							return nil, fmt.Errorf("failed to create multipart form section: %s", err.Error())
-						}
-					} else {
-						return nil, fmt.Errorf("unknown type for multipart form section for %#v", v)
-					}
+				err := writeMultipartParams(w, payload, "")
+				if err != nil {
+					return nil, fmt.Errorf("failed to write multipart params: %s", err.Error())
 				}
 			}
 			for _, u := range uploads {
