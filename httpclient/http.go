@@ -219,7 +219,9 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 func (d *dumpClient) getClientWithoutTimeout() *http.Client {
 	// Get a copy of the client and modify as multiple concurrent go routines can be using this client.
 	client := *d.Client
-	client.Transport = &http.Transport{Proxy: http.ProxyFromEnvironment}
+	tr := &http.Transport{Proxy: http.ProxyFromEnvironment}
+	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: NoCertCheck}
+	client.Transport = tr
 	return &client
 }
 
