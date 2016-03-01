@@ -59,6 +59,13 @@ var _ = Describe("Main", func() {
 		var app = kingpin.New("rsc", "rsc - tests")
 		var retries = 6
 		var cmdLine = cmd.CommandLine{Retry: retries}
+		var origDoAPIRequest func(string, *cmd.CommandLine) (*http.Response, error)
+		BeforeEach(func() {
+			origDoAPIRequest = doAPIRequest
+		})
+		AfterEach(func() {
+			doAPIRequest = origDoAPIRequest
+		})
 		It("retries if error on API call occurs", func() {
 			counter := 0
 			doAPIRequest = func(string, *cmd.CommandLine) (*http.Response, error) {
