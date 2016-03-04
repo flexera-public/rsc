@@ -369,15 +369,16 @@ func (e *EnumerableDataType) Name() string {
 	return "map[string]interface{}"
 }
 
-// SourceUploadDataType -- just a string we use as the body
+// SourceUploadDataType represents the body of a file as a plain text string.
 type SourceUploadDataType string
 
+// IsEquivalent returns true if other represents the same data type as the target.
 func (e *SourceUploadDataType) IsEquivalent(other DataType) bool {
 	_, ok := other.(*SourceUploadDataType)
 	return ok
 }
 
-// Implement DataType
+// Name returns the type name.
 func (e *SourceUploadDataType) Name() string {
 	return "string"
 }
