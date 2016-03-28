@@ -28,12 +28,12 @@ func main() {
 	cmdLine, err := ParseCommandLine(app)
 	if err != nil {
 		line := strings.Join(os.Args, " ")
-		PrintFatal(line + ": " + err.Error())
+		PrintFatal("%s: %s", line, err.Error())
 	}
 
 	resp, err := ExecuteCommand(app, cmdLine)
 	if err != nil {
-		PrintFatal(err.Error())
+		PrintFatal("%s", err.Error())
 	}
 	if resp == nil {
 		return // No results, just exit (e.g. setup, printed help...)
@@ -42,7 +42,7 @@ func main() {
 	var notExactlyOneError bool
 	displayer, err := NewDisplayer(resp)
 	if err != nil {
-		PrintFatal(err.Error())
+		PrintFatal("%s", err.Error())
 	}
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
 		// Let user know if something went wrong
@@ -67,7 +67,7 @@ func main() {
 			err = displayer.ApplyHeaderExtract(cmdLine.ExtractHeader)
 		}
 		if err != nil {
-			PrintFatal(err.Error())
+			PrintFatal("%s", err.Error())
 		} else if cmdLine.Pretty {
 			displayer.Pretty()
 		}
