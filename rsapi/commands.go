@@ -398,6 +398,9 @@ func (a *API) findParamAndValue(action *metadata.Action, flag string) (*metadata
 			if ap.Name == name {
 				param = ap
 				es := captureEnumRegex.FindStringSubmatch(elems[0])
+				if es == nil {
+					return nil, "", fmt.Errorf("Key/value arguments must be of the form NAME[KEY]=VALUE, value provided was '%s'", flag)
+				}
 				value = es[1] + "=" + value
 				break
 			}
