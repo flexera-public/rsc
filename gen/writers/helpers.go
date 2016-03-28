@@ -145,6 +145,8 @@ func flagType(param *gen.ActionParam) string {
 		return "[]string"
 	} else if _, ok := param.Type.(*gen.EnumerableDataType); ok {
 		return "map"
+	} else if _, ok := param.Type.(*gen.SourceUploadDataType); ok {
+		return "sourcefile"
 	} else if _, ok := param.Type.(*gen.UploadDataType); ok {
 		return "file"
 	}

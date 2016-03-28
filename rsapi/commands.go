@@ -110,6 +110,12 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 				return nil, fmt.Errorf("Value for '%s' must be of the form NAME=VALUE, got %s", name, value)
 			}
 			*coerced = append(*coerced, APIParams{fmt.Sprintf("%s[%s]", name, velems[0]): velems[1]})
+		case "sourcefile":
+			file, err := os.Open(value)
+			if err != nil {
+				return nil, fmt.Errorf("Invalid file upload path '%s' for %s: %s", value, name, err)
+			}
+			*coerced = append(*coerced, APIParams{name: &SourceUpload{Reader: file}})
 		case "file":
 			file, err := os.Open(value)
 			if err != nil {

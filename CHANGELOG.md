@@ -1,6 +1,7 @@
 Unreleased changes
 ------------------
 * Add --retry flag. Specifies number of retry attempts for non-successful API responses(500, 503, and timeouts only)
+* cm15: Add RightScriptAttachment actions. Add RightScript delete and update_source actions.
 
 v5.0.2 / 2016-02-05
 -------------------

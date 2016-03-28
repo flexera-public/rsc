@@ -9525,6 +9525,11 @@
             "class": "String",
             "description": "The new description for the RightScript",
             "non_blank": true
+          },
+          "right_script[source]": {
+            "class": "String",
+            "description": "The script source to be updated.",
+            "non_blank": true
           }
         },
         "status_code": "204 No Content",
@@ -9599,17 +9604,17 @@
           }
         },
         "example_resource": {
-          "links": [
-            {"rel":"self","href":"/api/right_scripts/2"},
-            {"rel":"source","href":"/api/right_scripts/2/source"}
-          ],
-          "description": "DESCRIPTION_3427582138",
-          "lineage": "https://testscale_1/api/acct/331800546/right_scripts/2",
+          "id": "22",
           "revision": 0,
-          "created_at": "2015/04/08 22:32:17 +0000",
-          "name": "NAME_230061123",
-          "id": "2",
-          "updated_at": "2015/04/08 22:32:17 +0000"
+          "created_at": "2015/11/05 23:27:38 +0000",
+          "updated_at": "2015/11/05 23:27:38 +0000",
+          "links": [
+            {"rel":"self","href":"/api/right_scripts/22"},
+            {"rel":"source","href":"/api/right_scripts/22/source"}
+          ],
+          "name": "NAME_939119426",
+          "description": "DESCRIPTION_3362835718",
+          "lineage": "https://testscale_1/api/acct/55944933/right_scripts/22"
         },
         "filters": {
           "name": {
@@ -9631,19 +9636,27 @@
       },
       "show": {
         "parameters": {
+          "view": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "default",
+              "inputs_2_0"
+            ]
+          }
         },
         "example_resource": {
-          "links": [
-            {"rel":"self","href":"/api/right_scripts/2"},
-            {"rel":"source","href":"/api/right_scripts/2/source"}
-          ],
-          "description": "DESCRIPTION_3427582138",
-          "lineage": "https://testscale_1/api/acct/331800546/right_scripts/2",
+          "id": "22",
           "revision": 0,
-          "created_at": "2015/04/08 22:32:17 +0000",
-          "name": "NAME_230061123",
-          "id": "2",
-          "updated_at": "2015/04/08 22:32:17 +0000"
+          "created_at": "2015/11/05 23:27:38 +0000",
+          "updated_at": "2015/11/05 23:27:38 +0000",
+          "links": [
+            {"rel":"self","href":"/api/right_scripts/22"},
+            {"rel":"source","href":"/api/right_scripts/22/source"}
+          ],
+          "name": "NAME_939119426",
+          "description": "DESCRIPTION_3362835718",
+          "lineage": "https://testscale_1/api/acct/55944933/right_scripts/22"
         },
         "status_code": "200 OK",
         "route": "GET    /api/right_scripts/:id(.:format)?        {:action=>\"show\", :controller=>\"right_scripts\"}",
@@ -9651,30 +9664,196 @@
           "observer"
         ],
         "description": "Displays information about a single RightScript."
+      },
+      "create": {
+        "parameters": {
+          "right_script": {
+            "class": "Hash",
+            "mandatory": true,
+            "non_blank": true
+          },
+          "right_script[name]": {
+            "class": "String",
+            "description": "The name of the RightScript to be created.",
+            "mandatory": true,
+            "non_blank": true
+          },
+          "right_script[description]": {
+            "class": "String",
+            "description": "The description of the RightScript to be created.",
+            "non_blank": true
+          },
+          "right_script[source]": {
+            "class": "String",
+            "description": "The script source to be created.",
+            "mandatory": true,
+            "non_blank": true
+          }
+        },
+        "status_code": "201 Created",
+        "route": "POST   /api/right_scripts(.:format)?            {:controller=>\"right_scripts\", :action=>\"create\"}",
+        "access_rules": [
+          "designer"
+        ],
+        "description": null
       }
     },
+    "description": "A RightScript is an executable piece of code that can be run on a server\nduring the boot, operational, or decommission phases.\n\nAll revisions of\na RightScript belong to a RightScript lineage that is exposed by the\n\"lineage\" attribute (NOTE: This attribute is merely a string to locate\nall revisions of a RightScript and NOT a working URL).\n",
     "media_type": {
+      "description": "  A RightScript is an executable piece of code that can be run on a server\n  during the boot, operational, or decommission phases. A RightScript\n  consists of a script (typically written in Bash, Ruby, or Perl), a set of\n  binary-file attachments that are downloaded on demand from RightScale,\n  a set of package names that are installed using the system's package\n  manager before running the script, and a set of named input parameters\n  that are passed into the script as environment variables. All revisions of\n  a RightScript belong to a RightScript lineage that is exposed by the\n  \"lineage\" attribute (NOTE: This attribute is merely a string to locate\n  all revisions of a RightScript and NOT a working URL).\n",
       "attributes": {
-        "links": "",
-        "description": "",
-        "lineage": "",
-        "revision": "",
-        "source": "",
-        "created_at": "",
-        "name": "",
         "id": "",
-        "updated_at": ""
+        "name": "",
+        "description": "",
+        "inputs": "",
+        "created_at": "",
+        "updated_at": "",
+        "links": "",
+        "lineage": "",
+        "source": "",
+        "revision": ""
+      },
+      "links": {
+        "self": "Href of itself",
+        "source": "Returns the RightScript source"
       },
       "content_types": [
         "application/vnd.rightscale.right_script"
-      ],
-      "links": {
-        "source": "Returns the RightScript source",
-        "self": "Href of itself"
+      ]
+    }
+  },
+  "RightScriptAttachments": {
+    "methods": {
+      "create": {
+        "access_rules": [
+          "designer"
+        ],
+        "route": "POST   /api/right_scripts/:right_script_id/attachments(.:format)? {:controller=>\"right_script_attachments\", :action=>\"create\"}",
+        "description": "\n",
+        "status_code": "201 Created",
+        "parameters": {
+          "right_script_attachment": {
+            "class": "Hash",
+            "non_blank": true,
+            "mandatory": true
+          },
+          "right_script_attachment[filename]": {
+            "class": "String",
+            "non_blank": true,
+            "mandatory": true,
+            "description": "The file name of the RightScript attachment to be created."
+          },
+          "right_script_attachment[content]": {
+            "class": "Tempfile",
+            "non_blank": true,
+            "mandatory": true,
+            "description": "The content of the RightScript attachment to be created."
+          }
+        }
       },
-      "description": "A RightScript is an executable piece of code that can be run on a server\n  during the boot, operational, or decommission phases. A RightScript\n  consists of a script (typically written in Bash, Ruby, or Perl), a set of\n  binary-file attachments that are downloaded on demand from RightScale,\n  a set of package names that are installed using the system's package\n  manager before running the script, and a set of named input parameters\n  that are passed into the script as environment variables. All revisions of\n  a RightScript belong to a RightScript lineage that is exposed by the\n  \"lineage\" attribute (NOTE: This attribute is merely a string to locate\n  all revisions of a RightScript and NOT a working URL)."
+      "destroy": {
+        "access_rules": [
+          "designer"
+        ],
+        "route": "DELETE /api/right_scripts/:right_script_id/attachments/:id(.:format)? {:controller=>\"right_script_attachments\", :action=>\"destroy\"}",
+        "description": "\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
+      "index": {
+        "access_rules": [
+          "observer"
+        ],
+        "route": "GET    /api/right_scripts/:right_script_id/attachments(.:format)? {:controller=>\"right_script_attachments\", :action=>\"index\"}",
+        "description": "Lists RightScript attachments.\n",
+        "status_code": "200 OK",
+        "parameters": {
+          "view": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "default", 
+              "full"
+            ]
+          },
+          "filter": {
+            "class": "Array",
+            "non_blank": true
+          }
+        },
+        "filters": {
+          "filename": {
+            "partial_match": true,
+            "description": "File name of the RightScript attachment to filter on."
+          }
+        }
+      },
+      "show": {
+        "access_rules": [
+          "observer"
+        ],
+        "route": "GET    /api/right_scripts/:right_script_id/attachments/:id(.:format)? {:controller=>\"right_script_attachments\", :action=>\"show\"}",
+        "description": "Displays information about a single RightScript attachment.\n",
+        "status_code": "200 OK",
+        "parameters": {
+          "view": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "default", 
+              "full"
+            ]
+          }
+        }
+      },
+      "update": {
+        "access_rules": [
+          "designer"
+        ],
+        "route": "PUT    /api/right_scripts/:right_script_id/attachments/:id(.:format)? {:controller=>\"right_script_attachments\", :action=>\"update\"}",
+        "description": "\n",
+        "status_code": "204 No Content",
+        "parameters": {
+          "right_script_attachment": {
+            "class": "Hash",
+            "non_blank": true,
+            "mandatory": true
+          },
+          "right_script_attachment[filename]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The new name for the RightScript attachment."
+          },
+          "right_script_attachment[content]": {
+            "class": "Tempfile",
+            "non_blank": true,
+            "description": "The new content for the RightScript attachment."
+          }
+        }
+      }
     },
-    "description": "A RightScript is an executable piece of code that can be run on a server\nduring the boot, operational, or decommission phases.\n\nAll revisions of\na RightScript belong to a RightScript lineage that is exposed by the\n\"lineage\" attribute (NOTE: This attribute is merely a string to locate\nall revisions of a RightScript and NOT a working URL)."
+    "description": null,
+    "media_type": {
+      "description": "RightScript attachments.\n\n",
+      "attributes": {
+        "id": "ID of the RightScript attachment",
+        "filename": "File name of the RightScript attachment",
+        "created_at": "Time when the RightScript attachment was created",
+        "updated_at": "Time when the RightScript attachment was last updated",
+        "digest": "MD5 checksum of the RightScript attachment",
+        "size": "Size of the RightScript attachment",
+        "download_url": "Temporary authenticated URL to download the attachment",
+        "links": ""
+      },
+      "links": {
+        "self": "Href of itself",
+        "right_script": "The RightScript to which the attachment is attached"
+      },
+      "content_types": [
+        "application/vnd.rightscale.right_script_attachment"
+      ]
+    }
   },
   "Cookbooks": {
     "methods": {

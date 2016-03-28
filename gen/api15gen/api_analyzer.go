@@ -156,6 +156,17 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			// Custom action
 			continue
 		}
+		// HACK: /api/right_scripts/:id/update_source is a unique snowflake. It has no
+		// params, it accepts the script body as a text/plain type type!. We inject a
+		// fake param here that acts as a multipart file upload does.
+		if name == "RightScripts" && actionName == "update_source" {
+			params["filename"] = map[string]interface{}{
+				"class":       "SourceUpload",
+				"mandatory":   true,
+				"non_blank":   true,
+				"description": "The file name to update the RightScript source with.",
+			}
+		}
 		var allParamNames = make([]string, len(params))
 		var i = 0
 		for n := range params {
