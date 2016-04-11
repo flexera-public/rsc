@@ -80,7 +80,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	resource.Actions = actions
 
 	// Name and done
-	resName := toGoTypeName(name, false)
+	resName := toGoTypeName(name)
 	desc.Resources[resName] = &resource
 	desc.ResourceNames = append(desc.ResourceNames, resName)
 

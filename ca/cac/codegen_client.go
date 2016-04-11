@@ -122,8 +122,8 @@ func (loc *AccountLocator) Create(options rsapi.APIParams) (*AccountLocator, err
 // GET /api/accounts
 //
 // List all accounts.
-func (loc *AccountLocator) Index(options rsapi.APIParams) (*Account, error) {
-	var res *Account
+func (loc *AccountLocator) Index(options rsapi.APIParams) ([]*Account, error) {
+	var res []*Account
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -432,8 +432,8 @@ func (loc *BudgetAlertLocator) Create(budget *BudgetStruct, frequency string, na
 // GET /api/budget_alerts
 //
 // List all BudgetAlerts.
-func (loc *BudgetAlertLocator) Index(options rsapi.APIParams) (*BudgetAlert, error) {
-	var res *BudgetAlert
+func (loc *BudgetAlertLocator) Index(options rsapi.APIParams) ([]*BudgetAlert, error) {
+	var res []*BudgetAlert
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -1051,8 +1051,8 @@ func (api *API) InstanceLocator(href string) *InstanceLocator {
 // GET /api/instances
 //
 // Gets instances that overlap with the requested time period.
-func (loc *InstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*Instance, error) {
-	var res *Instance
+func (loc *InstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) ([]*Instance, error) {
+	var res []*Instance
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
 		"end_time":   endTime,
@@ -2018,8 +2018,8 @@ func (api *API) InstanceUsagePeriodLocator(href string) *InstanceUsagePeriodLoca
 // GET /api/instance_usage_periods
 //
 // Gets the instance usage periods of instances.
-func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filter, options rsapi.APIParams) (*InstanceUsagePeriod, error) {
-	var res *InstanceUsagePeriod
+func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filter, options rsapi.APIParams) ([]*InstanceUsagePeriod, error) {
+	var res []*InstanceUsagePeriod
 	if len(instanceUsagePeriodFilters) == 0 {
 		return res, fmt.Errorf("instanceUsagePeriodFilters is required")
 	}
@@ -2155,8 +2155,8 @@ func (loc *PatternLocator) Create(months string, name string, operation string, 
 // GET /api/patterns
 //
 // List all Patterns.
-func (loc *PatternLocator) Index(options rsapi.APIParams) (*Pattern, error) {
-	var res *Pattern
+func (loc *PatternLocator) Index(options rsapi.APIParams) ([]*Pattern, error) {
+	var res []*Pattern
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -2406,8 +2406,8 @@ func (api *API) ReservedInstanceLocator(href string) *ReservedInstanceLocator {
 // GET /api/reserved_instances
 //
 // Gets Reserved Instances that overlap with the requested time period.
-func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) (*ReservedInstance, error) {
-	var res *ReservedInstance
+func (loc *ReservedInstanceLocator) Index(endTime *time.Time, startTime *time.Time, options rsapi.APIParams) ([]*ReservedInstance, error) {
+	var res []*ReservedInstance
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
 		"end_time":   endTime,
@@ -2784,8 +2784,8 @@ func (loc *ReservedInstancePurchaseLocator) Create(autoRenew bool, duration int,
 // GET /api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases
 //
 // List all ReservedInstancePurchases for the InstanceCombination.
-func (loc *ReservedInstancePurchaseLocator) Index(options rsapi.APIParams) (*ReservedInstancePurchase, error) {
-	var res *ReservedInstancePurchase
+func (loc *ReservedInstancePurchaseLocator) Index(options rsapi.APIParams) ([]*ReservedInstancePurchase, error) {
+	var res []*ReservedInstancePurchase
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -3048,8 +3048,8 @@ func (loc *ScenarioLocator) Create(snapshotTimestamp *time.Time, options rsapi.A
 // GET /api/scenarios
 //
 // List all Scenarios.
-func (loc *ScenarioLocator) Index(options rsapi.APIParams) (*Scenario, error) {
-	var res *Scenario
+func (loc *ScenarioLocator) Index(options rsapi.APIParams) ([]*Scenario, error) {
+	var res []*Scenario
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var includeNonPersistedOpt = options["include_non_persisted"]
@@ -3354,8 +3354,8 @@ func (loc *ScheduledReportLocator) Create(frequency string, name string, options
 // GET /api/scheduled_reports
 //
 // List all ScheduledReports.
-func (loc *ScheduledReportLocator) Index(options rsapi.APIParams) (*ScheduledReport, error) {
-	var res *ScheduledReport
+func (loc *ScheduledReportLocator) Index(options rsapi.APIParams) ([]*ScheduledReport, error) {
+	var res []*ScheduledReport
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -3702,8 +3702,8 @@ func (loc *UserLocator) Create(accounts []*UserAccounts, email string, options r
 // GET /api/users
 //
 // List all users.
-func (loc *UserLocator) Index(options rsapi.APIParams) (*User, error) {
-	var res *User
+func (loc *UserLocator) Index(options rsapi.APIParams) ([]*User, error) {
+	var res []*User
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]

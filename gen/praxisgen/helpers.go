@@ -22,8 +22,17 @@ var (
 	BuiltInTypes = []string{"RsId", "IP", "QueryFilter", "Href", "Tag", "CSV"}
 )
 
+// Produce action return type name
+func toGoReturnTypeName(name string, slice bool) string {
+	slicePrefix := ""
+	if slice {
+		slicePrefix = "[]"
+	}
+	return fmt.Sprintf("%s*%s", slicePrefix, toGoTypeName(name))
+}
+
 // Produce go type name from given ruby type name
-func toGoTypeName(name string, usePointer bool) string {
+func toGoTypeName(name string) string {
 	switch name {
 	case "String", "Symbol":
 		return "string"
@@ -34,17 +43,11 @@ func toGoTypeName(name string, usePointer bool) string {
 	case "Struct", "Collection":
 		panic("Uh oh, trying to infer a go type name for a unnamed struct or collection (" + name + ")")
 	default:
-		var typeName string
 		if strings.Contains(name, "::") {
 			elems := strings.Split(name, "::")
-			typeName = strings.Join(elems[2:len(elems)], "")
-		} else {
-			typeName = name
+			return strings.Join(elems[2:len(elems)], "")
 		}
-		if usePointer {
-			typeName = "*" + typeName
-		}
-		return typeName
+		return name
 	}
 
 }

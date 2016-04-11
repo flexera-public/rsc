@@ -166,7 +166,7 @@ func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 					if media, ok := resp["media_type"]; ok {
 						m := media.(map[string]interface{})
 						if name, ok := m["name"]; ok {
-							returnTypeName = toGoTypeName(name.(string), true)
+							returnTypeName = toGoReturnTypeName(name.(string), actionName == "index")
 							a.descriptor.NeedJSON = true
 							// Analyze return type to make sure it gets recorded
 							_, err := a.AnalyzeType(a.RawTypes[name.(string)], "return")

@@ -410,8 +410,8 @@ func (api *API) DeploymentLocator(href string) *DeploymentLocator {
 // GET /api/deployments
 //
 // List all Deployments in an Account.
-func (loc *DeploymentLocator) Index(options rsapi.APIParams) (*Deployment, error) {
-	var res *Deployment
+func (loc *DeploymentLocator) Index(options rsapi.APIParams) ([]*Deployment, error) {
+	var res []*Deployment
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var idsOpt = options["ids"]
@@ -540,8 +540,8 @@ func (api *API) ImageLocator(href string) *ImageLocator {
 // GET /api/clouds/:cloud_id/images
 //
 // Lists all Images for the given Cloud.
-func (loc *ImageLocator) Index(options rsapi.APIParams) (*Image, error) {
-	var res *Image
+func (loc *ImageLocator) Index(options rsapi.APIParams) ([]*Image, error) {
+	var res []*Image
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
@@ -684,8 +684,8 @@ func (api *API) InstanceLocator(href string) *InstanceLocator {
 // GET /api/clouds/:cloud_id/instances
 //
 // List all Instances in an account.
-func (loc *InstanceLocator) Index(options rsapi.APIParams) (*Instance, error) {
-	var res *Instance
+func (loc *InstanceLocator) Index(options rsapi.APIParams) ([]*Instance, error) {
+	var res []*Instance
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
