@@ -86,15 +86,15 @@ The list of global flags is:
   -a, --account=ACCOUNT  
                    RightScale account ID
   -h, --host=HOST  RightScale login endpoint (e.g. 'us-3.rightscale.com')
-  --email=EMAIL    Login email, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
-  --pwd=PWD        Login password, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
+  --email=EMAIL    Login email, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
+  --pwd=PWD        Login password, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
   -r, --refreshToken=REFRESHTOKEN
-                   OAuth refresh token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
+                   OAuth refresh token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
   -s, --accessToken=ACCESSTOKEN
-                   OAuth access token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
+                   OAuth access token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
   -p, --apiToken=APITOKEN
-                   Instance API token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
-  --rl10           Proxy requests through RightLink 10 agent, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10
+                   Instance API token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
+  --rl10           Proxy requests through RightLink 10 agent, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
   --noAuth         Make unauthenticated requests, used for testing
   --x1=X1          Extract single value using JSON:select
   --xm=XM          Extract zero, one or more values using JSON:select and return newline separated list
@@ -118,7 +118,7 @@ authenticated requests againsts all accounts the authenticated user has access t
 is created by making an API request to the CM 1.5 APIs the resulting cookie can be used to make API
 calls against all the RightScale APIs enabled for the user.
 
-`rsc` supports basic authentication via the `--email` and `--password` flags. When using `rsc` as a
+`rsc` supports basic authentication via the `--email` and `--pwd` flags. When using `rsc` as a
 Go package authentication is done once and the same cookie is used for all API requests made with
 the same client. The package also takes care of refreshing the cookie before the session expires.
 
