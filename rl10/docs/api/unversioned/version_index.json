@@ -6,6 +6,10 @@
       "name": "Resources::DebugCookbookPath",
       "friendly_name": "DebugCookbookPath"
     },
+    "Resources-DockerControl": {
+      "name": "Resources::DockerControl",
+      "friendly_name": "DockerControl"
+    },
     "Resources-Env": {
       "name": "Resources::Env",
       "friendly_name": "Env"

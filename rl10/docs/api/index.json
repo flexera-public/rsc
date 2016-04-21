@@ -5,6 +5,11 @@
       "name": "Resources::DebugCookbookPath",
       "media_type": "Praxis-SimpleMediaType"
     },
+    "DockerControl": {
+      "controller": "Resources-DockerControl",
+      "name": "Resources::DockerControl",
+      "media_type": "Praxis-SimpleMediaType"
+    },
     "Env": {
       "controller": "Resources-Env",
       "name": "Resources::Env",

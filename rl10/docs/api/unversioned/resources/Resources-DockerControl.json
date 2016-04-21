@@ -1,0 +1,96 @@
+{
+  "description": "Manipulate the Docker integration in RightLink 10",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Show Docker integration features",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/docker/control",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Enable/disable Docker integration features",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/docker/control",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "enable_docker": {
+              "values": [
+                "none",
+                "tags",
+                "all"
+              ],
+              "required": false,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "docker_host": {
+              "required": false,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "enable_docker": "all",
+          "docker_host": "specified"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources::DockerControl",
+  "metadata": {
+  }
+}
