@@ -184,6 +184,110 @@ func (loc *DebugCookbookPathLocator) Delete() error {
 	return nil
 }
 
+/******  DockerControl ******/
+
+// Manipulate the Docker integration in RightLink 10
+type DockerControl struct {
+}
+
+//===== Locator
+
+// DockerControlLocator exposes the DockerControl resource actions.
+type DockerControlLocator struct {
+	Href
+	api *API
+}
+
+// DockerControlLocator builds a locator from the given href.
+func (api *API) DockerControlLocator(href string) *DockerControlLocator {
+	return &DockerControlLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /rll/docker/control
+//
+// Show Docker integration features
+func (loc *DockerControlLocator) Show() (string, error) {
+	var res string
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("DockerControl", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/docker/control
+//
+// Enable/disable Docker integration features
+func (loc *DockerControlLocator) Update(options rsapi.APIParams) (string, error) {
+	var res string
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var dockerHostOpt = options["docker_host"]
+	if dockerHostOpt != nil {
+		params["docker_host"] = dockerHostOpt
+	}
+	var enableDockerOpt = options["enable_docker"]
+	if enableDockerOpt != nil {
+		params["enable_docker"] = enableDockerOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("DockerControl", "update")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
 /******  Env ******/
 
 // Manipulate global script environment variables
