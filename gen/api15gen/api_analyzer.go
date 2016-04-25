@@ -150,9 +150,12 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
-		fmt.Printf("meth: %#v\n", meth)
-		var pathPatterns = ParseRoute(fmt.Sprintf("%s#%s", name, actionName),
-			meth["route"].(string))
+		var routes = meth["routes"].([]interface{})
+		var strRoutes = make([]string, len(routes))
+		for i, r := range routes {
+			strRoutes[i] = r.(string)
+		}
+		var pathPatterns = ParseRoute(fmt.Sprintf("%s#%s", name, actionName), strRoutes)
 		if len(pathPatterns) == 0 {
 			// Custom action
 			continue
@@ -355,7 +358,7 @@ func LocatorFunc(attributes []*gen.Attribute, name string) string {
 }
 
 // ParseRoute parses a API 1.5 route and returns corresponding path patterns.
-func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) {
+func ParseRoute(moniker string, routes []string) (pathPatterns []*gen.PathPattern) {
 	// :(((( some routes are empty
 	var paths []string
 	var method string
@@ -375,26 +378,17 @@ func ParseRoute(moniker string, route string) (pathPatterns []*gen.PathPattern) 
 	case "Servers#terminate":
 		method, paths = "POST", []string{"/api/servers/:id/terminate"}
 	default:
-		bounds := routeRegexp.FindAllStringIndex(route, -1)
-		matches := make([]string, len(bounds))
-		prev := 0
-		for i, bound := range bounds {
-			matches[i] = route[prev:bound[0]]
-			prev = bound[1]
-		}
-		method = strings.TrimRight(matches[0][0:7], " ")
-		paths = make([]string, len(bounds))
-		j := 0
-		for _, r := range matches {
-			path := strings.TrimRight(r[7:], " ")
+		for _, route := range routes {
+			bound := routeRegexp.FindStringIndex(route)
+			match := route[0:bound[0]]
+			method = strings.TrimRight(match[0:7], " ")
+			path := strings.TrimRight(match[7:], " ")
 			path = strings.TrimSuffix(path, "(.:format)?")
 			if isDeprecated(path) || isCustom(method, path) {
 				continue
 			}
-			paths[j] = path
-			j++
+			paths = append(paths, path)
 		}
-		paths = paths[:j]
 	}
 	pathPatterns = make([]*gen.PathPattern, len(paths))
 	for i, p := range paths {

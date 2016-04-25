@@ -7,7 +7,9 @@
         "access_rules": [
           "instance"
         ],
-        "route": "POST   /api/right_net/scheduler/schedule_right_script(.:format)? {dummy so regexp matches}",
+        "routes": [
+			"POST   /api/right_net/scheduler/schedule_right_script(.:format)? {dummy so regexp matches}"
+		],
         "status_code": "204 No Content",
         "description": "Schedules a RightScript for execution on the current instance",
         "content_type": "",
@@ -29,11 +31,11 @@
           },
           "arguments": {
             "class": "Enumerable",
-	    "description": "Serialized script execution arguments values keyed by name"
+            "description": "Serialized script execution arguments values keyed by name"
           },
           "formal_values": {
             "class": "Enumerable",
-	    "description": "Formal input parameter values"
+            "description": "Formal input parameter values"
           },
           "policy": {
             "description": "RunlistPolicy policy name"
@@ -44,13 +46,15 @@
           "audit_period": {
             "description": "RunlistPolicy audit period"
           }
-	}
+        }
       },
       "schedule_recipe": {
         "access_rules": [
           "instance"
         ],
-        "route": "POST   /api/right_net/scheduler/schedule_recipe(.:format)? {dummy so regexp matches}",
+        "routes": [
+			"POST   /api/right_net/scheduler/schedule_recipe(.:format)? {dummy so regexp matches}"
+		],
         "status_code": "204 No Content",
         "description": "Schedules a chef recipe for execution on the current instance",
         "content_type": "",
@@ -72,11 +76,11 @@
           },
           "arguments": {
             "class": "Enumerable",
-	    "description": "Serialized recipe execution arguments values keyed by name"
+            "description": "Serialized recipe execution arguments values keyed by name"
           },
           "formal_values": {
             "class": "Enumerable",
-	    "description": "Formal input parameter values"
+            "description": "Formal input parameter values"
           },
           "policy": {
             "description": "RunlistPolicy policy name"
@@ -87,7 +91,7 @@
           "audit_period": {
             "description": "RunlistPolicy audit period"
           }
-	}
+        }
       }
     }
   },
@@ -2961,7 +2965,9 @@
           }
         },
         "status_code": "204 No Content",
-        "route": "PUT    /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)? {:action=>\"update\", :controller=>\"instance_custom_lodgements\"}",
+        "routes": [
+			"PUT    /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)? {:action=>\"update\", :controller=>\"instance_custom_lodgements\"}"
+		],
         "access_rules": [
           "actor||instance"
         ],
@@ -2995,7 +3001,9 @@
           }
         },
         "status_code": "201 Created",
-        "route": "POST   /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements(.:format)? {:action=>\"create\", :controller=>\"instance_custom_lodgements\"}",
+        "routes": [
+			"POST   /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements(.:format)? {:action=>\"create\", :controller=>\"instance_custom_lodgements\"}"
+		],
         "access_rules": [
           "actor||instance"
         ],
@@ -3017,7 +3025,9 @@
           }
         },
         "status_code": "200 OK",
-        "route": "GET    /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements(.:format)? {:action=>\"index\", :controller=>\"instance_custom_lodgements\"}",
+        "routes": [
+			"GET    /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements(.:format)? {:action=>\"index\", :controller=>\"instance_custom_lodgements\"}"
+		],
         "access_rules": [
           "observer||instance"
         ],
@@ -3027,7 +3037,9 @@
         "parameters": {
         },
         "status_code": "204 No Content",
-        "route": "DELETE /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)? {:action=>\"destroy\", :controller=>\"instance_custom_lodgements\"}",
+        "routes": [
+			"DELETE /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)? {:action=>\"destroy\", :controller=>\"instance_custom_lodgements\"}"
+		],
         "access_rules": [
           "actor||instance"
         ],
@@ -3037,7 +3049,9 @@
         "parameters": {
         },
         "status_code": "200 OK",
-        "route": "GET    /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)? {:action=>\"show\", :controller=>\"instance_custom_lodgements\"}",
+        "routes": [
+			"GET    /api/clouds/:cloud_id/instances/:instance_id/instance_custom_lodgements/:id(.:format)? {:action=>\"show\", :controller=>\"instance_custom_lodgements\"}"
+		],
         "access_rules": [
           "observer||instance"
         ],
