@@ -425,10 +425,9 @@ func (loc *AlertLocator) Index(options rsapi.APIParams) ([]*Alert, error) {
 // Suppresses the Alert from being triggered for a given time period. Idempotent.
 // Required parameters:
 // duration: The time period in seconds to suppress Alert from being triggered.
-func (loc *AlertLocator) Quench(duration string) (string, error) {
-	var res string
+func (loc *AlertLocator) Quench(duration string) error {
 	if duration == "" {
-		return res, fmt.Errorf("duration is required")
+		return fmt.Errorf("duration is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -437,15 +436,15 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 	}
 	uri, err := loc.ActionPath("Alert", "quench")
 	if err != nil {
-		return res, err
+		return err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return res, err
+		return err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return res, err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -454,15 +453,9 @@ func (loc *AlertLocator) Quench(duration string) (string, error) {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
-	}
-	res = string(respBody)
-	return res, err
+	return nil
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/alerts/:id

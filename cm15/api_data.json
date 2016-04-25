@@ -680,7 +680,6 @@
           "POST   /api/alerts/:id/quench(.:format)?        {:controller=>\"alerts\", :action=>\"quench\"}"
         ],
         "description": "Suppresses the Alert from being triggered for a given time period. Idempotent.\n",
-        "content_type": "application/vnd.rightscale.text",
         "status_code": "204 No Content",
         "parameters": {
           "duration": {
