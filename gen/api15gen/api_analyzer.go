@@ -150,6 +150,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		if d, _ := meth["description"]; d != nil {
 			description = d.(string)
 		}
+		fmt.Printf("meth: %#v\n", meth)
 		var pathPatterns = ParseRoute(fmt.Sprintf("%s#%s", name, actionName),
 			meth["route"].(string))
 		if len(pathPatterns) == 0 {
