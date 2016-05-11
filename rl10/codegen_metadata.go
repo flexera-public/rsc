@@ -87,6 +87,78 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
+	"DockerControl": &metadata.Resource{
+		Name:        "DockerControl",
+		Description: `Manipulate the Docker integration in RightLink 10`,
+		Identifier:  "",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "show",
+				Description: `Show Docker integration features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/rll/docker/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/docker/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Enable/disable Docker integration features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/docker/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/docker/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "docker_host",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "enable_docker",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"none", "tags", "all"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "docker_host",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "enable_docker",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"none", "tags", "all"},
+					},
+				},
+			},
+		},
+	},
 	"Env": &metadata.Resource{
 		Name:        "Env",
 		Description: `Manipulate global script environment variables`,

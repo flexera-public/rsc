@@ -1,7 +1,17 @@
-Unreleased changes
-------------------
+upcoming
+--------
+* Fields for Instance, Route, SshKey, Volume, and Permission types are updated.
+* Instances#set_custom_lodgement is removed.
+* InstanceCustomLodgement is removed.
+* Added RightScript#delete, Servers#disable_runnable_bindings, Servers#enable_runnable_bindings, ServerArrays#disable_runnable_bindings, and ServerArrays#enable_runnable_bindings, and VolumeSnapshots#copy.
+* Sessions#index now accepts a view argument and the supported views are: default and whoami.
+* Parameters for Instances#create, Instances#update, Routes#create, Servers#create, Servers#update, ServerArrays#create, and Volumes#create updated.
+
+v5.0.3 / 2016-04-21
+-------------------
 * Add --retry flag. Specifies number of retry attempts for non-successful API responses(500, 503, and timeouts only)
 * cm15: Add RightScriptAttachment actions. Add RightScript delete and update_source actions.
+* rl10: Add Docker integration actions.
 
 v5.0.2 / 2016-02-05
 -------------------

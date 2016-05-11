@@ -9,18 +9,19 @@ import (
 
 var _ = Describe("APIAnalyzer ParseRoute", func() {
 	var (
-		moniker, route string
+		moniker string
+		routes  []string
 
 		pathPatterns []*gen.PathPattern
 	)
 
 	JustBeforeEach(func() {
-		pathPatterns = ParseRoute(moniker, route)
+		pathPatterns = ParseRoute(moniker, routes)
 	})
 
 	Context("given a simple route", func() {
 		BeforeEach(func() {
-			route = "GET    /api/servers(.:format)? {:action=>\"index\", :controller=>\"servers\"}"
+			routes = []string{"GET    /api/servers(.:format)? {:action=>\"index\", :controller=>\"servers\"}"}
 		})
 
 		It("computes the path pattern", func() {
@@ -33,7 +34,7 @@ var _ = Describe("APIAnalyzer ParseRoute", func() {
 
 	Context("given an obsolete route", func() {
 		BeforeEach(func() {
-			route = "GET    /api/session(.:format)? {:action=>\"index\", :controller=>\"servers\"}"
+			routes = []string{"GET    /api/session(.:format)? {:action=>\"index\", :controller=>\"servers\"}"}
 		})
 
 		It("does not produce a path pattern", func() {
@@ -43,7 +44,7 @@ var _ = Describe("APIAnalyzer ParseRoute", func() {
 
 	Context("given a route with a variable", func() {
 		BeforeEach(func() {
-			route = "PUT    /api/servers/:id(.:format)? {:action=>\"index\", :controller=>\"servers\"}"
+			routes = []string{"PUT    /api/servers/:id(.:format)? {:action=>\"index\", :controller=>\"servers\"}"}
 		})
 
 		It("computes the path pattern", func() {
@@ -57,7 +58,7 @@ var _ = Describe("APIAnalyzer ParseRoute", func() {
 
 	Context("given a route with multiple variables", func() {
 		BeforeEach(func() {
-			route = "PUT    /api/clouds/:cloud_id/instances/:instance_id/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}"
+			routes = []string{"PUT    /api/clouds/:cloud_id/instances/:instance_id/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}"}
 		})
 
 		It("computes the path pattern", func() {
@@ -73,9 +74,11 @@ var _ = Describe("APIAnalyzer ParseRoute", func() {
 
 	Context("given multiple routes with multiple ", func() {
 		BeforeEach(func() {
-			route = "GET    /api/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}"
-			route += "GET    /api/instances/:instance_id/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}"
-			route += "GET    /api/clouds/:cloud_id/instances/:instance_id/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}"
+			routes = []string{
+				"GET    /api/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}",
+				"GET    /api/instances/:instance_id/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}",
+				"GET    /api/clouds/:cloud_id/instances/:instance_id/security_groups/:id(.:format)? {:action=>\"index\", :controller=>\"security_groups\"}",
+			}
 		})
 
 		It("computes the path patterns", func() {
