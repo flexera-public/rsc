@@ -21,6 +21,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "DebugCookbookPath",
 		Description: `Manipulate debug cookbook directory location`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -90,6 +91,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Env",
 		Description: `Manipulate global script environment variables`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -175,6 +177,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Proc",
 		Description: `List of process variables, such as version, identity, and protocol_version`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -211,6 +214,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Rl10",
 		Description: `Miscellaneous RightLink 10 local requests`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "upgrade",
@@ -380,6 +384,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "TSS",
 		Description: `Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "get_hostname",
@@ -434,6 +439,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "TSSControl",
 		Description: `Manipulate monitoring (TSS) settings`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -555,6 +561,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "TSSPlugin",
 		Description: `TSS Custom Plugins`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
