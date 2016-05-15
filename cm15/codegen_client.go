@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated with:
-// $ api15gen -metadata=cm15 -output=cm15
+// $ api15gen
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
