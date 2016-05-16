@@ -14,7 +14,7 @@
 	"cloud_type": "string",
 	"comments_emailed": "bool",
 	"comments_enabled": "bool",
-	"commit_message": "string",
+	"commit_message": "map[string]interface{}",
 	"commit_reference": "string",
 	"committed": "bool",
 	"company": "string",

@@ -7486,17 +7486,17 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 // A Publication is a revisioned component shared with a set of Account Groups.
 // If shared with your account, it can be imported in to your account.
 type Publication struct {
-	Actions       []map[string]string `json:"actions,omitempty"`
-	CommitMessage string              `json:"commit_message,omitempty"`
-	ContentType   string              `json:"content_type,omitempty"`
-	CreatedAt     *RubyTime           `json:"created_at,omitempty"`
-	Description   string              `json:"description,omitempty"`
-	Links         []map[string]string `json:"links,omitempty"`
-	Name          string              `json:"name,omitempty"`
-	Publisher     string              `json:"publisher,omitempty"`
-	Revision      int                 `json:"revision,omitempty"`
-	RevisionNotes string              `json:"revision_notes,omitempty"`
-	UpdatedAt     *RubyTime           `json:"updated_at,omitempty"`
+	Actions       []map[string]string    `json:"actions,omitempty"`
+	CommitMessage map[string]interface{} `json:"commit_message,omitempty"`
+	ContentType   string                 `json:"content_type,omitempty"`
+	CreatedAt     *RubyTime              `json:"created_at,omitempty"`
+	Description   string                 `json:"description,omitempty"`
+	Links         []map[string]string    `json:"links,omitempty"`
+	Name          string                 `json:"name,omitempty"`
+	Publisher     string                 `json:"publisher,omitempty"`
+	Revision      int                    `json:"revision,omitempty"`
+	RevisionNotes string                 `json:"revision_notes,omitempty"`
+	UpdatedAt     *RubyTime              `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
