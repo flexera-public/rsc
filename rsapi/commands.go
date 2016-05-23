@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"text/tabwriter"
+	"time"
 
 	"github.com/rightscale/rsc/metadata"
 )
@@ -102,6 +103,12 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 			if err != nil {
 				return nil, fmt.Errorf("Value for '%s' must be a bool, value provided was '%s'",
 					name, value)
+			}
+			*coerced = append(*coerced, APIParams{name: val})
+		case "*time.Time":
+			val, err := time.Parse(time.RFC3339, value)
+			if err != nil {
+				return nil, fmt.Errorf("Invalid time '%s' for %s: %s", value, name, err)
 			}
 			*coerced = append(*coerced, APIParams{name: val})
 		case "map":
