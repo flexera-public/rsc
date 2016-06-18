@@ -243,6 +243,62 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
+	"LoginControl": &metadata.Resource{
+		Name:        "LoginControl",
+		Description: `Manipulate login policy settings`,
+		Identifier:  "",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "show",
+				Description: `Show login policy features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/rll/login/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/login/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Enable/disable login policy features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/login/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/login/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_login",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"false", "true"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_login",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"false", "true"},
+					},
+				},
+			},
+		},
+	},
 	"Proc": &metadata.Resource{
 		Name:        "Proc",
 		Description: `List of process variables, such as version, identity, and protocol_version`,

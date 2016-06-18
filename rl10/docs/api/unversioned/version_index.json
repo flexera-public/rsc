@@ -33,6 +33,10 @@
     "Resources-TSSControl": {
       "name": "Resources::TSSControl",
       "friendly_name": "TSSControl"
+    },
+    "Resources-LoginControl": {
+      "name": "Resources::LoginControl",
+      "friendly_name": "LoginControl"
     }
   },
   "schemas": {
