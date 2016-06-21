@@ -278,7 +278,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "enable_login",
 						Description: ``,
-						Type:        "string",
+						Type:        "bool",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -289,7 +289,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "enable_login",
 						Description: ``,
-						Type:        "string",
+						Type:        "bool",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,

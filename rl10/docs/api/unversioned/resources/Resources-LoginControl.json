@@ -56,15 +56,15 @@
               ],
               "required": false,
               "type": {
-                "name": "String",
-                "id": "Attributor-String"
+                "name": "Boolean",
+                "id": "Attributor-Boolean"
               },
               "source": "query"
             }
           }
         },
         "example": {
-          "enable_monitoring": "true"
+          "enable_login": "true"
         }
       },
       "responses": {
