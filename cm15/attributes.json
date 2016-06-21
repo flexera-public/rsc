@@ -74,6 +74,7 @@
 	"ip_forwarding_enabled": "bool",
 	"is_default": "bool",
 	"last_name": "string",
+	"login_name": "string",
 	"lineage": "string",
 	"links": "[]map[string]string",
 	"local_disk_size": "int",
