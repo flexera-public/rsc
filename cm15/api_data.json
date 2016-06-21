@@ -11859,6 +11859,7 @@
           "email": "owner_user@rightscale.com",
           "first_name": "Fred",
           "last_name": "Accountholder",
+          "login_name": "rightscale888",
           "company": "Account That Likes to Publish Things",
           "phone": "805-867-5309",
           "timezone_name": "America/Los_Angeles",
@@ -11901,6 +11902,7 @@
           "email": "owner_user@rightscale.com",
           "first_name": "Fred",
           "last_name": "Accountholder",
+          "login_name": "rightscale888",
           "company": "Account That Likes to Publish Things",
           "phone": "805-867-5309",
           "timezone_name": "America/Los_Angeles",
@@ -11968,6 +11970,10 @@
             "class": "String",
             "non_blank": true
           },
+          "user[login_name]": {
+            "class": "String",
+            "non_blank": false
+          },
           "user[company]": {
             "class": "String",
             "non_blank": true
@@ -11992,6 +11998,7 @@
         "email": "",
         "first_name": "",
         "last_name": "",
+        "login_name": "",
         "company": "",
         "phone": "",
         "timezone_name": "",

@@ -14943,8 +14943,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "user[principal_uid]",
-						Description: `The updated principal identifier (SAML NameID or OpenID identity URL) of this user.`,
+						Name:        "user[timezone_name]",
+						Description: `This can be in the form of country/region or timezone name. For example 'America/Los_Angeles' or 'GB' or 'UTC'. A complete list of acceptable values is available in the Settings > User Settings > Preferences page.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14959,8 +14959,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "user[timezone_name]",
-						Description: `This can be in the form of country/region or timezone name. For example 'America/Los_Angeles' or 'GB' or 'UTC'. A complete list of acceptable values is available in the Settings > User Settings > Preferences page.`,
+						Name:        "user[principal_uid]",
+						Description: `The updated principal identifier (SAML NameID or OpenID identity URL) of this user.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14981,6 +14981,14 @@ Required parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "user[login_name]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "user[last_name]",

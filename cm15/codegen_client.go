@@ -13328,6 +13328,7 @@ type User struct {
 	FirstName    string              `json:"first_name,omitempty"`
 	LastName     string              `json:"last_name,omitempty"`
 	Links        []map[string]string `json:"links,omitempty"`
+	LoginName    string              `json:"login_name,omitempty"`
 	Phone        string              `json:"phone,omitempty"`
 	PrincipalUid string              `json:"principal_uid,omitempty"`
 	TimezoneName string              `json:"timezone_name,omitempty"`
@@ -15148,6 +15149,7 @@ type UserParam2 struct {
 	FirstName            string `json:"first_name,omitempty"`
 	IdentityProviderHref string `json:"identity_provider_href,omitempty"`
 	LastName             string `json:"last_name,omitempty"`
+	LoginName            string `json:"login_name,omitempty"`
 	NewEmail             string `json:"new_email,omitempty"`
 	NewPassword          string `json:"new_password,omitempty"`
 	Phone                string `json:"phone,omitempty"`

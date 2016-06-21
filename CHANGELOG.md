@@ -1,6 +1,6 @@
 upcoming
 --------
-* Fields for Instance, Route, SshKey, Volume, and Permission types are updated.
+* Fields for Instance, Route, SshKey, Volume, User, and Permission types are updated.
 * Instances#set_custom_lodgement is removed.
 * InstanceCustomLodgement is removed.
 * Added RightScript#delete, Servers#disable_runnable_bindings, Servers#enable_runnable_bindings, ServerArrays#disable_runnable_bindings, and ServerArrays#enable_runnable_bindings, and VolumeSnapshots#copy.
