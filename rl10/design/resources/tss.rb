@@ -97,7 +97,7 @@ module Resources
       params do
         attribute :tss_id, String, required: false
         attribute :enable_monitoring, Attributor::String, required: false,
-		values:['false','true','none','util','extra','all']
+          values:['false','true','none','util','extra','all']
       end
       response :ok
     end
