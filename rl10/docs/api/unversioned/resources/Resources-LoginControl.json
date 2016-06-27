@@ -51,20 +51,21 @@
           "attributes": {
             "enable_login": {
               "values": [
-                "false",
-                "true"
+                "on",
+                "off",
+                "compat"
               ],
               "required": false,
               "type": {
-                "name": "Boolean",
-                "id": "Attributor-Boolean"
+                "name": "String",
+                "id": "Attributor-String"
               },
               "source": "query"
             }
           }
         },
         "example": {
-          "enable_login": "true"
+          "enable_login": "on"
         }
       },
       "responses": {

@@ -19,7 +19,8 @@ module Resources
       description 'Enable/disable login policy features'
       routing { put '' }
       params do
-        attribute :enable_login, Attributor::Boolean, required: false
+        attribute :enable_login, Attributor::String, required: false,
+          values:['on', 'off', 'compat']
       end
       response :ok
     end
