@@ -1,4 +1,4 @@
-upcoming
+v6.0.0 / 2016-06-28
 --------
 * Fields for Instance, Route, SshKey, Volume, User, and Permission types are updated.
 * Instances#set_custom_lodgement is removed.
@@ -7,7 +7,6 @@ upcoming
 * Sessions#index now accepts a view argument and the supported views are: default and whoami.
 * Parameters for Instances#create, Instances#update, Routes#create, Servers#create, Servers#update, ServerArrays#create, and Volumes#create updated.
 * rl10: Add managed login actions
-
 
 v5.0.3 / 2016-04-21
 -------------------
