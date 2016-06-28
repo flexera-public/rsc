@@ -37,7 +37,7 @@ NAME=rsc
 BUCKET=rightscale-binaries
 ACL=public-read
 # version for gopkg.in, e.g. v1, v2, ...
-GOPKG_VERS=v5
+GOPKG_VERS=v6
 # Dependencies not handled by Godep, i.e. that are used to build/test/upload this puppy
 DEPEND=golang.org/x/tools/cmd/cover \
 			github.com/onsi/ginkgo \

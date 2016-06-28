@@ -6,6 +6,8 @@ and [README](https://github.com/rightscale/rsc/blob/master/README.md) must be ke
 
 ### Make a release branch
 
+If making a major release version, change `GOPKG_VERS` in Makefile.
+
 In order to cut a release branch from master, the steps are:
 ```
 git checkout -b v2.3.4
