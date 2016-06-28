@@ -7,12 +7,12 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cm16
+package cm16 // import "gopkg.in/rightscale/rsc.v6/cm16"
 
 import (
 	"regexp"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v6/metadata"
 )
 
 // Consists of a map of resource name to resource metadata.
