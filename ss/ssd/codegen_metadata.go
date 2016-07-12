@@ -29,9 +29,9 @@ Multiple Schedules can be associated with a Template when published to the Catal
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/collections/%s/schedules",
+						Pattern:    "/api/designer/collections/%s/schedules",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/schedules`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -44,9 +44,9 @@ Multiple Schedules can be associated with a Template when published to the Catal
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/collections/%s/schedules/%s",
+						Pattern:    "/api/designer/collections/%s/schedules/%s",
 						Variables:  []string{"collection_id", "id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/schedules/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -59,9 +59,9 @@ Multiple Schedules can be associated with a Template when published to the Catal
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/collections/%s/schedules",
+						Pattern:    "/api/designer/collections/%s/schedules",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/schedules`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -173,9 +173,9 @@ Note: updating a Schedule in Designer doesn't update it in the applications that
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PATCH",
-						Pattern:    "/collections/%s/schedules/%s",
+						Pattern:    "/api/designer/collections/%s/schedules/%s",
 						Variables:  []string{"collection_id", "id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/schedules/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -287,9 +287,9 @@ Note: deleting a Schedule from Designer doesn't remove it from the applications 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/collections/%s/schedules/%s",
+						Pattern:    "/api/designer/collections/%s/schedules/%s",
 						Variables:  []string{"collection_id", "id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/schedules/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -303,9 +303,9 @@ Note: deleting a Schedule from Designer doesn't remove it from the applications 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/collections/%s/schedules",
+						Pattern:    "/api/designer/collections/%s/schedules",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/schedules`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/schedules`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -334,7 +334,7 @@ Note: deleting a Schedule from Designer doesn't remove it from the applications 
 	"Template": &metadata.Resource{
 		Name: "Template",
 		Description: `A Template represent a CloudApplication Template (CAT) that has been uploaded to this design collection.
-For information on the syntax of a CAT file, please see the [CAT Designers Guide](http://support.rightscale.com/12-Guides/Self-Service/20_Cloud_Application_Template_%28CAT%29_Designers_Guide) on the RightScale Support
+For information on the syntax of a CAT file, please see the [CAT File Language Reference](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html) on the RightScale Docs
 site.
 A CAT file is compiled by Self-Service to make it ready for publication and subsequent launch by users. To
 test your CAT file syntax, you can call the compile action with the source content. In order to
@@ -350,22 +350,20 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/collections/%s/templates",
+						Pattern:    "/api/designer/collections/%s/templates",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "ids[]",
-						Description: `An optional list of template IDs to retrieve`,
+						Name:        "filter[]",
+						Description: `Filter by name, syntax is ["name==foo"]`,
 						Type:        "[]string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-				},
-				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "ids[]",
 						Description: `An optional list of template IDs to retrieve`,
@@ -373,6 +371,42 @@ attribute inside of a CAT file.`,
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `Optional view to return`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "expanded"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: `Filter by name, syntax is ["name==foo"]`,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "ids[]",
+						Description: `An optional list of template IDs to retrieve`,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `Optional view to return`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "expanded"},
 					},
 				},
 			},
@@ -383,9 +417,9 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/collections/%s/templates/%s",
+						Pattern:    "/api/designer/collections/%s/templates/%s",
 						Variables:  []string{"collection_id", "id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -418,9 +452,9 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/collections/%s/templates",
+						Pattern:    "/api/designer/collections/%s/templates",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -440,6 +474,55 @@ attribute inside of a CAT file.`,
 						Type:        "*rsapi.FileUpload",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "create_from_compilation",
+				Description: `Create a new Template from a previously compiled CAT.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/designer/collections/%s/templates/actions/create_from_compilation",
+						Variables:  []string{"collection_id"},
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/actions/create_from_compilation`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "compilation_href",
+						Description: `The href of the compilation`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "filename",
+						Description: `The filename of the template`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "compilation_href",
+						Description: `The href of the compilation`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "filename",
+						Description: `The filename of the template`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 				},
@@ -451,9 +534,9 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",
-						Pattern:    "/collections/%s/templates/%s",
+						Pattern:    "/api/designer/collections/%s/templates/%s",
 						Variables:  []string{"collection_id", "id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -479,14 +562,63 @@ attribute inside of a CAT file.`,
 			},
 
 			&metadata.Action{
+				Name:        "update_from_compilation",
+				Description: `Update a Template from a previously compiled CAT.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/designer/collections/%s/templates/%s/actions/update_from_compilation",
+						Variables:  []string{"collection_id", "id"},
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/([^/]+)/actions/update_from_compilation`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "compilation_href",
+						Description: `The href of the compilation`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "filename",
+						Description: `The filename of the template`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "compilation_href",
+						Description: `The href of the compilation`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "filename",
+						Description: `The filename of the template`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name:        "delete",
 				Description: `Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/collections/%s/templates/%s",
+						Pattern:    "/api/designer/collections/%s/templates/%s",
 						Variables:  []string{"collection_id", "id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -499,9 +631,9 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/collections/%s/templates",
+						Pattern:    "/api/designer/collections/%s/templates",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -532,9 +664,9 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/collections/%s/templates/%s/download",
+						Pattern:    "/api/designer/collections/%s/templates/%s/download",
 						Variables:  []string{"collection_id", "id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/([^/]+)/download`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/([^/]+)/download`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -565,9 +697,9 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/collections/%s/templates/actions/compile",
+						Pattern:    "/api/designer/collections/%s/templates/actions/compile",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/actions/compile`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/actions/compile`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -593,14 +725,114 @@ attribute inside of a CAT file.`,
 			},
 
 			&metadata.Action{
+				Name:        "dependencies",
+				Description: `Lists the Templates which the provided CAT source or Template directly or indirectly depend upon`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/designer/collections/%s/templates/actions/dependencies",
+						Variables:  []string{"collection_id"},
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/actions/dependencies`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "source",
+						Description: `The source of the CAT as a string, mutually exclusive with template_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "template_id",
+						Description: `The id of the template, mutually exclusive with source, have predecedence over "source" if both parameters are given`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "source",
+						Description: `The source of the CAT as a string, mutually exclusive with template_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "template_id",
+						Description: `The id of the template, mutually exclusive with source, have predecedence over "source" if both parameters are given`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "dependents",
+				Description: `List the Dependents templates available in Designer for the given package, even if no template actually define the package.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/designer/collections/%s/templates/actions/dependents",
+						Variables:  []string{"collection_id"},
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/actions/dependents`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "package",
+						Description: `The path of the Package to which lists the dependents`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `Optional view to return`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "expanded"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "package",
+						Description: `The path of the Package to which lists the dependents`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `Optional view to return`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "expanded"},
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name:        "publish",
 				Description: `Publish the given Template to the Catalog so that users can launch it.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/collections/%s/templates/actions/publish",
+						Pattern:    "/api/designer/collections/%s/templates/actions/publish",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/actions/publish`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/actions/publish`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -610,6 +842,14 @@ attribute inside of a CAT file.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "long_description",
+						Description: `Optionally override the Template long description used mostly for designers.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -663,6 +903,14 @@ attribute inside of a CAT file.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "long_description",
+						Description: `Optionally override the Template long description used mostly for designers.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "name",
 						Description: `Optionally override the Template name for display in the Catalog`,
 						Type:        "string",
@@ -711,9 +959,9 @@ attribute inside of a CAT file.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/collections/%s/templates/actions/unpublish",
+						Pattern:    "/api/designer/collections/%s/templates/actions/unpublish",
 						Variables:  []string{"collection_id"},
-						Regexp:     regexp.MustCompile(`/collections/([^/]+)/templates/actions/unpublish`),
+						Regexp:     regexp.MustCompile(`/api/designer/collections/([^/]+)/templates/actions/unpublish`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{

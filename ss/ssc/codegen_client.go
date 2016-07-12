@@ -90,7 +90,7 @@ func (api *API) AccountPreferenceLocator(href string) *AccountPreferenceLocator 
 
 //===== Actions
 
-// GET /accounts/:account_id/account_preferences
+// GET /api/catalog/accounts/:account_id/account_preferences
 //
 // List the AccountPreferences for this account.
 func (loc *AccountPreferenceLocator) Index(options rsapi.APIParams) ([]*AccountPreference, error) {
@@ -100,10 +100,6 @@ func (loc *AccountPreferenceLocator) Index(options rsapi.APIParams) ([]*AccountP
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
-	}
-	var groupOpt = options["group"]
-	if groupOpt != nil {
-		params["group"] = groupOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AccountPreference", "index")
@@ -136,7 +132,7 @@ func (loc *AccountPreferenceLocator) Index(options rsapi.APIParams) ([]*AccountP
 	return res, err
 }
 
-// GET /accounts/:account_id/account_preferences/:name
+// GET /api/catalog/accounts/:account_id/account_preferences/:name
 //
 // Get details for a particular AccountPreference
 func (loc *AccountPreferenceLocator) Show() (*AccountPreference, error) {
@@ -173,7 +169,7 @@ func (loc *AccountPreferenceLocator) Show() (*AccountPreference, error) {
 	return res, err
 }
 
-// POST /accounts/:account_id/account_preferences
+// POST /api/catalog/accounts/:account_id/account_preferences
 //
 // Create a new AccountPreference or update an existing AccountPreference with the new value
 func (loc *AccountPreferenceLocator) Create(groupName string, name string, value string) (*AccountPreferenceLocator, error) {
@@ -223,7 +219,7 @@ func (loc *AccountPreferenceLocator) Create(groupName string, name string, value
 	}
 }
 
-// DELETE /accounts/:account_id/account_preferences/:name
+// DELETE /api/catalog/accounts/:account_id/account_preferences/:name
 //
 // Delete an AccountPreference
 func (loc *AccountPreferenceLocator) Delete() error {
@@ -262,7 +258,9 @@ func (loc *AccountPreferenceLocator) Delete() error {
 // In the Self-Service portal, an Application is equivalent to an item in the Catalog. Most users have access to these Application resources
 // and can launch them to create Executions in the Manager application.
 type Application struct {
+	CompilationHref    string            `json:"compilation_href,omitempty"`
 	CompiledCat        string            `json:"compiled_cat,omitempty"`
+	CompilerVer        string            `json:"compiler_ver,omitempty"`
 	CreatedBy          *User             `json:"created_by,omitempty"`
 	Href               string            `json:"href,omitempty"`
 	Id                 string            `json:"id,omitempty"`
@@ -298,7 +296,7 @@ func (api *API) ApplicationLocator(href string) *ApplicationLocator {
 
 //===== Actions
 
-// GET /catalogs/:catalog_id/applications
+// GET /api/catalog/catalogs/:catalog_id/applications
 //
 // List the Applications available in the specified Catalog.
 func (loc *ApplicationLocator) Index(options rsapi.APIParams) ([]*Application, error) {
@@ -340,7 +338,7 @@ func (loc *ApplicationLocator) Index(options rsapi.APIParams) ([]*Application, e
 	return res, err
 }
 
-// GET /catalogs/:catalog_id/applications/:id
+// GET /api/catalog/catalogs/:catalog_id/applications/:id
 //
 // Show detailed information about a given Application.
 func (loc *ApplicationLocator) Show(options rsapi.APIParams) (*Application, error) {
@@ -382,14 +380,11 @@ func (loc *ApplicationLocator) Show(options rsapi.APIParams) (*Application, erro
 	return res, err
 }
 
-// POST /catalogs/:catalog_id/applications
+// POST /api/catalog/catalogs/:catalog_id/applications
 //
 // Create a new Application in the Catalog.
-func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, shortDescription string, options rsapi.APIParams) (*ApplicationLocator, error) {
+func (loc *ApplicationLocator) Create(name string, shortDescription string, options rsapi.APIParams) (*ApplicationLocator, error) {
 	var res *ApplicationLocator
-	if compiledCat == nil {
-		return res, fmt.Errorf("compiledCat is required")
-	}
 	if name == "" {
 		return res, fmt.Errorf("name is required")
 	}
@@ -399,9 +394,12 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{
-		"compiled_cat":      compiledCat,
 		"name":              name,
 		"short_description": shortDescription,
+	}
+	var compiledCatOpt = options["compiled_cat"]
+	if compiledCatOpt != nil {
+		p["compiled_cat"] = compiledCatOpt
 	}
 	var longDescriptionOpt = options["long_description"]
 	if longDescriptionOpt != nil {
@@ -448,7 +446,7 @@ func (loc *ApplicationLocator) Create(compiledCat *CompiledCAT, name string, sho
 	}
 }
 
-// PUT /catalogs/:catalog_id/applications/:id
+// PUT /api/catalog/catalogs/:catalog_id/applications/:id
 //
 // Update the content of an existing Application.
 func (loc *ApplicationLocator) Update(options rsapi.APIParams) error {
@@ -507,7 +505,7 @@ func (loc *ApplicationLocator) Update(options rsapi.APIParams) error {
 	return nil
 }
 
-// PUT /catalogs/:catalog_id/applications
+// PUT /api/catalog/catalogs/:catalog_id/applications
 //
 // Update the content of multiple Applications.
 func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.APIParams) error {
@@ -571,7 +569,7 @@ func (loc *ApplicationLocator) MultiUpdate(id string, options rsapi.APIParams) e
 	return nil
 }
 
-// DELETE /catalogs/:catalog_id/applications/:id
+// DELETE /api/catalog/catalogs/:catalog_id/applications/:id
 //
 // Delete an Application from the Catalog
 func (loc *ApplicationLocator) Delete() error {
@@ -601,7 +599,7 @@ func (loc *ApplicationLocator) Delete() error {
 	return nil
 }
 
-// DELETE /catalogs/:catalog_id/applications
+// DELETE /api/catalog/catalogs/:catalog_id/applications
 //
 // Delete multiple Applications from the Catalog
 func (loc *ApplicationLocator) MultiDelete(ids []string) error {
@@ -637,7 +635,7 @@ func (loc *ApplicationLocator) MultiDelete(ids []string) error {
 	return nil
 }
 
-// GET /catalogs/:catalog_id/applications/:id/download
+// GET /api/catalog/catalogs/:catalog_id/applications/:id/download
 //
 // Download the underlying CAT source of an Application.
 func (loc *ApplicationLocator) Download(apiVersion string) error {
@@ -673,13 +671,17 @@ func (loc *ApplicationLocator) Download(apiVersion string) error {
 	return nil
 }
 
-// POST /catalogs/:catalog_id/applications/:id/actions/launch
+// POST /api/catalog/catalogs/:catalog_id/applications/:id/actions/launch
 //
 // Launches an Application by creating an Execution with ScheduledActions as needed to match the optional Schedule provided.
 func (loc *ApplicationLocator) Launch(options rsapi.APIParams) error {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{}
+	var deferLaunchOpt = options["defer_launch"]
+	if deferLaunchOpt != nil {
+		p["defer_launch"] = deferLaunchOpt
+	}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
 		p["description"] = descriptionOpt
@@ -724,6 +726,190 @@ func (loc *ApplicationLocator) Launch(options rsapi.APIParams) error {
 	return nil
 }
 
+/******  EndUser ******/
+
+type EndUser struct {
+	Company      string `json:"company,omitempty"`
+	FirstName    string `json:"first_name,omitempty"`
+	Href         string `json:"href,omitempty"`
+	Id           string `json:"id,omitempty"`
+	Kind         string `json:"kind,omitempty"`
+	LastName     string `json:"last_name,omitempty"`
+	Phone        string `json:"phone,omitempty"`
+	TimezoneName string `json:"timezone_name,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *EndUser) Locator(api *API) *EndUserLocator {
+	return api.EndUserLocator(r.Href)
+}
+
+//===== Locator
+
+// EndUserLocator exposes the EndUser resource actions.
+type EndUserLocator struct {
+	Href
+	api *API
+}
+
+// EndUserLocator builds a locator from the given href.
+func (api *API) EndUserLocator(href string) *EndUserLocator {
+	return &EndUserLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /api/catalog/accounts/:account_id/end_users
+//
+// Show all Self-Service Only End Users that belong to this account.
+func (loc *EndUserLocator) Index(options rsapi.APIParams) ([]*EndUser, error) {
+	var res []*EndUser
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("EndUser", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// POST /api/catalog/accounts/:account_id/end_users
+//
+// Grant a user Self-Service Only End User access to this account.
+func (loc *EndUserLocator) Create(userIds []string) error {
+	if len(userIds) == 0 {
+		return fmt.Errorf("userIds is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"user_ids": userIds,
+	}
+	uri, err := loc.ActionPath("EndUser", "create")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// DELETE /api/catalog/accounts/:account_id/end_users
+//
+
+func (loc *EndUserLocator) Delete(userIds []string) error {
+	if len(userIds) == 0 {
+		return fmt.Errorf("userIds is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"user_ids": userIds,
+	}
+	uri, err := loc.ActionPath("EndUser", "delete")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// GET /api/catalog/accounts/:account_id/end_users/available
+//
+
+func (loc *EndUserLocator) NonSsUsers() (*EndUser, error) {
+	var res *EndUser
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("EndUser", "non_ss_users")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
 /******  NotificationRule ******/
 
 // A notification rule describes which notification should be created
@@ -735,6 +921,7 @@ func (loc *ApplicationLocator) Launch(options rsapi.APIParams) error {
 // out events with lower severities.
 type NotificationRule struct {
 	AccountId   string            `json:"account_id,omitempty"`
+	Category    string            `json:"category,omitempty"`
 	Href        string            `json:"href,omitempty"`
 	Id          string            `json:"id,omitempty"`
 	Kind        string            `json:"kind,omitempty"`
@@ -765,7 +952,7 @@ func (api *API) NotificationRuleLocator(href string) *NotificationRuleLocator {
 
 //===== Actions
 
-// GET /accounts/:account_id/notification_rules
+// GET /api/catalog/accounts/:account_id/notification_rules
 //
 // List all notification rules, potentially filtering by a collection of resources.
 func (loc *NotificationRuleLocator) Index(source string, options rsapi.APIParams) ([]*NotificationRule, error) {
@@ -776,6 +963,10 @@ func (loc *NotificationRuleLocator) Index(source string, options rsapi.APIParams
 	var params rsapi.APIParams
 	params = rsapi.APIParams{
 		"source": source,
+	}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
 	}
 	var targetsOpt = options["targets"]
 	if targetsOpt != nil {
@@ -812,7 +1003,7 @@ func (loc *NotificationRuleLocator) Index(source string, options rsapi.APIParams
 	return res, err
 }
 
-// POST /accounts/:account_id/notification_rules
+// POST /api/catalog/accounts/:account_id/notification_rules
 //
 // Create one notification rule for a specific target and source.
 // The source must be unique in the scope of target and account.
@@ -838,6 +1029,10 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 		"min_severity": minSeverity,
 		"source":       source,
 		"target":       target,
+	}
+	var categoryOpt = options["category"]
+	if categoryOpt != nil {
+		p["category"] = categoryOpt
 	}
 	uri, err := loc.ActionPath("NotificationRule", "create")
 	if err != nil {
@@ -868,7 +1063,7 @@ func (loc *NotificationRuleLocator) Create(minSeverity string, source string, ta
 	}
 }
 
-// PATCH /accounts/:account_id/notification_rules/:id
+// PATCH /api/catalog/accounts/:account_id/notification_rules/:id
 //
 // Change min severity of existing rule
 func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
@@ -904,7 +1099,7 @@ func (loc *NotificationRuleLocator) Patch(minSeverity string) error {
 	return nil
 }
 
-// GET /accounts/:account_id/notification_rules/:id
+// GET /api/catalog/accounts/:account_id/notification_rules/:id
 //
 // Show one notification rule.
 func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
@@ -941,7 +1136,7 @@ func (loc *NotificationRuleLocator) Show() (*NotificationRule, error) {
 	return res, err
 }
 
-// DELETE /accounts/:account_id/notification_rules/:id
+// DELETE /api/catalog/accounts/:account_id/notification_rules/:id
 //
 // Delete one notification rule.
 func (loc *NotificationRuleLocator) Delete() error {
@@ -971,7 +1166,7 @@ func (loc *NotificationRuleLocator) Delete() error {
 	return nil
 }
 
-// DELETE /accounts/:account_id/notification_rules
+// DELETE /api/catalog/accounts/:account_id/notification_rules
 //
 // Delete one or more notification rules by id or source and target.
 func (loc *NotificationRuleLocator) MultiDelete(options rsapi.APIParams) error {
@@ -1049,7 +1244,7 @@ func (api *API) UserPreferenceLocator(href string) *UserPreferenceLocator {
 
 //===== Actions
 
-// GET /accounts/:account_id/user_preferences
+// GET /api/catalog/accounts/:account_id/user_preferences
 //
 // List the UserPreference for users in this account.
 // Only administrators and infrastructure users may request the preferences of other users.
@@ -1097,7 +1292,7 @@ func (loc *UserPreferenceLocator) Index(options rsapi.APIParams) ([]*UserPrefere
 	return res, err
 }
 
-// GET /accounts/:account_id/user_preferences/:id
+// GET /api/catalog/accounts/:account_id/user_preferences/:id
 //
 // Get details for a particular UserPreference
 func (loc *UserPreferenceLocator) Show(options rsapi.APIParams) (*UserPreference, error) {
@@ -1139,7 +1334,7 @@ func (loc *UserPreferenceLocator) Show(options rsapi.APIParams) (*UserPreference
 	return res, err
 }
 
-// POST /accounts/:account_id/user_preferences
+// POST /api/catalog/accounts/:account_id/user_preferences
 //
 // Create a new UserPreference.
 // Multiple resources can be created at once with a multipart request.
@@ -1188,7 +1383,7 @@ func (loc *UserPreferenceLocator) Create(userId string, userPreferenceInfoId str
 	}
 }
 
-// PATCH /accounts/:account_id/user_preferences/:id
+// PATCH /api/catalog/accounts/:account_id/user_preferences/:id
 //
 // Update the value of a UserPreference.
 // Multiple values may be updated using a multipart request.
@@ -1227,7 +1422,7 @@ func (loc *UserPreferenceLocator) Update(value interface{}, options rsapi.APIPar
 	return nil
 }
 
-// DELETE /accounts/:account_id/user_preferences/:id
+// DELETE /api/catalog/accounts/:account_id/user_preferences/:id
 //
 // Delete a UserPreference
 func (loc *UserPreferenceLocator) Delete() error {
@@ -1295,7 +1490,7 @@ func (api *API) UserPreferenceInfoLocator(href string) *UserPreferenceInfoLocato
 
 //===== Actions
 
-// GET /accounts/:account_id/user_preference_infos
+// GET /api/catalog/accounts/:account_id/user_preference_infos
 //
 // List the UserPreferenceInfo.
 func (loc *UserPreferenceInfoLocator) Index(options rsapi.APIParams) ([]*UserPreferenceInfo, error) {
@@ -1337,7 +1532,7 @@ func (loc *UserPreferenceInfoLocator) Index(options rsapi.APIParams) ([]*UserPre
 	return res, err
 }
 
-// GET /accounts/:account_id/user_preference_infos/:id
+// GET /api/catalog/accounts/:account_id/user_preference_infos/:id
 //
 // Get details for a particular UserPreferenceInfo
 func (loc *UserPreferenceInfoLocator) Show() (*UserPreferenceInfo, error) {
@@ -1377,20 +1572,26 @@ func (loc *UserPreferenceInfoLocator) Show() (*UserPreferenceInfo, error) {
 /****** Parameter Data Types ******/
 
 type CompiledCAT struct {
-	Conditions         map[string]interface{} `json:"conditions,omitempty"`
-	Definitions        map[string]interface{} `json:"definitions,omitempty"`
-	LongDescription    string                 `json:"long_description,omitempty"`
-	Mappings           map[string]interface{} `json:"mappings,omitempty"`
-	Name               string                 `json:"name,omitempty"`
-	Namespaces         []*Namespace           `json:"namespaces,omitempty"`
-	Operations         map[string]interface{} `json:"operations,omitempty"`
-	Outputs            map[string]interface{} `json:"outputs,omitempty"`
-	Parameters         map[string]interface{} `json:"parameters,omitempty"`
-	RequiredParameters []string               `json:"required_parameters,omitempty"`
-	Resources          map[string]interface{} `json:"resources,omitempty"`
-	RsCaVer            int                    `json:"rs_ca_ver,omitempty"`
-	ShortDescription   string                 `json:"short_description,omitempty"`
-	Source             string                 `json:"source,omitempty"`
+	CatParserGemVersion string                   `json:"cat_parser_gem_version,omitempty"`
+	CompilerVer         string                   `json:"compiler_ver,omitempty"`
+	Conditions          map[string]interface{}   `json:"conditions,omitempty"`
+	Definitions         map[string]interface{}   `json:"definitions,omitempty"`
+	DependencyHashes    []map[string]interface{} `json:"dependency_hashes,omitempty"`
+	Imports             map[string]interface{}   `json:"imports,omitempty"`
+	LongDescription     string                   `json:"long_description,omitempty"`
+	Mappings            map[string]interface{}   `json:"mappings,omitempty"`
+	Name                string                   `json:"name,omitempty"`
+	Namespaces          []*Namespace             `json:"namespaces,omitempty"`
+	Operations          map[string]interface{}   `json:"operations,omitempty"`
+	Outputs             map[string]interface{}   `json:"outputs,omitempty"`
+	Package             string                   `json:"package,omitempty"`
+	Parameters          map[string]interface{}   `json:"parameters,omitempty"`
+	Permissions         map[string]interface{}   `json:"permissions,omitempty"`
+	RequiredParameters  []string                 `json:"required_parameters,omitempty"`
+	Resources           map[string]interface{}   `json:"resources,omitempty"`
+	RsCaVer             int                      `json:"rs_ca_ver,omitempty"`
+	ShortDescription    string                   `json:"short_description,omitempty"`
+	Source              string                   `json:"source,omitempty"`
 }
 
 type ConfigurationOption struct {

@@ -1,0 +1,36 @@
+{
+  "name": "V1::Type::CatDependency",
+  "attributes": {
+    "name": {
+      "description": "Name of the dependency",
+      "type": {
+        "name": "String"
+      }
+    },
+    "package": {
+      "description": "Package of the dependency",
+      "type": {
+        "name": "String"
+      }
+    },
+    "alias": {
+      "description": "Alias used to import this package. This will be empty if and only if this dependency is indirectly imported",
+      "example_definition": "log",
+      "type": {
+        "name": "String"
+      }
+    },
+    "source_href": {
+      "description": "Link to the source of the dependency",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "example": {
+    "name": "sloted",
+    "package": "foretime",
+    "alias": "log",
+    "source_href": "rhinolite"
+  }
+}

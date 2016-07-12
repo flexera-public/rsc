@@ -1,1 +1,156 @@
-{"name":"V1::MediaType::NotificationRule","attributes":{"id":{"required":true,"description":"Notification rule id","example_definition":"53e3bfa9a37b334abf000064","type":{"name":"String"}},"account_id":{"required":true,"description":"Account ID of the target and resource.","example_definition":"12345","type":{"name":"String"}},"href":{"description":"Notification rule href","example_definition":"/api/catalog/accounts/12345/notification_rules/53e3bfa9a37b334abf000064","type":{"name":"String"}},"source":{"description":"The resource (or resource collection) that would trigger the notification.\n                    \"/api/manager/projects/1234/executions\" refers to ALL executions in the project,\n                    \"/api/manager/projects/1234/executions/5678\" refers to just one execution, and\n                    \"/api/manager/projects/1234/executions?filter[]=created_by==me\" refers to executions\n                    created by the submitting user. The source must be unique in the scope of target and account.\n                    Note that at this time, \"me\" is the only supported target filter.","example_definition":["/api/manager/projects/1234/executions","/api/manager/projects/1234/executions/5678","/api/manager/projects/1234/executions?filter[]=created_by==me"],"type":{"name":"String"}},"min_severity":{"values":["error","info","none"],"description":"The lowest level of notifications for the target to receive.\n                    Setting this to \"error\" will result in only receiving error notifications,\n                    whereas setting it to \"info\" will result in receiving both info and error notifications,\n                    and setting it to \"none\" will result in not receiving any notifications.","type":{"name":"String"}},"target":{"description":"The notification target (user) that the rule applies to.\n                    Note that at this time, \"me\" is the only supported target.","example_definition":"me","type":{"name":"String"}},"priority":{"description":"During an index call, multiple rules that apply to the\n                    same execution might be returned, The one with the highest priority\n                    is the one that applies.","example_definition":"1","type":{"name":"Integer"}},"timestamps":{"type":{"name":"Struct","attributes":{"created_at":{"description":"Creation timestamp","type":{"name":"DateTime"}},"updated_at":{"description":"Update timestamp","type":{"name":"DateTime"}}}}},"kind":{"description":"The kind of this resource, always self_service#notification_rule","example_definition":"self_service#notification_rule","type":{"name":"String"}}},"views":{"default":{"attributes":{"kind":{},"id":{},"href":{},"source":{},"min_severity":{},"target":{},"priority":{},"timestamps":{}},"example":{"kind":"self_service#notification_rule","id":"53e3bfa9a37b334abf000064","href":"/api/catalog/accounts/12345/notification_rules/53e3bfa9a37b334abf000064","source":"/api/manager/projects/1234/executions?filter[]=created_by==me","min_severity":"info","target":"me","priority":1,"timestamps":{"created_at":"2013-04-27T00:00:00+00:00","updated_at":"2013-03-24T00:00:00+00:00"}}}},"mime_type":"application/vnd.rightscale.self_service.notification_rule","description":null,"example":{"id":"53e3bfa9a37b334abf000064","account_id":"12345","href":"/api/catalog/accounts/12345/notification_rules/53e3bfa9a37b334abf000064","source":"/api/manager/projects/1234/executions?filter[]=created_by==me","min_severity":"info","target":"me","priority":1,"timestamps":{"created_at":"2013-04-27T00:00:00+00:00","updated_at":"2013-03-24T00:00:00+00:00"},"kind":"self_service#notification_rule"}}
+{
+  "name": "V1::MediaType::NotificationRule",
+  "attributes": {
+    "id": {
+      "required": true,
+      "description": "Notification rule id",
+      "example_definition": "53e3bfa9a37b334abf000064",
+      "type": {
+        "name": "String"
+      }
+    },
+    "account_id": {
+      "required": true,
+      "description": "Account ID of the target and resource.",
+      "example_definition": "12345",
+      "type": {
+        "name": "String"
+      }
+    },
+    "href": {
+      "description": "Notification rule href",
+      "example_definition": "/api/catalog/accounts/12345/notification_rules/53e3bfa9a37b334abf000064",
+      "type": {
+        "name": "String"
+      }
+    },
+    "source": {
+      "description": "The resource (or resource collection) that would trigger the notification.\n                    \"/api/manager/projects/1234/executions\" refers to ALL executions in the project,\n                    \"/api/manager/projects/1234/executions/5678\" refers to just one execution, and\n                    \"/api/manager/projects/1234/executions?filter[]=created_by==me\" refers to executions\n                    created by the submitting user. The source must be unique in the scope of target and account.\n                    Note that at this time, \"me\" is the only supported target filter.",
+      "example_definition": [
+        "/api/manager/projects/1234/executions",
+        "/api/manager/projects/1234/executions/5678",
+        "/api/manager/projects/1234/executions?filter[]=created_by==me"
+      ],
+      "type": {
+        "name": "String"
+      }
+    },
+    "category": {
+      "values": [
+        "lifecycle",
+        "scheduled"
+      ],
+      "default": "lifecycle",
+      "description": "The type of notification for the resource.",
+      "type": {
+        "name": "String"
+      }
+    },
+    "min_severity": {
+      "values": [
+        "error",
+        "info",
+        "none"
+      ],
+      "description": "The lowest level of notifications for the target to receive.\n                    Setting this to \"error\" will result in only receiving error notifications,\n                    whereas setting it to \"info\" will result in receiving both info and error notifications,\n                    and setting it to \"none\" will result in not receiving any notifications.",
+      "type": {
+        "name": "String"
+      }
+    },
+    "target": {
+      "description": "The notification target (user) that the rule applies to.\n                    Note that at this time, \"me\" is the only supported target.",
+      "example_definition": "me",
+      "type": {
+        "name": "String"
+      }
+    },
+    "priority": {
+      "description": "During an index call, multiple rules that apply to the\n                    same execution might be returned, The one with the highest priority\n                    is the one that applies.",
+      "example_definition": "1",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Struct",
+        "attributes": {
+          "created_at": {
+            "description": "Creation timestamp",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "updated_at": {
+            "description": "Update timestamp",
+            "type": {
+              "name": "DateTime"
+            }
+          }
+        }
+      }
+    },
+    "kind": {
+      "description": "The kind of this resource, always self_service#notification_rule",
+      "example_definition": "self_service#notification_rule",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "id": {
+        },
+        "href": {
+        },
+        "source": {
+        },
+        "category": {
+        },
+        "min_severity": {
+        },
+        "target": {
+        },
+        "priority": {
+        },
+        "timestamps": {
+        }
+      },
+      "example": {
+        "kind": "self_service#notification_rule",
+        "id": "53e3bfa9a37b334abf000064",
+        "href": "/api/catalog/accounts/12345/notification_rules/53e3bfa9a37b334abf000064",
+        "source": "/api/manager/projects/1234/executions?filter[]=created_by==me",
+        "category": "lifecycle",
+        "min_severity": "info",
+        "target": "me",
+        "priority": 1,
+        "timestamps": {
+          "created_at": "2013-04-27T00:00:00+00:00",
+          "updated_at": "2013-03-24T00:00:00+00:00"
+        }
+      }
+    }
+  },
+  "mime_type": "application/vnd.rightscale.self_service.notification_rule",
+  "description": null,
+  "example": {
+    "id": "53e3bfa9a37b334abf000064",
+    "account_id": "12345",
+    "href": "/api/catalog/accounts/12345/notification_rules/53e3bfa9a37b334abf000064",
+    "source": "/api/manager/projects/1234/executions?filter[]=created_by==me",
+    "category": "lifecycle",
+    "min_severity": "info",
+    "target": "me",
+    "priority": 1,
+    "timestamps": {
+      "created_at": "2013-04-27T00:00:00+00:00",
+      "updated_at": "2013-03-24T00:00:00+00:00"
+    },
+    "kind": "self_service#notification_rule"
+  }
+}

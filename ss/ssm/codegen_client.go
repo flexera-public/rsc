@@ -69,34 +69,38 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 // instead of through Self-Service, the new Server's information won' be available in
 // Self-Service.
 type Execution struct {
-	ApiResources         []*Resource            `json:"api_resources,omitempty"`
-	AvailableActions     []string               `json:"available_actions,omitempty"`
-	AvailableOperations  []*OperationDefinition `json:"available_operations,omitempty"`
-	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
-	Cost                 *CostStruct            `json:"cost,omitempty"`
-	CreatedBy            *User                  `json:"created_by,omitempty"`
-	CurrentSchedule      string                 `json:"current_schedule,omitempty"`
-	Deployment           string                 `json:"deployment,omitempty"`
-	DeploymentUrl        string                 `json:"deployment_url,omitempty"`
-	Description          string                 `json:"description,omitempty"`
-	EndsAt               *time.Time             `json:"ends_at,omitempty"`
-	Href                 string                 `json:"href,omitempty"`
-	Id                   string                 `json:"id,omitempty"`
-	Kind                 string                 `json:"kind,omitempty"`
-	LatestNotifications  []*Notification        `json:"latest_notifications,omitempty"`
-	LaunchedFrom         *LaunchedFrom          `json:"launched_from,omitempty"`
-	LaunchedFromSummary  map[string]interface{} `json:"launched_from_summary,omitempty"`
-	Links                *ExecutionLinks        `json:"links,omitempty"`
-	Name                 string                 `json:"name,omitempty"`
-	NextAction           *ScheduledAction       `json:"next_action,omitempty"`
-	Outputs              []*Output              `json:"outputs,omitempty"`
-	RunningOperations    []*Operation           `json:"running_operations,omitempty"`
-	ScheduleRequired     bool                   `json:"schedule_required,omitempty"`
-	Scheduled            bool                   `json:"scheduled,omitempty"`
-	Schedules            []*Schedule            `json:"schedules,omitempty"`
-	Source               string                 `json:"source,omitempty"`
-	Status               string                 `json:"status,omitempty"`
-	Timestamps           *TimestampsStruct      `json:"timestamps,omitempty"`
+	ApiResources            []*Resource            `json:"api_resources,omitempty"`
+	AvailableActions        []string               `json:"available_actions,omitempty"`
+	AvailableOperations     []*OperationDefinition `json:"available_operations,omitempty"`
+	AvailableOperationsInfo []*OperationInfo       `json:"available_operations_info,omitempty"`
+	CompilationHref         string                 `json:"compilation_href,omitempty"`
+	ConfigurationOptions    []*ConfigurationOption `json:"configuration_options,omitempty"`
+	Cost                    *CostStruct            `json:"cost,omitempty"`
+	CreatedBy               *User                  `json:"created_by,omitempty"`
+	CurrentSchedule         string                 `json:"current_schedule,omitempty"`
+	Dependencies            []*CatDependency       `json:"dependencies,omitempty"`
+	Deployment              string                 `json:"deployment,omitempty"`
+	DeploymentUrl           string                 `json:"deployment_url,omitempty"`
+	Description             string                 `json:"description,omitempty"`
+	EndsAt                  *time.Time             `json:"ends_at,omitempty"`
+	Href                    string                 `json:"href,omitempty"`
+	Id                      string                 `json:"id,omitempty"`
+	Kind                    string                 `json:"kind,omitempty"`
+	LatestNotification      *Notification          `json:"latest_notification,omitempty"`
+	LatestNotifications     []*Notification        `json:"latest_notifications,omitempty"`
+	LaunchedFrom            *LaunchedFrom          `json:"launched_from,omitempty"`
+	LaunchedFromSummary     map[string]interface{} `json:"launched_from_summary,omitempty"`
+	Links                   *ExecutionLinks        `json:"links,omitempty"`
+	Name                    string                 `json:"name,omitempty"`
+	NextAction              *ScheduledAction       `json:"next_action,omitempty"`
+	Outputs                 []*Output              `json:"outputs,omitempty"`
+	RunningOperations       []*Operation           `json:"running_operations,omitempty"`
+	ScheduleRequired        bool                   `json:"schedule_required,omitempty"`
+	Scheduled               bool                   `json:"scheduled,omitempty"`
+	Schedules               []*Schedule            `json:"schedules,omitempty"`
+	Source                  string                 `json:"source,omitempty"`
+	Status                  string                 `json:"status,omitempty"`
+	Timestamps              *TimestampsStruct      `json:"timestamps,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -119,7 +123,7 @@ func (api *API) ExecutionLocator(href string) *ExecutionLocator {
 
 //===== Actions
 
-// GET /projects/:project_id/executions
+// GET /api/manager/projects/:project_id/executions
 //
 // List information about the Executions, or use a filter to only return certain Executions. A view can be used for various levels of detail.
 func (loc *ExecutionLocator) Index(options rsapi.APIParams) ([]*Execution, error) {
@@ -169,7 +173,7 @@ func (loc *ExecutionLocator) Index(options rsapi.APIParams) ([]*Execution, error
 	return res, err
 }
 
-// GET /projects/:project_id/executions/:id
+// GET /api/manager/projects/:project_id/executions/:id
 //
 // Show details for a given Execution. A view can be used for various levels of detail.
 func (loc *ExecutionLocator) Show(options rsapi.APIParams) (*Execution, error) {
@@ -211,7 +215,7 @@ func (loc *ExecutionLocator) Show(options rsapi.APIParams) (*Execution, error) {
 	return res, err
 }
 
-// POST /projects/:project_id/executions
+// POST /api/manager/projects/:project_id/executions
 //
 // Create a new execution from a CAT, a compiled CAT, an Application in the Catalog, or a Template in Designer
 func (loc *ExecutionLocator) Create(options rsapi.APIParams) (*ExecutionLocator, error) {
@@ -223,6 +227,10 @@ func (loc *ExecutionLocator) Create(options rsapi.APIParams) (*ExecutionLocator,
 	if applicationHrefOpt != nil {
 		p["application_href"] = applicationHrefOpt
 	}
+	var compilationHrefOpt = options["compilation_href"]
+	if compilationHrefOpt != nil {
+		p["compilation_href"] = compilationHrefOpt
+	}
 	var compiledCatOpt = options["compiled_cat"]
 	if compiledCatOpt != nil {
 		p["compiled_cat"] = compiledCatOpt
@@ -230,6 +238,10 @@ func (loc *ExecutionLocator) Create(options rsapi.APIParams) (*ExecutionLocator,
 	var currentScheduleOpt = options["current_schedule"]
 	if currentScheduleOpt != nil {
 		p["current_schedule"] = currentScheduleOpt
+	}
+	var deferLaunchOpt = options["defer_launch"]
+	if deferLaunchOpt != nil {
+		p["defer_launch"] = deferLaunchOpt
 	}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
@@ -296,7 +308,7 @@ func (loc *ExecutionLocator) Create(options rsapi.APIParams) (*ExecutionLocator,
 	}
 }
 
-// PATCH /projects/:project_id/executions/:id
+// PATCH /api/manager/projects/:project_id/executions/:id
 //
 // Updates an execution end date or selected schedule.
 func (loc *ExecutionLocator) Patch(options rsapi.APIParams) error {
@@ -335,7 +347,7 @@ func (loc *ExecutionLocator) Patch(options rsapi.APIParams) error {
 	return nil
 }
 
-// DELETE /projects/:project_id/executions/:id
+// DELETE /api/manager/projects/:project_id/executions/:id
 //
 // No description provided for delete.
 func (loc *ExecutionLocator) Delete(options rsapi.APIParams) error {
@@ -370,7 +382,7 @@ func (loc *ExecutionLocator) Delete(options rsapi.APIParams) error {
 	return nil
 }
 
-// DELETE /projects/:project_id/executions
+// DELETE /api/manager/projects/:project_id/executions
 //
 // Delete several executions from the database. Note: if an execution has not successfully been terminated, there may still be associated cloud resources running.
 func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.APIParams) error {
@@ -410,7 +422,7 @@ func (loc *ExecutionLocator) MultiDelete(ids []string, options rsapi.APIParams) 
 	return nil
 }
 
-// GET /projects/:project_id/executions/:id/download
+// GET /api/manager/projects/:project_id/executions/:id/download
 //
 // Download the CAT source for the execution.
 func (loc *ExecutionLocator) Download(apiVersion string) error {
@@ -446,7 +458,7 @@ func (loc *ExecutionLocator) Download(apiVersion string) error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/:id/actions/launch
+// POST /api/manager/projects/:project_id/executions/:id/actions/launch
 //
 // Launch an Execution.
 func (loc *ExecutionLocator) Launch() error {
@@ -476,7 +488,7 @@ func (loc *ExecutionLocator) Launch() error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/:id/actions/start
+// POST /api/manager/projects/:project_id/executions/:id/actions/start
 //
 // Start an Execution.
 func (loc *ExecutionLocator) Start() error {
@@ -506,7 +518,7 @@ func (loc *ExecutionLocator) Start() error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/:id/actions/stop
+// POST /api/manager/projects/:project_id/executions/:id/actions/stop
 //
 // Stop an Execution.
 func (loc *ExecutionLocator) Stop() error {
@@ -536,7 +548,7 @@ func (loc *ExecutionLocator) Stop() error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/:id/actions/terminate
+// POST /api/manager/projects/:project_id/executions/:id/actions/terminate
 //
 // Terminate an Execution.
 func (loc *ExecutionLocator) Terminate() error {
@@ -566,7 +578,7 @@ func (loc *ExecutionLocator) Terminate() error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/actions/launch
+// POST /api/manager/projects/:project_id/executions/actions/launch
 //
 // Launch several Executions.
 func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
@@ -602,7 +614,7 @@ func (loc *ExecutionLocator) MultiLaunch(ids []string) error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/actions/start
+// POST /api/manager/projects/:project_id/executions/actions/start
 //
 // Start several Executions.
 func (loc *ExecutionLocator) MultiStart(ids []string) error {
@@ -638,7 +650,7 @@ func (loc *ExecutionLocator) MultiStart(ids []string) error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/actions/stop
+// POST /api/manager/projects/:project_id/executions/actions/stop
 //
 // Stop several Executions.
 func (loc *ExecutionLocator) MultiStop(ids []string) error {
@@ -674,7 +686,7 @@ func (loc *ExecutionLocator) MultiStop(ids []string) error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/actions/terminate
+// POST /api/manager/projects/:project_id/executions/actions/terminate
 //
 // Terminate several Executions.
 func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
@@ -710,7 +722,7 @@ func (loc *ExecutionLocator) MultiTerminate(ids []string) error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/:id/actions/run
+// POST /api/manager/projects/:project_id/executions/:id/actions/run
 //
 // Runs an Operation on an Execution.
 func (loc *ExecutionLocator) Run(name string, options rsapi.APIParams) error {
@@ -750,7 +762,7 @@ func (loc *ExecutionLocator) Run(name string, options rsapi.APIParams) error {
 	return nil
 }
 
-// POST /projects/:project_id/executions/actions/run
+// POST /api/manager/projects/:project_id/executions/actions/run
 //
 // Runs an Operation on several Executions.
 func (loc *ExecutionLocator) MultiRun(ids []string, name string, options rsapi.APIParams) error {
@@ -833,7 +845,7 @@ func (api *API) NotificationLocator(href string) *NotificationLocator {
 
 //===== Actions
 
-// GET /projects/:project_id/notifications
+// GET /api/manager/projects/:project_id/notifications
 //
 // List the most recent 50 Notifications. Use the filter parameter to specify specify Executions.
 func (loc *NotificationLocator) Index(options rsapi.APIParams) ([]*Notification, error) {
@@ -879,7 +891,7 @@ func (loc *NotificationLocator) Index(options rsapi.APIParams) ([]*Notification,
 	return res, err
 }
 
-// GET /projects/:project_id/notifications/:id
+// GET /api/manager/projects/:project_id/notifications/:id
 //
 // Get details for a specific Notification
 func (loc *NotificationLocator) Show() (*Notification, error) {
@@ -919,9 +931,9 @@ func (loc *NotificationLocator) Show() (*Notification, error) {
 /******  Operation ******/
 
 // Operations represent actions that can be taken on an Execution.
-// When a CloudApp is launched, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language) in the Operations section
+// When a CloudApp is launched, a sequence of Operations is run as [explained here](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html#operations) in the Operations section
 // While a CloudApp is running, users may launch any custom Operations as defined in the CAT.
-// Once a CAT is Terminated, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language#Operations) in the Operations section
+// Once a CAT is Terminated, a sequence of Operations is run as [explained here](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html#operations) in the Operations section
 type Operation struct {
 	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
 	CreatedBy            *User                  `json:"created_by,omitempty"`
@@ -929,6 +941,7 @@ type Operation struct {
 	Href                 string                 `json:"href,omitempty"`
 	Id                   string                 `json:"id,omitempty"`
 	Kind                 string                 `json:"kind,omitempty"`
+	Label                string                 `json:"label,omitempty"`
 	Links                *OperationLinks        `json:"links,omitempty"`
 	Name                 string                 `json:"name,omitempty"`
 	Status               *StatusStruct          `json:"status,omitempty"`
@@ -955,7 +968,7 @@ func (api *API) OperationLocator(href string) *OperationLocator {
 
 //===== Actions
 
-// GET /projects/:project_id/operations
+// GET /api/manager/projects/:project_id/operations
 //
 // Get the list of 50 most recent Operations (usually filtered by Execution).
 func (loc *OperationLocator) Index(options rsapi.APIParams) ([]*Operation, error) {
@@ -1009,7 +1022,7 @@ func (loc *OperationLocator) Index(options rsapi.APIParams) ([]*Operation, error
 	return res, err
 }
 
-// GET /projects/:project_id/operations/:id
+// GET /api/manager/projects/:project_id/operations/:id
 //
 // Get the details for a specific Operation
 func (loc *OperationLocator) Show(options rsapi.APIParams) (*Operation, error) {
@@ -1051,7 +1064,7 @@ func (loc *OperationLocator) Show(options rsapi.APIParams) (*Operation, error) {
 	return res, err
 }
 
-// POST /projects/:project_id/operations
+// POST /api/manager/projects/:project_id/operations
 //
 // Trigger an Operation to run by specifying the Execution ID and the name of the Operation.
 func (loc *OperationLocator) Create(executionId string, name string, options rsapi.APIParams) (*OperationLocator, error) {
@@ -1145,7 +1158,7 @@ func (api *API) ScheduledActionLocator(href string) *ScheduledActionLocator {
 
 //===== Actions
 
-// GET /projects/:project_id/scheduled_actions
+// GET /api/manager/projects/:project_id/scheduled_actions
 //
 // List ScheduledAction resources in the project. The list can be filtered to a given execution.
 func (loc *ScheduledActionLocator) Index(options rsapi.APIParams) ([]*ScheduledAction, error) {
@@ -1187,7 +1200,7 @@ func (loc *ScheduledActionLocator) Index(options rsapi.APIParams) ([]*ScheduledA
 	return res, err
 }
 
-// GET /projects/:project_id/scheduled_actions/:id
+// GET /api/manager/projects/:project_id/scheduled_actions/:id
 //
 // Retrieve given ScheduledAction resource.
 func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
@@ -1224,7 +1237,7 @@ func (loc *ScheduledActionLocator) Show() (*ScheduledAction, error) {
 	return res, err
 }
 
-// POST /projects/:project_id/scheduled_actions
+// POST /api/manager/projects/:project_id/scheduled_actions
 //
 // Create a new ScheduledAction resource.
 func (loc *ScheduledActionLocator) Create(action string, executionId string, firstOccurrence *time.Time, options rsapi.APIParams) (*ScheduledActionLocator, error) {
@@ -1287,7 +1300,7 @@ func (loc *ScheduledActionLocator) Create(action string, executionId string, fir
 	}
 }
 
-// PATCH /projects/:project_id/scheduled_actions/:id
+// PATCH /api/manager/projects/:project_id/scheduled_actions/:id
 //
 // Updates the 'next_occurrence' property of a ScheduledAction.
 func (loc *ScheduledActionLocator) Patch(options rsapi.APIParams) error {
@@ -1322,7 +1335,7 @@ func (loc *ScheduledActionLocator) Patch(options rsapi.APIParams) error {
 	return nil
 }
 
-// DELETE /projects/:project_id/scheduled_actions/:id
+// DELETE /api/manager/projects/:project_id/scheduled_actions/:id
 //
 // Delete a ScheduledAction.
 func (loc *ScheduledActionLocator) Delete() error {
@@ -1352,7 +1365,7 @@ func (loc *ScheduledActionLocator) Delete() error {
 	return nil
 }
 
-// POST /projects/:project_id/scheduled_actions/:id/actions/skip
+// POST /api/manager/projects/:project_id/scheduled_actions/:id/actions/skip
 //
 // Skips the requested number of ScheduledAction occurrences. If no count is provided, one occurrence is skipped. On success, the next_occurrence view of the updated ScheduledAction is returned.
 func (loc *ScheduledActionLocator) Skip(options rsapi.APIParams) error {
@@ -1411,22 +1424,34 @@ type AvailableOperationsParametersValidationStruct struct {
 	NoEcho                bool          `json:"no_echo,omitempty"`
 }
 
+type CatDependency struct {
+	Alias      string `json:"alias,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Package    string `json:"package,omitempty"`
+	SourceHref string `json:"source_href,omitempty"`
+}
+
 type CompiledCAT struct {
-	Conditions         map[string]interface{} `json:"conditions,omitempty"`
-	Definitions        map[string]interface{} `json:"definitions,omitempty"`
-	LongDescription    string                 `json:"long_description,omitempty"`
-	Mappings           map[string]interface{} `json:"mappings,omitempty"`
-	Name               string                 `json:"name,omitempty"`
-	Namespaces         []*Namespace           `json:"namespaces,omitempty"`
-	Operations         map[string]interface{} `json:"operations,omitempty"`
-	Outputs            map[string]interface{} `json:"outputs,omitempty"`
-	Parameters         map[string]interface{} `json:"parameters,omitempty"`
-	Permissions        map[string]interface{} `json:"permissions,omitempty"`
-	RequiredParameters []string               `json:"required_parameters,omitempty"`
-	Resources          map[string]interface{} `json:"resources,omitempty"`
-	RsCaVer            int                    `json:"rs_ca_ver,omitempty"`
-	ShortDescription   string                 `json:"short_description,omitempty"`
-	Source             string                 `json:"source,omitempty"`
+	CatParserGemVersion string                   `json:"cat_parser_gem_version,omitempty"`
+	CompilerVer         string                   `json:"compiler_ver,omitempty"`
+	Conditions          map[string]interface{}   `json:"conditions,omitempty"`
+	Definitions         map[string]interface{}   `json:"definitions,omitempty"`
+	DependencyHashes    []map[string]interface{} `json:"dependency_hashes,omitempty"`
+	Imports             map[string]interface{}   `json:"imports,omitempty"`
+	LongDescription     string                   `json:"long_description,omitempty"`
+	Mappings            map[string]interface{}   `json:"mappings,omitempty"`
+	Name                string                   `json:"name,omitempty"`
+	Namespaces          []*Namespace             `json:"namespaces,omitempty"`
+	Operations          map[string]interface{}   `json:"operations,omitempty"`
+	Outputs             map[string]interface{}   `json:"outputs,omitempty"`
+	Package             string                   `json:"package,omitempty"`
+	Parameters          map[string]interface{}   `json:"parameters,omitempty"`
+	Permissions         map[string]interface{}   `json:"permissions,omitempty"`
+	RequiredParameters  []string                 `json:"required_parameters,omitempty"`
+	Resources           map[string]interface{}   `json:"resources,omitempty"`
+	RsCaVer             int                      `json:"rs_ca_ver,omitempty"`
+	ShortDescription    string                   `json:"short_description,omitempty"`
+	Source              string                   `json:"source,omitempty"`
 }
 
 type ConfigurationOption struct {
@@ -1453,75 +1478,79 @@ type ExecutionLinks struct {
 }
 
 type ExecutionParam struct {
-	ApiResources         []*Resource                                   `json:"api_resources,omitempty"`
-	AvailableActions     []string                                      `json:"available_actions,omitempty"`
-	AvailableOperations  []*OperationDefinition                        `json:"available_operations,omitempty"`
-	ConfigurationOptions []*ConfigurationOption                        `json:"configuration_options,omitempty"`
-	Cost                 *LatestNotificationsExecutionCostStruct       `json:"cost,omitempty"`
-	CreatedBy            *User                                         `json:"created_by,omitempty"`
-	CurrentSchedule      string                                        `json:"current_schedule,omitempty"`
-	Deployment           string                                        `json:"deployment,omitempty"`
-	DeploymentUrl        string                                        `json:"deployment_url,omitempty"`
-	Description          string                                        `json:"description,omitempty"`
-	EndsAt               *time.Time                                    `json:"ends_at,omitempty"`
-	Href                 string                                        `json:"href,omitempty"`
-	Id                   string                                        `json:"id,omitempty"`
-	Kind                 string                                        `json:"kind,omitempty"`
-	LatestNotifications  []*NotificationParam                          `json:"latest_notifications,omitempty"`
-	LaunchedFrom         *LaunchedFrom                                 `json:"launched_from,omitempty"`
-	LaunchedFromSummary  map[string]interface{}                        `json:"launched_from_summary,omitempty"`
-	Links                *ExecutionLinks                               `json:"links,omitempty"`
-	Name                 string                                        `json:"name,omitempty"`
-	NextAction           *ScheduledActionParam                         `json:"next_action,omitempty"`
-	Outputs              []*Output                                     `json:"outputs,omitempty"`
-	RunningOperations    []*OperationParam                             `json:"running_operations,omitempty"`
-	ScheduleRequired     bool                                          `json:"schedule_required,omitempty"`
-	Scheduled            bool                                          `json:"scheduled,omitempty"`
-	Schedules            []*Schedule                                   `json:"schedules,omitempty"`
-	Source               string                                        `json:"source,omitempty"`
-	Status               string                                        `json:"status,omitempty"`
-	Timestamps           *LatestNotificationsExecutionTimestampsStruct `json:"timestamps,omitempty"`
+	ApiResources            []*Resource                                  `json:"api_resources,omitempty"`
+	AvailableActions        []string                                     `json:"available_actions,omitempty"`
+	AvailableOperations     []*OperationDefinition                       `json:"available_operations,omitempty"`
+	AvailableOperationsInfo []*OperationInfo                             `json:"available_operations_info,omitempty"`
+	CompilationHref         string                                       `json:"compilation_href,omitempty"`
+	ConfigurationOptions    []*ConfigurationOption                       `json:"configuration_options,omitempty"`
+	Cost                    *LatestNotificationExecutionCostStruct       `json:"cost,omitempty"`
+	CreatedBy               *User                                        `json:"created_by,omitempty"`
+	CurrentSchedule         string                                       `json:"current_schedule,omitempty"`
+	Dependencies            []*CatDependency                             `json:"dependencies,omitempty"`
+	Deployment              string                                       `json:"deployment,omitempty"`
+	DeploymentUrl           string                                       `json:"deployment_url,omitempty"`
+	Description             string                                       `json:"description,omitempty"`
+	EndsAt                  *time.Time                                   `json:"ends_at,omitempty"`
+	Href                    string                                       `json:"href,omitempty"`
+	Id                      string                                       `json:"id,omitempty"`
+	Kind                    string                                       `json:"kind,omitempty"`
+	LatestNotification      *NotificationParam                           `json:"latest_notification,omitempty"`
+	LatestNotifications     []*NotificationParam                         `json:"latest_notifications,omitempty"`
+	LaunchedFrom            *LaunchedFrom                                `json:"launched_from,omitempty"`
+	LaunchedFromSummary     map[string]interface{}                       `json:"launched_from_summary,omitempty"`
+	Links                   *ExecutionLinks                              `json:"links,omitempty"`
+	Name                    string                                       `json:"name,omitempty"`
+	NextAction              *ScheduledActionParam                        `json:"next_action,omitempty"`
+	Outputs                 []*Output                                    `json:"outputs,omitempty"`
+	RunningOperations       []*OperationParam                            `json:"running_operations,omitempty"`
+	ScheduleRequired        bool                                         `json:"schedule_required,omitempty"`
+	Scheduled               bool                                         `json:"scheduled,omitempty"`
+	Schedules               []*Schedule                                  `json:"schedules,omitempty"`
+	Source                  string                                       `json:"source,omitempty"`
+	Status                  string                                       `json:"status,omitempty"`
+	Timestamps              *LatestNotificationExecutionTimestampsStruct `json:"timestamps,omitempty"`
 }
 
-type LatestNotificationsExecutionCostStruct struct {
+type LatestNotificationExecutionCostStruct struct {
 	Unit      string     `json:"unit,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	Value     string     `json:"value,omitempty"`
 }
 
-type LatestNotificationsExecutionNextActionOperationStruct struct {
+type LatestNotificationExecutionNextActionOperationStruct struct {
 	ConfigurationOptions []*ConfigurationOption `json:"configuration_options,omitempty"`
 	Name                 string                 `json:"name,omitempty"`
 }
 
-type LatestNotificationsExecutionNextActionTimestampsStruct struct {
+type LatestNotificationExecutionNextActionTimestampsStruct struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
-type LatestNotificationsExecutionRunningOperationsStatusStruct struct {
+type LatestNotificationExecutionRunningOperationsStatusStruct struct {
 	Percent int     `json:"percent,omitempty"`
 	Summary string  `json:"summary,omitempty"`
 	Tasks   []*Task `json:"tasks,omitempty"`
 }
 
-type LatestNotificationsExecutionRunningOperationsStatusTasksStatusStruct struct {
+type LatestNotificationExecutionRunningOperationsStatusTasksStatusStruct struct {
 	Percent int    `json:"percent,omitempty"`
 	Summary string `json:"summary,omitempty"`
 }
 
-type LatestNotificationsExecutionRunningOperationsTimestampsStruct struct {
+type LatestNotificationExecutionRunningOperationsTimestampsStruct struct {
 	CreatedAt  *time.Time `json:"created_at,omitempty"`
 	FinishedAt *time.Time `json:"finished_at,omitempty"`
 }
 
-type LatestNotificationsExecutionTimestampsStruct struct {
+type LatestNotificationExecutionTimestampsStruct struct {
 	CreatedAt    *time.Time `json:"created_at,omitempty"`
 	LaunchedAt   *time.Time `json:"launched_at,omitempty"`
 	TerminatedAt *time.Time `json:"terminated_at,omitempty"`
 }
 
-type LatestNotificationsTimestampsStruct struct {
+type LatestNotificationTimestampsStruct struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 }
 
@@ -1560,21 +1589,28 @@ type NotificationLinks struct {
 }
 
 type NotificationParam struct {
-	Category   string                               `json:"category,omitempty"`
-	Execution  *ExecutionParam                      `json:"execution,omitempty"`
-	Href       string                               `json:"href,omitempty"`
-	Id         string                               `json:"id,omitempty"`
-	Kind       string                               `json:"kind,omitempty"`
-	Links      *NotificationLinks                   `json:"links,omitempty"`
-	Message    string                               `json:"message,omitempty"`
-	Read       bool                                 `json:"read,omitempty"`
-	Timestamps *LatestNotificationsTimestampsStruct `json:"timestamps,omitempty"`
+	Category   string                              `json:"category,omitempty"`
+	Execution  *ExecutionParam                     `json:"execution,omitempty"`
+	Href       string                              `json:"href,omitempty"`
+	Id         string                              `json:"id,omitempty"`
+	Kind       string                              `json:"kind,omitempty"`
+	Links      *NotificationLinks                  `json:"links,omitempty"`
+	Message    string                              `json:"message,omitempty"`
+	Read       bool                                `json:"read,omitempty"`
+	Timestamps *LatestNotificationTimestampsStruct `json:"timestamps,omitempty"`
 }
 
 type OperationDefinition struct {
 	Description string       `json:"description,omitempty"`
+	Label       string       `json:"label,omitempty"`
 	Name        string       `json:"name,omitempty"`
 	Parameters  []*Parameter `json:"parameters,omitempty"`
+}
+
+type OperationInfo struct {
+	Description string `json:"description,omitempty"`
+	Label       string `json:"label,omitempty"`
+	Name        string `json:"name,omitempty"`
 }
 
 type OperationLinks struct {
@@ -1582,16 +1618,17 @@ type OperationLinks struct {
 }
 
 type OperationParam struct {
-	ConfigurationOptions []*ConfigurationOption                                         `json:"configuration_options,omitempty"`
-	CreatedBy            *User                                                          `json:"created_by,omitempty"`
-	Execution            *ExecutionParam                                                `json:"execution,omitempty"`
-	Href                 string                                                         `json:"href,omitempty"`
-	Id                   string                                                         `json:"id,omitempty"`
-	Kind                 string                                                         `json:"kind,omitempty"`
-	Links                *OperationLinks                                                `json:"links,omitempty"`
-	Name                 string                                                         `json:"name,omitempty"`
-	Status               *LatestNotificationsExecutionRunningOperationsStatusStruct     `json:"status,omitempty"`
-	Timestamps           *LatestNotificationsExecutionRunningOperationsTimestampsStruct `json:"timestamps,omitempty"`
+	ConfigurationOptions []*ConfigurationOption                                        `json:"configuration_options,omitempty"`
+	CreatedBy            *User                                                         `json:"created_by,omitempty"`
+	Execution            *ExecutionParam                                               `json:"execution,omitempty"`
+	Href                 string                                                        `json:"href,omitempty"`
+	Id                   string                                                        `json:"id,omitempty"`
+	Kind                 string                                                        `json:"kind,omitempty"`
+	Label                string                                                        `json:"label,omitempty"`
+	Links                *OperationLinks                                               `json:"links,omitempty"`
+	Name                 string                                                        `json:"name,omitempty"`
+	Status               *LatestNotificationExecutionRunningOperationsStatusStruct     `json:"status,omitempty"`
+	Timestamps           *LatestNotificationExecutionRunningOperationsTimestampsStruct `json:"timestamps,omitempty"`
 }
 
 type OperationRunningOperationsLink struct {
@@ -1647,22 +1684,22 @@ type ScheduledActionLinks struct {
 }
 
 type ScheduledActionParam struct {
-	Action                string                                                  `json:"action,omitempty"`
-	CreatedBy             *User                                                   `json:"created_by,omitempty"`
-	Execution             *ExecutionParam                                         `json:"execution,omitempty"`
-	ExecutionSchedule     bool                                                    `json:"execution_schedule,omitempty"`
-	FirstOccurrence       *time.Time                                              `json:"first_occurrence,omitempty"`
-	Href                  string                                                  `json:"href,omitempty"`
-	Id                    string                                                  `json:"id,omitempty"`
-	Kind                  string                                                  `json:"kind,omitempty"`
-	Links                 *ScheduledActionLinks                                   `json:"links,omitempty"`
-	Name                  string                                                  `json:"name,omitempty"`
-	NextOccurrence        *time.Time                                              `json:"next_occurrence,omitempty"`
-	Operation             *LatestNotificationsExecutionNextActionOperationStruct  `json:"operation,omitempty"`
-	Recurrence            string                                                  `json:"recurrence,omitempty"`
-	RecurrenceDescription string                                                  `json:"recurrence_description,omitempty"`
-	Timestamps            *LatestNotificationsExecutionNextActionTimestampsStruct `json:"timestamps,omitempty"`
-	Timezone              string                                                  `json:"timezone,omitempty"`
+	Action                string                                                 `json:"action,omitempty"`
+	CreatedBy             *User                                                  `json:"created_by,omitempty"`
+	Execution             *ExecutionParam                                        `json:"execution,omitempty"`
+	ExecutionSchedule     bool                                                   `json:"execution_schedule,omitempty"`
+	FirstOccurrence       *time.Time                                             `json:"first_occurrence,omitempty"`
+	Href                  string                                                 `json:"href,omitempty"`
+	Id                    string                                                 `json:"id,omitempty"`
+	Kind                  string                                                 `json:"kind,omitempty"`
+	Links                 *ScheduledActionLinks                                  `json:"links,omitempty"`
+	Name                  string                                                 `json:"name,omitempty"`
+	NextOccurrence        *time.Time                                             `json:"next_occurrence,omitempty"`
+	Operation             *LatestNotificationExecutionNextActionOperationStruct  `json:"operation,omitempty"`
+	Recurrence            string                                                 `json:"recurrence,omitempty"`
+	RecurrenceDescription string                                                 `json:"recurrence_description,omitempty"`
+	Timestamps            *LatestNotificationExecutionNextActionTimestampsStruct `json:"timestamps,omitempty"`
+	Timezone              string                                                 `json:"timezone,omitempty"`
 }
 
 type StatusStruct struct {
@@ -1672,9 +1709,9 @@ type StatusStruct struct {
 }
 
 type Task struct {
-	Label  string                                                                `json:"label,omitempty"`
-	Name   string                                                                `json:"name,omitempty"`
-	Status *LatestNotificationsExecutionRunningOperationsStatusTasksStatusStruct `json:"status,omitempty"`
+	Label  string                                                               `json:"label,omitempty"`
+	Name   string                                                               `json:"name,omitempty"`
+	Status *LatestNotificationExecutionRunningOperationsStatusTasksStatusStruct `json:"status,omitempty"`
 }
 
 type TimestampsStruct struct {

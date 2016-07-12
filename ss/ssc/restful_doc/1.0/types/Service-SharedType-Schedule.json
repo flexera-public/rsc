@@ -1,0 +1,58 @@
+{
+  "name": "Service::SharedType::Schedule",
+  "attributes": {
+    "name": {
+      "required": true,
+      "description": "The name of the Schedule",
+      "example_definition": "Business hours",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "An optional description that will help users understand the purpose of the Schedule",
+      "example_definition": "Weekdays from 9am to 5pm",
+      "type": {
+        "name": "String"
+      }
+    },
+    "start_recurrence": {
+      "required": true,
+      "description": "When to start a CloudApp",
+      "example_definition": "{\n  \"hour\": 8,\n  \"minute\": 0,\n  \"rule\": \"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR\"\n}",
+      "type": {
+        "name": "Service::SharedType::Recurrence"
+      }
+    },
+    "stop_recurrence": {
+      "required": true,
+      "description": "When to stop a CloudApp",
+      "example_definition": "{\n  \"hour\": 18,\n  \"minute\": 0,\n  \"rule\": \"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR\"\n}",
+      "type": {
+        "name": "Service::SharedType::Recurrence"
+      }
+    },
+    "created_from": {
+      "description": "optional HREF of the Schedule resource used to create this schedule",
+      "example_definition": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "example": {
+    "name": "Business hours",
+    "description": "Weekdays from 9am to 5pm",
+    "start_recurrence": {
+      "hour": 8,
+      "minute": 0,
+      "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+    },
+    "stop_recurrence": {
+      "hour": 18,
+      "minute": 0,
+      "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+    },
+    "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+  }
+}

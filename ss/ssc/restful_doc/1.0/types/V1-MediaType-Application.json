@@ -1,1 +1,610 @@
-{"name":"V1::MediaType::Application","attributes":{"id":{"required":true,"description":"Application id","example_definition":"53dc455d2b5b92e482000001","type":{"name":"String"}},"href":{"description":"Application href","example_definition":"/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001","type":{"name":"String"}},"name":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Name of application","example_definition":"Development All-in-One","type":{"name":"String"}},"short_description":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Short description of application","example_definition":"All-in-One Server for development purposes.","type":{"name":"String"}},"long_description":{"description":"Long description of application","example_definition":"Development server with basic environment setup","type":{"name":"String"}},"compiled_cat":{"description":"Parsed CAT source of application","example_definition":"","type":{"name":"String"}},"parameters":{"description":"Parameters that define how an application can be configured","type":{"name":"Collection","member_attribute":{"type":{"name":"Service::SharedType::Parameter"}}}},"required_parameters":{"description":"Parameters required to launch the CAT","type":{"name":"Collection","member_attribute":{"type":{"name":"String"}}}},"template_info":{"description":"Template that this application was created from","type":{"name":"V1::Type::TemplateInfo"}},"schedules":{"description":"Schedules available to users when launching the application","type":{"name":"Collection","member_attribute":{"type":{"name":"V1::Type::Schedule"}}}},"schedule_required":{"description":"Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI","type":{"name":"Boolean"}},"created_by":{"description":"User that created this application","type":{"name":"Service::SharedType::User"}},"timestamps":{"type":{"name":"Struct","attributes":{"created_at":{"description":"Created timestamp","type":{"name":"DateTime"}},"updated_at":{"description":"Updated timestamp","type":{"name":"DateTime"}}}}},"kind":{"description":"The kind of this resource, always self_service#application","example_definition":"self_service#application","type":{"name":"String"}}},"views":{"default":{"attributes":{"kind":{},"id":{},"name":{},"href":{},"short_description":{},"long_description":{},"parameters":{},"required_parameters":{},"schedules":{},"schedule_required":{},"template_info":{},"created_by":{},"timestamps":{}},"example":{"kind":"self_service#application","id":"53dc455d2b5b92e482000001","name":"Development All-in-One","href":"/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001","short_description":"All-in-One Server for development purposes.","long_description":"Development server with basic environment setup","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}}],"required_parameters":["pseudoramose"],"schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"template_info":{"href":"/api/designer/collections/12345/templates/53dc45552b5b92ace8000001","name":"Development All-in-One"},"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"timestamps":{"created_at":"2013-06-17T00:00:00+00:00","updated_at":"2013-01-26T00:00:00+00:00"}}},"expanded":{"attributes":{"kind":{},"id":{},"name":{},"href":{},"short_description":{},"long_description":{},"parameters":{},"required_parameters":{},"schedules":{},"schedule_required":{},"template_info":{},"compiled_cat":{},"created_by":{},"timestamps":{}},"example":{"kind":"self_service#application","id":"53dc455d2b5b92e482000001","name":"Development All-in-One","href":"/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001","short_description":"All-in-One Server for development purposes.","long_description":"Development server with basic environment setup","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}}],"required_parameters":["pseudoramose"],"schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"template_info":{"href":"/api/designer/collections/12345/templates/53dc45552b5b92ace8000001","name":"Development All-in-One"},"compiled_cat":"","created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"timestamps":{"created_at":"2013-06-17T00:00:00+00:00","updated_at":"2013-01-26T00:00:00+00:00"}}}},"mime_type":"application/vnd.rightscale.self_service.application","description":null,"example":{"id":"53dc455d2b5b92e482000001","href":"/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001","name":"Development All-in-One","short_description":"All-in-One Server for development purposes.","long_description":"Development server with basic environment setup","compiled_cat":"","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}}],"required_parameters":["pseudoramose"],"template_info":{"href":"/api/designer/collections/12345/templates/53dc45552b5b92ace8000001","name":"Development All-in-One"},"schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"timestamps":{"created_at":"2013-06-17T00:00:00+00:00","updated_at":"2013-01-26T00:00:00+00:00"},"kind":"self_service#application"}}
+{
+  "name": "V1::MediaType::Application",
+  "attributes": {
+    "id": {
+      "required": true,
+      "description": "Application id",
+      "example_definition": "53dc455d2b5b92e482000001",
+      "type": {
+        "name": "String"
+      }
+    },
+    "href": {
+      "description": "Application href",
+      "example_definition": "/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001",
+      "type": {
+        "name": "String"
+      }
+    },
+    "name": {
+      "regexp": "(?-mix:^(?!\\s*$).+)",
+      "description": "Name of application",
+      "example_definition": "Development All-in-One",
+      "type": {
+        "name": "String"
+      }
+    },
+    "short_description": {
+      "regexp": "(?-mix:^(?!\\s*$).+)",
+      "description": "Short description of application",
+      "example_definition": "All-in-One Server for development purposes.",
+      "type": {
+        "name": "String"
+      }
+    },
+    "long_description": {
+      "description": "Long description of application",
+      "example_definition": "Development server with basic environment setup",
+      "type": {
+        "name": "String"
+      }
+    },
+    "compiled_cat": {
+      "description": "Parsed CAT source of application",
+      "example_definition": "",
+      "type": {
+        "name": "String"
+      }
+    },
+    "compiler_ver": {
+      "description": "Compiler version used to compile the CAT",
+      "example_definition": "20150616",
+      "type": {
+        "name": "String"
+      }
+    },
+    "parameters": {
+      "description": "Parameters that define how an application can be configured",
+      "type": {
+        "name": "Collection",
+        "member_attribute": {
+          "type": {
+            "name": "Service::SharedType::Parameter"
+          }
+        }
+      }
+    },
+    "required_parameters": {
+      "description": "Parameters required to launch the CAT",
+      "type": {
+        "name": "Collection",
+        "member_attribute": {
+          "type": {
+            "name": "String"
+          }
+        }
+      }
+    },
+    "template_info": {
+      "description": "Template that this application was created from",
+      "type": {
+        "name": "V1::Type::TemplateInfo"
+      }
+    },
+    "schedules": {
+      "description": "Schedules available to users when launching the application",
+      "type": {
+        "name": "Collection",
+        "member_attribute": {
+          "type": {
+            "name": "Service::SharedType::Schedule"
+          }
+        }
+      }
+    },
+    "schedule_required": {
+      "description": "Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI",
+      "type": {
+        "name": "Boolean"
+      }
+    },
+    "created_by": {
+      "description": "User that created this application",
+      "type": {
+        "name": "Service::SharedType::User"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Struct",
+        "attributes": {
+          "created_at": {
+            "description": "Created timestamp",
+            "type": {
+              "name": "DateTime"
+            }
+          },
+          "updated_at": {
+            "description": "Updated timestamp",
+            "type": {
+              "name": "DateTime"
+            }
+          }
+        }
+      }
+    },
+    "kind": {
+      "description": "The kind of this resource, always self_service#application",
+      "example_definition": "self_service#application",
+      "type": {
+        "name": "String"
+      }
+    },
+    "compilation_href": {
+      "description": "The HREF of the compilation used to create this application",
+      "example_definition": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "id": {
+        },
+        "name": {
+        },
+        "href": {
+        },
+        "short_description": {
+        },
+        "long_description": {
+        },
+        "parameters": {
+        },
+        "required_parameters": {
+        },
+        "schedules": {
+        },
+        "schedule_required": {
+        },
+        "template_info": {
+        },
+        "compiler_ver": {
+        },
+        "created_by": {
+        },
+        "timestamps": {
+        }
+      },
+      "example": {
+        "kind": "self_service#application",
+        "id": "53dc455d2b5b92e482000001",
+        "name": "Development All-in-One",
+        "href": "/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001",
+        "short_description": "All-in-One Server for development purposes.",
+        "long_description": "Development server with basic environment setup",
+        "parameters": [
+          {
+            "name": "cloud",
+            "description": "Select the cloud to launch in",
+            "type": "string",
+            "default": "AWS US-East",
+            "operations": [
+              "launch",
+              "update_code"
+            ],
+            "ui": {
+              "label": "Cloud",
+              "category": "Cloud Information",
+              "index": 1
+            },
+            "validation": {
+              "no_echo": true,
+              "min_length": 5,
+              "max_length": 100,
+              "min_value": 1024,
+              "max_value": 2048,
+              "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+              "allowed_values": [
+                "An Object",
+                "An Object"
+              ],
+              "constraint_description": "The value must fit the pattern: ###-ABC"
+            }
+          },
+          {
+            "name": "cloud",
+            "description": "Select the cloud to launch in",
+            "type": "string",
+            "default": "AWS US-East",
+            "operations": [
+              "launch",
+              "update_code"
+            ],
+            "ui": {
+              "label": "Cloud",
+              "category": "Cloud Information",
+              "index": 1
+            },
+            "validation": {
+              "no_echo": true,
+              "min_length": 5,
+              "max_length": 100,
+              "min_value": 1024,
+              "max_value": 2048,
+              "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+              "allowed_values": [
+                "An Object",
+                "An Object"
+              ],
+              "constraint_description": "The value must fit the pattern: ###-ABC"
+            }
+          }
+        ],
+        "required_parameters": [
+          "pseudoramose"
+        ],
+        "schedules": [
+          {
+            "name": "Business hours",
+            "description": "Weekdays from 9am to 5pm",
+            "start_recurrence": {
+              "hour": 8,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "stop_recurrence": {
+              "hour": 18,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+          },
+          {
+            "name": "Business hours",
+            "description": "Weekdays from 9am to 5pm",
+            "start_recurrence": {
+              "hour": 8,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "stop_recurrence": {
+              "hour": 18,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+          },
+          {
+            "name": "Business hours",
+            "description": "Weekdays from 9am to 5pm",
+            "start_recurrence": {
+              "hour": 8,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "stop_recurrence": {
+              "hour": 18,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+          }
+        ],
+        "schedule_required": true,
+        "template_info": {
+          "href": "/api/designer/collections/12345/templates/53dc45552b5b92ace8000001",
+          "name": "Development All-in-One"
+        },
+        "compiler_ver": "20150616",
+        "created_by": {
+          "id": 9876,
+          "name": "Joe Montana",
+          "email": "joe.montana@49ers.com"
+        },
+        "timestamps": {
+          "created_at": "2013-06-17T00:00:00+00:00",
+          "updated_at": "2013-01-26T00:00:00+00:00"
+        }
+      }
+    },
+    "expanded": {
+      "attributes": {
+        "kind": {
+        },
+        "id": {
+        },
+        "name": {
+        },
+        "href": {
+        },
+        "short_description": {
+        },
+        "long_description": {
+        },
+        "parameters": {
+        },
+        "required_parameters": {
+        },
+        "schedules": {
+        },
+        "schedule_required": {
+        },
+        "template_info": {
+        },
+        "compiled_cat": {
+        },
+        "compiler_ver": {
+        },
+        "created_by": {
+        },
+        "timestamps": {
+        },
+        "compilation_href": {
+        }
+      },
+      "example": {
+        "kind": "self_service#application",
+        "id": "53dc455d2b5b92e482000001",
+        "name": "Development All-in-One",
+        "href": "/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001",
+        "short_description": "All-in-One Server for development purposes.",
+        "long_description": "Development server with basic environment setup",
+        "parameters": [
+          {
+            "name": "cloud",
+            "description": "Select the cloud to launch in",
+            "type": "string",
+            "default": "AWS US-East",
+            "operations": [
+              "launch",
+              "update_code"
+            ],
+            "ui": {
+              "label": "Cloud",
+              "category": "Cloud Information",
+              "index": 1
+            },
+            "validation": {
+              "no_echo": true,
+              "min_length": 5,
+              "max_length": 100,
+              "min_value": 1024,
+              "max_value": 2048,
+              "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+              "allowed_values": [
+                "An Object",
+                "An Object"
+              ],
+              "constraint_description": "The value must fit the pattern: ###-ABC"
+            }
+          },
+          {
+            "name": "cloud",
+            "description": "Select the cloud to launch in",
+            "type": "string",
+            "default": "AWS US-East",
+            "operations": [
+              "launch",
+              "update_code"
+            ],
+            "ui": {
+              "label": "Cloud",
+              "category": "Cloud Information",
+              "index": 1
+            },
+            "validation": {
+              "no_echo": true,
+              "min_length": 5,
+              "max_length": 100,
+              "min_value": 1024,
+              "max_value": 2048,
+              "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+              "allowed_values": [
+                "An Object",
+                "An Object"
+              ],
+              "constraint_description": "The value must fit the pattern: ###-ABC"
+            }
+          }
+        ],
+        "required_parameters": [
+          "pseudoramose"
+        ],
+        "schedules": [
+          {
+            "name": "Business hours",
+            "description": "Weekdays from 9am to 5pm",
+            "start_recurrence": {
+              "hour": 8,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "stop_recurrence": {
+              "hour": 18,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+          },
+          {
+            "name": "Business hours",
+            "description": "Weekdays from 9am to 5pm",
+            "start_recurrence": {
+              "hour": 8,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "stop_recurrence": {
+              "hour": 18,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+          },
+          {
+            "name": "Business hours",
+            "description": "Weekdays from 9am to 5pm",
+            "start_recurrence": {
+              "hour": 8,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "stop_recurrence": {
+              "hour": 18,
+              "minute": 0,
+              "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+            },
+            "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+          }
+        ],
+        "schedule_required": true,
+        "template_info": {
+          "href": "/api/designer/collections/12345/templates/53dc45552b5b92ace8000001",
+          "name": "Development All-in-One"
+        },
+        "compiled_cat": "",
+        "compiler_ver": "20150616",
+        "created_by": {
+          "id": 9876,
+          "name": "Joe Montana",
+          "email": "joe.montana@49ers.com"
+        },
+        "timestamps": {
+          "created_at": "2013-06-17T00:00:00+00:00",
+          "updated_at": "2013-01-26T00:00:00+00:00"
+        },
+        "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001"
+      }
+    }
+  },
+  "mime_type": "application/vnd.rightscale.self_service.application",
+  "description": null,
+  "example": {
+    "id": "53dc455d2b5b92e482000001",
+    "href": "/api/catalog/catalogs/60073/applications/53dc455d2b5b92e482000001",
+    "name": "Development All-in-One",
+    "short_description": "All-in-One Server for development purposes.",
+    "long_description": "Development server with basic environment setup",
+    "compiled_cat": "",
+    "compiler_ver": "20150616",
+    "parameters": [
+      {
+        "name": "cloud",
+        "description": "Select the cloud to launch in",
+        "type": "string",
+        "default": "AWS US-East",
+        "operations": [
+          "launch",
+          "update_code"
+        ],
+        "ui": {
+          "label": "Cloud",
+          "category": "Cloud Information",
+          "index": 1
+        },
+        "validation": {
+          "no_echo": true,
+          "min_length": 5,
+          "max_length": 100,
+          "min_value": 1024,
+          "max_value": 2048,
+          "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+          "allowed_values": [
+            "An Object",
+            "An Object"
+          ],
+          "constraint_description": "The value must fit the pattern: ###-ABC"
+        }
+      },
+      {
+        "name": "cloud",
+        "description": "Select the cloud to launch in",
+        "type": "string",
+        "default": "AWS US-East",
+        "operations": [
+          "launch",
+          "update_code"
+        ],
+        "ui": {
+          "label": "Cloud",
+          "category": "Cloud Information",
+          "index": 1
+        },
+        "validation": {
+          "no_echo": true,
+          "min_length": 5,
+          "max_length": 100,
+          "min_value": 1024,
+          "max_value": 2048,
+          "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+          "allowed_values": [
+            "An Object",
+            "An Object"
+          ],
+          "constraint_description": "The value must fit the pattern: ###-ABC"
+        }
+      }
+    ],
+    "required_parameters": [
+      "pseudoramose"
+    ],
+    "template_info": {
+      "href": "/api/designer/collections/12345/templates/53dc45552b5b92ace8000001",
+      "name": "Development All-in-One"
+    },
+    "schedules": [
+      {
+        "name": "Business hours",
+        "description": "Weekdays from 9am to 5pm",
+        "start_recurrence": {
+          "hour": 8,
+          "minute": 0,
+          "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        "stop_recurrence": {
+          "hour": 18,
+          "minute": 0,
+          "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+      },
+      {
+        "name": "Business hours",
+        "description": "Weekdays from 9am to 5pm",
+        "start_recurrence": {
+          "hour": 8,
+          "minute": 0,
+          "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        "stop_recurrence": {
+          "hour": 18,
+          "minute": 0,
+          "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+      },
+      {
+        "name": "Business hours",
+        "description": "Weekdays from 9am to 5pm",
+        "start_recurrence": {
+          "hour": 8,
+          "minute": 0,
+          "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        "stop_recurrence": {
+          "hour": 18,
+          "minute": 0,
+          "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+        },
+        "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+      }
+    ],
+    "schedule_required": true,
+    "created_by": {
+      "id": 9876,
+      "name": "Joe Montana",
+      "email": "joe.montana@49ers.com"
+    },
+    "timestamps": {
+      "created_at": "2013-06-17T00:00:00+00:00",
+      "updated_at": "2013-01-26T00:00:00+00:00"
+    },
+    "kind": "self_service#application",
+    "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001"
+  }
+}

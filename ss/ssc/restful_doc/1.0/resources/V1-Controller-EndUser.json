@@ -1,21 +1,21 @@
 {
-  "description": "\nThe AccountPreference resource stores preferences that apply account-wide, such as UI customization settings and other settings.\nThe Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings\nto use in your own integration.\n      ",
-  "media_type": "V1::MediaType::AccountPreference",
-  "mime_type": "application/vnd.rightscale.self_service.account_preference",
+  "description": "",
+  "media_type": "V1::MediaType::EndUser",
+  "mime_type": "application/vnd.rightscale.self_service.end_user",
   "actions": [
     {
-      "description": "List the AccountPreferences for this account.",
+      "description": "Show all Self-Service Only End Users that belong to this account.",
       "name": "index",
       "urls": [
         [
           "GET",
-          "/api/catalog/accounts/:account_id/account_preferences"
+          "/api/catalog/accounts/:account_id/end_users"
         ]
       ],
       "params": {
-        "identity": "name",
+        "identity": "id",
         "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
-        "reference": "V1::MediaType::AccountPreference",
+        "reference": "V1::MediaType::EndUser",
         "type": {
           "name": "Struct",
           "attributes": {
@@ -28,8 +28,8 @@
               }
             },
             "filter": {
-              "description": "Filter by group, so that only AccountPreferences belonging to that group are returned",
-              "example_definition": "[\"group_name==portal_customization\"]",
+              "description": "Filter by user ID",
+              "example_definition": "[\"user_id==1234\"]",
               "type": {
                 "name": "Collection",
                 "member_attribute": {
@@ -44,7 +44,7 @@
         "example": {
           "account_id": "12345",
           "filter": [
-            "group_name==portal_customization"
+            "user_id==1234"
           ]
         }
       },
@@ -52,7 +52,11 @@
         "default": {
           "description": null,
           "status": 200,
-          "mime_type": "application/vnd.rightscale.self_service.account_preference"
+          "mime_type": "application/vnd.rightscale.self_service.end_user"
+        },
+        "forbidden": {
+          "description": "Only administrators may retrieve end users.",
+          "status": 403
         },
         "validation": {
           "description": "When parameter validation hits...",
@@ -70,82 +74,18 @@
       }
     },
     {
-      "description": "Get details for a particular AccountPreference",
-      "name": "show",
-      "urls": [
-        [
-          "GET",
-          "/api/catalog/accounts/:account_id/account_preferences/:name"
-        ]
-      ],
-      "params": {
-        "identity": "name",
-        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
-        "reference": "V1::MediaType::AccountPreference",
-        "type": {
-          "name": "Struct",
-          "attributes": {
-            "account_id": {
-              "required": true,
-              "description": "The account ID",
-              "example_definition": "12345",
-              "type": {
-                "name": "String"
-              }
-            },
-            "name": {
-              "required": true,
-              "description": "The name of the AccountPreference to retrieve",
-              "example_definition": "primary_color",
-              "type": {
-                "name": "String"
-              }
-            }
-          }
-        },
-        "example": {
-          "account_id": "12345",
-          "name": "primary_color"
-        }
-      },
-      "responses": {
-        "default": {
-          "description": null,
-          "status": 200,
-          "mime_type": "application/vnd.rightscale.self_service.account_preference"
-        },
-        "not_found": {
-          "description": "An AccountPreference with the given account and name could not be found",
-          "status": 404
-        },
-        "validation": {
-          "description": "When parameter validation hits...",
-          "status": 400,
-          "mime_type": "application/json"
-        },
-        "internal_server_error": {
-          "description": "Internal Server Error",
-          "status": 500
-        },
-        "unauthorized": {
-          "description": "Authentication is required and has failed or has not yet been provided.",
-          "status": 401
-        }
-      }
-    },
-    {
-      "description": "Create a new AccountPreference or update an existing AccountPreference with the new value",
+      "description": "Grant a user Self-Service Only End User access to this account.",
       "name": "create",
       "urls": [
         [
           "POST",
-          "/api/catalog/accounts/:account_id/account_preferences"
+          "/api/catalog/accounts/:account_id/end_users"
         ]
       ],
       "params": {
-        "identity": "name",
+        "identity": "id",
         "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
-        "reference": "V1::MediaType::AccountPreference",
+        "reference": "V1::MediaType::EndUser",
         "type": {
           "name": "Struct",
           "attributes": {
@@ -164,59 +104,43 @@
         }
       },
       "payload": {
-        "identity": "name",
+        "identity": "id",
         "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
-        "reference": "V1::MediaType::AccountPreference",
+        "reference": "V1::MediaType::EndUser",
         "type": {
           "name": "Struct",
           "attributes": {
-            "name": {
+            "user_ids": {
               "required": true,
-              "description": "The name for the new AccountPreference or AccountPreference to update (note this is the key for this resource)",
-              "example_definition": "my_new_preference",
+              "description": "User IDs to add as SS End Users to this account",
+              "example_definition": "[\"1234\",\"7889\"]",
               "type": {
-                "name": "String"
-              }
-            },
-            "value": {
-              "required": true,
-              "description": "The value to set for this AccountPreference",
-              "example_definition": "some_custom_value",
-              "type": {
-                "name": "String"
-              }
-            },
-            "group_name": {
-              "required": true,
-              "description": "The group to place this AccountPreference in. Any string value is accepted - the group does not need to exist",
-              "example_definition": "my_custom_prefs",
-              "type": {
-                "name": "String"
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
               }
             }
           }
         },
         "example": {
-          "name": "my_new_preference",
-          "value": "some_custom_value",
-          "group_name": "my_custom_prefs"
+          "user_ids": [
+            "1234",
+            "7889"
+          ]
         }
       },
       "responses": {
-        "default": {
-          "description": null,
-          "status": 200
+        "forbidden": {
+          "description": "Only administrators may add end users.",
+          "status": 403
         },
-        "created": {
-          "description": "The AccountPreference was successfully created",
-          "status": 201,
-          "multipart": {
-            "type": "optional",
-            "envelope": {
-              "description": null,
-              "status": 200
-            }
-          }
+        "default": {
+          "description": "An array of results for each user, with either \"created\" or \"failed\" status",
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.end_user.create_result"
         },
         "validation": {
           "description": "When parameter validation hits...",
@@ -234,18 +158,18 @@
       }
     },
     {
-      "description": "Delete an AccountPreference",
+      "description": "",
       "name": "delete",
       "urls": [
         [
           "DELETE",
-          "/api/catalog/accounts/:account_id/account_preferences/:name"
+          "/api/catalog/accounts/:account_id/end_users"
         ]
       ],
       "params": {
-        "identity": "name",
+        "identity": "id",
         "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
-        "reference": "V1::MediaType::AccountPreference",
+        "reference": "V1::MediaType::EndUser",
         "type": {
           "name": "Struct",
           "attributes": {
@@ -256,11 +180,91 @@
               "type": {
                 "name": "String"
               }
-            },
-            "name": {
+            }
+          }
+        },
+        "example": {
+          "account_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::EndUser",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "user_ids": {
               "required": true,
-              "description": "The name of the AccountPreference to delete",
-              "example_definition": "my_new_preference",
+              "description": "User IDs to remove as SS End Users to this account",
+              "example_definition": "[\"1234\",\"7889\"]",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "user_ids": [
+            "1234",
+            "7889"
+          ]
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "SS End User successfully deleted",
+          "status": 204
+        },
+        "forbidden": {
+          "description": "Only administrators may remove SS End Users from the account.",
+          "status": 403
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "",
+      "name": "non_ss_users",
+      "urls": [
+        [
+          "GET",
+          "/api/catalog/accounts/:account_id/end_users/available"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::EndUser",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "account_id": {
+              "required": true,
+              "description": "The account ID",
+              "example_definition": "12345",
               "type": {
                 "name": "String"
               }
@@ -268,23 +272,18 @@
           }
         },
         "example": {
-          "account_id": "12345",
-          "name": "my_new_preference"
+          "account_id": "12345"
         }
       },
       "responses": {
-        "no_content": {
-          "description": "AccountPreference successfully deleted",
-          "status": 204
-        },
-        "not_found": {
-          "description": "An AccountPreference with the given account and name could not be found",
-          "status": 404
-        },
         "default": {
           "description": null,
           "status": 200,
-          "mime_type": "controller_defined"
+          "mime_type": "application/vnd.rightscale.self_service.end_user"
+        },
+        "forbidden": {
+          "description": "Only administrators may users available to add as end users.",
+          "status": 403
         },
         "validation": {
           "description": "When parameter validation hits...",

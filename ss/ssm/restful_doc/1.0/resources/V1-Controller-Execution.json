@@ -1,1 +1,2083 @@
-{"description":"An Execution is a launched instance of a CloudApp. Executions can be created from the catalog\nby launching an Application, from Designer by launching a Template, or directly in Manager\nby using the API and sending the CAT source or CAT Compiled source.\n\nExecutions are represented in RightScale Cloud Management by a deployment -- the resources\ndefined in the CAT are all created in the Deployment. Any action on a running CloudApp should\nbe made on its Execution resource.\n\nMaking changes to any resource directly in the CM deployment\nmay result in undesired behavior since the Execution only refreshes certain information as a\nresult of running an Operation on an Execution. For example, if a Server is replaced in CM\ninstead of through Self-Service, the new Server's information won' be available in\nSelf-Service.\n","media_type":"V1::MediaType::Execution","mime_type":"application/vnd.rightscale.self_service.execution","actions":[{"description":"List information about the Executions, or use a filter to only return certain Executions. A view can be used for various levels of detail.","name":"index","urls":[["GET","/projects/:project_id/executions"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"description":"An optional list of execution IDs to retrieve","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}},"filter":{"description":"Filter by status, syntax is [\"status==running\"]","example_definition":"#<Proc:0x007fbed57a3de8@/Users/arangamani/Projects/ss/service_manager/app/v1/configs/execution.rb:57 (lambda)>","type":{"name":"Collection","member_attribute":{"type":{"name":"String"}}}},"view":{"values":["default","expanded"],"description":"Optional view to return","example_definition":"expanded","type":{"name":"String"}}}},"example":{"project_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"],"filter":["status==running"],"view":"expanded"}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.execution","multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Show details for a given Execution. A view can be used for various levels of detail.","name":"show","urls":[["GET","/projects/:project_id/executions/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"view":{"values":["default","expanded","source"],"description":"Optional view to return","example_definition":"source","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002","view":"source"}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.execution","multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_found":{"description":"The Execution ID was not found in the specified account/project.","status":404,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"forbidden":{"description":"The Execution specified was launched by a different user and the AccountPreference is set to only show users their own CloudApp Executions.","status":403,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Create a new execution from a CAT, a compiled CAT, an Application in the Catalog, or a Template in Designer","name":"create","urls":[["POST","/projects/:project_id/executions"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}}}},"example":{"project_id":"12345"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"name":{"description":"The name for the Execution. The Template name will be used if none is provided. This will be used as the name of the deployment (appended with a unique ID).","example_definition":"My dev server for testing","type":{"name":"String"}},"description":{"description":"The description for the execution. The short_description of the Template will be used if none is provided.","example_definition":"Dev server for our new user interface project.","type":{"name":"String"}},"source":{"description":"The raw CAT source from which to create the Execution. The CAT will be compiled first and then launched if successful. This attribute is mutually exclusive with: compiled_cat, template_href and application_href.","type":{"name":"String"}},"compiled_cat":{"dsl_compiler":"Skeletor::MediaType::DSLCompiler","description":"The compiled CAT source from which to create the Execution. This attribute is mutually exclusive with: source, template_href and application_href.","reference":"Service::MediaType::CompiledCAT","type":{"name":"Service::MediaType::CompiledCAT","views":{"default":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"expanded":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"source":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"master":{"attributes":{"name":{"view":"master"},"rs_ca_ver":{"view":"master"},"short_description":{"view":"master"},"long_description":{"view":"master"},"source":{"view":"master"},"parameters":{"view":"master"},"required_parameters":{"view":"master"},"conditions":{"view":"master"},"mappings":{"view":"master"},"resources":{"view":"master"},"outputs":{"view":"master"},"operations":{"view":"master"},"definitions":{"view":"master"},"namespaces":{"view":"master"},"permissions":{"view":"master"}}}},"mime_type":"application/vnd.rightscale.self_service.compiled_cat","description":null}},"template_href":{"description":"The href of the Template in Designer from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and application_href.","example_definition":"/api/designer/collections/12345/templates/53dc45552b5b92ace8000001","type":{"name":"String"}},"application_href":{"description":"The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and template_href.","example_definition":"/api/catalog/catalogs/12345/applications/53dc455d2b5b92e482000001","type":{"name":"String"}},"options":{"description":"The configuration options of the Execution. These are the values provided for the CloudApp parameters.","type":{"name":"Collection","member_attribute":{"type":{"name":"Service::SharedType::ConfigurationOption"}}}},"scheduled_actions":{"description":"The inital ScheduledActions to apply to the Execution.","default":[],"type":{"name":"Collection","member_attribute":{"type":{"name":"V1::Type::ScheduledAction"}}}},"schedules":{"description":"The schedules available to the CloudApp","default":[],"type":{"name":"Collection","member_attribute":{"type":{"name":"Service::SharedType::Schedule"}}}},"schedule_required":{"description":"Whether the CloudApp requires a schedule. If set to false, allows user to pick from '24/7' schedule in the UI","type":{"name":"Boolean"}},"current_schedule":{"description":"The currently selected schedule name, or nil for CloudApps using the '24/7' schedule","type":{"name":"String"}},"ends_at":{"description":"The day on which the CloudApp should be automatically terminated","type":{"name":"DateTime"}}}},"example":{"name":"My dev server for testing","description":"Dev server for our new user interface project.","source":"diborate","compiled_cat":{"name":"unexecrated","rs_ca_ver":468,"short_description":"endochrome","long_description":"almondy","parameters":{"Nance":"#<Service::MediaType::SourceParameter:0x007fbedd038d30>","imperially":"#<Service::MediaType::SourceParameter:0x007fbedd0422e0>","sov":"#<Service::MediaType::SourceParameter:0x007fbedd041138>"},"conditions":{"nominalism":{"touchingly":["An Object","An Object","An Object"]},"unrepealable":{"prehandle":["An Object"]},"Urodela":{"symbolizer":["An Object"]}},"mappings":{"countrified":{"aiel":{"vinificator":"demiangel","tristichous":"empyocele"},"Mitsukurinidae":{"nephromalacia":"toreutic"},"bibliothecarian":{"Dendrohyrax":"imponderable"}}},"resources":{"stillroom":"#<Service::MediaType::SourceResource:0x007fbedd062bd0>","reformado":"#<Service::MediaType::SourceResource:0x007fbedd061f78>"},"outputs":{"sacrolumbalis":"#<Service::MediaType::SourceOutput:0x007fbedd0603a8>","Epidermophyton":"#<Service::MediaType::SourceOutput:0x007fbedd06b028>"},"operations":{"unimpropriated":"#<Service::MediaType::SourceOperation:0x007fbedd069188>","phenospermy":"#<Service::MediaType::SourceOperation:0x007fbedd073840>","dimeric":"#<Service::MediaType::SourceOperation:0x007fbedd072c38>"},"definitions":{"encephalometer":"#<Service::MediaType::SourceDefinition:0x007fbedd070d48>","undersettle":"#<Service::MediaType::SourceDefinition:0x007fbedd07bce8>","enstatolite":"#<Service::MediaType::SourceDefinition:0x007fbedd07b2c0>"}},"template_href":"/api/designer/collections/12345/templates/53dc45552b5b92ace8000001","application_href":"/api/catalog/catalogs/12345/applications/53dc455d2b5b92e482000001","options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"scheduled_actions":[{"name":"Start on Sunday","recurrence":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","action":"start","first_occurrence":"2012-12-29T00:00:00+00:00","timezone":"UTC","execution_schedule":false}],"schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"current_schedule":"unenraptured","ends_at":"2013-07-18T00:00:00+00:00"}},"responses":{"default":{"description":null,"status":200},"created":{"description":null,"status":201,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"parameter_not_found":{"description":null,"status":422},"template_not_found":{"description":null,"status":422},"invalid_template_href":{"description":null,"status":422},"application_not_found":{"description":null,"status":422},"invalid_application_href":{"description":null,"status":422},"invalid_current_schedule":{"description":null,"status":422},"parse_failure":{"description":null,"status":422},"converge_failure":{"description":null,"status":422},"bad_request":{"description":null,"status":400},"missing_def_name":{"description":null,"status":400},"missing_definition":{"description":null,"status":400},"missing_definition_source":{"description":null,"status":400},"missing_current_schedule":{"description":null,"status":400},"missing_value":{"description":null,"status":400},"refresh_job_creation_failed":{"description":null,"status":500},"not_disabled":{"description":null,"status":422,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_enabled":{"description":null,"status":422,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_running":{"description":null,"status":422,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Updates an execution end date or selected schedule.","name":"patch","urls":[["PATCH","/projects/:project_id/executions/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"current_schedule":{"description":"The name of the schedule to select, or nil to use the '24/7' schedule","example_definition":"Business hours","type":{"name":"String"}},"ends_at":{"description":"The day on which the CloudApp should be automatically terminated","type":{"name":"DateTime"}}}},"example":{"current_schedule":"Business hours","ends_at":"2013-07-18T00:00:00+00:00"}},"responses":{"no_content":{"description":null,"status":204},"forbidden":{"description":null,"status":403},"not_found":{"description":"The Execution ID was not found.","status":404},"invalid_current_schedule":{"description":"The schedule name does not match any of the available schedules","status":422},"missing_current_schedule":{"description":"The schedule_required flag is marked as true, but nil was passed in the current_schedule parameter","status":400},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":null,"name":"delete","urls":[["DELETE","/projects/:project_id/executions/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"ID of execution to delete","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"force":{"description":"Force delete execution, bypass state validation so that non term can deleted.\n\nNote: using this option may leave cloud resources running that must manually be destroyed.","default":false,"type":{"name":"Boolean"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002","force":false}},"responses":{"no_content":{"description":null,"status":204},"unprocessable_entity":{"description":null,"status":422},"forbidden":{"description":null,"status":403},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Delete several executions from the database. Note: if an execution has not successfully been terminated, there may still be associated cloud resources running.","name":"multi_delete","urls":[["DELETE","/projects/:project_id/executions"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"List of execution IDs to delete","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}},"force":{"description":"Force delete execution, bypass state validation so that non term can deleted.\n                              Note:       using this option may leave cloud resources running that must manually be destroyed.","default":false,"type":{"name":"Boolean"}}}},"example":{"project_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"],"force":false}},"responses":{"default":{"description":"The multipart response was received and processed. See individual responses for details.","status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"no_content":{"description":"The execution was deleted.","status":204},"unprocessable_entity":{"description":"Unable to delete the execution.","status":422},"forbidden":{"description":"The execution is restricted.","status":403},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Download the CAT source for the execution.","name":"download","urls":[["GET","/projects/:project_id/executions/:id/download"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"api_version":{"required":true,"description":"The API version (only valid value is currently \"1.0\")","example_definition":"1.0","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002","api_version":"1.0"}},"responses":{"download":{"description":null,"status":200},"forbidden":{"description":null,"status":403,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Launch an Execution.","name":"launch","urls":[["POST","/projects/:project_id/executions/:id/actions/launch"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002"}},"responses":{"accepted":{"description":"The request has been accepted and is being processed.","status":202},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Start an Execution.","name":"start","urls":[["POST","/projects/:project_id/executions/:id/actions/start"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002"}},"responses":{"accepted":{"description":"The request has been accepted and is being processed.","status":202},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Stop an Execution.","name":"stop","urls":[["POST","/projects/:project_id/executions/:id/actions/stop"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002"}},"responses":{"accepted":{"description":"The request has been accepted and is being processed.","status":202},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Terminate an Execution.","name":"terminate","urls":[["POST","/projects/:project_id/executions/:id/actions/terminate"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002"}},"responses":{"accepted":{"description":"The request has been accepted and is being processed.","status":202},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Launch several Executions.","name":"multi_launch","urls":[["POST","/projects/:project_id/executions/actions/launch"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"List of execution IDs to launch","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"project_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"responses":{"default":{"description":"The multipart request was received and processed. See individual responses for details.","status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"accepted":{"description":"The request has been accepted and is being processed.","status":202},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Start several Executions.","name":"multi_start","urls":[["POST","/projects/:project_id/executions/actions/start"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"List of execution IDs to start","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"project_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"responses":{"default":{"description":"The multipart request was received and processed. See individual responses for details.","status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"accepted":{"description":"The request has been accepted and is being processed.","status":202},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Stop several Executions.","name":"multi_stop","urls":[["POST","/projects/:project_id/executions/actions/stop"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"List of execution IDs to stop","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"project_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"responses":{"default":{"description":"The multipart request was received and processed. See individual responses for details.","status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"accepted":{"description":"The request has been accepted and is being processed.","status":202},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Terminate several Executions.","name":"multi_terminate","urls":[["POST","/projects/:project_id/executions/actions/terminate"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"List of execution IDs to terminate","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"project_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"responses":{"default":{"description":"The multipart request was received and processed. See individual responses for details.","status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"accepted":{"description":"The request has been accepted and is being processed.","status":202},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Runs an Operation on an Execution.","name":"run","urls":[["POST","/projects/:project_id/executions/:id/actions/run"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the execution","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"project_id":"12345","id":"5392479332ca2bd0ca000002"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"name":{"required":true,"description":"The name of the operation to run","example_definition":"update_code","type":{"name":"String"}},"configuration_options":{"description":"The configuration options of the operation. These are the values provided for the CloudApp parameters that this operation depends on.","type":{"name":"Collection","member_attribute":{"type":{"name":"Service::SharedType::ConfigurationOption"}}}}}},"example":{"name":"update_code","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}]}},"responses":{"created":{"description":"The operation was created.","status":201},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Runs an Operation on several Executions.","name":"multi_run","urls":[["POST","/projects/:project_id/executions/actions/run"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"project_id":{"required":true,"description":"The project ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"List of execution IDs to run","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"project_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"Struct","attributes":{"name":{"required":true,"regexp":"(?-mix:^[a-zA-Z])","description":"The name of the operation to run","example_definition":"update_code","type":{"name":"String"}},"configuration_options":{"description":"The configuration options of the operation. These are the values provided for the CloudApp parameters that this operation depends on.","type":{"name":"Collection","member_attribute":{"type":{"name":"Service::SharedType::ConfigurationOption"}}}}}},"example":{"name":"update_code","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}]}},"responses":{"default":{"description":"The multipart request was received and processed. See individual responses for details.","status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"created":{"description":"The operation was created.","status":201},"forbidden":{"description":"The execution is restricted.","status":403},"not_found":{"description":"The execution wasn't found.","status":404},"bad_request":{"description":"The execution is not in a valid state to perform this action.","status":400},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}}]}
+{
+  "description": "An Execution is a launched instance of a CloudApp. Executions can be created from the catalog\nby launching an Application, from Designer by launching a Template, or directly in Manager\nby using the API and sending the CAT source or CAT Compiled source.\n\nExecutions are represented in RightScale Cloud Management by a deployment -- the resources\ndefined in the CAT are all created in the Deployment. Any action on a running CloudApp should\nbe made on its Execution resource.\n\nMaking changes to any resource directly in the CM deployment\nmay result in undesired behavior since the Execution only refreshes certain information as a\nresult of running an Operation on an Execution. For example, if a Server is replaced in CM\ninstead of through Self-Service, the new Server's information won' be available in\nSelf-Service.\n",
+  "media_type": "V1::MediaType::Execution",
+  "mime_type": "application/vnd.rightscale.self_service.execution",
+  "actions": [
+    {
+      "description": "List information about the Executions, or use a filter to only return certain Executions. A view can be used for various levels of detail.",
+      "name": "index",
+      "urls": [
+        [
+          "GET",
+          "/api/manager/projects/:project_id/executions"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "description": "An optional list of execution IDs to retrieve",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            },
+            "filter": {
+              "description": "Filter by status, syntax is [\"status==running\"]",
+              "example_definition": "#<Proc:0x007f9565027ab8@/Users/kmanickam/gocode/src/github.com/rightscale/service_manager/app/v1/configs/execution.rb:57 (lambda)>",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "expanded",
+                "index",
+                "tiny"
+              ],
+              "description": "Optional view to return",
+              "example_definition": "expanded",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ],
+          "filter": [
+            "status==running"
+          ],
+          "view": "expanded"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.execution",
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Show details for a given Execution. A view can be used for various levels of detail.",
+      "name": "show",
+      "urls": [
+        [
+          "GET",
+          "/api/manager/projects/:project_id/executions/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "expanded",
+                "source"
+              ],
+              "description": "Optional view to return",
+              "example_definition": "source",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002",
+          "view": "source"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.execution",
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_found": {
+          "description": "The Execution ID was not found in the specified account/project.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "forbidden": {
+          "description": "The Execution specified was launched by a different user and the AccountPreference is set to only show users their own CloudApp Executions.",
+          "status": 403,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Create a new execution from a CAT, a compiled CAT, an Application in the Catalog, or a Template in Designer",
+      "name": "create",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "name": {
+              "description": "The name for the Execution. The Template name will be used if none is provided. This will be used as the name of the deployment (appended with a unique ID).",
+              "example_definition": "My dev server for testing",
+              "type": {
+                "name": "String"
+              }
+            },
+            "description": {
+              "description": "The description for the execution. The short_description of the Template will be used if none is provided.",
+              "example_definition": "Dev server for our new user interface project.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "source": {
+              "description": "The raw CAT source from which to create the Execution. The CAT will be compiled first and then launched if successful. This attribute is mutually exclusive with: compiled_cat, template_href, compilation_href and application_href.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "compiled_cat": {
+              "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+              "description": "The compiled CAT source from which to create the Execution. This attribute is mutually exclusive with: source, template_href and application_href.",
+              "reference": "Service::MediaType::CompiledCAT",
+              "type": {
+                "name": "Service::MediaType::CompiledCAT",
+                "views": {
+                  "default": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "expanded": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "source": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "master": {
+                    "attributes": {
+                      "name": {
+                        "view": "master"
+                      },
+                      "rs_ca_ver": {
+                        "view": "master"
+                      },
+                      "short_description": {
+                        "view": "master"
+                      },
+                      "long_description": {
+                        "view": "master"
+                      },
+                      "compiler_ver": {
+                        "view": "master"
+                      },
+                      "source": {
+                        "view": "master"
+                      },
+                      "parameters": {
+                        "view": "master"
+                      },
+                      "required_parameters": {
+                        "view": "master"
+                      },
+                      "conditions": {
+                        "view": "master"
+                      },
+                      "mappings": {
+                        "view": "master"
+                      },
+                      "resources": {
+                        "view": "master"
+                      },
+                      "outputs": {
+                        "view": "master"
+                      },
+                      "operations": {
+                        "view": "master"
+                      },
+                      "definitions": {
+                        "view": "master"
+                      },
+                      "namespaces": {
+                        "view": "master"
+                      },
+                      "permissions": {
+                        "view": "master"
+                      },
+                      "imports": {
+                        "view": "master"
+                      },
+                      "dependency_hashes": {
+                        "view": "master"
+                      },
+                      "package": {
+                        "view": "master"
+                      },
+                      "cat_parser_gem_version": {
+                        "view": "master"
+                      }
+                    }
+                  }
+                },
+                "mime_type": "application/vnd.rightscale.self_service.compiled_cat",
+                "description": null
+              }
+            },
+            "template_href": {
+              "description": "The href of the Template in Designer from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, compilation_href and application_href. NOTE: This requires :designer role at least.",
+              "example_definition": "/api/designer/collections/12345/templates/53dc45552b5b92ace8000001",
+              "type": {
+                "name": "String"
+              }
+            },
+            "application_href": {
+              "description": "The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, compilation_href and template_href.",
+              "example_definition": "/api/catalog/catalogs/12345/applications/53dc455d2b5b92e482000001",
+              "type": {
+                "name": "String"
+              }
+            },
+            "compilation_href": {
+              "description": "The href of the Compilation from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, template_href and application_href. NOTE: This requires :designer role at least.",
+              "example_definition": "/compilation_service/v1/projects/12345/compilations/53dc45552b5b92ace8000001",
+              "type": {
+                "name": "String"
+              }
+            },
+            "options": {
+              "description": "The configuration options of the Execution. These are the values provided for the CloudApp parameters.",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::ConfigurationOption"
+                  }
+                }
+              }
+            },
+            "scheduled_actions": {
+              "description": "The inital ScheduledActions to apply to the Execution.",
+              "default": [
+
+              ],
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "V1::Type::ScheduledAction"
+                  }
+                }
+              }
+            },
+            "schedules": {
+              "description": "The schedules available to the CloudApp",
+              "default": [
+
+              ],
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::Schedule"
+                  }
+                }
+              }
+            },
+            "schedule_required": {
+              "description": "Whether the CloudApp requires a schedule. If set to false, allows user to pick from '24/7' schedule in the UI",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            "current_schedule": {
+              "description": "The currently selected schedule name, or nil for CloudApps using the '24/7' schedule",
+              "type": {
+                "name": "String"
+              }
+            },
+            "defer_launch": {
+              "description": "Whether or not to defer launching the execution. Setting this value to true will keep the execution in not_started state until it is explicitly launched or the first scheduled start operation occurs.",
+              "default": false,
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            "ends_at": {
+              "description": "The day on which the CloudApp should be automatically terminated",
+              "type": {
+                "name": "DateTime"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "My dev server for testing",
+          "description": "Dev server for our new user interface project.",
+          "source": "diborate",
+          "compiled_cat": {
+            "name": "unexecrated",
+            "rs_ca_ver": 468,
+            "short_description": "endochrome",
+            "long_description": "almondy",
+            "compiler_ver": "rigorous",
+            "parameters": {
+              "Nance": "#<Service::MediaType::SourceParameter:0x007f955c7ec090>",
+              "imperially": "#<Service::MediaType::SourceParameter:0x007f955c7dc6b8>",
+              "sov": "#<Service::MediaType::SourceParameter:0x007f955ce5a238>"
+            },
+            "conditions": {
+              "nominalism": {
+                "touchingly": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ]
+              },
+              "unrepealable": {
+                "prehandle": [
+                  "An Object"
+                ]
+              },
+              "Urodela": {
+                "symbolizer": [
+                  "An Object"
+                ]
+              }
+            },
+            "mappings": {
+              "countrified": {
+                "aiel": {
+                  "vinificator": "demiangel",
+                  "tristichous": "empyocele"
+                },
+                "Mitsukurinidae": {
+                  "nephromalacia": "toreutic"
+                },
+                "bibliothecarian": {
+                  "Dendrohyrax": "imponderable"
+                }
+              }
+            },
+            "resources": {
+              "stillroom": "#<Service::MediaType::SourceResource:0x007f955ce300c8>",
+              "reformado": "#<Service::MediaType::SourceResource:0x007f955d6a1f18>"
+            },
+            "outputs": {
+              "sacrolumbalis": "#<Service::MediaType::SourceOutput:0x007f955ce28968>",
+              "Epidermophyton": "#<Service::MediaType::SourceOutput:0x007f955bc922f8>"
+            },
+            "operations": {
+              "unimpropriated": "#<Service::MediaType::SourceOperation:0x007f955c7a4fd8>",
+              "phenospermy": "#<Service::MediaType::SourceOperation:0x007f955c793d50>",
+              "dimeric": "#<Service::MediaType::SourceOperation:0x007f955c791500>"
+            },
+            "definitions": {
+              "encephalometer": "#<Service::MediaType::SourceDefinition:0x007f955c788518>",
+              "undersettle": "#<Service::MediaType::SourceDefinition:0x007f955c7819c0>",
+              "enstatolite": "#<Service::MediaType::SourceDefinition:0x007f955c780728>"
+            }
+          },
+          "template_href": "/api/designer/collections/12345/templates/53dc45552b5b92ace8000001",
+          "application_href": "/api/catalog/catalogs/12345/applications/53dc455d2b5b92e482000001",
+          "compilation_href": "/compilation_service/v1/projects/12345/compilations/53dc45552b5b92ace8000001",
+          "options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ],
+          "scheduled_actions": [
+            {
+              "name": "Start on Sunday",
+              "recurrence": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR",
+              "action": "start",
+              "first_occurrence": "2012-12-29T00:00:00+00:00",
+              "timezone": "UTC",
+              "execution_schedule": false
+            }
+          ],
+          "schedules": [
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            }
+          ],
+          "schedule_required": true,
+          "current_schedule": "unenraptured",
+          "defer_launch": true,
+          "ends_at": "2013-07-18T00:00:00+00:00"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200
+        },
+        "created": {
+          "description": null,
+          "status": 201,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "parameter_not_found": {
+          "description": null,
+          "status": 422
+        },
+        "template_not_found": {
+          "description": null,
+          "status": 422
+        },
+        "invalid_template_href": {
+          "description": null,
+          "status": 422
+        },
+        "compilation_not_found": {
+          "description": null,
+          "status": 422
+        },
+        "invalid_compilation_href": {
+          "description": null,
+          "status": 422
+        },
+        "compilation_creation_failure": {
+          "description": null,
+          "status": 422
+        },
+        "application_not_found": {
+          "description": null,
+          "status": 422
+        },
+        "invalid_application_href": {
+          "description": null,
+          "status": 422
+        },
+        "invalid_current_schedule": {
+          "description": null,
+          "status": 422
+        },
+        "parse_failure": {
+          "description": null,
+          "status": 422
+        },
+        "converge_failure": {
+          "description": null,
+          "status": 422
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        },
+        "forbidden_body": {
+          "description": null,
+          "status": 403
+        },
+        "grant_failure": {
+          "description": "An error occurred while processing the CloudApp's permissions. May be due to the user having insufficient permissions.",
+          "status": 403
+        },
+        "bad_request": {
+          "description": null,
+          "status": 400
+        },
+        "missing_def_name": {
+          "description": null,
+          "status": 400
+        },
+        "missing_definition": {
+          "description": null,
+          "status": 400
+        },
+        "missing_definition_source": {
+          "description": null,
+          "status": 400
+        },
+        "missing_current_schedule": {
+          "description": null,
+          "status": 400
+        },
+        "missing_value": {
+          "description": null,
+          "status": 400
+        },
+        "refresh_job_creation_failed": {
+          "description": null,
+          "status": 500
+        },
+        "not_disabled": {
+          "description": null,
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_enabled": {
+          "description": null,
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_running": {
+          "description": null,
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Updates an execution end date or selected schedule.",
+      "name": "patch",
+      "urls": [
+        [
+          "PATCH",
+          "/api/manager/projects/:project_id/executions/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "current_schedule": {
+              "description": "The name of the schedule to select, or nil to use the '24/7' schedule",
+              "example_definition": "Business hours",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ends_at": {
+              "description": "The day on which the CloudApp should be automatically terminated",
+              "type": {
+                "name": "DateTime"
+              }
+            }
+          }
+        },
+        "example": {
+          "current_schedule": "Business hours",
+          "ends_at": "2013-07-18T00:00:00+00:00"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": null,
+          "status": 204
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        },
+        "not_found": {
+          "description": "The Execution ID was not found.",
+          "status": 404
+        },
+        "invalid_current_schedule": {
+          "description": "The schedule name does not match any of the available schedules",
+          "status": 422
+        },
+        "missing_current_schedule": {
+          "description": "The schedule_required flag is marked as true, but nil was passed in the current_schedule parameter",
+          "status": 400
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": null,
+      "name": "delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/manager/projects/:project_id/executions/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "ID of execution to delete",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            },
+            "force": {
+              "description": "Force delete execution, bypassing state checks (only available to designers and admins).\n\nNote: using this option only deletes the CloudApp from Self-Service and does not modify or terminate resources in any way. Any cloud resources running must be manually destroyed.",
+              "default": false,
+              "type": {
+                "name": "Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002",
+          "force": false
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": null,
+          "status": 204
+        },
+        "not_found": {
+          "description": "The Execution ID was not found in the specified account/project.",
+          "status": 404
+        },
+        "unprocessable_entity": {
+          "description": null,
+          "status": 422
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Delete several executions from the database. Note: if an execution has not successfully been terminated, there may still be associated cloud resources running.",
+      "name": "multi_delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/manager/projects/:project_id/executions"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "List of execution IDs to delete",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            },
+            "force": {
+              "description": "Force delete execution, bypassing state checks (only available to designers and admins).\n\nNote: using this option only deletes the CloudApp from Self-Service and does not modify or terminate resources in any way. Any cloud resources running must be manually destroyed.",
+              "default": false,
+              "type": {
+                "name": "Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ],
+          "force": false
+        }
+      },
+      "responses": {
+        "default": {
+          "description": "The multipart response was received and processed. See individual responses for details.",
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "no_content": {
+          "description": "The execution was deleted.",
+          "status": 204
+        },
+        "unprocessable_entity": {
+          "description": "Unable to delete the execution.",
+          "status": 422
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Download the CAT source for the execution.",
+      "name": "download",
+      "urls": [
+        [
+          "GET",
+          "/api/manager/projects/:project_id/executions/:id/download"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            },
+            "api_version": {
+              "required": true,
+              "description": "The API version (only valid value is currently \"1.0\")",
+              "example_definition": "1.0",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002",
+          "api_version": "1.0"
+        }
+      },
+      "responses": {
+        "download": {
+          "description": null,
+          "status": 200
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Launch an Execution.",
+      "name": "launch",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/:id/actions/launch"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "responses": {
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Start an Execution.",
+      "name": "start",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/:id/actions/start"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "responses": {
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Stop an Execution.",
+      "name": "stop",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/:id/actions/stop"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "responses": {
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Terminate an Execution.",
+      "name": "terminate",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/:id/actions/terminate"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "responses": {
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Launch several Executions.",
+      "name": "multi_launch",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/actions/launch"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "List of execution IDs to launch",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": "The multipart request was received and processed. See individual responses for details.",
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Start several Executions.",
+      "name": "multi_start",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/actions/start"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "List of execution IDs to start",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": "The multipart request was received and processed. See individual responses for details.",
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Stop several Executions.",
+      "name": "multi_stop",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/actions/stop"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "List of execution IDs to stop",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": "The multipart request was received and processed. See individual responses for details.",
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Terminate several Executions.",
+      "name": "multi_terminate",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/actions/terminate"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "List of execution IDs to terminate",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": "The multipart request was received and processed. See individual responses for details.",
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "accepted": {
+          "description": "The request has been accepted and is being processed.",
+          "status": 202
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Runs an Operation on an Execution.",
+      "name": "run",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/:id/actions/run"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the execution",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "name": {
+              "required": true,
+              "description": "The name of the operation to run",
+              "example_definition": "update_code",
+              "type": {
+                "name": "String"
+              }
+            },
+            "configuration_options": {
+              "description": "The configuration options of the operation. These are the values provided for the CloudApp parameters that this operation depends on.",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::ConfigurationOption"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "update_code",
+          "configuration_options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The operation was created.",
+          "status": 201
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Runs an Operation on several Executions.",
+      "name": "multi_run",
+      "urls": [
+        [
+          "POST",
+          "/api/manager/projects/:project_id/executions/actions/run"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "project_id": {
+              "required": true,
+              "description": "The project ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "List of execution IDs to run",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "project_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ]
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Execution",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "name": {
+              "required": true,
+              "regexp": "(?-mix:^[a-zA-Z])",
+              "description": "The name of the operation to run",
+              "example_definition": "update_code",
+              "type": {
+                "name": "String"
+              }
+            },
+            "configuration_options": {
+              "description": "The configuration options of the operation. These are the values provided for the CloudApp parameters that this operation depends on.",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::ConfigurationOption"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "update_code",
+          "configuration_options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": "The multipart request was received and processed. See individual responses for details.",
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "created": {
+          "description": "The operation was created.",
+          "status": 201
+        },
+        "forbidden": {
+          "description": "The execution is restricted.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The execution wasn't found.",
+          "status": 404
+        },
+        "bad_request": {
+          "description": "The execution is not in a valid state to perform this action.",
+          "status": 400
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    }
+  ]
+}
