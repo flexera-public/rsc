@@ -69,7 +69,7 @@ func setupMetadata() {
 		}
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("designer", p.Pattern)
+				p.Pattern = path.Join("api", "designer", p.Pattern)
 			}
 		}
 	}
@@ -80,7 +80,7 @@ func setupMetadata() {
 		}
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("catalog", p.Pattern)
+				p.Pattern = path.Join("api", "catalog", p.Pattern)
 			}
 		}
 	}
@@ -91,7 +91,7 @@ func setupMetadata() {
 		}
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("manager", p.Pattern)
+				p.Pattern = path.Join("api", "manager", p.Pattern)
 			}
 		}
 	}
