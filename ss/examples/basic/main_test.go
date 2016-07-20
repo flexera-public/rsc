@@ -53,7 +53,7 @@ var _ = Describe("Basic Example", func() {
 				ghttp.RespondWith(200, ""),
 			),
 			ghttp.CombineHandlers(
-				ghttp.VerifyRequest("GET", "/manager/projects/42/executions"),
+				ghttp.VerifyRequest("GET", "/api/manager/projects/42/executions"),
 				ghttp.RespondWith(200, responseBody),
 			),
 		)
