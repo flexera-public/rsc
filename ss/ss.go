@@ -1,7 +1,6 @@
 package ss
 
 import (
-	"path"
 	"strings"
 
 	"github.com/rightscale/rsc/cmd"
@@ -64,36 +63,11 @@ func setupMetadata() {
 	GenMetadata = map[string]*metadata.Resource{}
 	for n, r := range ssd.GenMetadata {
 		GenMetadata[n] = r
-		if pathFixupDone {
-			continue
-		}
-		for _, a := range r.Actions {
-			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("designer", p.Pattern)
-			}
-		}
 	}
 	for n, r := range ssc.GenMetadata {
 		GenMetadata[n] = r
-		if pathFixupDone {
-			continue
-		}
-		for _, a := range r.Actions {
-			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("catalog", p.Pattern)
-			}
-		}
 	}
 	for n, r := range ssm.GenMetadata {
 		GenMetadata[n] = r
-		if pathFixupDone {
-			continue
-		}
-		for _, a := range r.Actions {
-			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("manager", p.Pattern)
-			}
-		}
 	}
-	pathFixupDone = true
 }

@@ -54,7 +54,7 @@ func main() {
 	}
 
 	// 3. Make execution index call using expanded view
-	l := client.ExecutionLocator(fmt.Sprintf("/projects/%d/executions", *account))
+	l := client.ExecutionLocator(fmt.Sprintf("/api/manager/projects/%d/executions", *account))
 	execs, err := l.Index(rsapi.APIParams{})
 	if err != nil {
 		fail("failed to list executions: %s", err)
@@ -67,7 +67,7 @@ func main() {
 	fmt.Fprintln(w, "Name\tState\tBy\tLink")
 	fmt.Fprintln(w, "-----\t-----\t-----\t-----")
 	for _, e := range execs {
-		link := fmt.Sprintf("https://%s/manager/#/exe/%s", ss.HostFromLogin(client.Host),
+		link := fmt.Sprintf("https://%s/api/manager/projects/#/executions/%s", ss.HostFromLogin(client.Host),
 			e.Id)
 		fmt.Fprintln(w, fmt.Sprintf("%s\t%s\t%s\t%s", e.Name, e.Status, e.CreatedBy.Email, link))
 	}
