@@ -8567,6 +8567,7 @@ type RightScript struct {
 	Lineage     string                   `json:"lineage,omitempty"`
 	Links       []map[string]string      `json:"links,omitempty"`
 	Name        string                   `json:"name,omitempty"`
+	Packages    string                   `json:"packages,omitempty"`
 	Revision    int                      `json:"revision,omitempty"`
 	Source      string                   `json:"source,omitempty"`
 	UpdatedAt   *RubyTime                `json:"updated_at,omitempty"`
@@ -14972,12 +14973,14 @@ type RightScriptParam struct {
 type RightScriptParam2 struct {
 	Description string `json:"description,omitempty"`
 	Name        string `json:"name,omitempty"`
+	Packages    string `json:"packages,omitempty"`
 	Source      string `json:"source,omitempty"`
 }
 
 type RightScriptParam3 struct {
 	Description string `json:"description,omitempty"`
 	Name        string `json:"name,omitempty"`
+	Packages    string `json:"packages,omitempty"`
 	Source      string `json:"source,omitempty"`
 }
 

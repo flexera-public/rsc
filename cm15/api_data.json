@@ -7462,6 +7462,12 @@
             "non_blank": true,
             "description": "The description of the RightScript to be created."
           },
+          "right_script[packages]": {
+            "class": "String",
+            "non_blank": true,
+            "mandatory": false,
+            "description": "Space-separated list of package names needed in order to successfully run the script."
+          },
           "right_script[source]": {
             "class": "String",
             "non_blank": true,
@@ -7610,6 +7616,11 @@
             "non_blank": true,
             "description": "The new description for the RightScript"
           },
+          "right_script[packages]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The new list of packages for the RightScript"
+          },
           "right_script[source]": {
             "class": "String",
             "non_blank": true,
@@ -7643,6 +7654,7 @@
         "links": "",
         "lineage": "",
         "source": "",
+        "packages": "",
         "revision": ""
       },
       "links": {
