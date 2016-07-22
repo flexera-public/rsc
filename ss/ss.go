@@ -48,10 +48,16 @@ func HostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")
 	hostPrefix := urlElems[0]
 	elems := strings.Split(hostPrefix, "-")
-	if len(elems) < 2 {
+
+	if len(elems) == 1 && elems[0] == "cm" {
+		// accommodates micromoo host inference, such as "cm.rightscale.local" => "selfservice.rightscale.local"
+		elems[0] = "selfservice"
+	} else if len(elems) < 2 {
+		// don't know how to compute this ss host; use the cm host
 		return host
+	} else {
+		elems[len(elems)-2] = "selfservice"
 	}
-	elems[len(elems)-2] = "selfservice"
 	ssLoginHostPrefix := strings.Join(elems, "-")
 	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
 }
