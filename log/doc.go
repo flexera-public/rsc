@@ -4,6 +4,6 @@ The default behavior in application mode consists of logging messages with sever
 to Stderr.
 The default behavior in library mode consists of not logging anything.
 The Logger variable can be used to set the logger behavior, for example by changing its handler.
-See https://godoc.org/gopkg.in/inconshreveable/log15.v2 for a list of available handlers.
+See https://godoc.org/github.com/inconshreveable/log15 for a list of available handlers.
 */
 package log

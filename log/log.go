@@ -1,6 +1,6 @@
 package log
 
-import "gopkg.in/inconshreveable/log15.v2"
+import "github.com/inconshreveable/log15"
 
 var (
 	// Logger is the main rsc logger. Configure its handler as appropriate.
