@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 
 	"golang.org/x/net/context"
 
@@ -104,6 +105,10 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 				values.Set(n, strconv.Itoa(t))
 			case bool:
 				values.Set(n, strconv.FormatBool(t))
+			case *time.Time:
+				if t != nil {
+					values.Set(n, t.Format(time.RFC3339))
+				}
 			case []string:
 				for _, e := range t {
 					values.Add(n, e)
