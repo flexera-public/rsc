@@ -113,7 +113,7 @@ func (a *APIAnalyzer) AnalyzeType(typeDef map[string]interface{}, query string) 
 		t := gen.BasicDataType("*time.Time") // Need pointer for case where value is null
 		a.descriptor.NeedTime = true
 		dataType = &t
-	case "Collection", "Ids":
+	case "Collection", "Ids", "V1::Types::Set":
 		member, ok := typeDef["member_attribute"].(map[string]interface{})
 		if !ok {
 			return nil, fmt.Errorf("Missing \"member_attribute\" for %s", prettify(typeDef))
