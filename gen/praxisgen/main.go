@@ -85,8 +85,8 @@ func main() {
 			}
 			apiResources := make(map[string]map[string]interface{}) // Resource properties indexed by name indexed by resource name
 			for name, resource := range resources {
-				// Skip built-in resources (?)
-				if strings.HasSuffix(name, " (*)") {
+				// Skip built-in resources (?) and resources with no controller
+				if strings.HasSuffix(name, " (*)") || resource["controller"] == nil {
 					continue
 				}
 				fileName := strings.Replace(fmt.Sprintf("%s.json", resource["controller"]), "::", "-", -1)
@@ -112,6 +112,7 @@ func main() {
 				}
 				apiTypes[typeName.(string)] = typeData
 			}
+
 			analyzer := NewAPIAnalyzer(version, *clientName, apiResources, apiTypes)
 			d, err := analyzer.Analyze()
 			kingpin.FatalIfError(err, "")
