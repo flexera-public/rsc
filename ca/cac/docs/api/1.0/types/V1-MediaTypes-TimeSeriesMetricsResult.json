@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+  "family": "hash",
   "id": "V1-MediaTypes-TimeSeriesMetricsResult",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,18 +16,21 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "timestamp": {
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
     "results": {
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -35,14 +40,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::MetricsResult",
+            "family": "hash",
             "id": "V1-MediaTypes-MetricsResult",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -84,32 +90,7 @@
               "reserved_instance_recurring_cost": 0.0
             },
             "breakdown_metrics_results": [
-              {
-                "kind": "ca#metrics_result",
-                "group": {
-                  "uncodded": "cotingoid",
-                  "flutelike": "multigap",
-                  "bobtail": "radicicolous"
-                },
-                "metrics": {
-                  "kind": "ca#metrics",
-                  "average_instance_count": 0.0,
-                  "lowest_instance_count": 0.0,
-                  "highest_instance_count": 0.0,
-                  "total_cost": 0.0,
-                  "wasted_reserved_instance_cost": 0.0,
-                  "managed_instance_rcu_count": 0.0,
-                  "unmanaged_instance_rcu_count": 0.0,
-                  "managed_instance_hours": 0.0,
-                  "unmanaged_instance_hours": 0.0,
-                  "instance_usage_cost": 0.0,
-                  "reserved_instance_upfront_cost": 0.0,
-                  "reserved_instance_recurring_cost": 0.0
-                },
-                "breakdown_metrics_results": [
 
-                ]
-              }
             ]
           },
           {
@@ -142,8 +123,9 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.time_series_metrics_result",
   "description": null,
+  "display_name": "TimeSeriesMetricsResult",
   "example": {
     "kind": "ca#time_series_metrics_result",
     "timestamp": "2012-11-27T00:00:00+00:00",
@@ -169,32 +151,7 @@
           "reserved_instance_recurring_cost": 0.0
         },
         "breakdown_metrics_results": [
-          {
-            "kind": "ca#metrics_result",
-            "group": {
-              "uncodded": "cotingoid",
-              "flutelike": "multigap",
-              "bobtail": "radicicolous"
-            },
-            "metrics": {
-              "kind": "ca#metrics",
-              "average_instance_count": 0.0,
-              "lowest_instance_count": 0.0,
-              "highest_instance_count": 0.0,
-              "total_cost": 0.0,
-              "wasted_reserved_instance_cost": 0.0,
-              "managed_instance_rcu_count": 0.0,
-              "unmanaged_instance_rcu_count": 0.0,
-              "managed_instance_hours": 0.0,
-              "unmanaged_instance_hours": 0.0,
-              "instance_usage_cost": 0.0,
-              "reserved_instance_upfront_cost": 0.0,
-              "reserved_instance_recurring_cost": 0.0
-            },
-            "breakdown_metrics_results": [
 
-            ]
-          }
         ]
       },
       {

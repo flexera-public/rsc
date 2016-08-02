@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::MetricsResult",
+  "family": "hash",
   "id": "V1-MediaTypes-MetricsResult",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -23,16 +26,19 @@
       },
       "type": {
         "name": "Hash",
+        "family": "hash",
         "id": null,
         "key": {
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         },
         "value": {
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         }
@@ -44,21 +50,23 @@
       },
       "type": {
         "name": "V1::MediaTypes::Metrics",
+        "family": "hash",
         "id": "V1-MediaTypes-Metrics",
         "key": {
           "type": {
             "name": "Symbol",
+            "family": "string",
             "id": "Attributor-Symbol"
           }
-        },
-        "attributes": null
+        }
       }
     },
     "breakdown_metrics_results": {
       "description": "The nested metric results requested by the `group` parameter.",
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fb874443368@/Users/ali/code/analytics_api_service/design/v1/media_types/metrics_result.rb:15>",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -68,14 +76,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::MetricsResult",
+            "family": "hash",
             "id": "V1-MediaTypes-MetricsResult",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -122,8 +131,9 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.metrics_result",
   "description": null,
+  "display_name": "MetricsResult",
   "example": {
     "kind": "ca#metrics_result",
     "group": {

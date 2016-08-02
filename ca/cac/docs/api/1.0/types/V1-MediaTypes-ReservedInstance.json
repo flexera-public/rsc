@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::ReservedInstance",
+  "family": "hash",
   "id": "V1-MediaTypes-ReservedInstance",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,14 +16,16 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "reservation_uid": {
       "description": "The AWS identifier of the Reserved Instance.",
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fb8744735b8@/Users/ali/code/analytics_api_service/design/v1/media_types/reserved_instance.rb:10>",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -29,6 +33,7 @@
       "description": "The Rightscale account ID.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -37,6 +42,7 @@
       "example_definition": "Example Account",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -47,6 +53,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -54,6 +61,7 @@
       "description": "The RightScale ID of the cloud.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -62,6 +70,7 @@
       "example_definition": "EC2 us-east-1",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -69,6 +78,7 @@
       "description": "A unique identifier for the datacenter across cloud vendors.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -77,6 +87,7 @@
       "example_definition": "us-east-1a",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -85,6 +96,7 @@
       "example_definition": "1::m1.small",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -93,6 +105,7 @@
       "example_definition": "m1.small",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -100,6 +113,7 @@
       "description": "The duration in seconds of the Reserved Instance.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -121,6 +135,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -132,6 +147,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -140,24 +156,30 @@
       "values": [
         "Light Utilization",
         "Medium Utilization",
-        "Heavy Utilization"
+        "Heavy Utilization",
+        "No Upfront",
+        "Partial Upfront",
+        "All Upfront"
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
-    "start_time": {
+    "start_at": {
       "description": "The start date of the Reserved Instance.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
-    "end_time": {
+    "end_at": {
       "description": "The end date of the Reserved Instance.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -165,6 +187,7 @@
       "description": "The number of instances applicable for the Reserved Instance.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -178,13 +201,15 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
-    "unused_recurring_cost": {
+    "wasted_reserved_instance_cost": {
       "description": "Total cost (USD) for any periods when the Reserved Instance was not being fully utilized during the period defined by the start and end time parameter.\n                        This only applies to Heavy, No Upfront and Partial Upfront Reserved Instances.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -192,6 +217,7 @@
       "description": "Utilization percentage for the Reserved Instance during the period defined by the start and end time parameters.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -199,6 +225,7 @@
       "description": "The amount (USD) saved by using Reserved Instances. This does not take into account the upfront cost.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     }
@@ -236,15 +263,15 @@
         },
         "offering_type": {
         },
-        "start_time": {
+        "start_at": {
         },
-        "end_time": {
+        "end_at": {
         },
         "instance_count": {
         },
         "state": {
         },
-        "unused_recurring_cost": {
+        "wasted_reserved_instance_cost": {
         },
         "utilization_percentage": {
         },
@@ -254,7 +281,7 @@
       "type": "standard",
       "example": {
         "kind": "ca#reserved_instance",
-        "reservation_uid": "51ad74dc-46dc-419e-9787-60100eb44d37",
+        "reservation_uid": "3557fd26-8ac9-4ff8-ab41-0a1d033a60cb",
         "account_id": 708,
         "account_name": "Example Account",
         "cloud_vendor_name": "Amazon Web Services",
@@ -267,22 +294,23 @@
         "duration": 411,
         "platform": "Red Hat Enterprise Linux",
         "tenancy": "dedicated",
-        "offering_type": "Medium Utilization",
-        "start_time": "2013-08-13T00:00:00+00:00",
-        "end_time": "2012-11-10T00:00:00+00:00",
+        "offering_type": "All Upfront",
+        "start_at": "2014-04-16T00:00:00+00:00",
+        "end_at": "2014-03-08T00:00:00+00:00",
         "instance_count": 327,
         "state": "retired",
-        "unused_recurring_cost": 0.0,
+        "wasted_reserved_instance_cost": 0.0,
         "utilization_percentage": 0.0,
         "cost_saved": 0.0
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.reserved_instance",
   "description": null,
+  "display_name": "ReservedInstance",
   "example": {
     "kind": "ca#reserved_instance",
-    "reservation_uid": "51ad74dc-46dc-419e-9787-60100eb44d37",
+    "reservation_uid": "3557fd26-8ac9-4ff8-ab41-0a1d033a60cb",
     "account_id": 708,
     "account_name": "Example Account",
     "cloud_vendor_name": "Amazon Web Services",
@@ -295,12 +323,12 @@
     "duration": 411,
     "platform": "Red Hat Enterprise Linux",
     "tenancy": "dedicated",
-    "offering_type": "Medium Utilization",
-    "start_time": "2013-08-13T00:00:00+00:00",
-    "end_time": "2012-11-10T00:00:00+00:00",
+    "offering_type": "All Upfront",
+    "start_at": "2014-04-16T00:00:00+00:00",
+    "end_at": "2014-03-08T00:00:00+00:00",
     "instance_count": 327,
     "state": "retired",
-    "unused_recurring_cost": 0.0,
+    "wasted_reserved_instance_cost": 0.0,
     "utilization_percentage": 0.0,
     "cost_saved": 0.0
   }

@@ -1,0 +1,116 @@
+{
+  "name": "V1::MediaTypes::AccountCloudVendor",
+  "family": "hash",
+  "id": "V1-MediaTypes-AccountCloudVendor",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "kind": {
+      "values": [
+        "ca#account_cloud_vendor"
+      ],
+      "default": "ca#account_cloud_vendor",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "account_id": {
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "cloud_vendors": {
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "reference": "V1::MediaTypes::CloudVendor"
+          },
+          "type": {
+            "name": "V1::MediaTypes::CloudVendor",
+            "family": "hash",
+            "id": "V1-MediaTypes-CloudVendor",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "account_id": {
+        },
+        "cloud_vendors": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "kind": "ca#account_cloud_vendor",
+        "account_id": 265,
+        "cloud_vendors": [
+          {
+            "kind": "ca#cloud_vendor",
+            "name": "Sunrise",
+            "connection_errors": [
+              "cloudwatch_not_enabled"
+            ]
+          },
+          {
+            "kind": "ca#cloud_vendor",
+            "name": "HP",
+            "connection_errors": [
+              "cloudwatch_not_enabled",
+              "cloudwatch_not_enabled"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.ca.account_cloud_vendor",
+  "description": "A collection of all of the connected cloud vendors for a RightScale account.",
+  "display_name": "AccountCloudVendor",
+  "example": {
+    "kind": "ca#account_cloud_vendor",
+    "account_id": 265,
+    "cloud_vendors": [
+      {
+        "kind": "ca#cloud_vendor",
+        "name": "Sunrise",
+        "connection_errors": [
+          "cloudwatch_not_enabled"
+        ]
+      },
+      {
+        "kind": "ca#cloud_vendor",
+        "name": "HP",
+        "connection_errors": [
+          "cloudwatch_not_enabled",
+          "cloudwatch_not_enabled"
+        ]
+      }
+    ]
+  }
+}

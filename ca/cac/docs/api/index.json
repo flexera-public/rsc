@@ -20,14 +20,18 @@
   },
   "1.0": {
     "Accounts": {
-      "controller": "V1-ApiResources-Accounts",
-      "name": "V1::ApiResources::Accounts",
+      "controller": "V1-Controllers-Accounts",
+      "name": "V1::Controllers::Accounts",
       "media_type": "V1-MediaTypes-Account"
     },
     "AnalysisSnapshots": {
       "controller": "V1-Controllers-AnalysisSnapshots",
       "name": "V1::Controllers::AnalysisSnapshots",
       "media_type": "V1-MediaTypes-AnalysisSnapshot"
+    },
+    "AwsAccountGroupMemberships": {
+      "controller": "V1-Controllers-AwsAccountGroupMemberships",
+      "name": "V1::Controllers::AwsAccountGroupMemberships"
     },
     "BudgetAlerts": {
       "controller": "V1-Controllers-BudgetAlerts",
@@ -43,8 +47,8 @@
       "name": "V1::Controllers::CloudBills"
     },
     "CurrentUser": {
-      "controller": "V1-ApiResources-CurrentUser",
-      "name": "V1::ApiResources::CurrentUser",
+      "controller": "V1-Controllers-CurrentUser",
+      "name": "V1::Controllers::CurrentUser",
       "media_type": "V1-MediaTypes-CurrentUser"
     },
     "Scenarios": {
@@ -55,6 +59,7 @@
     "InstanceCombinations": {
       "controller": "V1-Controllers-InstanceCombinations",
       "name": "V1::Controllers::InstanceCombinations",
+      "parent": "V1-Controllers-Scenarios",
       "media_type": "V1-MediaTypes-InstanceCombination"
     },
     "InstanceMetrics": {
@@ -79,6 +84,7 @@
     "ReservedInstancePurchases": {
       "controller": "V1-Controllers-ReservedInstancePurchases",
       "name": "V1::Controllers::ReservedInstancePurchases",
+      "parent": "V1-Controllers-InstanceCombinations",
       "media_type": "V1-MediaTypes-ReservedInstancePurchase"
     },
     "ReservedInstances": {
@@ -91,49 +97,55 @@
       "name": "V1::Controllers::ScheduledReports",
       "media_type": "V1-MediaTypes-ScheduledReport"
     },
-    "TempInstancePrices": {
-      "controller": "V1-Controllers-TempInstancePrices",
-      "name": "V1::Controllers::TempInstancePrices",
-      "media_type": "Praxis-SimpleMediaType"
-    },
     "UserSettings": {
       "controller": "V1-Controllers-UserSettings",
       "name": "V1::Controllers::UserSettings",
       "media_type": "V1-MediaTypes-UserSetting"
     },
     "Users": {
-      "controller": "V1-ApiResources-Users",
-      "name": "V1::ApiResources::Users",
+      "controller": "V1-Controllers-Users",
+      "name": "V1::Controllers::Users",
       "media_type": "V1-MediaTypes-User"
     },
-    "CloudAccount (*)": {
+    "UtilizationReport": {
+      "controller": "V1-Controllers-UtilizationReport",
+      "name": "V1::Controllers::UtilizationReport",
+      "media_type": "Praxis-SimpleMediaType"
+    },
+    "CloudAccount": {
       "media_type": "V1-MediaTypes-CloudAccount"
     },
-    "Filter (*)": {
+    "Filter": {
       "media_type": "V1-MediaTypes-Filter"
     },
-    "ModuleState (*)": {
+    "ModuleState": {
       "media_type": "V1-MediaTypes-ModuleState"
     },
-    "TimeSeriesMetricsResult (*)": {
+    "AwsAccountGroupMembership": {
+      "media_type": "V1-MediaTypes-AwsAccountGroupMembership"
+    },
+    "TimeSeriesMetricsResult": {
       "media_type": "V1-MediaTypes-TimeSeriesMetricsResult"
     },
-    "MetricsResult (*)": {
+    "MetricsResult": {
       "media_type": "V1-MediaTypes-MetricsResult"
     },
-    "Metrics (*)": {
+    "Metrics": {
       "media_type": "V1-MediaTypes-Metrics"
     },
-    "UserOnboardingStatus (*)": {
+    "UserOnboardingStatus": {
       "media_type": "V1-MediaTypes-UserOnboardingStatus"
     },
-    "UserEnvironment (*)": {
-      "media_type": "V1-MediaTypes-UserEnvironment"
+    "AccountCloudVendor": {
+      "media_type": "V1-MediaTypes-AccountCloudVendor"
     },
-    "Tag (*)": {
+    "CloudVendor": {
+      "media_type": "V1-MediaTypes-CloudVendor"
+    },
+    "Tag": {
       "media_type": "V1-MediaTypes-Tag"
     },
-    "UserAccounts (*)": {
+    "UserAccounts": {
       "media_type": "V1-MediaTypes-UserAccounts"
     }
   }

@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::Instance",
+  "family": "hash",
   "id": "V1-MediaTypes-Instance",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,14 +16,16 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "instance_key": {
       "description": "Unique identifier for the instance across accounts, clouds and cloud vendors.",
-      "example_definition": {},
+      "example_definition": "#<Proc:0x007fb8700639b8@/Users/ali/code/analytics_api_service/design/v1/media_types/instance.rb:10>",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -30,6 +34,7 @@
       "example_definition": "i-1a23bcd4",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -38,6 +43,7 @@
       "example_definition": "ABC1234D567E8",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -45,6 +51,7 @@
       "description": "The RightScale account ID.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -53,6 +60,7 @@
       "example_definition": "Example account",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -60,6 +68,7 @@
       "description": "The time that the instance went operational, in the user's current timezone.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -67,6 +76,7 @@
       "description": "The time the instance was wither terminated or stopped, in the user's current timezone.\n                        This can be null if the instance is still operational.",
       "type": {
         "name": "DateTime",
+        "family": "temporal",
         "id": "Attributor-DateTime"
       }
     },
@@ -74,21 +84,24 @@
       "description": "The name of the cloud vendor.",
       "values": [
         "Amazon Web Services",
-        "CloudStack",
-        "Datapipe",
         "Eucalyptus",
-        "Google",
-        "HP",
-        "IDC Frontier",
-        "Logicworks",
-        "Microsoft Azure",
-        "OpenStack",
         "Rackspace",
+        "CloudStack",
+        "OpenStack",
         "SoftLayer",
-        "VMware"
+        "Sunrise",
+        "Google",
+        "Microsoft Azure",
+        "HP",
+        "Blue Skies",
+        "VMware",
+        "Datapipe",
+        "IDC Frontier",
+        "Logicworks"
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -96,6 +109,7 @@
       "description": "The RightScale ID of the cloud.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -104,6 +118,7 @@
       "example_definition": "EC2 us-east-1",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -111,6 +126,7 @@
       "description": "A unique identifier for the datacenter across cloud vendors.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -119,6 +135,7 @@
       "example_definition": "us-east-1a",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -126,6 +143,7 @@
       "description": "The RightScale ID of the deployment.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -134,6 +152,7 @@
       "example_definition": "Example deployment",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -142,6 +161,7 @@
       "example_definition": "1::m1.small",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -150,6 +170,7 @@
       "example_definition": "m1.small",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -158,6 +179,7 @@
       "example_definition": "Example instance",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -165,6 +187,7 @@
       "description": "The RightScale ID of the ServerTemplate.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -173,6 +196,7 @@
       "example_definition": "Example ServerTemplate",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -184,6 +208,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -191,16 +216,16 @@
       "description": "The ID of the RightScale user that provisioned the instance. User ID 0 means that the instance was automatically launched from by the RightScale platform.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
     "provisioned_by_user_email": {
       "description": "The email address of the RightScale user that provisioned the instance. If null the instance was not provisioned by a RightScale user.",
-      "example_definition": [
-        "user@example.com"
-      ],
+      "example_definition": "user@example.com",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -208,6 +233,7 @@
       "description": "The ID of the Server or ServerType that launched the instance.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -219,6 +245,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -227,12 +254,14 @@
       "example_definition": "operational",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "tags": {
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -242,14 +271,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::Tag",
+            "family": "hash",
             "id": "V1-MediaTypes-Tag",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
@@ -258,6 +288,7 @@
       "description": "The total number of hours that the instance was operational for.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -265,6 +296,7 @@
       "description": "The total estimated cost (USD) of the instance during the period defined by the start and end time parameters.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -272,6 +304,7 @@
       "description": "The total estimated managed RCU count of the instance during the period defined by the start and end time parameters.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     }
@@ -348,7 +381,7 @@
         "account_name": "Example account",
         "instance_start_at": "2014-07-13T00:00:00+00:00",
         "instance_end_at": "2013-12-03T00:00:00+00:00",
-        "cloud_vendor_name": "Google",
+        "cloud_vendor_name": "OpenStack",
         "cloud_id": 626,
         "cloud_name": "EC2 us-east-1",
         "datacenter_key": "unhopefully",
@@ -444,7 +477,7 @@
         "account_name": "Example account",
         "instance_start_at": "2014-07-13T00:00:00+00:00",
         "instance_end_at": "2013-12-03T00:00:00+00:00",
-        "cloud_vendor_name": "Google",
+        "cloud_vendor_name": "OpenStack",
         "cloud_id": 626,
         "cloud_name": "EC2 us-east-1",
         "datacenter_key": "unhopefully",
@@ -476,8 +509,9 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.instance",
   "description": null,
+  "display_name": "Instance",
   "example": {
     "kind": "ca#instance",
     "instance_key": "530::626::i-1a23bcd4",
@@ -487,7 +521,7 @@
     "account_name": "Example account",
     "instance_start_at": "2014-07-13T00:00:00+00:00",
     "instance_end_at": "2013-12-03T00:00:00+00:00",
-    "cloud_vendor_name": "Google",
+    "cloud_vendor_name": "OpenStack",
     "cloud_id": 626,
     "cloud_name": "EC2 us-east-1",
     "datacenter_key": "unhopefully",

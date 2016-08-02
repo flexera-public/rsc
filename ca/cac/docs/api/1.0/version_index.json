@@ -1,14 +1,31 @@
 {
   "info": {
+    "schema_version": "1.0",
+    "base_path": "",
+    "version_with": [
+      "header",
+      "params"
+    ],
+    "consumes": [
+      "json",
+      "x-www-form-urlencoded"
+    ],
+    "produces": [
+      "json"
+    ]
   },
   "resources": {
-    "V1-ApiResources-Accounts": {
-      "name": "V1::ApiResources::Accounts",
+    "V1-Controllers-Accounts": {
+      "name": "V1::Controllers::Accounts",
       "friendly_name": "Accounts"
     },
     "V1-Controllers-AnalysisSnapshots": {
       "name": "V1::Controllers::AnalysisSnapshots",
       "friendly_name": "AnalysisSnapshots"
+    },
+    "V1-Controllers-AwsAccountGroupMemberships": {
+      "name": "V1::Controllers::AwsAccountGroupMemberships",
+      "friendly_name": "AwsAccountGroupMemberships"
     },
     "V1-Controllers-BudgetAlerts": {
       "name": "V1::Controllers::BudgetAlerts",
@@ -22,8 +39,8 @@
       "name": "V1::Controllers::CloudBills",
       "friendly_name": "CloudBills"
     },
-    "V1-ApiResources-CurrentUser": {
-      "name": "V1::ApiResources::CurrentUser",
+    "V1-Controllers-CurrentUser": {
+      "name": "V1::Controllers::CurrentUser",
       "friendly_name": "CurrentUser"
     },
     "V1-Controllers-Scenarios": {
@@ -62,17 +79,17 @@
       "name": "V1::Controllers::ScheduledReports",
       "friendly_name": "ScheduledReports"
     },
-    "V1-Controllers-TempInstancePrices": {
-      "name": "V1::Controllers::TempInstancePrices",
-      "friendly_name": "TempInstancePrices"
-    },
     "V1-Controllers-UserSettings": {
       "name": "V1::Controllers::UserSettings",
       "friendly_name": "UserSettings"
     },
-    "V1-ApiResources-Users": {
-      "name": "V1::ApiResources::Users",
+    "V1-Controllers-Users": {
+      "name": "V1::Controllers::Users",
       "friendly_name": "Users"
+    },
+    "V1-Controllers-UtilizationReport": {
+      "name": "V1::Controllers::UtilizationReport",
+      "friendly_name": "UtilizationReport"
     }
   },
   "schemas": {
@@ -95,6 +112,10 @@
     "V1-MediaTypes-ModuleState": {
       "name": "V1::MediaTypes::ModuleState",
       "friendly_name": "ModuleState"
+    },
+    "V1-MediaTypes-AwsAccountGroupMembership": {
+      "name": "V1::MediaTypes::AwsAccountGroupMembership",
+      "friendly_name": "AwsAccountGroupMembership"
     },
     "V1-MediaTypes-BudgetAlert": {
       "name": "V1::MediaTypes::BudgetAlert",
@@ -120,13 +141,13 @@
       "name": "V1::MediaTypes::UserOnboardingStatus",
       "friendly_name": "UserOnboardingStatus"
     },
-    "V1-MediaTypes-UserEnvironment": {
-      "name": "V1::MediaTypes::UserEnvironment",
-      "friendly_name": "UserEnvironment"
+    "V1-MediaTypes-AccountCloudVendor": {
+      "name": "V1::MediaTypes::AccountCloudVendor",
+      "friendly_name": "AccountCloudVendor"
     },
-    "V1-MediaTypes-UserSetting": {
-      "name": "V1::MediaTypes::UserSetting",
-      "friendly_name": "UserSetting"
+    "V1-MediaTypes-CloudVendor": {
+      "name": "V1::MediaTypes::CloudVendor",
+      "friendly_name": "CloudVendor"
     },
     "V1-MediaTypes-Scenario": {
       "name": "V1::MediaTypes::Scenario",
@@ -171,6 +192,10 @@
     "V1-MediaTypes-ScheduledReport": {
       "name": "V1::MediaTypes::ScheduledReport",
       "friendly_name": "ScheduledReport"
+    },
+    "V1-MediaTypes-UserSetting": {
+      "name": "V1::MediaTypes::UserSetting",
+      "friendly_name": "UserSetting"
     },
     "V1-MediaTypes-User": {
       "name": "V1::MediaTypes::User",

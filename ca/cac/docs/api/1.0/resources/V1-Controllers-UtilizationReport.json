@@ -1,0 +1,180 @@
+{
+  "description": "This resource is not included in the public docs.\n        iTime project for showing instance utilization with costs.",
+  "media_type": {
+    "name": "Praxis::SimpleMediaType",
+    "family": "string",
+    "id": "Praxis-SimpleMediaType",
+    "identifier": "application/json"
+  },
+  "actions": [
+    {
+      "description": "Returns an array of instances with their utilization and cost.",
+      "name": "index",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "start_time": {
+              "description": "The start time of the period.",
+              "required": true,
+              "example_definition": "2015-01-01T00:00:00",
+              "type": {
+                "name": "DateTime",
+                "family": "temporal",
+                "id": "Attributor-DateTime"
+              },
+              "example": "2015-01-01T00:00:00",
+              "source": "query"
+            },
+            "end_time": {
+              "description": "The end time of the period.",
+              "required": true,
+              "example_definition": "2015-02-01T00:00:00",
+              "type": {
+                "name": "DateTime",
+                "family": "temporal",
+                "id": "Attributor-DateTime"
+              },
+              "example": "2015-02-01T00:00:00",
+              "source": "query"
+            },
+            "instance_filters": {
+              "description": "The filters to apply",
+              "example_definition": [
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
+              ],
+              "type": {
+                "name": "Collection",
+                "family": "array",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::Filter"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
+                    "id": "V1-MediaTypes-Filter",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "family": "string",
+                        "id": "Attributor-Symbol"
+                      }
+                    }
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "start_time": "2015-01-01T00:00:00",
+          "end_time": "2015-02-01T00:00:00",
+          "instance_filters": [
+            {
+              "kind": "ca#filter",
+              "type": "instance:account_id",
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
+            },
+            {
+              "kind": "ca#filter",
+              "type": "instance:account_id",
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
+            },
+            {
+              "kind": "ca#filter",
+              "type": "instance:platform",
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
+            },
+            {
+              "kind": "ca#filter",
+              "type": "instance:tag",
+              "value": "ec2:state=active",
+              "label": null,
+              "tag_resource_type": "instances"
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "Praxis::SimpleMediaType",
+            "family": "string",
+            "id": "Praxis-SimpleMediaType",
+            "identifier": "application/json"
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/utilization_report",
+          "version": "1.0",
+          "example": "/api/utilization_report?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00"
+        }
+      ]
+    }
+  ],
+  "name": "V1::ApiResources::UtilizationReport",
+  "display_name": "UtilizationReport",
+  "metadata": {
+  },
+  "traits": [
+
+  ]
+}

@@ -1,29 +1,36 @@
 {
-  "description": "Enables you to get instance details, including the cost of individual instances.",
-  "media_type": "V1-MediaTypes-Instance",
+  "description": "Enables you to get instance details, including the cost of individual instances.\n\nBoth HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number\nof filters applied it is possible that the URL may exceed the maximum length. If the URL length is over\n2,083 characters we recommend using a POST request with the parameters in the body.\n",
+  "media_type": {
+    "name": "V1::MediaTypes::Instance",
+    "family": "hash",
+    "id": "V1-MediaTypes-Instance",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
   "actions": [
     {
       "description": "Gets instances that overlap with the requested time period.",
       "name": "index",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/instances",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Instance"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,8 +39,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             },
             "timezone": {
@@ -625,53 +634,60 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "America/Argentina/Cordoba",
               "source": "query"
             },
             "start_time": {
               "description": "The start time of the period.",
               "required": true,
+              "example_definition": "2015-01-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-01-01T00:00:00",
               "source": "query"
             },
             "end_time": {
               "description": "The end time of the period.",
               "required": true,
+              "example_definition": "2015-02-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-02-01T00:00:00",
               "source": "query"
             },
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -681,14 +697,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -727,21 +744,24 @@
                     "-provisioned_by_user",
                     "estimated_cost",
                     "-estimated_cost",
-                    "estimated_managed_rcus",
-                    "-estimated_managed_rcus",
+                    "estimated_managed_rcu_count",
+                    "-estimated_managed_rcu_count",
                     "estimated_cost_for_period",
                     "-estimated_cost_for_period",
-                    "estimated_managed_rcus_for_period",
-                    "-estimated_managed_rcus_for_period",
+                    "estimated_managed_rcu_count_for_period",
+                    "-estimated_managed_rcu_count_for_period",
                     "state",
                     "-state",
                     "tag_key",
-                    "-tag_key"
+                    "-tag_key",
+                    "total_usage_hours",
+                    "-total_usage_hours"
                   ]
                 }
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -775,21 +795,25 @@
                     "-provisioned_by_user",
                     "estimated_cost",
                     "-estimated_cost",
-                    "estimated_managed_rcus",
-                    "-estimated_managed_rcus",
+                    "estimated_managed_rcu_count",
+                    "-estimated_managed_rcu_count",
                     "estimated_cost_for_period",
                     "-estimated_cost_for_period",
-                    "estimated_managed_rcus_for_period",
-                    "-estimated_managed_rcus_for_period",
+                    "estimated_managed_rcu_count_for_period",
+                    "-estimated_managed_rcu_count_for_period",
                     "state",
                     "-state",
                     "tag_key",
-                    "-tag_key"
+                    "-tag_key",
+                    "total_usage_hours",
+                    "-total_usage_hours"
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "-deployment_name"
                 }
               },
               "source": "query"
@@ -798,16 +822,20 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 825,
               "source": "query"
             },
             "offset": {
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 435,
               "source": "query"
             }
           }
@@ -815,29 +843,36 @@
         "example": {
           "view": "Natal",
           "timezone": "Asia/Saigon",
-          "start_time": "2013-02-01T00:00:00+00:00",
-          "end_time": "2014-02-28T00:00:00+00:00",
+          "start_time": "2015-01-01T00:00:00",
+          "end_time": "2015-02-01T00:00:00",
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ],
           "order": [
@@ -867,42 +902,71 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
-            "name": "V1::MediaTypes::Instance",
-            "id": "V1-MediaTypes-Instance",
-            "key": {
+          "payload": {
+            "name": "V1::MediaTypes::Instance::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Instance-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Instance"
+              },
               "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
+                "name": "V1::MediaTypes::Instance",
+                "family": "hash",
+                "id": "V1-MediaTypes-Instance",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.instance+json; type=collection",
+                "body": "[\n  {\n    \"kind\": \"ca#instance\",\n    \"instance_key\": \"498::581::i-1a23bcd4\",\n    \"instance_uid\": \"i-1a23bcd4\",\n    \"instance_rsid\": \"ABC1234D567E8\",\n    \"account_id\": 498,\n    \"account_name\": \"Example account\",\n    \"instance_start_at\": \"2013-01-02T00:00:00+00:00\",\n    \"instance_end_at\": \"2014-10-04T00:00:00+00:00\",\n    \"cloud_vendor_name\": \"SoftLayer\",\n    \"cloud_id\": 581,\n    \"cloud_name\": \"EC2 us-east-1\",\n    \"datacenter_key\": \"craving\",\n    \"datacenter_name\": \"us-east-1a\",\n    \"deployment_id\": 925,\n    \"deployment_name\": \"Example deployment\",\n    \"instance_type_key\": \"1::m1.small\",\n    \"instance_type_name\": \"m1.small\",\n    \"instance_name\": \"Example instance\",\n    \"server_template_id\": 209,\n    \"server_template_name\": \"Example ServerTemplate\",\n    \"platform\": \"Linux/UNIX\",\n    \"provisioned_by_user_id\": 63,\n    \"provisioned_by_user_email\": \"user@example.com\",\n    \"incarnator_id\": 360,\n    \"incarnator_type\": \"Server\",\n    \"state\": \"operational\",\n    \"total_usage_hours\": 0.0,\n    \"estimated_cost_for_period\": 0.0,\n    \"estimated_managed_rcu_count_for_period\": 0.0\n  }\n]"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instances",
+          "version": "1.0",
+          "example": "/api/instances?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instances",
+          "version": "1.0",
+          "example": "/api/instances?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00"
+        }
+      ]
     },
     {
       "description": "Gets the count of instances that overlap with the requested time period.",
       "name": "count",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/instances/actions/count",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Instance"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -1496,53 +1560,60 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "America/Argentina/Cordoba",
               "source": "query"
             },
             "start_time": {
               "description": "The start time of the period.",
               "required": true,
+              "example_definition": "2015-01-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-01-01T00:00:00",
               "source": "query"
             },
             "end_time": {
               "description": "The end time of the period.",
               "required": true,
+              "example_definition": "2015-02-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-02-01T00:00:00",
               "source": "query"
             },
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -1552,14 +1623,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -1569,29 +1641,36 @@
         },
         "example": {
           "timezone": "Asia/Saigon",
-          "start_time": "2013-02-01T00:00:00+00:00",
-          "end_time": "2014-02-28T00:00:00+00:00",
+          "start_time": "2015-01-01T00:00:00",
+          "end_time": "2015-02-01T00:00:00",
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ]
         }
@@ -1614,34 +1693,47 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
+            "name": "Praxis::SimpleMediaType",
+            "family": "string",
+            "id": "Praxis-SimpleMediaType",
             "identifier": "application/json"
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instances/actions/count",
+          "version": "1.0",
+          "example": "/api/instances/actions/count?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instances/actions/count",
+          "version": "1.0",
+          "example": "/api/instances/actions/count?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00"
+        }
+      ]
     },
     {
       "description": "Checks if any instances overlap with the requested time period.",
       "name": "exist",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/instances/actions/exist",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Instance"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -2235,53 +2327,60 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "America/Argentina/Cordoba",
               "source": "query"
             },
             "start_time": {
               "description": "The start time of the period.",
               "required": false,
+              "example_definition": "2015-01-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-01-01T00:00:00",
               "source": "query"
             },
             "end_time": {
               "description": "The end time of the period.",
               "required": false,
+              "example_definition": "2015-02-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-02-01T00:00:00",
               "source": "query"
             },
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -2291,14 +2390,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -2308,29 +2408,36 @@
         },
         "example": {
           "timezone": "Asia/Saigon",
-          "start_time": "2013-02-01T00:00:00+00:00",
-          "end_time": "2014-02-28T00:00:00+00:00",
+          "start_time": "2015-01-01T00:00:00",
+          "end_time": "2015-02-01T00:00:00",
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ]
         }
@@ -2353,34 +2460,47 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
+            "name": "Praxis::SimpleMediaType",
+            "family": "string",
+            "id": "Praxis-SimpleMediaType",
             "identifier": "application/json"
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instances/actions/exist",
+          "version": "1.0",
+          "example": "/api/instances/actions/exist"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instances/actions/exist",
+          "version": "1.0",
+          "example": "/api/instances/actions/exist"
+        }
+      ]
     },
     {
       "description": "Exports the instances that overlap with the requested time period in CSV format.",
       "name": "export",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/instances/actions/export",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Instance"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -2389,8 +2509,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             },
             "timezone": {
@@ -2982,53 +3104,60 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "America/Argentina/Cordoba",
               "source": "query"
             },
             "start_time": {
               "description": "The start time of the period.",
               "required": true,
+              "example_definition": "2015-01-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-01-01T00:00:00",
               "source": "query"
             },
             "end_time": {
               "description": "The end time of the period.",
               "required": true,
+              "example_definition": "2015-02-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-02-01T00:00:00",
               "source": "query"
             },
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3038,14 +3167,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -3084,21 +3214,24 @@
                     "-provisioned_by_user",
                     "estimated_cost",
                     "-estimated_cost",
-                    "estimated_managed_rcus",
-                    "-estimated_managed_rcus",
+                    "estimated_managed_rcu_count",
+                    "-estimated_managed_rcu_count",
                     "estimated_cost_for_period",
                     "-estimated_cost_for_period",
-                    "estimated_managed_rcus_for_period",
-                    "-estimated_managed_rcus_for_period",
+                    "estimated_managed_rcu_count_for_period",
+                    "-estimated_managed_rcu_count_for_period",
                     "state",
                     "-state",
                     "tag_key",
-                    "-tag_key"
+                    "-tag_key",
+                    "total_usage_hours",
+                    "-total_usage_hours"
                   ]
                 }
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3132,21 +3265,25 @@
                     "-provisioned_by_user",
                     "estimated_cost",
                     "-estimated_cost",
-                    "estimated_managed_rcus",
-                    "-estimated_managed_rcus",
+                    "estimated_managed_rcu_count",
+                    "-estimated_managed_rcu_count",
                     "estimated_cost_for_period",
                     "-estimated_cost_for_period",
-                    "estimated_managed_rcus_for_period",
-                    "-estimated_managed_rcus_for_period",
+                    "estimated_managed_rcu_count_for_period",
+                    "-estimated_managed_rcu_count_for_period",
                     "state",
                     "-state",
                     "tag_key",
-                    "-tag_key"
+                    "-tag_key",
+                    "total_usage_hours",
+                    "-total_usage_hours"
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "-deployment_name"
                 }
               },
               "source": "query"
@@ -3155,16 +3292,20 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 825,
               "source": "query"
             },
             "offset": {
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 435,
               "source": "query"
             }
           }
@@ -3172,29 +3313,36 @@
         "example": {
           "view": "Natal",
           "timezone": "Asia/Saigon",
-          "start_time": "2013-02-01T00:00:00+00:00",
-          "end_time": "2014-02-28T00:00:00+00:00",
+          "start_time": "2015-01-01T00:00:00",
+          "end_time": "2015-02-01T00:00:00",
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ],
           "order": [
@@ -3228,46 +3376,51 @@
               "type": "regexp"
             }
           },
-          "media_type": {
+          "payload": {
+            "name": "Praxis::SimpleMediaType",
+            "family": "string",
+            "id": "Praxis-SimpleMediaType",
             "identifier": "text/csv"
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instances/actions/export",
+          "version": "1.0",
+          "example": "/api/instances/actions/export?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instances/actions/export",
+          "version": "1.0",
+          "example": "/api/instances/actions/export?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00"
+        }
+      ]
     },
     {
       "description": "Gets the filter options for instances that overlap with the requested time period.",
       "name": "filter_options",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/instances/actions/filter_options",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Instance"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "timezone": {
               "description": "The timezone name. Accepts any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
               "values": [
@@ -3857,53 +4010,60 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "America/Argentina/Cordoba",
               "source": "query"
             },
             "start_time": {
               "description": "The start time of the period.",
               "required": true,
+              "example_definition": "2015-01-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-01-01T00:00:00",
               "source": "query"
             },
             "end_time": {
               "description": "The end time of the period.",
               "required": true,
+              "example_definition": "2015-02-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-02-01T00:00:00",
               "source": "query"
             },
             "instance_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "instance:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "instance:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "instance:platform",
-                    "value": "Linux/UNIX"
-                  },
-                  {
-                    "type": "instance:tag",
-                    "value": "ec2:state=active",
-                    "tag_resource_type": "instance"
-                  }
-                ]
+                {
+                  "type": "instance:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "instance:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "instance:platform",
+                  "value": "Linux/UNIX"
+                },
+                {
+                  "type": "instance:tag",
+                  "value": "ec2:state=active",
+                  "tag_resource_type": "instances"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -3913,21 +4073,22 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
               "source": "query"
             },
             "order": {
-              "description": "The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order.",
+              "description": "The fields to order the results by. If '-' is in front of the field name allows it to be sorted in descending order. This is only allowed if one filter type is specified.",
               "options": {
                 "member_options": {
                   "values": [
@@ -3959,21 +4120,24 @@
                     "-provisioned_by_user",
                     "estimated_cost",
                     "-estimated_cost",
-                    "estimated_managed_rcus",
-                    "-estimated_managed_rcus",
+                    "estimated_managed_rcu_count",
+                    "-estimated_managed_rcu_count",
                     "estimated_cost_for_period",
                     "-estimated_cost_for_period",
-                    "estimated_managed_rcus_for_period",
-                    "-estimated_managed_rcus_for_period",
+                    "estimated_managed_rcu_count_for_period",
+                    "-estimated_managed_rcu_count_for_period",
                     "state",
                     "-state",
                     "tag_key",
-                    "-tag_key"
+                    "-tag_key",
+                    "total_usage_hours",
+                    "-total_usage_hours"
                   ]
                 }
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -4007,21 +4171,25 @@
                     "-provisioned_by_user",
                     "estimated_cost",
                     "-estimated_cost",
-                    "estimated_managed_rcus",
-                    "-estimated_managed_rcus",
+                    "estimated_managed_rcu_count",
+                    "-estimated_managed_rcu_count",
                     "estimated_cost_for_period",
                     "-estimated_cost_for_period",
-                    "estimated_managed_rcus_for_period",
-                    "-estimated_managed_rcus_for_period",
+                    "estimated_managed_rcu_count_for_period",
+                    "-estimated_managed_rcu_count_for_period",
                     "state",
                     "-state",
                     "tag_key",
-                    "-tag_key"
+                    "-tag_key",
+                    "total_usage_hours",
+                    "-total_usage_hours"
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "-deployment_name"
                 }
               },
               "source": "query"
@@ -4030,16 +4198,20 @@
               "description": "Limits the number of results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 825,
               "source": "query"
             },
             "offset": {
               "description": "Used with limit to paginate the results.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 435,
               "source": "query"
             },
             "filter_types": {
@@ -4062,13 +4234,13 @@
                     "instance:ss_app",
                     "instance:tag",
                     "instance_usage_period:instance_key",
-                    "tag:key",
-                    "tag:resource_type"
+                    "tag:key"
                   ]
                 }
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -4088,13 +4260,14 @@
                     "instance:ss_app",
                     "instance:tag",
                     "instance_usage_period:instance_key",
-                    "tag:key",
-                    "tag:resource_type"
+                    "tag:key"
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "instance:account_id"
                 }
               },
               "source": "query"
@@ -4104,38 +4277,46 @@
               "required": false,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "rhodonite",
               "source": "query"
             }
           }
         },
         "example": {
-          "view": "Natal",
           "timezone": "Asia/Saigon",
-          "start_time": "2013-02-01T00:00:00+00:00",
-          "end_time": "2014-02-28T00:00:00+00:00",
+          "start_time": "2015-01-01T00:00:00",
+          "end_time": "2015-02-01T00:00:00",
           "instance_filters": [
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:platform",
-              "value": "Linux/UNIX"
+              "value": "Linux/UNIX",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "instance:tag",
               "value": "ec2:state=active",
-              "tag_resource_type": "instance"
+              "label": null,
+              "tag_resource_type": "instances"
             }
           ],
           "order": [
@@ -4171,22 +4352,59 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
-            "name": "V1::MediaTypes::Filter",
-            "id": "V1-MediaTypes-Filter",
-            "key": {
+          "payload": {
+            "name": "V1::MediaTypes::Filter::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Filter-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Filter"
+              },
               "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
+                "name": "V1::MediaTypes::Filter",
+                "family": "hash",
+                "id": "V1-MediaTypes-Filter",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.filter+json; type=collection",
+                "body": "[\n  {\n    \"kind\": \"ca#filter\",\n    \"type\": \"instance:cloud_vendor_name\",\n    \"value\": \"Amazon Web Services\",\n    \"label\": \"Example Deployment (Test Account)\",\n    \"tag_resource_type\": \"deployments\"\n  },\n  {\n    \"kind\": \"ca#filter\",\n    \"type\": \"reserved_instance:cloud_vendor_name\",\n    \"value\": \"Amazon Web Services\",\n    \"label\": \"Example Deployment (Test Account)\",\n    \"tag_resource_type\": \"deployments\"\n  }\n]"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/instances/actions/filter_options",
+          "version": "1.0",
+          "example": "/api/instances/actions/filter_options?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00&filter_types=instance%3Aaccount_id&filter_types=instance%3Aaccount_id"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/instances/actions/filter_options",
+          "version": "1.0",
+          "example": "/api/instances/actions/filter_options?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00&filter_types=instance%3Aaccount_id&filter_types=instance%3Aaccount_id"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::Instances",
+  "display_name": "Instances",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

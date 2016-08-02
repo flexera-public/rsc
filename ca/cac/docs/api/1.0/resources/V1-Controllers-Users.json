@@ -1,0 +1,843 @@
+{
+  "description": "This resource is not included in the public docs.\n        Users can have various permissions on multiple accounts. Users with admin\n        permissions in an account can modify that account's users.",
+  "media_type": {
+    "name": "V1::MediaTypes::User",
+    "family": "hash",
+    "id": "V1-MediaTypes-User",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Create a new user with the requested permissions in the requested accounts, and emails\n          them the login details. Returns an error if the user already exists.",
+      "name": "create",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "unrigged"
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "email": {
+              "description": "Email of the user.",
+              "required": true,
+              "example_definition": "john.smith@example.com",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "john.smith@example.com"
+            },
+            "accounts": {
+              "description": "List of accounts that the user has access to.",
+              "required": true,
+              "type": {
+                "name": "Collection",
+                "family": "array",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::UserAccounts"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::UserAccounts",
+                    "family": "hash",
+                    "id": "V1-MediaTypes-UserAccounts",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "family": "string",
+                        "id": "Attributor-Symbol"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"email\": \"john.smith@example.com\",\n  \"accounts\": [\n    {\n      \"kind\": \"ca#user_accounts\",\n      \"account_id\": 574,\n      \"account_name\": \"protohydrogen\",\n      \"billing_admin_only\": true,\n      \"cloud_analytics_account_setting_enabled\": false,\n      \"cloud_analytics_enabled\": true,\n      \"permissions\": {\n        \"enterprise_manager\": true,\n        \"billing\": true\n      }\n    },\n    {\n      \"kind\": \"ca#user_accounts\",\n      \"account_id\": 691,\n      \"account_name\": \"monologian\",\n      \"billing_admin_only\": true,\n      \"cloud_analytics_account_setting_enabled\": true,\n      \"cloud_analytics_enabled\": true,\n      \"permissions\": {\n        \"admin\": true,\n        \"actor\": true\n      }\n    }\n  ]\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "email=john.smith%40example.com&accounts=%7B%3Akind%3D%3E%22ca%23user_accounts%22%2C+%3Aaccount_id%3D%3E574%2C+%3Aaccount_name%3D%3E%22protohydrogen%22%2C+%3Abilling_admin_only%3D%3Etrue%2C+%3Acloud_analytics_account_setting_enabled%3D%3Efalse%2C+%3Acloud_analytics_enabled%3D%3Etrue%2C+%3Apermissions%3D%3E%7B%22enterprise_manager%22%3D%3Etrue%2C+%22billing%22%3D%3Etrue%7D%7D&accounts=%7B%3Akind%3D%3E%22ca%23user_accounts%22%2C+%3Aaccount_id%3D%3E691%2C+%3Aaccount_name%3D%3E%22monologian%22%2C+%3Abilling_admin_only%3D%3Etrue%2C+%3Acloud_analytics_account_setting_enabled%3D%3Etrue%2C+%3Acloud_analytics_enabled%3D%3Etrue%2C+%3Apermissions%3D%3E%7B%22admin%22%3D%3Etrue%2C+%22actor%22%3D%3Etrue%7D%7D"
+          }
+        },
+        "example": {
+          "email": "john.smith@example.com",
+          "accounts": [
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 103,
+              "account_name": "faujasite",
+              "billing_admin_only": false,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": false,
+              "permissions": {
+                "billing": true,
+                "enterprise_manager": true
+              }
+            },
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 337,
+              "account_name": "emblazer",
+              "billing_admin_only": false,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": false,
+              "permissions": {
+                "observer": true
+              }
+            },
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 356,
+              "account_name": "hemafibrite",
+              "billing_admin_only": true,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": true,
+              "permissions": {
+                "enterprise_manager": true,
+                "observer": true,
+                "billing": true
+              }
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::User",
+            "family": "hash",
+            "id": "V1-MediaTypes-User",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.user+json",
+                "body": "{\n  \"id\": 767,\n  \"href\": \"predeliberate\",\n  \"kind\": \"ca#user\",\n  \"email\": \"john.smith@example.com\"\n}"
+              }
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/users",
+          "version": "1.0",
+          "example": "/api/users"
+        }
+      ]
+    },
+    {
+      "description": "List all users.",
+      "name": "index",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "unrigged"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::User::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-User-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::User"
+              },
+              "type": {
+                "name": "V1::MediaTypes::User",
+                "family": "hash",
+                "id": "V1-MediaTypes-User",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.user+json; type=collection",
+                "body": "[\n  {\n    \"id\": 389,\n    \"href\": \"preneuralgic\",\n    \"kind\": \"ca#user\",\n    \"email\": \"john.smith@example.com\"\n  },\n  {\n    \"id\": 430,\n    \"href\": \"clavolet\",\n    \"kind\": \"ca#user\",\n    \"email\": \"john.smith@example.com\"\n  },\n  {\n    \"id\": 989,\n    \"href\": \"Alliaceae\",\n    \"kind\": \"ca#user\",\n    \"email\": \"john.smith@example.com\"\n  }\n]"
+              }
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/users",
+          "version": "1.0",
+          "example": "/api/users"
+        }
+      ]
+    },
+    {
+      "description": "Show a specific user.",
+      "name": "show",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "default": "full",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 539,
+          "view": "unrigged"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::User",
+            "family": "hash",
+            "id": "V1-MediaTypes-User",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.user+json",
+                "body": "{\n  \"id\": 795,\n  \"href\": \"taeniacide\",\n  \"kind\": \"ca#user\",\n  \"email\": \"john.smith@example.com\"\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/users/:id",
+          "version": "1.0",
+          "example": "/api/users/606"
+        }
+      ]
+    },
+    {
+      "description": "Update a specific user's account permissions.\n          This cannot be used to update other user parameters such as their name or password.",
+      "name": "update",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 539,
+          "view": "unrigged"
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "accounts": {
+              "description": "List of accounts that the user has access to.",
+              "type": {
+                "name": "Collection",
+                "family": "array",
+                "id": null,
+                "options": {
+                },
+                "member_attribute": {
+                  "options": {
+                    "reference": "V1::MediaTypes::UserAccounts"
+                  },
+                  "type": {
+                    "name": "V1::MediaTypes::UserAccounts",
+                    "family": "hash",
+                    "id": "V1-MediaTypes-UserAccounts",
+                    "key": {
+                      "type": {
+                        "name": "Symbol",
+                        "family": "string",
+                        "id": "Attributor-Symbol"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"accounts\": [\n    {\n      \"kind\": \"ca#user_accounts\",\n      \"account_id\": 574,\n      \"account_name\": \"protohydrogen\",\n      \"billing_admin_only\": true,\n      \"cloud_analytics_account_setting_enabled\": false,\n      \"cloud_analytics_enabled\": true,\n      \"permissions\": {\n        \"enterprise_manager\": true,\n        \"billing\": true\n      }\n    },\n    {\n      \"kind\": \"ca#user_accounts\",\n      \"account_id\": 691,\n      \"account_name\": \"monologian\",\n      \"billing_admin_only\": true,\n      \"cloud_analytics_account_setting_enabled\": true,\n      \"cloud_analytics_enabled\": true,\n      \"permissions\": {\n        \"admin\": true,\n        \"actor\": true\n      }\n    }\n  ]\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "accounts=%7B%3Akind%3D%3E%22ca%23user_accounts%22%2C+%3Aaccount_id%3D%3E574%2C+%3Aaccount_name%3D%3E%22protohydrogen%22%2C+%3Abilling_admin_only%3D%3Etrue%2C+%3Acloud_analytics_account_setting_enabled%3D%3Efalse%2C+%3Acloud_analytics_enabled%3D%3Etrue%2C+%3Apermissions%3D%3E%7B%22enterprise_manager%22%3D%3Etrue%2C+%22billing%22%3D%3Etrue%7D%7D&accounts=%7B%3Akind%3D%3E%22ca%23user_accounts%22%2C+%3Aaccount_id%3D%3E691%2C+%3Aaccount_name%3D%3E%22monologian%22%2C+%3Abilling_admin_only%3D%3Etrue%2C+%3Acloud_analytics_account_setting_enabled%3D%3Etrue%2C+%3Acloud_analytics_enabled%3D%3Etrue%2C+%3Apermissions%3D%3E%7B%22admin%22%3D%3Etrue%2C+%22actor%22%3D%3Etrue%7D%7D"
+          }
+        },
+        "example": {
+          "accounts": [
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 103,
+              "account_name": "faujasite",
+              "billing_admin_only": false,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": false,
+              "permissions": {
+                "billing": true,
+                "enterprise_manager": true
+              }
+            },
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 337,
+              "account_name": "emblazer",
+              "billing_admin_only": false,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": false,
+              "permissions": {
+                "observer": true
+              }
+            },
+            {
+              "kind": "ca#user_accounts",
+              "account_id": 356,
+              "account_name": "hemafibrite",
+              "billing_admin_only": true,
+              "cloud_analytics_account_setting_enabled": true,
+              "cloud_analytics_enabled": true,
+              "permissions": {
+                "enterprise_manager": true,
+                "observer": true,
+                "billing": true
+              }
+            }
+          ]
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::User",
+            "family": "hash",
+            "id": "V1-MediaTypes-User",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.user+json",
+                "body": "{\n  \"id\": 795,\n  \"href\": \"taeniacide\",\n  \"kind\": \"ca#user\",\n  \"email\": \"john.smith@example.com\"\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/users/:id",
+          "version": "1.0",
+          "example": "/api/users/606"
+        }
+      ]
+    },
+    {
+      "description": "Remove a users access to all RightScale accounts",
+      "name": "delete",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "id": 539
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/users/:id",
+          "version": "1.0",
+          "example": "/api/users/606"
+        }
+      ]
+    },
+    {
+      "description": "Invites a user to the requested account and gives them the required permissions\n          so they can add/edit cloud credentials, the user is created if they don't already exist.\n          This is used during new user onboarding as the user who signs-up might not be the person who has\n          the cloud credentials required to connect their clouds to RightScale.",
+      "name": "invite",
+      "metadata": {
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::User"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "account_id": {
+              "description": "RightScale account ID.",
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 467
+            },
+            "email": {
+              "description": "User's email address.",
+              "required": true,
+              "example_definition": "john.smith@example.com",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "john.smith@example.com"
+            },
+            "message": {
+              "description": "Optional message to include in the invitation email.",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "allalinite"
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"account_id\": 467,\n  \"email\": \"john.smith@example.com\",\n  \"message\": \"allalinite\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "account_id=467&email=john.smith%40example.com&message=allalinite"
+          }
+        },
+        "example": {
+          "account_id": 921,
+          "email": "john.smith@example.com",
+          "message": "winterbloom"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::User",
+            "family": "hash",
+            "id": "V1-MediaTypes-User",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.user+json",
+                "body": "{\n  \"id\": 795,\n  \"href\": \"taeniacide\",\n  \"kind\": \"ca#user\",\n  \"email\": \"john.smith@example.com\"\n}"
+              }
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/users/actions/invite",
+          "version": "1.0",
+          "example": "/api/users/actions/invite"
+        }
+      ]
+    }
+  ],
+  "name": "V1::ApiResources::Users",
+  "display_name": "Users",
+  "metadata": {
+  },
+  "traits": [
+
+  ]
+}

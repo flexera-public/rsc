@@ -1,29 +1,36 @@
 {
   "description": "InstanceCombinations represent instances that make-up a Scenario.\n        Note that, when making create and update calls, a Pattern can only be applied to an InstanceCombination once.",
-  "media_type": "V1-MediaTypes-InstanceCombination",
+  "media_type": {
+    "name": "V1::MediaTypes::InstanceCombination",
+    "family": "hash",
+    "id": "V1-MediaTypes-InstanceCombination",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
   "actions": [
     {
       "description": "Create a new InstanceCombination.",
       "name": "create",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "POST",
-          "path": "/api/scenarios/:scenario_id/instance_combinations",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::InstanceCombination"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,16 +39,20 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -52,15 +63,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::InstanceCombination"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -70,31 +84,35 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 743
             },
             "cloud_vendor_name": {
               "description": "The cloud vendor name of the instances.",
               "values": [
                 "Amazon Web Services",
-                "CloudStack",
-                "Datapipe",
                 "Eucalyptus",
-                "Google",
-                "HP",
-                "IDC Frontier",
-                "Logicworks",
-                "Microsoft Azure",
-                "OpenStack",
                 "Rackspace",
                 "SoftLayer",
-                "VMware"
+                "Sunrise",
+                "Google",
+                "Microsoft Azure",
+                "HP",
+                "Blue Skies",
+                "Datapipe",
+                "IDC Frontier",
+                "Logicworks",
+                "Private cloud"
               ],
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Rackspace"
             },
             "cloud_name": {
               "description": "The cloud name of the instances.",
@@ -102,16 +120,30 @@
               "example_definition": "EC2 us-east-1",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "EC2 us-east-1"
+            },
+            "cloud_href": {
+              "description": "The href of the cloud in the RightScale API.",
+              "example_definition": "/api/clouds/1",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "/api/clouds/1"
             },
             "datacenter_name": {
               "description": "Where applicable, the datacenter name of the instances.",
               "example_definition": "us-east-1a",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "us-east-1a"
             },
             "instance_type_name": {
               "description": "The instance type.",
@@ -119,11 +151,13 @@
               "example_definition": "m1.small",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "m1.small"
             },
             "platform": {
-              "description": "The platform isn't the actual operating system of the instance as cloud vendors don't always have a way for us to access this.",
+              "description": "The base operating system lineage for the instance.",
               "values": [
                 "Linux/UNIX",
                 "Windows"
@@ -131,8 +165,20 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Windows"
+            },
+            "platform_version": {
+              "description": "More detailed information about the instance's operating system. If this is null, the instance is using the 'default' version of the operating system.",
+              "example_definition": "SUSE Linux",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "SUSE Linux"
             },
             "monthly_usage_option": {
               "description": "The number of hours that the instances run for every month.",
@@ -147,21 +193,37 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "1day/month"
             },
             "monthly_usage_hours": {
               "description": "If monthly_usage_option is set to 'Other', this specifies the hours in the month the instances are running.",
-              "required_if": {},
+              "required_if": {
+                "monthly_usage_option": "Other"
+              },
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 741
+            },
+            "assume_sustained_use": {
+              "description": "Whether to use [100% sustained use discount](https://cloud.google.com/compute/pricing#sustained_use) for forecasting. This will be set to `true` automatically if the `cloud_vendor_name` is `\"Google\"` and `monthly_usage_option` is `\"24hours/day\"`.",
+              "type": {
+                "name": "Boolean",
+                "family": "boolean",
+                "id": "Attributor-Boolean"
+              },
+              "example": true
             },
             "patterns": {
               "description": "Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -171,29 +233,43 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Pattern",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Pattern",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             }
           }
         },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"quantity\": 743,\n  \"cloud_vendor_name\": \"Rackspace\",\n  \"cloud_name\": \"EC2 us-east-1\",\n  \"cloud_href\": \"/api/clouds/1\",\n  \"datacenter_name\": \"us-east-1a\",\n  \"instance_type_name\": \"m1.small\",\n  \"platform\": \"Windows\",\n  \"platform_version\": \"SUSE Linux\",\n  \"monthly_usage_option\": \"1day/month\",\n  \"monthly_usage_hours\": 741,\n  \"assume_sustained_use\": true,\n  \"patterns\": [\n    {\n      \"id\": 925,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/925\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"permanent\",\n      \"value\": 0.0,\n      \"operation\": \"set_to\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2012-11-07T00:00:00+00:00\",\n      \"updated_at\": \"2013-05-26T00:00:00+00:00\"\n    },\n    {\n      \"id\": 770,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/770\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"temporary\",\n      \"value\": 0.0,\n      \"operation\": \"decrease\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2013-01-19T00:00:00+00:00\",\n      \"updated_at\": \"2012-12-18T00:00:00+00:00\"\n    },\n    {\n      \"id\": 672,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/672\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"temporary\",\n      \"value\": 0.0,\n      \"operation\": \"set_to\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2013-06-10T00:00:00+00:00\",\n      \"updated_at\": \"2013-05-20T00:00:00+00:00\"\n    }\n  ]\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "quantity=743&cloud_vendor_name=Rackspace&cloud_name=EC2+us-east-1&cloud_href=%2Fapi%2Fclouds%2F1&datacenter_name=us-east-1a&instance_type_name=m1.small&platform=Windows&platform_version=SUSE+Linux&monthly_usage_option=1day%2Fmonth&monthly_usage_hours=741&assume_sustained_use=true&patterns=%7B%3Aid%3D%3E925%2C+%3Akind%3D%3E%22ca%23pattern%22%2C+%3Ahref%3D%3E%22%2Fapi%2Fpatterns%2F925%22%2C+%3Aname%3D%3E%22Growth+pattern%22%2C+%3Asummary%3D%3E%22Increase+by+10%25+every+months%22%2C+%3Atype%3D%3E%22permanent%22%2C+%3Avalue%3D%3E0.0%2C+%3Aoperation%3D%3E%22set_to%22%2C+%3Ayears%3D%3E%22all%22%2C+%3Amonths%3D%3E%22all%22%2C+%3Acreated_at%3D%3EWed%2C+07+Nov+2012+00%3A00%3A00+%2B0000%2C+%3Aupdated_at%3D%3ESun%2C+26+May+2013+00%3A00%3A00+%2B0000%7D&patterns=%7B%3Aid%3D%3E770%2C+%3Akind%3D%3E%22ca%23pattern%22%2C+%3Ahref%3D%3E%22%2Fapi%2Fpatterns%2F770%22%2C+%3Aname%3D%3E%22Growth+pattern%22%2C+%3Asummary%3D%3E%22Increase+by+10%25+every+months%22%2C+%3Atype%3D%3E%22temporary%22%2C+%3Avalue%3D%3E0.0%2C+%3Aoperation%3D%3E%22decrease%22%2C+%3Ayears%3D%3E%22all%22%2C+%3Amonths%3D%3E%22all%22%2C+%3Acreated_at%3D%3ESat%2C+19+Jan+2013+00%3A00%3A00+%2B0000%2C+%3Aupdated_at%3D%3ETue%2C+18+Dec+2012+00%3A00%3A00+%2B0000%7D&patterns=%7B%3Aid%3D%3E672%2C+%3Akind%3D%3E%22ca%23pattern%22%2C+%3Ahref%3D%3E%22%2Fapi%2Fpatterns%2F672%22%2C+%3Aname%3D%3E%22Growth+pattern%22%2C+%3Asummary%3D%3E%22Increase+by+10%25+every+months%22%2C+%3Atype%3D%3E%22temporary%22%2C+%3Avalue%3D%3E0.0%2C+%3Aoperation%3D%3E%22set_to%22%2C+%3Ayears%3D%3E%22all%22%2C+%3Amonths%3D%3E%22all%22%2C+%3Acreated_at%3D%3EMon%2C+10+Jun+2013+00%3A00%3A00+%2B0000%2C+%3Aupdated_at%3D%3EMon%2C+20+May+2013+00%3A00%3A00+%2B0000%7D"
+          }
+        },
         "example": {
           "quantity": 671,
-          "cloud_vendor_name": "IDC Frontier",
+          "cloud_vendor_name": "Microsoft Azure",
           "cloud_name": "EC2 us-east-1",
+          "cloud_href": "/api/clouds/1",
           "datacenter_name": "us-east-1a",
           "instance_type_name": "m1.small",
           "platform": "Linux/UNIX",
+          "platform_version": "SUSE Linux",
           "monthly_usage_option": "1day/month",
           "monthly_usage_hours": 510,
+          "assume_sustained_use": true,
           "patterns": [
             {
               "id": 594,
@@ -205,7 +281,7 @@
               "value": 0.0,
               "operation": "subtract",
               "years": "all",
-              "months": "5, 7, 9",
+              "months": "all",
               "created_at": "2013-11-21T00:00:00+00:00",
               "updated_at": "2013-12-15T00:00:00+00:00"
             }
@@ -230,16 +306,23 @@
           "status": 201,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::InstanceCombination",
+            "family": "hash",
             "id": "V1-MediaTypes-InstanceCombination",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.instance_combination+json",
+                "body": "{\n  \"kind\": \"ca#instance_combination\",\n  \"id\": 124,\n  \"href\": \"/api/scenarios/123/instance_combinations/124\",\n  \"cloud_vendor_name\": \"Logicworks\",\n  \"cloud_name\": \"EC2 us-east-1\",\n  \"cloud_href\": \"/api/clouds/1\",\n  \"datacenter_name\": \"us-east-1a\",\n  \"instance_type_name\": \"m1.small\",\n  \"platform\": \"Linux/UNIX\",\n  \"platform_version\": \"SUSE Linux\",\n  \"quantity\": 505,\n  \"monthly_usage_option\": \"1day/month\",\n  \"monthly_usage_hours\": 555,\n  \"assume_sustained_use\": true,\n  \"links\": {\n    \"scenario\": {\n      \"id\": 774,\n      \"href\": \"/api/scenarios/774\",\n      \"name\": \"Test Scenario\",\n      \"kind\": \"ca#scenario\"\n    }\n  },\n  \"created_at\": \"2014-11-04T00:00:00+00:00\",\n  \"updated_at\": \"2012-12-24T00:00:00+00:00\",\n  \"patterns\": [\n    {\n      \"id\": 711,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/711\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"permanent\",\n      \"value\": 0.0,\n      \"operation\": \"decrease\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2014-11-24T00:00:00+00:00\",\n      \"updated_at\": \"2014-12-11T00:00:00+00:00\"\n    },\n    {\n      \"id\": 840,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/840\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"permanent\",\n      \"value\": 0.0,\n      \"operation\": \"add\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2013-11-02T00:00:00+00:00\",\n      \"updated_at\": \"2013-09-30T00:00:00+00:00\"\n    },\n    {\n      \"id\": 48,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/48\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"permanent\",\n      \"value\": 0.0,\n      \"operation\": \"decrease\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2014-07-26T00:00:00+00:00\",\n      \"updated_at\": \"2014-10-01T00:00:00+00:00\"\n    }\n  ],\n  \"reserved_instance_purchases\": [\n    {\n      \"id\": 120,\n      \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/120\",\n      \"kind\": \"ca#reserved_instance_purchase\",\n      \"offering_type\": \"No Upfront\",\n      \"duration\": 94608000,\n      \"quantity\": 943,\n      \"start_at\": \"2013-01-28T00:00:00+00:00\",\n      \"auto_renew\": true,\n      \"instance_tenancy\": \"dedicated\",\n      \"created_at\": \"2012-11-21T00:00:00+00:00\",\n      \"updated_at\": \"2014-05-22T00:00:00+00:00\",\n      \"links\": {\n        \"instance_combination\": {\n          \"kind\": \"ca#instance_combination\",\n          \"id\": 287,\n          \"href\": \"/api/scenarios/123/instance_combinations/287\"\n        }\n      }\n    }\n  ]\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -248,30 +331,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/scenarios/:scenario_id/instance_combinations",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations"
+        }
+      ]
     },
     {
       "description": "Show a specific InstanceCombination.",
       "name": "show",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::InstanceCombination"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -280,24 +367,30 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "scenario_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -326,16 +419,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::InstanceCombination",
+            "family": "hash",
             "id": "V1-MediaTypes-InstanceCombination",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.instance_combination+json",
+                "body": "{\n  \"kind\": \"ca#instance_combination\",\n  \"id\": 968,\n  \"href\": \"/api/scenarios/123/instance_combinations/968\",\n  \"cloud_vendor_name\": \"Rackspace\",\n  \"cloud_name\": \"EC2 us-east-1\",\n  \"cloud_href\": \"/api/clouds/1\",\n  \"datacenter_name\": \"us-east-1a\",\n  \"instance_type_name\": \"m1.small\",\n  \"platform\": \"Linux/UNIX\",\n  \"platform_version\": \"SUSE Linux\",\n  \"quantity\": 642,\n  \"monthly_usage_option\": \"Off (0 hours)\",\n  \"monthly_usage_hours\": 241,\n  \"assume_sustained_use\": false,\n  \"links\": {\n    \"scenario\": {\n      \"id\": 68,\n      \"href\": \"/api/scenarios/68\",\n      \"name\": \"Test Scenario\",\n      \"kind\": \"ca#scenario\"\n    }\n  },\n  \"created_at\": \"2014-08-24T00:00:00+00:00\",\n  \"updated_at\": \"2014-02-21T00:00:00+00:00\",\n  \"patterns\": [\n    {\n      \"id\": 517,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/517\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"permanent\",\n      \"value\": 0.0,\n      \"operation\": \"add\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2012-11-16T00:00:00+00:00\",\n      \"updated_at\": \"2014-12-08T00:00:00+00:00\"\n    },\n    {\n      \"id\": 470,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/470\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"temporary\",\n      \"value\": 0.0,\n      \"operation\": \"add\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2014-07-14T00:00:00+00:00\",\n      \"updated_at\": \"2014-05-25T00:00:00+00:00\"\n    }\n  ],\n  \"reserved_instance_purchases\": [\n    {\n      \"id\": 304,\n      \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/304\",\n      \"kind\": \"ca#reserved_instance_purchase\",\n      \"offering_type\": \"Partial Upfront\",\n      \"duration\": 94608000,\n      \"quantity\": 554,\n      \"start_at\": \"2013-06-08T00:00:00+00:00\",\n      \"auto_renew\": false,\n      \"instance_tenancy\": \"default\",\n      \"created_at\": \"2013-09-30T00:00:00+00:00\",\n      \"updated_at\": \"2014-12-06T00:00:00+00:00\",\n      \"links\": {\n        \"instance_combination\": {\n          \"kind\": \"ca#instance_combination\",\n          \"id\": 479,\n          \"href\": \"/api/scenarios/123/instance_combinations/479\"\n        }\n      }\n    }\n  ]\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -344,30 +444,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/606"
+        }
+      ]
     },
     {
       "description": "Update the provided attributes of an InstanceCombination.",
       "name": "update",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "PATCH",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::InstanceCombination"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -376,24 +480,30 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "scenario_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -405,15 +515,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::InstanceCombination"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -422,65 +535,97 @@
               "description": "The number of instances.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 743
             },
             "cloud_vendor_name": {
               "description": "The cloud vendor name of the instances.",
               "values": [
                 "Amazon Web Services",
-                "CloudStack",
-                "Datapipe",
                 "Eucalyptus",
-                "Google",
-                "HP",
-                "IDC Frontier",
-                "Logicworks",
-                "Microsoft Azure",
-                "OpenStack",
                 "Rackspace",
                 "SoftLayer",
-                "VMware"
+                "Sunrise",
+                "Google",
+                "Microsoft Azure",
+                "HP",
+                "Blue Skies",
+                "Datapipe",
+                "IDC Frontier",
+                "Logicworks",
+                "Private cloud"
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Rackspace"
             },
             "cloud_name": {
               "description": "The cloud name of the instances.",
               "example_definition": "EC2 us-east-1",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "EC2 us-east-1"
+            },
+            "cloud_href": {
+              "description": "The href of the cloud in the RightScale API.",
+              "example_definition": "/api/clouds/1",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "/api/clouds/1"
             },
             "datacenter_name": {
               "description": "Where applicable, the datacenter name of the instances.",
               "example_definition": "us-east-1a",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "us-east-1a"
             },
             "instance_type_name": {
               "description": "The instance type.",
               "example_definition": "m1.small",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "m1.small"
             },
             "platform": {
-              "description": "The platform isn't the actual operating system of the instance as cloud vendors don't always have a way for us to access this.",
+              "description": "The base operating system lineage for the instance.",
               "values": [
                 "Linux/UNIX",
                 "Windows"
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Windows"
+            },
+            "platform_version": {
+              "description": "More detailed information about the instance's operating system. If this is null, the instance is using the 'default' version of the operating system.",
+              "example_definition": "SUSE Linux",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "SUSE Linux"
             },
             "monthly_usage_option": {
               "description": "The number of hours that the instances run for every month.",
@@ -494,21 +639,37 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "1day/month"
             },
             "monthly_usage_hours": {
               "description": "If monthly_usage_option is set to 'Other', this specifies the hours in the month the instances are running.",
-              "required_if": {},
+              "required_if": {
+                "monthly_usage_option": "Other"
+              },
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 741
+            },
+            "assume_sustained_use": {
+              "description": "Whether to use [100% sustained use discount](https://cloud.google.com/compute/pricing#sustained_use) for forecasting. This will be set to `true` automatically if the `cloud_vendor_name` is `\"Google\"` and `monthly_usage_option` is `\"24hours/day\"`.",
+              "type": {
+                "name": "Boolean",
+                "family": "boolean",
+                "id": "Attributor-Boolean"
+              },
+              "example": true
             },
             "patterns": {
               "description": "Patterns to apply to the InstanceCombination, in the order that they are to be applied. If no href is specified with the Pattern body then this will create a new Pattern and apply it to the InstanceCombination.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -518,29 +679,43 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Pattern",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Pattern",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             }
           }
         },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"quantity\": 743,\n  \"cloud_vendor_name\": \"Rackspace\",\n  \"cloud_name\": \"EC2 us-east-1\",\n  \"cloud_href\": \"/api/clouds/1\",\n  \"datacenter_name\": \"us-east-1a\",\n  \"instance_type_name\": \"m1.small\",\n  \"platform\": \"Windows\",\n  \"platform_version\": \"SUSE Linux\",\n  \"monthly_usage_option\": \"1day/month\",\n  \"monthly_usage_hours\": 741,\n  \"assume_sustained_use\": true,\n  \"patterns\": [\n    {\n      \"id\": 925,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/925\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"permanent\",\n      \"value\": 0.0,\n      \"operation\": \"set_to\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2012-11-07T00:00:00+00:00\",\n      \"updated_at\": \"2013-05-26T00:00:00+00:00\"\n    },\n    {\n      \"id\": 770,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/770\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"temporary\",\n      \"value\": 0.0,\n      \"operation\": \"decrease\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2013-01-19T00:00:00+00:00\",\n      \"updated_at\": \"2012-12-18T00:00:00+00:00\"\n    },\n    {\n      \"id\": 672,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/672\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"temporary\",\n      \"value\": 0.0,\n      \"operation\": \"set_to\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2013-06-10T00:00:00+00:00\",\n      \"updated_at\": \"2013-05-20T00:00:00+00:00\"\n    }\n  ]\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "quantity=743&cloud_vendor_name=Rackspace&cloud_name=EC2+us-east-1&cloud_href=%2Fapi%2Fclouds%2F1&datacenter_name=us-east-1a&instance_type_name=m1.small&platform=Windows&platform_version=SUSE+Linux&monthly_usage_option=1day%2Fmonth&monthly_usage_hours=741&assume_sustained_use=true&patterns=%7B%3Aid%3D%3E925%2C+%3Akind%3D%3E%22ca%23pattern%22%2C+%3Ahref%3D%3E%22%2Fapi%2Fpatterns%2F925%22%2C+%3Aname%3D%3E%22Growth+pattern%22%2C+%3Asummary%3D%3E%22Increase+by+10%25+every+months%22%2C+%3Atype%3D%3E%22permanent%22%2C+%3Avalue%3D%3E0.0%2C+%3Aoperation%3D%3E%22set_to%22%2C+%3Ayears%3D%3E%22all%22%2C+%3Amonths%3D%3E%22all%22%2C+%3Acreated_at%3D%3EWed%2C+07+Nov+2012+00%3A00%3A00+%2B0000%2C+%3Aupdated_at%3D%3ESun%2C+26+May+2013+00%3A00%3A00+%2B0000%7D&patterns=%7B%3Aid%3D%3E770%2C+%3Akind%3D%3E%22ca%23pattern%22%2C+%3Ahref%3D%3E%22%2Fapi%2Fpatterns%2F770%22%2C+%3Aname%3D%3E%22Growth+pattern%22%2C+%3Asummary%3D%3E%22Increase+by+10%25+every+months%22%2C+%3Atype%3D%3E%22temporary%22%2C+%3Avalue%3D%3E0.0%2C+%3Aoperation%3D%3E%22decrease%22%2C+%3Ayears%3D%3E%22all%22%2C+%3Amonths%3D%3E%22all%22%2C+%3Acreated_at%3D%3ESat%2C+19+Jan+2013+00%3A00%3A00+%2B0000%2C+%3Aupdated_at%3D%3ETue%2C+18+Dec+2012+00%3A00%3A00+%2B0000%7D&patterns=%7B%3Aid%3D%3E672%2C+%3Akind%3D%3E%22ca%23pattern%22%2C+%3Ahref%3D%3E%22%2Fapi%2Fpatterns%2F672%22%2C+%3Aname%3D%3E%22Growth+pattern%22%2C+%3Asummary%3D%3E%22Increase+by+10%25+every+months%22%2C+%3Atype%3D%3E%22temporary%22%2C+%3Avalue%3D%3E0.0%2C+%3Aoperation%3D%3E%22set_to%22%2C+%3Ayears%3D%3E%22all%22%2C+%3Amonths%3D%3E%22all%22%2C+%3Acreated_at%3D%3EMon%2C+10+Jun+2013+00%3A00%3A00+%2B0000%2C+%3Aupdated_at%3D%3EMon%2C+20+May+2013+00%3A00%3A00+%2B0000%7D"
+          }
+        },
         "example": {
           "quantity": 671,
-          "cloud_vendor_name": "IDC Frontier",
+          "cloud_vendor_name": "Microsoft Azure",
           "cloud_name": "EC2 us-east-1",
+          "cloud_href": "/api/clouds/1",
           "datacenter_name": "us-east-1a",
           "instance_type_name": "m1.small",
           "platform": "Linux/UNIX",
+          "platform_version": "SUSE Linux",
           "monthly_usage_option": "1day/month",
           "monthly_usage_hours": 510,
+          "assume_sustained_use": true,
           "patterns": [
             {
               "id": 594,
@@ -552,7 +727,7 @@
               "value": 0.0,
               "operation": "subtract",
               "years": "all",
-              "months": "5, 7, 9",
+              "months": "all",
               "created_at": "2013-11-21T00:00:00+00:00",
               "updated_at": "2013-12-15T00:00:00+00:00"
             }
@@ -577,16 +752,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::InstanceCombination",
+            "family": "hash",
             "id": "V1-MediaTypes-InstanceCombination",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.instance_combination+json",
+                "body": "{\n  \"kind\": \"ca#instance_combination\",\n  \"id\": 968,\n  \"href\": \"/api/scenarios/123/instance_combinations/968\",\n  \"cloud_vendor_name\": \"Rackspace\",\n  \"cloud_name\": \"EC2 us-east-1\",\n  \"cloud_href\": \"/api/clouds/1\",\n  \"datacenter_name\": \"us-east-1a\",\n  \"instance_type_name\": \"m1.small\",\n  \"platform\": \"Linux/UNIX\",\n  \"platform_version\": \"SUSE Linux\",\n  \"quantity\": 642,\n  \"monthly_usage_option\": \"Off (0 hours)\",\n  \"monthly_usage_hours\": 241,\n  \"assume_sustained_use\": false,\n  \"links\": {\n    \"scenario\": {\n      \"id\": 68,\n      \"href\": \"/api/scenarios/68\",\n      \"name\": \"Test Scenario\",\n      \"kind\": \"ca#scenario\"\n    }\n  },\n  \"created_at\": \"2014-08-24T00:00:00+00:00\",\n  \"updated_at\": \"2014-02-21T00:00:00+00:00\",\n  \"patterns\": [\n    {\n      \"id\": 517,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/517\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"permanent\",\n      \"value\": 0.0,\n      \"operation\": \"add\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2012-11-16T00:00:00+00:00\",\n      \"updated_at\": \"2014-12-08T00:00:00+00:00\"\n    },\n    {\n      \"id\": 470,\n      \"kind\": \"ca#pattern\",\n      \"href\": \"/api/patterns/470\",\n      \"name\": \"Growth pattern\",\n      \"summary\": \"Increase by 10% every months\",\n      \"type\": \"temporary\",\n      \"value\": 0.0,\n      \"operation\": \"add\",\n      \"years\": \"all\",\n      \"months\": \"all\",\n      \"created_at\": \"2014-07-14T00:00:00+00:00\",\n      \"updated_at\": \"2014-05-25T00:00:00+00:00\"\n    }\n  ],\n  \"reserved_instance_purchases\": [\n    {\n      \"id\": 304,\n      \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/304\",\n      \"kind\": \"ca#reserved_instance_purchase\",\n      \"offering_type\": \"Partial Upfront\",\n      \"duration\": 94608000,\n      \"quantity\": 554,\n      \"start_at\": \"2013-06-08T00:00:00+00:00\",\n      \"auto_renew\": false,\n      \"instance_tenancy\": \"default\",\n      \"created_at\": \"2013-09-30T00:00:00+00:00\",\n      \"updated_at\": \"2014-12-06T00:00:00+00:00\",\n      \"links\": {\n        \"instance_combination\": {\n          \"kind\": \"ca#instance_combination\",\n          \"id\": 479,\n          \"href\": \"/api/scenarios/123/instance_combinations/479\"\n        }\n      }\n    }\n  ]\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -595,30 +777,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/606"
+        }
+      ]
     },
     {
       "description": "Delete an InstanceCombination.",
       "name": "destroy",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "DELETE",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::InstanceCombination"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -627,16 +813,20 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "scenario_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             }
           }
@@ -671,30 +861,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/606"
+        }
+      ]
     },
     {
       "description": "Returns pricing details for the various reserved instances that can be purchased for this InstanceCombination.",
       "name": "reserved_instance_prices",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:id/actions/reserved_instance_prices",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::InstanceCombination"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -703,24 +897,30 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "scenario_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -749,16 +949,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "family": "hash",
             "id": "V1-MediaTypes-ReservedInstancePurchase",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.reserved_instance_purchase+json",
+                "body": "{\n  \"id\": 446,\n  \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/446\",\n  \"kind\": \"ca#reserved_instance_purchase\",\n  \"offering_type\": \"Light Utilization\",\n  \"duration\": 94608000,\n  \"quantity\": 337,\n  \"start_at\": \"2014-01-15T00:00:00+00:00\",\n  \"auto_renew\": true,\n  \"instance_tenancy\": \"default\",\n  \"created_at\": \"2013-08-31T00:00:00+00:00\",\n  \"updated_at\": \"2013-12-23T00:00:00+00:00\",\n  \"links\": {\n    \"instance_combination\": {\n      \"kind\": \"ca#instance_combination\",\n      \"id\": 699,\n      \"href\": \"/api/scenarios/123/instance_combinations/699\"\n    }\n  }\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -767,10 +974,23 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:id/actions/reserved_instance_prices",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/606/actions/reserved_instance_prices"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::InstanceCombinations",
+  "parent": "V1-ApiResources-Scenarios",
+  "display_name": "InstanceCombinations",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

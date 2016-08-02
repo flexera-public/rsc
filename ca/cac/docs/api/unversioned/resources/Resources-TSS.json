@@ -1,0 +1,82 @@
+{
+  "description": "Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Get the TSS hostname to proxy (deprecated, RL10 knows the hostname)",
+      "name": "get_hostname",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/hostname",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Set the TSS hostname to proxy (deprecated, RL10 knows the hostname)",
+      "name": "put_hostname",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/hostname",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "hostname": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "hostname": "hies"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources::TSS",
+  "metadata": {
+  }
+}

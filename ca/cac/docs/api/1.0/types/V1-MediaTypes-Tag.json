@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::Tag",
+  "family": "hash",
   "id": "V1-MediaTypes-Tag",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -26,6 +29,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -34,6 +38,7 @@
       "example_definition": "ec2:name",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -41,6 +46,7 @@
       "description": "The value of the tag.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     }
@@ -66,8 +72,9 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.tag",
   "description": "See https://support.rightscale.com/12-Guides/RightScale_101/06-Advanced_Concepts/Tagging for more information on how RightScale uses tags",
+  "display_name": "Tag",
   "example": {
     "kind": "ca#tag",
     "resource_type": "deployments",

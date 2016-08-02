@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::CloudAccount",
+  "family": "hash",
   "id": "V1-MediaTypes-CloudAccount",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -21,28 +24,34 @@
       "description": "ID of the cloud.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
     "cloud_name": {
       "description": "Name of the cloud.",
-      "example_definition": [
-        "EC2 eu-central-1",
-        "Azure West US"
-      ],
+      "example_definition": "EC2 eu-central-1",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "cloud_type": {
       "description": "Type of the cloud.",
-      "example_definition": [
-        "amazon",
-        "azure"
-      ],
+      "example_definition": "amazon",
       "type": {
         "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "cloud_vendor_name": {
+      "description": "The name for the cloud provider",
+      "example_definition": "Amazon Web Services",
+      "type": {
+        "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     }
@@ -57,23 +66,28 @@
         "cloud_name": {
         },
         "cloud_type": {
+        },
+        "cloud_vendor_name": {
         }
       },
       "type": "standard",
       "example": {
         "kind": "ca#cloud_account",
         "cloud_id": 263,
-        "cloud_name": "Azure West US",
-        "cloud_type": "amazon"
+        "cloud_name": "EC2 eu-central-1",
+        "cloud_type": "amazon",
+        "cloud_vendor_name": "Amazon Web Services"
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.cloud_account",
   "description": null,
+  "display_name": "CloudAccount",
   "example": {
     "kind": "ca#cloud_account",
     "cloud_id": 263,
-    "cloud_name": "Azure West US",
-    "cloud_type": "amazon"
+    "cloud_name": "EC2 eu-central-1",
+    "cloud_type": "amazon",
+    "cloud_vendor_name": "Amazon Web Services"
   }
 }

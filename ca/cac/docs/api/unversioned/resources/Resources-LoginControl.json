@@ -1,0 +1,87 @@
+{
+  "description": "Manipulate login policy settings",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Show login policy features",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/login/control",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Enable/disable login policy features",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/login/control",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "enable_login": {
+              "values": [
+                "on",
+                "off",
+                "compat"
+              ],
+              "required": false,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "enable_login": "on"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources:::LoginControl",
+  "metadata": {
+  }
+}

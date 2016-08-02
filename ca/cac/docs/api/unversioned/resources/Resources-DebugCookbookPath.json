@@ -1,0 +1,103 @@
+{
+  "description": "Manipulate debug cookbook directory location",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Retrieve debug cookbook directory location",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/debug/cookbook",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Set debug cookbook directory location",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/debug/cookbook",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "path": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "path": "existing"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Remove debug cookbook directory location",
+      "name": "delete",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/rll/debug/cookbook",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "no_content": {
+          "description": "The server successfully processed the request, but is not returning any content.",
+          "status": 204,
+          "headers": {
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources::DebugCookbookPath",
+  "metadata": {
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "description": "Manipulate monitoring (TSS) settings",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Show monitoring features",
+      "name": "show",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/rll/tss/control",
+          "version": "n/a"
+        }
+      ],
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Enable/disable monitoring features",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/control",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "tss_id": {
+              "required": false,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "enable_monitoring": {
+              "values": [
+                "false",
+                "true",
+                "none",
+                "util",
+                "extra",
+                "all"
+              ],
+              "required": false,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "tss_id": "houseflies",
+          "enable_monitoring": "extra"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Control the TSS monitoring (deprecated, use the update action)",
+      "name": "put_control",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/tss/control",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "tss_id": {
+              "required": false,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "enable_monitoring": {
+              "required": false,
+              "example_definition": "all",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "tss_id": "houseflies",
+          "enable_monitoring": "all"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources::TSSControl",
+  "metadata": {
+  }
+}

@@ -1,29 +1,36 @@
 {
-  "description": "Represents the currently logged-in user. This resource is not included in the public docs.",
-  "media_type": "V1-MediaTypes-CurrentUser",
+  "description": "This resource is not included in the public docs.\n        Represents the currently logged-in user.",
+  "media_type": {
+    "name": "V1::MediaTypes::CurrentUser",
+    "family": "hash",
+    "id": "V1-MediaTypes-CurrentUser",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
   "actions": [
     {
       "description": "Show the user's details.",
       "name": "show",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/current_user",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::CurrentUser"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,14 +39,16 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
         },
         "example": {
-          "view": "vocalism"
+          "view": "kinaesthesis"
         }
       },
       "responses": {
@@ -60,42 +69,53 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::CurrentUser",
+            "family": "hash",
             "id": "V1-MediaTypes-CurrentUser",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.current_user+json",
+                "body": "{\n  \"id\": 589,\n  \"kind\": \"ca#current_user\",\n  \"first_name\": \"homeopathy\",\n  \"last_name\": \"goo\",\n  \"email\": \"john.smith@example.com\",\n  \"timezone\": \"Pacific/Apia\",\n  \"company\": \"drafting\",\n  \"phone\": \"sulphocarbanilide\",\n  \"created_at\": \"2014-06-23T00:00:00+00:00\",\n  \"updated_at\": \"2013-06-14T00:00:00+00:00\"\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/current_user",
+          "version": "1.0",
+          "example": "/api/current_user"
+        }
+      ]
     },
     {
       "description": "Update the user's details.",
       "name": "update",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "PATCH",
-          "path": "/api/current_user",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::CurrentUser"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -104,26 +124,31 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
         },
         "example": {
-          "view": "vocalism"
+          "view": "kinaesthesis"
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::CurrentUser"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -132,23 +157,29 @@
               "description": "First name of the user.",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "powerboat"
             },
             "last_name": {
               "description": "Last name of the user.",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "infiniteth"
             },
             "email": {
               "description": "Email address of the user.",
               "example_definition": "john.smith@example.com",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "john.smith@example.com"
             },
             "timezone": {
               "description": "The time zone of the user, can be any valid tz timezone (`http://en.wikipedia.org/wiki/List_of_tz_database_time_zones`).",
@@ -739,49 +770,79 @@
               "default": "UTC",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "America/Argentina/Cordoba"
             },
             "company": {
               "description": "The company of the user.",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Dalibarda"
             },
             "phone": {
               "description": "The phone number of the user.",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "phoronic"
             },
             "password": {
               "description": "As a security measure, the current password must be provided to use this API call.",
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "refloat"
             },
             "new_password": {
               "description": "Use this to update change the password.",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "essorant"
+            },
+            "new_password_confirmation": {
+              "description": "Must match new_password field.",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "carbonation"
             }
           }
         },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"first_name\": \"powerboat\",\n  \"last_name\": \"infiniteth\",\n  \"email\": \"john.smith@example.com\",\n  \"timezone\": \"America/Argentina/Cordoba\",\n  \"company\": \"Dalibarda\",\n  \"phone\": \"phoronic\",\n  \"password\": \"refloat\",\n  \"new_password\": \"essorant\",\n  \"new_password_confirmation\": \"carbonation\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "first_name=powerboat&last_name=infiniteth&email=john.smith%40example.com&timezone=America%2FArgentina%2FCordoba&company=Dalibarda&phone=phoronic&password=refloat&new_password=essorant&new_password_confirmation=carbonation"
+          }
+        },
         "example": {
-          "first_name": "etherean",
-          "last_name": "grignet",
+          "first_name": "inglutition",
+          "last_name": "ascendancy",
           "email": "john.smith@example.com",
-          "timezone": "US/Eastern",
-          "company": "nonvolcanic",
-          "phone": "manginess",
-          "password": "Litopterna",
-          "new_password": "bilharziosis"
+          "timezone": "Australia/ACT",
+          "company": "predorsal",
+          "phone": "unstep",
+          "password": "vernacularist",
+          "new_password": "synchoresis",
+          "new_password_confirmation": "taurokathapsia"
         }
       },
       "responses": {
@@ -802,42 +863,59 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::CurrentUser",
+            "family": "hash",
             "id": "V1-MediaTypes-CurrentUser",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.current_user+json",
+                "body": "{\n  \"id\": 589,\n  \"kind\": \"ca#current_user\",\n  \"first_name\": \"homeopathy\",\n  \"last_name\": \"goo\",\n  \"email\": \"john.smith@example.com\",\n  \"timezone\": \"Pacific/Apia\",\n  \"company\": \"drafting\",\n  \"phone\": \"sulphocarbanilide\",\n  \"created_at\": \"2014-06-23T00:00:00+00:00\",\n  \"updated_at\": \"2013-06-14T00:00:00+00:00\"\n}"
+              }
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/current_user",
+          "version": "1.0",
+          "example": "/api/current_user"
+        }
+      ]
     },
     {
       "description": "Creates a cloud account in the first available child account,\n          or the account used to login if there are no available child accounts.",
       "name": "cloud_accounts",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "POST",
-          "path": "/api/current_user/actions/cloud_accounts",
-          "version": "1.0"
-        }
-      ],
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::CurrentUser"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -846,37 +924,55 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "solidaristic"
             },
             "aws_account_number": {
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "temptableness"
             },
             "aws_access_key_id": {
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "nonmedicinal"
             },
             "aws_secret_access_key": {
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "stepless"
             }
           }
         },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"cloud_vendor_name\": \"solidaristic\",\n  \"aws_account_number\": \"temptableness\",\n  \"aws_access_key_id\": \"nonmedicinal\",\n  \"aws_secret_access_key\": \"stepless\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "cloud_vendor_name=solidaristic&aws_account_number=temptableness&aws_access_key_id=nonmedicinal&aws_secret_access_key=stepless"
+          }
+        },
         "example": {
-          "cloud_vendor_name": "amity",
-          "aws_account_number": "thegither",
-          "aws_access_key_id": "semeiography",
-          "aws_secret_access_key": "clavicularium"
+          "cloud_vendor_name": "fiendship",
+          "aws_account_number": "tarr",
+          "aws_access_key_id": "archboutefeu",
+          "aws_secret_access_key": "praelectorship"
         }
       },
       "responses": {
@@ -897,31 +993,41 @@
           "status": 201,
           "headers": {
           }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/current_user/actions/cloud_accounts",
+          "version": "1.0",
+          "example": "/api/current_user/actions/cloud_accounts"
+        }
+      ]
     },
     {
       "description": "Gets the onboarding status of the user.",
       "name": "onboarding_status",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/current_user/actions/onboarding_status",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::CurrentUser"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -930,14 +1036,16 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
         },
         "example": {
-          "view": "vocalism"
+          "view": "kinaesthesis"
         }
       },
       "responses": {
@@ -958,32 +1066,73 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::UserOnboardingStatus",
+            "family": "hash",
             "id": "V1-MediaTypes-UserOnboardingStatus",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.user_onboarding_status+json",
+                "body": "{\n  \"kind\": \"ca#user_onboarding_status\",\n  \"status\": \"not_seen\",\n  \"url_to_add_first_cloud\": \"acinous\",\n  \"account_id_to_add_first_cloud\": 457,\n  \"account_names\": [\n    \"Bukat\",\n    \"Beulah\"\n  ]\n}"
+              }
+            }
           }
         }
-      }
-    },
-    {
-      "description": "Gets various environment settings.",
-      "name": "environment",
-      "metadata": {
       },
       "urls": [
         {
           "verb": "GET",
-          "path": "/api/current_user/actions/environment",
-          "version": "1.0"
+          "path": "/api/current_user/actions/onboarding_status",
+          "version": "1.0",
+          "example": "/api/current_user/actions/onboarding_status"
         }
-      ],
+      ]
+    },
+    {
+      "description": "Returns the connected cloud vendor accounts for all of the user's accounts, along with any connection errors.",
+      "name": "connected_cloud_vendors",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::CurrentUser"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "kinaesthesis"
+        }
+      },
       "responses": {
         "global_session_unauthorized": {
           "description": null,
@@ -1002,22 +1151,53 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
-            "name": "V1::MediaTypes::UserEnvironment",
-            "id": "V1-MediaTypes-UserEnvironment",
-            "key": {
+          "payload": {
+            "name": "V1::MediaTypes::AccountCloudVendor::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-AccountCloudVendor-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::AccountCloudVendor"
+              },
               "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
+                "name": "V1::MediaTypes::AccountCloudVendor",
+                "family": "hash",
+                "id": "V1-MediaTypes-AccountCloudVendor",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.account_cloud_vendor+json; type=collection",
+                "body": "[\n  {\n    \"kind\": \"ca#account_cloud_vendor\",\n    \"account_id\": 659,\n    \"cloud_vendors\": [\n      {\n        \"kind\": \"ca#cloud_vendor\",\n        \"name\": \"Logicworks\",\n        \"connection_errors\": [\n          \"cloudwatch_not_enabled\",\n          \"cloudwatch_not_enabled\",\n          \"cloudwatch_not_enabled\"\n        ]\n      },\n      {\n        \"kind\": \"ca#cloud_vendor\",\n        \"name\": \"Amazon Web Services\",\n        \"connection_errors\": [\n          \"cloudwatch_not_enabled\"\n        ]\n      }\n    ]\n  },\n  {\n    \"kind\": \"ca#account_cloud_vendor\",\n    \"account_id\": 952,\n    \"cloud_vendors\": [\n      {\n        \"kind\": \"ca#cloud_vendor\",\n        \"name\": \"Microsoft Azure\",\n        \"connection_errors\": [\n          \"cloudwatch_not_enabled\",\n          \"cloudwatch_not_enabled\"\n        ]\n      },\n      {\n        \"kind\": \"ca#cloud_vendor\",\n        \"name\": \"CloudStack\",\n        \"connection_errors\": [\n          \"cloudwatch_not_enabled\"\n        ]\n      }\n    ]\n  },\n  {\n    \"kind\": \"ca#account_cloud_vendor\",\n    \"account_id\": 809,\n    \"cloud_vendors\": [\n      {\n        \"kind\": \"ca#cloud_vendor\",\n        \"name\": \"Datapipe\",\n        \"connection_errors\": [\n          \"cloudwatch_not_enabled\",\n          \"cloudwatch_not_enabled\"\n        ]\n      },\n      {\n        \"kind\": \"ca#cloud_vendor\",\n        \"name\": \"Amazon Web Services\",\n        \"connection_errors\": [\n          \"cloudwatch_not_enabled\"\n        ]\n      },\n      {\n        \"kind\": \"ca#cloud_vendor\",\n        \"name\": \"Amazon Web Services\",\n        \"connection_errors\": [\n          \"cloudwatch_not_enabled\"\n        ]\n      }\n    ]\n  }\n]"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/current_user/actions/connected_cloud_vendors",
+          "version": "1.0",
+          "example": "/api/current_user/actions/connected_cloud_vendors"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::CurrentUser",
+  "display_name": "CurrentUser",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

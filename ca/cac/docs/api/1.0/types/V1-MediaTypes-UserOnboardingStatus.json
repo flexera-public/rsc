@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::UserOnboardingStatus",
+  "family": "hash",
   "id": "V1-MediaTypes-UserOnboardingStatus",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -28,6 +31,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -35,6 +39,7 @@
       "description": "URL that should be used to add the user's first cloud.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -42,6 +47,7 @@
       "description": "RightScale account ID that should be used to add the user's first cloud.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -49,12 +55,14 @@
       "description": "List of RightScale account names that the user has access to.",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
         "member_attribute": {
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         }
@@ -89,8 +97,9 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.user_onboarding_status",
   "description": null,
+  "display_name": "UserOnboardingStatus",
   "example": {
     "kind": "ca#user_onboarding_status",
     "status": "onboard",

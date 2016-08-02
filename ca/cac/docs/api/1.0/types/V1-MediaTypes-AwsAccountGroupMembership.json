@@ -1,0 +1,218 @@
+{
+  "name": "V1::MediaTypes::AwsAccountGroupMembership",
+  "family": "hash",
+  "id": "V1-MediaTypes-AwsAccountGroupMembership",
+  "key": {
+    "type": {
+      "name": "Symbol",
+      "family": "string",
+      "id": "Attributor-Symbol"
+    }
+  },
+  "attributes": {
+    "id": {
+      "type": {
+        "name": "Integer",
+        "family": "numeric",
+        "id": "Attributor-Integer"
+      }
+    },
+    "created_at": {
+      "description": "UTC timestamp of when the AwsAccountGroupMembership was created.",
+      "type": {
+        "name": "DateTime",
+        "family": "temporal",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "updated_at": {
+      "description": "UTC timestamp of when the AwsAccountGroupMembership was last updated.",
+      "type": {
+        "name": "DateTime",
+        "family": "temporal",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "deleted_at": {
+      "description": "UTC timestamp of when the AwsAccountGroupMembership was deleted.",
+      "type": {
+        "name": "DateTime",
+        "family": "temporal",
+        "id": "Attributor-DateTime"
+      }
+    },
+    "state": {
+      "example_definition": "active",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "pending_reason": {
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "pending_aws_account_number": {
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "aws_account_number": {
+      "example_definition": "xxxx-xxxx-xxxx",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "name": {
+      "example_definition": "Member Test Account",
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
+      }
+    },
+    "links": {
+      "example_definition": [
+        {
+          "rel": "self",
+          "href": "/api/aws_account_group_memberships/2"
+        },
+        {
+          "rel": "member_account",
+          "href": "/api/accounts/12248"
+        },
+        {
+          "rel": "payer_account",
+          "href": "/api/accounts/12247"
+        },
+        {
+          "rel": "account",
+          "href": "/api/accounts/12247"
+        }
+      ],
+      "type": {
+        "name": "Collection",
+        "family": "array",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "options": {
+            "allow_extra": false
+          },
+          "type": {
+            "name": "Hash",
+            "family": "hash",
+            "id": "Attributor-Hash",
+            "key": {
+              "type": {
+                "name": "Object",
+                "family": "any",
+                "id": "Attributor-Object"
+              }
+            },
+            "value": {
+              "type": {
+                "name": "Object",
+                "family": "any",
+                "id": "Attributor-Object"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "created_at": {
+        },
+        "updated_at": {
+        },
+        "deleted_at": {
+        },
+        "state": {
+        },
+        "pending_reason": {
+        },
+        "pending_aws_account_number": {
+        },
+        "aws_account_number": {
+        },
+        "name": {
+        },
+        "links": {
+        }
+      },
+      "type": "standard",
+      "example": {
+        "id": 375,
+        "created_at": "2014-08-02T00:00:00+00:00",
+        "updated_at": "2014-07-08T00:00:00+00:00",
+        "deleted_at": "2014-01-15T00:00:00+00:00",
+        "state": "active",
+        "aws_account_number": "xxxx-xxxx-xxxx",
+        "name": "Member Test Account",
+        "links": [
+          {
+            "rel": "self",
+            "href": "/api/aws_account_group_memberships/2"
+          },
+          {
+            "rel": "member_account",
+            "href": "/api/accounts/12248"
+          },
+          {
+            "rel": "payer_account",
+            "href": "/api/accounts/12247"
+          },
+          {
+            "rel": "account",
+            "href": "/api/accounts/12247"
+          }
+        ]
+      }
+    }
+  },
+  "identifier": "application/vnd.rightscale.ca.aws_account_group_membership",
+  "description": null,
+  "display_name": "AwsAccountGroupMembership",
+  "example": {
+    "id": 375,
+    "created_at": "2014-08-02T00:00:00+00:00",
+    "updated_at": "2014-07-08T00:00:00+00:00",
+    "deleted_at": "2014-01-15T00:00:00+00:00",
+    "state": "active",
+    "aws_account_number": "xxxx-xxxx-xxxx",
+    "name": "Member Test Account",
+    "links": [
+      {
+        "rel": "self",
+        "href": "/api/aws_account_group_memberships/2"
+      },
+      {
+        "rel": "member_account",
+        "href": "/api/accounts/12248"
+      },
+      {
+        "rel": "payer_account",
+        "href": "/api/accounts/12247"
+      },
+      {
+        "rel": "account",
+        "href": "/api/accounts/12247"
+      }
+    ]
+  }
+}

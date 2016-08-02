@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::Metrics",
+  "family": "hash",
   "id": "V1-MediaTypes-Metrics",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -21,6 +24,7 @@
       "description": "The average instance count.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -28,6 +32,7 @@
       "description": "The lowest instance count at any point.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -35,6 +40,7 @@
       "description": "The highest instance count at any point.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -42,6 +48,7 @@
       "description": "The total cost (USD).",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -49,6 +56,7 @@
       "description": "The total cost (USD) for any period when a Reserved Instance was not being fully utilized. This only applies to Heavy, No Upfront and Partial Upfront Reserved Instances.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -56,6 +64,7 @@
       "description": "The total RightScale Compute Unit count for instances managed by RightScale.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -63,6 +72,7 @@
       "description": "The total RightScale Compute Unit count for instances not managed by RightScale.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -70,6 +80,7 @@
       "description": "The total hours for instances managed by RightScale.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -77,6 +88,7 @@
       "description": "The total hours for instances not managed by RightScale.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -84,6 +96,7 @@
       "description": "The total usage cost (USD) of instances.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -91,6 +104,7 @@
       "description": "The upfront cost (USD) of Reserved Instances. This only applies to Light, Mediam, Heavy, Partial and All Upfront Reserved Instances.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     },
@@ -98,6 +112,7 @@
       "description": "The recurring cost (USD) of Reserved Instances. This only applies to Heavy, No Upfront and Partial Upfront Reserved Instances.",
       "type": {
         "name": "Float",
+        "family": "numeric",
         "id": "Attributor-Float"
       }
     }
@@ -150,8 +165,9 @@
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.metrics",
   "description": null,
+  "display_name": "Metrics",
   "example": {
     "kind": "ca#metrics",
     "average_instance_count": 0.0,

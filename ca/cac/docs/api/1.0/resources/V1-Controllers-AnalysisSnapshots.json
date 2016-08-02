@@ -1,29 +1,36 @@
 {
   "description": "AnalysisSnapshots can be used to generate unique links to share data using filters over a date range.",
-  "media_type": "V1-MediaTypes-AnalysisSnapshot",
+  "media_type": {
+    "name": "V1::MediaTypes::AnalysisSnapshot",
+    "family": "hash",
+    "id": "V1-MediaTypes-AnalysisSnapshot",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
   "actions": [
     {
       "description": "Create a new AnalysisSnapshot.",
       "name": "create",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "POST",
-          "path": "/api/analysis_snapshots",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::AnalysisSnapshot"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,8 +39,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -43,15 +52,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::AnalysisSnapshot"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -61,24 +73,30 @@
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
-              }
+              },
+              "example": "2012-12-03T00:00:00+00:00"
             },
             "end_time": {
               "description": "The end time of the snapshot.",
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
-              }
+              },
+              "example": "2012-12-21T00:00:00+00:00"
             },
             "is_comparison": {
               "description": "Whether the snapshot should return comparison data for the previous date range.",
               "default": false,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
-              }
+              },
+              "example": true
             },
             "granularity": {
               "description": "Granularity of time series data.",
@@ -91,21 +109,26 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "week"
             },
             "excluded_tag_types": {
               "description": "Used by the Cloud Analytics UI to disable tag types in the tags module.",
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
                 "member_attribute": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "upspread"
                 }
               }
             },
@@ -130,7 +153,8 @@
                 }
               },
               "type": {
-                "name": "Collection",
+                "name": "V1::Types::Set",
+                "family": "hash",
                 "id": null,
                 "options": {
                 },
@@ -151,8 +175,10 @@
                   ],
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "reserved_instance_recurring_cost"
                 }
               }
             },
@@ -160,6 +186,7 @@
               "description": "Filters used to create the snapshot",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -169,23 +196,25 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             },
             "module_states": {
               "description": "Used by the Cloud Analytics UI to store the state of the snapshot modules based on the state of the Analyze page modules.",
-              "example_definition": {},
+              "example_definition": "#<Proc:0x007fb87a689b58@/Users/ali/code/analytics_api_service/design/v1/media_types/analysis_snapshot.rb:36>",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -195,18 +224,29 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::ModuleState",
+                    "family": "hash",
                     "id": "V1-MediaTypes-ModuleState",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"start_time\": \"2012-12-03T00:00:00+00:00\",\n  \"end_time\": \"2012-12-21T00:00:00+00:00\",\n  \"is_comparison\": true,\n  \"granularity\": \"week\",\n  \"excluded_tag_types\": {\n    \"upspread\": true,\n    \"abdicable\": true,\n    \"Apostolic\": true\n  },\n  \"metrics\": {\n    \"reserved_instance_recurring_cost\": true\n  },\n  \"filters\": [\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"tag:key\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"instances\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"cloud_bill:product_category\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:platform\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    }\n  ],\n  \"module_states\": [\n    {\n      \"type\": \"instance:account_id\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:deployment_key\",\n      \"active\": false,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:instance_type_key\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:tag\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:cloud_vendor_name\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:cloud_id\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:datacenter_key\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:platform\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:server_template_uid\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:pricing_type\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:provisioned_by_user_id\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:state\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:ss_app\",\n      \"active\": false,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    }\n  ]\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "start_time=2012-12-03T00%3A00%3A00%2B00%3A00&end_time=2012-12-21T00%3A00%3A00%2B00%3A00&is_comparison=true&granularity=week&excluded_tag_types=%7B%22upspread%22%3D%3Etrue%2C+%22abdicable%22%3D%3Etrue%2C+%22Apostolic%22%3D%3Etrue%7D&metrics=%7B%22reserved_instance_recurring_cost%22%3D%3Etrue%7D&filters=%7B%3Akind%3D%3E%22ca%23filter%22%2C+%3Atype%3D%3E%22tag%3Akey%22%2C+%3Avalue%3D%3E%22Amazon+Web+Services%22%2C+%3Alabel%3D%3E%22Example+Deployment+%28Test+Account%29%22%2C+%3Atag_resource_type%3D%3E%22instances%22%7D&filters=%7B%3Akind%3D%3E%22ca%23filter%22%2C+%3Atype%3D%3E%22cloud_bill%3Aproduct_category%22%2C+%3Avalue%3D%3E%22Amazon+Web+Services%22%2C+%3Alabel%3D%3E%22Example+Deployment+%28Test+Account%29%22%2C+%3Atag_resource_type%3D%3E%22deployments%22%7D&filters=%7B%3Akind%3D%3E%22ca%23filter%22%2C+%3Atype%3D%3E%22instance%3Aplatform%22%2C+%3Avalue%3D%3E%22Amazon+Web+Services%22%2C+%3Alabel%3D%3E%22Example+Deployment+%28Test+Account%29%22%2C+%3Atag_resource_type%3D%3E%22deployments%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Aaccount_id%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Etrue%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Adeployment_key%22%2C+%3Aactive%3D%3Efalse%2C+%3Aexpanded%3D%3Etrue%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Ainstance_type_key%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Etrue%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Atag%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Etrue%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Acloud_vendor_name%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Acloud_id%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Adatacenter_key%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Aplatform%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Aserver_template_uid%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Apricing_type%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Aprovisioned_by_user_id%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Astate%22%2C+%3Aactive%3D%3Etrue%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D&module_states=%7B%3Atype%3D%3E%22instance%3Ass_app%22%2C+%3Aactive%3D%3Efalse%2C+%3Aexpanded%3D%3Efalse%2C+%3Asort_key%3D%3E%22total_cost%22%7D"
           }
         },
         "example": {
@@ -214,27 +254,27 @@
           "end_time": "2012-12-08T00:00:00+00:00",
           "is_comparison": true,
           "granularity": "week",
-          "excluded_tag_types": [
-            "suborder",
-            "papyrotype",
-            "tautomery"
-          ],
-          "metrics": [
-            "reserved_instance_recurring_cost",
-            "managed_instance_rcu_count"
-          ],
+          "excluded_tag_types": {
+            "suborder": true,
+            "papyrotype": true,
+            "tautomery": true
+          },
+          "metrics": {
+            "reserved_instance_recurring_cost": true,
+            "managed_instance_rcu_count": true
+          },
           "filters": [
             {
               "kind": "ca#filter",
               "type": "reserved_instance:instance_type_key",
-              "value": "1",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "instances"
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:cloud_vendor_name",
-              "value": "1",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "instances"
             },
@@ -346,67 +386,82 @@
           "status": 201,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::AnalysisSnapshot",
+            "family": "hash",
             "id": "V1-MediaTypes-AnalysisSnapshot",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.analysis_snapshot+json",
+                "body": "{\n  \"uuid\": \"ffdc7706180c48ab3bfff3116df1027166e1f02e\",\n  \"href\": \"/api/analysis_snapshots/ffdc7706180c48ab3bfff3116df1027166e1f02e\",\n  \"kind\": \"ca#analysis_snapshot\",\n  \"created_at\": \"2014-03-07T00:00:00+00:00\",\n  \"created_by\": \"Scheduled Report - Production\",\n  \"updated_at\": \"2014-03-08T00:00:00+00:00\",\n  \"start_time\": \"2013-11-12T00:00:00+00:00\",\n  \"end_time\": \"2013-03-28T00:00:00+00:00\",\n  \"is_comparison\": false,\n  \"granularity\": \"day\",\n  \"metrics\": {\n    \"managed_instance_rcu_count\": true\n  },\n  \"filters\": [\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:ss_app\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"instances\"\n    }\n  ],\n  \"module_states\": [\n    {\n      \"type\": \"instance:account_id\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:deployment_key\",\n      \"active\": false,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:instance_type_key\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:tag\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:cloud_vendor_name\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:cloud_id\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:datacenter_key\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:platform\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:server_template_uid\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:pricing_type\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:provisioned_by_user_id\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:state\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:ss_app\",\n      \"active\": false,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    }\n  ],\n  \"excluded_tag_types\": {\n    \"anatomopathologic\": true,\n    \"Cophetua\": true,\n    \"benison\": true\n  },\n  \"missing_access_to_some_accounts\": true\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/analysis_snapshots",
+          "version": "1.0",
+          "example": "/api/analysis_snapshots"
+        }
+      ]
     },
     {
       "description": "Show a specific AnalysisSnapshot.",
       "name": "show",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/analysis_snapshots/:uuid",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::AnalysisSnapshot"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "uuid": {
               "description": "Universally unique ID of the snapshot.",
-              "example_definition": {},
+              "example_definition": "#<Proc:0x007fb87a6628c8@/Users/ali/code/analytics_api_service/design/v1/media_types/analysis_snapshot.rb:8>",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "4e4b0bf0d65423b8589c12135f2f3d5d2814b7b5",
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
         },
         "example": {
-          "uuid": "83cfe63d5a7e5cbb0f54a2b95e5beb3185a24b54",
+          "uuid": "86863fc4ae3343f2dac5e4317cf86717692c37d9",
           "view": "Pyrenochaeta"
         }
       },
@@ -428,16 +483,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::AnalysisSnapshot",
+            "family": "hash",
             "id": "V1-MediaTypes-AnalysisSnapshot",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.analysis_snapshot+json",
+                "body": "{\n  \"uuid\": \"445b045355dd876f2eb0d18054850311215aaf27\",\n  \"href\": \"/api/analysis_snapshots/445b045355dd876f2eb0d18054850311215aaf27\",\n  \"kind\": \"ca#analysis_snapshot\",\n  \"created_at\": \"2012-12-03T00:00:00+00:00\",\n  \"created_by\": \"Scheduled Report - Production\",\n  \"updated_at\": \"2013-02-03T00:00:00+00:00\",\n  \"start_time\": \"2014-06-11T00:00:00+00:00\",\n  \"end_time\": \"2012-11-02T00:00:00+00:00\",\n  \"is_comparison\": false,\n  \"granularity\": \"hour\",\n  \"metrics\": {\n    \"highest_instance_count\": true,\n    \"wasted_reserved_instance_cost\": true,\n    \"managed_instance_hours\": true\n  },\n  \"filters\": [\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:instance_type_key\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"accounts\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"reserved_instance:cloud_id\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"accounts\"\n    }\n  ],\n  \"module_states\": [\n    {\n      \"type\": \"instance:account_id\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:deployment_key\",\n      \"active\": false,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:instance_type_key\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:tag\",\n      \"active\": true,\n      \"expanded\": true,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:cloud_vendor_name\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:cloud_id\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:datacenter_key\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:platform\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:server_template_uid\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:pricing_type\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:provisioned_by_user_id\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:state\",\n      \"active\": true,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    },\n    {\n      \"type\": \"instance:ss_app\",\n      \"active\": false,\n      \"expanded\": false,\n      \"sort_key\": \"total_cost\"\n    }\n  ],\n  \"excluded_tag_types\": {\n    \"disrespectfully\": true,\n    \"movie\": true\n  },\n  \"missing_access_to_some_accounts\": true\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -446,10 +508,22 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/analysis_snapshots/:uuid",
+          "version": "1.0",
+          "example": "/api/analysis_snapshots/4e4b0bf0d65423b8589c12135f2f3d5d2814b7b5"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::AnalysisSnapshots",
+  "display_name": "AnalysisSnapshots",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

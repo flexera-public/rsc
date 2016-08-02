@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::UserAccounts",
+  "family": "hash",
   "id": "V1-MediaTypes-UserAccounts",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,6 +16,7 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -21,6 +24,7 @@
       "description": "RightScale account ID.",
       "type": {
         "name": "Integer",
+        "family": "numeric",
         "id": "Attributor-Integer"
       }
     },
@@ -28,6 +32,7 @@
       "description": "RightScale account name.",
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
@@ -35,6 +40,7 @@
       "description": "Does the account have the billing_admin_only account setting enabled?",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -42,6 +48,7 @@
       "description": "Is the `cloud_analytics` account setting enabled? Just because this setting is enabled,\n            it does not mean that the account is `cloud_analytics_enabled`.",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -49,6 +56,7 @@
       "description": "Does the user have the required settings and permissions for this account to be enabled\n            for them in Cloud Analytics?",
       "type": {
         "name": "Boolean",
+        "family": "boolean",
         "id": "Attributor-Boolean"
       }
     },
@@ -66,7 +74,8 @@
         }
       },
       "type": {
-        "name": "Collection",
+        "name": "V1::Types::Set",
+        "family": "hash",
         "id": null,
         "options": {
         },
@@ -80,6 +89,7 @@
           ],
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         }
@@ -112,15 +122,16 @@
         "billing_admin_only": false,
         "cloud_analytics_account_setting_enabled": false,
         "cloud_analytics_enabled": true,
-        "permissions": [
-          "observer",
-          "admin"
-        ]
+        "permissions": {
+          "observer": true,
+          "admin": true
+        }
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.user_accounts",
   "description": null,
+  "display_name": "UserAccounts",
   "example": {
     "kind": "ca#user_accounts",
     "account_id": 756,
@@ -128,9 +139,9 @@
     "billing_admin_only": false,
     "cloud_analytics_account_setting_enabled": false,
     "cloud_analytics_enabled": true,
-    "permissions": [
-      "observer",
-      "admin"
-    ]
+    "permissions": {
+      "observer": true,
+      "admin": true
+    }
   }
 }

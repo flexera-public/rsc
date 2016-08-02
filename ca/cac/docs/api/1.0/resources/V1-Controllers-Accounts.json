@@ -1,0 +1,386 @@
+{
+  "description": "This resource is not included in the public docs. Accounts act as a container for clouds credentials and other RightScale concepts such as\n        Deployments or ServerArrays. Users with the `enterprise_manager` permission in an account can create\n        child accounts.\n        The view `full` is not supported if the any of the user's accounts use IP Whitelisting.",
+  "media_type": {
+    "name": "V1::MediaTypes::Account",
+    "family": "hash",
+    "id": "V1-MediaTypes-Account",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
+  "actions": [
+    {
+      "description": "Create a new child account.",
+      "name": "create",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::Account"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "villanous"
+        }
+      },
+      "payload": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::Account"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "master_account_id": {
+              "required": true,
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 639
+            },
+            "name": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "interresponsible"
+            },
+            "shard_id": {
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 360
+            }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"master_account_id\": 639,\n  \"name\": \"interresponsible\",\n  \"shard_id\": 360\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "master_account_id=639&name=interresponsible&shard_id=360"
+          }
+        },
+        "example": {
+          "master_account_id": 189,
+          "name": "marrowlike",
+          "shard_id": 367
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "created_with_body": {
+          "description": null,
+          "status": 201,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::Account",
+            "family": "hash",
+            "id": "V1-MediaTypes-Account",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.account+json",
+                "body": "{\n  \"id\": 663,\n  \"href\": \"/api/accounts/663\",\n  \"kind\": \"ca#account\",\n  \"name\": \"chokerman\",\n  \"is_cloud_analytics_blocked_by_billing_admin_only\": false,\n  \"cloud_analytics_enabled\": false,\n  \"is_enterprise_parent\": true,\n  \"plan_code\": \"electropneumatic\",\n  \"shard_id\": 520,\n  \"owner_id\": 24,\n  \"expires_in\": 284,\n  \"user_has_admin\": false,\n  \"user_has_actor\": false,\n  \"user_has_enterprise_manager\": true,\n  \"uses_ip_whitelisting\": false\n}"
+              }
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+          "status": 422,
+          "headers": {
+          }
+        },
+        "forbidden": {
+          "description": "The request was a valid request, but the server is refusing to respond to it.",
+          "status": 403,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/accounts",
+          "version": "1.0",
+          "example": "/api/accounts"
+        }
+      ]
+    },
+    {
+      "description": "List all accounts.",
+      "name": "index",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::Account"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "view": "villanous"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::Account::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Account-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Account"
+              },
+              "type": {
+                "name": "V1::MediaTypes::Account",
+                "family": "hash",
+                "id": "V1-MediaTypes-Account",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.account+json; type=collection",
+                "body": "[\n  {\n    \"id\": 391,\n    \"href\": \"/api/accounts/391\",\n    \"kind\": \"ca#account\",\n    \"name\": \"leadin\",\n    \"is_cloud_analytics_blocked_by_billing_admin_only\": true,\n    \"cloud_analytics_enabled\": false,\n    \"is_enterprise_parent\": true,\n    \"plan_code\": \"undemised\",\n    \"shard_id\": 178,\n    \"owner_id\": 679,\n    \"expires_in\": 181,\n    \"user_has_admin\": true,\n    \"user_has_actor\": true,\n    \"user_has_enterprise_manager\": true,\n    \"uses_ip_whitelisting\": false\n  },\n  {\n    \"id\": 400,\n    \"href\": \"/api/accounts/400\",\n    \"kind\": \"ca#account\",\n    \"name\": \"azulene\",\n    \"is_cloud_analytics_blocked_by_billing_admin_only\": false,\n    \"cloud_analytics_enabled\": false,\n    \"is_enterprise_parent\": false,\n    \"plan_code\": \"sericulturist\",\n    \"shard_id\": 149,\n    \"owner_id\": 304,\n    \"expires_in\": 876,\n    \"user_has_admin\": true,\n    \"user_has_actor\": false,\n    \"user_has_enterprise_manager\": true,\n    \"uses_ip_whitelisting\": true\n  },\n  {\n    \"id\": 35,\n    \"href\": \"/api/accounts/35\",\n    \"kind\": \"ca#account\",\n    \"name\": \"Angelonia\",\n    \"is_cloud_analytics_blocked_by_billing_admin_only\": false,\n    \"cloud_analytics_enabled\": true,\n    \"is_enterprise_parent\": true,\n    \"plan_code\": \"eyebeam\",\n    \"shard_id\": 528,\n    \"owner_id\": 346,\n    \"expires_in\": 371,\n    \"user_has_admin\": false,\n    \"user_has_actor\": false,\n    \"user_has_enterprise_manager\": true,\n    \"uses_ip_whitelisting\": true\n  }\n]"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/accounts",
+          "version": "1.0",
+          "example": "/api/accounts"
+        }
+      ]
+    },
+    {
+      "description": "Show a specific account.",
+      "name": "show",
+      "metadata": {
+      },
+      "params": {
+        "required": true,
+        "options": {
+          "reference": "V1::MediaTypes::Account"
+        },
+        "type": {
+          "name": "Struct",
+          "family": "hash",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "family": "string",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "id": {
+              "type": {
+                "name": "Integer",
+                "family": "numeric",
+                "id": "Attributor-Integer"
+              },
+              "example": 606,
+              "source": "url"
+            },
+            "view": {
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "stickless",
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "id": 760,
+          "view": "villanous"
+        }
+      },
+      "responses": {
+        "global_session_unauthorized": {
+          "description": null,
+          "status": 401,
+          "headers": {
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to bad syntax.",
+          "status": 400,
+          "headers": {
+          }
+        },
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "payload": {
+            "name": "V1::MediaTypes::Account",
+            "family": "hash",
+            "id": "V1-MediaTypes-Account",
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.account+json",
+                "body": "{\n  \"id\": 437,\n  \"href\": \"/api/accounts/437\",\n  \"kind\": \"ca#account\",\n  \"name\": \"cartilagineous\",\n  \"is_cloud_analytics_blocked_by_billing_admin_only\": false,\n  \"cloud_analytics_enabled\": false,\n  \"is_enterprise_parent\": false,\n  \"plan_code\": \"artotype\",\n  \"shard_id\": 713,\n  \"owner_id\": 315,\n  \"expires_in\": 15,\n  \"user_has_admin\": true,\n  \"user_has_actor\": false,\n  \"user_has_enterprise_manager\": false,\n  \"uses_ip_whitelisting\": false\n}"
+              }
+            }
+          }
+        },
+        "not_found": {
+          "description": "The requested resource could not be found but may be available again in the future.",
+          "status": 404,
+          "headers": {
+          }
+        }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/accounts/:id",
+          "version": "1.0",
+          "example": "/api/accounts/606"
+        }
+      ]
+    }
+  ],
+  "name": "V1::ApiResources::Accounts",
+  "display_name": "Accounts",
+  "metadata": {
+  },
+  "traits": [
+
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "description": "Miscellaneous RightLink 10 local requests",
+  "media_type": "Praxis-SimpleMediaType",
+  "actions": [
+    {
+      "description": "Relaunch the RightLink process using a specified binary",
+      "name": "upgrade",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/rll/upgrade",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "exec": {
+              "description": "Absolute path to binary",
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "exec": "sandblasted"
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Run git-based scripts (as recipes) synchronously",
+      "name": "run_recipe",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/rll/run/recipe",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "recipe": {
+              "description": "Name of recipe",
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "json": {
+              "description": "JSON hash of \"name\": \"value\" pairs",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "arguments": {
+              "description": "Script argument values",
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "recipe": "turbulently",
+          "json": "graphologists",
+          "arguments": {
+            "Rourke": "alfresco"
+          }
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    },
+    {
+      "description": "Run RightScripts synchronously",
+      "name": "run_right_script",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/rll/run/right_script",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "right_script": {
+              "description": "Name of script",
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "query"
+            },
+            "right_script_id": {
+              "description": "Id of script",
+              "type": {
+                "name": "Integer",
+                "id": "Attributor-Integer"
+              },
+              "source": "query"
+            },
+            "arguments": {
+              "description": "Script argument values",
+              "options": {
+                "allow_extra": false
+              },
+              "type": {
+                "name": "Hash",
+                "id": null,
+                "key": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                },
+                "value": {
+                  "type": {
+                    "name": "String",
+                    "id": "Attributor-String"
+                  }
+                }
+              },
+              "source": "query"
+            }
+          }
+        },
+        "example": {
+          "right_script": "Jocasta",
+          "right_script_id": 142,
+          "arguments": {
+            "Rourke": "alfresco"
+          }
+        }
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
+    }
+  ],
+  "name": "Resources::Rl10",
+  "metadata": {
+  }
+}

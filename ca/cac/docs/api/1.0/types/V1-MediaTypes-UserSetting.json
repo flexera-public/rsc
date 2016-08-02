@@ -1,9 +1,11 @@
 {
   "name": "V1::MediaTypes::UserSetting",
+  "family": "hash",
   "id": "V1-MediaTypes-UserSetting",
   "key": {
     "type": {
       "name": "Symbol",
+      "family": "string",
       "id": "Attributor-Symbol"
     }
   },
@@ -14,41 +16,175 @@
       ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
+    "main_menu_visible": {
+      "description": "Whether or not the left hand menu is visible or collapsed",
+      "type": {
+        "name": "Boolean",
+        "family": "boolean",
+        "id": "Attributor-Boolean"
+      }
+    },
+    "sorting": {
+      "description": "Stores how sortable items (mainly tables) are sorted.\nThe key of the hash is the identifier of the table.\n",
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "family": "hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        },
+        "value": {
+          "type": {
+            "name": "Struct",
+            "family": "hash",
+            "id": null,
+            "key": {
+              "type": {
+                "name": "Symbol",
+                "family": "string",
+                "id": "Attributor-Symbol"
+              }
+            },
+            "attributes": {
+              "attribute": {
+                "description": "The attribute of the collection on which to sort",
+                "type": {
+                  "name": "String",
+                  "family": "string",
+                  "id": "Attributor-String"
+                }
+              },
+              "direction": {
+                "description": "Sort direction",
+                "values": [
+                  "desc",
+                  "asc"
+                ],
+                "type": {
+                  "name": "String",
+                  "family": "string",
+                  "id": "Attributor-String"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dismissed_dialogs": {
+      "description": "Dialogs, popups, alerts and messages that the user has dismissed.\n",
+      "type": {
+        "name": "V1::Types::Set",
+        "family": "hash",
+        "id": null,
+        "options": {
+        },
+        "member_attribute": {
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        }
+      }
+    },
+    "table_column_visibility": {
+      "description": "Table columns that are hidden. Currently this is only supported in the instance datatable.\n\nThe key is the ID of the table (i.e. `instance_datatable`), the Set is the visible columns.\n",
+      "options": {
+        "allow_extra": false
+      },
+      "type": {
+        "name": "Hash",
+        "family": "hash",
+        "id": null,
+        "key": {
+          "type": {
+            "name": "String",
+            "family": "string",
+            "id": "Attributor-String"
+          }
+        },
+        "value": {
+          "type": {
+            "name": "V1::Types::Set",
+            "family": "hash",
+            "id": null,
+            "options": {
+            },
+            "member_attribute": {
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              }
+            }
+          }
+        }
+      }
+    },
     "date_range": {
+      "description": "Date range used for displaying the Analyze Page",
       "type": {
         "name": "Struct",
+        "family": "hash",
         "id": null,
         "key": {
           "type": {
             "name": "Symbol",
+            "family": "string",
             "id": "Attributor-Symbol"
           }
         },
         "attributes": {
           "type": {
+            "description": "The date picker can operate in dynamic mode with one of these options:\n\n* Since Yesterday\n* This Week\n* This Month\n* This Year\n* Last 7 Days\n* Last 30 Days\n* Last 3 Months\n\nin which case `start_time` and `end_time` are ignored and the exact date range is computed automatically each day.\n\nIf this is set to `Custom`, than the date range will be between `start_time` and `end_time`.\n",
+            "values": [
+              "Since Yesterday",
+              "This Week",
+              "This Month",
+              "This Year",
+              "Last 7 Days",
+              "Last 30 Days",
+              "Last 3 Months",
+              "Custom"
+            ],
+            "example_definition": "Custom",
             "type": {
               "name": "String",
+              "family": "string",
               "id": "Attributor-String"
             }
           },
           "start_time": {
             "type": {
               "name": "DateTime",
+              "family": "temporal",
               "id": "Attributor-DateTime"
             }
           },
           "end_time": {
             "type": {
               "name": "DateTime",
+              "family": "temporal",
               "id": "Attributor-DateTime"
             }
           },
           "is_comparison": {
+            "description": "Set the Analyze page to comparison mode, where it will show the top graph with an additional data set for the previous period.",
             "type": {
               "name": "Boolean",
+              "family": "boolean",
               "id": "Attributor-Boolean"
             }
           }
@@ -56,14 +192,24 @@
       }
     },
     "granularity": {
+      "description": "The granularity of the top chart on the Analyze page",
+      "values": [
+        "hour",
+        "day",
+        "week",
+        "month"
+      ],
       "type": {
         "name": "String",
+        "family": "string",
         "id": "Attributor-String"
       }
     },
     "module_states": {
+      "description": "These are the modules displayed on the Analyze Page.",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -73,21 +219,24 @@
           },
           "type": {
             "name": "V1::MediaTypes::ModuleState",
+            "family": "hash",
             "id": "V1-MediaTypes-ModuleState",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
+            }
           }
         }
       }
     },
     "filters": {
+      "description": "Filters the user has currently *applied* on the Analyze Page",
       "type": {
         "name": "Collection",
+        "family": "array",
         "id": null,
         "options": {
         },
@@ -97,35 +246,15 @@
           },
           "type": {
             "name": "V1::MediaTypes::Filter",
+            "family": "hash",
             "id": "V1-MediaTypes-Filter",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
-            },
-            "attributes": null
-          }
-        }
-      }
-    },
-    "selected_cloud_vendor_names": {
-      "options": {
-        "allow_extra": false
-      },
-      "type": {
-        "name": "Hash",
-        "id": null,
-        "key": {
-          "type": {
-            "name": "String",
-            "id": "Attributor-String"
-          }
-        },
-        "value": {
-          "type": {
-            "name": "Boolean",
-            "id": "Attributor-Boolean"
+            }
           }
         }
       }
@@ -150,7 +279,8 @@
         }
       },
       "type": {
-        "name": "Collection",
+        "name": "V1::Types::Set",
+        "family": "hash",
         "id": null,
         "options": {
         },
@@ -171,126 +301,92 @@
           ],
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
-          }
-        }
-      }
-    },
-    "onboarding_status": {
-      "type": {
-        "name": "String",
-        "id": "Attributor-String"
-      }
-    },
-    "main_menu_visibility": {
-      "values": [
-        "open",
-        "closed"
-      ],
-      "type": {
-        "name": "String",
-        "id": "Attributor-String"
-      }
-    },
-    "sorting": {
-      "options": {
-        "allow_extra": false
-      },
-      "type": {
-        "name": "Hash",
-        "id": null,
-        "key": {
-          "type": {
-            "name": "String",
-            "id": "Attributor-String"
-          }
-        },
-        "value": {
-          "type": {
-            "name": "Hash",
-            "id": null,
-            "key": {
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              }
-            },
-            "value": {
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              }
-            }
-          }
-        }
-      }
-    },
-    "dismissed_dialogs": {
-      "options": {
-        "allow_extra": false
-      },
-      "type": {
-        "name": "Hash",
-        "id": null,
-        "key": {
-          "type": {
-            "name": "String",
-            "id": "Attributor-String"
-          }
-        },
-        "value": {
-          "type": {
-            "name": "Boolean",
-            "id": "Attributor-Boolean"
           }
         }
       }
     },
     "excluded_tag_types": {
+      "description": "Tag types that are not displayed in the Tags module on the analyze page",
       "type": {
-        "name": "Collection",
+        "name": "V1::Types::Set",
+        "family": "hash",
         "id": null,
         "options": {
         },
         "member_attribute": {
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
         }
       }
     },
-    "table_column_visibility": {
+    "selected_cloud_vendor_names": {
+      "description": "These are the cloud vendor filters that are applied on the instance combination edit page in Scenario Builder.",
       "options": {
-        "allow_extra": false
+        "member_options": {
+          "values": [
+            "Amazon Web Services",
+            "Eucalyptus",
+            "Rackspace",
+            "SoftLayer",
+            "Sunrise",
+            "Google",
+            "Microsoft Azure",
+            "HP",
+            "Blue Skies",
+            "Datapipe",
+            "IDC Frontier",
+            "Logicworks",
+            "Private cloud"
+          ]
+        }
       },
       "type": {
-        "name": "Hash",
+        "name": "V1::Types::Set",
+        "family": "hash",
         "id": null,
-        "key": {
+        "options": {
+        },
+        "member_attribute": {
+          "values": [
+            "Amazon Web Services",
+            "Eucalyptus",
+            "Rackspace",
+            "SoftLayer",
+            "Sunrise",
+            "Google",
+            "Microsoft Azure",
+            "HP",
+            "Blue Skies",
+            "Datapipe",
+            "IDC Frontier",
+            "Logicworks",
+            "Private cloud"
+          ],
           "type": {
             "name": "String",
+            "family": "string",
             "id": "Attributor-String"
           }
-        },
-        "value": {
-          "type": {
-            "name": "Hash",
-            "id": null,
-            "key": {
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              }
-            },
-            "value": {
-              "type": {
-                "name": "Boolean",
-                "id": "Attributor-Boolean"
-              }
-            }
-          }
         }
+      }
+    },
+    "onboarding_status": {
+      "values": [
+        "not_seen",
+        "no_clouds",
+        "with_clouds",
+        "onboard",
+        "all_accounts_expired"
+      ],
+      "type": {
+        "name": "String",
+        "family": "string",
+        "id": "Attributor-String"
       }
     }
   },
@@ -298,6 +394,14 @@
     "default": {
       "attributes": {
         "kind": {
+        },
+        "main_menu_visible": {
+        },
+        "sorting": {
+        },
+        "dismissed_dialogs": {
+        },
+        "table_column_visibility": {
         },
         "date_range": {
         },
@@ -307,33 +411,55 @@
         },
         "filters": {
         },
-        "selected_cloud_vendor_names": {
-        },
         "metrics": {
-        },
-        "onboarding_status": {
-        },
-        "main_menu_visibility": {
-        },
-        "sorting": {
-        },
-        "dismissed_dialogs": {
         },
         "excluded_tag_types": {
         },
-        "table_column_visibility": {
+        "selected_cloud_vendor_names": {
+        },
+        "onboarding_status": {
         }
       },
       "type": "standard",
       "example": {
         "kind": "ca#user_setting",
+        "main_menu_visible": false,
+        "sorting": {
+          "chiragra": {
+            "attribute": "cofeoffee",
+            "direction": "desc"
+          },
+          "unallayable": {
+            "attribute": "asem",
+            "direction": "desc"
+          },
+          "unresponsiveness": {
+            "attribute": "monoxylous",
+            "direction": "asc"
+          }
+        },
+        "dismissed_dialogs": {
+          "Theophila": true,
+          "gully": true
+        },
+        "table_column_visibility": {
+          "paganism": {
+            "[\"Schedar\", true]": true,
+            "[\"rhabdophanite\", true]": true,
+            "[\"ramage\", true]": true
+          },
+          "Davidic": {
+            "[\"stealthless\", true]": true,
+            "[\"counterclaimant\", true]": true
+          }
+        },
         "date_range": {
-          "type": "fergusonite",
+          "type": "Custom",
           "start_time": "2013-12-06T00:00:00+00:00",
           "end_time": "2013-11-10T00:00:00+00:00",
           "is_comparison": false
         },
-        "granularity": "prolific",
+        "granularity": "month",
         "module_states": [
           {
             "kind": "ca#module_state",
@@ -361,79 +487,77 @@
           {
             "kind": "ca#filter",
             "type": "cloud_bill:account_id",
-            "value": "1",
+            "value": "Amazon Web Services",
             "label": "Example Deployment (Test Account)",
             "tag_resource_type": "instances"
           },
           {
             "kind": "ca#filter",
             "type": "cloud_bill:account_id",
-            "value": "1",
+            "value": "Amazon Web Services",
             "label": "Example Deployment (Test Account)",
             "tag_resource_type": "accounts"
           }
         ],
+        "metrics": {
+          "managed_instance_hours": true,
+          "managed_instance_rcu_count": true
+        },
+        "excluded_tag_types": {
+          "willowweed": true,
+          "cleaving": true,
+          "tilemaking": true
+        },
         "selected_cloud_vendor_names": {
-          "campholide": true,
-          "endocortex": true
+          "Rackspace": true,
+          "Google": true
         },
-        "metrics": [
-          "managed_instance_hours",
-          "managed_instance_rcu_count",
-          "managed_instance_rcu_count"
-        ],
-        "onboarding_status": "Comanche",
-        "main_menu_visibility": "closed",
-        "sorting": {
-          "chiragra": {
-            "unresponsiveness": "scalene",
-            "uncounsellable": "nontaxable",
-            "gull": "boviform"
-          },
-          "beldamship": {
-            "maintainableness": "lifeline",
-            "apishamore": "unhearable",
-            "staphylotomy": "blench"
-          },
-          "gaoler": {
-            "unmaned": "ampliative"
-          }
-        },
-        "dismissed_dialogs": {
-          "intendit": true,
-          "ortolan": false
-        },
-        "excluded_tag_types": [
-          "willowweed",
-          "cleaving",
-          "tilemaking"
-        ],
-        "table_column_visibility": {
-          "paganism": {
-            "electrocoating": true,
-            "boarfish": false,
-            "discourageable": true
-          },
-          "masoned": {
-            "Calusa": true,
-            "oar": false,
-            "Simonist": false
-          }
-        }
+        "onboarding_status": "onboard"
       }
     }
   },
-  "identifier": null,
+  "identifier": "application/vnd.rightscale.ca.user_setting",
   "description": null,
+  "display_name": "UserSetting",
   "example": {
     "kind": "ca#user_setting",
+    "main_menu_visible": false,
+    "sorting": {
+      "chiragra": {
+        "attribute": "cofeoffee",
+        "direction": "desc"
+      },
+      "unallayable": {
+        "attribute": "asem",
+        "direction": "desc"
+      },
+      "unresponsiveness": {
+        "attribute": "monoxylous",
+        "direction": "asc"
+      }
+    },
+    "dismissed_dialogs": {
+      "Theophila": true,
+      "gully": true
+    },
+    "table_column_visibility": {
+      "paganism": {
+        "[\"Schedar\", true]": true,
+        "[\"rhabdophanite\", true]": true,
+        "[\"ramage\", true]": true
+      },
+      "Davidic": {
+        "[\"stealthless\", true]": true,
+        "[\"counterclaimant\", true]": true
+      }
+    },
     "date_range": {
-      "type": "fergusonite",
+      "type": "Custom",
       "start_time": "2013-12-06T00:00:00+00:00",
       "end_time": "2013-11-10T00:00:00+00:00",
       "is_comparison": false
     },
-    "granularity": "prolific",
+    "granularity": "month",
     "module_states": [
       {
         "kind": "ca#module_state",
@@ -461,64 +585,31 @@
       {
         "kind": "ca#filter",
         "type": "cloud_bill:account_id",
-        "value": "1",
+        "value": "Amazon Web Services",
         "label": "Example Deployment (Test Account)",
         "tag_resource_type": "instances"
       },
       {
         "kind": "ca#filter",
         "type": "cloud_bill:account_id",
-        "value": "1",
+        "value": "Amazon Web Services",
         "label": "Example Deployment (Test Account)",
         "tag_resource_type": "accounts"
       }
     ],
+    "metrics": {
+      "managed_instance_hours": true,
+      "managed_instance_rcu_count": true
+    },
+    "excluded_tag_types": {
+      "willowweed": true,
+      "cleaving": true,
+      "tilemaking": true
+    },
     "selected_cloud_vendor_names": {
-      "campholide": true,
-      "endocortex": true
+      "Rackspace": true,
+      "Google": true
     },
-    "metrics": [
-      "managed_instance_hours",
-      "managed_instance_rcu_count",
-      "managed_instance_rcu_count"
-    ],
-    "onboarding_status": "Comanche",
-    "main_menu_visibility": "closed",
-    "sorting": {
-      "chiragra": {
-        "unresponsiveness": "scalene",
-        "uncounsellable": "nontaxable",
-        "gull": "boviform"
-      },
-      "beldamship": {
-        "maintainableness": "lifeline",
-        "apishamore": "unhearable",
-        "staphylotomy": "blench"
-      },
-      "gaoler": {
-        "unmaned": "ampliative"
-      }
-    },
-    "dismissed_dialogs": {
-      "intendit": true,
-      "ortolan": false
-    },
-    "excluded_tag_types": [
-      "willowweed",
-      "cleaving",
-      "tilemaking"
-    ],
-    "table_column_visibility": {
-      "paganism": {
-        "electrocoating": true,
-        "boarfish": false,
-        "discourageable": true
-      },
-      "masoned": {
-        "Calusa": true,
-        "oar": false,
-        "Simonist": false
-      }
-    }
+    "onboarding_status": "onboard"
   }
 }

@@ -1,29 +1,36 @@
 {
   "description": "Patterns describe operations in usage, and can be applied to InstanceCombinations in Scenarios to model changes in the cost.\n        A pattern can only be applied to an InstanceCombination once.",
-  "media_type": "V1-MediaTypes-Pattern",
+  "media_type": {
+    "name": "V1::MediaTypes::Pattern",
+    "family": "hash",
+    "id": "V1-MediaTypes-Pattern",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
   "actions": [
     {
       "description": "Create a new Pattern.",
       "name": "create",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "POST",
-          "path": "/api/patterns",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,8 +39,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -43,15 +52,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -59,23 +71,23 @@
             "name": {
               "description": "Name of the pattern.",
               "required": true,
-              "example_definition": [
-                "Growth pattern"
-              ],
+              "example_definition": "Growth pattern",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Growth pattern"
             },
             "summary": {
               "description": "Summary of the pattern.",
-              "example_definition": [
-                "Increase by 10% every months"
-              ],
+              "example_definition": "Increase by 10% every months",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Increase by 10% every months"
             },
             "type": {
               "description": "Pattern type reflects whether the change that the pattern applies continues after the pattern has ended.\n          Changes made by permanent patterns persist past the chosen end date, e.g. general growth.\n          Changes made by temporary patterns only apply during the selected dates, e.g. holiday increase.",
@@ -86,16 +98,20 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "temporary"
             },
             "value": {
               "description": "Amount of change that the pattern will apply. The increase and decrease operations are based on percentages,\n            so for example, use the value 10 to increase/decrease by 10%.",
               "required": true,
               "type": {
                 "name": "Float",
+                "family": "numeric",
                 "id": "Attributor-Float"
-              }
+              },
+              "example": 0.0
             },
             "operation": {
               "description": "Type of change, the increase and decrease operations are based on percentages.",
@@ -109,35 +125,43 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "set_to"
             },
             "years": {
               "description": "The years that the pattern will apply to. This can be \"all\" to apply the pattern in all years;\n          a range such as \"1-3\" to apply the pattern from years 1 to years 3; or individual years in a comma-separated list such as \"1,3\".",
               "required": true,
-              "example_definition": [
-                "all",
-                "1-3",
-                "1, 3"
-              ],
+              "example_definition": "all",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "all"
             },
             "months": {
               "description": "The months that the pattern apply to. This can be \"all\" to apply the pattern in all months;\n          a range such as \"1-3\" meaning the pattern will be applied from the start of January to the end of March; or\n          individual months in a comma-separated list such as \"5, 7, 9\" meaning the pattern will be applied in May, July and September.",
               "required": true,
-              "example_definition": [
-                "all",
-                "1-3",
-                "5, 7, 9"
-              ],
+              "example_definition": "all",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "all"
             }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"name\": \"Growth pattern\",\n  \"summary\": \"Increase by 10% every months\",\n  \"type\": \"temporary\",\n  \"value\": 0.0,\n  \"operation\": \"set_to\",\n  \"years\": \"all\",\n  \"months\": \"all\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "name=Growth+pattern&summary=Increase+by+10%25+every+months&type=temporary&value=0.0&operation=set_to&years=all&months=all"
           }
         },
         "example": {
@@ -146,8 +170,8 @@
           "type": "temporary",
           "value": 0.0,
           "operation": "set_to",
-          "years": "1, 3",
-          "months": "5, 7, 9"
+          "years": "all",
+          "months": "all"
         }
       },
       "responses": {
@@ -168,42 +192,53 @@
           "status": 201,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::Pattern",
+            "family": "hash",
             "id": "V1-MediaTypes-Pattern",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.pattern+json",
+                "body": "{\n  \"id\": 372,\n  \"kind\": \"ca#pattern\",\n  \"href\": \"/api/patterns/372\",\n  \"name\": \"Growth pattern\",\n  \"summary\": \"Increase by 10% every months\",\n  \"type\": \"permanent\",\n  \"value\": 0.0,\n  \"operation\": \"decrease\",\n  \"years\": \"all\",\n  \"months\": \"all\",\n  \"created_at\": \"2014-09-08T00:00:00+00:00\",\n  \"updated_at\": \"2014-10-24T00:00:00+00:00\"\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/patterns",
+          "version": "1.0",
+          "example": "/api/patterns"
+        }
+      ]
     },
     {
       "description": "List all Patterns.",
       "name": "index",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/patterns",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -212,8 +247,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -240,42 +277,65 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
-            "name": "V1::MediaTypes::Pattern",
-            "id": "V1-MediaTypes-Pattern",
-            "key": {
+          "payload": {
+            "name": "V1::MediaTypes::Pattern::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-Pattern-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::Pattern"
+              },
               "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
+                "name": "V1::MediaTypes::Pattern",
+                "family": "hash",
+                "id": "V1-MediaTypes-Pattern",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.pattern+json; type=collection",
+                "body": "[\n  {\n    \"id\": 401,\n    \"kind\": \"ca#pattern\",\n    \"href\": \"/api/patterns/401\",\n    \"name\": \"Growth pattern\",\n    \"summary\": \"Increase by 10% every months\",\n    \"type\": \"temporary\",\n    \"value\": 0.0,\n    \"operation\": \"decrease\",\n    \"years\": \"all\",\n    \"months\": \"all\",\n    \"created_at\": \"2014-03-05T00:00:00+00:00\",\n    \"updated_at\": \"2014-12-01T00:00:00+00:00\"\n  },\n  {\n    \"id\": 788,\n    \"kind\": \"ca#pattern\",\n    \"href\": \"/api/patterns/788\",\n    \"name\": \"Growth pattern\",\n    \"summary\": \"Increase by 10% every months\",\n    \"type\": \"temporary\",\n    \"value\": 0.0,\n    \"operation\": \"add\",\n    \"years\": \"all\",\n    \"months\": \"all\",\n    \"created_at\": \"2013-10-08T00:00:00+00:00\",\n    \"updated_at\": \"2013-11-18T00:00:00+00:00\"\n  },\n  {\n    \"id\": 647,\n    \"kind\": \"ca#pattern\",\n    \"href\": \"/api/patterns/647\",\n    \"name\": \"Growth pattern\",\n    \"summary\": \"Increase by 10% every months\",\n    \"type\": \"permanent\",\n    \"value\": 0.0,\n    \"operation\": \"increase\",\n    \"years\": \"all\",\n    \"months\": \"all\",\n    \"created_at\": \"2014-11-18T00:00:00+00:00\",\n    \"updated_at\": \"2014-09-20T00:00:00+00:00\"\n  }\n]"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/patterns",
+          "version": "1.0",
+          "example": "/api/patterns"
+        }
+      ]
     },
     {
       "description": "Show a specific Pattern.",
       "name": "show",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/patterns/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -283,16 +343,20 @@
             "id": {
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -320,16 +384,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::Pattern",
+            "family": "hash",
             "id": "V1-MediaTypes-Pattern",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.pattern+json",
+                "body": "{\n  \"id\": 805,\n  \"kind\": \"ca#pattern\",\n  \"href\": \"/api/patterns/805\",\n  \"name\": \"Growth pattern\",\n  \"summary\": \"Increase by 10% every months\",\n  \"type\": \"temporary\",\n  \"value\": 0.0,\n  \"operation\": \"subtract\",\n  \"years\": \"all\",\n  \"months\": \"all\",\n  \"created_at\": \"2012-12-30T00:00:00+00:00\",\n  \"updated_at\": \"2014-01-07T00:00:00+00:00\"\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -338,30 +409,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/patterns/:id",
+          "version": "1.0",
+          "example": "/api/patterns/606"
+        }
+      ]
     },
     {
       "description": "Update the provided attributes of a Pattern.",
       "name": "update",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "PATCH",
-          "path": "/api/patterns/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -369,16 +444,20 @@
             "id": {
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -389,38 +468,41 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
             "name": {
               "description": "Name of the pattern.",
-              "example_definition": [
-                "Growth pattern"
-              ],
+              "example_definition": "Growth pattern",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Growth pattern"
             },
             "summary": {
               "description": "Summary of the pattern.",
-              "example_definition": [
-                "Increase by 10% every months"
-              ],
+              "example_definition": "Increase by 10% every months",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Increase by 10% every months"
             },
             "type": {
               "description": "Pattern type reflects whether the change that the pattern applies continues after the pattern has ended.\n          Changes made by permanent patterns persist past the chosen end date, e.g. general growth.\n          Changes made by temporary patterns only apply during the selected dates, e.g. holiday increase.",
@@ -430,15 +512,19 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "temporary"
             },
             "value": {
               "description": "Amount of change that the pattern will apply. The increase and decrease operations are based on percentages,\n            so for example, use the value 10 to increase/decrease by 10%.",
               "type": {
                 "name": "Float",
+                "family": "numeric",
                 "id": "Attributor-Float"
-              }
+              },
+              "example": 0.0
             },
             "operation": {
               "description": "Type of change, the increase and decrease operations are based on percentages.",
@@ -451,33 +537,41 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "set_to"
             },
             "years": {
               "description": "The years that the pattern will apply to. This can be \"all\" to apply the pattern in all years;\n          a range such as \"1-3\" to apply the pattern from years 1 to years 3; or individual years in a comma-separated list such as \"1,3\".",
-              "example_definition": [
-                "all",
-                "1-3",
-                "1, 3"
-              ],
+              "example_definition": "all",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "all"
             },
             "months": {
               "description": "The months that the pattern apply to. This can be \"all\" to apply the pattern in all months;\n          a range such as \"1-3\" meaning the pattern will be applied from the start of January to the end of March; or\n          individual months in a comma-separated list such as \"5, 7, 9\" meaning the pattern will be applied in May, July and September.",
-              "example_definition": [
-                "all",
-                "1-3",
-                "5, 7, 9"
-              ],
+              "example_definition": "all",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "all"
             }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"name\": \"Growth pattern\",\n  \"summary\": \"Increase by 10% every months\",\n  \"type\": \"temporary\",\n  \"value\": 0.0,\n  \"operation\": \"set_to\",\n  \"years\": \"all\",\n  \"months\": \"all\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "name=Growth+pattern&summary=Increase+by+10%25+every+months&type=temporary&value=0.0&operation=set_to&years=all&months=all"
           }
         },
         "example": {
@@ -486,8 +580,8 @@
           "type": "temporary",
           "value": 0.0,
           "operation": "set_to",
-          "years": "1, 3",
-          "months": "5, 7, 9"
+          "years": "all",
+          "months": "all"
         }
       },
       "responses": {
@@ -508,16 +602,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::Pattern",
+            "family": "hash",
             "id": "V1-MediaTypes-Pattern",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.pattern+json",
+                "body": "{\n  \"id\": 805,\n  \"kind\": \"ca#pattern\",\n  \"href\": \"/api/patterns/805\",\n  \"name\": \"Growth pattern\",\n  \"summary\": \"Increase by 10% every months\",\n  \"type\": \"temporary\",\n  \"value\": 0.0,\n  \"operation\": \"subtract\",\n  \"years\": \"all\",\n  \"months\": \"all\",\n  \"created_at\": \"2012-12-30T00:00:00+00:00\",\n  \"updated_at\": \"2014-01-07T00:00:00+00:00\"\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -526,30 +627,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/patterns/:id",
+          "version": "1.0",
+          "example": "/api/patterns/606"
+        }
+      ]
     },
     {
       "description": "Delete a Pattern.",
       "name": "destroy",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "DELETE",
-          "path": "/api/patterns/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -557,8 +662,10 @@
             "id": {
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             }
           }
@@ -592,30 +699,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/patterns/:id",
+          "version": "1.0",
+          "example": "/api/patterns/606"
+        }
+      ]
     },
     {
       "description": "Create the following commonly used default Patterns: Increase by 2% every month,\n          Increase by 5% every month, Increase by 10% every month, Increase by 15% every month,\n          Increase by 500% during Nov - Dec, Increase by 200% during Jan - Feb, Decrease by 2% every month,\n          Decrease by 5% every month, Decrease by 10% every month, Decrease by 15% every month, Add 1 every month.",
       "name": "create_defaults",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "POST",
-          "path": "/api/patterns/actions/create_defaults",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::Pattern"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -624,8 +735,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -652,22 +765,41 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::Pattern",
+            "family": "hash",
             "id": "V1-MediaTypes-Pattern",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.pattern+json",
+                "body": "{\n  \"id\": 805,\n  \"kind\": \"ca#pattern\",\n  \"href\": \"/api/patterns/805\",\n  \"name\": \"Growth pattern\",\n  \"summary\": \"Increase by 10% every months\",\n  \"type\": \"temporary\",\n  \"value\": 0.0,\n  \"operation\": \"subtract\",\n  \"years\": \"all\",\n  \"months\": \"all\",\n  \"created_at\": \"2012-12-30T00:00:00+00:00\",\n  \"updated_at\": \"2014-01-07T00:00:00+00:00\"\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/patterns/actions/create_defaults",
+          "version": "1.0",
+          "example": "/api/patterns/actions/create_defaults"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::Patterns",
+  "display_name": "Patterns",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

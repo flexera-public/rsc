@@ -2,21 +2,41 @@
   "info": {
   },
   "resources": {
-    "V0-Controllers-DevSession": {
-      "name": "V0::Controllers::DevSession",
-      "friendly_name": "DevSession"
+    "Resources-DebugCookbookPath": {
+      "name": "Resources::DebugCookbookPath",
+      "friendly_name": "DebugCookbookPath"
     },
-    "V0-HealthCheck": {
-      "name": "V0::HealthCheck",
-      "friendly_name": "HealthCheck"
+    "Resources-DockerControl": {
+      "name": "Resources::DockerControl",
+      "friendly_name": "DockerControl"
     },
-    "V0-Controllers-Session": {
-      "name": "V0::Controllers::Session",
-      "friendly_name": "Session"
+    "Resources-Env": {
+      "name": "Resources::Env",
+      "friendly_name": "Env"
     },
-    "V0-Controllers-App": {
-      "name": "V0::Controllers::App",
-      "friendly_name": "App"
+    "Resources-Proc": {
+      "name": "Resources::Proc",
+      "friendly_name": "Proc"
+    },
+    "Resources-Rl10": {
+      "name": "Resources::Rl10",
+      "friendly_name": "Rl10"
+    },
+    "Resources-TSS": {
+      "name": "Resources::TSS",
+      "friendly_name": "TSS"
+    },
+    "Resources-TSSPlugins": {
+      "name": "Resources::TSSPlugins",
+      "friendly_name": "TSSPlugins"
+    },
+    "Resources-TSSControl": {
+      "name": "Resources::TSSControl",
+      "friendly_name": "TSSControl"
+    },
+    "Resources-LoginControl": {
+      "name": "Resources::LoginControl",
+      "friendly_name": "LoginControl"
     }
   },
   "schemas": {

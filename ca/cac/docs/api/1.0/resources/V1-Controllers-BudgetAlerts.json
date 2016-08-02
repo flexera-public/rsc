@@ -1,29 +1,36 @@
 {
   "description": "Enable you to set a monthly spend budget and be alerted via email when this is exceeded,\n        based on either actual or forecasted spend. These emails include links to AnalysisSnapshots, which are\n        generated automatically by us.",
-  "media_type": "V1-MediaTypes-BudgetAlert",
+  "media_type": {
+    "name": "V1::MediaTypes::BudgetAlert",
+    "family": "hash",
+    "id": "V1-MediaTypes-BudgetAlert",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
   "actions": [
     {
       "description": "Create a new BudgetAlert.",
       "name": "create",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "POST",
-          "path": "/api/budget_alerts",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::BudgetAlert"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,8 +39,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -43,15 +52,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::BudgetAlert"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -61,18 +73,22 @@
               "example_definition": "My budget alert",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "My budget alert"
             },
             "budget": {
               "description": "Budget for the alert.",
               "required": true,
               "type": {
                 "name": "Struct",
+                "family": "hash",
                 "id": null,
                 "key": {
                   "type": {
                     "name": "Symbol",
+                    "family": "string",
                     "id": "Attributor-Symbol"
                   }
                 },
@@ -81,8 +97,10 @@
                     "description": "Budget amount in US Dollars.",
                     "type": {
                       "name": "Float",
+                      "family": "numeric",
                       "id": "Attributor-Float"
-                    }
+                    },
+                    "example": 0.0
                   },
                   "period": {
                     "description": "What period is the budget set for, currently only monthly is supported.",
@@ -91,8 +109,10 @@
                     ],
                     "type": {
                       "name": "String",
+                      "family": "string",
                       "id": "Attributor-String"
-                    }
+                    },
+                    "example": "monthly"
                   }
                 }
               }
@@ -106,8 +126,10 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "forecast"
             },
             "frequency": {
               "description": "The intervals at which alerts should be sent, emails will be sent at most once a day, week or month.",
@@ -119,27 +141,30 @@
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "monthly"
             },
             "additional_emails": {
               "description": "In addition to your email, the report will be sent to these additional email addresses.",
               "example_definition": [
-                [
-                  "john.smith@example.com",
-                  "joe.bloggs@example.org"
-                ]
+                "john.smith@example.com",
+                "joe.bloggs@example.org"
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
                 "member_attribute": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "john.smith@example.com"
                 }
               }
             },
@@ -148,6 +173,7 @@
               "default": false,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             },
@@ -155,6 +181,7 @@
               "description": "Filters to use for the BudgetAlert.",
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -164,18 +191,29 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               }
             }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"name\": \"My budget alert\",\n  \"budget\": {\n    \"amount\": 0.0,\n    \"period\": \"monthly\"\n  },\n  \"type\": \"forecast\",\n  \"frequency\": \"monthly\",\n  \"additional_emails\": [\n    \"john.smith@example.com\",\n    \"joe.bloggs@example.org\"\n  ],\n  \"attach_csv\": false,\n  \"filters\": [\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"tag:key\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"instances\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"cloud_bill:product_category\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:platform\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    }\n  ]\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "name=My+budget+alert&budget=%7B%3Aamount%3D%3E0.0%2C+%3Aperiod%3D%3E%22monthly%22%7D&type=forecast&frequency=monthly&additional_emails=john.smith%40example.com&additional_emails=joe.bloggs%40example.org&attach_csv=false&filters=%7B%3Akind%3D%3E%22ca%23filter%22%2C+%3Atype%3D%3E%22tag%3Akey%22%2C+%3Avalue%3D%3E%22Amazon+Web+Services%22%2C+%3Alabel%3D%3E%22Example+Deployment+%28Test+Account%29%22%2C+%3Atag_resource_type%3D%3E%22instances%22%7D&filters=%7B%3Akind%3D%3E%22ca%23filter%22%2C+%3Atype%3D%3E%22cloud_bill%3Aproduct_category%22%2C+%3Avalue%3D%3E%22Amazon+Web+Services%22%2C+%3Alabel%3D%3E%22Example+Deployment+%28Test+Account%29%22%2C+%3Atag_resource_type%3D%3E%22deployments%22%7D&filters=%7B%3Akind%3D%3E%22ca%23filter%22%2C+%3Atype%3D%3E%22instance%3Aplatform%22%2C+%3Avalue%3D%3E%22Amazon+Web+Services%22%2C+%3Alabel%3D%3E%22Example+Deployment+%28Test+Account%29%22%2C+%3Atag_resource_type%3D%3E%22deployments%22%7D"
           }
         },
         "example": {
@@ -194,15 +232,15 @@
           "filters": [
             {
               "kind": "ca#filter",
-              "type": "tag:key",
+              "type": "cloud_bill:product",
               "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "instances"
             },
             {
               "kind": "ca#filter",
-              "type": "cloud_bill:cloud_vendor_account_id",
-              "value": "1",
+              "type": "instance_usage_period:instance_key",
+              "value": "Amazon Web Services",
               "label": "Example Deployment (Test Account)",
               "tag_resource_type": "deployments"
             }
@@ -227,42 +265,53 @@
           "status": 201,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::BudgetAlert",
+            "family": "hash",
             "id": "V1-MediaTypes-BudgetAlert",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.budget_alert+json",
+                "body": "{\n  \"id\": 631,\n  \"href\": \"/api/budget_alerts/631\",\n  \"kind\": \"ca#budget_alert\",\n  \"name\": \"My budget alert\",\n  \"budget\": {\n    \"amount\": 0.0,\n    \"period\": \"monthly\"\n  },\n  \"type\": \"forecast\",\n  \"frequency\": \"monthly\",\n  \"additional_emails\": [\n    \"john.smith@example.com\",\n    \"joe.bloggs@example.org\"\n  ],\n  \"attach_csv\": false,\n  \"filters\": [\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:account_id\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"instances\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"cloud_bill:product\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"accounts\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:instance_type_key\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    }\n  ],\n  \"created_at\": \"2014-08-09T00:00:00+00:00\",\n  \"updated_at\": \"2014-12-19T00:00:00+00:00\"\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/budget_alerts",
+          "version": "1.0",
+          "example": "/api/budget_alerts"
+        }
+      ]
     },
     {
       "description": "List all BudgetAlerts.",
       "name": "index",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/budget_alerts",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::BudgetAlert"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -271,8 +320,10 @@
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -299,42 +350,65 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
-            "name": "V1::MediaTypes::BudgetAlert",
-            "id": "V1-MediaTypes-BudgetAlert",
-            "key": {
+          "payload": {
+            "name": "V1::MediaTypes::BudgetAlert::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-BudgetAlert-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::BudgetAlert"
+              },
               "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
+                "name": "V1::MediaTypes::BudgetAlert",
+                "family": "hash",
+                "id": "V1-MediaTypes-BudgetAlert",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.budget_alert+json; type=collection",
+                "body": "[\n  {\n    \"id\": 144,\n    \"href\": \"/api/budget_alerts/144\",\n    \"kind\": \"ca#budget_alert\",\n    \"name\": \"My budget alert\",\n    \"budget\": {\n      \"amount\": 0.0,\n      \"period\": \"monthly\"\n    },\n    \"type\": \"forecast\",\n    \"frequency\": \"monthly\",\n    \"additional_emails\": [\n      \"john.smith@example.com\",\n      \"joe.bloggs@example.org\"\n    ],\n    \"attach_csv\": true,\n    \"filters\": [\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"instance:account_id\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"accounts\"\n      },\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"reserved_instance:account_id\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"accounts\"\n      }\n    ],\n    \"created_at\": \"2014-02-09T00:00:00+00:00\",\n    \"updated_at\": \"2014-09-15T00:00:00+00:00\"\n  },\n  {\n    \"id\": 483,\n    \"href\": \"/api/budget_alerts/483\",\n    \"kind\": \"ca#budget_alert\",\n    \"name\": \"My budget alert\",\n    \"budget\": {\n      \"amount\": 0.0,\n      \"period\": \"monthly\"\n    },\n    \"type\": \"actual\",\n    \"frequency\": \"weekly\",\n    \"additional_emails\": [\n      \"john.smith@example.com\",\n      \"joe.bloggs@example.org\"\n    ],\n    \"attach_csv\": false,\n    \"filters\": [\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"instance:instance_type_key\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"instances\"\n      },\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"instance:ss_app\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"accounts\"\n      },\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"reserved_instance:cloud_id\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"deployments\"\n      }\n    ],\n    \"created_at\": \"2013-03-23T00:00:00+00:00\",\n    \"updated_at\": \"2014-04-17T00:00:00+00:00\"\n  },\n  {\n    \"id\": 354,\n    \"href\": \"/api/budget_alerts/354\",\n    \"kind\": \"ca#budget_alert\",\n    \"name\": \"My budget alert\",\n    \"budget\": {\n      \"amount\": 0.0,\n      \"period\": \"monthly\"\n    },\n    \"type\": \"actual\",\n    \"frequency\": \"weekly\",\n    \"additional_emails\": [\n      \"john.smith@example.com\",\n      \"joe.bloggs@example.org\"\n    ],\n    \"attach_csv\": false,\n    \"filters\": [\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"instance:server_template_uid\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"deployments\"\n      },\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"instance:tag\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"accounts\"\n      },\n      {\n        \"kind\": \"ca#filter\",\n        \"type\": \"cloud_bill:product_category\",\n        \"value\": \"Amazon Web Services\",\n        \"label\": \"Example Deployment (Test Account)\",\n        \"tag_resource_type\": \"deployments\"\n      }\n    ],\n    \"created_at\": \"2013-04-04T00:00:00+00:00\",\n    \"updated_at\": \"2014-05-05T00:00:00+00:00\"\n  }\n]"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/budget_alerts",
+          "version": "1.0",
+          "example": "/api/budget_alerts"
+        }
+      ]
     },
     {
       "description": "Show a specific BudgetAlert.",
       "name": "show",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/budget_alerts/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::BudgetAlert"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -343,16 +417,20 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -380,16 +458,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::BudgetAlert",
+            "family": "hash",
             "id": "V1-MediaTypes-BudgetAlert",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.budget_alert+json",
+                "body": "{\n  \"id\": 547,\n  \"href\": \"/api/budget_alerts/547\",\n  \"kind\": \"ca#budget_alert\",\n  \"name\": \"My budget alert\",\n  \"budget\": {\n    \"amount\": 0.0,\n    \"period\": \"monthly\"\n  },\n  \"type\": \"actual\",\n  \"frequency\": \"weekly\",\n  \"additional_emails\": [\n    \"john.smith@example.com\",\n    \"joe.bloggs@example.org\"\n  ],\n  \"attach_csv\": false,\n  \"filters\": [\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"reserved_instance:cloud_vendor_name\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"tag:resource_type\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"accounts\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:pricing_type\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    }\n  ],\n  \"created_at\": \"2013-07-23T00:00:00+00:00\",\n  \"updated_at\": \"2014-07-16T00:00:00+00:00\"\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -398,30 +483,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/budget_alerts/:id",
+          "version": "1.0",
+          "example": "/api/budget_alerts/606"
+        }
+      ]
     },
     {
       "description": "Update the provided attributes of a BudgetAlert.",
       "name": "update",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "PATCH",
-          "path": "/api/budget_alerts/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::BudgetAlert"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -430,16 +519,20 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -450,15 +543,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::BudgetAlert"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -467,17 +563,21 @@
               "example_definition": "My budget alert",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "My budget alert"
             },
             "budget": {
               "description": "Budget for the alert.",
               "type": {
                 "name": "Struct",
+                "family": "hash",
                 "id": null,
                 "key": {
                   "type": {
                     "name": "Symbol",
+                    "family": "string",
                     "id": "Attributor-Symbol"
                   }
                 },
@@ -486,8 +586,10 @@
                     "description": "Budget amount in US Dollars.",
                     "type": {
                       "name": "Float",
+                      "family": "numeric",
                       "id": "Attributor-Float"
-                    }
+                    },
+                    "example": 0.0
                   },
                   "period": {
                     "description": "What period is the budget set for, currently only monthly is supported.",
@@ -496,8 +598,10 @@
                     ],
                     "type": {
                       "name": "String",
+                      "family": "string",
                       "id": "Attributor-String"
-                    }
+                    },
+                    "example": "monthly"
                   }
                 }
               }
@@ -505,21 +609,22 @@
             "additional_emails": {
               "description": "In addition to your email, the report will be sent to these additional email addresses.",
               "example_definition": [
-                [
-                  "john.smith@example.com",
-                  "joe.bloggs@example.org"
-                ]
+                "john.smith@example.com",
+                "joe.bloggs@example.org"
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
                 "member_attribute": {
                   "type": {
                     "name": "String",
+                    "family": "string",
                     "id": "Attributor-String"
-                  }
+                  },
+                  "example": "john.smith@example.com"
                 }
               }
             },
@@ -531,8 +636,10 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "forecast"
             },
             "frequency": {
               "description": "The intervals at which alerts should be sent, emails will be sent at most once a day, week or month.",
@@ -543,16 +650,29 @@
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "monthly"
             },
             "attach_csv": {
               "description": "Whether the emails should include a CSV attachement of the instance data.",
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
             }
+          }
+        },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"name\": \"My budget alert\",\n  \"budget\": {\n    \"amount\": 0.0,\n    \"period\": \"monthly\"\n  },\n  \"additional_emails\": [\n    \"john.smith@example.com\",\n    \"joe.bloggs@example.org\"\n  ],\n  \"type\": \"forecast\",\n  \"frequency\": \"monthly\",\n  \"attach_csv\": false\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "name=My+budget+alert&budget=%7B%3Aamount%3D%3E0.0%2C+%3Aperiod%3D%3E%22monthly%22%7D&additional_emails=john.smith%40example.com&additional_emails=joe.bloggs%40example.org&type=forecast&frequency=monthly&attach_csv=false"
           }
         },
         "example": {
@@ -588,16 +708,23 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::BudgetAlert",
+            "family": "hash",
             "id": "V1-MediaTypes-BudgetAlert",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.budget_alert+json",
+                "body": "{\n  \"id\": 547,\n  \"href\": \"/api/budget_alerts/547\",\n  \"kind\": \"ca#budget_alert\",\n  \"name\": \"My budget alert\",\n  \"budget\": {\n    \"amount\": 0.0,\n    \"period\": \"monthly\"\n  },\n  \"type\": \"actual\",\n  \"frequency\": \"weekly\",\n  \"additional_emails\": [\n    \"john.smith@example.com\",\n    \"joe.bloggs@example.org\"\n  ],\n  \"attach_csv\": false,\n  \"filters\": [\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"reserved_instance:cloud_vendor_name\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"tag:resource_type\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"accounts\"\n    },\n    {\n      \"kind\": \"ca#filter\",\n      \"type\": \"instance:pricing_type\",\n      \"value\": \"Amazon Web Services\",\n      \"label\": \"Example Deployment (Test Account)\",\n      \"tag_resource_type\": \"deployments\"\n    }\n  ],\n  \"created_at\": \"2013-07-23T00:00:00+00:00\",\n  \"updated_at\": \"2014-07-16T00:00:00+00:00\"\n}"
+              }
+            }
           }
         },
         "not_found": {
@@ -606,30 +733,34 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/budget_alerts/:id",
+          "version": "1.0",
+          "example": "/api/budget_alerts/606"
+        }
+      ]
     },
     {
       "description": "Delete a BudgetAlert.",
       "name": "destroy",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "DELETE",
-          "path": "/api/budget_alerts/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::BudgetAlert"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -638,8 +769,10 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             }
           }
@@ -673,10 +806,22 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/budget_alerts/:id",
+          "version": "1.0",
+          "example": "/api/budget_alerts/606"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::BudgetAlerts",
+  "display_name": "BudgetAlerts",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

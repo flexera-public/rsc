@@ -1,79 +1,76 @@
 {
-  "description": "Enables you to get breakdowns of your cloud bill costs. Only Amazon Web Services is supported for now.",
+  "description": "Enables you to get breakdowns of your cloud bill costs.\n        Only Amazon Web Services, Microsoft Azure & Google are supported for now.\n\nBoth HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number\nof filters applied it is possible that the URL may exceed the maximum length. If the URL length is over\n2,083 characters we recommend using a POST request with the parameters in the body.\n",
   "actions": [
     {
       "description": "Calculates the time series of costs for cloud bills in a time period grouped into monthly\n          time buckets and groups them into specified breakdown categories, e.g. show me cost of my\n          cloud bills per month during the last year grouped by product.",
       "name": "grouped_time_series",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/cloud_bill_metrics/actions/grouped_time_series",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
           "attributes": {
-            "view": {
-              "default": "default",
-              "type": {
-                "name": "String",
-                "id": "Attributor-String"
-              },
-              "source": "query"
-            },
             "start_time": {
               "description": "The start time of the period.",
               "required": true,
+              "example_definition": "2015-01-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-01-01T00:00:00",
               "source": "query"
             },
             "end_time": {
               "description": "The end time of the period.",
               "required": true,
+              "example_definition": "2015-02-01T00:00:00",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
               },
+              "example": "2015-02-01T00:00:00",
               "source": "query"
             },
             "cloud_bill_filters": {
               "description": "The filters to apply",
               "example_definition": [
-                [
-                  {
-                    "type": "cloud_bill:account_id",
-                    "value": 12345
-                  },
-                  {
-                    "type": "cloud_bill:account_id",
-                    "value": 54321
-                  },
-                  {
-                    "type": "cloud_bill:cloud_vendor_name",
-                    "value": "Amazon Web Services"
-                  },
-                  {
-                    "type": "cloud_bill:product",
-                    "value": "EC2"
-                  }
-                ]
+                {
+                  "type": "cloud_bill:account_id",
+                  "value": 12345
+                },
+                {
+                  "type": "cloud_bill:account_id",
+                  "value": 54321
+                },
+                {
+                  "type": "cloud_bill:cloud_vendor_name",
+                  "value": "Microsoft Azure"
+                },
+                {
+                  "type": "cloud_bill:cloud_vendor_account_name",
+                  "value": "My MS Azure subscription 123"
+                },
+                {
+                  "type": "cloud_bill:product",
+                  "value": "Windows Azure Storage"
+                }
               ],
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -83,14 +80,15 @@
                   },
                   "type": {
                     "name": "V1::MediaTypes::Filter",
+                    "family": "hash",
                     "id": "V1-MediaTypes-Filter",
                     "key": {
                       "type": {
                         "name": "Symbol",
+                        "family": "string",
                         "id": "Attributor-Symbol"
                       }
-                    },
-                    "attributes": null
+                    }
                   }
                 }
               },
@@ -106,6 +104,7 @@
                       "account_id",
                       "cloud_vendor_name",
                       "cloud_vendor_account_id",
+                      "cloud_vendor_account_name",
                       "product",
                       "product_category",
                       "account_name"
@@ -115,6 +114,7 @@
               },
               "type": {
                 "name": "Collection",
+                "family": "array",
                 "id": null,
                 "options": {
                 },
@@ -125,6 +125,7 @@
                         "account_id",
                         "cloud_vendor_name",
                         "cloud_vendor_account_id",
+                        "cloud_vendor_account_name",
                         "product",
                         "product_category",
                         "account_name"
@@ -133,6 +134,7 @@
                   },
                   "type": {
                     "name": "Collection",
+                    "family": "array",
                     "id": null,
                     "options": {
                     },
@@ -141,14 +143,17 @@
                         "account_id",
                         "cloud_vendor_name",
                         "cloud_vendor_account_id",
+                        "cloud_vendor_account_name",
                         "product",
                         "product_category",
                         "account_name"
                       ],
                       "type": {
                         "name": "String",
+                        "family": "string",
                         "id": "Attributor-String"
-                      }
+                      },
+                      "example": "product"
                     }
                   }
                 }
@@ -158,38 +163,52 @@
           }
         },
         "example": {
-          "view": "noveldom",
-          "start_time": "2014-09-13T00:00:00+00:00",
-          "end_time": "2014-08-15T00:00:00+00:00",
+          "start_time": "2015-01-01T00:00:00",
+          "end_time": "2015-02-01T00:00:00",
           "cloud_bill_filters": [
             {
               "kind": "ca#filter",
               "type": "cloud_bill:account_id",
-              "value": "12345"
+              "value": "12345",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:account_id",
-              "value": "54321"
+              "value": "54321",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:cloud_vendor_name",
-              "value": "Amazon Web Services"
+              "value": "Microsoft Azure",
+              "label": null,
+              "tag_resource_type": null
+            },
+            {
+              "kind": "ca#filter",
+              "type": "cloud_bill:cloud_vendor_account_name",
+              "value": "My MS Azure subscription 123",
+              "label": null,
+              "tag_resource_type": null
             },
             {
               "kind": "ca#filter",
               "type": "cloud_bill:product",
-              "value": "EC2"
+              "value": "Windows Azure Storage",
+              "label": null,
+              "tag_resource_type": null
             }
           ],
           "group": [
             [
-              "product_category",
-              "product"
+              "product",
+              "cloud_vendor_account_name"
             ],
             [
-              "product"
+              "cloud_vendor_account_name"
             ],
             [
               "cloud_vendor_account_id",
@@ -216,22 +235,59 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
-            "name": "V1::MediaTypes::TimeSeriesMetricsResult",
-            "id": "V1-MediaTypes-TimeSeriesMetricsResult",
-            "key": {
+          "payload": {
+            "name": "V1::MediaTypes::TimeSeriesMetricsResult::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-TimeSeriesMetricsResult-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::TimeSeriesMetricsResult"
+              },
               "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
+                "name": "V1::MediaTypes::TimeSeriesMetricsResult",
+                "family": "hash",
+                "id": "V1-MediaTypes-TimeSeriesMetricsResult",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.time_series_metrics_result+json; type=collection",
+                "body": "[\n  {\n    \"kind\": \"ca#time_series_metrics_result\",\n    \"timestamp\": \"2013-09-16T00:00:00+00:00\",\n    \"results\": [\n      {\n        \"kind\": \"ca#metrics_result\",\n        \"group\": {\n          \"vaporium\": \"interlocutrice\"\n        },\n        \"metrics\": {\n          \"kind\": \"ca#metrics\",\n          \"average_instance_count\": 0.0,\n          \"lowest_instance_count\": 0.0,\n          \"highest_instance_count\": 0.0,\n          \"total_cost\": 0.0,\n          \"wasted_reserved_instance_cost\": 0.0,\n          \"managed_instance_rcu_count\": 0.0,\n          \"unmanaged_instance_rcu_count\": 0.0,\n          \"managed_instance_hours\": 0.0,\n          \"unmanaged_instance_hours\": 0.0,\n          \"instance_usage_cost\": 0.0,\n          \"reserved_instance_upfront_cost\": 0.0,\n          \"reserved_instance_recurring_cost\": 0.0\n        },\n        \"breakdown_metrics_results\": [\n          {\n            \"kind\": \"ca#metrics_result\",\n            \"group\": {\n              \"aquariist\": \"waremaker\",\n              \"grobianism\": \"liparite\"\n            },\n            \"metrics\": {\n              \"kind\": \"ca#metrics\",\n              \"average_instance_count\": 0.0,\n              \"lowest_instance_count\": 0.0,\n              \"highest_instance_count\": 0.0,\n              \"total_cost\": 0.0,\n              \"wasted_reserved_instance_cost\": 0.0,\n              \"managed_instance_rcu_count\": 0.0,\n              \"unmanaged_instance_rcu_count\": 0.0,\n              \"managed_instance_hours\": 0.0,\n              \"unmanaged_instance_hours\": 0.0,\n              \"instance_usage_cost\": 0.0,\n              \"reserved_instance_upfront_cost\": 0.0,\n              \"reserved_instance_recurring_cost\": 0.0\n            },\n            \"breakdown_metrics_results\": [\n\n            ]\n          }\n        ]\n      },\n      {\n        \"kind\": \"ca#metrics_result\",\n        \"group\": {\n          \"dogshore\": \"playgoing\"\n        },\n        \"metrics\": {\n          \"kind\": \"ca#metrics\",\n          \"average_instance_count\": 0.0,\n          \"lowest_instance_count\": 0.0,\n          \"highest_instance_count\": 0.0,\n          \"total_cost\": 0.0,\n          \"wasted_reserved_instance_cost\": 0.0,\n          \"managed_instance_rcu_count\": 0.0,\n          \"unmanaged_instance_rcu_count\": 0.0,\n          \"managed_instance_hours\": 0.0,\n          \"unmanaged_instance_hours\": 0.0,\n          \"instance_usage_cost\": 0.0,\n          \"reserved_instance_upfront_cost\": 0.0,\n          \"reserved_instance_recurring_cost\": 0.0\n        },\n        \"breakdown_metrics_results\": [\n\n        ]\n      },\n      {\n        \"kind\": \"ca#metrics_result\",\n        \"group\": {\n          \"syllogist\": \"ramekin\"\n        },\n        \"metrics\": {\n          \"kind\": \"ca#metrics\",\n          \"average_instance_count\": 0.0,\n          \"lowest_instance_count\": 0.0,\n          \"highest_instance_count\": 0.0,\n          \"total_cost\": 0.0,\n          \"wasted_reserved_instance_cost\": 0.0,\n          \"managed_instance_rcu_count\": 0.0,\n          \"unmanaged_instance_rcu_count\": 0.0,\n          \"managed_instance_hours\": 0.0,\n          \"unmanaged_instance_hours\": 0.0,\n          \"instance_usage_cost\": 0.0,\n          \"reserved_instance_upfront_cost\": 0.0,\n          \"reserved_instance_recurring_cost\": 0.0\n        },\n        \"breakdown_metrics_results\": [\n\n        ]\n      }\n    ]\n  }\n]"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/cloud_bill_metrics/actions/grouped_time_series",
+          "version": "1.0",
+          "example": "/api/cloud_bill_metrics/actions/grouped_time_series?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00&group=%5B%22product%22%2C+%22product_category%22%2C+%22product_category%22%5D"
+        },
+        {
+          "verb": "POST",
+          "path": "/api/cloud_bill_metrics/actions/grouped_time_series",
+          "version": "1.0",
+          "example": "/api/cloud_bill_metrics/actions/grouped_time_series?start_time=2015-01-01T00%3A00%3A00&end_time=2015-02-01T00%3A00%3A00&group=%5B%22product%22%2C+%22product_category%22%2C+%22product_category%22%5D"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::CloudBillMetrics",
+  "display_name": "CloudBillMetrics",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }

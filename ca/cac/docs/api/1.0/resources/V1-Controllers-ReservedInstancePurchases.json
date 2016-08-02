@@ -1,29 +1,36 @@
 {
   "description": "ReservedInstancePurchases can be applied to InstanceCombinations in Scenarios to model changes in the cost. These are not actually purchased in the cloud and are only used for cost simulation purposes.",
-  "media_type": "V1-MediaTypes-ReservedInstancePurchase",
+  "media_type": {
+    "name": "V1::MediaTypes::ReservedInstancePurchase",
+    "family": "hash",
+    "id": "V1-MediaTypes-ReservedInstancePurchase",
+    "key": {
+      "type": {
+        "name": "Symbol",
+        "family": "string",
+        "id": "Attributor-Symbol"
+      }
+    }
+  },
   "actions": [
     {
       "description": "Create a new ReservedInstancePurchase. This is not actually purchased in the cloud and is only used for cost simulation purposes.",
       "name": "create",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "POST",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::ReservedInstancePurchase"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -32,24 +39,30 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "instance_combination_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 275,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -61,15 +74,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::ReservedInstancePurchase"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -79,13 +95,18 @@
               "values": [
                 "Light Utilization",
                 "Medium Utilization",
-                "Heavy Utilization"
+                "Heavy Utilization",
+                "No Upfront",
+                "Partial Upfront",
+                "All Upfront"
               ],
               "required": true,
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Heavy Utilization"
             },
             "duration": {
               "description": "The duration of the ReservedInstance in seconds, 94608000 is 3 years, 31536000 is 1 year.",
@@ -96,41 +117,73 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 94608000
             },
             "quantity": {
               "description": "Number of instances to include in the reservation.",
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 743
             },
-            "start_date": {
+            "start_at": {
               "description": "Date at which the ReservedInstance purchase should start from, this can be a future date.",
               "required": true,
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
-              }
+              },
+              "example": "2014-11-11T00:00:00+00:00"
             },
             "auto_renew": {
               "description": "Whether the ReservedInstance should be renewed every year or not; only applicable for 1 year ReservedInstances.",
               "required": true,
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
+            },
+            "instance_tenancy": {
+              "description": "Whether this RI should run on dedicated hardware.",
+              "values": [
+                "default",
+                "dedicated"
+              ],
+              "default": "default",
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "default"
             }
           }
         },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"offering_type\": \"Heavy Utilization\",\n  \"duration\": 94608000,\n  \"quantity\": 743,\n  \"start_at\": \"2014-11-11T00:00:00+00:00\",\n  \"auto_renew\": false,\n  \"instance_tenancy\": \"default\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "offering_type=Heavy+Utilization&duration=94608000&quantity=743&start_at=2014-11-11T00%3A00%3A00%2B00%3A00&auto_renew=false&instance_tenancy=default"
+          }
+        },
         "example": {
-          "offering_type": "Medium Utilization",
+          "offering_type": "All Upfront",
           "duration": 31536000,
           "quantity": 172,
-          "start_date": "2015-01-01T00:00:00+00:00",
-          "auto_renew": false
+          "start_at": "2014-08-23T00:00:00+00:00",
+          "auto_renew": false,
+          "instance_tenancy": "default"
         }
       },
       "responses": {
@@ -157,42 +210,53 @@
           "status": 201,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "family": "hash",
             "id": "V1-MediaTypes-ReservedInstancePurchase",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.reserved_instance_purchase+json",
+                "body": "{\n  \"id\": 436,\n  \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/436\",\n  \"kind\": \"ca#reserved_instance_purchase\",\n  \"offering_type\": \"Heavy Utilization\",\n  \"duration\": 94608000,\n  \"quantity\": 623,\n  \"start_at\": \"2014-11-23T00:00:00+00:00\",\n  \"auto_renew\": false,\n  \"instance_tenancy\": \"default\",\n  \"created_at\": \"2013-02-17T00:00:00+00:00\",\n  \"updated_at\": \"2012-12-09T00:00:00+00:00\",\n  \"links\": {\n    \"instance_combination\": {\n      \"kind\": \"ca#instance_combination\",\n      \"id\": 809,\n      \"href\": \"/api/scenarios/123/instance_combinations/809\"\n    }\n  }\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "POST",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/275/reserved_instance_purchases"
+        }
+      ]
     },
     {
       "description": "List all ReservedInstancePurchases for the InstanceCombination.",
       "name": "index",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::ReservedInstancePurchase"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -201,24 +265,30 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "instance_combination_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 275,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -253,42 +323,65 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
-            "name": "V1::MediaTypes::ReservedInstancePurchase",
-            "id": "V1-MediaTypes-ReservedInstancePurchase",
-            "key": {
+          "payload": {
+            "name": "V1::MediaTypes::ReservedInstancePurchase::Collection",
+            "family": "array",
+            "id": "V1-MediaTypes-ReservedInstancePurchase-Collection",
+            "options": {
+            },
+            "member_attribute": {
+              "options": {
+                "reference": "V1::MediaTypes::ReservedInstancePurchase"
+              },
               "type": {
-                "name": "Symbol",
-                "id": "Attributor-Symbol"
+                "name": "V1::MediaTypes::ReservedInstancePurchase",
+                "family": "hash",
+                "id": "V1-MediaTypes-ReservedInstancePurchase",
+                "key": {
+                  "type": {
+                    "name": "Symbol",
+                    "family": "string",
+                    "id": "Attributor-Symbol"
+                  }
+                }
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.reserved_instance_purchase+json; type=collection",
+                "body": "[\n  {\n    \"id\": 822,\n    \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/822\",\n    \"kind\": \"ca#reserved_instance_purchase\",\n    \"offering_type\": \"Partial Upfront\",\n    \"duration\": 31536000,\n    \"quantity\": 361,\n    \"start_at\": \"2013-08-22T00:00:00+00:00\",\n    \"auto_renew\": false,\n    \"instance_tenancy\": \"dedicated\",\n    \"created_at\": \"2013-09-02T00:00:00+00:00\",\n    \"updated_at\": \"2014-03-16T00:00:00+00:00\",\n    \"links\": {\n      \"instance_combination\": {\n        \"kind\": \"ca#instance_combination\",\n        \"id\": 810,\n        \"href\": \"/api/scenarios/123/instance_combinations/810\"\n      }\n    }\n  },\n  {\n    \"id\": 508,\n    \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/508\",\n    \"kind\": \"ca#reserved_instance_purchase\",\n    \"offering_type\": \"Medium Utilization\",\n    \"duration\": 31536000,\n    \"quantity\": 602,\n    \"start_at\": \"2014-11-07T00:00:00+00:00\",\n    \"auto_renew\": false,\n    \"instance_tenancy\": \"dedicated\",\n    \"created_at\": \"2014-02-12T00:00:00+00:00\",\n    \"updated_at\": \"2013-07-13T00:00:00+00:00\",\n    \"links\": {\n      \"instance_combination\": {\n        \"kind\": \"ca#instance_combination\",\n        \"id\": 879,\n        \"href\": \"/api/scenarios/123/instance_combinations/879\"\n      }\n    }\n  },\n  {\n    \"id\": 226,\n    \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/226\",\n    \"kind\": \"ca#reserved_instance_purchase\",\n    \"offering_type\": \"Medium Utilization\",\n    \"duration\": 31536000,\n    \"quantity\": 482,\n    \"start_at\": \"2013-10-07T00:00:00+00:00\",\n    \"auto_renew\": false,\n    \"instance_tenancy\": \"dedicated\",\n    \"created_at\": \"2013-11-04T00:00:00+00:00\",\n    \"updated_at\": \"2013-01-02T00:00:00+00:00\",\n    \"links\": {\n      \"instance_combination\": {\n        \"kind\": \"ca#instance_combination\",\n        \"id\": 351,\n        \"href\": \"/api/scenarios/123/instance_combinations/351\"\n      }\n    }\n  }\n]"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/275/reserved_instance_purchases"
+        }
+      ]
     },
     {
       "description": "Show a specific ReservedInstancePurchase.",
       "name": "show",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::ReservedInstancePurchase"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -297,32 +390,40 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "instance_combination_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 275,
               "source": "url"
             },
             "id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -358,42 +459,53 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "family": "hash",
             "id": "V1-MediaTypes-ReservedInstancePurchase",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.reserved_instance_purchase+json",
+                "body": "{\n  \"id\": 446,\n  \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/446\",\n  \"kind\": \"ca#reserved_instance_purchase\",\n  \"offering_type\": \"Light Utilization\",\n  \"duration\": 94608000,\n  \"quantity\": 337,\n  \"start_at\": \"2014-01-15T00:00:00+00:00\",\n  \"auto_renew\": true,\n  \"instance_tenancy\": \"default\",\n  \"created_at\": \"2013-08-31T00:00:00+00:00\",\n  \"updated_at\": \"2013-12-23T00:00:00+00:00\",\n  \"links\": {\n    \"instance_combination\": {\n      \"kind\": \"ca#instance_combination\",\n      \"id\": 699,\n      \"href\": \"/api/scenarios/123/instance_combinations/699\"\n    }\n  }\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "GET",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/275/reserved_instance_purchases/606"
+        }
+      ]
     },
     {
       "description": "Update the provided attributes of a ReservedInstancePurchase.",
       "name": "update",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "PATCH",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::ReservedInstancePurchase"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -402,32 +514,40 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             },
             "instance_combination_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 275,
               "source": "url"
             },
             "id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "view": {
               "default": "default",
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
               },
+              "example": "stickless",
               "source": "query"
             }
           }
@@ -440,15 +560,18 @@
         }
       },
       "payload": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::ReservedInstancePurchase"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -458,12 +581,17 @@
               "values": [
                 "Light Utilization",
                 "Medium Utilization",
-                "Heavy Utilization"
+                "Heavy Utilization",
+                "No Upfront",
+                "Partial Upfront",
+                "All Upfront"
               ],
               "type": {
                 "name": "String",
+                "family": "string",
                 "id": "Attributor-String"
-              }
+              },
+              "example": "Heavy Utilization"
             },
             "duration": {
               "description": "The duration of the ReservedInstance in seconds, 94608000 is 3 years, 31536000 is 1 year.",
@@ -473,38 +601,69 @@
               ],
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 94608000
             },
             "quantity": {
               "description": "Number of instances to include in the reservation.",
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
-              }
+              },
+              "example": 743
             },
-            "start_date": {
+            "start_at": {
               "description": "Date at which the ReservedInstance purchase should start from, this can be a future date.",
               "type": {
                 "name": "DateTime",
+                "family": "temporal",
                 "id": "Attributor-DateTime"
-              }
+              },
+              "example": "2014-11-11T00:00:00+00:00"
             },
             "auto_renew": {
               "description": "Whether the ReservedInstance should be renewed every year or not; only applicable for 1 year ReservedInstances.",
               "type": {
                 "name": "Boolean",
+                "family": "boolean",
                 "id": "Attributor-Boolean"
               }
+            },
+            "instance_tenancy": {
+              "description": "Whether this RI should run on dedicated hardware.",
+              "values": [
+                "default",
+                "dedicated"
+              ],
+              "type": {
+                "name": "String",
+                "family": "string",
+                "id": "Attributor-String"
+              },
+              "example": "default"
             }
           }
         },
+        "examples": {
+          "json": {
+            "content_type": "application/json",
+            "body": "{\n  \"offering_type\": \"Heavy Utilization\",\n  \"duration\": 94608000,\n  \"quantity\": 743,\n  \"start_at\": \"2014-11-11T00:00:00+00:00\",\n  \"auto_renew\": false,\n  \"instance_tenancy\": \"default\"\n}"
+          },
+          "x-www-form-urlencoded": {
+            "content_type": "application/x-www-form-urlencoded",
+            "body": "offering_type=Heavy+Utilization&duration=94608000&quantity=743&start_at=2014-11-11T00%3A00%3A00%2B00%3A00&auto_renew=false&instance_tenancy=default"
+          }
+        },
         "example": {
-          "offering_type": "Medium Utilization",
+          "offering_type": "All Upfront",
           "duration": 31536000,
           "quantity": 172,
-          "start_date": "2015-01-01T00:00:00+00:00",
-          "auto_renew": false
+          "start_at": "2014-08-23T00:00:00+00:00",
+          "auto_renew": false,
+          "instance_tenancy": "default"
         }
       },
       "responses": {
@@ -531,42 +690,53 @@
           "status": 200,
           "headers": {
           },
-          "media_type": {
+          "payload": {
             "name": "V1::MediaTypes::ReservedInstancePurchase",
+            "family": "hash",
             "id": "V1-MediaTypes-ReservedInstancePurchase",
             "key": {
               "type": {
                 "name": "Symbol",
+                "family": "string",
                 "id": "Attributor-Symbol"
               }
             },
-            "attributes": null
+            "examples": {
+              "json": {
+                "content_type": "application/vnd.rightscale.ca.reserved_instance_purchase+json",
+                "body": "{\n  \"id\": 446,\n  \"href\": \"/api/scenarios/123/instance_combinations/456/reserved_instance_purchases/446\",\n  \"kind\": \"ca#reserved_instance_purchase\",\n  \"offering_type\": \"Light Utilization\",\n  \"duration\": 94608000,\n  \"quantity\": 337,\n  \"start_at\": \"2014-01-15T00:00:00+00:00\",\n  \"auto_renew\": true,\n  \"instance_tenancy\": \"default\",\n  \"created_at\": \"2013-08-31T00:00:00+00:00\",\n  \"updated_at\": \"2013-12-23T00:00:00+00:00\",\n  \"links\": {\n    \"instance_combination\": {\n      \"kind\": \"ca#instance_combination\",\n      \"id\": 699,\n      \"href\": \"/api/scenarios/123/instance_combinations/699\"\n    }\n  }\n}"
+              }
+            }
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "PATCH",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/275/reserved_instance_purchases/606"
+        }
+      ]
     },
     {
       "description": "Delete a ReservedInstancePurchase. This is not actually deleted in the cloud and is only used for cost simulation purposes.",
       "name": "destroy",
       "metadata": {
       },
-      "urls": [
-        {
-          "verb": "DELETE",
-          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
-          "version": "1.0"
-        }
-      ],
       "params": {
+        "required": true,
         "options": {
           "reference": "V1::MediaTypes::ReservedInstancePurchase"
         },
         "type": {
           "name": "Struct",
+          "family": "hash",
           "id": null,
           "key": {
             "type": {
               "name": "Symbol",
+              "family": "string",
               "id": "Attributor-Symbol"
             }
           },
@@ -575,24 +745,30 @@
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 606,
               "source": "url"
             },
             "instance_combination_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 275,
               "source": "url"
             },
             "scenario_id": {
               "required": true,
               "type": {
                 "name": "Integer",
+                "family": "numeric",
                 "id": "Attributor-Integer"
               },
+              "example": 335,
               "source": "url"
             }
           }
@@ -628,10 +804,23 @@
           "headers": {
           }
         }
-      }
+      },
+      "urls": [
+        {
+          "verb": "DELETE",
+          "path": "/api/scenarios/:scenario_id/instance_combinations/:instance_combination_id/reserved_instance_purchases/:id",
+          "version": "1.0",
+          "example": "/api/scenarios/335/instance_combinations/275/reserved_instance_purchases/606"
+        }
+      ]
     }
   ],
   "name": "V1::ApiResources::ReservedInstancePurchases",
+  "parent": "V1-ApiResources-InstanceCombinations",
+  "display_name": "ReservedInstancePurchases",
   "metadata": {
-  }
+  },
+  "traits": [
+
+  ]
 }
