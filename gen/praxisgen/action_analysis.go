@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"bitbucket.org/pkg/inflect"
 
@@ -163,15 +164,40 @@ func (a *APIAnalyzer) AnalyzeActions(resourceName string, resource map[string]in
 					}
 				}
 				if returnTypeName == "" {
-					if media, ok := resp["media_type"]; ok {
+					var media interface{}
+					media, ok = resp["media_type"]
+					if !ok {
+						media, ok = resp["payload"]
+					}
+					if ok {
 						m := media.(map[string]interface{})
 						if name, ok := m["name"]; ok {
-							returnTypeName = toGoReturnTypeName(name.(string), actionName == "index")
-							a.descriptor.NeedJSON = true
-							// Analyze return type to make sure it gets recorded
-							_, err := a.AnalyzeType(a.RawTypes[name.(string)], "return")
-							if err != nil {
-								return nil, err
+							isCollection := false
+							_, ok := a.RawTypes[name.(string)]
+
+							// If type isn't specified in the media types
+							if !ok {
+								// Special case for SimpleMediaType
+								if name.(string) == "Praxis::SimpleMediaType" {
+									returnTypeName = "string"
+								// Praxis creates Collection types if the actions returns a Praxis::Collection
+								// For these we want to return a slice of that type
+								} else if strings.HasSuffix(name.(string), "::Collection") {
+									isCollection = true
+									name = strings.TrimSuffix(name.(string), "::Collection")
+								} else {
+									return nil, fmt.Errorf("Failed to get return type for %s", name)
+								}
+							}
+
+							if returnTypeName == "" {
+								returnTypeName = toGoReturnTypeName(name.(string), (actionName == "index" || isCollection))
+								a.descriptor.NeedJSON = true
+								// Analyze return type to make sure it gets recorded
+								_, err := a.AnalyzeType(a.RawTypes[name.(string)], "return")
+								if err != nil {
+									return nil, err
+								}
 							}
 						} else {
 							// Default to string
