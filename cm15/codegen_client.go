@@ -14096,6 +14096,7 @@ type VolumeSnapshot struct {
 	Description string              `json:"description,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
 	Name        string              `json:"name,omitempty"`
+	OwnerId     string              `json:"owner_id,omitempty"`
 	Progress    string              `json:"progress,omitempty"`
 	ResourceUid string              `json:"resource_uid,omitempty"`
 	Size        string              `json:"size,omitempty"`

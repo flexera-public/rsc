@@ -15810,7 +15810,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state"},
+						ValidValues: []string{"deployment_href", "description", "name", "owner_id", "parent_volume_href", "resource_uid", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -15830,7 +15830,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state"},
+						ValidValues: []string{"deployment_href", "description", "name", "owner_id", "parent_volume_href", "resource_uid", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",

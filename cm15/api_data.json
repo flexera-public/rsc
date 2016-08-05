@@ -12371,6 +12371,10 @@
           },
           "deployment_href": {
             "description": "Deployment href to filter on."
+          },
+          "owner_id": {
+            "column": "cloud_owner",
+            "description": "Owner IDentifier for the Volume Snapshot to filter on"
           }
         }
       },
@@ -12424,6 +12428,7 @@
         "size": "",
         "state": "",
         "progress": "",
+        "owner_id": "Owner IDentifier of the Volume Snapshot",
         "links": "",
         "actions": "",
         "created_at": "",
