@@ -12374,7 +12374,7 @@
           },
           "owner_id": {
             "column": "cloud_owner",
-            "description": "Owner IDentifier for the Volume Snapshot to filter on"
+            "description": "Owner IDentifier for the Volume Snapshot to filter on (this is only supported on clouds that support volume snapshot sharing; currently this is only AWS)"
           }
         }
       },
