@@ -99,7 +99,6 @@
 	"optimized": "bool",
 	"options": "map[string]string",
 	"os_platform": "string",
-	"owner_id": "string",
 	"packages": "string",
 	"permissions": "[]Permission",
 	"phone": "string",

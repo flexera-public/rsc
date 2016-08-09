@@ -14091,17 +14091,17 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.APIParams) (*VolumeAttach
 // various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
 // Snapshots consist of a series of data blocks that are incrementally saved.
 type VolumeSnapshot struct {
-	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
-	Description string              `json:"description,omitempty"`
-	Links       []map[string]string `json:"links,omitempty"`
-	Name        string              `json:"name,omitempty"`
-	OwnerId     string              `json:"owner_id,omitempty"`
-	Progress    string              `json:"progress,omitempty"`
-	ResourceUid string              `json:"resource_uid,omitempty"`
-	Size        string              `json:"size,omitempty"`
-	State       string              `json:"state,omitempty"`
-	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+	Actions                 []map[string]string    `json:"actions,omitempty"`
+	CloudSpecificAttributes map[string]interface{} `json:"cloud_specific_attributes,omitempty"`
+	CreatedAt               *RubyTime              `json:"created_at,omitempty"`
+	Description             string                 `json:"description,omitempty"`
+	Links                   []map[string]string    `json:"links,omitempty"`
+	Name                    string                 `json:"name,omitempty"`
+	Progress                string                 `json:"progress,omitempty"`
+	ResourceUid             string                 `json:"resource_uid,omitempty"`
+	Size                    string                 `json:"size,omitempty"`
+	State                   string                 `json:"state,omitempty"`
+	UpdatedAt               *RubyTime              `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
