@@ -21,5 +21,14 @@ module Resources
       response :ok
     end
 
+    action :update do
+      description 'Set process variable'
+      routing { post '/:name' }
+      params do
+        attribute :name, String, required: true
+      end
+      payload String, required: true
+      response :ok
+    end
   end
 end
