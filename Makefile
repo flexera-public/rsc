@@ -55,7 +55,7 @@ SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
 GIT_BRANCH:=$(shell git symbolic-ref --short -q HEAD || echo "master")
 SHELL:=$(shell which bash)
-# on Mac OS X and other platforms, sed might not be GNU sed and the -i flag works needs an extension argument,
+# on Mac OS X and other platforms, sed might not be GNU sed and the -i flag needs an extension argument,
 # but that argument can be an empty string to indicate no backup
 ifeq ($(shell sed --version 2>/dev/null | grep 'GNU sed'),)
 SED_I=''
