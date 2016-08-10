@@ -54,7 +54,14 @@ DATE=$(shell date '+%F %T')
 SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
 GIT_BRANCH:=$(shell git symbolic-ref --short -q HEAD || echo "master")
-SHELL:=/bin/bash
+SHELL:=$(shell which bash)
+# on Mac OS X and other platforms, sed might not be GNU sed and the -i flag needs an extension argument,
+# but that argument can be an empty string to indicate no backup
+ifeq ($(shell sed --version 2>/dev/null | grep 'GNU sed'),)
+SED_I=''
+else
+SED_I=
+endif
 # by manually adding the godep workspace to the path we don't need to run godep itself
 ifeq ($(OS),Windows_NT)
 	GOPATH:=$(shell cygpath --windows $(PWD))/Godeps/_workspace;$(GOPATH)
@@ -130,14 +137,14 @@ govers:
 	@echo "adding package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
 		dir=`dirname $${f#./}` ;\
-		sed -E -i \
+		sed -E -i $(SED_I) \
 		  -e '1,10 s;^(package +[_a-z0-9]+).*;\1 // import "gopkg.in/rightscale/$(NAME).$(GOPKG_VERS)/'"$${dir}"'";' \
 			$$f;\
 	done
 	@echo "fixing code gen templates"
 	@for f in gen/writers/*.go; do \
 		dir=`dirname $${f#./}` ;\
-	  sed -E -i \
+	  sed -E -i $(SED_I) \
 		  -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
 	done
 	gofmt -w *.go */*.go
@@ -146,11 +153,11 @@ govers:
 unvers:
 	@echo "changing import statements"
 	@for f in `find . -path './[a-z]*' -name \*.go`; do \
-		sed -E -i -e 's;g[a-z.]+/rightscale/$(NAME)[-.a-z0-9]*;github.com/rightscale/$(NAME);' $$f ;\
+		sed -E -i $(SED_I) -e 's;g[a-z.]+/rightscale/$(NAME)[-.a-z0-9]*;github.com/rightscale/$(NAME);' $$f ;\
 	done
 	@echo "removing package import comments"
 	@for f in `find . -path './[a-z]*' -path ./\*/\*.go \! -name \*_test.go`; do \
-		sed -E -i -e '1,10 s;^(package +[a-z][^ /]*).*;\1;' $$f; \
+		sed -E -i $(SED_I) -e '1,10 s;^(package +[a-z][^ /]*).*;\1;' $$f; \
 	done
 	gofmt -w *.go */*.go
 
