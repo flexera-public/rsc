@@ -1,12 +1,12 @@
-package writers // import "gopkg.in/rightscale/rsc.v6/gen/writers"
+package writers
 
 import (
 	"fmt"
 	"os"
 	"strings"
 
-	"gopkg.in/rightscale/rsc.v6/gen"
-	"gopkg.in/rightscale/rsc.v6/gen/writers/text"
+	"github.com/rightscale/rsc/gen"
+	"github.com/rightscale/rsc/gen/writers/text"
 )
 
 // reserved golang keywords and package names

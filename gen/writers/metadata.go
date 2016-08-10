@@ -1,11 +1,11 @@
-package writers // import "gopkg.in/rightscale/rsc.v6/gen/writers"
+package writers
 
 import (
 	"io"
 	"strings"
 	"text/template"
 
-	"gopkg.in/rightscale/rsc.v6/gen"
+	"github.com/rightscale/rsc/gen"
 )
 
 // MetadataWriter struct exposes methods to generate the go API client command line tool
@@ -81,7 +81,7 @@ package {{.}}
 import (
 	"regexp"
 
-	"gopkg.in/rightscale/rsc.v6/metadata"
+	"github.com/rightscale/rsc/metadata"
 )
 
 `

@@ -1,6 +1,6 @@
 // Package recording defines the data structures used to record and replay invokations of "rsc" for
 // testing.
-package recording // import "gopkg.in/rightscale/rsc.v6/recording"
+package recording
 
 import "net/http"
 

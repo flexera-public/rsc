@@ -1,4 +1,4 @@
-package text // import "gopkg.in/rightscale/rsc.v6/gen/writers/text"
+package text
 
 import (
 	"io"

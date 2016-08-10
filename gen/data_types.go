@@ -1,4 +1,4 @@
-package gen // import "gopkg.in/rightscale/rsc.v6/gen"
+package gen
 
 import (
 	"fmt"

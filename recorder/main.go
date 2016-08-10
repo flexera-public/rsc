@@ -1,4 +1,4 @@
-package main // import "gopkg.in/rightscale/rsc.v6/recorder"
+package main
 
 import (
 	"bytes"
@@ -13,7 +13,7 @@ import (
 	"strings"
 	"syscall"
 
-	"gopkg.in/rightscale/rsc.v6/recording"
+	"github.com/rightscale/rsc/recording"
 )
 
 const output = "recording_new.json"
