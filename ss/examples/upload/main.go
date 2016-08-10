@@ -63,7 +63,7 @@ func main() {
 		fail("Could not open %s", *cat)
 	}
 	name := filepath.Base(*cat)
-	l := client.TemplateLocator(fmt.Sprintf("/designer/collections/%d/templates", *account))
+	l := client.TemplateLocator(fmt.Sprintf("/api/designer/collections/%d/templates", *account))
 	upload := rsapi.FileUpload{Name: "source", Filename: name, Reader: file}
 	t, err := l.Create(&upload)
 	if err != nil {

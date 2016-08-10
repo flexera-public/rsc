@@ -9,6 +9,68 @@ import (
 	"github.com/rightscale/rsc/gen/writers/text"
 )
 
+// reserved golang keywords and package names
+var reserved = map[string]bool{
+	"byte":       true,
+	"complex128": true,
+	"complex64":  true,
+	"float32":    true,
+	"float64":    true,
+	"int":        true,
+	"int16":      true,
+	"int32":      true,
+	"int64":      true,
+	"int8":       true,
+	"rune":       true,
+	"string":     true,
+	"uint16":     true,
+	"uint32":     true,
+	"uint64":     true,
+	"uint8":      true,
+
+	"break":       true,
+	"case":        true,
+	"chan":        true,
+	"const":       true,
+	"continue":    true,
+	"default":     true,
+	"defer":       true,
+	"else":        true,
+	"fallthrough": true,
+	"for":         true,
+	"func":        true,
+	"go":          true,
+	"goto":        true,
+	"if":          true,
+	"import":      true,
+	"interface":   true,
+	"map":         true,
+	"package":     true,
+	"range":       true,
+	"return":      true,
+	"select":      true,
+	"struct":      true,
+	"switch":      true,
+	"type":        true,
+	"var":         true,
+
+	// stdlib and rsc packages used by generated code
+	"fmt":      true,
+	"ioutil":   true,
+	"json":     true,
+	"time":     true,
+	"metadata": true,
+	"rsapi":    true,
+}
+
+// fixReserved appends an underscore on to Go reserved keywords.
+func fixReserved(w string) string {
+	if reserved[w] {
+		w += "_"
+	}
+	return w
+}
+
 // Produce line comments by concatenating given strings and producing 80 characters long lines
 // starting with "//"
 func comment(elems ...string) string {
@@ -34,7 +96,7 @@ func parameters(a *gen.Action) string {
 	}
 	var params = make([]string, countParams)
 	for i, param := range m {
-		params[i] = fmt.Sprintf("%s %s", param.VarName, param.Signature())
+		params[i] = fmt.Sprintf("%s %s", fixReserved(param.VarName), param.Signature())
 	}
 	if hasOptional {
 		params[countParams-1] = "options rsapi.APIParams"
@@ -48,6 +110,7 @@ func parameters(a *gen.Action) string {
 func paramsInitializer(action *gen.Action, location int, varName string) string {
 	var fields []string
 	var optionals []*gen.ActionParam
+	varName = fixReserved(varName)
 	for _, param := range action.Params {
 		if param.Location != location {
 			continue
@@ -57,7 +120,7 @@ func paramsInitializer(action *gen.Action, location int, varName string) string 
 			if location == 1 { // QueryParam
 				name = param.QueryName
 			}
-			fields = append(fields, fmt.Sprintf("\"%s\": %s,", name, param.VarName))
+			fields = append(fields, fmt.Sprintf("\"%s\": %s,", name, fixReserved(param.VarName)))
 		} else {
 			optionals = append(optionals, param)
 		}
@@ -91,6 +154,7 @@ func commandLine() string {
 // empty array or empy map).
 // Return empty string if type of variable cannot produce blank values
 func blankCondition(name string, t gen.DataType) (blank string) {
+	name = fixReserved(name)
 	switch actual := t.(type) {
 	case *gen.BasicDataType:
 		if *actual == "string" {

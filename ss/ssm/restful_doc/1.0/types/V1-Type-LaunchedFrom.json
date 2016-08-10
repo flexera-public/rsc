@@ -1,1 +1,23 @@
-{"name":"V1::Type::LaunchedFrom","attributes":{"type":{"description":"The type of the value (one of: application, template, compiled_cat, source","example_definition":"application","type":{"name":"String"}},"value":{"description":"The source of where the execution launched from: application_href, template_href, compiled_cat, or source","example_definition":"{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }","type":{"name":"Object"}}},"example":{"type":"application","value":"{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"}}
+{
+  "name": "V1::Type::LaunchedFrom",
+  "attributes": {
+    "type": {
+      "description": "The type of the value (one of: application, template, compiled_cat, source, compilation",
+      "example_definition": "application",
+      "type": {
+        "name": "String"
+      }
+    },
+    "value": {
+      "description": "The source of where the execution launched from: application_href, template_href, compiled_cat, or source",
+      "example_definition": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }",
+      "type": {
+        "name": "Object"
+      }
+    }
+  },
+  "example": {
+    "type": "application",
+    "value": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"
+  }
+}

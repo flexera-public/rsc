@@ -248,7 +248,7 @@ var _ = Describe("ParseCommand", func() {
 			}
 			expected := rsapi.ParsedCommand{
 				HTTPMethod:    "POST",
-				URI:           "/projects/42/executions/54/actions/run",
+				URI:           "/api/manager/projects/42/executions/54/actions/run",
 				QueryParams:   rsapi.APIParams{},
 				PayloadParams: payload,
 			}
@@ -293,7 +293,7 @@ var _ = Describe("ParseCommand", func() {
 			}
 			expected := rsapi.ParsedCommand{
 				HTTPMethod:    "POST",
-				URI:           "/projects/42/executions/54/actions/run",
+				URI:           "/api/manager/projects/42/executions/54/actions/run",
 				QueryParams:   rsapi.APIParams{},
 				PayloadParams: payload,
 			}
@@ -321,7 +321,7 @@ var _ = Describe("ParseCommand", func() {
 			}
 			expected := rsapi.ParsedCommand{
 				HTTPMethod:    "GET",
-				URI:           "/projects/42/executions",
+				URI:           "/api/manager/projects/42/executions",
 				QueryParams:   query,
 				PayloadParams: rsapi.APIParams{},
 			}

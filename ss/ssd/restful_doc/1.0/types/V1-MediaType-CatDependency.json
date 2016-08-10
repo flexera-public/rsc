@@ -1,0 +1,104 @@
+{
+  "name": "V1::MediaType::CatDependency",
+  "attributes": {
+    "template_id": {
+      "required": true,
+      "description": "Template id",
+      "example_definition": "5392479332ca2bd0ca000002",
+      "type": {
+        "name": "String"
+      }
+    },
+    "template_href": {
+      "description": "Template href",
+      "example_definition": "/api/designer/collections/60073/templates/5392479332ca2bd0ca000002",
+      "type": {
+        "name": "String"
+      }
+    },
+    "name": {
+      "description": "Name of Template as specified in the CAT",
+      "example_definition": "Base Dev Server",
+      "type": {
+        "name": "String"
+      }
+    },
+    "rs_ca_ver": {
+      "description": "Template version",
+      "example_definition": "20131202",
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "package": {
+      "description": "The package of the Template, if any",
+      "example_definition": "dev/debug/log",
+      "type": {
+        "name": "String"
+      }
+    },
+    "alias": {
+      "description": "Alias used to import this package. This will be empty if and only if this dependency is indirectly imported",
+      "example_definition": "log",
+      "type": {
+        "name": "String"
+      }
+    },
+    "source_href": {
+      "description": "CAT source href",
+      "type": {
+        "name": "String"
+      }
+    },
+    "compiled_at": {
+      "description": "Compilation timestamp",
+      "type": {
+        "name": "DateTime"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "template_id": {
+        },
+        "template_href": {
+        },
+        "name": {
+        },
+        "rs_ca_ver": {
+        },
+        "package": {
+        },
+        "alias": {
+        },
+        "source_href": {
+        },
+        "compiled_at": {
+        }
+      },
+      "example": {
+        "template_id": "5392479332ca2bd0ca000002",
+        "template_href": "/api/designer/collections/60073/templates/5392479332ca2bd0ca000002",
+        "name": "Base Dev Server",
+        "rs_ca_ver": 20131202,
+        "package": "dev/debug/log",
+        "alias": "log",
+        "source_href": "urinology",
+        "compiled_at": "2013-04-03T00:00:00+00:00"
+      }
+    }
+  },
+  "mime_type": "application/vnd.rightscale.self_service.template",
+  "description": null,
+  "example": {
+    "template_id": "5392479332ca2bd0ca000002",
+    "template_href": "/api/designer/collections/60073/templates/5392479332ca2bd0ca000002",
+    "name": "Base Dev Server",
+    "rs_ca_ver": 20131202,
+    "package": "dev/debug/log",
+    "alias": "log",
+    "source_href": "urinology",
+    "compiled_at": "2013-04-03T00:00:00+00:00"
+  }
+}

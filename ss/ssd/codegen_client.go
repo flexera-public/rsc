@@ -91,7 +91,7 @@ func (api *API) ScheduleLocator(href string) *ScheduleLocator {
 
 //===== Actions
 
-// GET /collections/:collection_id/schedules
+// GET /api/designer/collections/:collection_id/schedules
 //
 // List the schedules available in Designer.
 func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
@@ -128,7 +128,7 @@ func (loc *ScheduleLocator) Index() ([]*Schedule, error) {
 	return res, err
 }
 
-// GET /collections/:collection_id/schedules/:id
+// GET /api/designer/collections/:collection_id/schedules/:id
 //
 // Show detailed information about a given Schedule.
 func (loc *ScheduleLocator) Show() (*Schedule, error) {
@@ -165,7 +165,7 @@ func (loc *ScheduleLocator) Show() (*Schedule, error) {
 	return res, err
 }
 
-// POST /collections/:collection_id/schedules
+// POST /api/designer/collections/:collection_id/schedules
 //
 // Create a new Schedule.
 func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, stopRecurrence *Recurrence, options rsapi.APIParams) (*ScheduleLocator, error) {
@@ -219,7 +219,7 @@ func (loc *ScheduleLocator) Create(name string, startRecurrence *Recurrence, sto
 	}
 }
 
-// PATCH /collections/:collection_id/schedules/:id
+// PATCH /api/designer/collections/:collection_id/schedules/:id
 //
 // Update one or more attributes of an existing Schedule.
 // Note: updating a Schedule in Designer doesn't update it in the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
@@ -267,7 +267,7 @@ func (loc *ScheduleLocator) Update(options rsapi.APIParams) error {
 	return nil
 }
 
-// DELETE /collections/:collection_id/schedules/:id
+// DELETE /api/designer/collections/:collection_id/schedules/:id
 //
 // Delete a Schedule from the system.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
@@ -298,7 +298,7 @@ func (loc *ScheduleLocator) Delete() error {
 	return nil
 }
 
-// DELETE /collections/:collection_id/schedules
+// DELETE /api/designer/collections/:collection_id/schedules
 //
 // Delete multiple Schedules from the system in bulk.
 // Note: deleting a Schedule from Designer doesn't remove it from the applications that were published with it to the Catalog or affect running CloudApps with that Schedule.
@@ -338,7 +338,7 @@ func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 /******  Template ******/
 
 // A Template represent a CloudApplication Template (CAT) that has been uploaded to this design collection.
-// For information on the syntax of a CAT file, please see the [CAT Designers Guide](http://support.rightscale.com/12-Guides/Self-Service/20_Cloud_Application_Template_%28CAT%29_Designers_Guide) on the RightScale Support
+// For information on the syntax of a CAT file, please see the [CAT File Language Reference](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html) on the RightScale Docs
 // site.
 // A CAT file is compiled by Self-Service to make it ready for publication and subsequent launch by users. To
 // test your CAT file syntax, you can call the compile action with the source content. In order to
@@ -348,19 +348,27 @@ func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 // attribute inside of a CAT file.
 type Template struct {
 	ApplicationInfo    *ApplicationInfo  `json:"application_info,omitempty"`
+	CompilationHref    string            `json:"compilation_href,omitempty"`
 	CompiledCat        string            `json:"compiled_cat,omitempty"`
 	CreatedBy          *User             `json:"created_by,omitempty"`
+	Dependencies       []*CatDependency  `json:"dependencies,omitempty"`
+	Dependents         []*CatDependency  `json:"dependents,omitempty"`
 	Filename           string            `json:"filename,omitempty"`
 	Href               string            `json:"href,omitempty"`
 	Id                 string            `json:"id,omitempty"`
+	Imports            []string          `json:"imports,omitempty"`
 	Kind               string            `json:"kind,omitempty"`
 	LongDescription    string            `json:"long_description,omitempty"`
 	Name               string            `json:"name,omitempty"`
+	Package            string            `json:"package,omitempty"`
 	Parameters         []*Parameter      `json:"parameters,omitempty"`
 	PublishedBy        *User             `json:"published_by,omitempty"`
 	RequiredParameters []string          `json:"required_parameters,omitempty"`
+	RsCaVer            int               `json:"rs_ca_ver,omitempty"`
 	ShortDescription   string            `json:"short_description,omitempty"`
 	Source             string            `json:"source,omitempty"`
+	SourceHref         string            `json:"source_href,omitempty"`
+	Stale              bool              `json:"stale,omitempty"`
 	Timestamps         *TimestampsStruct `json:"timestamps,omitempty"`
 }
 
@@ -384,16 +392,24 @@ func (api *API) TemplateLocator(href string) *TemplateLocator {
 
 //===== Actions
 
-// GET /collections/:collection_id/templates
+// GET /api/designer/collections/:collection_id/templates
 //
 // List the templates available in Designer along with some general details.
 func (loc *TemplateLocator) Index(options rsapi.APIParams) ([]*Template, error) {
 	var res []*Template
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
 	var idsOpt = options["ids"]
 	if idsOpt != nil {
 		params["ids[]"] = idsOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Template", "index")
@@ -426,7 +442,7 @@ func (loc *TemplateLocator) Index(options rsapi.APIParams) ([]*Template, error) 
 	return res, err
 }
 
-// GET /collections/:collection_id/templates/:id
+// GET /api/designer/collections/:collection_id/templates/:id
 //
 // Show detailed information about a given Template. Use the views specified below for more information.
 func (loc *TemplateLocator) Show(options rsapi.APIParams) (*Template, error) {
@@ -468,7 +484,7 @@ func (loc *TemplateLocator) Show(options rsapi.APIParams) (*Template, error) {
 	return res, err
 }
 
-// POST /collections/:collection_id/templates
+// POST /api/designer/collections/:collection_id/templates
 //
 // Create a new Template by uploading its content to Designer.
 func (loc *TemplateLocator) Create(source *rsapi.FileUpload) (*TemplateLocator, error) {
@@ -507,7 +523,47 @@ func (loc *TemplateLocator) Create(source *rsapi.FileUpload) (*TemplateLocator, 
 	}
 }
 
-// PUT /collections/:collection_id/templates/:id
+// POST /api/designer/collections/:collection_id/templates/actions/create_from_compilation
+//
+// Create a new Template from a previously compiled CAT.
+func (loc *TemplateLocator) CreateFromCompilation(compilationHref string, options rsapi.APIParams) error {
+	if compilationHref == "" {
+		return fmt.Errorf("compilationHref is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"compilation_href": compilationHref,
+	}
+	var filenameOpt = options["filename"]
+	if filenameOpt != nil {
+		p["filename"] = filenameOpt
+	}
+	uri, err := loc.ActionPath("Template", "create_from_compilation")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// PUT /api/designer/collections/:collection_id/templates/:id
 //
 // Update the content of an existing Template (a Template with the same "name" value in the CAT).
 func (loc *TemplateLocator) Update(source *rsapi.FileUpload) error {
@@ -540,7 +596,47 @@ func (loc *TemplateLocator) Update(source *rsapi.FileUpload) error {
 	return nil
 }
 
-// DELETE /collections/:collection_id/templates/:id
+// POST /api/designer/collections/:collection_id/templates/:id/actions/update_from_compilation
+//
+// Update a Template from a previously compiled CAT.
+func (loc *TemplateLocator) UpdateFromCompilation(compilationHref string, options rsapi.APIParams) error {
+	if compilationHref == "" {
+		return fmt.Errorf("compilationHref is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"compilation_href": compilationHref,
+	}
+	var filenameOpt = options["filename"]
+	if filenameOpt != nil {
+		p["filename"] = filenameOpt
+	}
+	uri, err := loc.ActionPath("Template", "update_from_compilation")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// DELETE /api/designer/collections/:collection_id/templates/:id
 //
 // Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
 func (loc *TemplateLocator) Delete() error {
@@ -570,7 +666,7 @@ func (loc *TemplateLocator) Delete() error {
 	return nil
 }
 
-// DELETE /collections/:collection_id/templates
+// DELETE /api/designer/collections/:collection_id/templates
 //
 // Delete multiple Templates from the system in bulk. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the "unpublish" action.
 func (loc *TemplateLocator) MultiDelete(ids []string) error {
@@ -606,7 +702,7 @@ func (loc *TemplateLocator) MultiDelete(ids []string) error {
 	return nil
 }
 
-// GET /collections/:collection_id/templates/:id/download
+// GET /api/designer/collections/:collection_id/templates/:id/download
 //
 // Download the source of a Template.
 func (loc *TemplateLocator) Download(apiVersion string) error {
@@ -642,7 +738,7 @@ func (loc *TemplateLocator) Download(apiVersion string) error {
 	return nil
 }
 
-// POST /collections/:collection_id/templates/actions/compile
+// POST /api/designer/collections/:collection_id/templates/actions/compile
 //
 // Compile the Template, but don't save it to Designer. Useful for debugging a CAT file while you are still authoring it.
 func (loc *TemplateLocator) Compile(source string) error {
@@ -678,7 +774,100 @@ func (loc *TemplateLocator) Compile(source string) error {
 	return nil
 }
 
-// POST /collections/:collection_id/templates/actions/publish
+// POST /api/designer/collections/:collection_id/templates/actions/dependencies
+//
+// Lists the Templates which the provided CAT source or Template directly or indirectly depend upon
+func (loc *TemplateLocator) Dependencies(options rsapi.APIParams) (*Template, error) {
+	var res *Template
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var sourceOpt = options["source"]
+	if sourceOpt != nil {
+		p["source"] = sourceOpt
+	}
+	var templateIdOpt = options["template_id"]
+	if templateIdOpt != nil {
+		p["template_id"] = templateIdOpt
+	}
+	uri, err := loc.ActionPath("Template", "dependencies")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /api/designer/collections/:collection_id/templates/actions/dependents
+//
+// List the Dependents templates available in Designer for the given package, even if no template actually define the package.
+func (loc *TemplateLocator) Dependents(package_ string, options rsapi.APIParams) (*Template, error) {
+	var res *Template
+	if package_ == "" {
+		return res, fmt.Errorf("package is required")
+	}
+	var params rsapi.APIParams
+	params = rsapi.APIParams{
+		"package": package_,
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("Template", "dependents")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// POST /api/designer/collections/:collection_id/templates/actions/publish
 //
 // Publish the given Template to the Catalog so that users can launch it.
 func (loc *TemplateLocator) Publish(id string, options rsapi.APIParams) error {
@@ -689,6 +878,10 @@ func (loc *TemplateLocator) Publish(id string, options rsapi.APIParams) error {
 	var p rsapi.APIParams
 	p = rsapi.APIParams{
 		"id": id,
+	}
+	var longDescriptionOpt = options["long_description"]
+	if longDescriptionOpt != nil {
+		p["long_description"] = longDescriptionOpt
 	}
 	var nameOpt = options["name"]
 	if nameOpt != nil {
@@ -734,7 +927,7 @@ func (loc *TemplateLocator) Publish(id string, options rsapi.APIParams) error {
 	return nil
 }
 
-// POST /collections/:collection_id/templates/actions/unpublish
+// POST /api/designer/collections/:collection_id/templates/actions/unpublish
 //
 // Remove a publication from the Catalog by specifying its associated Template.
 func (loc *TemplateLocator) Unpublish(id string) error {
@@ -777,6 +970,17 @@ type ApplicationInfo struct {
 	Name string `json:"name,omitempty"`
 }
 
+type CatDependency struct {
+	Alias        string     `json:"alias,omitempty"`
+	CompiledAt   *time.Time `json:"compiled_at,omitempty"`
+	Name         string     `json:"name,omitempty"`
+	Package      string     `json:"package,omitempty"`
+	RsCaVer      int        `json:"rs_ca_ver,omitempty"`
+	SourceHref   string     `json:"source_href,omitempty"`
+	TemplateHref string     `json:"template_href,omitempty"`
+	TemplateId   string     `json:"template_id,omitempty"`
+}
+
 type Parameter struct {
 	Default     interface{}                 `json:"default,omitempty"`
 	Description string                      `json:"description,omitempty"`
@@ -816,6 +1020,7 @@ type TimestampsStruct struct {
 }
 
 type TimestampsStruct2 struct {
+	CompiledAt  *time.Time `json:"compiled_at,omitempty"`
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 	PublishedAt *time.Time `json:"published_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`

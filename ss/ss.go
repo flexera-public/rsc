@@ -1,7 +1,7 @@
 package ss
 
 import (
-	"path"
+	"regexp"
 	"strings"
 
 	"github.com/rightscale/rsc/cmd"
@@ -48,16 +48,42 @@ func HostFromLogin(host string) string {
 	urlElems := strings.Split(host, ".")
 	hostPrefix := urlElems[0]
 	elems := strings.Split(hostPrefix, "-")
-	if len(elems) < 2 {
+
+	if len(elems) == 1 && elems[0] == "cm" {
+		// accommodates micromoo host inference, such as "cm.rightscale.local" => "selfservice.rightscale.local"
+		elems[0] = "selfservice"
+	} else if len(elems) < 2 {
+		// don't know how to compute this ss host; use the cm host
 		return host
+	} else {
+		elems[len(elems)-2] = "selfservice"
 	}
-	elems[len(elems)-2] = "selfservice"
 	ssLoginHostPrefix := strings.Join(elems, "-")
 	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
 }
 
 // Whether we've already adjusted the action path patterns in the SS APIs generated metadata
 var pathFixupDone bool
+
+func copyPathPattern(p *metadata.PathPattern) (newP *metadata.PathPattern) {
+	newP = &metadata.PathPattern{HTTPMethod: p.HTTPMethod, Pattern: p.Pattern}
+	copy(newP.Variables, p.Variables)
+	newP.Regexp = &regexp.Regexp{}
+	*newP.Regexp = *p.Regexp
+	return
+}
+
+// Removes the specified number of prefixes from a regexp and returns a new regexp.
+// This basically loosens validations on the regexp by making the specified number of
+// prefixes optional. num must be greater than the number of prefixes. For example:
+// r.String()                       // => "/api/catalog/collections/([^/]+)/templates/actions/dependencies"
+// removePrefixes(&r, 2).String()   // => "/collections/([^/]+)/templates/actions/dependencies"
+func removePrefixes(r *regexp.Regexp, num int) (result *regexp.Regexp) {
+	path := strings.TrimLeft(r.String(), "/")
+	paths := strings.Split(path, "/")
+	result = regexp.MustCompile("/" + strings.Join(paths[num:], "/"))
+	return
+}
 
 // Initialize GenMetadata from each SS API generated metadata
 func setupMetadata() {
@@ -69,7 +95,8 @@ func setupMetadata() {
 		}
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("designer", p.Pattern)
+				// remove "/api/designer" prefix
+				p.Regexp = removePrefixes(p.Regexp, 2)
 			}
 		}
 	}
@@ -80,7 +107,8 @@ func setupMetadata() {
 		}
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("catalog", p.Pattern)
+				// remove "/api/catalog" prefix
+				p.Regexp = removePrefixes(p.Regexp, 2)
 			}
 		}
 	}
@@ -91,7 +119,8 @@ func setupMetadata() {
 		}
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
-				p.Pattern = path.Join("manager", p.Pattern)
+				// remove "/api/manager" prefix
+				p.Regexp = removePrefixes(p.Regexp, 2)
 			}
 		}
 	}

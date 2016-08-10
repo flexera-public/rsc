@@ -1,1 +1,1778 @@
-{"description":"\nAn Application is an element in the Catalog that can be launched by users. Applications are generally created by uploading CAT\nfiles to the Designer and publishing them to the Catalog, though they can also be created via API calls to the Catalog directly without\ngoing through Designer. If an Application was created from Designer through the publish action, it contains a link back to the Template\nresource in Designer.\n\nIn the Self-Service portal, an Application is equivalent to an item in the Catalog. Most users have access to these Application resources\nand can launch them to create Executions in the Manager application.\n      ","media_type":"V1::MediaType::Application","mime_type":"application/vnd.rightscale.self_service.application","actions":[{"description":"List the Applications available in the specified Catalog.","name":"index","urls":[["GET","/catalogs/:catalog_id/applications"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"description":"An optional list of Application IDs to retrieve. If not specified, all are returned.","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"catalog_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.application","multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Show detailed information about a given Application.","name":"show","urls":[["GET","/catalogs/:catalog_id/applications/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The Application ID","example_definition":"53dc411b2b5b92f8f6000001","type":{"name":"String"}},"view":{"values":["default","expanded"],"description":"Optional view to return","example_definition":"expanded","type":{"name":"String"}}}},"example":{"catalog_id":"12345","id":"53dc411b2b5b92f8f6000001","view":"expanded"}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.application"},"not_found":{"description":"The Application ID was not found in the specified Catalog.","status":404},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Create a new Application in the Catalog.","name":"create","urls":[["POST","/catalogs/:catalog_id/applications"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}}}},"example":{"catalog_id":"12345"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"name":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Name of application","required":true,"example_definition":"Development All-in-One","type":{"name":"String"}},"short_description":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Short description of application","required":true,"example_definition":"All-in-One Server for development purposes.","type":{"name":"String"}},"long_description":{"description":"Long description of application","example_definition":"Development server with basic environment setup","type":{"name":"String"}},"schedules":{"description":"Schedules available to users when launching the application","type":{"name":"Collection","member_attribute":{"type":{"name":"V1::Type::Schedule"}}}},"schedule_required":{"description":"Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI","type":{"name":"Boolean"}},"compiled_cat":{"dsl_compiler":"Skeletor::MediaType::DSLCompiler","required":true,"description":"The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.","reference":"Service::MediaType::CompiledCAT","type":{"name":"Service::MediaType::CompiledCAT","views":{"default":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"expanded":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"source":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"master":{"attributes":{"name":{"view":"master"},"rs_ca_ver":{"view":"master"},"short_description":{"view":"master"},"long_description":{"view":"master"},"source":{"view":"master"},"parameters":{"view":"master"},"required_parameters":{"view":"master"},"conditions":{"view":"master"},"mappings":{"view":"master"},"resources":{"view":"master"},"outputs":{"view":"master"},"operations":{"view":"master"},"definitions":{"view":"master"},"namespaces":{"view":"master"}}}},"mime_type":"application/vnd.rightscale.self_service.compiled_cat","description":null}},"template_href":{"description":"If created from a Template, the template href can be provided to maintain the relationship between the resources.","example_definition":"/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001","type":{"name":"String"}}}},"example":{"name":"Development All-in-One","short_description":"All-in-One Server for development purposes.","long_description":"Development server with basic environment setup","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"compiled_cat":{"name":"minitant","rs_ca_ver":127,"short_description":"oxycopaivic","long_description":"hypapophysis","parameters":{"textuality":"#<Service::MediaType::SourceParameter:0x007feac4139398>","promodernistic":"#<Service::MediaType::SourceParameter:0x007feac4142948>"},"conditions":{"ussingite":{"underhand":["An Object","An Object","An Object"],"feathertop":["An Object"]},"embind":{"cubage":["An Object","An Object","An Object"],"gloeosporiose":["An Object"],"tangram":["An Object","An Object","An Object"]}},"mappings":{"allantoidean":{"diacritically":{"cardiauxe":"Placoidei","duality":"punga","schoollike":"tautomeral"},"recurvature":{"mimble":"diactin"}},"Pishquow":{"Faliscan":{"Orca":"Susuhunan"},"explode":{"gasket":"muktar"}}},"resources":{"havergrass":"#<Service::MediaType::SourceResource:0x007feac416bbe0>","fecundify":"#<Service::MediaType::SourceResource:0x007feac416af88>","seignior":"#<Service::MediaType::SourceResource:0x007feac416a600>"},"outputs":{"waygang":"#<Service::MediaType::SourceOutput:0x007feac4168968>"},"operations":{"sleightful":"#<Service::MediaType::SourceOperation:0x007feac41723a0>","jurament":"#<Service::MediaType::SourceOperation:0x007feac4170aa0>","exoterics":"#<Service::MediaType::SourceOperation:0x007feac417be28>"},"definitions":{"charwoman":"#<Service::MediaType::SourceDefinition:0x007feac4179f38>","Pholadinea":"#<Service::MediaType::SourceDefinition:0x007feac4178f48>","decollation":"#<Service::MediaType::SourceDefinition:0x007feac4178520>"}},"template_href":"/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001"}},"responses":{"default":{"description":null,"status":200},"created":{"description":"The Application was successfully created.","status":201,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"already_exists":{"description":"An Application with that name already exists or, if specified, the Template has previously been published. Use Application.update instead.","status":409},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Update the content of an existing Application.","name":"update","urls":[["PUT","/catalogs/:catalog_id/applications/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The Application ID","example_definition":"53dc411b2b5b92f8f6000001","type":{"name":"String"}}}},"example":{"catalog_id":"12345","id":"53dc411b2b5b92f8f6000001"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"name":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Name of application","example_definition":"Development All-in-One","type":{"name":"String"}},"short_description":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Short description of application","example_definition":"All-in-One Server for development purposes.","type":{"name":"String"}},"long_description":{"description":"Long description of application","example_definition":"Development server with basic environment setup","type":{"name":"String"}},"schedules":{"description":"Schedules available to users when launching the application","type":{"name":"Collection","member_attribute":{"type":{"name":"V1::Type::Schedule"}}}},"schedule_required":{"description":"Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI","type":{"name":"Boolean"}},"compiled_cat":{"dsl_compiler":"Skeletor::MediaType::DSLCompiler","description":"The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.","reference":"Service::MediaType::CompiledCAT","type":{"name":"Service::MediaType::CompiledCAT","views":{"default":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"expanded":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"source":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"master":{"attributes":{"name":{"view":"master"},"rs_ca_ver":{"view":"master"},"short_description":{"view":"master"},"long_description":{"view":"master"},"source":{"view":"master"},"parameters":{"view":"master"},"required_parameters":{"view":"master"},"conditions":{"view":"master"},"mappings":{"view":"master"},"resources":{"view":"master"},"outputs":{"view":"master"},"operations":{"view":"master"},"definitions":{"view":"master"},"namespaces":{"view":"master"}}}},"mime_type":"application/vnd.rightscale.self_service.compiled_cat","description":null}},"template_href":{"description":"A template href can be provided to maintain the relationship between the resources.","example_definition":"/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001","type":{"name":"String"}}}},"example":{"name":"Development All-in-One","short_description":"All-in-One Server for development purposes.","long_description":"Development server with basic environment setup","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"compiled_cat":{"name":"minitant","rs_ca_ver":127,"short_description":"oxycopaivic","long_description":"hypapophysis","parameters":{"textuality":"#<Service::MediaType::SourceParameter:0x007feac41c0d70>","promodernistic":"#<Service::MediaType::SourceParameter:0x007feac41cbb58>"},"conditions":{"ussingite":{"underhand":["An Object","An Object","An Object"],"feathertop":["An Object"]},"embind":{"cubage":["An Object","An Object","An Object"],"gloeosporiose":["An Object"],"tangram":["An Object","An Object","An Object"]}},"mappings":{"allantoidean":{"diacritically":{"cardiauxe":"Placoidei","duality":"punga","schoollike":"tautomeral"},"recurvature":{"mimble":"diactin"}},"Pishquow":{"Faliscan":{"Orca":"Susuhunan"},"explode":{"gasket":"muktar"}}},"resources":{"havergrass":"#<Service::MediaType::SourceResource:0x007feac41eb7a0>","fecundify":"#<Service::MediaType::SourceResource:0x007feac41eae18>","seignior":"#<Service::MediaType::SourceResource:0x007feac41ea490>"},"outputs":{"waygang":"#<Service::MediaType::SourceOutput:0x007feac41e95b8>"},"operations":{"sleightful":"#<Service::MediaType::SourceOperation:0x007feac41e8528>","jurament":"#<Service::MediaType::SourceOperation:0x007feac41f38b0>","exoterics":"#<Service::MediaType::SourceOperation:0x007feac41f2ca8>"},"definitions":{"charwoman":"#<Service::MediaType::SourceDefinition:0x007feac41f1b78>","Pholadinea":"#<Service::MediaType::SourceDefinition:0x007feac41f1150>","decollation":"#<Service::MediaType::SourceDefinition:0x007feac41f0728>"}},"template_href":"/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001"}},"responses":{"no_content":{"description":"The Application was successfully updated.","status":204},"not_found":{"description":"The Application ID was not found in the specified Catalog.","status":404},"already_exists":{"description":"An Application with that name already exists or, if specified, the Template has previously been published. Use Application.update instead.","status":409},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Update the content of multiple Applications.","name":"multi_update","urls":[["PUT","/catalogs/:catalog_id/applications"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}}}},"example":{"catalog_id":"12345"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"id":{"required":true,"description":"The Application ID to update","example_definition":"53dc411b2b5b92f8f6000001","type":{"name":"String"}},"name":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Name of application","example_definition":"Development All-in-One","type":{"name":"String"}},"short_description":{"regexp":"(?-mix:^(?!\\s*$).+)","description":"Short description of application","example_definition":"All-in-One Server for development purposes.","type":{"name":"String"}},"long_description":{"description":"Long description of application","example_definition":"Development server with basic environment setup","type":{"name":"String"}},"schedules":{"description":"Schedules available to users when launching the application","type":{"name":"Collection","member_attribute":{"type":{"name":"V1::Type::Schedule"}}}},"schedule_required":{"description":"Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI","type":{"name":"Boolean"}},"compiled_cat":{"dsl_compiler":"Skeletor::MediaType::DSLCompiler","description":"The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.","reference":"Service::MediaType::CompiledCAT","type":{"name":"Service::MediaType::CompiledCAT","views":{"default":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"expanded":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"source":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}}},"master":{"attributes":{"name":{"view":"master"},"rs_ca_ver":{"view":"master"},"short_description":{"view":"master"},"long_description":{"view":"master"},"source":{"view":"master"},"parameters":{"view":"master"},"required_parameters":{"view":"master"},"conditions":{"view":"master"},"mappings":{"view":"master"},"resources":{"view":"master"},"outputs":{"view":"master"},"operations":{"view":"master"},"definitions":{"view":"master"},"namespaces":{"view":"master"}}}},"mime_type":"application/vnd.rightscale.self_service.compiled_cat","description":null}},"template_href":{"description":"A template href can be provided to maintain the relationship between the resources.","example_definition":"/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001","type":{"name":"String"}}}},"example":{"id":"53dc411b2b5b92f8f6000001","name":"Development All-in-One","short_description":"All-in-One Server for development purposes.","long_description":"Development server with basic environment setup","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"compiled_cat":{"name":"minitant","rs_ca_ver":127,"short_description":"oxycopaivic","long_description":"hypapophysis","parameters":{"textuality":"#<Service::MediaType::SourceParameter:0x007feabd52cf60>","promodernistic":"#<Service::MediaType::SourceParameter:0x007feabd537d70>"},"conditions":{"ussingite":{"underhand":["An Object","An Object","An Object"],"feathertop":["An Object"]},"embind":{"cubage":["An Object","An Object","An Object"],"gloeosporiose":["An Object"],"tangram":["An Object","An Object","An Object"]}},"mappings":{"allantoidean":{"diacritically":{"cardiauxe":"Placoidei","duality":"punga","schoollike":"tautomeral"},"recurvature":{"mimble":"diactin"}},"Pishquow":{"Faliscan":{"Orca":"Susuhunan"},"explode":{"gasket":"muktar"}}},"resources":{"havergrass":"#<Service::MediaType::SourceResource:0x007feabd557990>","fecundify":"#<Service::MediaType::SourceResource:0x007feabd557008>","seignior":"#<Service::MediaType::SourceResource:0x007feabd556680>"},"outputs":{"waygang":"#<Service::MediaType::SourceOutput:0x007feabd5557a8>"},"operations":{"sleightful":"#<Service::MediaType::SourceOperation:0x007feabd554718>","jurament":"#<Service::MediaType::SourceOperation:0x007feabd55fac8>","exoterics":"#<Service::MediaType::SourceOperation:0x007feabd55eec0>"},"definitions":{"charwoman":"#<Service::MediaType::SourceDefinition:0x007feabd55dd90>","Pholadinea":"#<Service::MediaType::SourceDefinition:0x007feabd55d368>","decollation":"#<Service::MediaType::SourceDefinition:0x007feabd55c940>"}},"template_href":"/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001"}},"responses":{"no_content":{"description":"The Application was successfully updated.","status":204},"not_found":{"description":"The Application ID was not found in the specified Catalog.","status":404},"default":{"description":null,"status":200,"multipart":{"type":"always","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Delete an Application from the Catalog","name":"delete","urls":[["DELETE","/catalogs/:catalog_id/applications/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The Application ID to delete","example_definition":"53dc411b2b5b92f8f6000001","type":{"name":"String"}}}},"example":{"catalog_id":"12345","id":"53dc411b2b5b92f8f6000001"}},"responses":{"no_content":{"description":"The Application was successfully deleted.","status":204},"not_found":{"description":"The Application ID was not found in the specified Catalog.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Delete multiple Applications from the Catalog","name":"multi_delete","urls":[["DELETE","/catalogs/:catalog_id/applications"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"The Application IDs to delete","example_definition":"53dc411b2b5b92f8f6000001,53dc455d2b5b92e482000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"catalog_id":"12345","ids":["53dc411b2b5b92f8f6000001","53dc455d2b5b92e482000001"]}},"responses":{"no_content":{"description":"The Application was successfully deleted.","status":204},"not_found":{"description":"The Application ID was not found in the specified Catalog.","status":404},"default":{"description":null,"status":200,"multipart":{"type":"always","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Download the underlying CAT source of an Application.","name":"download","urls":[["GET","/catalogs/:catalog_id/applications/:id/download"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The Application ID to delete","example_definition":"53dc411b2b5b92f8f6000001","type":{"name":"String"}},"api_version":{"required":true,"description":"The API version (only valid value is currently \"1.0\")","example_definition":"1.0","type":{"name":"String"}}}},"example":{"catalog_id":"12345","id":"53dc411b2b5b92f8f6000001","api_version":"1.0"}},"responses":{"not_found":{"description":"The Application ID was not found in the specified Catalog.","status":404},"download":{"description":null,"status":200},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}},{"description":"Launches an Application by creating an Execution with ScheduledActions as needed to match the optional Schedule provided.","name":"launch","urls":[["POST","/catalogs/:catalog_id/applications/:id/actions/launch"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"catalog_id":{"required":true,"description":"The catalog ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The Application ID","example_definition":"53dc411b2b5b92f8f6000001","type":{"name":"String"}}}},"example":{"catalog_id":"12345","id":"53dc411b2b5b92f8f6000001"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Application","type":{"name":"Struct","attributes":{"name":{"description":"The name for the Execution. The Application name will be used if none is provided. This will be used as the name of the deployment (appended with a unique ID).","example_definition":"My dev server for testing","type":{"name":"String"}},"description":{"description":"The description for the execution. The description of the Application will be used if none is provided.","example_definition":"Dev server for our new user interface project.","type":{"name":"String"}},"options":{"description":"The configuration options of the Execution. These are the values provided for the CloudApp parameters.","type":{"name":"Collection","member_attribute":{"type":{"name":"Service::SharedType::ConfigurationOption"}}}},"schedule_name":{"description":"Name of the Schedule to use when launching. It must match one of the schedules attached to the Application","example_definition":"Business days","type":{"name":"String"}},"end_date":{"description":"When the CloudApp should be automatically terminated.","type":{"name":"DateTime"}}}},"example":{"name":"My dev server for testing","description":"Dev server for our new user interface project.","options":[{"name":"cloud","type":"string","value":"AWS US-West"}],"schedule_name":"Business days","end_date":"2014-03-24T00:00:00+00:00"}},"responses":{"not_found":{"description":"The Application ID was not found in the specified Catalog.","status":404},"launched":{"description":"The Application was successfully launched.","status":204},"manager_400_error":{"description":"An error occurred when creating the execution in the Service Manager","status":400},"manager_422_error":{"description":"An error occurred when creating the execution in the Service Manager","status":422},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401},"forbidden":{"description":"The user is not authorized to perform this action.","status":403}}}]}
+{
+  "description": "\nAn Application is an element in the Catalog that can be launched by users. Applications are generally created by uploading CAT\nfiles to the Designer and publishing them to the Catalog, though they can also be created via API calls to the Catalog directly without\ngoing through Designer. If an Application was created from Designer through the publish action, it contains a link back to the Template\nresource in Designer.\n\nIn the Self-Service portal, an Application is equivalent to an item in the Catalog. Most users have access to these Application resources\nand can launch them to create Executions in the Manager application.\n      ",
+  "media_type": "V1::MediaType::Application",
+  "mime_type": "application/vnd.rightscale.self_service.application",
+  "actions": [
+    {
+      "description": "List the Applications available in the specified Catalog.",
+      "name": "index",
+      "urls": [
+        [
+          "GET",
+          "/api/catalog/catalogs/:catalog_id/applications"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "description": "An optional list of Application IDs to retrieve. If not specified, all are returned.",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.application",
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Show detailed information about a given Application.",
+      "name": "show",
+      "urls": [
+        [
+          "GET",
+          "/api/catalog/catalogs/:catalog_id/applications/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The Application ID",
+              "example_definition": "53dc411b2b5b92f8f6000001",
+              "type": {
+                "name": "String"
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "expanded"
+              ],
+              "description": "Optional view to return",
+              "example_definition": "expanded",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345",
+          "id": "53dc411b2b5b92f8f6000001",
+          "view": "expanded"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.application"
+        },
+        "not_found": {
+          "description": "The Application ID was not found in the specified Catalog.",
+          "status": 404
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Create a new Application in the Catalog.",
+      "name": "create",
+      "urls": [
+        [
+          "POST",
+          "/api/catalog/catalogs/:catalog_id/applications"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "name": {
+              "regexp": "(?-mix:^(?!\\s*$).+)",
+              "description": "Name of application",
+              "required": true,
+              "example_definition": "Development All-in-One",
+              "type": {
+                "name": "String"
+              }
+            },
+            "short_description": {
+              "regexp": "(?-mix:^(?!\\s*$).+)",
+              "description": "Short description of application",
+              "required": true,
+              "example_definition": "All-in-One Server for development purposes.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "long_description": {
+              "description": "Long description of application",
+              "example_definition": "Development server with basic environment setup",
+              "type": {
+                "name": "String"
+              }
+            },
+            "schedules": {
+              "description": "Schedules available to users when launching the application",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::Schedule"
+                  }
+                }
+              }
+            },
+            "schedule_required": {
+              "description": "Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            "compiled_cat": {
+              "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+              "description": "The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.",
+              "reference": "Service::MediaType::CompiledCAT",
+              "type": {
+                "name": "Service::MediaType::CompiledCAT",
+                "views": {
+                  "default": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "expanded": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "source": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "master": {
+                    "attributes": {
+                      "name": {
+                        "view": "master"
+                      },
+                      "rs_ca_ver": {
+                        "view": "master"
+                      },
+                      "short_description": {
+                        "view": "master"
+                      },
+                      "long_description": {
+                        "view": "master"
+                      },
+                      "compiler_ver": {
+                        "view": "master"
+                      },
+                      "source": {
+                        "view": "master"
+                      },
+                      "parameters": {
+                        "view": "master"
+                      },
+                      "required_parameters": {
+                        "view": "master"
+                      },
+                      "conditions": {
+                        "view": "master"
+                      },
+                      "mappings": {
+                        "view": "master"
+                      },
+                      "resources": {
+                        "view": "master"
+                      },
+                      "outputs": {
+                        "view": "master"
+                      },
+                      "operations": {
+                        "view": "master"
+                      },
+                      "definitions": {
+                        "view": "master"
+                      },
+                      "namespaces": {
+                        "view": "master"
+                      },
+                      "permissions": {
+                        "view": "master"
+                      },
+                      "imports": {
+                        "view": "master"
+                      },
+                      "dependency_hashes": {
+                        "view": "master"
+                      },
+                      "package": {
+                        "view": "master"
+                      },
+                      "cat_parser_gem_version": {
+                        "view": "master"
+                      }
+                    }
+                  }
+                },
+                "mime_type": "application/vnd.rightscale.self_service.compiled_cat",
+                "description": null
+              }
+            },
+            "template_href": {
+              "description": "If created from a Template, the template href can be provided to maintain the relationship between the resources.",
+              "example_definition": "/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "Development All-in-One",
+          "short_description": "All-in-One Server for development purposes.",
+          "long_description": "Development server with basic environment setup",
+          "schedules": [
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            }
+          ],
+          "schedule_required": true,
+          "compiled_cat": {
+            "name": "minitant",
+            "rs_ca_ver": 127,
+            "short_description": "oxycopaivic",
+            "long_description": "hypapophysis",
+            "compiler_ver": "Marxism",
+            "parameters": {
+              "textuality": "#<Service::MediaType::SourceParameter:0x007fe8ac0cbb50>",
+              "promodernistic": "#<Service::MediaType::SourceParameter:0x007fe8ac0c9148>"
+            },
+            "conditions": {
+              "ussingite": {
+                "underhand": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ],
+                "feathertop": [
+                  "An Object"
+                ]
+              },
+              "embind": {
+                "cubage": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ],
+                "gloeosporiose": [
+                  "An Object"
+                ],
+                "tangram": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ]
+              }
+            },
+            "mappings": {
+              "allantoidean": {
+                "diacritically": {
+                  "cardiauxe": "Placoidei",
+                  "duality": "punga",
+                  "schoollike": "tautomeral"
+                },
+                "recurvature": {
+                  "mimble": "diactin"
+                }
+              },
+              "Pishquow": {
+                "Faliscan": {
+                  "Orca": "Susuhunan"
+                },
+                "explode": {
+                  "gasket": "muktar"
+                }
+              }
+            },
+            "resources": {
+              "havergrass": "#<Service::MediaType::SourceResource:0x007fe8a34a23b8>",
+              "fecundify": "#<Service::MediaType::SourceResource:0x007fe8a34a1760>",
+              "seignior": "#<Service::MediaType::SourceResource:0x007fe8a34a0dd8>"
+            },
+            "outputs": {
+              "waygang": "#<Service::MediaType::SourceOutput:0x007fe8a34a70e8>"
+            },
+            "operations": {
+              "sleightful": "#<Service::MediaType::SourceOperation:0x007fe8a34a4b68>",
+              "jurament": "#<Service::MediaType::SourceOperation:0x007fe8a34ab058>",
+              "exoterics": "#<Service::MediaType::SourceOperation:0x007fe8a34aa3b0>"
+            },
+            "definitions": {
+              "charwoman": "#<Service::MediaType::SourceDefinition:0x007fe8a34a8420>",
+              "Pholadinea": "#<Service::MediaType::SourceDefinition:0x007fe8a34af3d8>",
+              "decollation": "#<Service::MediaType::SourceDefinition:0x007fe8a34ae9b0>"
+            }
+          },
+          "template_href": "/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200
+        },
+        "created": {
+          "description": "The Application was successfully created.",
+          "status": 201,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "already_exists": {
+          "description": "An Application with that name already exists or, if specified, the Template has previously been published. Use Application.update instead.",
+          "status": 409
+        },
+        "grant_failure": {
+          "description": "An error occurred while processing the CloudApp's permissions. May be due to the user having insufficient permissions.",
+          "status": 403
+        },
+        "template_not_found": {
+          "description": null,
+          "status": 422
+        },
+        "unprocessable_entity": {
+          "description": "The compiled_cat and template_href are missing or invalid",
+          "status": 422
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Update the content of an existing Application.",
+      "name": "update",
+      "urls": [
+        [
+          "PUT",
+          "/api/catalog/catalogs/:catalog_id/applications/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The Application ID",
+              "example_definition": "53dc411b2b5b92f8f6000001",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345",
+          "id": "53dc411b2b5b92f8f6000001"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "name": {
+              "regexp": "(?-mix:^(?!\\s*$).+)",
+              "description": "Name of application",
+              "example_definition": "Development All-in-One",
+              "type": {
+                "name": "String"
+              }
+            },
+            "short_description": {
+              "regexp": "(?-mix:^(?!\\s*$).+)",
+              "description": "Short description of application",
+              "example_definition": "All-in-One Server for development purposes.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "long_description": {
+              "description": "Long description of application",
+              "example_definition": "Development server with basic environment setup",
+              "type": {
+                "name": "String"
+              }
+            },
+            "schedules": {
+              "description": "Schedules available to users when launching the application",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::Schedule"
+                  }
+                }
+              }
+            },
+            "schedule_required": {
+              "description": "Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            "compiled_cat": {
+              "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+              "description": "The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.",
+              "reference": "Service::MediaType::CompiledCAT",
+              "type": {
+                "name": "Service::MediaType::CompiledCAT",
+                "views": {
+                  "default": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "expanded": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "source": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "master": {
+                    "attributes": {
+                      "name": {
+                        "view": "master"
+                      },
+                      "rs_ca_ver": {
+                        "view": "master"
+                      },
+                      "short_description": {
+                        "view": "master"
+                      },
+                      "long_description": {
+                        "view": "master"
+                      },
+                      "compiler_ver": {
+                        "view": "master"
+                      },
+                      "source": {
+                        "view": "master"
+                      },
+                      "parameters": {
+                        "view": "master"
+                      },
+                      "required_parameters": {
+                        "view": "master"
+                      },
+                      "conditions": {
+                        "view": "master"
+                      },
+                      "mappings": {
+                        "view": "master"
+                      },
+                      "resources": {
+                        "view": "master"
+                      },
+                      "outputs": {
+                        "view": "master"
+                      },
+                      "operations": {
+                        "view": "master"
+                      },
+                      "definitions": {
+                        "view": "master"
+                      },
+                      "namespaces": {
+                        "view": "master"
+                      },
+                      "permissions": {
+                        "view": "master"
+                      },
+                      "imports": {
+                        "view": "master"
+                      },
+                      "dependency_hashes": {
+                        "view": "master"
+                      },
+                      "package": {
+                        "view": "master"
+                      },
+                      "cat_parser_gem_version": {
+                        "view": "master"
+                      }
+                    }
+                  }
+                },
+                "mime_type": "application/vnd.rightscale.self_service.compiled_cat",
+                "description": null
+              }
+            },
+            "template_href": {
+              "description": "A template href can be provided to maintain the relationship between the resources.",
+              "example_definition": "/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "Development All-in-One",
+          "short_description": "All-in-One Server for development purposes.",
+          "long_description": "Development server with basic environment setup",
+          "schedules": [
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            }
+          ],
+          "schedule_required": true,
+          "compiled_cat": {
+            "name": "minitant",
+            "rs_ca_ver": 127,
+            "short_description": "oxycopaivic",
+            "long_description": "hypapophysis",
+            "compiler_ver": "Marxism",
+            "parameters": {
+              "textuality": "#<Service::MediaType::SourceParameter:0x007fe8a34e2558>",
+              "promodernistic": "#<Service::MediaType::SourceParameter:0x007fe8a34e13b0>"
+            },
+            "conditions": {
+              "ussingite": {
+                "underhand": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ],
+                "feathertop": [
+                  "An Object"
+                ]
+              },
+              "embind": {
+                "cubage": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ],
+                "gloeosporiose": [
+                  "An Object"
+                ],
+                "tangram": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ]
+              }
+            },
+            "mappings": {
+              "allantoidean": {
+                "diacritically": {
+                  "cardiauxe": "Placoidei",
+                  "duality": "punga",
+                  "schoollike": "tautomeral"
+                },
+                "recurvature": {
+                  "mimble": "diactin"
+                }
+              },
+              "Pishquow": {
+                "Faliscan": {
+                  "Orca": "Susuhunan"
+                },
+                "explode": {
+                  "gasket": "muktar"
+                }
+              }
+            },
+            "resources": {
+              "havergrass": "#<Service::MediaType::SourceResource:0x007fe8a3500fd0>",
+              "fecundify": "#<Service::MediaType::SourceResource:0x007fe8a3500648>",
+              "seignior": "#<Service::MediaType::SourceResource:0x007fe8a350bc78>"
+            },
+            "outputs": {
+              "waygang": "#<Service::MediaType::SourceOutput:0x007fe8a350ada0>"
+            },
+            "operations": {
+              "sleightful": "#<Service::MediaType::SourceOperation:0x007fe8a3509d10>",
+              "jurament": "#<Service::MediaType::SourceOperation:0x007fe8a3509068>",
+              "exoterics": "#<Service::MediaType::SourceOperation:0x007fe8a35083c0>"
+            },
+            "definitions": {
+              "charwoman": "#<Service::MediaType::SourceDefinition:0x007fe8a3513180>",
+              "Pholadinea": "#<Service::MediaType::SourceDefinition:0x007fe8a3512758>",
+              "decollation": "#<Service::MediaType::SourceDefinition:0x007fe8a3511d30>"
+            }
+          },
+          "template_href": "/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The Application was successfully updated.",
+          "status": 204
+        },
+        "not_found": {
+          "description": "The Application ID was not found in the specified Catalog.",
+          "status": 404
+        },
+        "already_exists": {
+          "description": "An Application with that name already exists or, if specified, the Template has previously been published. Use Application.update instead.",
+          "status": 409
+        },
+        "grant_failure": {
+          "description": "An error occurred while processing the CloudApp's permissions. May be due to the user having insufficient permissions.",
+          "status": 403
+        },
+        "template_not_found": {
+          "description": null,
+          "status": 422
+        },
+        "unprocessable_entity": {
+          "description": "The template_href is or invalid",
+          "status": 422
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Update the content of multiple Applications.",
+      "name": "multi_update",
+      "urls": [
+        [
+          "PUT",
+          "/api/catalog/catalogs/:catalog_id/applications"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "id": {
+              "required": true,
+              "description": "The Application ID to update",
+              "example_definition": "53dc411b2b5b92f8f6000001",
+              "type": {
+                "name": "String"
+              }
+            },
+            "name": {
+              "regexp": "(?-mix:^(?!\\s*$).+)",
+              "description": "Name of application",
+              "example_definition": "Development All-in-One",
+              "type": {
+                "name": "String"
+              }
+            },
+            "short_description": {
+              "regexp": "(?-mix:^(?!\\s*$).+)",
+              "description": "Short description of application",
+              "example_definition": "All-in-One Server for development purposes.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "long_description": {
+              "description": "Long description of application",
+              "example_definition": "Development server with basic environment setup",
+              "type": {
+                "name": "String"
+              }
+            },
+            "schedules": {
+              "description": "Schedules available to users when launching the application",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::Schedule"
+                  }
+                }
+              }
+            },
+            "schedule_required": {
+              "description": "Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI",
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            "compiled_cat": {
+              "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+              "description": "The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.",
+              "reference": "Service::MediaType::CompiledCAT",
+              "type": {
+                "name": "Service::MediaType::CompiledCAT",
+                "views": {
+                  "default": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "expanded": {
+                    "attributes": {
+                      "name": {
+                      },
+                      "rs_ca_ver": {
+                      },
+                      "short_description": {
+                      },
+                      "long_description": {
+                      },
+                      "compiler_ver": {
+                      },
+                      "source": {
+                      },
+                      "parameters": {
+                      },
+                      "conditions": {
+                      },
+                      "mappings": {
+                      },
+                      "resources": {
+                      },
+                      "outputs": {
+                      },
+                      "operations": {
+                      },
+                      "definitions": {
+                      }
+                    }
+                  },
+                  "master": {
+                    "attributes": {
+                      "name": {
+                        "view": "master"
+                      },
+                      "rs_ca_ver": {
+                        "view": "master"
+                      },
+                      "short_description": {
+                        "view": "master"
+                      },
+                      "long_description": {
+                        "view": "master"
+                      },
+                      "compiler_ver": {
+                        "view": "master"
+                      },
+                      "source": {
+                        "view": "master"
+                      },
+                      "parameters": {
+                        "view": "master"
+                      },
+                      "required_parameters": {
+                        "view": "master"
+                      },
+                      "conditions": {
+                        "view": "master"
+                      },
+                      "mappings": {
+                        "view": "master"
+                      },
+                      "resources": {
+                        "view": "master"
+                      },
+                      "outputs": {
+                        "view": "master"
+                      },
+                      "operations": {
+                        "view": "master"
+                      },
+                      "definitions": {
+                        "view": "master"
+                      },
+                      "namespaces": {
+                        "view": "master"
+                      },
+                      "permissions": {
+                        "view": "master"
+                      },
+                      "imports": {
+                        "view": "master"
+                      },
+                      "dependency_hashes": {
+                        "view": "master"
+                      },
+                      "package": {
+                        "view": "master"
+                      },
+                      "cat_parser_gem_version": {
+                        "view": "master"
+                      }
+                    }
+                  }
+                },
+                "mime_type": "application/vnd.rightscale.self_service.compiled_cat",
+                "description": null
+              }
+            },
+            "template_href": {
+              "description": "A template href can be provided to maintain the relationship between the resources.",
+              "example_definition": "/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "53dc411b2b5b92f8f6000001",
+          "name": "Development All-in-One",
+          "short_description": "All-in-One Server for development purposes.",
+          "long_description": "Development server with basic environment setup",
+          "schedules": [
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "start_recurrence": {
+                "hour": 8,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "stop_recurrence": {
+                "hour": 18,
+                "minute": 0,
+                "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+              },
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            }
+          ],
+          "schedule_required": true,
+          "compiled_cat": {
+            "name": "minitant",
+            "rs_ca_ver": 127,
+            "short_description": "oxycopaivic",
+            "long_description": "hypapophysis",
+            "compiler_ver": "Marxism",
+            "parameters": {
+              "textuality": "#<Service::MediaType::SourceParameter:0x007fe8a35598d8>",
+              "promodernistic": "#<Service::MediaType::SourceParameter:0x007fe8a3558730>"
+            },
+            "conditions": {
+              "ussingite": {
+                "underhand": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ],
+                "feathertop": [
+                  "An Object"
+                ]
+              },
+              "embind": {
+                "cubage": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ],
+                "gloeosporiose": [
+                  "An Object"
+                ],
+                "tangram": [
+                  "An Object",
+                  "An Object",
+                  "An Object"
+                ]
+              }
+            },
+            "mappings": {
+              "allantoidean": {
+                "diacritically": {
+                  "cardiauxe": "Placoidei",
+                  "duality": "punga",
+                  "schoollike": "tautomeral"
+                },
+                "recurvature": {
+                  "mimble": "diactin"
+                }
+              },
+              "Pishquow": {
+                "Faliscan": {
+                  "Orca": "Susuhunan"
+                },
+                "explode": {
+                  "gasket": "muktar"
+                }
+              }
+            },
+            "resources": {
+              "havergrass": "#<Service::MediaType::SourceResource:0x007fe8a3578350>",
+              "fecundify": "#<Service::MediaType::SourceResource:0x007fe8a3583980>",
+              "seignior": "#<Service::MediaType::SourceResource:0x007fe8a3582ff8>"
+            },
+            "outputs": {
+              "waygang": "#<Service::MediaType::SourceOutput:0x007fe8a3582120>"
+            },
+            "operations": {
+              "sleightful": "#<Service::MediaType::SourceOperation:0x007fe8a3581090>",
+              "jurament": "#<Service::MediaType::SourceOperation:0x007fe8a35803e8>",
+              "exoterics": "#<Service::MediaType::SourceOperation:0x007fe8a358b6d0>"
+            },
+            "definitions": {
+              "charwoman": "#<Service::MediaType::SourceDefinition:0x007fe8a358a500>",
+              "Pholadinea": "#<Service::MediaType::SourceDefinition:0x007fe8a3589ad8>",
+              "decollation": "#<Service::MediaType::SourceDefinition:0x007fe8a35890b0>"
+            }
+          },
+          "template_href": "/api/designer/collections/60073/templates/53dfcb642b5b921f3e000001"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The Application was successfully updated.",
+          "status": 204
+        },
+        "not_found": {
+          "description": "The Application ID was not found in the specified Catalog.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "multipart": {
+            "type": "always",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "grant_failure": {
+          "description": "An error occurred while processing the CloudApp's permissions. May be due to the user having insufficient permissions.",
+          "status": 403
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Delete an Application from the Catalog",
+      "name": "delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/catalog/catalogs/:catalog_id/applications/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The Application ID to delete",
+              "example_definition": "53dc411b2b5b92f8f6000001",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345",
+          "id": "53dc411b2b5b92f8f6000001"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The Application was successfully deleted.",
+          "status": 204
+        },
+        "not_found": {
+          "description": "The Application ID was not found in the specified Catalog.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Delete multiple Applications from the Catalog",
+      "name": "multi_delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/catalog/catalogs/:catalog_id/applications"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "The Application IDs to delete",
+              "example_definition": "53dc411b2b5b92f8f6000001,53dc455d2b5b92e482000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345",
+          "ids": [
+            "53dc411b2b5b92f8f6000001",
+            "53dc455d2b5b92e482000001"
+          ]
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The Application was successfully deleted.",
+          "status": 204
+        },
+        "not_found": {
+          "description": "The Application ID was not found in the specified Catalog.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "multipart": {
+            "type": "always",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Download the underlying CAT source of an Application.",
+      "name": "download",
+      "urls": [
+        [
+          "GET",
+          "/api/catalog/catalogs/:catalog_id/applications/:id/download"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The Application ID to delete",
+              "example_definition": "53dc411b2b5b92f8f6000001",
+              "type": {
+                "name": "String"
+              }
+            },
+            "api_version": {
+              "required": true,
+              "description": "The API version (only valid value is currently \"1.0\")",
+              "example_definition": "1.0",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345",
+          "id": "53dc411b2b5b92f8f6000001",
+          "api_version": "1.0"
+        }
+      },
+      "responses": {
+        "not_found": {
+          "description": "The Application ID was not found in the specified Catalog.",
+          "status": 404
+        },
+        "download": {
+          "description": null,
+          "status": 200
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Launches an Application by creating an Execution with ScheduledActions as needed to match the optional Schedule provided.",
+      "name": "launch",
+      "urls": [
+        [
+          "POST",
+          "/api/catalog/catalogs/:catalog_id/applications/:id/actions/launch"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "catalog_id": {
+              "required": true,
+              "description": "The catalog ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The Application ID",
+              "example_definition": "53dc411b2b5b92f8f6000001",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "catalog_id": "12345",
+          "id": "53dc411b2b5b92f8f6000001"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Application",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "name": {
+              "description": "The name for the Execution. The Application name will be used if none is provided. This will be used as the name of the deployment (appended with a unique ID).",
+              "example_definition": "My dev server for testing",
+              "type": {
+                "name": "String"
+              }
+            },
+            "description": {
+              "description": "The description for the execution. The description of the Application will be used if none is provided.",
+              "example_definition": "Dev server for our new user interface project.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "options": {
+              "description": "The configuration options of the Execution. These are the values provided for the CloudApp parameters.",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "Service::SharedType::ConfigurationOption"
+                  }
+                }
+              }
+            },
+            "schedule_name": {
+              "description": "Name of the Schedule to use when launching. It must match one of the schedules attached to the Application",
+              "example_definition": "Business days",
+              "type": {
+                "name": "String"
+              }
+            },
+            "defer_launch": {
+              "description": "Whether or not to defer launching the execution. Setting this value to true will keep the execution in not_started state until it is explicitly launched or the first scheduled start operation occurs.",
+              "default": false,
+              "type": {
+                "name": "Boolean"
+              }
+            },
+            "end_date": {
+              "description": "When the CloudApp should be automatically terminated.",
+              "type": {
+                "name": "DateTime"
+              }
+            }
+          }
+        },
+        "example": {
+          "name": "My dev server for testing",
+          "description": "Dev server for our new user interface project.",
+          "options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ],
+          "schedule_name": "Business days",
+          "defer_launch": false,
+          "end_date": "2014-03-24T00:00:00+00:00"
+        }
+      },
+      "responses": {
+        "not_found": {
+          "description": "The Application ID was not found in the specified Catalog.",
+          "status": 404
+        },
+        "launched": {
+          "description": "The Application was successfully launched.",
+          "status": 204
+        },
+        "manager_400_error": {
+          "description": "An error occurred when creating the execution in the Service Manager",
+          "status": 400
+        },
+        "manager_422_error": {
+          "description": "An error occurred when creating the execution in the Service Manager",
+          "status": 422
+        },
+        "grant_failure": {
+          "description": "An error occurred while processing the CloudApp's permissions. May be due to the user having insufficient permissions.",
+          "status": 403
+        },
+        "unprocessable_entity": {
+          "description": "The CAT could not be recompiled prior to launch.",
+          "status": 422
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": "The user is not authorized to perform this action.",
+          "status": 403
+        }
+      }
+    }
+  ]
+}

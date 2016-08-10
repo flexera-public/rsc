@@ -1,1 +1,3438 @@
-{"name":"V1::MediaType::Notification","attributes":{"id":{"required":true,"description":"Notification id","example_definition":"53e3bfa9a37b334abf000064","type":{"name":"String"}},"href":{"description":"Notification href","example_definition":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","type":{"name":"String"}},"execution":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","description":"Execution notification is for","reference":"V1::MediaType::Execution","type":{"name":"V1::MediaType::Execution","views":{"default":{"attributes":{"kind":{},"id":{},"name":{},"href":{},"description":{},"status":{},"cost":{},"deployment":{},"created_by":{},"timestamps":{},"links":{}}},"expanded":{"attributes":{"kind":{},"id":{},"name":{},"href":{},"description":{},"status":{},"cost":{},"deployment":{},"deployment_url":{},"configuration_options":{},"outputs":{},"available_operations":{},"available_actions":{},"next_action":{"view":"next_occurrence"},"running_operations":{"view":"embedded"},"api_resources":{},"latest_notifications":{"view":"embedded"},"created_by":{},"scheduled":{},"timestamps":{},"links":{},"launched_from_summary":{},"ends_at":{},"schedule_required":{},"current_schedule":{},"schedules":{}}},"source":{"attributes":{"id":{},"name":{},"href":{},"description":{},"configuration_options":{},"status":{},"source":{},"launched_from":{}}},"tiny":{"attributes":{"id":{},"name":{},"href":{},"description":{},"status":{},"timestamps":{}}},"master":{"attributes":{"id":{"view":"master"},"href":{"view":"master"},"name":{"view":"master"},"description":{"view":"master"},"status":{"view":"master"},"available_actions":{"view":"master"},"next_action":{"view":"master"},"available_operations":{"view":"master"},"running_operations":{"view":"master"},"configuration_options":{"view":"master"},"api_resources":{"view":"master"},"outputs":{"view":"master"},"source":{"view":"master"},"launched_from":{"view":"master"},"launched_from_summary":{"view":"master"},"deployment":{"view":"master"},"deployment_url":{"view":"master"},"latest_notifications":{"view":"master"},"created_by":{"view":"master"},"scheduled":{"view":"master"},"cost":{"view":"master"},"timestamps":{"view":"master"},"ends_at":{"view":"master"},"schedules":{"view":"master"},"schedule_required":{"view":"master"},"current_schedule":{"view":"master"},"kind":{"view":"master"},"links":{"view":"master"}}}},"mime_type":"application/vnd.rightscale.self_service.execution","description":null}},"message":{"description":"Notification content","example_definition":"Operation \"launch\" completed","type":{"name":"String"}},"category":{"values":["info","error","status_update"],"description":"Notification category, info or error","type":{"name":"String"}},"read":{"description":"Whether notification was marked as read (not currently used)","example_definition":"false","type":{"name":"Boolean"}},"timestamps":{"type":{"name":"Struct","attributes":{"created_at":{"description":"Creation timestamp","type":{"name":"DateTime"}}}}},"kind":{"description":"The kind of this resource, always self_service#notification","example_definition":"self_service#notification","type":{"name":"String"}},"links":{"reference":"V1::MediaType::Notification","type":{"name":"V1::MediaType::Notification::Links","attributes":{"execution":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Execution","type":{"name":"V1::MediaType::Execution::Link","attributes":{"id":{"required":true,"description":"Execution id","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"name":{"description":"Name of execution","example_definition":"My dev server for testing","type":{"name":"String"}},"href":{"description":"Execution href","example_definition":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001","type":{"name":"String"}}},"views":{"default":{"attributes":{"id":{},"name":{},"href":{}}},"master":{"attributes":{"id":{"view":"master"},"name":{"view":"master"},"href":{"view":"master"}}}},"link_to":"V1::MediaType::Execution"}}},"views":{"default":{"attributes":{"execution":{}}},"master":{"attributes":{"execution":{"view":"master"}}}},"links_struct":true}}},"views":{"default":{"attributes":{"kind":{},"id":{},"href":{},"message":{},"category":{},"read":{},"timestamps":{},"links":{}},"example":{"kind":"self_service#notification","id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"error","read":false,"timestamps":{"created_at":"2013-06-17T00:00:00+00:00"},"links":{"execution":{"id":"5392479332ca2bd0ca000002","name":"My dev server for testing","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"}}}},"embedded":{"attributes":{"kind":{},"id":{},"href":{},"message":{},"category":{},"read":{},"timestamps":{}},"example":{"kind":"self_service#notification","id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"error","read":false,"timestamps":{"created_at":"2013-06-17T00:00:00+00:00"}}}},"mime_type":"application/vnd.rightscale.self_service.notification","description":null,"example":{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","execution":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001","name":"My dev server for testing","description":"Dev server for our new user interface project.","status":"running","available_actions":["protension","Theodora","uncharged"],"next_action":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001","name":"Start","execution":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001","name":"My dev server for testing","description":"Dev server for our new user interface project.","status":"running","available_actions":["extraprovincial","etymon","unaccredited"],"next_action":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001","name":"Start","execution":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001","name":"My dev server for testing","description":"Dev server for our new user interface project.","status":"running","available_actions":["unprofessional","clerkhood"],"available_operations":[{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]},{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]}],"running_operations":[{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}}],"configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"api_resources":[{"name":"spirignathous","type":"metayer"}],"outputs":[{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"}],"source":"name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"","launched_from_summary":{},"deployment":"/api/deployments/461147093","deployment_url":"https://us-3.rightscale.com/acct/60073/deployments/461147093","latest_notifications":[{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"error","read":false,"kind":"self_service#notification","links":{}},{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"error","read":false,"kind":"self_service#notification","links":{}}],"scheduled":true,"ends_at":"2013-07-01T00:00:00+00:00","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":false,"current_schedule":"sharpshooting","kind":"self_service#execution","links":{"running_operations":{"href":"/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"},"latest_notifications":{"href":"/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"}}},"recurrence":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","first_occurrence":"2014-01-18T00:00:00+00:00","timezone":"America/Los_Angeles","recurrence_description":"Every third Sunday.","action":"enable","next_occurrence":"2013-07-13T00:00:00+00:00","execution_schedule":false,"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"operation":{"name":"backup","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}]},"timestamps":{"created_at":"2014-07-22T00:00:00+00:00","updated_at":"2014-04-15T00:00:00+00:00"},"kind":"self_service#scheduled_action","links":{"execution":{"id":"5392479332ca2bd0ca000002","name":"My dev server for testing","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"}}},"available_operations":[{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]}],"running_operations":[{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}}],"configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"}],"api_resources":[{"name":"os","type":"separatist"}],"outputs":[{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"}],"source":"name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"","launched_from":{"type":"application","value":"{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"},"launched_from_summary":{},"deployment":"/api/deployments/461147093","deployment_url":"https://us-3.rightscale.com/acct/60073/deployments/461147093","latest_notifications":[{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"status_update","read":false,"kind":"self_service#notification","links":{}},{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"info","read":false,"kind":"self_service#notification","links":{}},{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"info","read":false,"kind":"self_service#notification","links":{}}],"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"scheduled":false,"cost":{"value":"23.53","unit":"$","updated_at":"2012-12-23T00:00:00+00:00"},"timestamps":{"created_at":"2012-11-27T00:00:00+00:00","launched_at":"2014-08-09T00:00:00+00:00","terminated_at":"2013-05-12T00:00:00+00:00"},"ends_at":"2014-12-03T00:00:00+00:00","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":false,"current_schedule":"compresence","kind":"self_service#execution","links":{"running_operations":{"href":"/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"},"latest_notifications":{"href":"/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"}}},"recurrence":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","first_occurrence":"2013-07-16T00:00:00+00:00","timezone":"America/Los_Angeles","recurrence_description":"Every third Sunday.","action":"start","next_occurrence":"2014-03-29T00:00:00+00:00","execution_schedule":false,"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"operation":{"name":"backup","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}]},"timestamps":{"created_at":"2014-04-13T00:00:00+00:00","updated_at":"2013-06-03T00:00:00+00:00"},"kind":"self_service#scheduled_action","links":{"execution":{"id":"5392479332ca2bd0ca000002","name":"My dev server for testing","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"}}},"available_operations":[{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]},{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]},{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]}],"running_operations":[{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"}],"status":{"tasks":[{"name":"geckoid","label":"Khotana"},{"name":"sharebone","label":"glassie"},{"name":"scaramouch","label":"norelin"}],"summary":"aborted","percent":75},"execution":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001","name":"My dev server for testing","description":"Dev server for our new user interface project.","status":"running","available_actions":["dissuasory","virginship"],"next_action":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001","name":"Start","recurrence":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","first_occurrence":"2014-08-06T00:00:00+00:00","timezone":"America/Los_Angeles","recurrence_description":"Every third Sunday.","action":"run","next_occurrence":"2013-01-26T00:00:00+00:00","execution_schedule":true,"kind":"self_service#scheduled_action","links":{}},"available_operations":[{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]},{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]},{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]}],"running_operations":[{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}},{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}},{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}}],"configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"api_resources":[{"name":"helicograph","type":"retromingently"}],"outputs":[{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"}],"source":"name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"","launched_from":{"type":"application","value":"{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"},"launched_from_summary":{},"deployment":"/api/deployments/461147093","deployment_url":"https://us-3.rightscale.com/acct/60073/deployments/461147093","latest_notifications":[{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"info","read":false,"kind":"self_service#notification","links":{}},{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"status_update","read":false,"kind":"self_service#notification","links":{}},{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"info","read":false,"kind":"self_service#notification","links":{}}],"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"scheduled":false,"cost":{"value":"23.53","unit":"$","updated_at":"2013-07-06T00:00:00+00:00"},"timestamps":{"created_at":"2014-11-30T00:00:00+00:00","launched_at":"2013-11-11T00:00:00+00:00","terminated_at":"2013-04-13T00:00:00+00:00"},"ends_at":"2013-12-02T00:00:00+00:00","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"current_schedule":"tavolatite","kind":"self_service#execution","links":{"running_operations":{"href":"/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"},"latest_notifications":{"href":"/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"}}},"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"timestamps":{"created_at":"2014-09-09T00:00:00+00:00","finished_at":"2013-02-20T00:00:00+00:00"},"kind":"self_service#operation","links":{"execution":{"id":"5392479332ca2bd0ca000002","name":"My dev server for testing","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"}}},{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"status":{"tasks":[{"name":"macrochemical","label":"oculus"},{"name":"mingy","label":"geejee"},{"name":"saltwife","label":"escutellate"}],"summary":"aborted","percent":75},"execution":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001","name":"My dev server for testing","description":"Dev server for our new user interface project.","status":"running","available_actions":["suffixment"],"next_action":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001","name":"Start","recurrence":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","first_occurrence":"2013-01-12T00:00:00+00:00","timezone":"America/Los_Angeles","recurrence_description":"Every third Sunday.","action":"launch","next_occurrence":"2014-05-18T00:00:00+00:00","execution_schedule":true,"kind":"self_service#scheduled_action","links":{}},"available_operations":[{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]},{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]},{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]}],"running_operations":[{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}},{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}},{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}}],"configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"}],"api_resources":[{"name":"jiglike","type":"druidic"},{"name":"ubiquity","type":"vermicular"}],"outputs":[{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"}],"source":"name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"","launched_from":{"type":"application","value":"{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"},"launched_from_summary":{},"deployment":"/api/deployments/461147093","deployment_url":"https://us-3.rightscale.com/acct/60073/deployments/461147093","latest_notifications":[{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"status_update","read":false,"kind":"self_service#notification","links":{}}],"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"scheduled":false,"cost":{"value":"23.53","unit":"$","updated_at":"2014-12-04T00:00:00+00:00"},"timestamps":{"created_at":"2012-12-17T00:00:00+00:00","launched_at":"2014-05-23T00:00:00+00:00","terminated_at":"2014-04-04T00:00:00+00:00"},"ends_at":"2014-11-21T00:00:00+00:00","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":true,"current_schedule":"Digenea","kind":"self_service#execution","links":{"running_operations":{"href":"/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"},"latest_notifications":{"href":"/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"}}},"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"timestamps":{"created_at":"2014-09-25T00:00:00+00:00","finished_at":"2013-02-08T00:00:00+00:00"},"kind":"self_service#operation","links":{"execution":{"id":"5392479332ca2bd0ca000002","name":"My dev server for testing","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"}}}],"configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"api_resources":[{"name":"unsettled","type":"Antilope","value":{"href":"unfermenting","details":{}}},{"name":"hypothermia","type":"quadricentennial","value":{"href":"perlustrate","details":{}}},{"name":"Bourbonism","type":"unprostituted","value":{"href":"inerrantly","details":{}}}],"outputs":[{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"}],"source":"name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"","launched_from":{"type":"application","value":"{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"},"launched_from_summary":{},"deployment":"/api/deployments/461147093","deployment_url":"https://us-3.rightscale.com/acct/60073/deployments/461147093","latest_notifications":[{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","execution":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001","name":"My dev server for testing","description":"Dev server for our new user interface project.","status":"running","available_actions":["digitalein"],"next_action":{"id":"5392479332ca2bd0ca000002","href":"/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001","name":"Start","recurrence":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR","first_occurrence":"2013-05-14T00:00:00+00:00","timezone":"America/Los_Angeles","recurrence_description":"Every third Sunday.","action":"run","next_occurrence":"2014-09-12T00:00:00+00:00","execution_schedule":true,"kind":"self_service#scheduled_action","links":{}},"available_operations":[{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"]}]}],"running_operations":[{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}},{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}},{"id":"53e270fca37b3315c5000136","href":"/api/manager/projects/12345/operations/53e270fca37b3315c5000136","name":"launch","configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"}],"kind":"self_service#operation","links":{}}],"configuration_options":[{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"},{"name":"cloud","type":"string","value":"AWS US-West"}],"api_resources":[{"name":"unditched","type":"stereoscopist"},{"name":"exerciser","type":"assbaa"},{"name":"hulkage","type":"mnemonicon"}],"outputs":[{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"},{"name":"running_branch","label":"Branch name","description":"The name of the branch that is running on the app servers","category":"Developer Information","index":3,"value":"dev_branch_1"}],"source":"name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"","launched_from":{"type":"application","value":"{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"},"launched_from_summary":{},"deployment":"/api/deployments/461147093","deployment_url":"https://us-3.rightscale.com/acct/60073/deployments/461147093","latest_notifications":[{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"error","read":false,"kind":"self_service#notification","links":{}},{"id":"53e3bfa9a37b334abf000064","href":"/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064","message":"Operation \"launch\" completed","category":"status_update","read":false,"kind":"self_service#notification","links":{}}],"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"scheduled":false,"cost":{"value":"23.53","unit":"$","updated_at":"2013-02-27T00:00:00+00:00"},"timestamps":{"created_at":"2014-08-01T00:00:00+00:00","launched_at":"2014-04-17T00:00:00+00:00","terminated_at":"2013-09-25T00:00:00+00:00"},"ends_at":"2014-06-05T00:00:00+00:00","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":false,"current_schedule":"opportunist","kind":"self_service#execution","links":{"running_operations":{"href":"/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"},"latest_notifications":{"href":"/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"}}},"message":"Operation \"launch\" completed","category":"info","read":false,"timestamps":{"created_at":"2012-12-29T00:00:00+00:00"},"kind":"self_service#notification","links":{"execution":{"id":"5392479332ca2bd0ca000002","name":"My dev server for testing","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"}}}],"created_by":{"id":9876,"name":"Joe Montana","email":"joe.montana@49ers.com"},"scheduled":false,"cost":{"value":"23.53","unit":"$","updated_at":"2013-05-18T00:00:00+00:00"},"timestamps":{"created_at":"2014-02-09T00:00:00+00:00","launched_at":"2014-02-04T00:00:00+00:00","terminated_at":"2014-08-25T00:00:00+00:00"},"ends_at":"2013-05-02T00:00:00+00:00","schedules":[{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"},{"name":"Business hours","description":"Weekdays from 9am to 5pm","start_recurrence":{"hour":8,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"stop_recurrence":{"hour":18,"minute":0,"rule":"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"},"created_from":"/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"}],"schedule_required":false,"current_schedule":"Bootid","kind":"self_service#execution","links":{"running_operations":{"href":"/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"},"latest_notifications":{"href":"/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"}}},"message":"Operation \"launch\" completed","category":"error","read":false,"timestamps":{"created_at":"2013-06-17T00:00:00+00:00"},"kind":"self_service#notification","links":{"execution":{"id":"5392479332ca2bd0ca000002","name":"My dev server for testing","href":"/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"}}}}
+{
+  "name": "V1::MediaType::Notification",
+  "attributes": {
+    "id": {
+      "required": true,
+      "description": "Notification id",
+      "example_definition": "53e3bfa9a37b334abf000064",
+      "type": {
+        "name": "String"
+      }
+    },
+    "href": {
+      "description": "Notification href",
+      "example_definition": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+      "type": {
+        "name": "String"
+      }
+    },
+    "execution": {
+      "identity": "id",
+      "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+      "description": "Execution notification is for",
+      "reference": "V1::MediaType::Execution",
+      "type": {
+        "name": "V1::MediaType::Execution",
+        "views": {
+          "default": {
+            "attributes": {
+              "kind": {
+              },
+              "id": {
+              },
+              "name": {
+              },
+              "href": {
+              },
+              "description": {
+              },
+              "status": {
+              },
+              "cost": {
+              },
+              "deployment": {
+              },
+              "created_by": {
+              },
+              "timestamps": {
+              },
+              "links": {
+              }
+            }
+          },
+          "index": {
+            "attributes": {
+              "kind": {
+              },
+              "id": {
+              },
+              "name": {
+              },
+              "href": {
+              },
+              "description": {
+              },
+              "status": {
+              },
+              "cost": {
+              },
+              "deployment_url": {
+              },
+              "outputs": {
+              },
+              "available_operations_info": {
+              },
+              "available_actions": {
+              },
+              "next_action": {
+                "view": "next_occurrence"
+              },
+              "running_operations": {
+                "view": "embedded"
+              },
+              "latest_notification": {
+                "view": "embedded"
+              },
+              "created_by": {
+              },
+              "scheduled": {
+              },
+              "timestamps": {
+              },
+              "launched_from_summary": {
+              },
+              "ends_at": {
+              },
+              "current_schedule": {
+              }
+            }
+          },
+          "expanded": {
+            "attributes": {
+              "kind": {
+              },
+              "id": {
+              },
+              "name": {
+              },
+              "href": {
+              },
+              "description": {
+              },
+              "compilation_href": {
+              },
+              "status": {
+              },
+              "cost": {
+              },
+              "deployment": {
+              },
+              "deployment_url": {
+              },
+              "configuration_options": {
+              },
+              "outputs": {
+              },
+              "available_operations": {
+              },
+              "available_actions": {
+              },
+              "next_action": {
+                "view": "next_occurrence"
+              },
+              "running_operations": {
+                "view": "embedded"
+              },
+              "api_resources": {
+              },
+              "latest_notifications": {
+                "view": "embedded"
+              },
+              "created_by": {
+              },
+              "scheduled": {
+              },
+              "timestamps": {
+              },
+              "links": {
+              },
+              "launched_from_summary": {
+              },
+              "ends_at": {
+              },
+              "schedule_required": {
+              },
+              "current_schedule": {
+              },
+              "schedules": {
+              }
+            }
+          },
+          "source": {
+            "attributes": {
+              "id": {
+              },
+              "name": {
+              },
+              "href": {
+              },
+              "dependencies": {
+              },
+              "description": {
+              },
+              "configuration_options": {
+              },
+              "status": {
+              },
+              "source": {
+              },
+              "launched_from": {
+              }
+            }
+          },
+          "tiny": {
+            "attributes": {
+              "id": {
+              },
+              "name": {
+              },
+              "href": {
+              },
+              "description": {
+              },
+              "status": {
+              },
+              "timestamps": {
+              },
+              "launched_from_summary": {
+              },
+              "created_by": {
+              }
+            }
+          },
+          "master": {
+            "attributes": {
+              "id": {
+                "view": "master"
+              },
+              "href": {
+                "view": "master"
+              },
+              "name": {
+                "view": "master"
+              },
+              "description": {
+                "view": "master"
+              },
+              "status": {
+                "view": "master"
+              },
+              "compilation_href": {
+                "view": "master"
+              },
+              "dependencies": {
+                "view": "master"
+              },
+              "available_actions": {
+                "view": "master"
+              },
+              "next_action": {
+                "view": "master"
+              },
+              "available_operations": {
+                "view": "master"
+              },
+              "available_operations_info": {
+                "view": "master"
+              },
+              "running_operations": {
+                "view": "master"
+              },
+              "configuration_options": {
+                "view": "master"
+              },
+              "api_resources": {
+                "view": "master"
+              },
+              "outputs": {
+                "view": "master"
+              },
+              "source": {
+                "view": "master"
+              },
+              "launched_from": {
+                "view": "master"
+              },
+              "launched_from_summary": {
+                "view": "master"
+              },
+              "deployment": {
+                "view": "master"
+              },
+              "deployment_url": {
+                "view": "master"
+              },
+              "latest_notifications": {
+                "view": "master"
+              },
+              "latest_notification": {
+                "view": "master"
+              },
+              "created_by": {
+                "view": "master"
+              },
+              "scheduled": {
+                "view": "master"
+              },
+              "cost": {
+                "view": "master"
+              },
+              "timestamps": {
+                "view": "master"
+              },
+              "ends_at": {
+                "view": "master"
+              },
+              "schedules": {
+                "view": "master"
+              },
+              "schedule_required": {
+                "view": "master"
+              },
+              "current_schedule": {
+                "view": "master"
+              },
+              "kind": {
+                "view": "master"
+              },
+              "links": {
+                "view": "master"
+              }
+            }
+          }
+        },
+        "mime_type": "application/vnd.rightscale.self_service.execution",
+        "description": null
+      }
+    },
+    "message": {
+      "description": "Notification content",
+      "example_definition": "Operation \"launch\" completed",
+      "type": {
+        "name": "String"
+      }
+    },
+    "category": {
+      "values": [
+        "info",
+        "error",
+        "status_update"
+      ],
+      "description": "Notification category, info or error",
+      "type": {
+        "name": "String"
+      }
+    },
+    "read": {
+      "description": "Whether notification was marked as read (not currently used)",
+      "example_definition": "false",
+      "type": {
+        "name": "Boolean"
+      }
+    },
+    "timestamps": {
+      "type": {
+        "name": "Struct",
+        "attributes": {
+          "created_at": {
+            "description": "Creation timestamp",
+            "type": {
+              "name": "DateTime"
+            }
+          }
+        }
+      }
+    },
+    "kind": {
+      "description": "The kind of this resource, always self_service#notification",
+      "example_definition": "self_service#notification",
+      "type": {
+        "name": "String"
+      }
+    },
+    "links": {
+      "reference": "V1::MediaType::Notification",
+      "type": {
+        "name": "V1::MediaType::Notification::Links",
+        "attributes": {
+          "execution": {
+            "identity": "id",
+            "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+            "reference": "V1::MediaType::Execution",
+            "type": {
+              "name": "V1::MediaType::Execution::Link",
+              "attributes": {
+                "id": {
+                  "required": true,
+                  "description": "Execution id",
+                  "example_definition": "5392479332ca2bd0ca000002",
+                  "type": {
+                    "name": "String"
+                  }
+                },
+                "name": {
+                  "description": "Name of execution",
+                  "example_definition": "My dev server for testing",
+                  "type": {
+                    "name": "String"
+                  }
+                },
+                "href": {
+                  "description": "Execution href",
+                  "example_definition": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              },
+              "views": {
+                "default": {
+                  "attributes": {
+                    "id": {
+                    },
+                    "name": {
+                    },
+                    "href": {
+                    }
+                  }
+                },
+                "master": {
+                  "attributes": {
+                    "id": {
+                      "view": "master"
+                    },
+                    "name": {
+                      "view": "master"
+                    },
+                    "href": {
+                      "view": "master"
+                    }
+                  }
+                }
+              },
+              "link_to": "V1::MediaType::Execution"
+            }
+          }
+        },
+        "views": {
+          "default": {
+            "attributes": {
+              "execution": {
+              }
+            }
+          },
+          "master": {
+            "attributes": {
+              "execution": {
+                "view": "master"
+              }
+            }
+          }
+        },
+        "links_struct": true
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "kind": {
+        },
+        "id": {
+        },
+        "href": {
+        },
+        "message": {
+        },
+        "category": {
+        },
+        "read": {
+        },
+        "timestamps": {
+        },
+        "links": {
+        }
+      },
+      "example": {
+        "kind": "self_service#notification",
+        "id": "53e3bfa9a37b334abf000064",
+        "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+        "message": "Operation \"launch\" completed",
+        "category": "error",
+        "read": false,
+        "timestamps": {
+          "created_at": "2013-06-17T00:00:00+00:00"
+        },
+        "links": {
+          "execution": {
+            "id": "5392479332ca2bd0ca000002",
+            "name": "My dev server for testing",
+            "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+          }
+        }
+      }
+    },
+    "embedded": {
+      "attributes": {
+        "kind": {
+        },
+        "id": {
+        },
+        "href": {
+        },
+        "message": {
+        },
+        "category": {
+        },
+        "read": {
+        },
+        "timestamps": {
+        }
+      },
+      "example": {
+        "kind": "self_service#notification",
+        "id": "53e3bfa9a37b334abf000064",
+        "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+        "message": "Operation \"launch\" completed",
+        "category": "error",
+        "read": false,
+        "timestamps": {
+          "created_at": "2013-06-17T00:00:00+00:00"
+        }
+      }
+    }
+  },
+  "mime_type": "application/vnd.rightscale.self_service.notification",
+  "description": null,
+  "example": {
+    "id": "53e3bfa9a37b334abf000064",
+    "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+    "execution": {
+      "id": "5392479332ca2bd0ca000002",
+      "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+      "name": "My dev server for testing",
+      "description": "Dev server for our new user interface project.",
+      "status": "running",
+      "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+      "dependencies": [
+        {
+          "name": "slangy",
+          "package": "irresistibly",
+          "alias": "log",
+          "source_href": "garlandry"
+        },
+        {
+          "name": "gorbelly",
+          "package": "clapt",
+          "alias": "log",
+          "source_href": "Styphelia"
+        },
+        {
+          "name": "autonomy",
+          "package": "negative",
+          "alias": "log",
+          "source_href": "nation"
+        }
+      ],
+      "available_actions": [
+        "protension",
+        "Theodora",
+        "uncharged"
+      ],
+      "next_action": {
+        "id": "5392479332ca2bd0ca000002",
+        "href": "/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001",
+        "name": "Start",
+        "execution": {
+          "id": "5392479332ca2bd0ca000002",
+          "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+          "name": "My dev server for testing",
+          "description": "Dev server for our new user interface project.",
+          "status": "running",
+          "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+          "dependencies": [
+            {
+              "name": "uselessly",
+              "package": "bretelle",
+              "alias": "log",
+              "source_href": "entoptical"
+            }
+          ],
+          "available_actions": [
+            "extraprovincial",
+            "etymon",
+            "unaccredited"
+          ],
+          "next_action": {
+            "id": "5392479332ca2bd0ca000002",
+            "href": "/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001",
+            "name": "Start",
+            "execution": {
+              "id": "5392479332ca2bd0ca000002",
+              "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+              "name": "My dev server for testing",
+              "description": "Dev server for our new user interface project.",
+              "status": "running",
+              "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+              "dependencies": [
+                {
+                  "name": "Baduhenna",
+                  "package": "turbinectomy",
+                  "alias": "log",
+                  "source_href": "Montanism"
+                }
+              ],
+              "available_actions": [
+                "unprofessional",
+                "clerkhood"
+              ],
+              "available_operations": [
+                {
+                  "name": "update_code",
+                  "description": "Update the code on the app servers",
+                  "label": "Update code",
+                  "parameters": [
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "update_code",
+                  "description": "Update the code on the app servers",
+                  "label": "Update code",
+                  "parameters": [
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "available_operations_info": [
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                }
+              ],
+              "running_operations": [
+                {
+                  "id": "53e270fca37b3315c5000136",
+                  "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                  "name": "launch",
+                  "label": "Create database backup",
+                  "configuration_options": [
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    },
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    }
+                  ],
+                  "kind": "self_service#operation",
+                  "links": {
+                  }
+                }
+              ],
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ],
+              "api_resources": [
+                {
+                  "name": "spirignathous",
+                  "type": "metayer"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                },
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                },
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                }
+              ],
+              "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+              "launched_from_summary": {
+              },
+              "deployment": "/api/deployments/461147093",
+              "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+              "latest_notifications": [
+                {
+                  "id": "53e3bfa9a37b334abf000064",
+                  "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                  "message": "Operation \"launch\" completed",
+                  "category": "error",
+                  "read": false,
+                  "kind": "self_service#notification",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "53e3bfa9a37b334abf000064",
+                  "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                  "message": "Operation \"launch\" completed",
+                  "category": "error",
+                  "read": false,
+                  "kind": "self_service#notification",
+                  "links": {
+                  }
+                }
+              ],
+              "scheduled": true,
+              "ends_at": "2013-07-01T00:00:00+00:00",
+              "schedules": [
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                },
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                },
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                }
+              ],
+              "schedule_required": false,
+              "current_schedule": "sharpshooting",
+              "kind": "self_service#execution",
+              "links": {
+                "running_operations": {
+                  "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+                },
+                "latest_notifications": {
+                  "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+                }
+              }
+            },
+            "recurrence": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR",
+            "first_occurrence": "2014-01-18T00:00:00+00:00",
+            "timezone": "America/Los_Angeles",
+            "recurrence_description": "Every third Sunday.",
+            "action": "stop",
+            "next_occurrence": "2013-07-13T00:00:00+00:00",
+            "execution_schedule": false,
+            "created_by": {
+              "id": 9876,
+              "name": "Joe Montana",
+              "email": "joe.montana@49ers.com"
+            },
+            "operation": {
+              "name": "backup",
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ]
+            },
+            "timestamps": {
+              "created_at": "2014-07-22T00:00:00+00:00",
+              "updated_at": "2014-04-15T00:00:00+00:00"
+            },
+            "kind": "self_service#scheduled_action",
+            "links": {
+              "execution": {
+                "id": "5392479332ca2bd0ca000002",
+                "name": "My dev server for testing",
+                "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+              }
+            }
+          },
+          "available_operations": [
+            {
+              "name": "update_code",
+              "description": "Update the code on the app servers",
+              "label": "Update code",
+              "parameters": [
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                }
+              ]
+            }
+          ],
+          "available_operations_info": [
+            {
+              "name": "update_code",
+              "label": "Update code",
+              "description": "Update the code on the app servers"
+            }
+          ],
+          "running_operations": [
+            {
+              "id": "53e270fca37b3315c5000136",
+              "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+              "name": "launch",
+              "label": "Create database backup",
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ],
+              "kind": "self_service#operation",
+              "links": {
+              }
+            }
+          ],
+          "configuration_options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ],
+          "api_resources": [
+            {
+              "name": "os",
+              "type": "separatist"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "running_branch",
+              "label": "Branch name",
+              "description": "The name of the branch that is running on the app servers",
+              "category": "Developer Information",
+              "index": 3,
+              "value": "dev_branch_1"
+            },
+            {
+              "name": "running_branch",
+              "label": "Branch name",
+              "description": "The name of the branch that is running on the app servers",
+              "category": "Developer Information",
+              "index": 3,
+              "value": "dev_branch_1"
+            },
+            {
+              "name": "running_branch",
+              "label": "Branch name",
+              "description": "The name of the branch that is running on the app servers",
+              "category": "Developer Information",
+              "index": 3,
+              "value": "dev_branch_1"
+            }
+          ],
+          "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+          "launched_from": {
+            "type": "application",
+            "value": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"
+          },
+          "launched_from_summary": {
+          },
+          "deployment": "/api/deployments/461147093",
+          "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+          "latest_notifications": [
+            {
+              "id": "53e3bfa9a37b334abf000064",
+              "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+              "message": "Operation \"launch\" completed",
+              "category": "status_update",
+              "read": false,
+              "kind": "self_service#notification",
+              "links": {
+              }
+            },
+            {
+              "id": "53e3bfa9a37b334abf000064",
+              "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+              "message": "Operation \"launch\" completed",
+              "category": "info",
+              "read": false,
+              "kind": "self_service#notification",
+              "links": {
+              }
+            },
+            {
+              "id": "53e3bfa9a37b334abf000064",
+              "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+              "message": "Operation \"launch\" completed",
+              "category": "info",
+              "read": false,
+              "kind": "self_service#notification",
+              "links": {
+              }
+            }
+          ],
+          "latest_notification": {
+            "id": "53e3bfa9a37b334abf000064",
+            "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+            "execution": {
+              "id": "5392479332ca2bd0ca000002",
+              "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+              "name": "My dev server for testing",
+              "description": "Dev server for our new user interface project.",
+              "status": "running",
+              "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+              "dependencies": [
+                {
+                  "name": "unportioned",
+                  "package": "chaetotaxy",
+                  "alias": "log",
+                  "source_href": "phoenicaceous"
+                }
+              ],
+              "available_actions": [
+                "guava"
+              ],
+              "available_operations": [
+                {
+                  "name": "update_code",
+                  "description": "Update the code on the app servers",
+                  "label": "Update code",
+                  "parameters": [
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "update_code",
+                  "description": "Update the code on the app servers",
+                  "label": "Update code",
+                  "parameters": [
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "available_operations_info": [
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                },
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                }
+              ],
+              "running_operations": [
+                {
+                  "id": "53e270fca37b3315c5000136",
+                  "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                  "name": "launch",
+                  "label": "Create database backup",
+                  "configuration_options": [
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    },
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    }
+                  ],
+                  "kind": "self_service#operation",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "53e270fca37b3315c5000136",
+                  "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                  "name": "launch",
+                  "label": "Create database backup",
+                  "configuration_options": [
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    }
+                  ],
+                  "kind": "self_service#operation",
+                  "links": {
+                  }
+                }
+              ],
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ],
+              "api_resources": [
+                {
+                  "name": "monarthritis",
+                  "type": "chicaner"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                },
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                },
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                }
+              ],
+              "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+              "launched_from_summary": {
+              },
+              "deployment": "/api/deployments/461147093",
+              "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+              "latest_notifications": [
+                {
+                  "id": "53e3bfa9a37b334abf000064",
+                  "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                  "message": "Operation \"launch\" completed",
+                  "category": "info",
+                  "read": false,
+                  "kind": "self_service#notification",
+                  "links": {
+                  }
+                }
+              ],
+              "scheduled": false,
+              "ends_at": "2013-10-27T00:00:00+00:00",
+              "schedules": [
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                }
+              ],
+              "schedule_required": false,
+              "current_schedule": "splanchnesthetic",
+              "kind": "self_service#execution",
+              "links": {
+                "running_operations": {
+                  "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+                },
+                "latest_notifications": {
+                  "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+                }
+              }
+            },
+            "message": "Operation \"launch\" completed",
+            "category": "error",
+            "read": false,
+            "timestamps": {
+              "created_at": "2013-03-14T00:00:00+00:00"
+            },
+            "kind": "self_service#notification",
+            "links": {
+              "execution": {
+                "id": "5392479332ca2bd0ca000002",
+                "name": "My dev server for testing",
+                "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+              }
+            }
+          },
+          "created_by": {
+            "id": 9876,
+            "name": "Joe Montana",
+            "email": "joe.montana@49ers.com"
+          },
+          "scheduled": false,
+          "cost": {
+            "value": "23.53",
+            "unit": "$",
+            "updated_at": "2012-12-23T00:00:00+00:00"
+          },
+          "timestamps": {
+            "created_at": "2012-11-27T00:00:00+00:00",
+            "launched_at": "2014-08-09T00:00:00+00:00",
+            "terminated_at": "2013-05-12T00:00:00+00:00"
+          },
+          "ends_at": "2014-12-03T00:00:00+00:00",
+          "schedules": [
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            }
+          ],
+          "schedule_required": false,
+          "current_schedule": "compresence",
+          "kind": "self_service#execution",
+          "links": {
+            "running_operations": {
+              "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+            },
+            "latest_notifications": {
+              "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+            }
+          }
+        },
+        "recurrence": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR",
+        "first_occurrence": "2013-07-16T00:00:00+00:00",
+        "timezone": "America/Los_Angeles",
+        "recurrence_description": "Every third Sunday.",
+        "action": "start",
+        "next_occurrence": "2014-03-29T00:00:00+00:00",
+        "execution_schedule": false,
+        "created_by": {
+          "id": 9876,
+          "name": "Joe Montana",
+          "email": "joe.montana@49ers.com"
+        },
+        "operation": {
+          "name": "backup",
+          "configuration_options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ]
+        },
+        "timestamps": {
+          "created_at": "2014-04-13T00:00:00+00:00",
+          "updated_at": "2013-06-03T00:00:00+00:00"
+        },
+        "kind": "self_service#scheduled_action",
+        "links": {
+          "execution": {
+            "id": "5392479332ca2bd0ca000002",
+            "name": "My dev server for testing",
+            "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+          }
+        }
+      },
+      "available_operations": [
+        {
+          "name": "update_code",
+          "description": "Update the code on the app servers",
+          "label": "Update code",
+          "parameters": [
+            {
+              "name": "cloud",
+              "description": "Select the cloud to launch in",
+              "type": "string",
+              "default": "AWS US-East",
+              "operations": [
+                "launch",
+                "update_code"
+              ]
+            },
+            {
+              "name": "cloud",
+              "description": "Select the cloud to launch in",
+              "type": "string",
+              "default": "AWS US-East",
+              "operations": [
+                "launch",
+                "update_code"
+              ]
+            },
+            {
+              "name": "cloud",
+              "description": "Select the cloud to launch in",
+              "type": "string",
+              "default": "AWS US-East",
+              "operations": [
+                "launch",
+                "update_code"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "update_code",
+          "description": "Update the code on the app servers",
+          "label": "Update code",
+          "parameters": [
+            {
+              "name": "cloud",
+              "description": "Select the cloud to launch in",
+              "type": "string",
+              "default": "AWS US-East",
+              "operations": [
+                "launch",
+                "update_code"
+              ]
+            },
+            {
+              "name": "cloud",
+              "description": "Select the cloud to launch in",
+              "type": "string",
+              "default": "AWS US-East",
+              "operations": [
+                "launch",
+                "update_code"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "update_code",
+          "description": "Update the code on the app servers",
+          "label": "Update code",
+          "parameters": [
+            {
+              "name": "cloud",
+              "description": "Select the cloud to launch in",
+              "type": "string",
+              "default": "AWS US-East",
+              "operations": [
+                "launch",
+                "update_code"
+              ]
+            }
+          ]
+        }
+      ],
+      "available_operations_info": [
+        {
+          "name": "update_code",
+          "label": "Update code",
+          "description": "Update the code on the app servers"
+        },
+        {
+          "name": "update_code",
+          "label": "Update code",
+          "description": "Update the code on the app servers"
+        }
+      ],
+      "running_operations": [
+        {
+          "id": "53e270fca37b3315c5000136",
+          "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+          "name": "launch",
+          "label": "Create database backup",
+          "configuration_options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ],
+          "status": {
+            "tasks": [
+              {
+                "name": "geckoid",
+                "label": "Khotana"
+              },
+              {
+                "name": "sharebone",
+                "label": "glassie"
+              },
+              {
+                "name": "scaramouch",
+                "label": "norelin"
+              }
+            ],
+            "summary": "failed",
+            "percent": 75
+          },
+          "execution": {
+            "id": "5392479332ca2bd0ca000002",
+            "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+            "name": "My dev server for testing",
+            "description": "Dev server for our new user interface project.",
+            "status": "running",
+            "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+            "dependencies": [
+              {
+                "name": "unagonize",
+                "package": "backchat",
+                "alias": "log",
+                "source_href": "aperch"
+              },
+              {
+                "name": "appertinent",
+                "package": "reeshle",
+                "alias": "log",
+                "source_href": "phrontisterion"
+              },
+              {
+                "name": "Johnathan",
+                "package": "baggie",
+                "alias": "log",
+                "source_href": "prayerfulness"
+              }
+            ],
+            "available_actions": [
+              "dissuasory",
+              "virginship"
+            ],
+            "next_action": {
+              "id": "5392479332ca2bd0ca000002",
+              "href": "/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001",
+              "name": "Start",
+              "recurrence": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR",
+              "first_occurrence": "2014-08-06T00:00:00+00:00",
+              "timezone": "America/Los_Angeles",
+              "recurrence_description": "Every third Sunday.",
+              "action": "run",
+              "next_occurrence": "2013-01-26T00:00:00+00:00",
+              "execution_schedule": true,
+              "kind": "self_service#scheduled_action",
+              "links": {
+              }
+            },
+            "available_operations": [
+              {
+                "name": "update_code",
+                "description": "Update the code on the app servers",
+                "label": "Update code",
+                "parameters": [
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "update_code",
+                "description": "Update the code on the app servers",
+                "label": "Update code",
+                "parameters": [
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  },
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "update_code",
+                "description": "Update the code on the app servers",
+                "label": "Update code",
+                "parameters": [
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  },
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  },
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "available_operations_info": [
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              },
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              },
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              }
+            ],
+            "running_operations": [
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              },
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              },
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              }
+            ],
+            "configuration_options": [
+              {
+                "name": "cloud",
+                "type": "string",
+                "value": "AWS US-West"
+              },
+              {
+                "name": "cloud",
+                "type": "string",
+                "value": "AWS US-West"
+              },
+              {
+                "name": "cloud",
+                "type": "string",
+                "value": "AWS US-West"
+              }
+            ],
+            "api_resources": [
+              {
+                "name": "helicograph",
+                "type": "retromingently"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "running_branch",
+                "label": "Branch name",
+                "description": "The name of the branch that is running on the app servers",
+                "category": "Developer Information",
+                "index": 3,
+                "value": "dev_branch_1"
+              },
+              {
+                "name": "running_branch",
+                "label": "Branch name",
+                "description": "The name of the branch that is running on the app servers",
+                "category": "Developer Information",
+                "index": 3,
+                "value": "dev_branch_1"
+              }
+            ],
+            "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+            "launched_from": {
+              "type": "application",
+              "value": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"
+            },
+            "launched_from_summary": {
+            },
+            "deployment": "/api/deployments/461147093",
+            "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+            "latest_notifications": [
+              {
+                "id": "53e3bfa9a37b334abf000064",
+                "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                "message": "Operation \"launch\" completed",
+                "category": "info",
+                "read": false,
+                "kind": "self_service#notification",
+                "links": {
+                }
+              },
+              {
+                "id": "53e3bfa9a37b334abf000064",
+                "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                "message": "Operation \"launch\" completed",
+                "category": "status_update",
+                "read": false,
+                "kind": "self_service#notification",
+                "links": {
+                }
+              },
+              {
+                "id": "53e3bfa9a37b334abf000064",
+                "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                "message": "Operation \"launch\" completed",
+                "category": "info",
+                "read": false,
+                "kind": "self_service#notification",
+                "links": {
+                }
+              }
+            ],
+            "latest_notification": {
+              "id": "53e3bfa9a37b334abf000064",
+              "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+              "message": "Operation \"launch\" completed",
+              "category": "info",
+              "read": false,
+              "kind": "self_service#notification",
+              "links": {
+              }
+            },
+            "created_by": {
+              "id": 9876,
+              "name": "Joe Montana",
+              "email": "joe.montana@49ers.com"
+            },
+            "scheduled": false,
+            "cost": {
+              "value": "23.53",
+              "unit": "$",
+              "updated_at": "2013-07-06T00:00:00+00:00"
+            },
+            "timestamps": {
+              "created_at": "2014-11-30T00:00:00+00:00",
+              "launched_at": "2013-11-11T00:00:00+00:00",
+              "terminated_at": "2013-04-13T00:00:00+00:00"
+            },
+            "ends_at": "2013-12-02T00:00:00+00:00",
+            "schedules": [
+              {
+                "name": "Business hours",
+                "description": "Weekdays from 9am to 5pm",
+                "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+              },
+              {
+                "name": "Business hours",
+                "description": "Weekdays from 9am to 5pm",
+                "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+              },
+              {
+                "name": "Business hours",
+                "description": "Weekdays from 9am to 5pm",
+                "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+              }
+            ],
+            "schedule_required": true,
+            "current_schedule": "tavolatite",
+            "kind": "self_service#execution",
+            "links": {
+              "running_operations": {
+                "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+              },
+              "latest_notifications": {
+                "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+              }
+            }
+          },
+          "created_by": {
+            "id": 9876,
+            "name": "Joe Montana",
+            "email": "joe.montana@49ers.com"
+          },
+          "timestamps": {
+            "created_at": "2014-09-09T00:00:00+00:00",
+            "finished_at": "2013-02-20T00:00:00+00:00"
+          },
+          "kind": "self_service#operation",
+          "links": {
+            "execution": {
+              "id": "5392479332ca2bd0ca000002",
+              "name": "My dev server for testing",
+              "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+            }
+          }
+        },
+        {
+          "id": "53e270fca37b3315c5000136",
+          "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+          "name": "launch",
+          "label": "Create database backup",
+          "configuration_options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ],
+          "status": {
+            "tasks": [
+              {
+                "name": "macrochemical",
+                "label": "oculus"
+              },
+              {
+                "name": "mingy",
+                "label": "geejee"
+              },
+              {
+                "name": "saltwife",
+                "label": "escutellate"
+              }
+            ],
+            "summary": "new",
+            "percent": 75
+          },
+          "execution": {
+            "id": "5392479332ca2bd0ca000002",
+            "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+            "name": "My dev server for testing",
+            "description": "Dev server for our new user interface project.",
+            "status": "running",
+            "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+            "dependencies": [
+              {
+                "name": "indiscretion",
+                "package": "disfeature",
+                "alias": "log",
+                "source_href": "guanaco"
+              },
+              {
+                "name": "anomaly",
+                "package": "upbuild",
+                "alias": "log",
+                "source_href": "psilophyte"
+              },
+              {
+                "name": "eructative",
+                "package": "enharmonical",
+                "alias": "log",
+                "source_href": "councilist"
+              }
+            ],
+            "available_actions": [
+              "suffixment"
+            ],
+            "next_action": {
+              "id": "5392479332ca2bd0ca000002",
+              "href": "/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001",
+              "name": "Start",
+              "recurrence": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR",
+              "first_occurrence": "2013-01-12T00:00:00+00:00",
+              "timezone": "America/Los_Angeles",
+              "recurrence_description": "Every third Sunday.",
+              "action": "launch",
+              "next_occurrence": "2014-05-18T00:00:00+00:00",
+              "execution_schedule": true,
+              "kind": "self_service#scheduled_action",
+              "links": {
+              }
+            },
+            "available_operations": [
+              {
+                "name": "update_code",
+                "description": "Update the code on the app servers",
+                "label": "Update code",
+                "parameters": [
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  },
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "update_code",
+                "description": "Update the code on the app servers",
+                "label": "Update code",
+                "parameters": [
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  },
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "update_code",
+                "description": "Update the code on the app servers",
+                "label": "Update code",
+                "parameters": [
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "available_operations_info": [
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              },
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              }
+            ],
+            "running_operations": [
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              },
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              },
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              }
+            ],
+            "configuration_options": [
+              {
+                "name": "cloud",
+                "type": "string",
+                "value": "AWS US-West"
+              }
+            ],
+            "api_resources": [
+              {
+                "name": "jiglike",
+                "type": "druidic"
+              },
+              {
+                "name": "ubiquity",
+                "type": "vermicular"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "running_branch",
+                "label": "Branch name",
+                "description": "The name of the branch that is running on the app servers",
+                "category": "Developer Information",
+                "index": 3,
+                "value": "dev_branch_1"
+              },
+              {
+                "name": "running_branch",
+                "label": "Branch name",
+                "description": "The name of the branch that is running on the app servers",
+                "category": "Developer Information",
+                "index": 3,
+                "value": "dev_branch_1"
+              }
+            ],
+            "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+            "launched_from": {
+              "type": "application",
+              "value": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"
+            },
+            "launched_from_summary": {
+            },
+            "deployment": "/api/deployments/461147093",
+            "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+            "latest_notifications": [
+              {
+                "id": "53e3bfa9a37b334abf000064",
+                "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                "message": "Operation \"launch\" completed",
+                "category": "status_update",
+                "read": false,
+                "kind": "self_service#notification",
+                "links": {
+                }
+              }
+            ],
+            "latest_notification": {
+              "id": "53e3bfa9a37b334abf000064",
+              "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+              "message": "Operation \"launch\" completed",
+              "category": "status_update",
+              "read": false,
+              "kind": "self_service#notification",
+              "links": {
+              }
+            },
+            "created_by": {
+              "id": 9876,
+              "name": "Joe Montana",
+              "email": "joe.montana@49ers.com"
+            },
+            "scheduled": false,
+            "cost": {
+              "value": "23.53",
+              "unit": "$",
+              "updated_at": "2014-12-04T00:00:00+00:00"
+            },
+            "timestamps": {
+              "created_at": "2012-12-17T00:00:00+00:00",
+              "launched_at": "2014-05-23T00:00:00+00:00",
+              "terminated_at": "2014-04-04T00:00:00+00:00"
+            },
+            "ends_at": "2014-11-21T00:00:00+00:00",
+            "schedules": [
+              {
+                "name": "Business hours",
+                "description": "Weekdays from 9am to 5pm",
+                "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+              },
+              {
+                "name": "Business hours",
+                "description": "Weekdays from 9am to 5pm",
+                "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+              }
+            ],
+            "schedule_required": true,
+            "current_schedule": "Digenea",
+            "kind": "self_service#execution",
+            "links": {
+              "running_operations": {
+                "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+              },
+              "latest_notifications": {
+                "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+              }
+            }
+          },
+          "created_by": {
+            "id": 9876,
+            "name": "Joe Montana",
+            "email": "joe.montana@49ers.com"
+          },
+          "timestamps": {
+            "created_at": "2014-09-25T00:00:00+00:00",
+            "finished_at": "2013-02-08T00:00:00+00:00"
+          },
+          "kind": "self_service#operation",
+          "links": {
+            "execution": {
+              "id": "5392479332ca2bd0ca000002",
+              "name": "My dev server for testing",
+              "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+            }
+          }
+        }
+      ],
+      "configuration_options": [
+        {
+          "name": "cloud",
+          "type": "string",
+          "value": "AWS US-West"
+        },
+        {
+          "name": "cloud",
+          "type": "string",
+          "value": "AWS US-West"
+        }
+      ],
+      "api_resources": [
+        {
+          "name": "unsettled",
+          "type": "Antilope",
+          "value": {
+            "href": "unfermenting",
+            "details": {
+            }
+          }
+        },
+        {
+          "name": "hypothermia",
+          "type": "quadricentennial",
+          "value": {
+            "href": "perlustrate",
+            "details": {
+            }
+          }
+        },
+        {
+          "name": "Bourbonism",
+          "type": "unprostituted",
+          "value": {
+            "href": "inerrantly",
+            "details": {
+            }
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "running_branch",
+          "label": "Branch name",
+          "description": "The name of the branch that is running on the app servers",
+          "category": "Developer Information",
+          "index": 3,
+          "value": "dev_branch_1"
+        },
+        {
+          "name": "running_branch",
+          "label": "Branch name",
+          "description": "The name of the branch that is running on the app servers",
+          "category": "Developer Information",
+          "index": 3,
+          "value": "dev_branch_1"
+        },
+        {
+          "name": "running_branch",
+          "label": "Branch name",
+          "description": "The name of the branch that is running on the app servers",
+          "category": "Developer Information",
+          "index": 3,
+          "value": "dev_branch_1"
+        }
+      ],
+      "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+      "launched_from": {
+        "type": "application",
+        "value": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"
+      },
+      "launched_from_summary": {
+      },
+      "deployment": "/api/deployments/461147093",
+      "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+      "latest_notifications": [
+        {
+          "id": "53e3bfa9a37b334abf000064",
+          "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+          "execution": {
+            "id": "5392479332ca2bd0ca000002",
+            "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+            "name": "My dev server for testing",
+            "description": "Dev server for our new user interface project.",
+            "status": "running",
+            "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+            "dependencies": [
+              {
+                "name": "yearbook",
+                "package": "pneumotyphoid",
+                "alias": "log",
+                "source_href": "routinish"
+              },
+              {
+                "name": "exceptionality",
+                "package": "adynamic",
+                "alias": "log",
+                "source_href": "macrosmatic"
+              },
+              {
+                "name": "eustomatous",
+                "package": "foraminule",
+                "alias": "log",
+                "source_href": "hydrotomy"
+              }
+            ],
+            "available_actions": [
+              "digitalein"
+            ],
+            "next_action": {
+              "id": "5392479332ca2bd0ca000002",
+              "href": "/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001",
+              "name": "Start",
+              "recurrence": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR",
+              "first_occurrence": "2013-05-14T00:00:00+00:00",
+              "timezone": "America/Los_Angeles",
+              "recurrence_description": "Every third Sunday.",
+              "action": "run",
+              "next_occurrence": "2014-09-12T00:00:00+00:00",
+              "execution_schedule": true,
+              "kind": "self_service#scheduled_action",
+              "links": {
+              }
+            },
+            "available_operations": [
+              {
+                "name": "update_code",
+                "description": "Update the code on the app servers",
+                "label": "Update code",
+                "parameters": [
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  },
+                  {
+                    "name": "cloud",
+                    "description": "Select the cloud to launch in",
+                    "type": "string",
+                    "default": "AWS US-East",
+                    "operations": [
+                      "launch",
+                      "update_code"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "available_operations_info": [
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              },
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              },
+              {
+                "name": "update_code",
+                "label": "Update code",
+                "description": "Update the code on the app servers"
+              }
+            ],
+            "running_operations": [
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  },
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              },
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              },
+              {
+                "id": "53e270fca37b3315c5000136",
+                "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                "name": "launch",
+                "label": "Create database backup",
+                "configuration_options": [
+                  {
+                    "name": "cloud",
+                    "type": "string",
+                    "value": "AWS US-West"
+                  }
+                ],
+                "kind": "self_service#operation",
+                "links": {
+                }
+              }
+            ],
+            "configuration_options": [
+              {
+                "name": "cloud",
+                "type": "string",
+                "value": "AWS US-West"
+              },
+              {
+                "name": "cloud",
+                "type": "string",
+                "value": "AWS US-West"
+              },
+              {
+                "name": "cloud",
+                "type": "string",
+                "value": "AWS US-West"
+              }
+            ],
+            "api_resources": [
+              {
+                "name": "unditched",
+                "type": "stereoscopist"
+              },
+              {
+                "name": "exerciser",
+                "type": "assbaa"
+              },
+              {
+                "name": "hulkage",
+                "type": "mnemonicon"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "running_branch",
+                "label": "Branch name",
+                "description": "The name of the branch that is running on the app servers",
+                "category": "Developer Information",
+                "index": 3,
+                "value": "dev_branch_1"
+              },
+              {
+                "name": "running_branch",
+                "label": "Branch name",
+                "description": "The name of the branch that is running on the app servers",
+                "category": "Developer Information",
+                "index": 3,
+                "value": "dev_branch_1"
+              },
+              {
+                "name": "running_branch",
+                "label": "Branch name",
+                "description": "The name of the branch that is running on the app servers",
+                "category": "Developer Information",
+                "index": 3,
+                "value": "dev_branch_1"
+              }
+            ],
+            "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+            "launched_from": {
+              "type": "application",
+              "value": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"
+            },
+            "launched_from_summary": {
+            },
+            "deployment": "/api/deployments/461147093",
+            "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+            "latest_notifications": [
+              {
+                "id": "53e3bfa9a37b334abf000064",
+                "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                "message": "Operation \"launch\" completed",
+                "category": "error",
+                "read": false,
+                "kind": "self_service#notification",
+                "links": {
+                }
+              },
+              {
+                "id": "53e3bfa9a37b334abf000064",
+                "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                "message": "Operation \"launch\" completed",
+                "category": "status_update",
+                "read": false,
+                "kind": "self_service#notification",
+                "links": {
+                }
+              }
+            ],
+            "latest_notification": {
+              "id": "53e3bfa9a37b334abf000064",
+              "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+              "message": "Operation \"launch\" completed",
+              "category": "status_update",
+              "read": false,
+              "kind": "self_service#notification",
+              "links": {
+              }
+            },
+            "created_by": {
+              "id": 9876,
+              "name": "Joe Montana",
+              "email": "joe.montana@49ers.com"
+            },
+            "scheduled": false,
+            "cost": {
+              "value": "23.53",
+              "unit": "$",
+              "updated_at": "2013-02-27T00:00:00+00:00"
+            },
+            "timestamps": {
+              "created_at": "2014-08-01T00:00:00+00:00",
+              "launched_at": "2014-04-17T00:00:00+00:00",
+              "terminated_at": "2013-09-25T00:00:00+00:00"
+            },
+            "ends_at": "2014-06-05T00:00:00+00:00",
+            "schedules": [
+              {
+                "name": "Business hours",
+                "description": "Weekdays from 9am to 5pm",
+                "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+              }
+            ],
+            "schedule_required": false,
+            "current_schedule": "opportunist",
+            "kind": "self_service#execution",
+            "links": {
+              "running_operations": {
+                "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+              },
+              "latest_notifications": {
+                "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+              }
+            }
+          },
+          "message": "Operation \"launch\" completed",
+          "category": "info",
+          "read": false,
+          "timestamps": {
+            "created_at": "2012-12-29T00:00:00+00:00"
+          },
+          "kind": "self_service#notification",
+          "links": {
+            "execution": {
+              "id": "5392479332ca2bd0ca000002",
+              "name": "My dev server for testing",
+              "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+            }
+          }
+        }
+      ],
+      "latest_notification": {
+        "id": "53e3bfa9a37b334abf000064",
+        "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+        "execution": {
+          "id": "5392479332ca2bd0ca000002",
+          "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+          "name": "My dev server for testing",
+          "description": "Dev server for our new user interface project.",
+          "status": "running",
+          "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+          "dependencies": [
+            {
+              "name": "isodurene",
+              "package": "beseemliness",
+              "alias": "log",
+              "source_href": "nicknameable"
+            },
+            {
+              "name": "equilobed",
+              "package": "cardioncus",
+              "alias": "log",
+              "source_href": "superbenefit"
+            }
+          ],
+          "available_actions": [
+            "pickwick",
+            "Lutheranize"
+          ],
+          "next_action": {
+            "id": "5392479332ca2bd0ca000002",
+            "href": "/api/manager/projects/12345/scheduled_actions/53d7dc711ee3ea0c74000001",
+            "name": "Start",
+            "execution": {
+              "id": "5392479332ca2bd0ca000002",
+              "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+              "name": "My dev server for testing",
+              "description": "Dev server for our new user interface project.",
+              "status": "running",
+              "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+              "dependencies": [
+                {
+                  "name": "myelocytic",
+                  "package": "peridiniaceous",
+                  "alias": "log",
+                  "source_href": "sonly"
+                },
+                {
+                  "name": "mycohaemia",
+                  "package": "overwomanly",
+                  "alias": "log",
+                  "source_href": "Pterosauri"
+                },
+                {
+                  "name": "fructuously",
+                  "package": "launderer",
+                  "alias": "log",
+                  "source_href": "transference"
+                }
+              ],
+              "available_actions": [
+                "crosshand",
+                "overblown"
+              ],
+              "available_operations": [
+                {
+                  "name": "update_code",
+                  "description": "Update the code on the app servers",
+                  "label": "Update code",
+                  "parameters": [
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "update_code",
+                  "description": "Update the code on the app servers",
+                  "label": "Update code",
+                  "parameters": [
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "available_operations_info": [
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                },
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                },
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                }
+              ],
+              "running_operations": [
+                {
+                  "id": "53e270fca37b3315c5000136",
+                  "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                  "name": "launch",
+                  "label": "Create database backup",
+                  "configuration_options": [
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    },
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    }
+                  ],
+                  "kind": "self_service#operation",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "53e270fca37b3315c5000136",
+                  "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                  "name": "launch",
+                  "label": "Create database backup",
+                  "configuration_options": [
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    }
+                  ],
+                  "kind": "self_service#operation",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "53e270fca37b3315c5000136",
+                  "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                  "name": "launch",
+                  "label": "Create database backup",
+                  "configuration_options": [
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    },
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    }
+                  ],
+                  "kind": "self_service#operation",
+                  "links": {
+                  }
+                }
+              ],
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ],
+              "api_resources": [
+                {
+                  "name": "interbrigade",
+                  "type": "lacerate"
+                },
+                {
+                  "name": "patrizate",
+                  "type": "scalpellic"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                },
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                }
+              ],
+              "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+              "launched_from_summary": {
+              },
+              "deployment": "/api/deployments/461147093",
+              "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+              "latest_notifications": [
+                {
+                  "id": "53e3bfa9a37b334abf000064",
+                  "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                  "message": "Operation \"launch\" completed",
+                  "category": "status_update",
+                  "read": false,
+                  "kind": "self_service#notification",
+                  "links": {
+                  }
+                },
+                {
+                  "id": "53e3bfa9a37b334abf000064",
+                  "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                  "message": "Operation \"launch\" completed",
+                  "category": "error",
+                  "read": false,
+                  "kind": "self_service#notification",
+                  "links": {
+                  }
+                }
+              ],
+              "scheduled": true,
+              "ends_at": "2013-06-11T00:00:00+00:00",
+              "schedules": [
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                }
+              ],
+              "schedule_required": true,
+              "current_schedule": "dehydrator",
+              "kind": "self_service#execution",
+              "links": {
+                "running_operations": {
+                  "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+                },
+                "latest_notifications": {
+                  "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+                }
+              }
+            },
+            "recurrence": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR",
+            "first_occurrence": "2013-05-23T00:00:00+00:00",
+            "timezone": "America/Los_Angeles",
+            "recurrence_description": "Every third Sunday.",
+            "action": "stop",
+            "next_occurrence": "2014-11-12T00:00:00+00:00",
+            "execution_schedule": false,
+            "created_by": {
+              "id": 9876,
+              "name": "Joe Montana",
+              "email": "joe.montana@49ers.com"
+            },
+            "operation": {
+              "name": "backup",
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ]
+            },
+            "timestamps": {
+              "created_at": "2014-01-31T00:00:00+00:00",
+              "updated_at": "2013-01-22T00:00:00+00:00"
+            },
+            "kind": "self_service#scheduled_action",
+            "links": {
+              "execution": {
+                "id": "5392479332ca2bd0ca000002",
+                "name": "My dev server for testing",
+                "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+              }
+            }
+          },
+          "available_operations": [
+            {
+              "name": "update_code",
+              "description": "Update the code on the app servers",
+              "label": "Update code",
+              "parameters": [
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                },
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                },
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "update_code",
+              "description": "Update the code on the app servers",
+              "label": "Update code",
+              "parameters": [
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                },
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "update_code",
+              "description": "Update the code on the app servers",
+              "label": "Update code",
+              "parameters": [
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                },
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                },
+                {
+                  "name": "cloud",
+                  "description": "Select the cloud to launch in",
+                  "type": "string",
+                  "default": "AWS US-East",
+                  "operations": [
+                    "launch",
+                    "update_code"
+                  ]
+                }
+              ]
+            }
+          ],
+          "available_operations_info": [
+            {
+              "name": "update_code",
+              "label": "Update code",
+              "description": "Update the code on the app servers"
+            }
+          ],
+          "running_operations": [
+            {
+              "id": "53e270fca37b3315c5000136",
+              "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+              "name": "launch",
+              "label": "Create database backup",
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                },
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ],
+              "kind": "self_service#operation",
+              "links": {
+              }
+            }
+          ],
+          "configuration_options": [
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            },
+            {
+              "name": "cloud",
+              "type": "string",
+              "value": "AWS US-West"
+            }
+          ],
+          "api_resources": [
+            {
+              "name": "perforce",
+              "type": "alveolate"
+            },
+            {
+              "name": "beparse",
+              "type": "enrollment"
+            },
+            {
+              "name": "carbinol",
+              "type": "apogeny"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "running_branch",
+              "label": "Branch name",
+              "description": "The name of the branch that is running on the app servers",
+              "category": "Developer Information",
+              "index": 3,
+              "value": "dev_branch_1"
+            },
+            {
+              "name": "running_branch",
+              "label": "Branch name",
+              "description": "The name of the branch that is running on the app servers",
+              "category": "Developer Information",
+              "index": 3,
+              "value": "dev_branch_1"
+            },
+            {
+              "name": "running_branch",
+              "label": "Branch name",
+              "description": "The name of the branch that is running on the app servers",
+              "category": "Developer Information",
+              "index": 3,
+              "value": "dev_branch_1"
+            }
+          ],
+          "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+          "launched_from": {
+            "type": "application",
+            "value": "{ name: 'My App', href: '/catalog/catalogs/60073/applications/53d2d08abe534aca90000001' }"
+          },
+          "launched_from_summary": {
+          },
+          "deployment": "/api/deployments/461147093",
+          "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+          "latest_notifications": [
+            {
+              "id": "53e3bfa9a37b334abf000064",
+              "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+              "message": "Operation \"launch\" completed",
+              "category": "info",
+              "read": false,
+              "kind": "self_service#notification",
+              "links": {
+              }
+            }
+          ],
+          "latest_notification": {
+            "id": "53e3bfa9a37b334abf000064",
+            "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+            "execution": {
+              "id": "5392479332ca2bd0ca000002",
+              "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001",
+              "name": "My dev server for testing",
+              "description": "Dev server for our new user interface project.",
+              "status": "running",
+              "compilation_href": "/compilation_service/v1/projects/1234/compilations/53dc455d2b5b92e482000001",
+              "dependencies": [
+                {
+                  "name": "caraguata",
+                  "package": "stinge",
+                  "alias": "log",
+                  "source_href": "bemedalled"
+                },
+                {
+                  "name": "unpermanent",
+                  "package": "Manihot",
+                  "alias": "log",
+                  "source_href": "superaspiration"
+                },
+                {
+                  "name": "chuck",
+                  "package": "pneumogastric",
+                  "alias": "log",
+                  "source_href": "prosecretin"
+                }
+              ],
+              "available_actions": [
+                "inurbane",
+                "intranarial",
+                "Bradley"
+              ],
+              "available_operations": [
+                {
+                  "name": "update_code",
+                  "description": "Update the code on the app servers",
+                  "label": "Update code",
+                  "parameters": [
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    },
+                    {
+                      "name": "cloud",
+                      "description": "Select the cloud to launch in",
+                      "type": "string",
+                      "default": "AWS US-East",
+                      "operations": [
+                        "launch",
+                        "update_code"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "available_operations_info": [
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                },
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                },
+                {
+                  "name": "update_code",
+                  "label": "Update code",
+                  "description": "Update the code on the app servers"
+                }
+              ],
+              "running_operations": [
+                {
+                  "id": "53e270fca37b3315c5000136",
+                  "href": "/api/manager/projects/12345/operations/53e270fca37b3315c5000136",
+                  "name": "launch",
+                  "label": "Create database backup",
+                  "configuration_options": [
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    },
+                    {
+                      "name": "cloud",
+                      "type": "string",
+                      "value": "AWS US-West"
+                    }
+                  ],
+                  "kind": "self_service#operation",
+                  "links": {
+                  }
+                }
+              ],
+              "configuration_options": [
+                {
+                  "name": "cloud",
+                  "type": "string",
+                  "value": "AWS US-West"
+                }
+              ],
+              "api_resources": [
+                {
+                  "name": "sensibilium",
+                  "type": "tentable"
+                },
+                {
+                  "name": "excalceation",
+                  "type": "olivescent"
+                },
+                {
+                  "name": "trierarchy",
+                  "type": "predynastic"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                },
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                },
+                {
+                  "name": "running_branch",
+                  "label": "Branch name",
+                  "description": "The name of the branch that is running on the app servers",
+                  "category": "Developer Information",
+                  "index": 3,
+                  "value": "dev_branch_1"
+                }
+              ],
+              "source": "name \"My CloudApp\"\\nrs_ca_ver 20131202\\nshort_description \"A basic server\"",
+              "launched_from_summary": {
+              },
+              "deployment": "/api/deployments/461147093",
+              "deployment_url": "https://us-3.rightscale.com/acct/60073/deployments/461147093",
+              "latest_notifications": [
+                {
+                  "id": "53e3bfa9a37b334abf000064",
+                  "href": "/api/manager/projects/12345/notifications/53e3bfa9a37b334abf000064",
+                  "message": "Operation \"launch\" completed",
+                  "category": "error",
+                  "read": false,
+                  "kind": "self_service#notification",
+                  "links": {
+                  }
+                }
+              ],
+              "scheduled": false,
+              "ends_at": "2014-04-11T00:00:00+00:00",
+              "schedules": [
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                },
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                },
+                {
+                  "name": "Business hours",
+                  "description": "Weekdays from 9am to 5pm",
+                  "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+                }
+              ],
+              "schedule_required": false,
+              "current_schedule": "rebend",
+              "kind": "self_service#execution",
+              "links": {
+                "running_operations": {
+                  "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+                },
+                "latest_notifications": {
+                  "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+                }
+              }
+            },
+            "message": "Operation \"launch\" completed",
+            "category": "status_update",
+            "read": false,
+            "timestamps": {
+              "created_at": "2014-07-23T00:00:00+00:00"
+            },
+            "kind": "self_service#notification",
+            "links": {
+              "execution": {
+                "id": "5392479332ca2bd0ca000002",
+                "name": "My dev server for testing",
+                "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+              }
+            }
+          },
+          "created_by": {
+            "id": 9876,
+            "name": "Joe Montana",
+            "email": "joe.montana@49ers.com"
+          },
+          "scheduled": true,
+          "cost": {
+            "value": "23.53",
+            "unit": "$",
+            "updated_at": "2014-04-24T00:00:00+00:00"
+          },
+          "timestamps": {
+            "created_at": "2013-12-30T00:00:00+00:00",
+            "launched_at": "2014-09-05T00:00:00+00:00",
+            "terminated_at": "2014-11-17T00:00:00+00:00"
+          },
+          "ends_at": "2014-04-01T00:00:00+00:00",
+          "schedules": [
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            },
+            {
+              "name": "Business hours",
+              "description": "Weekdays from 9am to 5pm",
+              "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+            }
+          ],
+          "schedule_required": false,
+          "current_schedule": "luteolin",
+          "kind": "self_service#execution",
+          "links": {
+            "running_operations": {
+              "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+            },
+            "latest_notifications": {
+              "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+            }
+          }
+        },
+        "message": "Operation \"launch\" completed",
+        "category": "error",
+        "read": false,
+        "timestamps": {
+          "created_at": "2014-07-10T00:00:00+00:00"
+        },
+        "kind": "self_service#notification",
+        "links": {
+          "execution": {
+            "id": "5392479332ca2bd0ca000002",
+            "name": "My dev server for testing",
+            "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+          }
+        }
+      },
+      "created_by": {
+        "id": 9876,
+        "name": "Joe Montana",
+        "email": "joe.montana@49ers.com"
+      },
+      "scheduled": false,
+      "cost": {
+        "value": "23.53",
+        "unit": "$",
+        "updated_at": "2013-05-18T00:00:00+00:00"
+      },
+      "timestamps": {
+        "created_at": "2014-02-09T00:00:00+00:00",
+        "launched_at": "2014-02-04T00:00:00+00:00",
+        "terminated_at": "2014-08-25T00:00:00+00:00"
+      },
+      "ends_at": "2013-05-02T00:00:00+00:00",
+      "schedules": [
+        {
+          "name": "Business hours",
+          "description": "Weekdays from 9am to 5pm",
+          "start_recurrence": {
+            "hour": 8,
+            "minute": 0,
+            "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+          },
+          "stop_recurrence": {
+            "hour": 18,
+            "minute": 0,
+            "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+          },
+          "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+        },
+        {
+          "name": "Business hours",
+          "description": "Weekdays from 9am to 5pm",
+          "start_recurrence": {
+            "hour": 8,
+            "minute": 0,
+            "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+          },
+          "stop_recurrence": {
+            "hour": 18,
+            "minute": 0,
+            "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+          },
+          "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+        },
+        {
+          "name": "Business hours",
+          "description": "Weekdays from 9am to 5pm",
+          "start_recurrence": {
+            "hour": 8,
+            "minute": 0,
+            "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+          },
+          "stop_recurrence": {
+            "hour": 18,
+            "minute": 0,
+            "rule": "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+          },
+          "created_from": "/api/designer/collections/60073/schedules/53dfcb642b5b921f3e000001"
+        }
+      ],
+      "schedule_required": false,
+      "current_schedule": "Bootid",
+      "kind": "self_service#execution",
+      "links": {
+        "running_operations": {
+          "href": "/api/manager/projects/12345/operations?filter[]=execution_id==5392479332ca2bd0ca000002&filter[]=status==running"
+        },
+        "latest_notifications": {
+          "href": "/api/manager/projects/12345/notifications?filter[]=execution_id==5392479332ca2bd0ca000002"
+        }
+      }
+    },
+    "message": "Operation \"launch\" completed",
+    "category": "error",
+    "read": false,
+    "timestamps": {
+      "created_at": "2013-06-17T00:00:00+00:00"
+    },
+    "kind": "self_service#notification",
+    "links": {
+      "execution": {
+        "id": "5392479332ca2bd0ca000002",
+        "name": "My dev server for testing",
+        "href": "/api/manager/projects/12345/executions/53d7dc711ee3ea0c74000001"
+      }
+    }
+  }
+}

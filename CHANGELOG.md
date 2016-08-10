@@ -1,3 +1,9 @@
+v6.1.0 / 2016-07-27
+--------
+* SelfService action paths have been updated to the latest version of the SelfService API. This means that each path has been prefixed with one of "/api/catalog", "/api/design", or "/api/manager" depending on the service it is associated with. The built-in documentation has been updated with the new paths.
+* The old SelfService action paths are now deprecated. While they still work as before they will no longer be supported in the next major release of RSC.
+* Added support for the EndUser resource in the SelfService Catalog API.
+
 v6.0.0 / 2016-06-28
 --------
 * Fields for Instance, Route, SshKey, Volume, User, and Permission types are updated.
