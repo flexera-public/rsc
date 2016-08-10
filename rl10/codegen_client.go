@@ -7,14 +7,14 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rl10 // import "gopkg.in/rightscale/rsc.v6/rl10"
+package rl10
 
 import (
 	"fmt"
 	"io/ioutil"
 
-	"gopkg.in/rightscale/rsc.v6/metadata"
-	"gopkg.in/rightscale/rsc.v6/rsapi"
+	"github.com/rightscale/rsc/metadata"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // API Version

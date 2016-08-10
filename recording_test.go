@@ -18,7 +18,7 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/ghttp"
-	"gopkg.in/rightscale/rsc.v6/recording"
+	"github.com/rightscale/rsc/recording"
 )
 
 // Iterate through all recorded test cases and play them back

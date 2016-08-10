@@ -1,9 +1,9 @@
-package rl10 // import "gopkg.in/rightscale/rsc.v6/rl10"
+package rl10
 
 import (
 	"net/http"
 
-	"gopkg.in/rightscale/rsc.v6/rsapi"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 const (

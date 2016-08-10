@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/rightscale/rsc/cmd"
 	"gopkg.in/alecthomas/kingpin.v2"
-	"gopkg.in/rightscale/rsc.v6/cmd"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

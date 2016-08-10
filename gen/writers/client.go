@@ -1,4 +1,4 @@
-package writers // import "gopkg.in/rightscale/rsc.v6/gen/writers"
+package writers
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strings"
 	"text/template"
 
-	"gopkg.in/rightscale/rsc.v6/gen"
+	"github.com/rightscale/rsc/gen"
 )
 
 // ClientWriter struct exposes methods to generate the go API client code
@@ -97,8 +97,8 @@ import (
 	"io/ioutil"
 	{{if .NeedTime}}"time"
 	{{end}}
-	"gopkg.in/rightscale/rsc.v6/metadata"
-	"gopkg.in/rightscale/rsc.v6/rsapi"
+	"github.com/rightscale/rsc/metadata"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // API Version

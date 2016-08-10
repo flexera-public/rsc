@@ -1,7 +1,7 @@
 // This example illustrates how to setup a CM 1.5 client to tail the audit entry
 // summary. The reference for the API can be found at
 // http://reference.rightscale.com/api1.5/index.html.
-package main // import "gopkg.in/rightscale/rsc.v6/cm15/examples/auditail"
+package main
 
 import (
 	"flag"
@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/rightscale/rsc.v6/cm15"
-	"gopkg.in/rightscale/rsc.v6/rsapi"
+	"github.com/rightscale/rsc/cm15"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 func main() {

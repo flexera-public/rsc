@@ -1,8 +1,8 @@
-package main // import "gopkg.in/rightscale/rsc.v6/gen/praxisgen"
+package main
 
 import (
 	"bitbucket.org/pkg/inflect"
-	"gopkg.in/rightscale/rsc.v6/gen"
+	"github.com/rightscale/rsc/gen"
 )
 
 // AnalyzeResource creates an API descriptor from raw resources and types.

@@ -1,8 +1,8 @@
-package cm16 // import "gopkg.in/rightscale/rsc.v6/cm16"
+package cm16
 
 import (
-	"gopkg.in/rightscale/rsc.v6/cmd"
-	"gopkg.in/rightscale/rsc.v6/rsapi"
+	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/rsapi"
 )
 
 // API 1.6 client

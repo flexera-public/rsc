@@ -1,6 +1,6 @@
-package cac // import "gopkg.in/rightscale/rsc.v6/ca/cac"
+package cac
 
-import "gopkg.in/rightscale/rsc.v6/rsapi"
+import "github.com/rightscale/rsc/rsapi"
 
 // API is the Cloud Analytics API client.
 type API struct {
