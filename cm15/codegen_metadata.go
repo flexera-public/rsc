@@ -3842,8 +3842,8 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3851,8 +3851,8 @@ Optional parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3867,6 +3867,14 @@ Optional parameters:
 						Mandatory:   false,
 						NonBlank:    false,
 						ValidValues: []string{"default", "dedicated"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_size]",
@@ -3901,14 +3909,6 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][keep_alive_id]",
-						Description: `The id of keep alive. Supported by UCA cloud only.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][ebs_optimized]",
 						Description: `Whether the instance is able to connect to IOPS-enabled volumes.`,
 						Type:        "string",
@@ -3916,6 +3916,14 @@ Optional parameters:
 						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][keep_alive_id]",
+						Description: `The id of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][pricing_type]",
@@ -4818,6 +4826,14 @@ Required parameters:
 						Mandatory:   false,
 						NonBlank:    false,
 						ValidValues: []string{"default", "dedicated"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_size]",
@@ -7090,31 +7106,9 @@ Required parameters:
 		},
 	},
 	"Oauth2": &metadata.Resource{
-		Name: "Oauth2",
-		Description: `Note that all API calls irrespective of the resource it is acting on, should pass a header
-"X-Api-Version" with the value "1.5".
-This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
-a bearer access token, which can be used in lieu of a session cookie when interacting with API
-resources.
-This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
-to the conventions established by other RightScale API resources. However, an API-version header is
-still required when interacting with the OAuth endpoint.
-OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
-browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
-endpoint supports the following OAuth 2.0 operations:
- * refresh_token - for end-user login using a previously-negotiated OAuth grant
- * client_credentials - for instance login using API credentials transmitted via user-data
-RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
- * clients MUST transmit an X-Api-Version header with every OAuth request
- * clients MAY transmit an account_id parameter as part of their POST form data
-If you choose to post an account_id, then the API may respond with a 301 redirect if your account
-is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
-elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
-this cluster).
-For more information on how to use OAuth 2.0 with RightScale, refer to the following:
-http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
-http://tools.ietf.org/html/draft-ietf-oauth-v2-23`,
-		Identifier: "",
+		Name:        "Oauth2",
+		Description: ``,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7355,7 +7349,7 @@ destroying it while the user has other permissions will result in an error.`,
 
 			&metadata.Action{
 				Name: "index",
-				Description: `List all permissions for all users of the current acount.
+				Description: `List all permissions for all users of the current account.
 Optional parameters:
 	filter`,
 				PathPatterns: []*metadata.PathPattern{
@@ -10961,6 +10955,14 @@ Required parameters:
 						ValidValues: []string{"default", "dedicated"},
 					},
 					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
 						Type:        "string",
@@ -10977,16 +10979,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][keep_alive_url]",
-						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Name:        "server[instance][cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11889,20 +11891,20 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][iam_instance_profile]",
-						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][root_volume_type_uid]",
 						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][iam_instance_profile]",
+						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_interface]",
@@ -11913,8 +11915,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11922,8 +11924,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11942,6 +11944,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11998,16 +12008,16 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
-						Description: `The number of instance cores. Supported by UCA cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
-						Description: `The size of instance memory. Supported by UCA cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12038,16 +12048,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][schedule][][max_count]",
-						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
+						Name:        "server_array[elasticity_params][schedule][][min_count]",
+						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][schedule][][min_count]",
-						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
+						Name:        "server_array[elasticity_params][schedule][][max_count]",
+						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12079,16 +12089,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][bounds][max_count]",
-						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
+						Name:        "server_array[datacenter_policy][][datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[datacenter_policy][][datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
+						Name:        "server_array[elasticity_params][bounds][max_count]",
+						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12129,14 +12139,6 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][placement_group_href]",
-						Description: `The href of the Placement Group.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][security_group_hrefs][]",
 						Description: `The hrefs of the Security Groups.`,
 						Type:        "[]string",
@@ -12153,8 +12155,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][ramdisk_image_href]",
-						Description: `The href of the Ramdisk Image.`,
+						Name:        "server_array[instance][placement_group_href]",
+						Description: `The href of the Placement Group.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12169,8 +12171,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][kernel_image_href]",
-						Description: `The href of the Kernel Image.`,
+						Name:        "server_array[instance][ramdisk_image_href]",
+						Description: `The href of the Ramdisk Image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12179,6 +12181,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][weight]",
 						Description: `Instance allocation (should total 100%).`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][kernel_image_href]",
+						Description: `The href of the Kernel Image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14379,6 +14389,14 @@ Required parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "subnet[cidr_block]",
+						Description: `The range of IP addresses for the Subnet.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "subnet[name]",
