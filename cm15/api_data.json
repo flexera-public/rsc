@@ -6066,6 +6066,11 @@
             "non_blank": false,
             "description": "The description of the Placement Group to be created."
           },
+          "placement_group[cloud_specific_attributes]": {
+            "class": "Hash",
+            "non_blank": false,
+            "description": "Additional Placement Group attributes specific to a cloud."
+          },
           "placement_group[cloud_href]": {
             "class": "String",
             "non_blank": true,
