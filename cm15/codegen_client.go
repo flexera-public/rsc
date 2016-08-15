@@ -425,9 +425,10 @@ func (loc *AlertLocator) Index(options rsapi.APIParams) ([]*Alert, error) {
 // Suppresses the Alert from being triggered for a given time period. Idempotent.
 // Required parameters:
 // duration: The time period in seconds to suppress Alert from being triggered.
-func (loc *AlertLocator) Quench(duration string) error {
+func (loc *AlertLocator) Quench(duration string) (string, error) {
+	var res string
 	if duration == "" {
-		return fmt.Errorf("duration is required")
+		return res, fmt.Errorf("duration is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -436,15 +437,15 @@ func (loc *AlertLocator) Quench(duration string) error {
 	}
 	uri, err := loc.ActionPath("Alert", "quench")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -453,9 +454,15 @@ func (loc *AlertLocator) Quench(duration string) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
@@ -3844,12 +3851,13 @@ type Instance struct {
 	PublicDnsNames           []string               `json:"public_dns_names,omitempty"`
 	PublicIpAddresses        []string               `json:"public_ip_addresses,omitempty"`
 	ResourceUid              string                 `json:"resource_uid,omitempty"`
-	SecurityGroups           []SecurityGroup        `json:"security_groups,omitempty"`
-	State                    string                 `json:"state,omitempty"`
-	Subnets                  []Subnet               `json:"subnets,omitempty"`
-	TerminatedAt             *RubyTime              `json:"terminated_at,omitempty"`
-	UpdatedAt                *RubyTime              `json:"updated_at,omitempty"`
-	UserData                 string                 `json:"user_data,omitempty"`
+	RsProvisioned            `json:"rs_provisioned,omitempty"`
+	SecurityGroups           []SecurityGroup `json:"security_groups,omitempty"`
+	State                    string          `json:"state,omitempty"`
+	Subnets                  []Subnet        `json:"subnets,omitempty"`
+	TerminatedAt             *RubyTime       `json:"terminated_at,omitempty"`
+	UpdatedAt                *RubyTime       `json:"updated_at,omitempty"`
+	UserData                 string          `json:"user_data,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -6749,29 +6757,6 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 
 /******  Oauth2 ******/
 
-// Note that all API calls irrespective of the resource it is acting on, should pass a header
-// "X-Api-Version" with the value "1.5".
-// This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
-// a bearer access token, which can be used in lieu of a session cookie when interacting with API
-// resources.
-// This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
-// to the conventions established by other RightScale API resources. However, an API-version header is
-// still required when interacting with the OAuth endpoint.
-// OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
-// browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
-// endpoint supports the following OAuth 2.0 operations:
-// * refresh_token - for end-user login using a previously-negotiated OAuth grant
-// * client_credentials - for instance login using API credentials transmitted via user-data
-// RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
-// * clients MUST transmit an X-Api-Version header with every OAuth request
-// * clients MAY transmit an account_id parameter as part of their POST form data
-// If you choose to post an account_id, then the API may respond with a 301 redirect if your account
-// is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
-// elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
-// this cluster).
-// For more information on how to use OAuth 2.0 with RightScale, refer to the following:
-// http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
-// http://tools.ietf.org/html/draft-ietf-oauth-v2-23
 type Oauth2 struct {
 }
 
@@ -6890,6 +6875,7 @@ type Permission struct {
 	Actions   []map[string]string `json:"actions,omitempty"`
 	CreatedAt *RubyTime           `json:"created_at,omitempty"`
 	DeletedAt *RubyTime           `json:"deleted_at,omitempty"`
+	Id        string              `json:"id,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	RoleTitle string              `json:"role_title,omitempty"`
 }
@@ -7010,7 +6996,7 @@ func (loc *PermissionLocator) Destroy() error {
 
 // GET /api/permissions
 //
-// List all permissions for all users of the current acount.
+// List all permissions for all users of the current account.
 // Optional parameters:
 // filter
 func (loc *PermissionLocator) Index(options rsapi.APIParams) ([]*Permission, error) {
@@ -14566,6 +14552,7 @@ type CloudAccountParam struct {
 
 type CloudSpecificAttributes struct {
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
 	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
 	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
@@ -14589,6 +14576,7 @@ type CloudSpecificAttributes struct {
 
 type CloudSpecificAttributes2 struct {
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
 	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
 	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
@@ -14620,6 +14608,7 @@ type CloudSpecificAttributes4 struct {
 
 type CloudSpecificAttributes5 struct {
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
 	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
 	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
@@ -14642,6 +14631,7 @@ type CloudSpecificAttributes5 struct {
 
 type CloudSpecificAttributes6 struct {
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
 	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
 	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
@@ -15133,6 +15123,7 @@ type SubnetParam struct {
 }
 
 type SubnetParam2 struct {
+	CidrBlock      string `json:"cidr_block,omitempty"`
 	Description    string `json:"description,omitempty"`
 	Name           string `json:"name,omitempty"`
 	RouteTableHref string `json:"route_table_href,omitempty"`
