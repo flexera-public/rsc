@@ -14610,30 +14610,12 @@ type CloudSpecificAttributes2 struct {
 }
 
 type CloudSpecificAttributes3 struct {
-	InstanceTags []string `json:"instance_tags,omitempty"`
-	Priority     int      `json:"priority,omitempty"`
+	AccountType []string `json:"account_type,omitempty"`
 }
 
 type CloudSpecificAttributes4 struct {
-	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
-	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
-	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
-	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
-	DiskGb                           int    `json:"disk_gb,omitempty"`
-	IamInstanceProfile               string `json:"iam_instance_profile,omitempty"`
-	KeepAliveId                      string `json:"keep_alive_id,omitempty"`
-	KeepAliveUrl                     string `json:"keep_alive_url,omitempty"`
-	LocalSsdCount                    string `json:"local_ssd_count,omitempty"`
-	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
-	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
-	MemoryMb                         int    `json:"memory_mb,omitempty"`
-	NumCores                         int    `json:"num_cores,omitempty"`
-	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
-	Preemptible                      string `json:"preemptible,omitempty"`
-	PricingType                      string `json:"pricing_type,omitempty"`
-	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
-	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
-	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	InstanceTags []string `json:"instance_tags,omitempty"`
+	Priority     int      `json:"priority,omitempty"`
 }
 
 type CloudSpecificAttributes5 struct {
@@ -14659,6 +14641,28 @@ type CloudSpecificAttributes5 struct {
 }
 
 type CloudSpecificAttributes6 struct {
+	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
+	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
+	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
+	DiskGb                           int    `json:"disk_gb,omitempty"`
+	IamInstanceProfile               string `json:"iam_instance_profile,omitempty"`
+	KeepAliveId                      string `json:"keep_alive_id,omitempty"`
+	KeepAliveUrl                     string `json:"keep_alive_url,omitempty"`
+	LocalSsdCount                    string `json:"local_ssd_count,omitempty"`
+	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
+	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
+	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	NumCores                         int    `json:"num_cores,omitempty"`
+	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
+	Preemptible                      string `json:"preemptible,omitempty"`
+	PricingType                      string `json:"pricing_type,omitempty"`
+	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+}
+
+type CloudSpecificAttributes7 struct {
 	CreateBootVolume string `json:"create_boot_volume,omitempty"`
 	DeleteBootVolume string `json:"delete_boot_volume,omitempty"`
 }
@@ -14756,7 +14760,7 @@ type InstanceParam2 struct {
 type InstanceParam3 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
 	CloudHref                string                    `json:"cloud_href,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes5 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
@@ -14776,7 +14780,7 @@ type InstanceParam3 struct {
 type InstanceParam4 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
 	CloudHref                string                    `json:"cloud_href,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes5 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes6 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
@@ -14795,7 +14799,7 @@ type InstanceParam4 struct {
 }
 
 type InstanceParam5 struct {
-	CloudSpecificAttributes *CloudSpecificAttributes6 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes *CloudSpecificAttributes7 `json:"cloud_specific_attributes,omitempty"`
 }
 
 type InstanceParam6 struct {
@@ -14906,9 +14910,10 @@ type PermissionParam struct {
 }
 
 type PlacementGroupParam struct {
-	CloudHref   string `json:"cloud_href,omitempty"`
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	CloudHref               string                    `json:"cloud_href,omitempty"`
+	CloudSpecificAttributes *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
+	Description             string                    `json:"description,omitempty"`
+	Name                    string                    `json:"name,omitempty"`
 }
 
 type PreferenceParam struct {
@@ -14985,7 +14990,7 @@ type RightScriptParam3 struct {
 }
 
 type RouteParam struct {
-	CloudSpecificAttributes *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
 	Description             string                    `json:"description,omitempty"`
 	DestinationCidrBlock    string                    `json:"destination_cidr_block,omitempty"`
 	NextHopHref             string                    `json:"next_hop_href,omitempty"`
