@@ -6071,6 +6071,17 @@
             "non_blank": true,
             "mandatory": true,
             "description": "The Href of the Cloud in which the PlacementGroup should be created. Note: This feature is not supported for all clouds."
+          },
+          "placement_group[cloud_specific_attributes]": {
+            "class": "Hash",
+            "non_blank": true,
+            "description": "Cloud specific attributes that have no generic rightscale abstraction"
+          },
+          "placement_group[cloud_specific_attributes][account_type]": {
+            "class": "Array",
+            "description": "AzureRM: The type of Storage Account.",
+            "non_blank": true,
+            "mandatory": false
           }
         }
       },

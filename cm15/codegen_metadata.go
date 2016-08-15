@@ -7431,6 +7431,14 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "placement_group[cloud_specific_attributes][account_type][]",
+						Description: `AzureRM: The type of Storage Account.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "placement_group[description]",
 						Description: `The description of the Placement Group to be created.`,
 						Type:        "string",
