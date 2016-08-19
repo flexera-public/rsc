@@ -14578,6 +14578,7 @@ type CloudSpecificAttributes struct {
 	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
 	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
 	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
 	NumCores                         int    `json:"num_cores,omitempty"`
 	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
 	Preemptible                      string `json:"preemptible,omitempty"`
