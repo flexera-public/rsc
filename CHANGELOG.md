@@ -1,3 +1,7 @@
+unreleased changes
+-------------------
+* rl10: Added /rll/proc/log_level
+
 v6.1.0 / 2016-08-09
 --------
 * SelfService action paths have been updated to the latest version of the SelfService API. This means that each path has been prefixed with one of "/api/catalog", "/api/design", or "/api/manager" depending on the service it is associated with. The built-in documentation has been updated with the new paths.
