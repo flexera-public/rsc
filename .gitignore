@@ -1,4 +1,6 @@
 tags
+bin/glide*
+vendor
 rsc
 gen/api15gen/api15gen
 gen/praxisgen/praxisgen

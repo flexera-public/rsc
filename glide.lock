@@ -1,0 +1,68 @@
+hash: d233334b81c32e035ac64cd44a535bf49008ab8c9f4788f5071751f03a91f33a
+updated: 2016-08-22T11:54:33.435622691-07:00
+imports:
+- name: bitbucket.org/pkg/inflect
+  version: 8961c3750a47b8c0b3e118d52513b97adf85a7e8
+- name: github.com/alecthomas/template
+  version: b867cc6ab45cece8143cfcc6fc9c77cf3f2c23c0
+  subpackages:
+  - parse
+- name: github.com/alecthomas/units
+  version: 6b4e7dc5e3143b85ea77909c72caf89416fc2915
+- name: github.com/coddingtonbear/go-simplejson
+  version: a582018feafb39c4884d1b03cad98b91e2804276
+- name: github.com/golang/protobuf
+  version: 68415e7123da32b07eab49c96d2c4d6158360e9b
+  subpackages:
+  - proto
+- name: github.com/mattn/go-colorable
+  version: 40e4aedc8fabf8c23e040057540867186712faa5
+- name: github.com/mattn/go-isatty
+  version: ae0b1f8f8004be68d791a576e3d8e7648ab41449
+- name: github.com/onsi/ginkgo
+  version: 17ea479729ee427265ac1e913443018350946ddf
+  subpackages:
+  - config
+  - internal/codelocation
+  - internal/failer
+  - internal/remote
+  - internal/suite
+  - internal/testingtproxy
+  - internal/writer
+  - reporters
+  - reporters/stenographer
+  - types
+  - internal/containernode
+  - internal/leafnodes
+  - internal/spec
+  - internal/specrunner
+- name: github.com/onsi/gomega
+  version: 0fe204460da2c8fa1babcaac196e694de8f1aaa1
+  subpackages:
+  - ghttp
+  - internal/assertion
+  - internal/asyncassertion
+  - internal/testingtsupport
+  - matchers
+  - types
+  - internal/oraclematcher
+  - format
+  - matchers/support/goraph/bipartitegraph
+  - matchers/support/goraph/edge
+  - matchers/support/goraph/node
+  - matchers/support/goraph/util
+- name: github.com/rightscale/go-jsonselect
+  version: d04eebe26072b09f780b43c72c6df71b12b8d105
+- name: golang.org/x/net
+  version: 66f0418ca41253f8d1a024eb9754e9441a8e79b9
+  subpackages:
+  - context
+  - context/ctxhttp
+- name: gopkg.in/alecthomas/kingpin.v2
+  version: e5900212cbf65b181d3d8e08308ef06a01d117cf
+- name: gopkg.in/inconshreveable/log15.v2
+  version: b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f
+  subpackages:
+  - stack
+  - term
+testImports: []

@@ -28,9 +28,6 @@
 # https://$(BUCKET).s3.amazonaws.com/rsbin/$(NAME)/$(BRANCH)/$(NAME)-$(GOOS)-$(GOARCH).tgz
 # (.zip for windows)
 #
-# HACKS - a couple of things here are unconventional in order to keep travis-ci fast:
-# - use 'godep save' on your laptop if you add dependencies, but we don't use godep in the
-#   makefile, instead, we simply add the godep workspace to the GOPATH
 
 #NAME=$(shell basename $$PWD)
 NAME=rsc
@@ -38,13 +35,20 @@ BUCKET=rightscale-binaries
 ACL=public-read
 # version for gopkg.in, e.g. v1, v2, ...
 GOPKG_VERS=v6
-# Dependencies not handled by Godep, i.e. that are used to build/test/upload this puppy
+GLIDE_VERSION?=v0.11.1
+GOOS=$(shell go env GOOS)
+GOARCH=$(shell go env GOARCH)
+ifeq (windows,$(GOOS))
+GLIDE_EXEC=glide-$(GLIDE_VERSION).exe
+else
+GLIDE_EXEC=glide-$(GLIDE_VERSION)
+endif
+# Dependencies not handled by glide, i.e. that are used to build/test/upload this puppy
 DEPEND=golang.org/x/tools/cmd/cover \
 			github.com/onsi/ginkgo \
 			github.com/onsi/ginkgo/ginkgo \
 			github.com/golang/protobuf/proto \
 			github.com/rlmcpherson/s3gof3r/gof3r \
-			github.com/tools/godep \
 			github.com/rogpeppe/govers
 
 #=== below this line ideally remains unchanged, add new targets at the end  ===
@@ -62,14 +66,6 @@ SED_I=''
 else
 SED_I=
 endif
-# by manually adding the godep workspace to the path we don't need to run godep itself
-ifeq ($(OS),Windows_NT)
-	GOPATH:=$(shell cygpath --windows $(PWD))/Godeps/_workspace;$(GOPATH)
-else
-	GOPATH:=$(PWD)/Godeps/_workspace:$(GOPATH)
-endif
-# because of the Godep path we build ginkgo into the godep workspace
-PATH:=$(PWD)/Godeps/_workspace/bin:$(PATH)
 
 # the default target builds a binary in the top-level dir for whatever the local OS is
 default: $(NAME)
@@ -103,7 +99,7 @@ build/$(NAME)-%.zip: *.go version depend
 
 # upload assumes you have AWS_ACCESS_KEY_ID and AWS_SECRET_KEY env variables set,
 # which happens in the .travis.yml for CI
-upload: depend
+upload:
 	@which gof3r >/dev/null || (echo 'Please "go get github.com/rlmcpherson/s3gof3r/gof3r"'; false)
 	(cd build; set -ex; \
 	  for f in *.tgz *.zip; do \
@@ -181,19 +177,26 @@ check-govers:
 	@echo "not a release branch: not checking import constraints"
 endif
 
+bin/$(GLIDE_EXEC):
+	mkdir -p tmp bin
+	curl -sSfL --tlsv1 --connect-timeout 30 --max-time 180 --retry 3 \
+		-o tmp/glide.tar.gz https://github.com/Masterminds/glide/releases/download/$(GLIDE_VERSION)/glide-$(GLIDE_VERSION)-$(GOOS)-$(GOARCH).tar.gz
+	cd tmp && tar zxvf glide.tar.gz
+	mv tmp/$(GOOS)-$(GOARCH)/glide* bin/$(GLIDE_EXEC)
+	rm -rf tmp
+
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
 # Travis doing this. The following just relies on go get no reinstalling when it's already
 # there, like your laptop.
-depend:
+depend: bin/$(GLIDE_EXEC)
 	go get $(DEPEND)
-	godep restore
+	./bin/$(GLIDE_EXEC) install --cache
+
 
 clean:
 	rm -rf build
 	rm -f version.go httpclient/user_agent.go
 
-# gofmt uses the awkward *.go */*.go because gofmt -l . descends into the Godeps workspace
-# and then pointlessly complains about bad formatting in imported packages, sigh
 lint: check-govers
 	@if gofmt -l *.go */*.go 2>&1 | grep .go; then \
 	  echo "^- Repo contains improperly formatted go files; run gofmt -w *.go */*.go" && exit 1; \
@@ -202,15 +205,15 @@ lint: check-govers
 	go tool vet -composites=false **/*.go
 
 travis-test: lint generate
-	ginkgo -r -cover
+	ginkgo -r -cover -skipPackage vendor
 
 # running ginkgo twice, sadly, the problem is that -cover modifies the source code with the effect
 # that if there are errors the output of gingko refers to incorrect line numbers
 # tip: if you don't like colors use gingkgo -r -noColor
 test: lint generate
 	@test "$PWD" != `/bin/pwd` && echo "*** Please cd `/bin/pwd` if compilation fails"
-	ginkgo -r
-	ginkgo -r -cover
+	ginkgo -r -skipPackage vendor
+	ginkgo -r -cover -skipPackage vendor
 	go tool cover -func=`basename $$PWD`.coverprofile
 
 #===== SPECIAL TARGETS FOR RSC =====

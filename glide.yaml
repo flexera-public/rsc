@@ -1,0 +1,33 @@
+package: github.com/rightscale/rsc
+import:
+- package: bitbucket.org/pkg/inflect
+  version: 8961c3750a47b8c0b3e118d52513b97adf85a7e8
+- package: github.com/alecthomas/template
+  version: b867cc6ab45cece8143cfcc6fc9c77cf3f2c23c0
+- package: github.com/alecthomas/units
+  version: 6b4e7dc5e3143b85ea77909c72caf89416fc2915
+- package: github.com/coddingtonbear/go-simplejson
+  version: a582018feafb39c4884d1b03cad98b91e2804276
+- package: github.com/mattn/go-colorable
+  version: 40e4aedc8fabf8c23e040057540867186712faa5
+- package: github.com/mattn/go-isatty
+  version: ae0b1f8f8004be68d791a576e3d8e7648ab41449
+- package: github.com/golang/protobuf
+  version: 68415e7123da32b07eab49c96d2c4d6158360e9b
+  subpackages:
+  - proto
+- package: github.com/onsi/ginkgo
+  version: 17ea479729ee427265ac1e913443018350946ddf
+- package: github.com/onsi/gomega
+  version: 0fe204460da2c8fa1babcaac196e694de8f1aaa1
+- package: github.com/rightscale/go-jsonselect
+  version: d04eebe26072b09f780b43c72c6df71b12b8d105
+- package: golang.org/x/net
+  version: 66f0418ca41253f8d1a024eb9754e9441a8e79b9
+  subpackages:
+  - context
+  - context/ctxhttp
+- package: gopkg.in/alecthomas/kingpin.v2
+  version: ^2.0.12
+- package: gopkg.in/inconshreveable/log15.v2
+  version: ^2.10.0

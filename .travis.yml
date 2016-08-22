@@ -4,7 +4,7 @@
 # uploaded version. (Note: nothing is automatically garbage collected.)
 language: go
 go:
-  - 1.5
+  - 1.7
 env:
   global:
     # RSBIN_KEY= to upload to rightscale-binaries bucket in q&b acct:
@@ -16,6 +16,11 @@ env:
 
 # sudo=false makes the build run using a container
 sudo: false
+
+# This project uses a glide.lock file that is committed to the repository,
+# meaning that the contents of `vendor/` can be safely cached.
+cache:
+  - vendor
 
 # travis checks rsc out into github.com/rightscale/rsc but for release branches we really need it
 # in gopkg.in/rightscale/rsc-v1 so we have to manually move it, sigh
@@ -32,9 +37,6 @@ before_install:
 # here all we're doing is making sure that we have a go compliler for every target architecture
 install:
   - export PATH=$PATH:$HOME/gopath/bin # travis' worker doesn't seem to do this consistently
-  - GOOS=darwin GOARCH=amd64 gimme 1.5
-  - GOOS=windows GOARCH=amd64 gimme 1.5
-  - GOOS=linux GOARCH=arm gimme 1.5
 
 before_script: make build
 
@@ -43,8 +45,6 @@ before_script: make build
 script:
   - export NAME=`basename $TRAVIS_REPO_SLUG`
   - make travis-test
-  - export PATH=./Godeps/_workspace/bin:$PATH
-  - ls Godeps/_workspace/bin
   - echo $PATH
   - which gof3r
   # Deploy build result to s3
