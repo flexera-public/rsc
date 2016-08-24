@@ -333,6 +333,40 @@ var GenMetadata = map[string]*metadata.Resource{
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
 			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Set process variable value`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/proc/%s",
+						Variables:  []string{"name"},
+						Regexp:     regexp.MustCompile(`/rll/proc/([^/]+)`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "payload",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+				Payload: "string",
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "payload",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
 		},
 	},
 	"Rl10": &metadata.Resource{

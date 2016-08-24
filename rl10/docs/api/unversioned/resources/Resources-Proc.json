@@ -49,6 +49,63 @@
           }
         }
       }
+    },
+    {
+      "description": "Set process variable value",
+      "name": "update",
+      "metadata": {
+      },
+      "urls": [
+        {
+          "verb": "PUT",
+          "path": "/rll/proc/:name",
+          "version": "n/a"
+        }
+      ],
+      "params": {
+        "type": {
+          "name": "Struct",
+          "id": null,
+          "key": {
+            "type": {
+              "name": "Symbol",
+              "id": "Attributor-Symbol"
+            }
+          },
+          "attributes": {
+            "name": {
+              "required": true,
+              "type": {
+                "name": "String",
+                "id": "Attributor-String"
+              },
+              "source": "url"
+            }
+          }
+        },
+        "example": {
+          "name": "log_level"
+        }
+      },
+      "payload": {
+        "required": true,
+        "type": {
+          "name": "String",
+          "id": "Attributor-String"
+        },
+        "example": "debug"
+      },
+      "responses": {
+        "ok": {
+          "description": "Standard response for successful HTTP requests.",
+          "status": 200,
+          "headers": {
+          },
+          "media_type": {
+            "identifier": "text/plain"
+          }
+        }
+      }
     }
   ],
   "name": "Resources::Proc",
