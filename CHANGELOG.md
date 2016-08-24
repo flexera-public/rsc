@@ -1,4 +1,4 @@
-unreleased changes
+v6.2.0 / 2016-08-24
 -------------------
 * rl10: Added /rll/proc/log_level
 
