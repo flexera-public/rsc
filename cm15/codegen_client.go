@@ -295,6 +295,40 @@ func (api *API) AlertLocator(href string) *AlertLocator {
 
 //===== Actions
 
+// DELETE /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
+// DELETE /api/servers/:server_id/alerts/:id
+// DELETE /api/server_arrays/:server_array_id/alerts/:id
+// DELETE /api/deployments/:deployment_id/alerts/:id
+// DELETE /api/alerts/:id
+//
+// Destroys the Alert.
+func (loc *AlertLocator) Destroy() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("Alert", "destroy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // POST /api/clouds/:cloud_id/instances/:instance_id/alerts/:id/disable
 // POST /api/servers/:server_id/alerts/:id/disable
 // POST /api/server_arrays/:server_array_id/alerts/:id/disable

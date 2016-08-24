@@ -580,6 +580,22 @@
   },
   "Alerts": {
     "methods": {
+      "destroy": {
+        "access_rules": [
+          "actor||instance"
+        ],
+        "routes": [
+          "DELETE /api/clouds/:cloud_id/instances/:instance_id/alerts/:id(.:format)? {:controller=>\"alerts\", :action=>\"destroy\"}",
+          "DELETE /api/servers/:server_id/alerts/:id(.:format)? {:controller=>\"alerts\", :action=>\"destroy\"}",
+          "DELETE /api/server_arrays/:server_array_id/alerts/:id(.:format)? {:controller=>\"alerts\", :action=>\"destroy\"}",
+          "DELETE /api/deployments/:deployment_id/alerts/:id(.:format)? {:controller=>\"alerts\", :action=>\"destroy\"}",
+          "DELETE /api/alerts/:id(.:format)?               {:controller=>\"alerts\", :action=>\"destroy\"}"
+        ],
+        "description": "Destroys the Alert.\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
       "disable": {
         "access_rules": [
           "actor||instance"
