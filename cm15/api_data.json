@@ -3366,6 +3366,11 @@
             "description": "The size of instance memory. Supported by UCA cloud only.",
             "mandatory": false
           },
+          "instance[cloud_specific_attributes][metadata]": {
+            "class": "String",
+            "description": "Extra data used for configuration, in query string format",
+            "mandatory": false
+          },
           "instance[cloud_specific_attributes][disk_gb]": {
             "class": "Integer",
             "description": "The size of root disk. Supported by UCA cloud only.",

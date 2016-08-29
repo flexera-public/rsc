@@ -3952,6 +3952,14 @@ Optional parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][disk_gb]",
 						Description: `The size of root disk. Supported by UCA cloud only.`,
 						Type:        "int",
