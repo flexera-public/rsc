@@ -222,7 +222,7 @@ rsc --account 234 cm15 index clouds
 ### <a name=extract></a>Extracting Values From Responses
 
 The `--x1`, `--xm` and `--xj` flags make it possible to extract values from the response using a
-JSON select expression (see [http://jsonselect.org/](http://jsonselect.org/)). For example:
+JSON select expression (see [https://github.com/lloyd/JSONSelect](https://github.com/lloyd/JSONSelect)). For example:
 ```
 $ rsc --xm .name cm15 index /api/clouds
 ```

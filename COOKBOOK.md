@@ -2,16 +2,22 @@ Data Extraction Help and Cookbook
 =================================
 
 `rsc` supports the selection and extraction of data from an API response using a
-[JSON:select](http://jsonselect.org) expression. [JSON:select](http://jsonselect.org) is very powerful but
+[JSON:select] expression. [JSON:select] is very powerful but
 it is also not the most intuitive language (unless you are intimately familiar with
 CSS selectors) and the current library used in `rsc` leaves room for improvement...
 Since API responses are all very similar to one another it is often easiest to create
 a new query by looking up other similar queries. This is where this help page comes in.
 
-Below are three sections:
- - A summary of [JSON:select](http://jsonselect.org) selectors
- - A definition for the `rsc` output formats
- - A cookbook with API 1.5 examples
+[JSON:select]: https://github.com/lloyd/JSONSelect
+
+ - [JSON:Select selector summary](#jsonselect-selector-summary): A summary of [JSON:select] selectors
+ - [`rsc` Output Formats](#rsc-output-formats): A definition for the `rsc` output formats
+   - [`--x1` -- single match](#--x1----single-match)
+   - [`--xm` -- multiple match](#--xm----multiple-match)
+   - [`--xj` -- multiple match JSON output](#--xj----multiple-match-json-output)
+   - [`json` Subcommand](#json-subcommand)
+ - [Cookbook](#cookbook): A cookbook with API 1.5 examples
+ - [Using `rsc` in PowerShell](#using-rsc-in-powershell): Workarounds for issues using `rsc` in PowerShell
 
 JSON:Select selector summary
 ----------------------------
@@ -197,7 +203,7 @@ $ rsc --host us-3.rightscale.com --key 1234567890 \
 Note: the match `object:has(.rel:val("self")).href` serves to extract the hrefs from the _self_
 links. The returned JSON for each cloud includes
 `"links":[ {"href":"/api/clouds/7", "rel":"self"}, {"href":"/api/clouds/7/datacenters",
-"rel":"datacenters"}, ... ]` and the [JSON:select](http://jsonselect.org) expression says:
+"rel":"datacenters"}, ... ]` and the [JSON:select] expression says:
 find an _object_ (JSON hash) that has a _rel_ child/field whose value is _self_
 and then extract the value of the _href_ child/field. The _object_ here matches the
 `{"href":"/api/clouds/7","rel":"self"}` hash.
@@ -222,3 +228,48 @@ $ rsc --host us-3.rightscale.com --key 1234567890 \
 "/api/clouds/1/instances/LAB4OFL7I82E"
 ```
 
+## Using `rsc` in PowerShell
+
+In PowerShell (at least on Windows), there are some quirks with passing arguments to native programs
+such as `rsc` when those arguments contain quotation marks especially when they also contain spaces.
+The reason for this is a combination of the string parsing that PowerShell does and how Windows
+executables actually parse their whole command line into arguments (see [MSDN: CommandLineToArgvW
+function]).
+
+When passing a [JSON:select] query that contains quotation marks from PowerShell to `rsc`, the
+quotation marks need to be escaped for the command line parsing:
+
+```powershell
+rsc json --x1 'object:has(.rel:val(\"self\")).href'
+```
+
+When the quotation marks are inside a string that itself is contained in double quotation marks, the
+quotation marks need to be escaped for both PowerShell and for the command line parsing:
+
+```powershell
+rsc json --x1 "object:has(.rel:val(\`"$rel\`")).href"
+```
+
+However, if there are also spaces in the string or a variable you are expanding contains spaces, things get tricky:
+
+```powershell
+# this will work fine in PowerShell 2.0 (or newer PowerShell using the -Version 2.0 flag)
+# but it will not correctly with PowerShell 3.0 or higher as the outer quotation marks will
+# not be passed for some reason
+rsc json --x1 "object:has(.name:val(\`"rs low space on C: drive\`"))"
+
+# this also works with variables
+$name='rs low space on C: drive'
+rsc json --x1 "object:has(.name:val(\`"$name\`"))"
+
+# on PowerShell 3.0 and higher, you can use the special `--%` argument which is the PowerShell verbatim parameter
+# but it will not work with PowerShell 2.0 and PowerShell will not expand variables, etc.
+rsc --% json --x1 "object:has(.name:val(\"rs low space on C: drive\"))"
+
+# since this does not work with PowerShell variables, environment variables should be used instead
+# care should be taken to not overwrite important environment variables
+$env:name='rs low space on C: drive'
+rsc --% json --x1 "object:has(.name:val(\"%name%\"))"
+```
+
+[MSDN: CommandLineToArgvW function]: https://msdn.microsoft.com/en-us/library/windows/desktop/bb776391(v=vs.85).aspx
