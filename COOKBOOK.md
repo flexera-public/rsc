@@ -266,8 +266,8 @@ rsc json --x1 "object:has(.name:val(\`"$name\`"))"
 # but it will not work with PowerShell 2.0 and PowerShell will not expand variables, etc.
 rsc --% json --x1 "object:has(.name:val(\"rs low space on C: drive\"))"
 
-# since this does not work with PowerShell variables, enviroment variables should be used instead
-# care should be taken to not overwrite important enviroment variables
+# since this does not work with PowerShell variables, environment variables should be used instead
+# care should be taken to not overwrite important environment variables
 $env:name='rs low space on C: drive'
 rsc --% json --x1 "object:has(.name:val(\"%name%\"))"
 ```
