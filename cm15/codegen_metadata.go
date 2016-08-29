@@ -150,6 +150,45 @@ Optional parameters:
 		Identifier:  "application/vnd.rightscale.alert",
 		Actions: []*metadata.Action{
 			&metadata.Action{
+				Name:        "destroy",
+				Description: `Destroys the Alert.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/clouds/%s/instances/%s/alerts/%s",
+						Variables:  []string{"cloud_id", "instance_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/servers/%s/alerts/%s",
+						Variables:  []string{"server_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/server_arrays/%s/alerts/%s",
+						Variables:  []string{"server_array_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/deployments/%s/alerts/%s",
+						Variables:  []string{"deployment_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/deployments/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/alerts/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/alerts/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
 				Name:        "disable",
 				Description: `Disables the Alert indefinitely. Idempotent.`,
 				PathPatterns: []*metadata.PathPattern{
