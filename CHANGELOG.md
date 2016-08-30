@@ -1,6 +1,8 @@
-v6.2.0 / 2016-08-24
+v6.2.0 / 2016-08-29
 -------------------
-* rl10: Added /rll/proc/log_level
+* rl10: Added /rll/proc/log_level.
+* Add destroy action for alerts.
+* Fields for Instance are updated.
 
 v6.1.0 / 2016-08-09
 --------
