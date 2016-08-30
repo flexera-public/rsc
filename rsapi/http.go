@@ -1,4 +1,4 @@
-package rsapi
+package rsapi // import "gopkg.in/rightscale/rsc.v6/rsapi"
 
 import (
 	"bytes"
@@ -13,7 +13,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/rightscale/rsc/metadata"
+	"gopkg.in/rightscale/rsc.v6/metadata"
 )
 
 // FileUpload represents payload fields that correspond to multipart file uploads.
