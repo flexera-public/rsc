@@ -254,7 +254,7 @@ However, if there are also spaces in the string or a variable you are expanding 
 
 ```powershell
 # this will work fine except in PowerShell 5 and PowerShell 6 alpha where there is currently a bug where spaces in
-# segments of a string where an even number of quotation marks even though some may be escaped are ignored for quoting
+# segments of a string with an even number of quotation marks even though some may be escaped are ignored for quoting
 # when executing native programs (this bug can be avoided by using the -Version 2.0 command line flag to run in
 # PowerShell 2.0 compatiblity mode, but that could turn off other needed PowerShell functionality)
 rsc json --x1 "object:has(.name:val(\`"rs low space on C: drive\`"))"
