@@ -17,7 +17,7 @@ a new query by looking up other similar queries. This is where this help page co
    - [`--xj` -- multiple match JSON output](#--xj----multiple-match-json-output)
    - [`json` Subcommand](#json-subcommand)
  - [Cookbook](#cookbook): A cookbook with API 1.5 examples
- - [Using `rsc` in PowerShell](#using-rsc-in-powershell): Workarounds for issues using `rsc` in PowerShell
+ - [Using `rsc` in PowerShell](#using-rsc-in-powershell): Hints for using `rsc` in PowerShell
 
 JSON:Select selector summary
 ----------------------------
@@ -253,17 +253,23 @@ rsc json --x1 "object:has(.rel:val(\`"$rel\`")).href"
 However, if there are also spaces in the string or a variable you are expanding contains spaces, things get tricky:
 
 ```powershell
-# this will work fine in PowerShell 2.0 (or newer PowerShell using the -Version 2.0 flag)
-# but it will not correctly with PowerShell 3.0 or higher as the outer quotation marks will
-# not be passed for some reason
+# this will work fine except in PowerShell 5 and PowerShell 6 alpha where there is currently a bug where spaces in
+# segments of a string with an even number of quotation marks even though some may be escaped are ignored for quoting
+# when executing native programs (this bug can be avoided by using the -Version 2.0 command line flag to run in
+# PowerShell 2.0 compatiblity mode, but that could turn off other needed PowerShell functionality)
 rsc json --x1 "object:has(.name:val(\`"rs low space on C: drive\`"))"
 
 # this also works with variables
 $name='rs low space on C: drive'
 rsc json --x1 "object:has(.name:val(\`"$name\`"))"
 
-# on PowerShell 3.0 and higher, you can use the special `--%` argument which is the PowerShell verbatim parameter
-# but it will not work with PowerShell 2.0 and PowerShell will not expand variables, etc.
+# one work around for the PowerShell 5 bug is to place a space in another segment where there have been an odd number of
+# quotation marks; the follow examples work okay with rsc
+rsc json --x1 "object:has(.name:val(\`"rs low space on C: drive\`")) "
+rsc json --x1 " object:has(.name:val(\`"rs low space on C: drive\`"))"
+
+# on PowerShell 3 and higher, you can use the special `--%` argument which is the PowerShell verbatim parameter
+# but it will not work with PowerShell 2 and PowerShell will not expand variables, etc.
 rsc --% json --x1 "object:has(.name:val(\"rs low space on C: drive\"))"
 
 # since this does not work with PowerShell variables, environment variables should be used instead
