@@ -30,4 +30,3 @@ import:
 - package: gopkg.in/alecthomas/kingpin.v2
   version: ^2.0.12
 - package: github.com/inconshreveable/log15
-  version: ^2.10.0
