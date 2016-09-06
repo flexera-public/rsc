@@ -175,10 +175,12 @@ func (d *dumpClient) DoHiddenWithContext(ctx context.Context, req *http.Request)
 
 // doImp actually performs the HTTP request logging according to the various settings.
 func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) (*http.Response, error) {
-	if Insecure {
-		req.URL.Scheme = "http"
-	} else {
-		req.URL.Scheme = "https"
+	if req.URL.Scheme == "" {
+		if Insecure {
+			req.URL.Scheme = "http"
+		} else {
+			req.URL.Scheme = "https"
+		}
 	}
 	req.Header.Set("User-Agent", UA)
 

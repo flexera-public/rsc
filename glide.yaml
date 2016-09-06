@@ -29,5 +29,4 @@ import:
   - context/ctxhttp
 - package: gopkg.in/alecthomas/kingpin.v2
   version: ^2.0.12
-- package: gopkg.in/inconshreveable/log15.v2
-  version: ^2.10.0
+- package: github.com/inconshreveable/log15

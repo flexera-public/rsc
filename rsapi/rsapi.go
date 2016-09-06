@@ -21,9 +21,6 @@ type (
 		Client                httpclient.HTTPClient // Underlying http client (not used for authentication requests as these necessitate special redirect handling)
 		FetchLocationResource bool                  // Whether to fetch resource pointed by Location header
 		Metadata              APIMetadata           // Generated API metadata
-
-		insecure bool // Whether HTTP should be used instead of HTTPS (used by RL10 proxied requests)
-		// Use Insecure method to set to true.
 	}
 )
 

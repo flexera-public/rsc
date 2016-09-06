@@ -373,7 +373,7 @@ to make a series of requests.
 
 The `log` package exposes a `Logger` variable of type `log15.Logger`. This logger is used
 by rsc to log API requests made to external services. Configure the logger handler
-to enable logging. The [log15](https://godoc.org/gopkg.in/inconshreveable/log15.v2) package comes
+to enable logging. The [log15](https://godoc.org/github.com/inconshreveable/log15) package comes
 with a number of default handlers including a file and a syslog handlers.
 
 Configuring the `log` package to log to the file `/var/log/myapp.log` would look like:
@@ -384,7 +384,7 @@ if err != nil {
 }
 log.Logger.SetHandler(handler)
 ```
-Consult the [log15](https://godoc.org/gopkg.in/inconshreveable/log15.v2) GoDocs for more information.
+Consult the [log15](https://godoc.org/github.com/inconshreveable/log15) GoDocs for more information.
 
 ### Locators
 
