@@ -1,5 +1,5 @@
-hash: d233334b81c32e035ac64cd44a535bf49008ab8c9f4788f5071751f03a91f33a
-updated: 2016-08-22T11:54:33.435622691-07:00
+hash: 0368a8cc3269bb70498989e8c83d736bd6b53451962b6470dd2153e1ba8138d2
+updated: 2016-09-06T13:50:52.202698-07:00
 imports:
 - name: bitbucket.org/pkg/inflect
   version: 8961c3750a47b8c0b3e118d52513b97adf85a7e8
@@ -15,6 +15,8 @@ imports:
   version: 68415e7123da32b07eab49c96d2c4d6158360e9b
   subpackages:
   - proto
+- name: github.com/inconshreveable/log15
+  version: b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f
 - name: github.com/mattn/go-colorable
   version: 40e4aedc8fabf8c23e040057540867186712faa5
 - name: github.com/mattn/go-isatty
@@ -59,7 +61,7 @@ imports:
   - context
   - context/ctxhttp
 - name: gopkg.in/alecthomas/kingpin.v2
-  version: e5900212cbf65b181d3d8e08308ef06a01d117cf
+  version: e9044be3ab2a8e11d4e1f418d12f0790d57e8d70
 - name: gopkg.in/inconshreveable/log15.v2
   version: b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f
   subpackages:
