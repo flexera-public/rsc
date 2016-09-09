@@ -39,6 +39,7 @@ const (
 
 const (
 	noRedirectError = "no redirect"
+	requestIdHeader = "X-Request-Id"
 )
 
 var (
@@ -186,7 +187,12 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 
 	var reqBody []byte
 	startedAt := time.Now()
-	id := ShortToken()
+
+	// prefer the X-Request-Id header as request token for logging, if present.
+	id := req.Header.Get(requestIdHeader)
+	if id == "" {
+		id = ShortToken()
+	}
 	log.Info("started", "id", id, req.Method, req.URL.String())
 	hide := (DumpFormat == NoDump) || (hidden && !DumpFormat.IsVerbose())
 	if !hide {
