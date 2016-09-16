@@ -1,3 +1,8 @@
+unreleased changes
+------------------
+* Added MultiCloudImageMatcher resource
+* Updated fields for Subnet, Instance, ServerArray
+
 v6.2.0 / 2016-08-29
 -------------------
 * rl10: Added /rll/proc/log_level.
