@@ -20,9 +20,18 @@ func (a *APIAnalyzer) AnalyzeResource(name string, res map[string]interface{}, d
 	identifier := ""
 	attributes := []*gen.Attribute{}
 	links := map[string]string{}
-	m, ok := res["media_type"].(string)
+	m, ok := res["media_type"]
+
+	var mt string
+	switch m := m.(type) {
+		case string:
+			mt = m
+		case map[string]interface{}:
+			mt = m["name"].(string)
+	}
+
 	if ok {
-		t, ok := a.RawTypes[m]
+		t, ok := a.RawTypes[mt]
 		if ok {
 			attrs, ok := t["attributes"].(map[string]interface{})
 			if ok {

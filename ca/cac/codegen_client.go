@@ -62,6 +62,27 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 // child accounts.
 // The view `full` is not supported if the any of the user's accounts use IP Whitelisting.
 type Account struct {
+	CloudAccounts                             []*CloudAccount `json:"cloud_accounts,omitempty"`
+	CloudAnalyticsEnabled                     bool            `json:"cloud_analytics_enabled,omitempty"`
+	ExpiresIn                                 int             `json:"expires_in,omitempty"`
+	Href                                      string          `json:"href,omitempty"`
+	Id                                        int             `json:"id,omitempty"`
+	IsCloudAnalyticsBlockedByBillingAdminOnly bool            `json:"is_cloud_analytics_blocked_by_billing_admin_only,omitempty"`
+	IsEnterpriseParent                        bool            `json:"is_enterprise_parent,omitempty"`
+	Kind                                      string          `json:"kind,omitempty"`
+	Name                                      string          `json:"name,omitempty"`
+	OwnerId                                   int             `json:"owner_id,omitempty"`
+	PlanCode                                  string          `json:"plan_code,omitempty"`
+	ShardId                                   int             `json:"shard_id,omitempty"`
+	UserHasActor                              bool            `json:"user_has_actor,omitempty"`
+	UserHasAdmin                              bool            `json:"user_has_admin,omitempty"`
+	UserHasEnterpriseManager                  bool            `json:"user_has_enterprise_manager,omitempty"`
+	UsesIpWhitelisting                        bool            `json:"uses_ip_whitelisting,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Account) Locator(api *API) *AccountLocator {
+	return api.AccountLocator(r.Href)
 }
 
 //===== Locator
@@ -219,6 +240,26 @@ func (loc *AccountLocator) Show(options rsapi.APIParams) (*Account, error) {
 
 // AnalysisSnapshots can be used to generate unique links to share data using filters over a date range.
 type AnalysisSnapshot struct {
+	CreatedAt                   *time.Time     `json:"created_at,omitempty"`
+	CreatedBy                   string         `json:"created_by,omitempty"`
+	EndTime                     *time.Time     `json:"end_time,omitempty"`
+	ExcludedTagTypes            []string       `json:"excluded_tag_types,omitempty"`
+	Filters                     []*Filter      `json:"filters,omitempty"`
+	Granularity                 string         `json:"granularity,omitempty"`
+	Href                        string         `json:"href,omitempty"`
+	IsComparison                bool           `json:"is_comparison,omitempty"`
+	Kind                        string         `json:"kind,omitempty"`
+	Metrics                     []string       `json:"metrics,omitempty"`
+	MissingAccessToSomeAccounts bool           `json:"missing_access_to_some_accounts,omitempty"`
+	ModuleStates                []*ModuleState `json:"module_states,omitempty"`
+	StartTime                   *time.Time     `json:"start_time,omitempty"`
+	UpdatedAt                   *time.Time     `json:"updated_at,omitempty"`
+	Uuid                        string         `json:"uuid,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *AnalysisSnapshot) Locator(api *API) *AnalysisSnapshotLocator {
+	return api.AnalysisSnapshotLocator(r.Href)
 }
 
 //===== Locator
@@ -496,6 +537,23 @@ func (loc *AwsAccountGroupMembershipLocator) Show() (*AwsAccountGroupMembership,
 // based on either actual or forecasted spend. These emails include links to AnalysisSnapshots, which are
 // generated automatically by us.
 type BudgetAlert struct {
+	AdditionalEmails []string      `json:"additional_emails,omitempty"`
+	AttachCsv        bool          `json:"attach_csv,omitempty"`
+	Budget           *BudgetStruct `json:"budget,omitempty"`
+	CreatedAt        *time.Time    `json:"created_at,omitempty"`
+	Filters          []*Filter     `json:"filters,omitempty"`
+	Frequency        string        `json:"frequency,omitempty"`
+	Href             string        `json:"href,omitempty"`
+	Id               int           `json:"id,omitempty"`
+	Kind             string        `json:"kind,omitempty"`
+	Name             string        `json:"name,omitempty"`
+	Type             string        `json:"type,omitempty"`
+	UpdatedAt        *time.Time    `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *BudgetAlert) Locator(api *API) *BudgetAlertLocator {
+	return api.BudgetAlertLocator(r.Href)
 }
 
 //===== Locator
@@ -972,6 +1030,16 @@ func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime *time.Time, group [
 // This resource is not included in the public docs.
 // Represents the currently logged-in user.
 type CurrentUser struct {
+	Company   string     `json:"company,omitempty"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	Email     string     `json:"email,omitempty"`
+	FirstName string     `json:"first_name,omitempty"`
+	Id        int        `json:"id,omitempty"`
+	Kind      string     `json:"kind,omitempty"`
+	LastName  string     `json:"last_name,omitempty"`
+	Phone     string     `json:"phone,omitempty"`
+	Timezone  string     `json:"timezone,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 //===== Locator
@@ -1251,6 +1319,36 @@ func (loc *CurrentUserLocator) ConnectedCloudVendors(options rsapi.APIParams) ([
 // of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 // 2,083 characters we recommend using a POST request with the parameters in the body.
 type Instance struct {
+	AccountId                         int        `json:"account_id,omitempty"`
+	AccountName                       string     `json:"account_name,omitempty"`
+	CloudId                           int        `json:"cloud_id,omitempty"`
+	CloudName                         string     `json:"cloud_name,omitempty"`
+	CloudVendorName                   string     `json:"cloud_vendor_name,omitempty"`
+	DatacenterKey                     string     `json:"datacenter_key,omitempty"`
+	DatacenterName                    string     `json:"datacenter_name,omitempty"`
+	DeploymentId                      int        `json:"deployment_id,omitempty"`
+	DeploymentName                    string     `json:"deployment_name,omitempty"`
+	EstimatedCostForPeriod            float64    `json:"estimated_cost_for_period,omitempty"`
+	EstimatedManagedRcuCountForPeriod float64    `json:"estimated_managed_rcu_count_for_period,omitempty"`
+	IncarnatorId                      int        `json:"incarnator_id,omitempty"`
+	IncarnatorType                    string     `json:"incarnator_type,omitempty"`
+	InstanceEndAt                     *time.Time `json:"instance_end_at,omitempty"`
+	InstanceKey                       string     `json:"instance_key,omitempty"`
+	InstanceName                      string     `json:"instance_name,omitempty"`
+	InstanceRsid                      string     `json:"instance_rsid,omitempty"`
+	InstanceStartAt                   *time.Time `json:"instance_start_at,omitempty"`
+	InstanceTypeKey                   string     `json:"instance_type_key,omitempty"`
+	InstanceTypeName                  string     `json:"instance_type_name,omitempty"`
+	InstanceUid                       string     `json:"instance_uid,omitempty"`
+	Kind                              string     `json:"kind,omitempty"`
+	Platform                          string     `json:"platform,omitempty"`
+	ProvisionedByUserEmail            string     `json:"provisioned_by_user_email,omitempty"`
+	ProvisionedByUserId               int        `json:"provisioned_by_user_id,omitempty"`
+	ServerTemplateId                  int        `json:"server_template_id,omitempty"`
+	ServerTemplateName                string     `json:"server_template_name,omitempty"`
+	State                             string     `json:"state,omitempty"`
+	Tags                              []*Tag     `json:"tags,omitempty"`
+	TotalUsageHours                   float64    `json:"total_usage_hours,omitempty"`
 }
 
 //===== Locator
@@ -1580,6 +1678,31 @@ func (loc *InstanceLocator) FilterOptions(endTime *time.Time, filterTypes []stri
 // InstanceCombinations represent instances that make-up a Scenario.
 // Note that, when making create and update calls, a Pattern can only be applied to an InstanceCombination once.
 type InstanceCombination struct {
+	AssumeSustainedUse        bool                        `json:"assume_sustained_use,omitempty"`
+	CloudHref                 string                      `json:"cloud_href,omitempty"`
+	CloudName                 string                      `json:"cloud_name,omitempty"`
+	CloudVendorName           string                      `json:"cloud_vendor_name,omitempty"`
+	CreatedAt                 *time.Time                  `json:"created_at,omitempty"`
+	DatacenterName            string                      `json:"datacenter_name,omitempty"`
+	Href                      string                      `json:"href,omitempty"`
+	Id                        int                         `json:"id,omitempty"`
+	InstanceTypeName          string                      `json:"instance_type_name,omitempty"`
+	Kind                      string                      `json:"kind,omitempty"`
+	Links                     *InstanceCombinationLinks   `json:"links,omitempty"`
+	MonthlyUsageHours         int                         `json:"monthly_usage_hours,omitempty"`
+	MonthlyUsageOption        string                      `json:"monthly_usage_option,omitempty"`
+	Patterns                  []*Pattern                  `json:"patterns,omitempty"`
+	Platform                  string                      `json:"platform,omitempty"`
+	PlatformVersion           string                      `json:"platform_version,omitempty"`
+	Quantity                  int                         `json:"quantity,omitempty"`
+	ReservedInstancePurchases []*ReservedInstancePurchase `json:"reserved_instance_purchases,omitempty"`
+	Scenario                  *Scenario                   `json:"scenario,omitempty"`
+	UpdatedAt                 *time.Time                  `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *InstanceCombination) Locator(api *API) *InstanceCombinationLocator {
+	return api.InstanceCombinationLocator(r.Href)
 }
 
 //===== Locator
@@ -2238,6 +2361,17 @@ func (loc *InstanceMetricLocator) CurrentCount(options rsapi.APIParams) (string,
 // of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 // 2,083 characters we recommend using a POST request with the parameters in the body.
 type InstanceUsagePeriod struct {
+	EstimatedCost            float64    `json:"estimated_cost,omitempty"`
+	EstimatedManagedRcuCount float64    `json:"estimated_managed_rcu_count,omitempty"`
+	HourlyPrice              float64    `json:"hourly_price,omitempty"`
+	InstanceKey              string     `json:"instance_key,omitempty"`
+	InstanceTypeName         string     `json:"instance_type_name,omitempty"`
+	Kind                     string     `json:"kind,omitempty"`
+	PricingType              string     `json:"pricing_type,omitempty"`
+	RcuRate                  float64    `json:"rcu_rate,omitempty"`
+	ReservationUid           string     `json:"reservation_uid,omitempty"`
+	UsageEndAt               *time.Time `json:"usage_end_at,omitempty"`
+	UsageStartAt             *time.Time `json:"usage_start_at,omitempty"`
 }
 
 //===== Locator
@@ -2308,6 +2442,24 @@ func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filte
 // Patterns describe operations in usage, and can be applied to InstanceCombinations in Scenarios to model changes in the cost.
 // A pattern can only be applied to an InstanceCombination once.
 type Pattern struct {
+	CreatedAt *time.Time  `json:"created_at,omitempty"`
+	Href      string      `json:"href,omitempty"`
+	Id        int         `json:"id,omitempty"`
+	Kind      string      `json:"kind,omitempty"`
+	Months    string      `json:"months,omitempty"`
+	Name      string      `json:"name,omitempty"`
+	Operation string      `json:"operation,omitempty"`
+	Scenarios []*Scenario `json:"scenarios,omitempty"`
+	Summary   string      `json:"summary,omitempty"`
+	Type      string      `json:"type,omitempty"`
+	UpdatedAt *time.Time  `json:"updated_at,omitempty"`
+	Value     float64     `json:"value,omitempty"`
+	Years     string      `json:"years,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Pattern) Locator(api *API) *PatternLocator {
+	return api.PatternLocator(r.Href)
 }
 
 //===== Locator
@@ -2630,6 +2782,28 @@ func (loc *PatternLocator) CreateDefaults(options rsapi.APIParams) (*Pattern, er
 // of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 // 2,083 characters we recommend using a POST request with the parameters in the body.
 type ReservedInstance struct {
+	AccountId                  int        `json:"account_id,omitempty"`
+	AccountName                string     `json:"account_name,omitempty"`
+	CloudId                    int        `json:"cloud_id,omitempty"`
+	CloudName                  string     `json:"cloud_name,omitempty"`
+	CloudVendorName            string     `json:"cloud_vendor_name,omitempty"`
+	CostSaved                  float64    `json:"cost_saved,omitempty"`
+	DatacenterKey              string     `json:"datacenter_key,omitempty"`
+	DatacenterName             string     `json:"datacenter_name,omitempty"`
+	Duration                   int        `json:"duration,omitempty"`
+	EndAt                      *time.Time `json:"end_at,omitempty"`
+	InstanceCount              int        `json:"instance_count,omitempty"`
+	InstanceTypeKey            string     `json:"instance_type_key,omitempty"`
+	InstanceTypeName           string     `json:"instance_type_name,omitempty"`
+	Kind                       string     `json:"kind,omitempty"`
+	OfferingType               string     `json:"offering_type,omitempty"`
+	Platform                   string     `json:"platform,omitempty"`
+	ReservationUid             string     `json:"reservation_uid,omitempty"`
+	StartAt                    *time.Time `json:"start_at,omitempty"`
+	State                      string     `json:"state,omitempty"`
+	Tenancy                    string     `json:"tenancy,omitempty"`
+	UtilizationPercentage      float64    `json:"utilization_percentage,omitempty"`
+	WastedReservedInstanceCost float64    `json:"wasted_reserved_instance_cost,omitempty"`
 }
 
 //===== Locator
@@ -2950,6 +3124,24 @@ func (loc *ReservedInstanceLocator) FilterOptions(endTime *time.Time, startTime 
 
 // ReservedInstancePurchases can be applied to InstanceCombinations in Scenarios to model changes in the cost. These are not actually purchased in the cloud and are only used for cost simulation purposes.
 type ReservedInstancePurchase struct {
+	AutoRenew           bool                           `json:"auto_renew,omitempty"`
+	CreatedAt           *time.Time                     `json:"created_at,omitempty"`
+	Duration            int                            `json:"duration,omitempty"`
+	Href                string                         `json:"href,omitempty"`
+	Id                  int                            `json:"id,omitempty"`
+	InstanceCombination *InstanceCombination           `json:"instance_combination,omitempty"`
+	InstanceTenancy     string                         `json:"instance_tenancy,omitempty"`
+	Kind                string                         `json:"kind,omitempty"`
+	Links               *ReservedInstancePurchaseLinks `json:"links,omitempty"`
+	OfferingType        string                         `json:"offering_type,omitempty"`
+	Quantity            int                            `json:"quantity,omitempty"`
+	StartAt             *time.Time                     `json:"start_at,omitempty"`
+	UpdatedAt           *time.Time                     `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *ReservedInstancePurchase) Locator(api *API) *ReservedInstancePurchaseLocator {
+	return api.ReservedInstancePurchaseLocator(r.Href)
 }
 
 //===== Locator
@@ -3209,6 +3401,22 @@ func (loc *ReservedInstancePurchaseLocator) Destroy() error {
 // Use the forecast action to generate the results after you create a Scenario and add your InstanceCombinations,
 // ReservedInstancePurchases and Patterns.
 type Scenario struct {
+	CreatedAt              *time.Time                 `json:"created_at,omitempty"`
+	Filters                []*Filter                  `json:"filters,omitempty"`
+	HistoricMetricsResults []*TimeSeriesMetricsResult `json:"historic_metrics_results,omitempty"`
+	Href                   string                     `json:"href,omitempty"`
+	Id                     int                        `json:"id,omitempty"`
+	InstanceCombinations   []*InstanceCombination     `json:"instance_combinations,omitempty"`
+	IsPersisted            bool                       `json:"is_persisted,omitempty"`
+	Kind                   string                     `json:"kind,omitempty"`
+	Name                   string                     `json:"name,omitempty"`
+	SnapshotTimestamp      *time.Time                 `json:"snapshot_timestamp,omitempty"`
+	UpdatedAt              *time.Time                 `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *Scenario) Locator(api *API) *ScenarioLocator {
+	return api.ScenarioLocator(r.Href)
 }
 
 //===== Locator
@@ -3509,6 +3717,21 @@ func (loc *ScenarioLocator) Forecast(options rsapi.APIParams) (*TimeSeriesMetric
 // These emails include links to AnalysisSnapshots, which are generated automatically by us.
 // Each report will be sent on Monday for weekly reports, 1st of the month for Monthly reports and daily for the daily reports in the user's timezone.
 type ScheduledReport struct {
+	AdditionalEmails []string   `json:"additional_emails,omitempty"`
+	AttachCsv        bool       `json:"attach_csv,omitempty"`
+	CreatedAt        *time.Time `json:"created_at,omitempty"`
+	Filters          []*Filter  `json:"filters,omitempty"`
+	Frequency        string     `json:"frequency,omitempty"`
+	Href             string     `json:"href,omitempty"`
+	Id               int        `json:"id,omitempty"`
+	Kind             string     `json:"kind,omitempty"`
+	Name             string     `json:"name,omitempty"`
+	UpdatedAt        *time.Time `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *ScheduledReport) Locator(api *API) *ScheduledReportLocator {
+	return api.ScheduledReportLocator(r.Href)
 }
 
 //===== Locator
@@ -3810,6 +4033,18 @@ func (loc *ScheduledReportLocator) CreateDefaults(options rsapi.APIParams) (*Sch
 // Users can have various permissions on multiple accounts. Users with admin
 // permissions in an account can modify that account's users.
 type User struct {
+	Accounts                             []*UserAccounts `json:"accounts,omitempty"`
+	Email                                string          `json:"email,omitempty"`
+	HasAnyExpiredAccounts                bool            `json:"has_any_expired_accounts,omitempty"`
+	HasAnyIpWhitelistedAccountsWithAdmin bool            `json:"has_any_ip_whitelisted_accounts_with_admin,omitempty"`
+	Href                                 string          `json:"href,omitempty"`
+	Id                                   int             `json:"id,omitempty"`
+	Kind                                 string          `json:"kind,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *User) Locator(api *API) *UserLocator {
+	return api.UserLocator(r.Href)
 }
 
 //===== Locator
@@ -4096,6 +4331,19 @@ func (loc *UserLocator) Invite(accountId int, email string, options rsapi.APIPar
 
 // Used by the Cloud Analytics UI to keep track of various UI states.
 type UserSetting struct {
+	DateRange                *DateRangeStruct       `json:"date_range,omitempty"`
+	DismissedDialogs         []string               `json:"dismissed_dialogs,omitempty"`
+	ExcludedTagTypes         []string               `json:"excluded_tag_types,omitempty"`
+	Filters                  []*Filter              `json:"filters,omitempty"`
+	Granularity              string                 `json:"granularity,omitempty"`
+	Kind                     string                 `json:"kind,omitempty"`
+	MainMenuVisible          bool                   `json:"main_menu_visible,omitempty"`
+	Metrics                  []string               `json:"metrics,omitempty"`
+	ModuleStates             []*ModuleState         `json:"module_states,omitempty"`
+	OnboardingStatus         string                 `json:"onboarding_status,omitempty"`
+	SelectedCloudVendorNames []string               `json:"selected_cloud_vendor_names,omitempty"`
+	Sorting                  map[string]interface{} `json:"sorting,omitempty"`
+	TableColumnVisibility    map[string]interface{} `json:"table_column_visibility,omitempty"`
 }
 
 //===== Locator

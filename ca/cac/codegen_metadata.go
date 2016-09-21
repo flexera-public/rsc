@@ -23,7 +23,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Deployments or ServerArrays. Users with the ` + `enterprise_manager` + ` permission in an account can create
         child accounts.
         The view ` + `full` + ` is not supported if the any of the user's accounts use IP Whitelisting.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.account",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -176,7 +176,7 @@ var GenMetadata = map[string]*metadata.Resource{
 	"AnalysisSnapshot": &metadata.Resource{
 		Name:        "AnalysisSnapshot",
 		Description: `AnalysisSnapshots can be used to generate unique links to share data using filters over a date range.`,
-		Identifier:  "",
+		Identifier:  "application/vnd.rightscale.ca.analysis_snapshot",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -539,7 +539,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Enable you to set a monthly spend budget and be alerted via email when this is exceeded,
         based on either actual or forecasted spend. These emails include links to AnalysisSnapshots, which are
         generated automatically by us.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.budget_alert",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -1249,7 +1249,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "CurrentUser",
 		Description: `This resource is not included in the public docs.
         Represents the currently logged-in user.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.current_user",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -1618,7 +1618,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.instance",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2278,7 +2278,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "InstanceCombination",
 		Description: `InstanceCombinations represent instances that make-up a Scenario.
         Note that, when making create and update calls, a Pattern can only be applied to an InstanceCombination once.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.instance_combination",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -3017,6 +3017,9 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 				},
 			},
 		},
+		Links: map[string]string{
+			"scenario": "The Scenario to which this InstanceCombination belongs to.",
+		},
 	},
 	"InstanceMetric": &metadata.Resource{
 		Name: "InstanceMetric",
@@ -3710,7 +3713,7 @@ years.`,
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.instance_usage_period",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -3774,7 +3777,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Name: "Pattern",
 		Description: `Patterns describe operations in usage, and can be applied to InstanceCombinations in Scenarios to model changes in the cost.
         A pattern can only be applied to an InstanceCombination once.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.pattern",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -4222,7 +4225,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 Both HTTP GET and HTTP POST requests can be used to execute these actions. Since we do not limit the number
 of filters applied it is possible that the URL may exceed the maximum length. If the URL length is over
 2,083 characters we recommend using a POST request with the parameters in the body.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.reserved_instance",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -4849,7 +4852,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 	"ReservedInstancePurchase": &metadata.Resource{
 		Name:        "ReservedInstancePurchase",
 		Description: `ReservedInstancePurchases can be applied to InstanceCombinations in Scenarios to model changes in the cost. These are not actually purchased in the cloud and are only used for cost simulation purposes.`,
-		Identifier:  "",
+		Identifier:  "application/vnd.rightscale.ca.reserved_instance_purchase",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5202,13 +5205,16 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 				APIParams:    []*metadata.ActionParam{},
 			},
 		},
+		Links: map[string]string{
+			"instance_combination": "The InstanceCombination for the ReservedInstance.",
+		},
 	},
 	"Scenario": &metadata.Resource{
 		Name: "Scenario",
 		Description: `Scenarios can be used to model changes in cloud usage to forecast costs over a 3-year period.
         Use the forecast action to generate the results after you create a Scenario and add your InstanceCombinations,
         ReservedInstancePurchases and Patterns.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.scenario",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5577,7 +5583,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Description: `ScheduledReports are emailed to you, and include usage, cost, and the change from the previous reporting period.
         These emails include links to AnalysisSnapshots, which are generated automatically by us.
         Each report will be sent on Monday for weekly reports, 1st of the month for Monthly reports and daily for the daily reports in the user's timezone.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.scheduled_report",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5960,7 +5966,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 		Description: `This resource is not included in the public docs.
         Users can have various permissions on multiple accounts. Users with admin
         permissions in an account can modify that account's users.`,
-		Identifier: "",
+		Identifier: "application/vnd.rightscale.ca.user",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6335,7 +6341,7 @@ of filters applied it is possible that the URL may exceed the maximum length. If
 	"UserSetting": &metadata.Resource{
 		Name:        "UserSetting",
 		Description: `Used by the Cloud Analytics UI to keep track of various UI states.`,
-		Identifier:  "",
+		Identifier:  "application/vnd.rightscale.ca.user_setting",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
