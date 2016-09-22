@@ -1,15 +1,16 @@
 {
   "Scheduler": {
     "description": "Provide RightLink with the ability to schedule script executions on instances",
-    "attributes": {},
+    "attributes": {
+    },
     "methods": {
       "schedule_right_script": {
         "access_rules": [
           "instance"
         ],
         "routes": [
-			"POST   /api/right_net/scheduler/schedule_right_script(.:format)? {dummy so regexp matches}"
-		],
+          "POST   /api/right_net/scheduler/schedule_right_script(.:format)? {dummy so regexp matches}"
+        ],
         "status_code": "204 No Content",
         "description": "Schedules a RightScript for execution on the current instance",
         "content_type": "",
@@ -53,8 +54,8 @@
           "instance"
         ],
         "routes": [
-			"POST   /api/right_net/scheduler/schedule_recipe(.:format)? {dummy so regexp matches}"
-		],
+          "POST   /api/right_net/scheduler/schedule_recipe(.:format)? {dummy so regexp matches}"
+        ],
         "status_code": "204 No Content",
         "description": "Schedules a chef recipe for execution on the current instance",
         "content_type": "",
@@ -1196,10 +1197,7 @@
             {
               "resource_uid": "RESOURCE_3872976164",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_3872976164;1225633"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_3872976164;1225633"}
               ],
               "size": null,
               "state": "available",
@@ -1210,10 +1208,7 @@
             {
               "resource_uid": "RESOURCE_3052613316",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_3052613316;3403561960"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_3052613316;3403561960"}
               ],
               "size": null,
               "state": "available",
@@ -1323,10 +1318,7 @@
             {
               "resource_uid": "RESOURCE_3872976164",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_3872976164;1225633"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_3872976164;1225633"}
               ],
               "size": null,
               "state": "available",
@@ -1337,10 +1329,7 @@
             {
               "resource_uid": "RESOURCE_3052613316",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_3052613316;3403561960"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_3052613316;3403561960"}
               ],
               "size": null,
               "state": "available",
@@ -1613,7 +1602,7 @@
     "methods": {
       "index": {
         "access_rules": [
-          "observer"
+          "observer||instance"
         ],
         "routes": [
           "GET    /api/clouds(.:format)?                   {:controller=>\"clouds\", :action=>\"index\"}"
@@ -1672,7 +1661,7 @@
       },
       "show": {
         "access_rules": [
-          "observer"
+          "observer||instance"
         ],
         "routes": [
           "GET    /api/clouds/:id(.:format)?               {:controller=>\"clouds\", :action=>\"show\"}"
@@ -2341,7 +2330,7 @@
     "methods": {
       "index": {
         "access_rules": [
-          "observer"
+          "observer||instance"
         ],
         "routes": [
           "GET    /api/clouds/:cloud_id/datacenters(.:format)? {:controller=>\"datacenters\", :action=>\"index\"}"
@@ -2386,7 +2375,7 @@
       },
       "show": {
         "access_rules": [
-          "observer"
+          "observer||instance"
         ],
         "routes": [
           "GET    /api/clouds/:cloud_id/datacenters/:id(.:format)? {:controller=>\"datacenters\", :action=>\"show\"}"
@@ -3432,6 +3421,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "instance[cloud_specific_attributes][availability_set]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": true,
+            "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
           }
         }
       },
@@ -4156,6 +4151,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "instance[cloud_specific_attributes][availability_set]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": true,
+            "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
           }
         }
       }
@@ -4192,7 +4193,8 @@
         "associate_public_ip_address": "",
         "ip_forwarding_enabled": "",
         "cloud_specific_attributes": "",
-        "admin_password": ""
+        "admin_password": "",
+        "rs_provisioned": ""
       },
       "links": {
         "self": "Href of itself",
@@ -4721,6 +4723,144 @@
       ]
     }
   },
+  "MultiCloudImageMatchers": {
+    "methods": {
+      "create": {
+        "access_rules": [
+          "designer"
+        ],
+        "routes": [
+          "POST   /api/multi_cloud_images/:multi_cloud_image_id/matchers(.:format)? {:controller=>\"multi_cloud_image_matchers\", :action=>\"create\"}"
+        ],
+        "description": "Creates a new setting matcher for an existing MultiCloudImage.\n",
+        "status_code": "201 Created",
+        "parameters": {
+          "multi_cloud_image_matcher": {
+            "class": "Hash",
+            "non_blank": true,
+            "mandatory": true
+          },
+          "multi_cloud_image_matcher[image_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The href of the example Image to use. Mandatory if specifying fingerprint type.",
+            "mandatory": true
+          },
+          "multi_cloud_image_matcher[user_data]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "User data that RightScale automatically passes to your instance at boot time."
+          }
+        }
+      },
+      "destroy": {
+        "access_rules": [
+          "designer"
+        ],
+        "routes": [
+          "DELETE /api/multi_cloud_images/:multi_cloud_image_id/matchers/:id(.:format)? {:controller=>\"multi_cloud_image_matchers\", :action=>\"destroy\"}"
+        ],
+        "description": "Deletes a MultiCloudImage setting matcher.\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
+      "index": {
+        "access_rules": [
+          "observer"
+        ],
+        "routes": [
+          "GET    /api/multi_cloud_images/:multi_cloud_image_id/matchers(.:format)? {:controller=>\"multi_cloud_image_matchers\", :action=>\"index\"}"
+        ],
+        "description": "Lists the MultiCloudImage setting matchers.\n",
+        "content_type": "application/vnd.rightscale.multi_cloud_image_matcher;type=collection",
+        "status_code": "200 OK",
+        "example_resource": {
+          "links": [
+            {"rel":"self","href":"/api/multi_cloud_images/32/matchers/48"},
+            {"rel":"multi_cloud_image","href":"/api/multi_cloud_images/32"}
+          ],
+          "actions": [
+            {
+              "rel": "rematch"
+            }
+          ],
+          "cloud_type": "eucalyptus",
+          "match_type": "fingerprint",
+          "match_criteria": {
+            "fingerprint": "F2193553982"
+          },
+          "user_data": "user_data_2225625371"
+        },
+        "parameters": {
+        },
+        "filters": {
+        }
+      },
+      "rematch": {
+        "access_rules": [
+          "designer"
+        ],
+        "routes": [
+          "POST   /api/multi_cloud_images/:multi_cloud_image_id/matchers/:id/rematch(.:format)? {:controller=>\"multi_cloud_image_matchers\", :action=>\"rematch\"}"
+        ],
+        "description": "Generates new MultiCloudImageSettings based upon match_criteria. Returns hash of created/updated/destroyed settings.\n",
+        "status_code": "200 OK",
+        "parameters": {
+        }
+      },
+      "show": {
+        "access_rules": [
+          "observer"
+        ],
+        "routes": [
+          "GET    /api/multi_cloud_images/:multi_cloud_image_id/matchers/:id(.:format)? {:controller=>\"multi_cloud_image_matchers\", :action=>\"show\"}"
+        ],
+        "description": "Show information about a single MultiCloudImage setting matcher.\n",
+        "content_type": "application/vnd.rightscale.multi_cloud_image_matcher",
+        "status_code": "200 OK",
+        "parameters": {
+        },
+        "example_resource": {
+          "links": [
+            {"rel":"self","href":"/api/multi_cloud_images/32/matchers/48"},
+            {"rel":"multi_cloud_image","href":"/api/multi_cloud_images/32"}
+          ],
+          "actions": [
+            {
+              "rel": "rematch"
+            }
+          ],
+          "cloud_type": "eucalyptus",
+          "match_type": "fingerprint",
+          "match_criteria": {
+            "fingerprint": "F2193553982"
+          },
+          "user_data": "user_data_2225625371"
+        }
+      }
+    },
+    "description": "A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a given cloud type. For now, only\none type of matcher is supported (fingerprint). Fingerprint will match images based upon a checksum as returned by the\ncloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass in an example image with an image_href from\nwhich to generate the fingerprint.\n",
+    "media_type": {
+      "description": "A MultiCloudImageMatcher generates MultiCloudImageSettings based upon provided criteria.\n",
+      "attributes": {
+        "user_data": "User data that RightScale automatically passes to your instance at boot time.",
+        "links": "",
+        "actions": "",
+        "cloud_type": "Cloud type for this matcher",
+        "match_type": "Type of matcher. Possible values: 'fingerprint'.",
+        "match_criteria": "Hash of criteria used for matching. Will return 'fingerprint' for fingerprint type."
+      },
+      "links": {
+        "self": "Href of itself",
+        "cloud": "Associated cloud",
+        "multi_cloud_image": "Associated multi cloud image"
+      },
+      "content_types": [
+        "application/vnd.rightscale.multi_cloud_image_matcher"
+      ]
+    }
+  },
   "MultiCloudImageSettings": {
     "methods": {
       "create": {
@@ -4811,10 +4951,6 @@
           ]
         },
         "filters": {
-          "multi_cloud_image_href": {
-            "column": "multi_cloud_image_id",
-            "description": "The MultiCloudImage href to filter on."
-          },
           "cloud_href": {
             "column": "cloud_id",
             "description": "The Cloud href to filter on."
@@ -4896,10 +5032,11 @@
     },
     "description": "A MultiCloudImageSetting defines which\nsettings should be used when a server is launched in a cloud.\n",
     "media_type": {
-      "description": " A MultiCloudImageSetting defines which\n settings should be used when a server is launched in a cloud.\n",
+      "description": "A MultiCloudImageSetting defines which settings should be used when a server is launched in a cloud.\n",
       "attributes": {
         "links": "",
-        "actions": ""
+        "actions": "",
+        "user_data": ""
       },
       "links": {
         "self": "Href of itself",
@@ -5120,7 +5257,8 @@
       },
       "links": {
         "self": "Href of itself",
-        "settings": "Associated multi cloud image settings"
+        "settings": "Associated multi cloud image settings",
+        "matchers": "Associated multi cloud image setting matchers"
       },
       "content_types": [
         "application/vnd.rightscale.multi_cloud_image"
@@ -5986,7 +6124,7 @@
         "routes": [
           "GET    /api/permissions(.:format)?              {:controller=>\"permissions\", :action=>\"index\"}"
         ],
-        "description": "List all permissions for all users of the current acount.\n",
+        "description": "List all permissions for all users of the current account.\n",
         "content_type": "application/vnd.rightscale.permission;type=collection",
         "status_code": "200 OK",
         "parameters": {
@@ -6043,11 +6181,12 @@
     "media_type": {
       "description": null,
       "attributes": {
-        "role_title": "",
-        "created_at": "",
-        "deleted_at": "",
+        "role_title": "Role provided by the permission (e.g. observer)",
+        "created_at": "Time when permission was created",
+        "deleted_at": "Time when permission was deleted",
         "links": "",
-        "actions": ""
+        "actions": "",
+        "id": "Permission ID. It is constructed from the permission's user ID and role title (i.e. user_id-role_title)."
       },
       "links": {
         "self": "Href of itself",
@@ -6096,10 +6235,11 @@
           "placement_group[cloud_specific_attributes]": {
             "class": "Hash",
             "non_blank": true,
-            "description": "Cloud specific attributes that have no generic rightscale abstraction"
+            "description": "Cloud specific attributes that have no generic rightscale abstraction",
+            "mandatory": false
           },
           "placement_group[cloud_specific_attributes][account_type]": {
-            "class": "Array",
+            "class": "String",
             "description": "AzureRM: The type of Storage Account.",
             "non_blank": true,
             "mandatory": false
@@ -6133,7 +6273,8 @@
             "class": "String",
             "non_blank": true,
             "valid_values": [
-              "default"
+              "default",
+              "extended"
             ]
           },
           "filter": {
@@ -6184,7 +6325,8 @@
             "class": "String",
             "non_blank": true,
             "valid_values": [
-              "default"
+              "default",
+              "extended"
             ]
           }
         },
@@ -6216,7 +6358,8 @@
         "created_at": "",
         "updated_at": "",
         "links": "",
-        "actions": ""
+        "actions": "",
+        "cloud_specific_attributes": ""
       },
       "links": {
         "self": "Href of itself",
@@ -9270,6 +9413,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "server_array[instance][cloud_specific_attributes][availability_set]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": true,
+            "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
           }
         }
       },
@@ -10673,6 +10822,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "server[instance][cloud_specific_attributes][availability_set]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": true,
+            "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
           }
         }
       },
@@ -11587,6 +11742,11 @@
             "class": "String",
             "non_blank": false,
             "description": "The RouteTable to associate/dissociate with this Subnet. Pass this parameter with an empty string to reset this Subnet to use the default RouteTable."
+          },
+          "subnet[cidr_block]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The range of IP addresses for the Subnet."
           }
         }
       }
@@ -12459,7 +12619,8 @@
         "links": "",
         "actions": "",
         "created_at": "",
-        "updated_at": ""
+        "updated_at": "",
+        "cloud_specific_attributes": "Any cloud specific attributes of the volume snapshot"
       },
       "links": {
         "self": "Href of itself",

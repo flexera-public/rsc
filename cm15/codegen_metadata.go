@@ -3857,20 +3857,20 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
-						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
 						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
+						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][local_ssd_interface]",
@@ -3906,6 +3906,14 @@ Optional parameters:
 						Mandatory:   false,
 						NonBlank:    false,
 						ValidValues: []string{"default", "dedicated"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_size]",
@@ -4865,6 +4873,14 @@ Required parameters:
 						Mandatory:   false,
 						NonBlank:    false,
 						ValidValues: []string{"default", "dedicated"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_size]",
@@ -6111,8 +6127,126 @@ Required parameters:
 			},
 		},
 		Links: map[string]string{
+			"matchers": "Associated multi cloud image setting matchers",
 			"self":     "Href of itself",
 			"settings": "Associated multi cloud image settings",
+		},
+	},
+	"MultiCloudImageMatcher": &metadata.Resource{
+		Name: "MultiCloudImageMatcher",
+		Description: `A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a given cloud type. For now, only
+one type of matcher is supported (fingerprint). Fingerprint will match images based upon a checksum as returned by the
+cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass in an example image with an image_href from
+which to generate the fingerprint.`,
+		Identifier: "application/vnd.rightscale.multi_cloud_image_matcher",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "create",
+				Description: `Creates a new setting matcher for an existing MultiCloudImage.
+Required parameters:
+	multi_cloud_image_matcher`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/multi_cloud_images/%s/matchers",
+						Variables:  []string{"multi_cloud_image_id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "multi_cloud_image_matcher[image_href]",
+						Description: `The href of the example Image to use. Mandatory if specifying fingerprint type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "multi_cloud_image_matcher[user_data]",
+						Description: `User data that RightScale automatically passes to your instance at boot time.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "multi_cloud_image_matcher",
+						Description: ``,
+						Type:        "*MultiCloudImageMatcherParam",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "destroy",
+				Description: `Deletes a MultiCloudImage setting matcher.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/multi_cloud_images/%s/matchers/%s",
+						Variables:  []string{"multi_cloud_image_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "index",
+				Description: `Lists the MultiCloudImage setting matchers.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/multi_cloud_images/%s/matchers",
+						Variables:  []string{"multi_cloud_image_id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "rematch",
+				Description: `Generates new MultiCloudImageSettings based upon match_criteria. Returns hash of created/updated/destroyed settings.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/multi_cloud_images/%s/matchers/%s/rematch",
+						Variables:  []string{"multi_cloud_image_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers/([^/]+)/rematch$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "show",
+				Description: `Show information about a single MultiCloudImage setting matcher.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/multi_cloud_images/%s/matchers/%s",
+						Variables:  []string{"multi_cloud_image_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+		},
+		Links: map[string]string{
+			"cloud":             "Associated cloud",
+			"multi_cloud_image": "Associated multi cloud image",
+			"self":              "Href of itself",
 		},
 	},
 	"MultiCloudImageSetting": &metadata.Resource{
@@ -6232,7 +6366,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "multi_cloud_image_href"},
+						ValidValues: []string{"cloud_href"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -6243,7 +6377,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "multi_cloud_image_href"},
+						ValidValues: []string{"cloud_href"},
 					},
 				},
 			},
@@ -7402,7 +7536,7 @@ destroying it while the user has other permissions will result in an error.`,
 
 			&metadata.Action{
 				Name: "index",
-				Description: `List all permissions for all users of the current acount.
+				Description: `List all permissions for all users of the current account.
 Optional parameters:
 	filter`,
 				PathPatterns: []*metadata.PathPattern{
@@ -7478,9 +7612,9 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "placement_group[cloud_specific_attributes][account_type][]",
+						Name:        "placement_group[cloud_specific_attributes][account_type]",
 						Description: `AzureRM: The type of Storage Account.`,
-						Type:        "[]string",
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -7568,7 +7702,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -7588,7 +7722,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 			},
@@ -7614,7 +7748,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -7625,7 +7759,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 			},
@@ -11016,6 +11150,14 @@ Required parameters:
 						ValidValues: []string{"default", "dedicated"},
 					},
 					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
 						Type:        "string",
@@ -11032,16 +11174,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][keep_alive_url]",
-						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Name:        "server[instance][cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11944,20 +12086,20 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][iam_instance_profile]",
-						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][root_volume_type_uid]",
 						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][iam_instance_profile]",
+						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_interface]",
@@ -11968,8 +12110,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11977,8 +12119,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11997,6 +12139,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12053,16 +12203,16 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
-						Description: `The number of instance cores. Supported by UCA cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
-						Description: `The size of instance memory. Supported by UCA cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12093,16 +12243,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][schedule][][max_count]",
-						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
+						Name:        "server_array[elasticity_params][schedule][][min_count]",
+						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][schedule][][min_count]",
-						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
+						Name:        "server_array[elasticity_params][schedule][][max_count]",
+						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12134,16 +12284,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][bounds][max_count]",
-						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
+						Name:        "server_array[datacenter_policy][][datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[datacenter_policy][][datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
+						Name:        "server_array[elasticity_params][bounds][max_count]",
+						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12184,14 +12334,6 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][placement_group_href]",
-						Description: `The href of the Placement Group.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][security_group_hrefs][]",
 						Description: `The hrefs of the Security Groups.`,
 						Type:        "[]string",
@@ -12208,8 +12350,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][ramdisk_image_href]",
-						Description: `The href of the Ramdisk Image.`,
+						Name:        "server_array[instance][placement_group_href]",
+						Description: `The href of the Placement Group.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12224,8 +12366,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][kernel_image_href]",
-						Description: `The href of the Kernel Image.`,
+						Name:        "server_array[instance][ramdisk_image_href]",
+						Description: `The href of the Ramdisk Image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12234,6 +12376,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][weight]",
 						Description: `Instance allocation (should total 100%).`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][kernel_image_href]",
+						Description: `The href of the Kernel Image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14434,6 +14584,14 @@ Required parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "subnet[cidr_block]",
+						Description: `The range of IP addresses for the Subnet.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "subnet[name]",
