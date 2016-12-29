@@ -190,7 +190,7 @@ var _ = Describe("Config", func() {
 
 					It("exits without prompting for new values", func() {
 						Ω(testOut.String()).Should(ContainSubstring("Exiting"))
-						Ω(testOut.String()).ShouldNot(ContainSubstring("Account id"))
+						Ω(testOut.String()).ShouldNot(ContainSubstring("Account ID"))
 					})
 
 					Context("replying yes to the confirmation prompt", func() {
@@ -200,7 +200,7 @@ var _ = Describe("Config", func() {
 
 						It("prompts for new values", func() {
 							Ω(testOut.String()).ShouldNot(ContainSubstring("Exiting"))
-							Ω(testOut.String()).Should(ContainSubstring("Account id"))
+							Ω(testOut.String()).Should(ContainSubstring("Account ID"))
 						})
 					})
 				})
