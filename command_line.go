@@ -88,6 +88,9 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 			if cmdLine.Host == "" {
 				cmdLine.Host = config.LoginHost
 			}
+			if len(config.RefreshToken) > 0 {
+				cmdLine.OAuthToken = config.RefreshToken
+			}
 		}
 	}
 	cmdLine.Command = cmd
