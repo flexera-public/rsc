@@ -9,10 +9,11 @@ import (
 
 // ClientConfig is the basic configuration settings required by all clients.
 type ClientConfig struct {
-	Account   int    // RightScale account ID
-	LoginHost string // RightScale API login host, e.g. "us-3.rightscale.com"
-	Email     string // RightScale API login email
-	Password  string // RightScale API login password
+	Account      int    // RightScale account ID
+	LoginHost    string // RightScale API login host, e.g. "us-3.rightscale.com"
+	Email        string // RightScale API login email
+	Password     string // RightScale API login password
+	RefreshToken string // RightScale API refresh token
 }
 
 // LoadConfig loads the client configuration from disk
@@ -51,7 +52,7 @@ func (cfg *ClientConfig) Save(path string) error {
 // CreateConfig creates a configuration file and saves it to the file at the given path.
 func CreateConfig(path string) error {
 	config, _ := LoadConfig(path)
-	var emailDef, passwordDef, accountDef, hostDef string
+	var emailDef, passwordDef, accountDef, hostDef, refreshTokenDef string
 	if config != nil {
 		yn := PromptConfirmation("Found existing configuration file %v, overwrite? (y/N): ", path)
 		if yn != "y" {
@@ -65,11 +66,12 @@ func CreateConfig(path string) error {
 			config.LoginHost = "my.rightscale.com"
 		}
 		hostDef = fmt.Sprintf(" (%v)", config.LoginHost)
+		refreshTokenDef = fmt.Sprintf(" (%v)", config.RefreshToken)
 	} else {
 		config = &ClientConfig{}
 	}
 
-	fmt.Fprintf(out, "Account id%v: ", accountDef)
+	fmt.Fprintf(out, "Account ID%v: ", accountDef)
 	var newAccount string
 	fmt.Fscanln(in, &newAccount)
 	if newAccount != "" {
@@ -99,6 +101,13 @@ func CreateConfig(path string) error {
 	fmt.Fscanln(in, &newLoginHost)
 	if newLoginHost != "" {
 		config.LoginHost = newLoginHost
+	}
+
+	fmt.Fprintf(out, "API Refresh Token%v: ", refreshTokenDef)
+	var newRefreshToken string
+	fmt.Fscanln(in, &newRefreshToken)
+	if newRefreshToken != "" {
+		config.RefreshToken = newRefreshToken
 	}
 
 	err := config.Save(path)
