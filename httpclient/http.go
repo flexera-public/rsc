@@ -229,9 +229,26 @@ func (d *dumpClient) getClientWithoutTimeout() *http.Client {
 	client := *d.Client
 	tr, ok := client.Transport.(*http.Transport)
 	if ok {
-		trCopy := *tr
-		trCopy.ResponseHeaderTimeout = 0
-		tr = &trCopy
+		// note that the http.Transport struct has internal mutex fields that are
+		// not safe to copy. we have to be selective in copying fields.
+		trCopy := &http.Transport{
+			Proxy:                  tr.Proxy,
+			DialContext:            tr.DialContext,
+			Dial:                   tr.Dial,
+			DialTLS:                tr.DialTLS,
+			TLSClientConfig:        tr.TLSClientConfig,
+			TLSHandshakeTimeout:    tr.TLSHandshakeTimeout,
+			DisableKeepAlives:      tr.DisableKeepAlives,
+			DisableCompression:     tr.DisableCompression,
+			MaxIdleConns:           tr.MaxIdleConns,
+			MaxIdleConnsPerHost:    tr.MaxIdleConnsPerHost,
+			IdleConnTimeout:        tr.IdleConnTimeout,
+			ResponseHeaderTimeout:  0, // explicitly zeroed-out
+			ExpectContinueTimeout:  tr.ExpectContinueTimeout,
+			TLSNextProto:           tr.TLSNextProto,
+			MaxResponseHeaderBytes: tr.MaxResponseHeaderBytes,
+		}
+		tr = trCopy
 	} else {
 		// note that the following code has a known issue in that it depends on the
 		// current value of the NoCertCheck global. if that global changes after
