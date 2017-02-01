@@ -227,8 +227,18 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 func (d *dumpClient) getClientWithoutTimeout() *http.Client {
 	// Get a copy of the client and modify as multiple concurrent go routines can be using this client.
 	client := *d.Client
-	tr := &http.Transport{Proxy: http.ProxyFromEnvironment}
-	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: NoCertCheck}
+	tr, ok := client.Transport.(*http.Transport)
+	if ok {
+		trCopy := *tr
+		trCopy.ResponseHeaderTimeout = 0
+		tr = &trCopy
+	} else {
+		// note that the following code has a known issue in that it depends on the
+		// current value of the NoCertCheck global. if that global changes after
+		// creation of this client then the behavior is undefined.
+		tr = &http.Transport{Proxy: http.ProxyFromEnvironment}
+		tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: NoCertCheck}
+	}
 	client.Transport = tr
 	return &client
 }
