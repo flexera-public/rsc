@@ -12,8 +12,8 @@ import (
 	"github.com/rightscale/rsc/ss/ssm"
 )
 
-// Metadata synthetized from all SS APIs metadata
-var GenMetadata map[string]*metadata.Resource
+// Metadata synthetized from all SS APIs metadata; setup once
+var GenMetadata = setupMetadata()
 
 // API is the Self-Service 1.0 common client to all self-service APIs.
 type API struct {
@@ -26,7 +26,6 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 	if err != nil {
 		return nil, err
 	}
-	setupMetadata()
 	api.Metadata = GenMetadata
 	if api.Auth != nil {
 		api.Auth.SetHost(api.Host)
@@ -37,7 +36,6 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 // New returns a Self-Service API client.
 func New(h string, a rsapi.Authenticator) *API {
 	api := rsapi.New(h, a)
-	setupMetadata()
 	api.Metadata = GenMetadata
 	return &API{API: api}
 }
@@ -62,9 +60,6 @@ func HostFromLogin(host string) string {
 	return strings.Join(append([]string{ssLoginHostPrefix}, urlElems[1:]...), ".")
 }
 
-// Whether we've already adjusted the action path patterns in the SS APIs generated metadata
-var pathFixupDone bool
-
 func copyPathPattern(p *metadata.PathPattern) (newP *metadata.PathPattern) {
 	newP = &metadata.PathPattern{HTTPMethod: p.HTTPMethod, Pattern: p.Pattern}
 	copy(newP.Variables, p.Variables)
@@ -86,13 +81,10 @@ func removePrefixes(r *regexp.Regexp, num int) (result *regexp.Regexp) {
 }
 
 // Initialize GenMetadata from each SS API generated metadata
-func setupMetadata() {
-	GenMetadata = map[string]*metadata.Resource{}
+func setupMetadata() (result map[string]*metadata.Resource) {
+	result = make(map[string]*metadata.Resource)
 	for n, r := range ssd.GenMetadata {
-		GenMetadata[n] = r
-		if pathFixupDone {
-			continue
-		}
+		result[n] = r
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
 				// remove "/api/designer" prefix
@@ -101,10 +93,7 @@ func setupMetadata() {
 		}
 	}
 	for n, r := range ssc.GenMetadata {
-		GenMetadata[n] = r
-		if pathFixupDone {
-			continue
-		}
+		result[n] = r
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
 				// remove "/api/catalog" prefix
@@ -113,10 +102,7 @@ func setupMetadata() {
 		}
 	}
 	for n, r := range ssm.GenMetadata {
-		GenMetadata[n] = r
-		if pathFixupDone {
-			continue
-		}
+		result[n] = r
 		for _, a := range r.Actions {
 			for _, p := range a.PathPatterns {
 				// remove "/api/manager" prefix
@@ -124,5 +110,5 @@ func setupMetadata() {
 			}
 		}
 	}
-	pathFixupDone = true
+	return
 }
