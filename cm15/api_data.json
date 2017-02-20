@@ -2497,6 +2497,11 @@
               "account"
             ],
             "description": "The routing scope for tags for servers in the deployment."
+          },
+          "deployment[resource_group_href]" : {
+            "class": "String",
+            "non_blank": true,
+            "description" : "The href of the Windows Azure Resource Group attached to the deployment."
           }
         }
       },
@@ -2574,6 +2579,9 @@
           "server_tag_scope": {
             "partial_match": true,
             "description": "The routing scope for tags for servers in the deployment."
+          },
+          "resource_group_href": {
+            "description": "Resource Group href to filter on."
           }
         }
       },
@@ -2680,6 +2688,11 @@
               "account"
             ],
             "description": "The routing scope for tags for servers in the deployment."
+          },
+          "deployment[resource_group_href]" : {
+            "class": "String",
+            "non_blank": true,
+            "description" : "The href of the Windows Azure Resource Group attached to the deployment."
           }
         }
       },
@@ -2713,7 +2726,8 @@
         "self": "Href of itself",
         "servers": "Associated servers",
         "server_arrays": "Associated server arrays",
-        "alerts": "Associated alerts"
+        "alerts": "Associated alerts",
+        "resource_group" : "Href of the ResourceGroup that this Deployment belongs to"
       },
       "content_types": [
         "application/vnd.rightscale.deployment"
@@ -5872,6 +5886,11 @@
             "non_blank": true,
             "description": "The Cloud to create the Network in",
             "mandatory": true
+          },
+          "network[deployment_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The href of the Deployment that owns this Network."
           }
         }
       },
@@ -5929,6 +5948,9 @@
           },
           "resource_uid": {
             "description": "Resource Unique Identifier for the Network to filter on."
+          },
+          "deployment_href": {
+            "description": "Deployment href to filter on."
           }
         }
       },
@@ -5986,6 +6008,11 @@
             "class": "String",
             "non_blank": true,
             "description": "Sets the default RouteTable for this Network."
+          },
+          "network[deployment_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The href of the Deployment that owns this Network."
           }
         }
       }
@@ -6006,7 +6033,8 @@
       "links": {
         "self": "Href of itself",
         "cloud": "Href of the Cloud the network is in",
-        "default_route_table": "The href of the RouteTable that is currently active"
+        "default_route_table": "The href of the RouteTable that is currently active",
+        "deployment" : "Containing Deployment"
       },
       "content_types": [
         "application/vnd.rightscale.network"
@@ -6232,6 +6260,11 @@
             "mandatory": true,
             "description": "The Href of the Cloud in which the PlacementGroup should be created. Note: This feature is not supported for all clouds."
           },
+          "placement_group[deployment_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The href of the Deployment that owns this PlacementGroup."
+          },
           "placement_group[cloud_specific_attributes]": {
             "class": "Hash",
             "non_blank": true,
@@ -6307,6 +6340,9 @@
           },
           "cloud_href": {
             "description": "Href of the Cloud to filter on."
+          },
+          "deployment_href": {
+            "description": "Deployment href to filter on."
           }
         }
       },
@@ -7414,6 +7450,170 @@
       },
       "content_types": [
         "application/vnd.rightscale.repository_asset"
+      ]
+    }
+  },
+  "ResourceGroups": {
+    "methods": {
+      "create": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "POST   /api/resource_groups(.:format)?         {:controller=>\"resource_groups\", :action=>\"create\"}"
+        ],
+        "description": "Creates a ResourceGroup.\n",
+        "status_code": "201 Created",
+        "parameters": {
+          "resource_group": {
+            "class": "Hash",
+            "non_blank": true,
+            "mandatory": true
+          },
+          "resource_group[name]": {
+            "class": "String",
+            "non_blank": true,
+            "mandatory": true,
+            "description": "The name of the Resource Group to be created."
+          },
+          "resource_group[description]": {
+            "class": "String",
+            "non_blank": false,
+            "description": "The description of the Resource Group to be created."
+          },
+          "resource_group[cloud_href]": {
+            "class": "String",
+            "non_blank": true,
+            "mandatory": true,
+            "description": "The Href of the Cloud in which the ResourceGroup should be created."
+          },
+          "resource_group[deployment_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The Href of the Deployment that owns this Resource Group."
+          }
+        }
+      },
+      "destroy": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "DELETE /api/resource_groups/:id(.:format)?     {:controller=>\"resource_groups\", :action=>\"destroy\"}"
+        ],
+        "description": "Destroys a ResourceGroup.\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
+      "index": {
+        "access_rules": [
+          "observer||instance"
+        ],
+        "routes": [
+          "GET    /api/resource_groups(.:format)?         {:controller=>\"resource_groups\", :action=>\"index\"}"
+        ],
+        "description": "Lists all ResourceGroups in an account.\n",
+        "content_type": "application/vnd.rightscale.resource_group;type=collection",
+        "status_code": "200 OK",
+        "parameters": {
+          "view": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "default"
+            ]
+          },
+          "filter": {
+            "class": "Array",
+            "non_blank": true
+          }
+        },
+        "example_resource": {
+          "name": "NAME_3519857283",
+          "description": "",
+          "state": "available",
+          "resource_uid": "RESOURCE_453014838",
+          "created_at": "2016/04/22 21:11:15 +0000",
+          "updated_at": "2016/04/22 21:11:15 +0000",
+          "links": [
+            {"rel":"self","href":"/api/resource_groups/FCV644RLQN457"},
+            {"rel":"cloud","href":"/api/clouds/888"},
+            {"rel":"deployment","href":"/api/deployments/2"}
+          ],
+          "actions": [
+
+          ]
+        },
+        "filters": {
+          "name": {
+            "description": "Name of the Resource Groups to filter on.",
+            "partial_match": true
+          },
+          "state": {
+            "description": "State of the Resource Groups to filter on. Valid values are: [\"available\", \"unavalable\"]."
+          },
+          "cloud_href": {
+            "description": "Href of the Cloud to filter on."
+          }
+        }
+      },
+      "show": {
+        "access_rules": [
+          "observer||instance"
+        ],
+        "routes": [
+          "GET    /api/resource_groups/:id(.:format)?     {:controller=>\"resource_groups\", :action=>\"show\"}"
+        ],
+        "description": "Shows information about a single ResourceGroup.\n",
+        "content_type": "application/vnd.rightscale.resource_group",
+        "status_code": "200 OK",
+        "parameters": {
+          "view": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "default"
+            ]
+          }
+        },
+        "example_resource": {
+          "name": "NAME_3519857281",
+          "description": "",
+          "state": "available",
+          "resource_uid": "RESOURCE_453014832",
+          "created_at": "2016/04/22 21:11:15 +0000",
+          "updated_at": "2016/04/22 21:11:15 +0000",
+          "links": [
+            {"rel":"self","href":"/api/resource_groups/ABC1601954162DEF"},
+            {"rel":"cloud","href":"/api/clouds/888"},
+            {"rel":"deployment","href":"/api/deployments/2"}
+          ],
+          "actions": [
+
+          ]
+        }
+      }
+    },
+    "description": null,
+    "media_type": {
+      "description": null,
+      "attributes": {
+        "name": "",
+        "description": "",
+        "state": "",
+        "resource_uid": "",
+        "created_at": "",
+        "updated_at": "",
+        "links": "",
+        "actions": ""
+      },
+      "links": {
+        "self": "Href of itself",
+        "cloud": "Href of the Cloud that this ResourceGroup belongs to"
+      },
+      "content_types": [
+        "application/vnd.rightscale.resource_group"
       ]
     }
   },
@@ -8793,6 +8993,11 @@
           "security_group[network_href]": {
             "class": "String",
             "non_blank": true
+          },
+          "security_group[deployment_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The href of the Deployment that owns this SecurityGroup."
           }
         }
       },
@@ -8856,6 +9061,9 @@
           "network_href": {
             "column": "security_groups.network_rsid",
             "description": "Network to filter on."
+          },
+          "deployment_href": {
+            "description": "Deployment href to filter on."
           }
         }
       },
