@@ -3037,7 +3037,7 @@ func (loc *DeploymentLocator) Clone(options rsapi.APIParams) error {
 // Creates a new deployment with the given parameters.
 // Required parameters:
 // deployment
-func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLocator, error) {
+func (loc *DeploymentLocator) Create(deployment *DeploymentParam2) (*DeploymentLocator, error) {
 	var res *DeploymentLocator
 	if deployment == nil {
 		return res, fmt.Errorf("deployment is required")
@@ -3314,7 +3314,7 @@ func (loc *DeploymentLocator) Unlock() error {
 // Updates attributes of a given deployment.
 // Required parameters:
 // deployment
-func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
+func (loc *DeploymentLocator) Update(deployment *DeploymentParam3) error {
 	if deployment == nil {
 		return fmt.Errorf("deployment is required")
 	}
@@ -8778,6 +8778,211 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.APIParams) (*RepositoryAss
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("RepositoryAsset", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+/******  ResourceGroup ******/
+
+type ResourceGroup struct {
+	Actions     []map[string]string `json:"actions,omitempty"`
+	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
+	Description string              `json:"description,omitempty"`
+	Links       []map[string]string `json:"links,omitempty"`
+	Name        string              `json:"name,omitempty"`
+	ResourceUid string              `json:"resource_uid,omitempty"`
+	State       string              `json:"state,omitempty"`
+	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *ResourceGroup) Locator(api *API) *ResourceGroupLocator {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.ResourceGroupLocator(l["href"])
+		}
+	}
+	return nil
+}
+
+//===== Locator
+
+// ResourceGroupLocator exposes the ResourceGroup resource actions.
+type ResourceGroupLocator struct {
+	Href
+	api *API
+}
+
+// ResourceGroupLocator builds a locator from the given href.
+func (api *API) ResourceGroupLocator(href string) *ResourceGroupLocator {
+	return &ResourceGroupLocator{Href(href), api}
+}
+
+//===== Actions
+
+// POST /api/resource_groups
+//
+// Creates a ResourceGroup.
+// Required parameters:
+// resource_group
+func (loc *ResourceGroupLocator) Create(resourceGroup *ResourceGroupParam) (*ResourceGroupLocator, error) {
+	var res *ResourceGroupLocator
+	if resourceGroup == nil {
+		return res, fmt.Errorf("resourceGroup is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"resource_group": resourceGroup,
+	}
+	uri, err := loc.ActionPath("ResourceGroup", "create")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ResourceGroupLocator{Href(location), loc.api}, nil
+	}
+}
+
+// DELETE /api/resource_groups/:id
+//
+// Destroys a ResourceGroup.
+func (loc *ResourceGroupLocator) Destroy() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ResourceGroup", "destroy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// GET /api/resource_groups
+//
+// Lists all ResourceGroups in an account.
+// Optional parameters:
+// filter
+// view
+func (loc *ResourceGroupLocator) Index(options rsapi.APIParams) ([]*ResourceGroup, error) {
+	var res []*ResourceGroup
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ResourceGroup", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /api/resource_groups/:id
+//
+// Shows information about a single ResourceGroup.
+// Optional parameters:
+// view
+func (loc *ResourceGroupLocator) Show(options rsapi.APIParams) (*ResourceGroup, error) {
+	var res *ResourceGroup
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ResourceGroup", "show")
 	if err != nil {
 		return res, err
 	}
@@ -14967,6 +15172,20 @@ type DeploymentParam struct {
 	ServerTagScope string `json:"server_tag_scope,omitempty"`
 }
 
+type DeploymentParam2 struct {
+	Description       string `json:"description,omitempty"`
+	Name              string `json:"name,omitempty"`
+	ResourceGroupHref string `json:"resource_group_href,omitempty"`
+	ServerTagScope    string `json:"server_tag_scope,omitempty"`
+}
+
+type DeploymentParam3 struct {
+	Description       string `json:"description,omitempty"`
+	Name              string `json:"name,omitempty"`
+	ResourceGroupHref string `json:"resource_group_href,omitempty"`
+	ServerTagScope    string `json:"server_tag_scope,omitempty"`
+}
+
 type Descriptions struct {
 	Long  string `json:"long,omitempty"`
 	Notes string `json:"notes,omitempty"`
@@ -15154,12 +15373,14 @@ type NetworkOptionGroupParam2 struct {
 type NetworkParam struct {
 	CidrBlock       string `json:"cidr_block,omitempty"`
 	CloudHref       string `json:"cloud_href,omitempty"`
+	DeploymentHref  string `json:"deployment_href,omitempty"`
 	Description     string `json:"description,omitempty"`
 	InstanceTenancy string `json:"instance_tenancy,omitempty"`
 	Name            string `json:"name,omitempty"`
 }
 
 type NetworkParam2 struct {
+	DeploymentHref string `json:"deployment_href,omitempty"`
 	Description    string `json:"description,omitempty"`
 	Name           string `json:"name,omitempty"`
 	RouteTableHref string `json:"route_table_href,omitempty"`
@@ -15179,6 +15400,7 @@ type PermissionParam struct {
 type PlacementGroupParam struct {
 	CloudHref               string                    `json:"cloud_href,omitempty"`
 	CloudSpecificAttributes *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
+	DeploymentHref          string                    `json:"deployment_href,omitempty"`
 	Description             string                    `json:"description,omitempty"`
 	Name                    string                    `json:"name,omitempty"`
 }
@@ -15231,6 +15453,13 @@ type RepositoryParam2 struct {
 	Name            string       `json:"name,omitempty"`
 	Source          string       `json:"source,omitempty"`
 	SourceType      string       `json:"source_type,omitempty"`
+}
+
+type ResourceGroupParam struct {
+	CloudHref      string `json:"cloud_href,omitempty"`
+	DeploymentHref string `json:"deployment_href,omitempty"`
+	Description    string `json:"description,omitempty"`
+	Name           string `json:"name,omitempty"`
 }
 
 type RightScriptAttachmentParam struct {
@@ -15310,9 +15539,10 @@ type Schedule struct {
 }
 
 type SecurityGroupParam struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	NetworkHref string `json:"network_href,omitempty"`
+	DeploymentHref string `json:"deployment_href,omitempty"`
+	Description    string `json:"description,omitempty"`
+	Name           string `json:"name,omitempty"`
+	NetworkHref    string `json:"network_href,omitempty"`
 }
 
 type SecurityGroupRuleParam struct {

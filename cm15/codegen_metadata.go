@@ -3094,6 +3094,14 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "deployment[resource_group_href]",
+						Description: `The href of the Windows Azure Resource Group attached to the deployment.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "deployment[server_tag_scope]",
 						Description: `The routing scope for tags for servers in the deployment.`,
 						Type:        "string",
@@ -3123,7 +3131,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "deployment",
 						Description: ``,
-						Type:        "*DeploymentParam",
+						Type:        "*DeploymentParam2",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -3171,7 +3179,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"description", "name", "server_tag_scope"},
+						ValidValues: []string{"description", "name", "resource_group_href", "server_tag_scope"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3191,7 +3199,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"description", "name", "server_tag_scope"},
+						ValidValues: []string{"description", "name", "resource_group_href", "server_tag_scope"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3346,6 +3354,14 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "deployment[resource_group_href]",
+						Description: `The href of the Windows Azure Resource Group attached to the deployment.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "deployment[server_tag_scope]",
 						Description: `The routing scope for tags for servers in the deployment.`,
 						Type:        "string",
@@ -3375,7 +3391,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "deployment",
 						Description: ``,
-						Type:        "*DeploymentParam",
+						Type:        "*DeploymentParam3",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -3384,12 +3400,13 @@ Required parameters:
 			},
 		},
 		Links: map[string]string{
-			"alerts":        "Associated alerts",
-			"inputs":        "List of configuration inputs",
-			"lock_user":     "Href of the user who has locked this deployment",
-			"self":          "Href of itself",
-			"server_arrays": "Associated server arrays",
-			"servers":       "Associated servers",
+			"alerts":         "Associated alerts",
+			"inputs":         "List of configuration inputs",
+			"lock_user":      "Href of the user who has locked this deployment",
+			"resource_group": "Href of the ResourceGroup that this Deployment belongs to",
+			"self":           "Href of itself",
+			"server_arrays":  "Associated server arrays",
+			"servers":        "Associated servers",
 		},
 	},
 	"HealthCheck": &metadata.Resource{
@@ -6508,6 +6525,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "network[deployment_href]",
+						Description: `The href of the Deployment that owns this Network.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "network[description]",
 						Description: `The description for the Network.`,
 						Type:        "string",
@@ -6588,7 +6613,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cidr_block", "cloud_href", "name", "resource_uid"},
+						ValidValues: []string{"cidr_block", "cloud_href", "deployment_href", "name", "resource_uid"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -6599,7 +6624,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cidr_block", "cloud_href", "name", "resource_uid"},
+						ValidValues: []string{"cidr_block", "cloud_href", "deployment_href", "name", "resource_uid"},
 					},
 				},
 			},
@@ -6642,6 +6667,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "network[deployment_href]",
+						Description: `The href of the Deployment that owns this Network.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "network[description]",
 						Description: `The updated description for the Network.`,
 						Type:        "string",
@@ -6673,6 +6706,7 @@ Required parameters:
 		Links: map[string]string{
 			"cloud":               "Href of the Cloud the network is in",
 			"default_route_table": "The href of the RouteTable that is currently active",
+			"deployment":          "Containing Deployment",
 			"self":                "Href of itself",
 		},
 	},
@@ -7620,6 +7654,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "placement_group[deployment_href]",
+						Description: `The href of the Deployment that owns this PlacementGroup.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "placement_group[description]",
 						Description: `The description of the Placement Group to be created.`,
 						Type:        "string",
@@ -7693,7 +7735,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "name", "state"},
+						ValidValues: []string{"cloud_href", "deployment_href", "name", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -7713,7 +7755,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "name", "state"},
+						ValidValues: []string{"cloud_href", "deployment_href", "name", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -8961,6 +9003,183 @@ Optional parameters:
 		},
 		Links: map[string]string{
 			"self": "Href of itself",
+		},
+	},
+	"ResourceGroup": &metadata.Resource{
+		Name:        "ResourceGroup",
+		Description: ``,
+		Identifier:  "application/vnd.rightscale.resource_group",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "create",
+				Description: `Creates a ResourceGroup.
+Required parameters:
+	resource_group`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/resource_groups",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group[deployment_href]",
+						Description: `The Href of the Deployment that owns this Resource Group.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[description]",
+						Description: `The description of the Resource Group to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[cloud_href]",
+						Description: `The Href of the Cloud in which the ResourceGroup should be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[name]",
+						Description: `The name of the Resource Group to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group",
+						Description: ``,
+						Type:        "*ResourceGroupParam",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "destroy",
+				Description: `Destroys a ResourceGroup.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/resource_groups/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name: "index",
+				Description: `Lists all ResourceGroups in an account.
+Optional parameters:
+	filter
+	view`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/resource_groups",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "state"},
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "state"},
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name: "show",
+				Description: `Shows information about a single ResourceGroup.
+Optional parameters:
+	view`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/resource_groups/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+			},
+		},
+		Links: map[string]string{
+			"cloud": "Href of the Cloud that this ResourceGroup belongs to",
+			"self":  "Href of itself",
 		},
 	},
 	"RightScript": &metadata.Resource{
@@ -10587,6 +10806,14 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "security_group[deployment_href]",
+						Description: `The href of the Deployment that owns this SecurityGroup.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "security_group[network_href]",
 						Description: ``,
 						Type:        "string",
@@ -10660,7 +10887,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"name", "network_href", "resource_uid"},
+						ValidValues: []string{"deployment_href", "name", "network_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -10680,7 +10907,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"name", "network_href", "resource_uid"},
+						ValidValues: []string{"deployment_href", "name", "network_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
