@@ -1,5 +1,6 @@
-unreleased changes
+v6.3.0 / 2017-03-02
 ------------------
+* Added ResourceGroup resource
 * Added MultiCloudImageMatcher resource
 * Updated fields for Subnet, Instance, ServerArray
 

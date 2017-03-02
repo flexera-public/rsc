@@ -4,8 +4,8 @@
 Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 
-v6.2.0
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v6.2.0)](https://travis-ci.org/rightscale/rsc)
+v6.3.0
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v6.3.0)](https://travis-ci.org/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
@@ -83,7 +83,7 @@ The list of global flags is:
   -c, --config="/home/raphael/.rsc"
                    path to rsc config file
   -R, --retry=0    Number of retry attempts for non-successful API responses (500, 503, and timeouts only)
-  -a, --account=ACCOUNT  
+  -a, --account=ACCOUNT
                    RightScale account ID
   -h, --host=HOST  RightScale login endpoint (e.g. 'us-3.rightscale.com')
   --email=EMAIL    Login email, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
