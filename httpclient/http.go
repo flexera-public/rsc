@@ -43,6 +43,11 @@ const (
 )
 
 var (
+	// defaults
+	defaultHiddenHeaders = map[string]bool{"Authorization": true, "Cookie": true}
+
+	defaultResponseHeaderTimeout = 300 * time.Second
+
 	// DumpFormat dictates how HTTP requests and responses are logged: NoDump prevents logging
 	// altogether, Debug generates logs in human readable format and JSON in JSON format.
 	// Verbose causes all headers to be logged - including sensitive ones.
@@ -60,10 +65,10 @@ var (
 	// time to wait in seconds for a server's response headers after fully
 	// writing the request (including its body, if any). This
 	// time does not include the time to read the response body.
-	ResponseHeaderTimeout = 300 * time.Second
+	ResponseHeaderTimeout = defaultResponseHeaderTimeout
 
 	// HiddenHeaders lists headers that should not be logged unless DumpFormat is Verbose.
-	HiddenHeaders = map[string]bool{"Authorization": true, "Cookie": true}
+	HiddenHeaders map[string]bool
 )
 
 // For tests
@@ -90,27 +95,108 @@ type (
 	// Format is the request/response dump format.
 	Format int
 
+	// ParamBlock is used to create a new client without using the package variables,
+	// which are not go-routine safe.
+	ParamBlock struct {
+		// DumpFormat dictates how HTTP requests and responses are logged: NoDump prevents logging
+		// altogether, Debug generates logs in human readable format and JSON in JSON format.
+		// Verbose causes all headers to be logged - including sensitive ones.
+		DumpFormat Format
+
+		// HiddenHeaders lists headers that should not be logged unless DumpFormat is Verbose.
+		HiddenHeaders map[string]bool
+
+		// Insecure dictates whether HTTP (true) or HTTPS (false) should be used to connect to the
+		// API endpoints.
+		Insecure bool
+
+		// NoCertCheck dictates whether the SSL handshakes should bypass X509 certificate
+		// validation (true) or not (false).
+		NoCertCheck bool
+
+		// NoRedirect as true to not follow redirects. false follows redirects.
+		NoRedirect bool
+
+		// ResponseHeaderTimeout if non-zero, specifies the amount of
+		// time to wait in seconds for a server's response headers after fully
+		// writing the request (including its body, if any). This
+		// time does not include the time to read the response body.
+		ResponseHeaderTimeout time.Duration
+	}
+
 	// HTTP client that optionally dumps requests and responses.
 	// This client also disables the default http client redirect handling.
 	dumpClient struct {
-		Client *http.Client
-		Format Format
+		Client        *http.Client
+		isInsecure    func() bool
+		dumpFormat    func() Format
+		hiddenHeaders func() map[string]bool
 	}
 )
 
 // Default DumpFormat to NoDump
 func init() {
 	DumpFormat = NoDump
+
+	// copy default hidden headers to avoid modifying original.
+	HiddenHeaders = copyHiddenHeaders(defaultHiddenHeaders)
 }
 
 // New returns an HTTP client using the settings specified by this package variables.
 func New() HTTPClient {
-	return &dumpClient{Client: newRawClient(false)}
+	return newVariableDumpClient(newRawClient(false, NoCertCheck, ResponseHeaderTimeout))
 }
 
 // NewNoRedirect returns an HTTP client that does not follow redirects.
 func NewNoRedirect() HTTPClient {
-	return &dumpClient{Client: newRawClient(true)}
+	return newVariableDumpClient(newRawClient(true, NoCertCheck, ResponseHeaderTimeout))
+}
+
+// NewPB returns an HTTP client user only the parameter block and ignoring
+// the current values of the package variables, which are not go-routine safe.
+func NewPB(pb *ParamBlock) HTTPClient {
+	responseHeaderTimeout := pb.ResponseHeaderTimeout
+	if responseHeaderTimeout == 0 {
+		responseHeaderTimeout = defaultResponseHeaderTimeout
+	}
+	dumpFormat := pb.DumpFormat
+	if dumpFormat == 0 {
+		dumpFormat = NoDump
+	}
+	hiddenHeaders := pb.HiddenHeaders
+	if hiddenHeaders == nil {
+		hiddenHeaders = defaultHiddenHeaders // immutable
+	} else {
+		hiddenHeaders = copyHiddenHeaders(hiddenHeaders) // copy to avoid side-effects
+	}
+	dc := &dumpClient{Client: newRawClient(pb.NoRedirect, pb.NoCertCheck, responseHeaderTimeout)}
+	dc.isInsecure = func() bool {
+		return pb.Insecure
+	}
+	dc.dumpFormat = func() Format {
+		return dumpFormat
+	}
+	dc.hiddenHeaders = func() map[string]bool {
+		return hiddenHeaders
+	}
+	return dc
+}
+
+// newVariableDumpClient defines accessors for package variables, which are not
+// go-routine safe so can theoretically change value while the client is in use.
+// this emulates the legacy behavior.
+func newVariableDumpClient(c *http.Client) HTTPClient {
+	dc := &dumpClient{Client: c}
+	dc.isInsecure = func() bool {
+		return Insecure
+	}
+	dc.dumpFormat = func() Format {
+		return DumpFormat
+	}
+	dc.hiddenHeaders = func() map[string]bool {
+		return HiddenHeaders
+	}
+	return dc
 }
 
 // ShortToken creates a 6 bytes unique string.
@@ -123,11 +209,14 @@ func ShortToken() string {
 
 // newRawClient creates an http package Client taking into account both the parameters and package
 // variables.
-func newRawClient(noredirect bool) *http.Client {
-	tr := http.Transport{ResponseHeaderTimeout: ResponseHeaderTimeout, Proxy: http.ProxyFromEnvironment}
-	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: NoCertCheck}
+func newRawClient(
+	noRedirect, noCertCheck bool,
+	responseHeaderTimeout time.Duration) *http.Client {
+
+	tr := http.Transport{ResponseHeaderTimeout: responseHeaderTimeout, Proxy: http.ProxyFromEnvironment}
+	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: noCertCheck}
 	c := http.Client{Transport: &tr}
-	if noredirect {
+	if noRedirect {
 		c.CheckRedirect = func(*http.Request, []*http.Request) error {
 			return fmt.Errorf(noRedirectError)
 		}
@@ -177,7 +266,7 @@ func (d *dumpClient) DoHiddenWithContext(ctx context.Context, req *http.Request)
 // doImp actually performs the HTTP request logging according to the various settings.
 func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) (*http.Response, error) {
 	if req.URL.Scheme == "" {
-		if Insecure {
+		if d.isInsecure() {
 			req.URL.Scheme = "http"
 		} else {
 			req.URL.Scheme = "https"
@@ -194,10 +283,11 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 		id = ShortToken()
 	}
 	log.Info("started", "id", id, req.Method, req.URL.String())
-	hide := (DumpFormat == NoDump) || (hidden && !DumpFormat.IsVerbose())
+	df := d.dumpFormat()
+	hide := (df == NoDump) || (hidden && !df.IsVerbose())
 	if !hide {
 		startedAt = time.Now()
-		reqBody = dumpRequest(req)
+		reqBody = d.dumpRequest(req)
 	}
 	var resp *http.Response
 	var err error
@@ -215,7 +305,7 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 		return nil, err
 	}
 	if !hide {
-		dumpResponse(resp, req, reqBody)
+		d.dumpResponse(resp, req, reqBody)
 	}
 	log.Info("completed", "id", id, "status", resp.Status, "time", time.Since(startedAt).String())
 
@@ -262,25 +352,26 @@ func (d *dumpClient) getClientWithoutTimeout() *http.Client {
 
 // Dump request if needed.
 // Return request serialized as JSON if DumpFormat is JSON, nil otherwise.
-func dumpRequest(req *http.Request) []byte {
-	if DumpFormat == NoDump {
+func (d *dumpClient) dumpRequest(req *http.Request) []byte {
+	df := d.dumpFormat()
+	if df == NoDump {
 		return nil
 	}
 	reqBody, err := dumpReqBody(req)
 	if err != nil {
 		log.Error("Failed to load request body for dump", "error", err.Error())
 	}
-	if DumpFormat.IsDebug() {
+	if df.IsDebug() {
 		var buffer bytes.Buffer
 		buffer.WriteString(req.Method + " " + req.URL.String() + "\n")
-		writeHeaders(&buffer, req.Header)
+		d.writeHeaders(&buffer, req.Header)
 		if reqBody != nil {
 			buffer.WriteString("\n")
 			buffer.Write(reqBody)
 			buffer.WriteString("\n")
 		}
 		fmt.Fprint(OsStderr, buffer.String())
-	} else if DumpFormat.IsJSON() {
+	} else if df.IsJSON() {
 		return reqBody
 	}
 	return nil
@@ -289,28 +380,30 @@ func dumpRequest(req *http.Request) []byte {
 // dumpResponse dumps the response and optionally the request (in case of JSON format) according to
 // DumpFormat.
 // It also checks whether the special recorder pipe is opened and if so writes the dump to it.
-func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
-	if DumpFormat == NoDump {
+func (d *dumpClient) dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
+	df := d.dumpFormat()
+	if df == NoDump {
 		return
 	}
 	respBody, _ := dumpRespBody(resp)
-	if DumpFormat.IsDebug() {
+	if df.IsDebug() {
 		var buffer bytes.Buffer
 		buffer.WriteString("==> " + resp.Proto + " " + resp.Status + "\n")
-		writeHeaders(&buffer, resp.Header)
+		d.writeHeaders(&buffer, resp.Header)
 		if respBody != nil {
 			buffer.WriteString("\n")
 			buffer.Write(respBody)
 			buffer.WriteString("\n")
 		}
 		fmt.Fprint(OsStderr, buffer.String())
-	} else if DumpFormat.IsJSON() {
+	} else if df.IsJSON() {
 		reqHeaders := make(http.Header)
-		filterHeaders(req.Header, func(name string, value []string) {
+		hh := d.hiddenHeaders()
+		filterHeaders(df, hh, req.Header, func(name string, value []string) {
 			reqHeaders[name] = value
 		})
 		respHeaders := make(http.Header)
-		filterHeaders(resp.Header, func(name string, value []string) {
+		filterHeaders(df, hh, resp.Header, func(name string, value []string) {
 			respHeaders[name] = value
 		})
 		dumped := recording.RequestResponse{
@@ -327,7 +420,7 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 			log.Error("Failed to dump request content", "error", err.Error())
 			return
 		}
-		if DumpFormat.IsRecord() {
+		if df.IsRecord() {
 			f := os.NewFile(10, "fd10")
 			_, err = f.Stat()
 			if err == nil {
@@ -342,13 +435,17 @@ func dumpResponse(resp *http.Response, req *http.Request, reqBody []byte) {
 // writeHeaders is a helper function that writes the given HTTP headers to the given buffer as
 // human readable strings. If DumpFormat is not Verbose then writeHeaders filters out headers whose
 // names are keys of HiddenHeaders.
-func writeHeaders(buffer *bytes.Buffer, headers http.Header) {
-	filterHeaders(headers, func(name string, value []string) {
-		buffer.WriteString(name)
-		buffer.WriteString(": ")
-		buffer.WriteString(strings.Join(value, ", "))
-		buffer.WriteString("\n")
-	})
+func (d *dumpClient) writeHeaders(buffer *bytes.Buffer, headers http.Header) {
+	filterHeaders(
+		d.dumpFormat(),
+		d.hiddenHeaders(),
+		headers,
+		func(name string, value []string) {
+			buffer.WriteString(name)
+			buffer.WriteString(": ")
+			buffer.WriteString(strings.Join(value, ", "))
+			buffer.WriteString("\n")
+		})
 }
 
 // Dump request body, strongly inspired from httputil.DumpRequest
@@ -423,13 +520,27 @@ type headerIterator func(name string, value []string)
 // filterHeaders iterates through the headers skipping hidden headers unless DumpFormat is Verbose.
 // It calls the given iterator for each header name/value pair. The values are serialized as
 // strings.
-func filterHeaders(headers http.Header, iterator headerIterator) {
+func filterHeaders(
+	dumpFormat Format,
+	hiddenHeaders map[string]bool,
+	headers http.Header,
+	iterator headerIterator) {
+
 	for k, v := range headers {
-		if !DumpFormat.IsVerbose() {
-			if _, ok := HiddenHeaders[k]; ok {
+		if !dumpFormat.IsVerbose() {
+			if _, ok := hiddenHeaders[k]; ok {
 				continue
 			}
 		}
 		iterator(k, v)
 	}
+}
+
+// copyHiddenHeaders copies the given map
+func copyHiddenHeaders(from map[string]bool) (to map[string]bool) {
+	to = make(map[string]bool)
+	for k, v := range from {
+		to[k] = v
+	}
+	return
 }
