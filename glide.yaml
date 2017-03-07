@@ -9,8 +9,6 @@ import:
 - package: github.com/golang/protobuf
   subpackages:
   - proto
-- package: github.com/onsi/ginkgo
-- package: github.com/onsi/gomega
 - package: github.com/rightscale/go-jsonselect
 - package: golang.org/x/net
   subpackages:
@@ -19,3 +17,7 @@ import:
 - package: gopkg.in/alecthomas/kingpin.v2
   version: ^2.0.12
 - package: github.com/inconshreveable/log15
+testImport:
+- package: github.com/onsi/ginkgo
+- package: github.com/onsi/gomega
+

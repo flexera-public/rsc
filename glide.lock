@@ -1,5 +1,5 @@
-hash: a7c2e4bdce40ff2afcc0894cbb72b546f5cfce84129c5776b76a3d860a8de2e6
-updated: 2017-03-07T10:25:52.639682724-08:00
+hash: 51d0757e9a496a666f5d7353cbc4653c80774fed2187f7a8b56f481a606ea114
+updated: 2017-03-07T11:05:54.751055562-08:00
 imports:
 - name: bitbucket.org/pkg/inflect
   version: 8961c3750a47b8c0b3e118d52513b97adf85a7e8
@@ -25,6 +25,20 @@ imports:
   version: acb9493f2794fd0f820de7a27a217dafbb1b65ea
 - name: github.com/mattn/go-isatty
   version: 57fdcb988a5c543893cc61bce354a6e24ab70022
+- name: github.com/rightscale/go-jsonselect
+  version: d04eebe26072b09f780b43c72c6df71b12b8d105
+- name: golang.org/x/net
+  version: d379faa25cbdc04d653984913a2ceb43b0bc46d7
+  subpackages:
+  - context
+  - context/ctxhttp
+- name: golang.org/x/sys
+  version: e48874b42435b4347fc52bdee0424a52abc974d7
+  subpackages:
+  - unix
+- name: gopkg.in/alecthomas/kingpin.v2
+  version: e9044be3ab2a8e11d4e1f418d12f0790d57e8d70
+testImports:
 - name: github.com/onsi/ginkgo
   version: ab07225d112dc7a93c289ac5b2e12735c2c46035
   subpackages:
@@ -59,19 +73,5 @@ imports:
   - matchers/support/goraph/edge
   - matchers/support/goraph/node
   - matchers/support/goraph/util
-- name: github.com/rightscale/go-jsonselect
-  version: d04eebe26072b09f780b43c72c6df71b12b8d105
-- name: golang.org/x/net
-  version: d379faa25cbdc04d653984913a2ceb43b0bc46d7
-  subpackages:
-  - context
-  - context/ctxhttp
-- name: golang.org/x/sys
-  version: e48874b42435b4347fc52bdee0424a52abc974d7
-  subpackages:
-  - unix
-- name: gopkg.in/alecthomas/kingpin.v2
-  version: e9044be3ab2a8e11d4e1f418d12f0790d57e8d70
-testImports:
 - name: gopkg.in/yaml.v2
   version: a3f3340b5840cee44f372bddb5880fcbc419b46a
