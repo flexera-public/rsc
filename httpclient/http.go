@@ -152,7 +152,7 @@ func NewNoRedirect() HTTPClient {
 	return newVariableDumpClient(newRawClient(true, NoCertCheck, ResponseHeaderTimeout))
 }
 
-// NewPB returns an HTTP client user only the parameter block and ignoring
+// NewPB returns an HTTP client using only the parameter block and ignoring
 // the current values of the package variables, which are not go-routine safe.
 func NewPB(pb *ParamBlock) HTTPClient {
 	responseHeaderTimeout := pb.ResponseHeaderTimeout
