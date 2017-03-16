@@ -1,4 +1,4 @@
-package httpclient
+package httpclient // import "gopkg.in/rightscale/rsc.v6/httpclient"
 
 import (
 	"bytes"
@@ -19,8 +19,8 @@ import (
 	"golang.org/x/net/context"
 	"golang.org/x/net/context/ctxhttp"
 
-	"github.com/rightscale/rsc/log"
-	"github.com/rightscale/rsc/recording"
+	"gopkg.in/rightscale/rsc.v6/log"
+	"gopkg.in/rightscale/rsc.v6/recording"
 )
 
 const (
