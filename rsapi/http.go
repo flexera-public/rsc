@@ -2,6 +2,7 @@ package rsapi
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,8 +11,6 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
-
-	"golang.org/x/net/context"
 
 	"github.com/rightscale/rsc/metadata"
 )

@@ -2,6 +2,7 @@ package httpclient
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"crypto/tls"
 	"encoding/base64"
@@ -15,9 +16,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
-	"golang.org/x/net/context"
-	"golang.org/x/net/context/ctxhttp"
 
 	"github.com/rightscale/rsc/log"
 	"github.com/rightscale/rsc/recording"
@@ -294,7 +292,7 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 	if ctx == nil {
 		resp, err = d.Client.Do(req)
 	} else {
-		resp, err = ctxhttp.Do(ctx, d.getClientWithoutTimeout(), req)
+		resp, err = ctxhttpDo(ctx, d.getClientWithoutTimeout(), req)
 	}
 	if urlError, ok := err.(*url.Error); ok {
 		if urlError.Err.Error() == noRedirectError {
@@ -543,4 +541,30 @@ func copyHiddenHeaders(from map[string]bool) (to map[string]bool) {
 		to[k] = v
 	}
 	return
+}
+
+// Do sends an HTTP request with the provided http.Client and returns
+// an HTTP response.
+//
+// If the client is nil, http.DefaultClient is used.
+//
+// The provided ctx must be non-nil. If it is canceled or times out,
+// ctx.Err() will be returned.
+//
+// Borrowed originally from "https://github.com/golang/net/blob/master/context/ctxhttp/ctxhttp.go"
+func ctxhttpDo(ctx context.Context, client *http.Client, req *http.Request) (*http.Response, error) {
+	if client == nil {
+		client = http.DefaultClient
+	}
+	resp, err := client.Do(req.WithContext(ctx))
+	// If we got an error, and the context has been canceled,
+	// the context's error is probably more useful.
+	if err != nil {
+		select {
+		case <-ctx.Done():
+			err = ctx.Err()
+		default:
+		}
+	}
+	return resp, err
 }

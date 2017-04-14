@@ -1,5 +1,5 @@
-hash: 51d0757e9a496a666f5d7353cbc4653c80774fed2187f7a8b56f481a606ea114
-updated: 2017-03-07T11:05:54.751055562-08:00
+hash: 60f8e2d0aefe263e279cd571f3fa5dcacbfda7894fd2fdab7ff6859d787d0339
+updated: 2017-04-14T13:41:12.235924389-07:00
 imports:
 - name: bitbucket.org/pkg/inflect
   version: 8961c3750a47b8c0b3e118d52513b97adf85a7e8
@@ -14,7 +14,7 @@ imports:
 - name: github.com/go-stack/stack
   version: 100eb0c0a9c5b306ca2fb4f165df21d80ada4b82
 - name: github.com/golang/protobuf
-  version: c9c7427a2a70d2eb3bafa0ab2dc163e45f143317
+  version: 2bba0603135d7d7f5cb73b2125beeda19c09f4ef
   subpackages:
   - proto
 - name: github.com/inconshreveable/log15
@@ -22,25 +22,20 @@ imports:
   subpackages:
   - term
 - name: github.com/mattn/go-colorable
-  version: acb9493f2794fd0f820de7a27a217dafbb1b65ea
+  version: ded68f7a9561c023e790de24279db7ebf473ea80
 - name: github.com/mattn/go-isatty
-  version: 57fdcb988a5c543893cc61bce354a6e24ab70022
+  version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/rightscale/go-jsonselect
   version: d04eebe26072b09f780b43c72c6df71b12b8d105
-- name: golang.org/x/net
-  version: d379faa25cbdc04d653984913a2ceb43b0bc46d7
-  subpackages:
-  - context
-  - context/ctxhttp
 - name: golang.org/x/sys
-  version: e48874b42435b4347fc52bdee0424a52abc974d7
+  version: f3918c30c5c2cb527c0b071a27c35120a6c0719a
   subpackages:
   - unix
 - name: gopkg.in/alecthomas/kingpin.v2
-  version: e9044be3ab2a8e11d4e1f418d12f0790d57e8d70
+  version: 7f0871f2e17818990e4eed73f9b5c2f429501228
 testImports:
 - name: github.com/onsi/ginkgo
-  version: ab07225d112dc7a93c289ac5b2e12735c2c46035
+  version: f40a49d81e5c12e90400620b6242fb29a8e7c9d9
   subpackages:
   - config
   - internal/codelocation
@@ -52,6 +47,7 @@ testImports:
   - reporters
   - reporters/stenographer
   - types
+  - internal/spec_iterator
   - internal/containernode
   - internal/leafnodes
   - internal/spec
@@ -59,7 +55,7 @@ testImports:
   - reporters/stenographer/support/go-colorable
   - reporters/stenographer/support/go-isatty
 - name: github.com/onsi/gomega
-  version: 1de7ab2df9105aa5c15c4d7e14a8a514e3cb8d4b
+  version: 9b8c753e8dfb382618ba8fa19b4197b5dcb0434c
   subpackages:
   - ghttp
   - internal/assertion
@@ -74,4 +70,4 @@ testImports:
   - matchers/support/goraph/node
   - matchers/support/goraph/util
 - name: gopkg.in/yaml.v2
-  version: a3f3340b5840cee44f372bddb5880fcbc419b46a
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
