@@ -1,4 +1,6 @@
-# Travis-CI for Golang projects
+
+group: edge
+  # Travis-CI for Golang projects
 # Runs the tests, builds the distribution artifacts, uploads them to S3, and produces a
 # code coverage report. The upload is segregated by branch name, so each branch gets its own
 # uploaded version. (Note: nothing is automatically garbage collected.)
