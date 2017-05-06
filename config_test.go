@@ -71,6 +71,7 @@ var _ = Describe("Config", func() {
 					Ω(config.LoginHost).Should(BeZero())
 					Ω(config.Email).Should(BeZero())
 					Ω(config.Password).Should(BeZero())
+					Ω(config.RefreshToken).Should(BeZero())
 				})
 			})
 
@@ -80,11 +81,12 @@ var _ = Describe("Config", func() {
 					host     string
 					email    string
 					password string
+					refresh  string
 				)
 
 				JustBeforeEach(func() {
-					var cfg = fmt.Sprintf(`{"Account":%d,"Email":"%s","LoginHost":"%s","Password":"%s"}`,
-						account, email, host, password)
+					var cfg = fmt.Sprintf(`{"Account":%d,"Email":"%s","LoginHost":"%s","Password":"%s","RefreshToken":"%s"}`,
+						account, email, host, password, refresh)
 					tempFile.WriteString(cfg)
 					config, err = LoadConfig(path)
 				})
@@ -180,7 +182,7 @@ var _ = Describe("Config", func() {
 
 				Context("which contains a valid config", func() {
 					BeforeEach(func() {
-						var cfg = `{"Account":2,"Email":"test@test.com","LoginHost":"s","Password":"OlVr2Xv9jZfg1zf+LACM+WJNnFxg4Bm46Yc/kA=="}`
+						var cfg = `{"Account":2,"Email":"test@test.com","LoginHost":"s","Password":"OlVr2Xv9jZfg1zf+LACM+WJNnFxg4Bm46Yc/kA==","RefreshToken":"P+YuzH1milj3Od0Vd1tbQPAKWrVqXpRbTTtdeBc2U4HdH/tL2LqXEqp9OhDtWXB5slRWlZSjTVpjDjp/kpY9GJQX8D77nrY1"}`
 						tempFile.WriteString(cfg)
 					})
 
@@ -190,7 +192,7 @@ var _ = Describe("Config", func() {
 
 					It("exits without prompting for new values", func() {
 						Ω(testOut.String()).Should(ContainSubstring("Exiting"))
-						Ω(testOut.String()).ShouldNot(ContainSubstring("Account id"))
+						Ω(testOut.String()).ShouldNot(ContainSubstring("Account ID"))
 					})
 
 					Context("replying yes to the confirmation prompt", func() {
@@ -200,7 +202,7 @@ var _ = Describe("Config", func() {
 
 						It("prompts for new values", func() {
 							Ω(testOut.String()).ShouldNot(ContainSubstring("Exiting"))
-							Ω(testOut.String()).Should(ContainSubstring("Account id"))
+							Ω(testOut.String()).Should(ContainSubstring("Account ID"))
 						})
 					})
 				})
@@ -221,13 +223,14 @@ var _ = Describe("Config", func() {
 							email    string
 							password string
 							host     string
+							refresh  string
 						)
 
 						Context("given an incorrect account", func() {
 							BeforeEach(func() {
 								account = "foo"
-								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n",
-									account, email, password, host)
+								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n",
+									account, email, password, host, refresh)
 								testIn = bytes.NewReader([]byte(inputs))
 							})
 
@@ -243,8 +246,9 @@ var _ = Describe("Config", func() {
 								email = "test@test.com"
 								password = "tok"
 								host = "host"
-								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n",
-									account, email, password, host)
+								refresh = "1ecea8a3fbce2eb3a3be6ac8180f60182b5c81cd"
+								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n",
+									account, email, password, host, refresh)
 								testIn = bytes.NewReader([]byte(inputs))
 							})
 
@@ -256,6 +260,7 @@ var _ = Describe("Config", func() {
 								Ω(config.Email).Should(Equal(email))
 								Ω(config.Password).Should(Equal(password))
 								Ω(config.LoginHost).Should(Equal(host))
+								Ω(config.RefreshToken).Should(Equal(refresh))
 							})
 						})
 					})
