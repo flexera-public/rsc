@@ -28,6 +28,9 @@ func LoadConfig(path string) (*ClientConfig, error) {
 		return nil, err
 	}
 	config.Password, err = Decrypt(config.Password)
+	if err != nil {
+		return nil, err
+	}
 	config.RefreshToken, err = Decrypt(config.RefreshToken)
 	return &config, err
 }
