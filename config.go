@@ -28,16 +28,23 @@ func LoadConfig(path string) (*ClientConfig, error) {
 		return nil, err
 	}
 	config.Password, err = Decrypt(config.Password)
+	config.RefreshToken, err = Decrypt(config.RefreshToken)
 	return &config, err
 }
 
-// Save config encrypts the password and persists the config to file
+// Save config encrypts the password and/or refresh token;
+// persists the config to file
 func (cfg *ClientConfig) Save(path string) error {
-	encrypted, err := Encrypt(cfg.Password)
+	encrypted_password, err := Encrypt(cfg.Password)
 	if err != nil {
 		return fmt.Errorf("Failed to encrypt password: %s", err)
 	}
-	cfg.Password = encrypted
+	cfg.Password = encrypted_password
+	encrypted_refresh, err := Encrypt(cfg.RefreshToken)
+	if err != nil {
+		return fmt.Errorf("Failed to encrypt refresh token: %s", err)
+	}
+	cfg.RefreshToken = encrypted_refresh
 	bytes, err := json.Marshal(cfg)
 	if err != nil {
 		return fmt.Errorf("Failed to serialize config: %s", err)

@@ -182,7 +182,7 @@ var _ = Describe("Config", func() {
 
 				Context("which contains a valid config", func() {
 					BeforeEach(func() {
-						var cfg = `{"Account":2,"Email":"test@test.com","LoginHost":"s","Password":"OlVr2Xv9jZfg1zf+LACM+WJNnFxg4Bm46Yc/kA==","RefreshToken":"1edda1a7fbde9eb1a3ae6ab8980f60183b5c71ca"}`
+						var cfg = `{"Account":2,"Email":"test@test.com","LoginHost":"s","Password":"OlVr2Xv9jZfg1zf+LACM+WJNnFxg4Bm46Yc/kA==","RefreshToken":"P+YuzH1milj3Od0Vd1tbQPAKWrVqXpRbTTtdeBc2U4HdH/tL2LqXEqp9OhDtWXB5slRWlZSjTVpjDjp/kpY9GJQX8D77nrY1"}`
 						tempFile.WriteString(cfg)
 					})
 
@@ -246,7 +246,7 @@ var _ = Describe("Config", func() {
 								email = "test@test.com"
 								password = "tok"
 								host = "host"
-								refresh = "1edda1a7fbde9eb1a3ae6ab8980f60183b5c71ca"
+								refresh = "1ecea8a3fbce2eb3a3be6ac8180f60182b5c81cd"
 								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n",
 									account, email, password, host, refresh)
 								testIn = bytes.NewReader([]byte(inputs))
