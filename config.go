@@ -76,7 +76,7 @@ func CreateConfig(path string) error {
 			config.LoginHost = "my.rightscale.com"
 		}
 		hostDef = fmt.Sprintf(" (%v)", config.LoginHost)
-		refreshTokenDef = fmt.Sprintf(" (%v)", config.RefreshToken)
+		refreshTokenDef = " (leave blank to leave unchanged)"
 	} else {
 		config = &ClientConfig{}
 	}
