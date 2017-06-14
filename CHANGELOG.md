@@ -1,3 +1,12 @@
+v6.4.0 / 2017-06-14
+-------------------
+* Build with Go 1.8 which fixes JSON output to prefer decimal notation rather than scientific notation which was messing
+  up some IDs (see [encoding/json](https://golang.org/doc/go1.8#encoding_json) in the Go 1.8 Release Notes).
+* Add `httpclient.NewPB` constructor which will create an `HTTPClient` from a `ParamBlock` rather than using package
+  global variables which can be unsafe with multiple Goroutines.
+* Use `context` instead of `golang.org/x/net/context`.
+* Support refresh token in `~/.rsc` configuration file for the command line tool.
+
 v6.3.0 / 2017-03-02
 ------------------
 * Added ResourceGroup resource
