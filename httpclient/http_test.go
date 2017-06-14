@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/onsi/gomega/ghttp"
-	"github.com/rightscale/rsc/httpclient"
+	"gopkg.in/rightscale/rsc.v6/httpclient"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
