@@ -1,3 +1,8 @@
+v6.4.1 / 2017-06-20
+-------------------
+* Fix bug introduced with storing refresh token in `~/.rsc` where it took precedence over the `-r`/`--refresh-token`
+  flag rather than the flag taking precendence over the config file value like it should.
+
 v6.4.0 / 2017-06-14
 -------------------
 * Build with Go 1.8 which fixes JSON output to prefer decimal notation rather than scientific notation which was messing
