@@ -1602,7 +1602,7 @@
     "methods": {
       "index": {
         "access_rules": [
-          "observer||instance"
+          "observer||instance||infrastructure"
         ],
         "routes": [
           "GET    /api/clouds(.:format)?                   {:controller=>\"clouds\", :action=>\"index\"}"
@@ -1661,7 +1661,7 @@
       },
       "show": {
         "access_rules": [
-          "observer||instance"
+          "observer||instance||infrastructure"
         ],
         "routes": [
           "GET    /api/clouds/:id(.:format)?               {:controller=>\"clouds\", :action=>\"show\"}"
@@ -2498,10 +2498,10 @@
             ],
             "description": "The routing scope for tags for servers in the deployment."
           },
-          "deployment[resource_group_href]" : {
+          "deployment[resource_group_href]": {
             "class": "String",
             "non_blank": true,
-            "description" : "The href of the Windows Azure Resource Group attached to the deployment."
+            "description": "The href of the Windows Azure Resource Group attached to the deployment."
           }
         }
       },
@@ -2689,10 +2689,10 @@
             ],
             "description": "The routing scope for tags for servers in the deployment."
           },
-          "deployment[resource_group_href]" : {
+          "deployment[resource_group_href]": {
             "class": "String",
             "non_blank": true,
-            "description" : "The href of the Windows Azure Resource Group attached to the deployment."
+            "description": "The href of the Windows Azure Resource Group attached to the deployment."
           }
         }
       },
@@ -2727,7 +2727,7 @@
         "servers": "Associated servers",
         "server_arrays": "Associated server arrays",
         "alerts": "Associated alerts",
-        "resource_group" : "Href of the ResourceGroup that this Deployment belongs to"
+        "resource_group": "Href of the ResourceGroup that this Deployment belongs to"
       },
       "content_types": [
         "application/vnd.rightscale.deployment"
@@ -2885,8 +2885,8 @@
             "description": "The image's operating system to filter on. Examples: Linux or Windows."
           },
           "image_type": {
-            "partial_match": true,
-            "description": "The Image Type to filter on. This will be either \"machine\", \"ramdisk\" or \"kernel\"."
+            "partial_match": false,
+            "description": "The Image Type to filter on. This will be either \"machine\", \"machine_azure\", \"ramdisk\" or \"kernel\"."
           },
           "cpu_architecture": {
             "partial_match": true,
@@ -3387,8 +3387,9 @@
           },
           "instance[cloud_specific_attributes][metadata]": {
             "class": "String",
-            "description": "Extra data used for configuration, in query string format",
-            "mandatory": false
+            "description": "Extra data used for configuration, in query string format.",
+            "mandatory": false,
+            "non_blank": true
           },
           "instance[cloud_specific_attributes][disk_gb]": {
             "class": "Integer",
@@ -3441,6 +3442,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
+          },
+          "instance[cloud_specific_attributes][admin_username]": {
+            "class": "String",
+            "description": "The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href=\"http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html\">review the documentation</a>.",
+            "non_blank": true,
+            "mandatory": false
           }
         }
       },
@@ -4171,6 +4178,18 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
+          },
+          "instance[cloud_specific_attributes][admin_username]": {
+            "class": "String",
+            "description": "The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href=\"http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html\">review the documentation</a>.",
+            "non_blank": true,
+            "mandatory": false
+          },
+          "instance[cloud_specific_attributes][metadata]": {
+            "class": "String",
+            "description": "Extra data used for configuration, in query string format.",
+            "non_blank": true,
+            "mandatory": false
           }
         }
       }
@@ -4257,8 +4276,8 @@
           "ip_address_binding[instance_href]": {
             "class": "String",
             "non_blank": true,
-            "mandatory": true,
-            "description": "The Instance to which this IpAddress should be bound."
+            "mandatory": false,
+            "description": "The Instance to which this IpAddress should be bound. Mutually exclusive with server_href."
           },
           "ip_address_binding[public_ip_address_href]": {
             "class": "String",
@@ -4287,6 +4306,12 @@
             "non_blank": true,
             "mandatory": false,
             "description": "Incoming network traffic will get forwarded to this port number on the specified Instance. If not specified, will use public port. Required unless public_ip_address_href is passed."
+          },
+          "ip_address_binding[server_href]": {
+            "class": "String",
+            "non_blank": true,
+            "mandatory": false,
+            "description": "The Server to which this IpAddress should be bound. Mutually exclusive with instance_href.Note: the Server must have a current_instance."
           }
         }
       },
@@ -4854,9 +4879,9 @@
         }
       }
     },
-    "description": "A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a given cloud type. For now, only\none type of matcher is supported (fingerprint). Fingerprint will match images based upon a checksum as returned by the\ncloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass in an example image with an image_href from\nwhich to generate the fingerprint.\n",
+    "description": "A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a\ngiven cloud type. For now, only one type of matcher is supported\n(fingerprint). Fingerprint will match images based upon a checksum as returned\nby the cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass\nin an example image with an image_href from which to generate the fingerprint.\n",
     "media_type": {
-      "description": "A MultiCloudImageMatcher generates MultiCloudImageSettings based upon provided criteria.\n",
+      "description": "  A MultiCloudImageMatcher generates MultiCloudImageSettings based upon provided\n  criteria. For now, only one match_type is supported (fingerprint). Fingerprint\n  will match images based upon a checksum as returned by the cloud and is\n  supported on CloudStack, OpenStack, and vSphere clouds.\n",
       "attributes": {
         "user_data": "User data that RightScale automatically passes to your instance at boot time.",
         "links": "",
@@ -5003,7 +5028,7 @@
         "routes": [
           "PUT    /api/multi_cloud_images/:multi_cloud_image_id/settings/:id(.:format)? {:controller=>\"multi_cloud_image_settings\", :action=>\"update\"}"
         ],
-        "description": "Updates a settings for a MultiCLoudImage.\n",
+        "description": "Updates a settings for a MultiCloudImage.\n",
         "status_code": "204 No Content",
         "parameters": {
           "multi_cloud_image_setting": {
@@ -5046,7 +5071,7 @@
     },
     "description": "A MultiCloudImageSetting defines which\nsettings should be used when a server is launched in a cloud.\n",
     "media_type": {
-      "description": "A MultiCloudImageSetting defines which settings should be used when a server is launched in a cloud.\n",
+      "description": "  A MultiCloudImageSetting defines which settings should be used when a server\n  is launched in a cloud.\n",
       "attributes": {
         "links": "",
         "actions": "",
@@ -6034,7 +6059,7 @@
         "self": "Href of itself",
         "cloud": "Href of the Cloud the network is in",
         "default_route_table": "The href of the RouteTable that is currently active",
-        "deployment" : "Containing Deployment"
+        "deployment": "Containing Deployment"
       },
       "content_types": [
         "application/vnd.rightscale.network"
@@ -6205,7 +6230,7 @@
         }
       }
     },
-    "description": null,
+    "description": "\n\n\n  Please note that API 1.5 does not support operations on Governance Groups\n  or Orgs and only allows management of the following CM Roles:\n    admin, actor, observer,\n    aws_architect, publisher,\n    designer, billing, signup_wiz,\n    enterprise_manager, server_login,\n    library, security_manager,\n    instance, server_superuser,\n    infrastructure, ss_end_user,\n    ss_designer, ss_observer\n\n  Moreover, this API allows management of only roles granted directly\n  on an account, to an individual user.\n\n\n",
     "media_type": {
       "description": null,
       "attributes": {
@@ -6399,7 +6424,8 @@
       },
       "links": {
         "self": "Href of itself",
-        "cloud": "Href of the Cloud that this PlacementGroup belongs to"
+        "cloud": "Href of the Cloud that this PlacementGroup belongs to",
+        "deployment": "Containing Deployment"
       },
       "content_types": [
         "application/vnd.rightscale.placement_group"
@@ -6747,22 +6773,51 @@
             "class": "String",
             "non_blank": true,
             "mandatory": true,
-            "description": "The device location where the volume or volume snapshot will be mounted. Value must be of format /dev/xvd[bcefghij]. This is not reliable and will be deprecated."
+            "description": "The device location where the volume or volume snapshot will be mounted. Value of format is cloud-specific, such as /dev/xvd[bcefghij] for EC2. This is not reliable and will be deprecated."
           },
           "recurring_volume_attachment[volume_type_href]": {
             "class": "String",
             "non_blank": true,
-            "description": "The href of the volume type. Can be required by some clouds in case if you attaching volume snapshot."
+            "description": "The href of the volume type. Can be required by some clouds if you are attaching volume snapshot."
           },
           "recurring_volume_attachment[settings]": {
             "class": "Hash",
             "non_blank": true,
-            "description": "Additional parameters concerning created attachment. For example, ':delete_on_termination => true' will schedule volume deletion if instance was terminated."
+            "description": "Additional parameters concerning created attachment."
           },
           "recurring_volume_attachment[settings][*]": {
             "class": "String",
             "non_blank": true,
             "description": "Key/Value separated options"
+          },
+          "recurring_volume_attachment[size]": {
+            "class": "String",
+            "non_blank": true,
+            "mandatory": false,
+            "description": "Size of volume in gigabyte (GB). Only applicable if storage_href is a volume snapshot.",
+            "regex": "/^\\d+$/"
+          },
+          "recurring_volume_attachment[settings][delete_on_termination]": {
+            "class": "String",
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "description": "Whether this attached volume should be deleted on Instance termination.",
+            "non_blank": true,
+            "mandatory": false
+          },
+          "recurring_volume_attachment[settings][description]": {
+            "class": "String",
+            "description": "Description for this recurring attachment.",
+            "non_blank": true,
+            "mandatory": false
+          },
+          "recurring_volume_attachment[settings][name]": {
+            "class": "String",
+            "description": "Name of volume to create. Only applicable if storage_href is a volume snapshot.",
+            "non_blank": true,
+            "mandatory": false
           }
         }
       },
@@ -6894,13 +6949,15 @@
         "device_id": "",
         "size": "",
         "links": "",
-        "actions": ""
+        "actions": "",
+        "settings": ""
       },
       "links": {
         "self": "Href of itself",
         "cloud": "Associated cloud",
         "runnable": "Associated Server/ServerArray",
-        "storage": "Associated Volume/VolumeSnapshot"
+        "storage": "Associated Volume/VolumeSnapshot",
+        "volume_type": "Associated VolumeType if storage is of type VolumeSnapshot"
       },
       "content_types": [
         "application/vnd.rightscale.recurring_volume_attachment"
@@ -7460,7 +7517,7 @@
           "actor"
         ],
         "routes": [
-          "POST   /api/resource_groups(.:format)?         {:controller=>\"resource_groups\", :action=>\"create\"}"
+          "POST   /api/resource_groups(.:format)?          {:controller=>\"resource_groups\", :action=>\"create\"}"
         ],
         "description": "Creates a ResourceGroup.\n",
         "status_code": "201 Created",
@@ -7499,7 +7556,7 @@
           "actor"
         ],
         "routes": [
-          "DELETE /api/resource_groups/:id(.:format)?     {:controller=>\"resource_groups\", :action=>\"destroy\"}"
+          "DELETE /api/resource_groups/:id(.:format)?      {:controller=>\"resource_groups\", :action=>\"destroy\"}"
         ],
         "description": "Destroys a ResourceGroup.\n",
         "status_code": "204 No Content",
@@ -7511,7 +7568,7 @@
           "observer||instance"
         ],
         "routes": [
-          "GET    /api/resource_groups(.:format)?         {:controller=>\"resource_groups\", :action=>\"index\"}"
+          "GET    /api/resource_groups(.:format)?          {:controller=>\"resource_groups\", :action=>\"index\"}"
         ],
         "description": "Lists all ResourceGroups in an account.\n",
         "content_type": "application/vnd.rightscale.resource_group;type=collection",
@@ -7563,7 +7620,7 @@
           "observer||instance"
         ],
         "routes": [
-          "GET    /api/resource_groups/:id(.:format)?     {:controller=>\"resource_groups\", :action=>\"show\"}"
+          "GET    /api/resource_groups/:id(.:format)?      {:controller=>\"resource_groups\", :action=>\"show\"}"
         ],
         "description": "Shows information about a single ResourceGroup.\n",
         "content_type": "application/vnd.rightscale.resource_group",
@@ -7593,6 +7650,33 @@
 
           ]
         }
+      },
+      "update": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "PUT    /api/resource_groups/:id(.:format)?      {:controller=>\"resource_groups\", :action=>\"update\"}"
+        ],
+        "description": "Updates attributes of a given ResourceGroup.\n",
+        "status_code": "204 No Content",
+        "parameters": {
+          "resource_group": {
+            "class": "Hash",
+            "non_blank": true,
+            "mandatory": true
+          },
+          "resource_group[description]": {
+            "class": "String",
+            "non_blank": false,
+            "description": "The description of the Resource Group to be created."
+          },
+          "resource_group[deployment_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The Href of the Deployment that owns this Resource Group."
+          }
+        }
       }
     },
     "description": null,
@@ -7610,7 +7694,8 @@
       },
       "links": {
         "self": "Href of itself",
-        "cloud": "Href of the Cloud that this ResourceGroup belongs to"
+        "cloud": "Href of the Cloud that this ResourceGroup belongs to",
+        "deployment": "Associated Deployment"
       },
       "content_types": [
         "application/vnd.rightscale.resource_group"
@@ -9117,7 +9202,8 @@
         "self": "Href of itself",
         "cloud": "Associated cloud",
         "security_group_rules": "Associated security_group_rules",
-        "network": "Associated network"
+        "network": "Associated network",
+        "deployment": "Containing Deployment"
       },
       "content_types": [
         "application/vnd.rightscale.security_group"
@@ -9627,6 +9713,18 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
+          },
+          "server_array[instance][cloud_specific_attributes][admin_username]": {
+            "class": "String",
+            "description": "The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href=\"http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html\">review the documentation</a>.",
+            "non_blank": true,
+            "mandatory": false
+          },
+          "server_array[instance][cloud_specific_attributes][metadata]": {
+            "class": "String",
+            "description": "Extra data used for configuration, in query string format.",
+            "non_blank": true,
+            "mandatory": false
           }
         }
       },
@@ -11036,6 +11134,18 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Availability set for raw instance. Supported by Azure v2 cloud only."
+          },
+          "server[instance][cloud_specific_attributes][admin_username]": {
+            "class": "String",
+            "description": "The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href=\"http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html\">review the documentation</a>.",
+            "non_blank": true,
+            "mandatory": false
+          },
+          "server[instance][cloud_specific_attributes][metadata]": {
+            "class": "String",
+            "description": "Extra data used for configuration, in query string format.",
+            "non_blank": true,
+            "mandatory": false
           }
         }
       },
@@ -12044,7 +12154,8 @@
               "multi_cloud_images",
               "images",
               "server_arrays",
-              "accounts"
+              "accounts",
+              "placement_groups"
             ],
             "mandatory": true,
             "description": "Search among a single resource type."
@@ -12190,7 +12301,7 @@
     "methods": {
       "create": {
         "access_rules": [
-          "admin"
+          "admin||enterprise_manager"
         ],
         "routes": [
           "POST   /api/users(.:format)?                    {:controller=>\"users\", :action=>\"create\"}"
@@ -12457,22 +12568,34 @@
           "volume_attachment[instance_href]": {
             "class": "String",
             "non_blank": true,
-            "description": "The href of the instance to which the volume will be attached to."
+            "description": "The href of the instance to which the volume will be attached. Mutually exclusive with server_href.",
+            "mandatory": false
           },
           "volume_attachment[device]": {
             "class": "String",
             "non_blank": true,
-            "description": "The device location where the volume will be mounted. Value must be of format /dev/xvd[bcefghij]. This is not reliable and will be deprecated."
+            "description": "The device location where the volume will be mounted. Value of format is cloud-specific, such as /dev/xvd[bcefghij] for EC2. This is not reliable and will be deprecated."
           },
           "volume_attachment[settings]": {
             "class": "Hash",
             "non_blank": true,
-            "description": "Additional parameters concerning created attachment. For example, ':delete_on_termination => true' will schedule volume deletion if instance was terminated."
+            "description": "Additional parameters concerning created attachment."
           },
           "volume_attachment[settings][*]": {
             "class": "String",
             "non_blank": true,
             "description": "Key/Value separated options"
+          },
+          "volume_attachment[server_href]": {
+            "class": "String",
+            "non_blank": true,
+            "mandatory": false,
+            "description": "The href of the server to which the volume will be attached. Mutually exclusive with instance_href.Note: the Server must have a current_instance."
+          },
+          "volume_attachment[settings][delete_on_termination]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "Setting to 'true' will schedule volume deletion if instance was terminated, default value is 'false'"
           }
         }
       },

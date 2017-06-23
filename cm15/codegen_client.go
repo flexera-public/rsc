@@ -5605,10 +5605,11 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 
 /******  MultiCloudImageMatcher ******/
 
-// A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a given cloud type. For now, only
-// one type of matcher is supported (fingerprint). Fingerprint will match images based upon a checksum as returned by the
-// cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass in an example image with an image_href from
-// which to generate the fingerprint.
+// A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a
+// given cloud type. For now, only one type of matcher is supported
+// (fingerprint). Fingerprint will match images based upon a checksum as returned
+// by the cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass
+// in an example image with an image_href from which to generate the fingerprint.
 type MultiCloudImageMatcher struct {
 	Actions       []map[string]string `json:"actions,omitempty"`
 	CloudType     string              `json:"cloud_type,omitempty"`
@@ -6013,7 +6014,7 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 
 // PUT /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
 //
-// Updates a settings for a MultiCLoudImage.
+// Updates a settings for a MultiCloudImage.
 // Required parameters:
 // multi_cloud_image_setting
 func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCloudImageSettingParam) error {
@@ -7140,6 +7141,18 @@ func (loc *Oauth2Locator) Create(grantType string, options rsapi.APIParams) (map
 
 /******  Permission ******/
 
+// Please note that API 1.5 does not support operations on Governance Groups
+// or Orgs and only allows management of the following CM Roles:
+// admin, actor, observer,
+// aws_architect, publisher,
+// designer, billing, signup_wiz,
+// enterprise_manager, server_login,
+// library, security_manager,
+// instance, server_superuser,
+// infrastructure, ss_end_user,
+// ss_designer, ss_observer
+// Moreover, this API allows management of only roles granted directly
+// on an account, to an individual user.
 type Permission struct {
 	Actions   []map[string]string `json:"actions,omitempty"`
 	CreatedAt *RubyTime           `json:"created_at,omitempty"`
@@ -8001,10 +8014,11 @@ type RecurringVolumeAttachment struct {
 	Links        []map[string]string `json:"links,omitempty"`
 	Name         string              `json:"name,omitempty"`
 	RunnableType string              `json:"runnable_type,omitempty"`
-	Size         string              `json:"size,omitempty"`
-	Status       string              `json:"status,omitempty"`
-	StorageType  string              `json:"storage_type,omitempty"`
-	UpdatedAt    *RubyTime           `json:"updated_at,omitempty"`
+	Settings     `json:"settings,omitempty"`
+	Size         string    `json:"size,omitempty"`
+	Status       string    `json:"status,omitempty"`
+	StorageType  string    `json:"storage_type,omitempty"`
+	UpdatedAt    *RubyTime `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -9010,6 +9024,44 @@ func (loc *ResourceGroupLocator) Show(options rsapi.APIParams) (*ResourceGroup, 
 	}
 	err = json.Unmarshal(respBody, &res)
 	return res, err
+}
+
+// PUT /api/resource_groups/:id
+//
+// Updates attributes of a given ResourceGroup.
+// Required parameters:
+// resource_group
+func (loc *ResourceGroupLocator) Update(resourceGroup *ResourceGroupParam2) error {
+	if resourceGroup == nil {
+		return fmt.Errorf("resourceGroup is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"resource_group": resourceGroup,
+	}
+	uri, err := loc.ActionPath("ResourceGroup", "update")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
 }
 
 /******  RightScript ******/
@@ -15027,6 +15079,7 @@ type CloudAccountParam struct {
 }
 
 type CloudSpecificAttributes struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
 	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
@@ -15052,6 +15105,7 @@ type CloudSpecificAttributes struct {
 }
 
 type CloudSpecificAttributes2 struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
 	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
@@ -15065,6 +15119,7 @@ type CloudSpecificAttributes2 struct {
 	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
 	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
 	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
 	NumCores                         int    `json:"num_cores,omitempty"`
 	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
 	Preemptible                      string `json:"preemptible,omitempty"`
@@ -15084,6 +15139,7 @@ type CloudSpecificAttributes4 struct {
 }
 
 type CloudSpecificAttributes5 struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
 	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
@@ -15097,6 +15153,7 @@ type CloudSpecificAttributes5 struct {
 	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
 	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
 	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
 	NumCores                         int    `json:"num_cores,omitempty"`
 	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
 	Preemptible                      string `json:"preemptible,omitempty"`
@@ -15107,6 +15164,7 @@ type CloudSpecificAttributes5 struct {
 }
 
 type CloudSpecificAttributes6 struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
 	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
@@ -15120,6 +15178,7 @@ type CloudSpecificAttributes6 struct {
 	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
 	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
 	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
 	NumCores                         int    `json:"num_cores,omitempty"`
 	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
 	Preemptible                      string `json:"preemptible,omitempty"`
@@ -15296,6 +15355,7 @@ type IpAddressBindingParam struct {
 	Protocol            string `json:"protocol,omitempty"`
 	PublicIpAddressHref string `json:"public_ip_address_href,omitempty"`
 	PublicPort          string `json:"public_port,omitempty"`
+	ServerHref          string `json:"server_href,omitempty"`
 }
 
 type IpAddressParam struct {
@@ -15427,11 +15487,12 @@ type QueueSpecificParams struct {
 }
 
 type RecurringVolumeAttachmentParam struct {
-	Device         string                 `json:"device,omitempty"`
-	RunnableHref   string                 `json:"runnable_href,omitempty"`
-	Settings       map[string]interface{} `json:"settings,omitempty"`
-	StorageHref    string                 `json:"storage_href,omitempty"`
-	VolumeTypeHref string                 `json:"volume_type_href,omitempty"`
+	Device         string    `json:"device,omitempty"`
+	RunnableHref   string    `json:"runnable_href,omitempty"`
+	Settings       *Settings `json:"settings,omitempty"`
+	Size           string    `json:"size,omitempty"`
+	StorageHref    string    `json:"storage_href,omitempty"`
+	VolumeTypeHref string    `json:"volume_type_href,omitempty"`
 }
 
 type RepositoryParam struct {
@@ -15460,6 +15521,11 @@ type ResourceGroupParam struct {
 	DeploymentHref string `json:"deployment_href,omitempty"`
 	Description    string `json:"description,omitempty"`
 	Name           string `json:"name,omitempty"`
+}
+
+type ResourceGroupParam2 struct {
+	DeploymentHref string `json:"deployment_href,omitempty"`
+	Description    string `json:"description,omitempty"`
 }
 
 type RightScriptAttachmentParam struct {
@@ -15617,6 +15683,16 @@ type ServerTemplateParam struct {
 	Name        string `json:"name,omitempty"`
 }
 
+type Settings struct {
+	DeleteOnTermination string `json:"delete_on_termination,omitempty"`
+	Description         string `json:"description,omitempty"`
+	Name                string `json:"name,omitempty"`
+}
+
+type Settings2 struct {
+	DeleteOnTermination string `json:"delete_on_termination,omitempty"`
+}
+
 type SshKeyParam struct {
 	Name string `json:"name,omitempty"`
 }
@@ -15664,10 +15740,11 @@ type UserParam2 struct {
 }
 
 type VolumeAttachmentParam struct {
-	Device       string                 `json:"device,omitempty"`
-	InstanceHref string                 `json:"instance_href,omitempty"`
-	Settings     map[string]interface{} `json:"settings,omitempty"`
-	VolumeHref   string                 `json:"volume_href,omitempty"`
+	Device       string     `json:"device,omitempty"`
+	InstanceHref string     `json:"instance_href,omitempty"`
+	ServerHref   string     `json:"server_href,omitempty"`
+	Settings     *Settings2 `json:"settings,omitempty"`
+	VolumeHref   string     `json:"volume_href,omitempty"`
 }
 
 type VolumeParam struct {

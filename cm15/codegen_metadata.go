@@ -3874,20 +3874,20 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
-						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
 						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
+						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][local_ssd_interface]",
@@ -3898,8 +3898,8 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3907,8 +3907,8 @@ Optional parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -3949,6 +3949,14 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][max_spot_price]",
 						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
@@ -3965,14 +3973,6 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][keep_alive_id]",
-						Description: `The id of keep alive. Supported by UCA cloud only.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][ebs_optimized]",
 						Description: `Whether the instance is able to connect to IOPS-enabled volumes.`,
 						Type:        "string",
@@ -3980,6 +3980,14 @@ Optional parameters:
 						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][keep_alive_id]",
+						Description: `The id of keep alive. Supported by UCA cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][pricing_type]",
@@ -4017,11 +4025,11 @@ Optional parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][metadata]",
-						Description: `Extra data used for configuration, in query string format`,
+						Description: `Extra data used for configuration, in query string format.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][disk_gb]",
@@ -4841,20 +4849,20 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
-						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
 						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
+						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][local_ssd_interface]",
@@ -4865,8 +4873,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4874,8 +4882,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4932,6 +4940,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][keep_alive_id]",
 						Description: `The id of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
@@ -4958,6 +4974,14 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][num_cores]",
 						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
@@ -4966,12 +4990,12 @@ Required parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][memory_mb]",
-						Description: `The size of instance memory. Supported by UCA cloud only.`,
-						Type:        "int",
+						Name:        "instance[cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][disk_gb]",
@@ -5473,15 +5497,23 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "ip_address_binding[instance_href]",
-						Description: `The Instance to which this IpAddress should be bound.`,
+						Description: `The Instance to which this IpAddress should be bound. Mutually exclusive with server_href.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "ip_address_binding[private_port]",
 						Description: `Incoming network traffic will get forwarded to this port number on the specified Instance. If not specified, will use public port. Required unless public_ip_address_href is passed.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "ip_address_binding[server_href]",
+						Description: `The Server to which this IpAddress should be bound. Mutually exclusive with instance_href.Note: the Server must have a current_instance.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -6151,10 +6183,11 @@ Required parameters:
 	},
 	"MultiCloudImageMatcher": &metadata.Resource{
 		Name: "MultiCloudImageMatcher",
-		Description: `A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a given cloud type. For now, only
-one type of matcher is supported (fingerprint). Fingerprint will match images based upon a checksum as returned by the
-cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass in an example image with an image_href from
-which to generate the fingerprint.`,
+		Description: `A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a
+given cloud type. For now, only one type of matcher is supported
+(fingerprint). Fingerprint will match images based upon a checksum as returned
+by the cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass
+in an example image with an image_href from which to generate the fingerprint.`,
 		Identifier: "application/vnd.rightscale.multi_cloud_image_matcher",
 		Actions: []*metadata.Action{
 			&metadata.Action{
@@ -6416,7 +6449,7 @@ Optional parameters:
 
 			&metadata.Action{
 				Name: "update",
-				Description: `Updates a settings for a MultiCLoudImage.
+				Description: `Updates a settings for a MultiCloudImage.
 Required parameters:
 	multi_cloud_image_setting`,
 				PathPatterns: []*metadata.PathPattern{
@@ -7491,9 +7524,20 @@ Optional parameters:
 		},
 	},
 	"Permission": &metadata.Resource{
-		Name:        "Permission",
-		Description: ``,
-		Identifier:  "application/vnd.rightscale.permission",
+		Name: "Permission",
+		Description: `  Please note that API 1.5 does not support operations on Governance Groups
+  or Orgs and only allows management of the following CM Roles:
+    admin, actor, observer,
+    aws_architect, publisher,
+    designer, billing, signup_wiz,
+    enterprise_manager, server_login,
+    library, security_manager,
+    instance, server_superuser,
+    infrastructure, ss_end_user,
+    ss_designer, ss_observer
+  Moreover, this API allows management of only roles granted directly
+  on an account, to an individual user.`,
+		Identifier: "application/vnd.rightscale.permission",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7807,8 +7851,9 @@ Optional parameters:
 			},
 		},
 		Links: map[string]string{
-			"cloud": "Href of the Cloud that this PlacementGroup belongs to",
-			"self":  "Href of itself",
+			"cloud":      "Href of the Cloud that this PlacementGroup belongs to",
+			"deployment": "Containing Deployment",
+			"self":       "Href of itself",
 		},
 	},
 	"Preference": &metadata.Resource{
@@ -8122,8 +8167,33 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "recurring_volume_attachment[settings][delete_on_termination]",
+						Description: `Whether this attached volume should be deleted on Instance termination.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
+					&metadata.ActionParam{
+						Name:        "recurring_volume_attachment[settings][description]",
+						Description: `Description for this recurring attachment.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "recurring_volume_attachment[volume_type_href]",
-						Description: `The href of the volume type. Can be required by some clouds in case if you attaching volume snapshot.`,
+						Description: `The href of the volume type. Can be required by some clouds if you are attaching volume snapshot.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "recurring_volume_attachment[settings][name]",
+						Description: `Name of volume to create. Only applicable if storage_href is a volume snapshot.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -8146,19 +8216,19 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "recurring_volume_attachment[settings]",
-						Description: `Additional parameters concerning created attachment. For example, ':delete_on_termination => true' will schedule volume deletion if instance was terminated.`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "recurring_volume_attachment[device]",
-						Description: `The device location where the volume or volume snapshot will be mounted. Value must be of format /dev/xvd[bcefghij]. This is not reliable and will be deprecated.`,
+						Description: `The device location where the volume or volume snapshot will be mounted. Value of format is cloud-specific, such as /dev/xvd[bcefghij] for EC2. This is not reliable and will be deprecated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "recurring_volume_attachment[size]",
+						Description: `Size of volume in gigabyte (GB). Only applicable if storage_href is a volume snapshot.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 				},
@@ -8319,10 +8389,11 @@ Optional parameters:
 			},
 		},
 		Links: map[string]string{
-			"cloud":    "Associated cloud",
-			"runnable": "Associated Server/ServerArray",
-			"self":     "Href of itself",
-			"storage":  "Associated Volume/VolumeSnapshot",
+			"cloud":       "Associated cloud",
+			"runnable":    "Associated Server/ServerArray",
+			"self":        "Href of itself",
+			"storage":     "Associated Volume/VolumeSnapshot",
+			"volume_type": "Associated VolumeType if storage is of type VolumeSnapshot",
 		},
 	},
 	"Repository": &metadata.Resource{
@@ -9176,10 +9247,54 @@ Optional parameters:
 					},
 				},
 			},
+
+			&metadata.Action{
+				Name: "update",
+				Description: `Updates attributes of a given ResourceGroup.
+Required parameters:
+	resource_group`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/api/resource_groups/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group[deployment_href]",
+						Description: `The Href of the Deployment that owns this Resource Group.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[description]",
+						Description: `The description of the Resource Group to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group",
+						Description: ``,
+						Type:        "*ResourceGroupParam2",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
 		},
 		Links: map[string]string{
-			"cloud": "Href of the Cloud that this ResourceGroup belongs to",
-			"self":  "Href of itself",
+			"cloud":      "Href of the Cloud that this ResourceGroup belongs to",
+			"deployment": "Associated Deployment",
+			"self":       "Href of itself",
 		},
 	},
 	"RightScript": &metadata.Resource{
@@ -10960,6 +11075,7 @@ Optional parameters:
 		},
 		Links: map[string]string{
 			"cloud":                "Associated cloud",
+			"deployment":           "Containing Deployment",
 			"network":              "Associated network",
 			"security_group_rules": "Associated security_group_rules",
 			"self":                 "Href of itself",
@@ -11326,20 +11442,20 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][iam_instance_profile]",
-						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][root_volume_type_uid]",
 						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][iam_instance_profile]",
+						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][local_ssd_interface]",
@@ -11401,6 +11517,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
 						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
@@ -11443,6 +11567,14 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][memory_mb]",
 						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
@@ -11451,12 +11583,12 @@ Required parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][num_cores]",
-						Description: `The number of instance cores. Supported by UCA cloud only.`,
-						Type:        "int",
+						Name:        "server[instance][cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][disk_gb]",
@@ -11517,14 +11649,6 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][instance_type_href]",
-						Description: `The href of the Instance Type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server[instance][ramdisk_image_href]",
 						Description: `The href of the Ramdisk Image.`,
 						Type:        "string",
@@ -11535,6 +11659,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[instance][private_ip_address]",
 						Description: `The private ip address for the instance`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][instance_type_href]",
+						Description: `The href of the Instance Type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -11597,19 +11729,19 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][image_href]",
-						Description: `The href of the Image to use.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server[instance][cloud_href]",
 						Description: `The href of the cloud that the Server should be added to.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][image_href]",
+						Description: `The href of the Image to use.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -12337,8 +12469,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12346,8 +12478,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12364,16 +12496,16 @@ Required parameters:
 						ValidValues: []string{"default", "dedicated"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][root_volume_size]",
-						Description: `The size for root disk. Not supported in all Clouds.`,
+						Name:        "server_array[instance][cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][availability_set]",
-						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][root_volume_size]",
+						Description: `The size for root disk. Not supported in all Clouds.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12388,6 +12520,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][keep_alive_url]",
 						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
@@ -12396,8 +12536,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Name:        "server_array[instance][cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12430,6 +12570,14 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
 						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
@@ -12438,12 +12586,12 @@ Required parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
-						Description: `The number of instance cores. Supported by UCA cloud only.`,
-						Type:        "int",
+						Name:        "server_array[instance][cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][disk_gb]",
@@ -14938,7 +15086,7 @@ Optional parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
-						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts"},
+						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts", "placement_groups"},
 					},
 					&metadata.ActionParam{
 						Name:        "with_deleted",
@@ -14992,7 +15140,7 @@ Optional parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
-						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts"},
+						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts", "placement_groups"},
 					},
 					&metadata.ActionParam{
 						Name:        "tags",
@@ -15849,8 +15997,16 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "volume_attachment[settings][delete_on_termination]",
+						Description: `Setting to 'true' will schedule volume deletion if instance was terminated, default value is 'false'`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "volume_attachment[instance_href]",
-						Description: `The href of the instance to which the volume will be attached to.`,
+						Description: `The href of the instance to which the volume will be attached. Mutually exclusive with server_href.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -15865,16 +16021,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "volume_attachment[settings]",
-						Description: `Additional parameters concerning created attachment. For example, ':delete_on_termination => true' will schedule volume deletion if instance was terminated.`,
-						Type:        "map",
+						Name:        "volume_attachment[server_href]",
+						Description: `The href of the server to which the volume will be attached. Mutually exclusive with instance_href.Note: the Server must have a current_instance.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "volume_attachment[device]",
-						Description: `The device location where the volume will be mounted. Value must be of format /dev/xvd[bcefghij]. This is not reliable and will be deprecated.`,
+						Description: `The device location where the volume will be mounted. Value of format is cloud-specific, such as /dev/xvd[bcefghij] for EC2. This is not reliable and will be deprecated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
