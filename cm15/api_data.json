@@ -6789,35 +6789,6 @@
             "class": "String",
             "non_blank": true,
             "description": "Key/Value separated options"
-          },
-          "recurring_volume_attachment[size]": {
-            "class": "String",
-            "non_blank": true,
-            "mandatory": false,
-            "description": "Size of volume in gigabyte (GB). Only applicable if storage_href is a volume snapshot.",
-            "regex": "/^\\d+$/"
-          },
-          "recurring_volume_attachment[settings][delete_on_termination]": {
-            "class": "String",
-            "valid_values": [
-              "true",
-              "false"
-            ],
-            "description": "Whether this attached volume should be deleted on Instance termination.",
-            "non_blank": true,
-            "mandatory": false
-          },
-          "recurring_volume_attachment[settings][description]": {
-            "class": "String",
-            "description": "Description for this recurring attachment.",
-            "non_blank": true,
-            "mandatory": false
-          },
-          "recurring_volume_attachment[settings][name]": {
-            "class": "String",
-            "description": "Name of volume to create. Only applicable if storage_href is a volume snapshot.",
-            "non_blank": true,
-            "mandatory": false
           }
         }
       },
@@ -6949,15 +6920,13 @@
         "device_id": "",
         "size": "",
         "links": "",
-        "actions": "",
-        "settings": ""
+        "actions": ""
       },
       "links": {
         "self": "Href of itself",
         "cloud": "Associated cloud",
         "runnable": "Associated Server/ServerArray",
-        "storage": "Associated Volume/VolumeSnapshot",
-        "volume_type": "Associated VolumeType if storage is of type VolumeSnapshot"
+        "storage": "Associated Volume/VolumeSnapshot"
       },
       "content_types": [
         "application/vnd.rightscale.recurring_volume_attachment"

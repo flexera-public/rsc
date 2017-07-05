@@ -8014,11 +8014,10 @@ type RecurringVolumeAttachment struct {
 	Links        []map[string]string `json:"links,omitempty"`
 	Name         string              `json:"name,omitempty"`
 	RunnableType string              `json:"runnable_type,omitempty"`
-	Settings     `json:"settings,omitempty"`
-	Size         string    `json:"size,omitempty"`
-	Status       string    `json:"status,omitempty"`
-	StorageType  string    `json:"storage_type,omitempty"`
-	UpdatedAt    *RubyTime `json:"updated_at,omitempty"`
+	Size         string              `json:"size,omitempty"`
+	Status       string              `json:"status,omitempty"`
+	StorageType  string              `json:"storage_type,omitempty"`
+	UpdatedAt    *RubyTime           `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -15487,12 +15486,11 @@ type QueueSpecificParams struct {
 }
 
 type RecurringVolumeAttachmentParam struct {
-	Device         string    `json:"device,omitempty"`
-	RunnableHref   string    `json:"runnable_href,omitempty"`
-	Settings       *Settings `json:"settings,omitempty"`
-	Size           string    `json:"size,omitempty"`
-	StorageHref    string    `json:"storage_href,omitempty"`
-	VolumeTypeHref string    `json:"volume_type_href,omitempty"`
+	Device         string                 `json:"device,omitempty"`
+	RunnableHref   string                 `json:"runnable_href,omitempty"`
+	Settings       map[string]interface{} `json:"settings,omitempty"`
+	StorageHref    string                 `json:"storage_href,omitempty"`
+	VolumeTypeHref string                 `json:"volume_type_href,omitempty"`
 }
 
 type RepositoryParam struct {
@@ -15685,12 +15683,6 @@ type ServerTemplateParam struct {
 
 type Settings struct {
 	DeleteOnTermination string `json:"delete_on_termination,omitempty"`
-	Description         string `json:"description,omitempty"`
-	Name                string `json:"name,omitempty"`
-}
-
-type Settings2 struct {
-	DeleteOnTermination string `json:"delete_on_termination,omitempty"`
 }
 
 type SshKeyParam struct {
@@ -15740,11 +15732,11 @@ type UserParam2 struct {
 }
 
 type VolumeAttachmentParam struct {
-	Device       string     `json:"device,omitempty"`
-	InstanceHref string     `json:"instance_href,omitempty"`
-	ServerHref   string     `json:"server_href,omitempty"`
-	Settings     *Settings2 `json:"settings,omitempty"`
-	VolumeHref   string     `json:"volume_href,omitempty"`
+	Device       string    `json:"device,omitempty"`
+	InstanceHref string    `json:"instance_href,omitempty"`
+	ServerHref   string    `json:"server_href,omitempty"`
+	Settings     *Settings `json:"settings,omitempty"`
+	VolumeHref   string    `json:"volume_href,omitempty"`
 }
 
 type VolumeParam struct {
