@@ -359,20 +359,16 @@ func (a *API) parseResource(cmd, hrefPrefix string, commandValues ActionCommands
 
 	var vars []*metadata.PathVariable
 	var candidates []*metadata.Resource
+Metadata:
 	for _, res := range a.Metadata {
 		if v, err := res.ExtractVariables(href); err == nil {
 			vars = v
-			exact := false
 			for _, a := range res.Actions {
 				if a.Name == actionName && a.MatchHref(href) {
 					// We found an exact match!
 					candidates = []*metadata.Resource{res}
-					exact = true
-					break
+					break Metadata
 				}
-			}
-			if exact {
-				break
 			}
 			candidates = append(candidates, res)
 		}
