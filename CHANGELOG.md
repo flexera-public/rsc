@@ -1,3 +1,8 @@
+unreleased changes
+-------------------
+* Fix a bug command line resource href matching where actions whose href pattern partially matched the href were
+  considered a full match resulting in the wrong resource action being selected.
+
 v6.4.1 / 2017-06-20
 -------------------
 * Fix bug introduced with storing refresh token in `~/.rsc` where it took precedence over the `-r`/`--refresh-token`
