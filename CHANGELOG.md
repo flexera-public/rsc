@@ -1,5 +1,6 @@
-unreleased changes
+v6.5.0 / 2017-07-19
 -------------------
+* Add support for AzureRM Managed Disk.
 * Fix a bug command line resource href matching where actions whose href pattern partially matched the href were
   considered a full match resulting in the wrong resource action being selected.
 
