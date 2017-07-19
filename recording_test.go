@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
@@ -81,14 +80,16 @@ var _ = Describe("Recorded request", func() {
 			SetOutput(&stdoutBuf)
 			exitCode := 99
 			osExit = func(code int) { exitCode = code }
-			SetErrorOutput(ioutil.Discard)
+			stderrBuf := bytes.Buffer{}
+			SetErrorOutput(&stderrBuf)
 
 			main()
 
 			// Verify that stdout and the exit code are correct
 			//fmt.Fprintf(os.Stderr, "Exit %d %d\n", exitCode, testCase.ExitCode)
 			//fmt.Fprintf(os.Stderr, "stdout got <<%q>>\n  expected <<%q>>\n",
-			//stdoutBuf.String(), testCase.Stdout)
+			//	stdoutBuf.String(), testCase.Stdout)
+			//fmt.Fprintf(os.Stderr, "stderr got <<%q>>\n", stderrBuf.String())
 			Ω(exitCode).Should(Equal(testCase.ExitCode), "Exit code doesn't match")
 			Ω(stdoutBuf.String()).Should(Equal(testCase.Stdout), "Stdout doesn't match")
 		})
