@@ -10771,6 +10771,7 @@ func (loc *SecurityGroupLocator) Show(options rsapi.APIParams) (*SecurityGroup, 
 /******  SecurityGroupRule ******/
 
 type SecurityGroupRule struct {
+	Action      string              `json:"action,omitempty"`
 	Actions     []map[string]string `json:"actions,omitempty"`
 	CidrIps     []string            `json:"cidr_ips,omitempty"`
 	Description string              `json:"description,omitempty"`
@@ -10783,6 +10784,7 @@ type SecurityGroupRule struct {
 	IcmpCode    string              `json:"icmp_code,omitempty"`
 	IcmpType    string              `json:"icmp_type,omitempty"`
 	Links       []map[string]string `json:"links,omitempty"`
+	Priority    int                 `json:"priority,omitempty"`
 	Protocol    string              `json:"protocol,omitempty"`
 	SourceType  string              `json:"source_type,omitempty"`
 	StartPort   string              `json:"start_port,omitempty"`
@@ -15610,10 +15612,12 @@ type SecurityGroupParam struct {
 }
 
 type SecurityGroupRuleParam struct {
+	Action            string           `json:"action,omitempty"`
 	CidrIps           string           `json:"cidr_ips,omitempty"`
 	Direction         string           `json:"direction,omitempty"`
 	GroupName         string           `json:"group_name,omitempty"`
 	GroupOwner        string           `json:"group_owner,omitempty"`
+	Priority          int              `json:"priority,omitempty"`
 	Protocol          string           `json:"protocol,omitempty"`
 	ProtocolDetails   *ProtocolDetails `json:"protocol_details,omitempty"`
 	SecurityGroupHref string           `json:"security_group_href,omitempty"`

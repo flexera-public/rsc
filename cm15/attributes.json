@@ -1,5 +1,6 @@
 {
 	"account_owner": "string",
+	"action": "string",
 	"actions": "[]map[string]string",
 	"address": "string",
 	"admin_password": "string",
@@ -108,6 +109,7 @@
 	"position": "int",
 	"pricing_type": "string",
 	"principal_uid": "string",
+	"priority": "int",
 	"private_dns_names": "[]string",
 	"private_ip_addresses": "[]string",
 	"private_port": "string",
