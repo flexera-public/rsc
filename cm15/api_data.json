@@ -8874,6 +8874,22 @@
             "class": "String",
             "non_blank": true,
             "description": "ICMP code. Required if protocol is 'icmp'."
+          },
+          "security_group_rule[priority]": {
+            "class": "Integer",
+            "non_blank": true,
+            "mandatory": false,
+            "description": "Lower takes precedence. Supported by AzureRM cloud only."
+          },
+          "security_group_rule[action]": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "allow",
+              "deny"
+            ],
+            "mandatory": false,
+            "description": "Allow or deny rule. Defaults to allow. Supported by AzureRM cloud only."
           }
         }
       },
@@ -9007,7 +9023,9 @@
         "links": "",
         "actions": "",
         "href": "",
-        "description": ""
+        "description": "",
+        "action": "",
+        "priority": ""
       },
       "links": {
         "self": "Href of itself",
