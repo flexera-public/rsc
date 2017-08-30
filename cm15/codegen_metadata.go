@@ -7338,31 +7338,9 @@ Required parameters:
 		},
 	},
 	"Oauth2": &metadata.Resource{
-		Name: "Oauth2",
-		Description: `Note that all API calls irrespective of the resource it is acting on, should pass a header
-"X-Api-Version" with the value "1.5".
-This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
-a bearer access token, which can be used in lieu of a session cookie when interacting with API
-resources.
-This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
-to the conventions established by other RightScale API resources. However, an API-version header is
-still required when interacting with the OAuth endpoint.
-OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
-browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
-endpoint supports the following OAuth 2.0 operations:
- * refresh_token - for end-user login using a previously-negotiated OAuth grant
- * client_credentials - for instance login using API credentials transmitted via user-data
-RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
- * clients MUST transmit an X-Api-Version header with every OAuth request
- * clients MAY transmit an account_id parameter as part of their POST form data
-If you choose to post an account_id, then the API may respond with a 301 redirect if your account
-is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
-elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
-this cluster).
-For more information on how to use OAuth 2.0 with RightScale, refer to the following:
-http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
-http://tools.ietf.org/html/draft-ietf-oauth-v2-23`,
-		Identifier: "",
+		Name:        "Oauth2",
+		Description: ``,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7529,7 +7507,7 @@ Optional parameters:
   or Orgs and only allows management of the following CM Roles:
     admin, actor, observer,
     aws_architect, publisher,
-    designer, billing, signup_wiz,
+    designer, signup_wiz,
     enterprise_manager, server_login,
     library, security_manager,
     instance, server_superuser,
@@ -8168,7 +8146,7 @@ Required parameters:
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "recurring_volume_attachment[volume_type_href]",
-						Description: `The href of the volume type. Can be required by some clouds if you are attaching volume snapshot.`,
+						Description: `The href of the volume type. Can be required by some clouds in case if you attaching volume snapshot.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -8192,7 +8170,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "recurring_volume_attachment[settings]",
-						Description: `Additional parameters concerning created attachment.`,
+						Description: `Additional parameters concerning created attachment. For example, ':delete_on_termination => true' will schedule volume deletion if instance was terminated.`,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -8200,7 +8178,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "recurring_volume_attachment[device]",
-						Description: `The device location where the volume or volume snapshot will be mounted. Value of format is cloud-specific, such as /dev/xvd[bcefghij] for EC2. This is not reliable and will be deprecated.`,
+						Description: `The device location where the volume or volume snapshot will be mounted. Value must be of format /dev/xvd[bcefghij]. This is not reliable and will be deprecated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
@@ -9133,8 +9111,7 @@ Required parameters:
 				Name: "index",
 				Description: `Lists all ResourceGroups in an account.
 Optional parameters:
-	filter
-	view`,
+	filter`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -9153,15 +9130,6 @@ Optional parameters:
 						NonBlank:    true,
 						ValidValues: []string{"cloud_href", "name", "state"},
 					},
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
@@ -9173,23 +9141,12 @@ Optional parameters:
 						NonBlank:    true,
 						ValidValues: []string{"cloud_href", "name", "state"},
 					},
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
 				},
 			},
 
 			&metadata.Action{
-				Name: "show",
-				Description: `Shows information about a single ResourceGroup.
-Optional parameters:
-	view`,
+				Name:        "show",
+				Description: `Shows information about a single ResourceGroup.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -9198,28 +9155,8 @@ Optional parameters:
 						Regexp:     regexp.MustCompile(`^/api/resource_groups/([^/]+)$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
-				APIParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default"},
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -16021,7 +15958,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "volume_attachment[device]",
-						Description: `The device location where the volume will be mounted. Value of format is cloud-specific, such as /dev/xvd[bcefghij] for EC2. This is not reliable and will be deprecated.`,
+						Description: `The device location where the volume will be mounted. Value must be of format /dev/xvd[bcefghij]. This is not reliable and will be deprecated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
