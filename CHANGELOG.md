@@ -3,6 +3,7 @@ v6.6.0 / 2017-10-25
 * Add action/priority to security group rules.
 * Add source/destination cidr IPs/group names and source start/end port to security group rules. These are currently
   only available for AzureRM.
+* Add cloud_specific_params[service_account] to instances
 
 v6.5.0 / 2017-07-19
 -------------------
