@@ -1,3 +1,9 @@
+v6.6.0 / 2017-10-25
+-------------------
+* Add action/priority to security group rules.
+* Add source/destination cidr IPs/group names and source start/end port to security group rules. These are currently
+  only available for AzureRM.
+
 v6.5.0 / 2017-07-19
 -------------------
 * Add support for AzureRM Managed Disk.
