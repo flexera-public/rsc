@@ -15081,6 +15081,7 @@ type CloudSpecificAttributes struct {
 	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
 }
 
 type CloudSpecificAttributes2 struct {
@@ -15106,6 +15107,7 @@ type CloudSpecificAttributes2 struct {
 	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
 }
 
 type CloudSpecificAttributes3 struct {
@@ -15140,6 +15142,7 @@ type CloudSpecificAttributes5 struct {
 	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
 }
 
 type CloudSpecificAttributes6 struct {
@@ -15165,6 +15168,7 @@ type CloudSpecificAttributes6 struct {
 	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
 }
 
 type CloudSpecificAttributes7 struct {

@@ -3463,6 +3463,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "instance[cloud_specific_attributes][service_account]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": false,
+            "description": "Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only."
           }
         }
       },
@@ -4205,6 +4211,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "instance[cloud_specific_attributes][service_account]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": false,
+            "description": "Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only."
           }
         }
       }
@@ -9710,6 +9722,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "server_array[instance][cloud_specific_attributes][service_account]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": false,
+            "description": "Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only."
           }
         }
       },
@@ -11131,6 +11149,12 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "server[instance][cloud_specific_attributes][service_account]": {
+            "class": "String",
+            "mandatory": false,
+            "non_blank": false,
+            "description": "Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only."
           }
         }
       },
