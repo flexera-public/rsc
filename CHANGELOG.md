@@ -1,6 +1,7 @@
 v6.7.0 / 2018-03-15
 -------------------
 * Add skip_deletion flag for Backups.cleanup action
+* Update Server resource: change deployment_href on existing server
 
 v6.6.0 / 2017-10-25
 -------------------
