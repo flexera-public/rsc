@@ -3420,8 +3420,8 @@ func (loc *HealthCheckLocator) Index() ([]map[string]interface{}, error) {
 
 /******  IdentityProvider ******/
 
-// An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,
-// and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
+// An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Organization,
+// and is trusted by the RightScale dashboard to authenticate your organization's end users.
 // To register an Identity Provider, contact your account manager.
 type IdentityProvider struct {
 	Actions       []map[string]string `json:"actions,omitempty"`
@@ -14005,12 +14005,12 @@ func (loc *UserLocator) Show() (*User, error) {
 // Update a user's contact information, change their password, or update their SSO settings.
 // In order to update a user record, one of the following criteria must be met:
 // 1. You've authenticated and are the user being modified, and you provide a valid current_password.
-// 2. You're an admin and the user is linked to your enterprise SSO provider.
-// 3. You're an admin and the user's email matches the email_domain of your enterprise SSO provider.
+// 2. You're an admin and the user is linked to your organization SSO provider.
+// 3. You're an admin and the user's email matches the email_domain of your organization SSO provider.
 // In other words: you can update yourself if you know your own password, you can update
 // yourself or others if you're an admin and they're linked to your SSO provider, and you can update any user
 // if you're an admin and their email address is known to belong to your organization.
-// For information about enabling canonical email domain ownership for your enterprise, please
+// For information about enabling canonical email domain ownership for your organization, please
 // talk to your RightScale account manager or contact our support team.
 // To update a user's contact information, simply pass the desired values for email, first_name,
 // and so forth.
@@ -15650,6 +15650,7 @@ type ServerParam struct {
 
 type ServerParam2 struct {
 	AutomaticInstanceStoreMapping string          `json:"automatic_instance_store_mapping,omitempty"`
+	DeploymentHref                string          `json:"deployment_href,omitempty"`
 	Description                   string          `json:"description,omitempty"`
 	Instance                      *InstanceParam5 `json:"instance,omitempty"`
 	Name                          string          `json:"name,omitempty"`
