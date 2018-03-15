@@ -1235,6 +1235,8 @@ func (api *API) BackupLocator(href string) *BackupLocator {
 // The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
 // independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
 // Hence, it is important to "commit" a backup to make it eligible for cleanup.
+// Using skip_deletion='true' attribute will return an index of what will be deleted when the action is run.
+// The status code returned is 200 when using this parameter instead of 204.
 // Required parameters:
 // keep_last: The number of backups that should be kept.
 // lineage: The lineage of the backups that are to be cleaned-up.
@@ -1242,6 +1244,7 @@ func (api *API) BackupLocator(href string) *BackupLocator {
 // cloud_href: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
 // dailies: The number of daily backups(the latest one in each day) that should be kept.
 // monthlies: The number of monthly backups(the latest one in each month) that should be kept.
+// skip_deletion: When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.
 // weeklies: The number of weekly backups(the latest one in each week) that should be kept.
 // yearlies: The number of yearly backups(the latest one in each year) that should be kept.
 func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi.APIParams) error {
@@ -1268,6 +1271,10 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi
 	var monthliesOpt = options["monthlies"]
 	if monthliesOpt != nil {
 		p["monthlies"] = monthliesOpt
+	}
+	var skipDeletionOpt = options["skip_deletion"]
+	if skipDeletionOpt != nil {
+		p["skip_deletion"] = skipDeletionOpt
 	}
 	var weekliesOpt = options["weeklies"]
 	if weekliesOpt != nil {

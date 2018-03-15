@@ -1399,6 +1399,8 @@ For all the perfect backups, the constraints of keep_last and dailies etc. will 
 The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
 independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
 Hence, it is important to "commit" a backup to make it eligible for cleanup.
+Using skip_deletion='true' attribute will return an index of what will be deleted when the action is run.
+The status code returned is 200 when using this parameter instead of 204.
 Required parameters:
 	keep_last: The number of backups that should be kept.
 	lineage: The lineage of the backups that are to be cleaned-up.
@@ -1406,6 +1408,7 @@ Optional parameters:
 	cloud_href: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
 	dailies: The number of daily backups(the latest one in each day) that should be kept.
 	monthlies: The number of monthly backups(the latest one in each month) that should be kept.
+	skip_deletion: When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.
 	weeklies: The number of weekly backups(the latest one in each week) that should be kept.
 	yearlies: The number of yearly backups(the latest one in each year) that should be kept.`,
 				PathPatterns: []*metadata.PathPattern{
@@ -1417,6 +1420,15 @@ Optional parameters:
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "skip_deletion",
+						Description: `When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
 					&metadata.ActionParam{
 						Name:        "cloud_href",
 						Description: `Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.`,
@@ -1442,14 +1454,6 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "weeklies",
-						Description: `The number of weekly backups(the latest one in each week) that should be kept.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "yearlies",
 						Description: `The number of yearly backups(the latest one in each year) that should be kept.`,
 						Type:        "string",
@@ -1458,8 +1462,8 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "dailies",
-						Description: `The number of daily backups(the latest one in each day) that should be kept.`,
+						Name:        "weeklies",
+						Description: `The number of weekly backups(the latest one in each week) that should be kept.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1471,6 +1475,14 @@ Optional parameters:
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "dailies",
+						Description: `The number of daily backups(the latest one in each day) that should be kept.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 				},
@@ -1514,6 +1526,15 @@ Optional parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "skip_deletion",
+						Description: `When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
 						Name:        "weeklies",
