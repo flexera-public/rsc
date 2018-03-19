@@ -1,3 +1,7 @@
+v6.7.0 / 2018-03-15
+-------------------
+* Add skip_deletion flag for Backups.cleanup action
+
 v6.6.0 / 2017-10-25
 -------------------
 * Add action/priority to security group rules.
