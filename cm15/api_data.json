@@ -1207,10 +1207,7 @@
             {
               "resource_uid": "RESOURCE_2294991701",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_2294991701;4291176187"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_2294991701;4291176187"}
               ],
               "size": null,
               "state": "available",
@@ -1221,10 +1218,7 @@
             {
               "resource_uid": "RESOURCE_1758005507",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_1758005507;1944441571"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_1758005507;1944441571"}
               ],
               "size": null,
               "state": "available",
@@ -1334,10 +1328,7 @@
             {
               "resource_uid": "RESOURCE_2294991701",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_2294991701;4291176187"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_2294991701;4291176187"}
               ],
               "size": null,
               "state": "available",
@@ -1348,10 +1339,7 @@
             {
               "resource_uid": "RESOURCE_1758005507",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_1758005507;1944441571"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_1758005507;1944441571"}
               ],
               "size": null,
               "state": "available",
@@ -2831,9 +2819,9 @@
         }
       }
     },
-    "description": "An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,\nand is trusted by the RightScale dashboard to authenticate your enterprise's end users.\nTo register an Identity Provider, contact your account manager.\n",
+    "description": "An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Organization,\nand is trusted by the RightScale dashboard to authenticate your organization's end users.\nTo register an Identity Provider, contact your account manager.\n",
     "media_type": {
-      "description": "  An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,\n  and is trusted by the RightScale dashboard to authenticate your enterprise's end users.\n  To register an Identity Provider, contact your account manager.\n\n  Once your provider is registered with RightScale and associated with your enterprise account,\n  you can use the provisioning API to query the IdentityProviders resource and discover your provider's API href.\n  You can use the href to create new users via provisioning API who are pre-linked to your SAML identity provider and\n  can perform single sign-on immediately, without accepting an invitation or choosing a password.\n",
+      "description": "  An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Organization,\n  and is trusted by the RightScale dashboard to authenticate your organization's end users.\n  To register an Identity Provider, contact your account manager.\n\n  Once your provider is registered with RightScale and associated with your organization,\n  you can use the provisioning API to query the IdentityProviders resource and discover your provider's API href.\n  You can use the href to create new users via provisioning API who are pre-linked to your SAML identity provider and\n  can perform single sign-on immediately, without accepting an invitation or choosing a password.\n",
       "attributes": {
         "created_at": "",
         "updated_at": "",
@@ -3476,7 +3464,7 @@
           "instance[cloud_specific_attributes][service_account]": {
             "class": "String",
             "mandatory": false,
-            "non_blank": false,
+            "non_blank": true,
             "description": "Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only."
           }
         }
@@ -8883,22 +8871,6 @@
             "class": "String",
             "non_blank": true,
             "description": "ICMP code. Required if protocol is 'icmp'."
-          },
-          "security_group_rule[priority]": {
-            "class": "Integer",
-            "non_blank": true,
-            "mandatory": false,
-            "description": "Lower takes precedence. Supported by AzureRM cloud only."
-          },
-          "security_group_rule[action]": {
-            "class": "String",
-            "non_blank": true,
-            "valid_values": [
-              "allow",
-              "deny"
-            ],
-            "mandatory": false,
-            "description": "Allow or deny rule. Defaults to allow. Supported by AzureRM cloud only."
           }
         }
       },
@@ -9042,9 +9014,7 @@
         "links": "",
         "actions": "",
         "href": "",
-        "description": "",
-        "action": "",
-        "priority": ""
+        "description": ""
       },
       "links": {
         "self": "Href of itself",
@@ -9735,7 +9705,7 @@
           "server_array[instance][cloud_specific_attributes][service_account]": {
             "class": "String",
             "mandatory": false,
-            "non_blank": false,
+            "non_blank": true,
             "description": "Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only."
           }
         }
@@ -11162,7 +11132,7 @@
           "server[instance][cloud_specific_attributes][service_account]": {
             "class": "String",
             "mandatory": false,
-            "non_blank": false,
+            "non_blank": true,
             "description": "Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only."
           }
         }
@@ -11411,6 +11381,11 @@
               "false"
             ],
             "description": "If enabled, the associated volume will be deleted when the instance is terminated."
+          },
+          "server[deployment_href]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The updated deployment of the server."
           }
         }
       },
@@ -12116,7 +12091,7 @@
     "methods": {
       "by_resource": {
         "access_rules": [
-          "observer||instance"
+          "observer||instance||infrastructure"
         ],
         "routes": [
           "POST   /api/tags/by_resource(.:format)?         {:controller=>\"tags\", :action=>\"by_resource\"}"
@@ -12135,7 +12110,7 @@
       },
       "by_tag": {
         "access_rules": [
-          "observer||instance"
+          "observer||instance||infrastructure"
         ],
         "routes": [
           "POST   /api/tags/by_tag(.:format)?              {:controller=>\"tags\", :action=>\"by_tag\"}"
@@ -12464,7 +12439,7 @@
         "routes": [
           "PUT    /api/users/:id(.:format)?                {:controller=>\"users\", :action=>\"update\"}"
         ],
-        "description": "Update a user's contact information, change their password, or update their SSO settings.\n\nIn order to update a user record, one of the following criteria must be met:\n1. You've authenticated and are the user being modified, and you provide a valid current_password.\n2. You're an admin and the user is linked to your enterprise SSO provider.\n3. You're an admin and the user's email matches the email_domain of your enterprise SSO provider.\n\nIn other words: you can update yourself if you know your own password, you can update\nyourself or others if you're an admin and they're linked to your SSO provider, and you can update any user\nif you're an admin and their email address is known to belong to your organization.\n\nFor information about enabling canonical email domain ownership for your enterprise, please\ntalk to your RightScale account manager or contact our support team.\n\nTo update a user's contact information, simply pass the desired values for email, first_name,\nand so forth.\n\nTo update a user's password, provide the desired new_password.\n\nTo set or update a user's SSO information, you may provide a just a principal_uid (to maintain the\nuser's existing identity provider) or you may provide an identity_provider_href and a\nprincipal_uid (to switch identity providers as well as specify a new user identity).\n\nIn the context of SAML, principal_uid is equivalent to the SAML NameID or Subject claim.\nRightScale cannot predict or influence the NameID value that your SAML IdP will send to us for\n",
+        "description": "Update a user's contact information, change their password, or update their SSO settings.\n\nIn order to update a user record, one of the following criteria must be met:\n1. You've authenticated and are the user being modified, and you provide a valid current_password.\n2. You're an admin and the user is linked to your organization SSO provider.\n3. You're an admin and the user's email matches the email_domain of your organization SSO provider.\n\nIn other words: you can update yourself if you know your own password, you can update\nyourself or others if you're an admin and they're linked to your SSO provider, and you can update any user\nif you're an admin and their email address is known to belong to your organization.\n\nFor information about enabling canonical email domain ownership for your organization, please\ntalk to your RightScale account manager or contact our support team.\n\nTo update a user's contact information, simply pass the desired values for email, first_name,\nand so forth.\n\nTo update a user's password, provide the desired new_password.\n\nTo set or update a user's SSO information, you may provide a just a principal_uid (to maintain the\nuser's existing identity provider) or you may provide an identity_provider_href and a\nprincipal_uid (to switch identity providers as well as specify a new user identity).\n\nIn the context of SAML, principal_uid is equivalent to the SAML NameID or Subject claim.\nRightScale cannot predict or influence the NameID value that your SAML IdP will send to us for\n",
         "status_code": "204 No Content",
         "parameters": {
           "user": {
@@ -12963,7 +12938,7 @@
         "cloud_specific_attributes": "Any cloud specific attributes of the volume snapshot",
         "links": "",
         "actions": "",
-        "created_at": "",
+        "created_at": "The date at which this volume snapshot was created in the cloud",
         "updated_at": ""
       },
       "links": {
@@ -13335,7 +13310,7 @@
     "media_type": {
       "description": "  A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).\n",
       "attributes": {
-        "created_at": "",
+        "created_at": "The date at which this volume was created in the cloud",
         "updated_at": "",
         "name": "",
         "resource_uid": "",

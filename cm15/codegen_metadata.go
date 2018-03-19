@@ -3453,8 +3453,8 @@ Required parameters:
 	},
 	"IdentityProvider": &metadata.Resource{
 		Name: "IdentityProvider",
-		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,
-and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
+		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Organization,
+and is trusted by the RightScale dashboard to authenticate your organization's end users.
 To register an Identity Provider, contact your account manager.`,
 		Identifier: "application/vnd.rightscale.identity_provider",
 		Actions: []*metadata.Action{
@@ -3967,7 +3967,7 @@ Optional parameters:
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][local_ssd_count]",
@@ -11487,7 +11487,7 @@ Required parameters:
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][admin_username]",
@@ -12119,8 +12119,8 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "server[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12128,8 +12128,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "server[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12148,6 +12148,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[deployment_href]",
+						Description: `The updated deployment of the server.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12490,7 +12498,7 @@ Required parameters:
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_count]",
@@ -15485,12 +15493,12 @@ Optional parameters:
 				Description: `Update a user's contact information, change their password, or update their SSO settings.
 In order to update a user record, one of the following criteria must be met:
 1. You've authenticated and are the user being modified, and you provide a valid current_password.
-2. You're an admin and the user is linked to your enterprise SSO provider.
-3. You're an admin and the user's email matches the email_domain of your enterprise SSO provider.
+2. You're an admin and the user is linked to your organization SSO provider.
+3. You're an admin and the user's email matches the email_domain of your organization SSO provider.
 In other words: you can update yourself if you know your own password, you can update
 yourself or others if you're an admin and they're linked to your SSO provider, and you can update any user
 if you're an admin and their email address is known to belong to your organization.
-For information about enabling canonical email domain ownership for your enterprise, please
+For information about enabling canonical email domain ownership for your organization, please
 talk to your RightScale account manager or contact our support team.
 To update a user's contact information, simply pass the desired values for email, first_name,
 and so forth.
