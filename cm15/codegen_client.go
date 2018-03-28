@@ -15726,6 +15726,7 @@ type UserParam2 struct {
 }
 
 type VolumeAttachmentParam struct {
+	ApiBehavior  string    `json:"api_behavior,omitempty"`
 	Device       string    `json:"device,omitempty"`
 	InstanceHref string    `json:"instance_href,omitempty"`
 	ServerHref   string    `json:"server_href,omitempty"`

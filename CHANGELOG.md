@@ -1,3 +1,7 @@
+v6.8.0 / 2018-03-28
+-------------------
+* add api_behavior to VolumeAttachments create call. 
+
 v6.7.0 / 2018-03-15
 -------------------
 * Add skip_deletion flag for Backups.cleanup action

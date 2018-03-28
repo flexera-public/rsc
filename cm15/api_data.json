@@ -12584,6 +12584,11 @@
             "class": "String",
             "non_blank": true,
             "description": "Setting to 'true' will schedule volume deletion if instance was terminated, default value is 'false'"
+          },
+          "volume_attachment[api_behavior]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "Setting to 'async' will cause volume_attachments to happen asynchrously,default value is null"
           }
         }
       },
