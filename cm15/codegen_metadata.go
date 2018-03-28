@@ -16002,8 +16002,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "volume_attachment[volume_href]",
-						Description: `The href of the volume to be attached.`,
+						Name:        "volume_attachment[api_behavior]",
+						Description: `Setting to 'async' will cause volume_attachments to happen asynchrously,default value is null`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -16012,6 +16012,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "volume_attachment[server_href]",
 						Description: `The href of the server to which the volume will be attached. Mutually exclusive with instance_href.Note: the Server must have a current_instance.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "volume_attachment[volume_href]",
+						Description: `The href of the volume to be attached.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
