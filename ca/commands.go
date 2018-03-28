@@ -1,9 +1,9 @@
-package ca
+package ca // import "gopkg.in/rightscale/rsc.v6/ca"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v6/rsapi"
 )
 
 const (
