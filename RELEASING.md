@@ -11,12 +11,16 @@ If making a major release version, change `GOPKG_VERS` in Makefile.
 In order to cut a release branch from master, the steps are:
 ```
 git checkout -b v2.3.4
+rm -rf vendor/
 make govers
 git commit -a -m 'add import constraints for release v2.3.4'
 git push origin v2.3.4
 ```
 This will trigger a CI build which will upload the new version binaries. Also creating the remote
-branch means that `gopkg.in` will get the newly released code for the major version.
+branch means that `gopkg.in` will get the newly released code for the major version. We remove the
+`vendor` directory in order to avoid a bug in `govers` that tries to look at files in the directory
+causing it to miss the top level directory `.go` files. You can run `make depend` to restore `vendor`
+after releasing.
 
 ### Test a release
 

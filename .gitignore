@@ -18,3 +18,4 @@ cm15/examples/rsssh/rsssh
 ss/examples/basic/basic
 vendor/
 .glide/
+.DS_Store
