@@ -23,49 +23,6 @@ var GenMetadata = map[string]*metadata.Resource{
 The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
 to use in your own integration.`,
 		Identifier: "application/vnd.rightscale.self_service.account_preference",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_by",
-				FieldName: "CreatedBy",
-				FieldType: "*User",
-			},
-
-			&metadata.Attribute{
-				Name:      "group_name",
-				FieldName: "GroupName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-
-			&metadata.Attribute{
-				Name:      "value",
-				FieldName: "Value",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -73,9 +30,9 @@ to use in your own integration.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/account_preferences",
+						Pattern:    "/api/catalog/accounts/%s/account_preferences",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/account_preferences`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/account_preferences`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -83,14 +40,6 @@ to use in your own integration.`,
 						Name:        "filter[]",
 						Description: `Filter by group, so that only AccountPreferences belonging to that group are returned`,
 						Type:        "[]string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "group",
-						Description: `The group that this setting belongs to, simply for organizational purposes`,
-						Type:        "string",
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -105,14 +54,6 @@ to use in your own integration.`,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
-					&metadata.ActionParam{
-						Name:        "group",
-						Description: `The group that this setting belongs to, simply for organizational purposes`,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
 				},
 			},
 
@@ -122,9 +63,9 @@ to use in your own integration.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/account_preferences/%s",
+						Pattern:    "/api/catalog/accounts/%s/account_preferences/%s",
 						Variables:  []string{"account_id", "name"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/account_preferences/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/account_preferences/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -137,9 +78,9 @@ to use in your own integration.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/accounts/%s/account_preferences",
+						Pattern:    "/api/catalog/accounts/%s/account_preferences",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/account_preferences`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/account_preferences`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -202,9 +143,9 @@ to use in your own integration.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/accounts/%s/account_preferences/%s",
+						Pattern:    "/api/catalog/accounts/%s/account_preferences/%s",
 						Variables:  []string{"account_id", "name"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/account_preferences/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/account_preferences/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -221,91 +162,6 @@ resource in Designer.
 In the Self-Service portal, an Application is equivalent to an item in the Catalog. Most users have access to these Application resources
 and can launch them to create Executions in the Manager application.`,
 		Identifier: "application/vnd.rightscale.self_service.application",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "compiled_cat",
-				FieldName: "CompiledCat",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_by",
-				FieldName: "CreatedBy",
-				FieldType: "*User",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "long_description",
-				FieldName: "LongDescription",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "parameters",
-				FieldName: "Parameters",
-				FieldType: "[]*Parameter",
-			},
-
-			&metadata.Attribute{
-				Name:      "required_parameters",
-				FieldName: "RequiredParameters",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "schedule_required",
-				FieldName: "ScheduleRequired",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "schedules",
-				FieldName: "Schedules",
-				FieldType: "[]*Schedule",
-			},
-
-			&metadata.Attribute{
-				Name:      "short_description",
-				FieldName: "ShortDescription",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "template_info",
-				FieldName: "TemplateInfo",
-				FieldType: "*TemplateInfo",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -313,9 +169,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/catalogs/%s/applications",
+						Pattern:    "/api/catalog/catalogs/%s/applications",
 						Variables:  []string{"catalog_id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -346,9 +202,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/catalogs/%s/applications/%s",
+						Pattern:    "/api/catalog/catalogs/%s/applications/%s",
 						Variables:  []string{"catalog_id", "id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -381,12 +237,28 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/catalogs/%s/applications",
+						Pattern:    "/api/catalog/catalogs/%s/applications",
 						Variables:  []string{"catalog_id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "compiled_cat[cat_parser_gem_version]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[compiler_ver]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat[conditions]",
 						Description: ``,
@@ -397,6 +269,22 @@ and can launch them to create Executions in the Manager application.`,
 					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat[definitions]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[dependency_hashes][]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[imports]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -424,45 +312,13 @@ and can launch them to create Executions in the Manager application.`,
 						Description: ``,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[dependency_hashes][]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -484,6 +340,14 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "compiled_cat[package]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "compiled_cat[parameters]",
 						Description: ``,
 						Type:        "map",
@@ -492,41 +356,17 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[permissions]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   true,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
+						Name:        "compiled_cat[dependency_hashes][]",
+						Description: ``,
+						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -536,7 +376,7 @@ and can launch them to create Executions in the Manager application.`,
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -544,7 +384,7 @@ and can launch them to create Executions in the Manager application.`,
 						Description: ``,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -560,7 +400,7 @@ and can launch them to create Executions in the Manager application.`,
 						Description: ``,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -682,7 +522,7 @@ and can launch them to create Executions in the Manager application.`,
 						Description: `The compiled source of the CAT file. This can be obtained by calling Template.compile or Template.show in the Designer application.`,
 						Type:        "*CompiledCAT",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
@@ -742,12 +582,28 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",
-						Pattern:    "/catalogs/%s/applications/%s",
+						Pattern:    "/api/catalog/catalogs/%s/applications/%s",
 						Variables:  []string{"catalog_id", "id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "compiled_cat[cat_parser_gem_version]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[compiler_ver]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat[conditions]",
 						Description: ``,
@@ -758,6 +614,22 @@ and can launch them to create Executions in the Manager application.`,
 					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat[definitions]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[dependency_hashes][]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[imports]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -789,41 +661,9 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[dependency_hashes][]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -845,6 +685,14 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "compiled_cat[package]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "compiled_cat[parameters]",
 						Description: ``,
 						Type:        "map",
@@ -853,41 +701,17 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[permissions]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
+						Name:        "compiled_cat[dependency_hashes][]",
+						Description: ``,
+						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1103,12 +927,28 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",
-						Pattern:    "/catalogs/%s/applications",
+						Pattern:    "/api/catalog/catalogs/%s/applications",
 						Variables:  []string{"catalog_id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "compiled_cat[cat_parser_gem_version]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[compiler_ver]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat[conditions]",
 						Description: ``,
@@ -1119,6 +959,22 @@ and can launch them to create Executions in the Manager application.`,
 					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat[definitions]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[dependency_hashes][]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[imports]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -1150,41 +1006,9 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[dependency_hashes][]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1206,6 +1030,14 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "compiled_cat[package]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "compiled_cat[parameters]",
 						Description: ``,
 						Type:        "map",
@@ -1214,41 +1046,17 @@ and can launch them to create Executions in the Manager application.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[permissions]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
+						Name:        "compiled_cat[dependency_hashes][]",
+						Description: ``,
+						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1480,9 +1288,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/catalogs/%s/applications/%s",
+						Pattern:    "/api/catalog/catalogs/%s/applications/%s",
 						Variables:  []string{"catalog_id", "id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1495,9 +1303,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/catalogs/%s/applications",
+						Pattern:    "/api/catalog/catalogs/%s/applications",
 						Variables:  []string{"catalog_id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1528,9 +1336,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/catalogs/%s/applications/%s/download",
+						Pattern:    "/api/catalog/catalogs/%s/applications/%s/download",
 						Variables:  []string{"catalog_id", "id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications/([^/]+)/download`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications/([^/]+)/download`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1561,12 +1369,20 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/catalogs/%s/applications/%s/actions/launch",
+						Pattern:    "/api/catalog/catalogs/%s/applications/%s/actions/launch",
 						Variables:  []string{"catalog_id", "id"},
-						Regexp:     regexp.MustCompile(`/catalogs/([^/]+)/applications/([^/]+)/actions/launch`),
+						Regexp:     regexp.MustCompile(`/api/catalog/catalogs/([^/]+)/applications/([^/]+)/actions/launch`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "defer_launch",
+						Description: `Whether or not to defer launching the execution. Setting this value to true will keep the execution in not_started state until it is explicitly launched or the first scheduled start operation occurs.`,
+						Type:        "bool",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "description",
 						Description: `The description for the execution. The description of the Application will be used if none is provided.`,
@@ -1627,6 +1443,14 @@ and can launch them to create Executions in the Manager application.`,
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "defer_launch",
+						Description: `Whether or not to defer launching the execution. Setting this value to true will keep the execution in not_started state until it is explicitly launched or the first scheduled start operation occurs.`,
+						Type:        "bool",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "description",
 						Description: `The description for the execution. The description of the Application will be used if none is provided.`,
 						Type:        "string",
@@ -1670,6 +1494,126 @@ and can launch them to create Executions in the Manager application.`,
 			},
 		},
 	},
+	"EndUser": &metadata.Resource{
+		Name:        "EndUser",
+		Description: ``,
+		Identifier:  "application/vnd.rightscale.self_service.end_user",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "index",
+				Description: `Show all Self-Service Only End Users that belong to this account.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/catalog/accounts/%s/end_users",
+						Variables:  []string{"account_id"},
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/end_users`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: `Filter by user ID`,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: `Filter by user ID`,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "create",
+				Description: `Grant a user Self-Service Only End User access to this account.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/catalog/accounts/%s/end_users",
+						Variables:  []string{"account_id"},
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/end_users`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "user_ids[]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "user_ids",
+						Description: `User IDs to add as SS End Users to this account`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "delete",
+				Description: ``,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/catalog/accounts/%s/end_users",
+						Variables:  []string{"account_id"},
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/end_users`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "user_ids[]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "user_ids",
+						Description: `User IDs to remove as SS End Users to this account`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "non_ss_users",
+				Description: ``,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/catalog/accounts/%s/end_users/available",
+						Variables:  []string{"account_id"},
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/end_users/available`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+		},
+	},
 	"NotificationRule": &metadata.Resource{
 		Name: "NotificationRule",
 		Description: `A notification rule describes which notification should be created
@@ -1680,61 +1624,6 @@ and can launch them to create Executions in the Manager application.`,
         corresponds to a user (for now) and a minimum severity used to filter
         out events with lower severities.`,
 		Identifier: "application/vnd.rightscale.self_service.notification_rule",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "account_id",
-				FieldName: "AccountId",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "min_severity",
-				FieldName: "MinSeverity",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "priority",
-				FieldName: "Priority",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "source",
-				FieldName: "Source",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "target",
-				FieldName: "Target",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1742,12 +1631,20 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/notification_rules",
+						Pattern:    "/api/catalog/accounts/%s/notification_rules",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/notification_rules`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/notification_rules`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: `Filter by category.`,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name: "source",
 						Description: `List all notification rules where the target is the current user.
@@ -1772,6 +1669,14 @@ and can launch them to create Executions in the Manager application.`,
 					},
 				},
 				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: `Filter by category.`,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name: "source",
 						Description: `List all notification rules where the target is the current user.
@@ -1804,9 +1709,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/accounts/%s/notification_rules",
+						Pattern:    "/api/catalog/accounts/%s/notification_rules",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/notification_rules`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/notification_rules`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1817,6 +1722,15 @@ and can launch them to create Executions in the Manager application.`,
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "category",
+						Description: `The type of notification for the resource.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"lifecycle", "scheduled"},
 					},
 					&metadata.ActionParam{
 						Name: "min_severity",
@@ -1861,6 +1775,15 @@ and can launch them to create Executions in the Manager application.`,
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "category",
+						Description: `The type of notification for the resource.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"lifecycle", "scheduled"},
 					},
 					&metadata.ActionParam{
 						Name: "min_severity",
@@ -1905,9 +1828,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PATCH",
-						Pattern:    "/accounts/%s/notification_rules/%s",
+						Pattern:    "/api/catalog/accounts/%s/notification_rules/%s",
 						Variables:  []string{"account_id", "id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/notification_rules/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/notification_rules/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1946,9 +1869,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/notification_rules/%s",
+						Pattern:    "/api/catalog/accounts/%s/notification_rules/%s",
 						Variables:  []string{"account_id", "id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/notification_rules/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/notification_rules/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1961,9 +1884,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/accounts/%s/notification_rules/%s",
+						Pattern:    "/api/catalog/accounts/%s/notification_rules/%s",
 						Variables:  []string{"account_id", "id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/notification_rules/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/notification_rules/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1976,9 +1899,9 @@ and can launch them to create Executions in the Manager application.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/accounts/%s/notification_rules",
+						Pattern:    "/api/catalog/accounts/%s/notification_rules",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/notification_rules`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/notification_rules`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2043,55 +1966,6 @@ and can launch them to create Executions in the Manager application.`,
 		Description: `The UserPreference resource stores preferences on a per user basis, such as default notification preference.
 The Self-Service portal uses these preferences in the portal.`,
 		Identifier: "application/vnd.rightscale.self_service.user_preference",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_by",
-				FieldName: "CreatedBy",
-				FieldType: "*User",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-
-			&metadata.Attribute{
-				Name:      "user_id",
-				FieldName: "UserId",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "user_preference_info",
-				FieldName: "UserPreferenceInfo",
-				FieldType: "*UserPreferenceInfo",
-			},
-
-			&metadata.Attribute{
-				Name:      "value",
-				FieldName: "Value",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -2101,9 +1975,9 @@ Users who are not members of the admin role need to specify a filter with their 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/user_preferences",
+						Pattern:    "/api/catalog/accounts/%s/user_preferences",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/user_preferences`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/user_preferences`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2152,9 +2026,9 @@ Users who are not members of the admin role need to specify a filter with their 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/user_preferences/%s",
+						Pattern:    "/api/catalog/accounts/%s/user_preferences/%s",
 						Variables:  []string{"account_id", "id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/user_preferences/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/user_preferences/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2189,9 +2063,9 @@ Values are validated with the corresponding UserPreferenceInfo.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/accounts/%s/user_preferences",
+						Pattern:    "/api/catalog/accounts/%s/user_preferences",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/user_preferences`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/user_preferences`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2256,9 +2130,9 @@ Values are validated with the corresponding UserPreferenceInfo.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PATCH",
-						Pattern:    "/accounts/%s/user_preferences/%s",
+						Pattern:    "/api/catalog/accounts/%s/user_preferences/%s",
 						Variables:  []string{"account_id", "id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/user_preferences/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/user_preferences/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2305,9 +2179,9 @@ Values are validated with the corresponding UserPreferenceInfo.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/accounts/%s/user_preferences/%s",
+						Pattern:    "/api/catalog/accounts/%s/user_preferences/%s",
 						Variables:  []string{"account_id", "id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/user_preferences/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/user_preferences/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -2320,73 +2194,6 @@ Values are validated with the corresponding UserPreferenceInfo.`,
 		Description: `The UserPreferenceInfo resource defines the available user preferences supported by the system.
 It is also used to validate values saved in UserPreference.`,
 		Identifier: "application/vnd.rightscale.self_service.user_preference_info",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "category",
-				FieldName: "Category",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "default_value",
-				FieldName: "DefaultValue",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "display_name",
-				FieldName: "DisplayName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "help_text",
-				FieldName: "HelpText",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "value_constraint",
-				FieldName: "ValueConstraint",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "value_range",
-				FieldName: "ValueRange",
-				FieldType: "*ValueRangeStruct",
-			},
-
-			&metadata.Attribute{
-				Name:      "value_type",
-				FieldName: "ValueType",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2394,9 +2201,9 @@ It is also used to validate values saved in UserPreference.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/user_preference_infos",
+						Pattern:    "/api/catalog/accounts/%s/user_preference_infos",
 						Variables:  []string{"account_id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/user_preference_infos`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/user_preference_infos`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2427,9 +2234,9 @@ It is also used to validate values saved in UserPreference.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/accounts/%s/user_preference_infos/%s",
+						Pattern:    "/api/catalog/accounts/%s/user_preference_infos/%s",
 						Variables:  []string{"account_id", "id"},
-						Regexp:     regexp.MustCompile(`/accounts/([^/]+)/user_preference_infos/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/catalog/accounts/([^/]+)/user_preference_infos/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},

@@ -456,6 +456,106 @@ func (loc *EnvLocator) Delete() error {
 	return nil
 }
 
+/******  LoginControl ******/
+
+// Manipulate login policy settings
+type LoginControl struct {
+}
+
+//===== Locator
+
+// LoginControlLocator exposes the LoginControl resource actions.
+type LoginControlLocator struct {
+	Href
+	api *API
+}
+
+// LoginControlLocator builds a locator from the given href.
+func (api *API) LoginControlLocator(href string) *LoginControlLocator {
+	return &LoginControlLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /rll/login/control
+//
+// Show login policy features
+func (loc *LoginControlLocator) Show() (string, error) {
+	var res string
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("LoginControl", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/login/control
+//
+// Enable/disable login policy features
+func (loc *LoginControlLocator) Update(options rsapi.APIParams) (string, error) {
+	var res string
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var enableLoginOpt = options["enable_login"]
+	if enableLoginOpt != nil {
+		params["enable_login"] = enableLoginOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("LoginControl", "update")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
 /******  Proc ******/
 
 // List of process variables, such as version, identity, and protocol_version
@@ -522,6 +622,49 @@ func (loc *ProcLocator) Show() (string, error) {
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Proc", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
+}
+
+// PUT /rll/proc/:name
+//
+// Set process variable value
+func (loc *ProcLocator) Update(payload string) (string, error) {
+	var res string
+	if payload == "" {
+		return res, fmt.Errorf("payload is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"payload": payload,
+	}
+	uri, err := loc.ActionPath("Proc", "update")
 	if err != nil {
 		return res, err
 	}

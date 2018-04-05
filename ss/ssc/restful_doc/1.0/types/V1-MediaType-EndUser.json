@@ -1,0 +1,95 @@
+{
+  "name": "V1::MediaType::EndUser",
+  "attributes": {
+    "id": {
+      "description": "User id",
+      "example_definition": "12345",
+      "type": {
+        "name": "String"
+      }
+    },
+    "href": {
+      "description": "User href",
+      "example_definition": "/grs/users/12345",
+      "type": {
+        "name": "String"
+      }
+    },
+    "kind": {
+      "description": "The kind of this resource, always self_service#end_user",
+      "example_definition": "self_service#end_user",
+      "type": {
+        "name": "String"
+      }
+    },
+    "company": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "first_name": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "last_name": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "phone": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "timezone_name": {
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "id": {
+        },
+        "href": {
+        },
+        "kind": {
+        },
+        "company": {
+        },
+        "first_name": {
+        },
+        "last_name": {
+        },
+        "phone": {
+        },
+        "timezone_name": {
+        }
+      },
+      "example": {
+        "id": "12345",
+        "href": "/grs/users/12345",
+        "kind": "self_service#end_user",
+        "company": "uninforming",
+        "first_name": "plainer",
+        "last_name": "intelligize",
+        "phone": "Dictyophora",
+        "timezone_name": "legitimity"
+      }
+    }
+  },
+  "mime_type": "application/vnd.rightscale.self_service.end_user",
+  "description": null,
+  "example": {
+    "id": "12345",
+    "href": "/grs/users/12345",
+    "kind": "self_service#end_user",
+    "company": "uninforming",
+    "first_name": "plainer",
+    "last_name": "intelligize",
+    "phone": "Dictyophora",
+    "timezone_name": "legitimity"
+  }
+}

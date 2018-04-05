@@ -10,8 +10,8 @@ import (
 	"github.com/rightscale/rsc/rsapi"
 )
 
-// Metadata synthetized from all CA APIs metadata
-var GenMetadata map[string]*metadata.Resource
+// Metadata synthetized from all CA APIs metadata; setup once
+var GenMetadata = setupMetadata()
 
 // API is the CA 1.0 common client to all cloud analytics APIs.
 type API struct {
@@ -24,7 +24,6 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 	if err != nil {
 		return nil, err
 	}
-	setupMetadata()
 	api.Host = apiHostFromLogin(cmdLine.Host)
 	api.Metadata = GenMetadata
 	return &API{api}, nil
@@ -33,7 +32,6 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 // New returns a CA API client.
 func New(h string, a rsapi.Authenticator) *API {
 	api := rsapi.New(h, a)
-	setupMetadata()
 	api.Metadata = GenMetadata
 	return &API{API: api}
 }
@@ -59,9 +57,10 @@ func apiHostFromLogin(host string) string {
 }
 
 // Initialize GenMetadata from each CA API generated metadata
-func setupMetadata() {
-	GenMetadata = map[string]*metadata.Resource{}
+func setupMetadata() (result map[string]*metadata.Resource) {
+	result = make(map[string]*metadata.Resource)
 	for n, r := range cac.GenMetadata {
-		GenMetadata[n] = r
+		result[n] = r
 	}
+	return
 }

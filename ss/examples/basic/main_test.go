@@ -53,7 +53,7 @@ var _ = Describe("Basic Example", func() {
 				ghttp.RespondWith(200, ""),
 			),
 			ghttp.CombineHandlers(
-				ghttp.VerifyRequest("GET", "/manager/projects/42/executions"),
+				ghttp.VerifyRequest("GET", "/api/manager/projects/42/executions"),
 				ghttp.RespondWith(200, responseBody),
 			),
 		)
@@ -71,9 +71,9 @@ func trace(rw http.ResponseWriter, req *http.Request) {
 
 const output = `Name                                                 State      By                                   Link
 -----                                                -----      -----                                -----
-RM_SS_API_testNotification- Self Launch 1 1428525219 terminated qa_test\+ss_admin_user@rightscale.com https://127.0.0.1:[0-9]+/manager/#/exe/552590c173656c589b6a0e00
-RM_SS_API_testNotification- Self Launch 2 1428530238 failed     qa_test\+ss_admin_user@rightscale.com https://127.0.0.1:[0-9]+/manager/#/exe/5525a4e073656c567f82c800
-exe_3_sch_action_tests__2015-04-29_20:11:36.335      running    resat-premium@rightscale.com         https://127.0.0.1:[0-9]+/manager/#/exe/55413b0b73656c4399040000`
+RM_SS_API_testNotification- Self Launch 1 1428525219 terminated qa_test\+ss_admin_user@rightscale.com https://127.0.0.1:[0-9]+/api/manager/projects/#/executions/552590c173656c589b6a0e00
+RM_SS_API_testNotification- Self Launch 2 1428530238 failed     qa_test\+ss_admin_user@rightscale.com https://127.0.0.1:[0-9]+/api/manager/projects/#/executions/5525a4e073656c567f82c800
+exe_3_sch_action_tests__2015-04-29_20:11:36.335      running    resat-premium@rightscale.com         https://127.0.0.1:[0-9]+/api/manager/projects/#/executions/55413b0b73656c4399040000`
 
 const responseBody = `[{
 	"kind":"self_service#execution",

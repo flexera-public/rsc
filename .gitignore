@@ -1,4 +1,6 @@
 tags
+bin/glide*
+vendor
 rsc
 gen/api15gen/api15gen
 gen/praxisgen/praxisgen
@@ -14,3 +16,6 @@ cm15/examples/auditail/auditail
 cm15/examples/basic/basic
 cm15/examples/rsssh/rsssh
 ss/examples/basic/basic
+vendor/
+.glide/
+.DS_Store

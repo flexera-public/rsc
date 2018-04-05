@@ -54,11 +54,11 @@ var _ = Describe("Upload Example", func() {
 				ghttp.RespondWith(200, ""),
 			),
 			ghttp.CombineHandlers(
-				ghttp.VerifyRequest("POST", "/designer/collections/42/templates"),
+				ghttp.VerifyRequest("POST", "/api/designer/collections/42/templates"),
 				ghttp.RespondWith(201, "", http.Header(map[string][]string{"Location": []string{"/api/designer/collections/42/templates/1"}})),
 			),
 			ghttp.CombineHandlers(
-				ghttp.VerifyRequest("GET", "/designer/collections/42/templates/1"),
+				ghttp.VerifyRequest("GET", "/api/designer/collections/42/templates/1"),
 				ghttp.RespondWith(201, responseBody),
 			),
 		)

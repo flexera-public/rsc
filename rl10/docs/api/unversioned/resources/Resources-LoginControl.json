@@ -1,40 +1,16 @@
 {
-  "description": "List of process variables, such as version, identity, and protocol_version",
+  "description": "Manipulate login policy settings",
   "media_type": "Praxis-SimpleMediaType",
   "actions": [
     {
-      "description": "List all process variables",
-      "name": "index",
-      "metadata": {
-      },
-      "urls": [
-        {
-          "verb": "GET",
-          "path": "/rll/proc",
-          "version": "n/a"
-        }
-      ],
-      "responses": {
-        "ok": {
-          "description": "Standard response for successful HTTP requests.",
-          "status": 200,
-          "headers": {
-          },
-          "media_type": {
-            "identifier": "text/plain"
-          }
-        }
-      }
-    },
-    {
-      "description": "Retrieve process variable value",
+      "description": "Show login policy features",
       "name": "show",
       "metadata": {
       },
       "urls": [
         {
           "verb": "GET",
-          "path": "/rll/proc/:name",
+          "path": "/rll/login/control",
           "version": "n/a"
         }
       ],
@@ -51,14 +27,14 @@
       }
     },
     {
-      "description": "Set process variable value",
+      "description": "Enable/disable login policy features",
       "name": "update",
       "metadata": {
       },
       "urls": [
         {
           "verb": "PUT",
-          "path": "/rll/proc/:name",
+          "path": "/rll/login/control",
           "version": "n/a"
         }
       ],
@@ -73,27 +49,24 @@
             }
           },
           "attributes": {
-            "name": {
-              "required": true,
+            "enable_login": {
+              "values": [
+                "on",
+                "off",
+                "compat"
+              ],
+              "required": false,
               "type": {
                 "name": "String",
                 "id": "Attributor-String"
               },
-              "source": "url"
+              "source": "query"
             }
           }
         },
         "example": {
-          "name": "log_level"
+          "enable_login": "on"
         }
-      },
-      "payload": {
-        "required": true,
-        "type": {
-          "name": "String",
-          "id": "Attributor-String"
-        },
-        "example": "debug"
       },
       "responses": {
         "ok": {
@@ -108,7 +81,7 @@
       }
     }
   ],
-  "name": "Resources::Proc",
+  "name": "Resources:::LoginControl",
   "metadata": {
   }
 }

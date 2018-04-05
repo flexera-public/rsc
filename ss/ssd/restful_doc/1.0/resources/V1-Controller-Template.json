@@ -1,1 +1,1537 @@
-{"description":"\nA Template represent a CloudApplication Template (CAT) that has been uploaded to this design collection.\nFor information on the syntax of a CAT file, please see the [CAT Designers Guide](http://support.rightscale.com/12-Guides/Self-Service/20_Cloud_Application_Template_%28CAT%29_Designers_Guide) on the RightScale Support\nsite.\n\nA CAT file is compiled by Self-Service to make it ready for publication and subsequent launch by users. To\ntest your CAT file syntax, you can call the compile action with the source content. In order to\nPublish your CAT to the Catalog where users can launch it, it must be uploaded to Designer first, and then\npublished to the Catalog.\n\nCAT files are uniquely identified by the name of the CloudApplication, which is specified as the \"name\"\nattribute inside of a CAT file.\n      ","media_type":"V1::MediaType::Template","mime_type":"application/vnd.rightscale.self_service.template","actions":[{"description":"List the templates available in Designer along with some general details.","name":"index","urls":[["GET","/collections/:collection_id/templates"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"description":"An optional list of template IDs to retrieve","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"collection_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.template","multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Show detailed information about a given Template. Use the views specified below for more information.","name":"show","urls":[["GET","/collections/:collection_id/templates/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the Template","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"view":{"values":["default","expanded"],"description":"Optional view to return","example_definition":"expanded","type":{"name":"String"}}}},"example":{"collection_id":"12345","id":"5392479332ca2bd0ca000002","view":"expanded"}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.template","multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_found":{"description":"The template ID was not found in the specified account/collection.","status":404,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Create a new Template by uploading its content to Designer.","name":"create","urls":[["POST","/collections/:collection_id/templates"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}}}},"example":{"collection_id":"12345"}},"payload":{"type":{"attributes":{"source":{"required":true,"type":{"name":"V1::Type::FileUpload"},"description":"Multipart File Upload"}}},"example":{"filename":"my_cat_file.rb","type":"contraremonstrant","name":"noneviction","tempfile":"#<File:0x007faf93b1b288>","head":"unsympathy"}},"responses":{"created":{"description":"The Template was successfully uploaded to and compiled by Designer.","status":201,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"already_exists":{"description":"A CAT with the same \"name\" (as specified in the CAT) already exists. Use \"update\" instead.","status":409},"unprocessable_entity":{"description":"The Template failed to compile - the response includes detailed information about the failure(s).","status":422},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Update the content of an existing Template (a Template with the same \"name\" value in the CAT).","name":"update","urls":[["PUT","/collections/:collection_id/templates/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the Template to update","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"collection_id":"12345","id":"5392479332ca2bd0ca000002"}},"payload":{"type":{"attributes":{"source":{"required":true,"type":{"name":"V1::Type::FileUpload"},"description":"Multipart File Upload"}}},"example":{"filename":"my_cat_file.rb","type":"contraremonstrant","name":"noneviction","tempfile":"#<File:0x007faf93b20b98>","head":"unsympathy"}},"responses":{"no_content":{"description":"The Template was successfully updated.","status":204,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_found":{"description":"The template ID was not found in the specified account/collection.","status":404,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"unprocessable_entity":{"description":"The Template failed to compile - the response includes detailed information about the failure(s).","status":422,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the \"unpublish\" action.","name":"delete","urls":[["DELETE","/collections/:collection_id/templates/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the Template to delete","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"collection_id":"12345","id":"5392479332ca2bd0ca000002"}},"responses":{"no_content":{"description":null,"status":204,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_found":{"description":"The template ID was not found in the specified account/collection.","status":404,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Delete multiple Templates from the system in bulk. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the \"unpublish\" action.","name":"multi_delete","urls":[["DELETE","/collections/:collection_id/templates"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"ids":{"required":true,"description":"The IDs of the Template to delete","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}}}},"example":{"collection_id":"12345","ids":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"]}},"responses":{"default":{"description":null,"status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"no_content":{"description":"The Template was successfully deleted.","status":204,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_found":{"description":"The template ID was not found in the specified account/collection.","status":404,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Download the source of a Template.","name":"download","urls":[["GET","/collections/:collection_id/templates/:id/download"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"The ID of the Template to download","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"api_version":{"required":true,"description":"The API version (only valid value is currently \"1.0\")","example_definition":"1.0","type":{"name":"String"}}}},"example":{"collection_id":"12345","id":"5392479332ca2bd0ca000002","api_version":"1.0"}},"responses":{"download":{"description":null,"status":200},"not_found":{"description":"The template ID was not found in the specified account/collection.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Compile the Template, but don't save it to Designer. Useful for debugging a CAT file while you are still authoring it.","name":"compile","urls":[["POST","/collections/:collection_id/templates/actions/compile"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}}}},"example":{"collection_id":"12345"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"source":{"required":true,"description":"The source of the CAT as a string","type":{"name":"String"}}}},"example":{"source":"thiamin"}},"responses":{"compiled_template":{"description":"The CAT was successfully compiled and its internal representation as JSON was returned.","status":200,"mime_type":"application/vnd.rightscale.self_service.compiled_cat"},"parse_failure":{"description":"The Template failed to compile - the response includes detailed information about the failure(s).","status":422,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Publish the given Template to the Catalog so that users can launch it.","name":"publish","urls":[["POST","/collections/:collection_id/templates/actions/publish"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}}}},"example":{"collection_id":"12345"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"id":{"required":true,"description":"The ID of a Template to publish","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"name":{"description":"Optionally override the Template name for display in the Catalog","example_definition":"Development Server","type":{"name":"String"}},"short_description":{"description":"Optionally override the Template short description for display in the Catalog","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}},"overridden_application_href":{"description":"If re-publishing, you must specify the href of the Application in the Catalog that is being overridden","example_definition":"/api/catalog/catalogs/12345/applications/5392479332c42bd0ca000002","type":{"name":"String"}},"schedules":{"description":"Schedules available to users when launching the application","example_definition":"5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001","type":{"name":"Ids","member_attribute":{"type":{"name":"String"}}}},"schedule_required":{"description":"Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI","type":{"name":"Boolean"}}}},"example":{"id":"5392479332ca2bd0ca000002","name":"Development Server","short_description":"5392479332ca2bd0ca000002","overridden_application_href":"/api/catalog/catalogs/12345/applications/5392479332c42bd0ca000002","schedules":["5392479332ca2bd0ca000002","5395f22432ca2bfd41000001","53b447b64a16db52e7000001"],"schedule_required":true}},"responses":{"proxy":{"description":null,"status":200},"published":{"description":"Template successfully published to the Catalog","status":201},"already_published":{"description":"The Template was already published and \"overridden_application_href\" was not specified.","status":409},"no_content":{"description":null,"status":204},"default":{"description":null,"status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"not_found":{"description":"The template ID was not found in the specified account/collection.","status":404,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"unprocessable_entity":{"description":"The specified \"overridden_application_href\" was invalid or not found.","status":422,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Remove a publication from the Catalog by specifying its associated Template.","name":"unpublish","urls":[["POST","/collections/:collection_id/templates/actions/unpublish"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"collection_id":{"required":true,"description":"The collection ID (currently the account ID)","example_definition":"12345","type":{"name":"String"}}}},"example":{"collection_id":"12345"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::Template","type":{"name":"Struct","attributes":{"id":{"required":true,"description":"The ID of the Template to unpublish","example_definition":"5392479332ca2bd0ca000002","type":{"name":"String"}}}},"example":{"id":"5392479332ca2bd0ca000002"}},"responses":{"proxy":{"description":null,"status":200},"no_content":{"description":"The Template was successfully unpublished from the Catalog","status":204},"not_found":{"description":"The template ID was not found in the specified account/collection.","status":404},"unprocessable_entity":{"description":"The template was not published, so could not be unpublished.","status":422,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"default":{"description":null,"status":200,"multipart":{"type":"optional","envelope":{"description":null,"status":200}}},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}}]}
+{
+  "description": "\nA Template represent a CloudApplication Template (CAT) that has been uploaded to this design collection.\nFor information on the syntax of a CAT file, please see the [CAT File Language Reference](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html) on the RightScale Docs\nsite.\n\nA CAT file is compiled by Self-Service to make it ready for publication and subsequent launch by users. To\ntest your CAT file syntax, you can call the compile action with the source content. In order to\nPublish your CAT to the Catalog where users can launch it, it must be uploaded to Designer first, and then\npublished to the Catalog.\n\nCAT files are uniquely identified by the name of the CloudApplication, which is specified as the \"name\"\nattribute inside of a CAT file.\n      ",
+  "media_type": "V1::MediaType::Template",
+  "mime_type": "application/vnd.rightscale.self_service.template",
+  "actions": [
+    {
+      "description": "List the templates available in Designer along with some general details.",
+      "name": "index",
+      "urls": [
+        [
+          "GET",
+          "/api/designer/collections/:collection_id/templates"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "description": "An optional list of template IDs to retrieve",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            },
+            "filter": {
+              "description": "Filter by name, syntax is [\"name==foo\"]",
+              "example_definition": "[\"name==foo\"]",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "expanded"
+              ],
+              "description": "Optional view to return",
+              "example_definition": "expanded",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ],
+          "filter": [
+            "name==foo"
+          ],
+          "view": "expanded"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.template",
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Show detailed information about a given Template. Use the views specified below for more information.",
+      "name": "show",
+      "urls": [
+        [
+          "GET",
+          "/api/designer/collections/:collection_id/templates/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the Template",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "expanded"
+              ],
+              "description": "Optional view to return",
+              "example_definition": "expanded",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "id": "5392479332ca2bd0ca000002",
+          "view": "expanded"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.template",
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "An error occurred while retrieving the specified Template.",
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Create a new Template by uploading its content to Designer.",
+      "name": "create",
+      "urls": [
+        [
+          "POST",
+          "/api/designer/collections/:collection_id/templates"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345"
+        }
+      },
+      "payload": {
+        "type": {
+          "attributes": {
+            "source": {
+              "required": true,
+              "type": {
+                "name": "V1::Type::FileUpload"
+              },
+              "description": "Multipart File Upload"
+            }
+          }
+        },
+        "example": {
+          "filename": "my_cat_file.rb",
+          "type": "contraremonstrant",
+          "name": "noneviction",
+          "tempfile": "#<File:0x007fcf71827588>",
+          "head": "unsympathy"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The Template was successfully uploaded to and compiled by Designer.",
+          "status": 201,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "already_exists": {
+          "description": "A CAT with the same \"name\" (as specified in the CAT) already exists. Use \"update\" instead.",
+          "status": 409
+        },
+        "duplicate_package": {
+          "description": "A CAT with the same \"package\" (as specified in the CAT) already exists. First \"delete\" the existing template.",
+          "status": 409
+        },
+        "missing_dependencies": {
+          "description": "Some dependencies of the CAT are missing or are outdated",
+          "status": 422
+        },
+        "unprocessable_entity": {
+          "description": "The Template failed to compile - the response includes detailed information about the failure(s).",
+          "status": 422
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Create a new Template from a previously compiled CAT.",
+      "name": "create_from_compilation",
+      "urls": [
+        [
+          "POST",
+          "/api/designer/collections/:collection_id/templates/actions/create_from_compilation"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "compilation_href": {
+              "required": true,
+              "description": "The href of the compilation",
+              "type": {
+                "name": "String"
+              }
+            },
+            "filename": {
+              "description": "The filename of the template",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "compilation_href": "feltwork",
+          "filename": "reasoned"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The Template was successfully uploaded to and compiled by Designer.",
+          "status": 201,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "already_exists": {
+          "description": "A CAT with the same \"name\" (as specified in the CAT) already exists. Use \"update\" instead.",
+          "status": 409
+        },
+        "duplicate_package": {
+          "description": "A CAT with the same \"package\" (as specified in the CAT) already exists. First \"delete\" the existing template.",
+          "status": 409
+        },
+        "not_found": {
+          "description": "The compilation result ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "Unable to create the Template - the response includes detailed information about the failure(s).",
+          "status": 422
+        },
+        "missing_dependencies": {
+          "description": "Some dependencies of the CAT are missing or are outdated",
+          "status": 422
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Update the content of an existing Template (a Template with the same \"name\" value in the CAT).",
+      "name": "update",
+      "urls": [
+        [
+          "PUT",
+          "/api/designer/collections/:collection_id/templates/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the Template to update",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "payload": {
+        "type": {
+          "attributes": {
+            "source": {
+              "required": true,
+              "type": {
+                "name": "V1::Type::FileUpload"
+              },
+              "description": "Multipart File Upload"
+            }
+          }
+        },
+        "example": {
+          "filename": "my_cat_file.rb",
+          "type": "contraremonstrant",
+          "name": "noneviction",
+          "tempfile": "#<File:0x007fcf71ec46e8>",
+          "head": "unsympathy"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The Template was successfully updated.",
+          "status": 204,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "duplicate_package": {
+          "description": "A CAT with the same \"package\" (as specified in the CAT) already exists. First \"delete\" the existing template.",
+          "status": 409
+        },
+        "missing_dependencies": {
+          "description": "Some dependencies of the CAT are missing or are outdated",
+          "status": 422
+        },
+        "unprocessable_entity": {
+          "description": "The Template failed to compile - the response includes detailed information about the failure(s).",
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Update a Template from a previously compiled CAT.",
+      "name": "update_from_compilation",
+      "urls": [
+        [
+          "POST",
+          "/api/designer/collections/:collection_id/templates/:id/actions/update_from_compilation"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the Template to update",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "compilation_href": {
+              "required": true,
+              "description": "The href of the compilation",
+              "type": {
+                "name": "String"
+              }
+            },
+            "filename": {
+              "description": "The filename of the template",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "compilation_href": "feltwork",
+          "filename": "reasoned"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": "The Template was successfully updated.",
+          "status": 204,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "duplicate_package": {
+          "description": "A CAT with the same \"package\" (as specified in the CAT) already exists. First \"delete\" the existing template.",
+          "status": 409
+        },
+        "unprocessable_entity": {
+          "description": "Unable to create the Template - the response includes detailed information about the failure(s).",
+          "status": 422
+        },
+        "missing_dependencies": {
+          "description": "Some dependencies of the CAT are missing or are outdated",
+          "status": 422
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Delete a Template from the system. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the \"unpublish\" action.",
+      "name": "delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/designer/collections/:collection_id/templates/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the Template to delete",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": null,
+          "status": 204,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Delete multiple Templates from the system in bulk. Note: deleting a Template from Designer doesn't remove it from the Catalog if it has already been published -- see the \"unpublish\" action.",
+      "name": "multi_delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/designer/collections/:collection_id/templates"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "ids": {
+              "required": true,
+              "description": "The IDs of the Template to delete",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "ids": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "no_content": {
+          "description": "The Template was successfully deleted.",
+          "status": 204,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Download the source of a Template.",
+      "name": "download",
+      "urls": [
+        [
+          "GET",
+          "/api/designer/collections/:collection_id/templates/:id/download"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "The ID of the Template to download",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            },
+            "api_version": {
+              "required": true,
+              "description": "The API version (only valid value is currently \"1.0\")",
+              "example_definition": "1.0",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "id": "5392479332ca2bd0ca000002",
+          "api_version": "1.0"
+        }
+      },
+      "responses": {
+        "download": {
+          "description": null,
+          "status": 200
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Compile the Template, but don't save it to Designer. Useful for debugging a CAT file while you are still authoring it.",
+      "name": "compile",
+      "urls": [
+        [
+          "POST",
+          "/api/designer/collections/:collection_id/templates/actions/compile"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "source": {
+              "required": true,
+              "description": "The source of the CAT as a string",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "source": "thiamin"
+        }
+      },
+      "responses": {
+        "compiled_template": {
+          "description": "The CAT was successfully compiled and its internal representation as JSON was returned.",
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.compiled_cat"
+        },
+        "parse_failure": {
+          "description": "The Template failed to compile - the response includes detailed information about the failure(s).",
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "Unable to compile the Template - the response includes detailed information about the failure(s).",
+          "status": 422
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Lists the Templates which the provided CAT source or Template directly or indirectly depend upon",
+      "name": "dependencies",
+      "urls": [
+        [
+          "POST",
+          "/api/designer/collections/:collection_id/templates/actions/dependencies"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "template_id": {
+              "required": false,
+              "description": "The id of the template, mutually exclusive with source, have predecedence over \"source\" if both parameters are given",
+              "type": {
+                "name": "String"
+              }
+            },
+            "source": {
+              "required": false,
+              "description": "The source of the CAT as a string, mutually exclusive with template_id",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "template_id": "splinter",
+          "source": "thiamin"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.template",
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "bad_request": {
+          "description": "The request cannot be fulfilled due to invalid attributes.",
+          "status": 400,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "Unable to extract metadata from the template - the response includes detailed information about the failure(s).",
+          "status": 422
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "List the Dependents templates available in Designer for the given package, even if no template actually define the package.",
+      "name": "dependents",
+      "urls": [
+        [
+          "GET",
+          "/api/designer/collections/:collection_id/templates/actions/dependents"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "package": {
+              "required": true,
+              "description": "The path of the Package to which lists the dependents",
+              "example_definition": "lib/logger",
+              "type": {
+                "name": "String"
+              }
+            },
+            "view": {
+              "values": [
+                "default",
+                "expanded"
+              ],
+              "description": "Optional view to return",
+              "example_definition": "expanded",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345",
+          "package": "lib/logger",
+          "view": "expanded"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.template",
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Publish the given Template to the Catalog so that users can launch it.",
+      "name": "publish",
+      "urls": [
+        [
+          "POST",
+          "/api/designer/collections/:collection_id/templates/actions/publish"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "id": {
+              "required": true,
+              "description": "The ID of a Template to publish",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            },
+            "name": {
+              "description": "Optionally override the Template name for display in the Catalog",
+              "example_definition": "Development Server",
+              "type": {
+                "name": "String"
+              }
+            },
+            "short_description": {
+              "description": "Optionally override the Template short description for display in the Catalog",
+              "example_definition": "Three-tier instance for development.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "long_description": {
+              "description": "Optionally override the Template long description used mostly for designers.",
+              "example_definition": "A more technical description.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "overridden_application_href": {
+              "description": "If re-publishing, you must specify the href of the Application in the Catalog that is being overridden",
+              "example_definition": "/api/catalog/catalogs/12345/applications/5392479332c42bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            },
+            "schedules": {
+              "description": "Schedules available to users when launching the application",
+              "example_definition": "5392479332ca2bd0ca000002,5395f22432ca2bfd41000001,53b447b64a16db52e7000001",
+              "type": {
+                "name": "Ids",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            },
+            "schedule_required": {
+              "description": "Whether the CloudApp requires a schedule to be provided at launch time. If set to false, allows user to pick from '24/7' schedule when launching in the UI",
+              "type": {
+                "name": "Boolean"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "5392479332ca2bd0ca000002",
+          "name": "Development Server",
+          "short_description": "Three-tier instance for development.",
+          "long_description": "A more technical description.",
+          "overridden_application_href": "/api/catalog/catalogs/12345/applications/5392479332c42bd0ca000002",
+          "schedules": [
+            "5392479332ca2bd0ca000002",
+            "5395f22432ca2bfd41000001",
+            "53b447b64a16db52e7000001"
+          ],
+          "schedule_required": true
+        }
+      },
+      "responses": {
+        "proxy": {
+          "description": null,
+          "status": 200
+        },
+        "published": {
+          "description": "Template successfully published to the Catalog",
+          "status": 201
+        },
+        "already_published": {
+          "description": "The Template was already published and \"overridden_application_href\" was not specified.",
+          "status": 409
+        },
+        "no_content": {
+          "description": null,
+          "status": 204
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "grant_failure": {
+          "description": "An error occurred while processing the CloudApp's permissions. May be due to the user having insufficient permissions.",
+          "status": 403
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "unprocessable_entity": {
+          "description": "The specified \"overridden_application_href\" was invalid or not found.",
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    },
+    {
+      "description": "Remove a publication from the Catalog by specifying its associated Template.",
+      "name": "unpublish",
+      "urls": [
+        [
+          "POST",
+          "/api/designer/collections/:collection_id/templates/actions/unpublish"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "collection_id": {
+              "required": true,
+              "description": "The collection ID (currently the account ID)",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "collection_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::Template",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "id": {
+              "required": true,
+              "description": "The ID of the Template to unpublish",
+              "example_definition": "5392479332ca2bd0ca000002",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "5392479332ca2bd0ca000002"
+        }
+      },
+      "responses": {
+        "proxy": {
+          "description": null,
+          "status": 200
+        },
+        "no_content": {
+          "description": "The Template was successfully unpublished from the Catalog",
+          "status": 204
+        },
+        "not_found": {
+          "description": "The template ID was not found in the specified account/collection.",
+          "status": 404
+        },
+        "unprocessable_entity": {
+          "description": "The template was not published, so could not be unpublished.",
+          "status": 422,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "multipart": {
+            "type": "optional",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        },
+        "forbidden": {
+          "description": null,
+          "status": 403
+        }
+      }
+    }
+  ]
+}

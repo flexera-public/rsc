@@ -32,11 +32,16 @@ func (a *Action) PayloadParamNames() []string {
 	return a.paramsByLocation(PayloadParam)
 }
 
-// MatchHref returns true if the given href
+// MatchHref returns true if the given href matches one of the action's href patterns exactly
 func (a *Action) MatchHref(href string) bool {
+	hrefs := []string{href, href + "/"}
 	for _, pattern := range a.PathPatterns {
-		if pattern.Regexp.MatchString(href) || pattern.Regexp.MatchString(href+"/") {
-			return true
+		for _, href := range hrefs {
+			indices := pattern.Regexp.FindStringIndex(href)
+			// it is only an exact match if the pattern matches from the beginning to the length of the string
+			if indices != nil && indices[0] == 0 && indices[1] == len(href) {
+				return true
+			}
 		}
 	}
 	return false

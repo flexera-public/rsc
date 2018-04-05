@@ -1,0 +1,31 @@
+{
+  "name": "V1::Type::OperationInfo",
+  "attributes": {
+    "name": {
+      "description": "Name of operation",
+      "example_definition": "update_code",
+      "type": {
+        "name": "String"
+      }
+    },
+    "label": {
+      "description": "Label of the operation",
+      "example_definition": "Update code",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description",
+      "example_definition": "Update the code on the app servers",
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "example": {
+    "name": "update_code",
+    "label": "Update code",
+    "description": "Update the code on the app servers"
+  }
+}

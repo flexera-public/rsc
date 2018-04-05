@@ -9,10 +9,11 @@ import (
 
 // ClientConfig is the basic configuration settings required by all clients.
 type ClientConfig struct {
-	Account   int    // RightScale account ID
-	LoginHost string // RightScale API login host, e.g. "us-3.rightscale.com"
-	Email     string // RightScale API login email
-	Password  string // RightScale API login password
+	Account      int    // RightScale account ID
+	LoginHost    string // RightScale API login host, e.g. "us-3.rightscale.com"
+	Email        string // RightScale API login email
+	Password     string // RightScale API login password
+	RefreshToken string // RightScale API refresh token
 }
 
 // LoadConfig loads the client configuration from disk
@@ -27,16 +28,26 @@ func LoadConfig(path string) (*ClientConfig, error) {
 		return nil, err
 	}
 	config.Password, err = Decrypt(config.Password)
+	if err != nil {
+		return nil, err
+	}
+	config.RefreshToken, err = Decrypt(config.RefreshToken)
 	return &config, err
 }
 
-// Save config encrypts the password and persists the config to file
+// Save config encrypts the password and/or refresh token;
+// persists the config to file
 func (cfg *ClientConfig) Save(path string) error {
-	encrypted, err := Encrypt(cfg.Password)
+	encrypted_password, err := Encrypt(cfg.Password)
 	if err != nil {
 		return fmt.Errorf("Failed to encrypt password: %s", err)
 	}
-	cfg.Password = encrypted
+	cfg.Password = encrypted_password
+	encrypted_refresh, err := Encrypt(cfg.RefreshToken)
+	if err != nil {
+		return fmt.Errorf("Failed to encrypt refresh token: %s", err)
+	}
+	cfg.RefreshToken = encrypted_refresh
 	bytes, err := json.Marshal(cfg)
 	if err != nil {
 		return fmt.Errorf("Failed to serialize config: %s", err)
@@ -51,7 +62,7 @@ func (cfg *ClientConfig) Save(path string) error {
 // CreateConfig creates a configuration file and saves it to the file at the given path.
 func CreateConfig(path string) error {
 	config, _ := LoadConfig(path)
-	var emailDef, passwordDef, accountDef, hostDef string
+	var emailDef, passwordDef, accountDef, hostDef, refreshTokenDef string
 	if config != nil {
 		yn := PromptConfirmation("Found existing configuration file %v, overwrite? (y/N): ", path)
 		if yn != "y" {
@@ -65,11 +76,12 @@ func CreateConfig(path string) error {
 			config.LoginHost = "my.rightscale.com"
 		}
 		hostDef = fmt.Sprintf(" (%v)", config.LoginHost)
+		refreshTokenDef = " (leave blank to leave unchanged)"
 	} else {
 		config = &ClientConfig{}
 	}
 
-	fmt.Fprintf(out, "Account id%v: ", accountDef)
+	fmt.Fprintf(out, "Account ID%v: ", accountDef)
 	var newAccount string
 	fmt.Fscanln(in, &newAccount)
 	if newAccount != "" {
@@ -99,6 +111,13 @@ func CreateConfig(path string) error {
 	fmt.Fscanln(in, &newLoginHost)
 	if newLoginHost != "" {
 		config.LoginHost = newLoginHost
+	}
+
+	fmt.Fprintf(out, "API Refresh Token%v: ", refreshTokenDef)
+	var newRefreshToken string
+	fmt.Fscanln(in, &newRefreshToken)
+	if newRefreshToken != "" {
+		config.RefreshToken = newRefreshToken
 	}
 
 	err := config.Save(path)

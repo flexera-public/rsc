@@ -31,175 +31,6 @@ result of running an Operation on an Execution. For example, if a Server is repl
 instead of through Self-Service, the new Server's information won' be available in
 Self-Service.`,
 		Identifier: "application/vnd.rightscale.self_service.execution",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "api_resources",
-				FieldName: "ApiResources",
-				FieldType: "[]*Resource",
-			},
-
-			&metadata.Attribute{
-				Name:      "available_actions",
-				FieldName: "AvailableActions",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "available_operations",
-				FieldName: "AvailableOperations",
-				FieldType: "[]*OperationDefinition",
-			},
-
-			&metadata.Attribute{
-				Name:      "configuration_options",
-				FieldName: "ConfigurationOptions",
-				FieldType: "[]*ConfigurationOption",
-			},
-
-			&metadata.Attribute{
-				Name:      "cost",
-				FieldName: "Cost",
-				FieldType: "*CostStruct",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_by",
-				FieldName: "CreatedBy",
-				FieldType: "*User",
-			},
-
-			&metadata.Attribute{
-				Name:      "current_schedule",
-				FieldName: "CurrentSchedule",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "deployment",
-				FieldName: "Deployment",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "deployment_url",
-				FieldName: "DeploymentUrl",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "ends_at",
-				FieldName: "EndsAt",
-				FieldType: "*time.Time",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "latest_notifications",
-				FieldName: "LatestNotifications",
-				FieldType: "[]*Notification",
-			},
-
-			&metadata.Attribute{
-				Name:      "launched_from",
-				FieldName: "LaunchedFrom",
-				FieldType: "*LaunchedFrom",
-			},
-
-			&metadata.Attribute{
-				Name:      "launched_from_summary",
-				FieldName: "LaunchedFromSummary",
-				FieldType: "map[string]interface{}",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "*ExecutionLinks",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "next_action",
-				FieldName: "NextAction",
-				FieldType: "*ScheduledAction",
-			},
-
-			&metadata.Attribute{
-				Name:      "outputs",
-				FieldName: "Outputs",
-				FieldType: "[]*Output",
-			},
-
-			&metadata.Attribute{
-				Name:      "running_operations",
-				FieldName: "RunningOperations",
-				FieldType: "[]*Operation",
-			},
-
-			&metadata.Attribute{
-				Name:      "schedule_required",
-				FieldName: "ScheduleRequired",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "scheduled",
-				FieldName: "Scheduled",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "schedules",
-				FieldName: "Schedules",
-				FieldType: "[]*Schedule",
-			},
-
-			&metadata.Attribute{
-				Name:      "source",
-				FieldName: "Source",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "status",
-				FieldName: "Status",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -207,9 +38,9 @@ Self-Service.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/executions",
+						Pattern:    "/api/manager/projects/%s/executions",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -236,7 +67,7 @@ Self-Service.`,
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
-						ValidValues: []string{"default", "expanded"},
+						ValidValues: []string{"default", "expanded", "index", "tiny"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -263,7 +94,7 @@ Self-Service.`,
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
-						ValidValues: []string{"default", "expanded"},
+						ValidValues: []string{"default", "expanded", "index", "tiny"},
 					},
 				},
 			},
@@ -274,9 +105,9 @@ Self-Service.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/executions/%s",
+						Pattern:    "/api/manager/projects/%s/executions/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -309,15 +140,39 @@ Self-Service.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions",
+						Pattern:    "/api/manager/projects/%s/executions",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "application_href",
-						Description: `The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and template_href.`,
+						Description: `The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, compilation_href and template_href.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compilation_href",
+						Description: `The href of the Compilation from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, template_href and application_href. NOTE: This requires :designer role at least.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[cat_parser_gem_version]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[compiler_ver]",
+						Description: ``,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -333,6 +188,22 @@ Self-Service.`,
 					},
 					&metadata.ActionParam{
 						Name:        "compiled_cat[definitions]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[dependency_hashes][]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compiled_cat[imports]",
 						Description: ``,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
@@ -364,41 +235,9 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[dependency_hashes][]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -420,6 +259,14 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "compiled_cat[package]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "compiled_cat[parameters]",
 						Description: ``,
 						Type:        "map",
@@ -436,41 +283,9 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "compiled_cat[name]",
+						Name:        "compiled_cat[dependency_hashes][]",
 						Description: ``,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][auth]",
-						Description: `Authorization information`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][headers]",
-						Description: `Optional additional request headers`,
 						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][host]",
-						Description: `Service hostname`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "compiled_cat[namespaces][][service][path]",
-						Description: `Requests base path`,
-						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -511,6 +326,14 @@ Self-Service.`,
 						Name:        "current_schedule",
 						Description: `The currently selected schedule name, or nil for CloudApps using the '24/7' schedule`,
 						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "defer_launch",
+						Description: `Whether or not to defer launching the execution. Setting this value to true will keep the execution in not_started state until it is explicitly launched or the first scheduled start operation occurs.`,
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -579,7 +402,7 @@ Self-Service.`,
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
-						ValidValues: []string{"launch", "start", "enable", "stop", "terminate", "run"},
+						ValidValues: []string{"launch", "start", "stop", "terminate", "run"},
 					},
 					&metadata.ActionParam{
 						Name:        "scheduled_actions[][created_by][email]",
@@ -600,6 +423,14 @@ Self-Service.`,
 					&metadata.ActionParam{
 						Name:        "scheduled_actions[][created_by][name]",
 						Description: `User name, usually of the form "First Last"`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "scheduled_actions[][execution][compilation_href]",
+						Description: `The HREF of the compilation used to create this execution`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -718,8 +549,65 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "scheduled_actions[][execution][latest_notification][category]",
+						Description: `Notification category, info or error`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"info", "error", "status_update"},
+					},
+					&metadata.ActionParam{
+						Name:        "scheduled_actions[][execution][href]",
+						Description: `Execution href`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "scheduled_actions[][created_by][id]",
+						Description: `User id`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "scheduled_actions[][execution][kind]",
+						Description: `The kind of this resource, always self_service#execution`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "scheduled_actions[][execution][latest_notification][message]",
+						Description: `Notification content`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "scheduled_actions[][execution][latest_notification][read]",
+						Description: `Whether notification was marked as read (not currently used)`,
+						Type:        "bool",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "scheduled_actions[][execution][latest_notification][timestamps][created_at]",
+						Description: `Creation timestamp`,
+						Type:        "*time.Time",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "scheduled_actions[][execution][launched_from][type]",
-						Description: `The type of the value (one of: application, template, compiled_cat, source`,
+						Description: `The type of the value (one of: application, template, compiled_cat, source, compilation`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -742,14 +630,6 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][href]",
-						Description: `Execution href`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "scheduled_actions[][created_by][name]",
 						Description: `User name, usually of the form "First Last"`,
 						Type:        "string",
@@ -764,7 +644,7 @@ Self-Service.`,
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
-						ValidValues: []string{"launch", "start", "enable", "stop", "terminate", "run"},
+						ValidValues: []string{"launch", "start", "stop", "terminate", "run"},
 					},
 					&metadata.ActionParam{
 						Name:        "scheduled_actions[][created_by][email]",
@@ -831,14 +711,6 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][href]",
-						Description: `Execution href`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "scheduled_actions[][created_by][name]",
 						Description: `User name, usually of the form "First Last"`,
 						Type:        "string",
@@ -879,16 +751,8 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][next_action][timestamps][created_at]",
+						Name:        "scheduled_actions[][execution][latest_notification][timestamps][created_at]",
 						Description: `Creation timestamp`,
-						Type:        "*time.Time",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][cost][updated_at]",
-						Description: `Timestamp of last cost refresh`,
 						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -897,14 +761,6 @@ Self-Service.`,
 					&metadata.ActionParam{
 						Name:        "scheduled_actions[][execution][next_action][timezone]",
 						Description: `The timezone in which the "first_occurrence" and "next_occurrence" times will be interpreted. Used to determine when Daylight Savings Time changes occur. Supports standardized "tzinfo" names [found here](http://www.iana.org/time-zones).`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][href]",
-						Description: `Execution href`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -944,16 +800,8 @@ Self-Service.`,
 						ValidValues: []string{"not_started", "launching", "starting", "enabling", "running", "disabling", "disabled", "terminating", "stopping", "waiting_for_operations", "canceling_operations", "stopped", "terminated", "failed", "provisioning", "decommissioning", "decommissioned"},
 					},
 					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][next_action][timestamps][created_at]",
+						Name:        "scheduled_actions[][execution][latest_notification][timestamps][created_at]",
 						Description: `Creation timestamp`,
-						Type:        "*time.Time",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][cost][updated_at]",
-						Description: `Timestamp of last cost refresh`,
 						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1000,14 +848,6 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][href]",
-						Description: `Execution href`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "scheduled_actions[][created_by][name]",
 						Description: `User name, usually of the form "First Last"`,
 						Type:        "string",
@@ -1048,16 +888,8 @@ Self-Service.`,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][next_action][timestamps][created_at]",
+						Name:        "scheduled_actions[][execution][latest_notification][timestamps][created_at]",
 						Description: `Creation timestamp`,
-						Type:        "*time.Time",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "scheduled_actions[][execution][cost][updated_at]",
-						Description: `Timestamp of last cost refresh`,
 						Type:        "*time.Time",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1145,7 +977,7 @@ Self-Service.`,
 					},
 					&metadata.ActionParam{
 						Name:        "source",
-						Description: `The raw CAT source from which to create the Execution. The CAT will be compiled first and then launched if successful. This attribute is mutually exclusive with: compiled_cat, template_href and application_href.`,
+						Description: `The raw CAT source from which to create the Execution. The CAT will be compiled first and then launched if successful. This attribute is mutually exclusive with: compiled_cat, template_href, compilation_href and application_href.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1153,7 +985,7 @@ Self-Service.`,
 					},
 					&metadata.ActionParam{
 						Name:        "template_href",
-						Description: `The href of the Template in Designer from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and application_href.`,
+						Description: `The href of the Template in Designer from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, compilation_href and application_href. NOTE: This requires :designer role at least.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1163,7 +995,15 @@ Self-Service.`,
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "application_href",
-						Description: `The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and template_href.`,
+						Description: `The href of the Application in Catalog from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, compilation_href and template_href.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "compilation_href",
+						Description: `The href of the Compilation from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, template_href and application_href. NOTE: This requires :designer role at least.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1181,6 +1021,14 @@ Self-Service.`,
 						Name:        "current_schedule",
 						Description: `The currently selected schedule name, or nil for CloudApps using the '24/7' schedule`,
 						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "defer_launch",
+						Description: `Whether or not to defer launching the execution. Setting this value to true will keep the execution in not_started state until it is explicitly launched or the first scheduled start operation occurs.`,
+						Type:        "bool",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1243,7 +1091,7 @@ Self-Service.`,
 					},
 					&metadata.ActionParam{
 						Name:        "source",
-						Description: `The raw CAT source from which to create the Execution. The CAT will be compiled first and then launched if successful. This attribute is mutually exclusive with: compiled_cat, template_href and application_href.`,
+						Description: `The raw CAT source from which to create the Execution. The CAT will be compiled first and then launched if successful. This attribute is mutually exclusive with: compiled_cat, template_href, compilation_href and application_href.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1251,7 +1099,7 @@ Self-Service.`,
 					},
 					&metadata.ActionParam{
 						Name:        "template_href",
-						Description: `The href of the Template in Designer from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, and application_href.`,
+						Description: `The href of the Template in Designer from which to create the Execution. This attribute is mutually exclusive with: source, compiled_cat, compilation_href and application_href. NOTE: This requires :designer role at least.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1266,9 +1114,9 @@ Self-Service.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PATCH",
-						Pattern:    "/projects/%s/executions/%s",
+						Pattern:    "/api/manager/projects/%s/executions/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1315,16 +1163,16 @@ Self-Service.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/projects/%s/executions/%s",
+						Pattern:    "/api/manager/projects/%s/executions/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.
-Note: using this option may leave cloud resources running that must manually be destroyed.`,
+						Description: `Force delete execution, bypassing state checks (only available to designers and admins).
+Note: using this option only deletes the CloudApp from Self-Service and does not modify or terminate resources in any way. Any cloud resources running must be manually destroyed.`,
 						Type:      "bool",
 						Location:  metadata.QueryParam,
 						Mandatory: false,
@@ -1334,8 +1182,8 @@ Note: using this option may leave cloud resources running that must manually be 
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.
-Note: using this option may leave cloud resources running that must manually be destroyed.`,
+						Description: `Force delete execution, bypassing state checks (only available to designers and admins).
+Note: using this option only deletes the CloudApp from Self-Service and does not modify or terminate resources in any way. Any cloud resources running must be manually destroyed.`,
 						Type:      "bool",
 						Location:  metadata.QueryParam,
 						Mandatory: false,
@@ -1350,16 +1198,16 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/projects/%s/executions",
+						Pattern:    "/api/manager/projects/%s/executions",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.
-                              Note:       using this option may leave cloud resources running that must manually be destroyed.`,
+						Description: `Force delete execution, bypassing state checks (only available to designers and admins).
+Note: using this option only deletes the CloudApp from Self-Service and does not modify or terminate resources in any way. Any cloud resources running must be manually destroyed.`,
 						Type:      "bool",
 						Location:  metadata.QueryParam,
 						Mandatory: false,
@@ -1377,8 +1225,8 @@ Note: using this option may leave cloud resources running that must manually be 
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name: "force",
-						Description: `Force delete execution, bypass state validation so that non term can deleted.
-                              Note:       using this option may leave cloud resources running that must manually be destroyed.`,
+						Description: `Force delete execution, bypassing state checks (only available to designers and admins).
+Note: using this option only deletes the CloudApp from Self-Service and does not modify or terminate resources in any way. Any cloud resources running must be manually destroyed.`,
 						Type:      "bool",
 						Location:  metadata.QueryParam,
 						Mandatory: false,
@@ -1401,9 +1249,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/executions/%s/download",
+						Pattern:    "/api/manager/projects/%s/executions/%s/download",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/download`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)/download`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1434,9 +1282,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/%s/actions/launch",
+						Pattern:    "/api/manager/projects/%s/executions/%s/actions/launch",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/launch`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)/actions/launch`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1449,9 +1297,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/%s/actions/start",
+						Pattern:    "/api/manager/projects/%s/executions/%s/actions/start",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/start`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)/actions/start`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1464,9 +1312,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/%s/actions/stop",
+						Pattern:    "/api/manager/projects/%s/executions/%s/actions/stop",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/stop`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)/actions/stop`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1479,9 +1327,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/%s/actions/terminate",
+						Pattern:    "/api/manager/projects/%s/executions/%s/actions/terminate",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/terminate`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)/actions/terminate`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1494,9 +1342,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/actions/launch",
+						Pattern:    "/api/manager/projects/%s/executions/actions/launch",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/launch`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/actions/launch`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1527,9 +1375,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/actions/start",
+						Pattern:    "/api/manager/projects/%s/executions/actions/start",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/start`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/actions/start`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1560,9 +1408,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/actions/stop",
+						Pattern:    "/api/manager/projects/%s/executions/actions/stop",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/stop`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/actions/stop`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1593,9 +1441,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/actions/terminate",
+						Pattern:    "/api/manager/projects/%s/executions/actions/terminate",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/terminate`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/actions/terminate`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1626,9 +1474,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/%s/actions/run",
+						Pattern:    "/api/manager/projects/%s/executions/%s/actions/run",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/([^/]+)/actions/run`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/([^/]+)/actions/run`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1692,9 +1540,9 @@ Note: using this option may leave cloud resources running that must manually be 
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/executions/actions/run",
+						Pattern:    "/api/manager/projects/%s/executions/actions/run",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/executions/actions/run`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/executions/actions/run`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1779,61 +1627,6 @@ Note: using this option may leave cloud resources running that must manually be 
 these Notifications are the start and completion of Operations. Currently notifications are only
 available via the API/UI and are not distributed externally to users.`,
 		Identifier: "application/vnd.rightscale.self_service.notification",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "category",
-				FieldName: "Category",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "execution",
-				FieldName: "Execution",
-				FieldType: "*Execution",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "*NotificationLinks",
-			},
-
-			&metadata.Attribute{
-				Name:      "message",
-				FieldName: "Message",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "read",
-				FieldName: "Read",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1841,9 +1634,9 @@ available via the API/UI and are not distributed externally to users.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/notifications",
+						Pattern:    "/api/manager/projects/%s/notifications",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/notifications`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/notifications`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -1890,9 +1683,9 @@ available via the API/UI and are not distributed externally to users.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/notifications/%s",
+						Pattern:    "/api/manager/projects/%s/notifications/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/notifications/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/notifications/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -1906,71 +1699,10 @@ available via the API/UI and are not distributed externally to users.`,
 	"Operation": &metadata.Resource{
 		Name: "Operation",
 		Description: `Operations represent actions that can be taken on an Execution.
-When a CloudApp is launched, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language) in the Operations section
+When a CloudApp is launched, a sequence of Operations is run as [explained here](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html#operations) in the Operations section
 While a CloudApp is running, users may launch any custom Operations as defined in the CAT.
-Once a CAT is Terminated, a sequence of Operations is run as [explained here](http://support.rightscale.com/12-Guides/Self-Service/25_Cloud_Application_Template_Language#Operations) in the Operations section`,
+Once a CAT is Terminated, a sequence of Operations is run as [explained here](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html#operations) in the Operations section`,
 		Identifier: "application/vnd.rightscale.self_service.operation",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "configuration_options",
-				FieldName: "ConfigurationOptions",
-				FieldType: "[]*ConfigurationOption",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_by",
-				FieldName: "CreatedBy",
-				FieldType: "*User",
-			},
-
-			&metadata.Attribute{
-				Name:      "execution",
-				FieldName: "Execution",
-				FieldType: "*Execution",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "*OperationLinks",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "status",
-				FieldName: "Status",
-				FieldType: "*StatusStruct",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1978,9 +1710,9 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/operations",
+						Pattern:    "/api/manager/projects/%s/operations",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/operations`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/operations`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2061,9 +1793,9 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/operations/%s",
+						Pattern:    "/api/manager/projects/%s/operations/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/operations/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/operations/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2096,9 +1828,9 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/operations",
+						Pattern:    "/api/manager/projects/%s/operations",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/operations`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/operations`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2182,103 +1914,6 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
 All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)`,
 		Identifier: "application/vnd.rightscale.self_service.scheduled_action",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "action",
-				FieldName: "Action",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_by",
-				FieldName: "CreatedBy",
-				FieldType: "*User",
-			},
-
-			&metadata.Attribute{
-				Name:      "execution",
-				FieldName: "Execution",
-				FieldType: "*Execution",
-			},
-
-			&metadata.Attribute{
-				Name:      "execution_schedule",
-				FieldName: "ExecutionSchedule",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "first_occurrence",
-				FieldName: "FirstOccurrence",
-				FieldType: "*time.Time",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "kind",
-				FieldName: "Kind",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "*ScheduledActionLinks",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "next_occurrence",
-				FieldName: "NextOccurrence",
-				FieldType: "*time.Time",
-			},
-
-			&metadata.Attribute{
-				Name:      "operation",
-				FieldName: "Operation",
-				FieldType: "*OperationStruct",
-			},
-
-			&metadata.Attribute{
-				Name:      "recurrence",
-				FieldName: "Recurrence",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "recurrence_description",
-				FieldName: "RecurrenceDescription",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "timestamps",
-				FieldName: "Timestamps",
-				FieldType: "*TimestampsStruct",
-			},
-
-			&metadata.Attribute{
-				Name:      "timezone",
-				FieldName: "Timezone",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2286,9 +1921,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/scheduled_actions",
+						Pattern:    "/api/manager/projects/%s/scheduled_actions",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/scheduled_actions`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2319,9 +1954,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
-						Pattern:    "/projects/%s/scheduled_actions/%s",
+						Pattern:    "/api/manager/projects/%s/scheduled_actions/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/scheduled_actions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -2334,9 +1969,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/scheduled_actions",
+						Pattern:    "/api/manager/projects/%s/scheduled_actions",
 						Variables:  []string{"project_id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/scheduled_actions`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2347,7 +1982,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
-						ValidValues: []string{"launch", "start", "enable", "stop", "terminate", "run"},
+						ValidValues: []string{"launch", "start", "stop", "terminate", "run"},
 					},
 					&metadata.ActionParam{
 						Name:        "execution_id",
@@ -2431,7 +2066,7 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
-						ValidValues: []string{"launch", "start", "enable", "stop", "terminate", "run"},
+						ValidValues: []string{"launch", "start", "stop", "terminate", "run"},
 					},
 					&metadata.ActionParam{
 						Name:        "execution_id",
@@ -2490,9 +2125,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PATCH",
-						Pattern:    "/projects/%s/scheduled_actions/%s",
+						Pattern:    "/api/manager/projects/%s/scheduled_actions/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/scheduled_actions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
@@ -2523,9 +2158,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "DELETE",
-						Pattern:    "/projects/%s/scheduled_actions/%s",
+						Pattern:    "/api/manager/projects/%s/scheduled_actions/%s",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/scheduled_actions/([^/]+)`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{},
@@ -2538,9 +2173,9 @@ All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "POST",
-						Pattern:    "/projects/%s/scheduled_actions/%s/actions/skip",
+						Pattern:    "/api/manager/projects/%s/scheduled_actions/%s/actions/skip",
 						Variables:  []string{"project_id", "id"},
-						Regexp:     regexp.MustCompile(`/projects/([^/]+)/scheduled_actions/([^/]+)/actions/skip`),
+						Regexp:     regexp.MustCompile(`/api/manager/projects/([^/]+)/scheduled_actions/([^/]+)/actions/skip`),
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{

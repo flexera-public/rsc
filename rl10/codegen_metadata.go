@@ -21,7 +21,6 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "DebugCookbookPath",
 		Description: `Manipulate debug cookbook directory location`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -163,7 +162,6 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Env",
 		Description: `Manipulate global script environment variables`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -245,11 +243,66 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
+	"LoginControl": &metadata.Resource{
+		Name:        "LoginControl",
+		Description: `Manipulate login policy settings`,
+		Identifier:  "",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "show",
+				Description: `Show login policy features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/rll/login/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/login/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Enable/disable login policy features`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/login/control",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`/rll/login/control`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_login",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"on", "off", "compat"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "enable_login",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"on", "off", "compat"},
+					},
+				},
+			},
+		},
+	},
 	"Proc": &metadata.Resource{
 		Name:        "Proc",
 		Description: `List of process variables, such as version, identity, and protocol_version`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -280,13 +333,46 @@ var GenMetadata = map[string]*metadata.Resource{
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
 			},
+
+			&metadata.Action{
+				Name:        "update",
+				Description: `Set process variable value`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/rll/proc/%s",
+						Variables:  []string{"name"},
+						Regexp:     regexp.MustCompile(`/rll/proc/([^/]+)`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "payload",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+				Payload: "string",
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "payload",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    false,
+					},
+				},
+			},
 		},
 	},
 	"Rl10": &metadata.Resource{
 		Name:        "Rl10",
 		Description: `Miscellaneous RightLink 10 local requests`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "upgrade",
@@ -456,7 +542,6 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "TSS",
 		Description: `Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "get_hostname",
@@ -511,7 +596,6 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "TSSControl",
 		Description: `Manipulate monitoring (TSS) settings`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -633,7 +717,6 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "TSSPlugin",
 		Description: `TSS Custom Plugins`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

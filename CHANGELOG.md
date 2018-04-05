@@ -1,11 +1,66 @@
-upcoming
+v6.8.0 / 2018-03-28
+-------------------
+* add api_behavior to VolumeAttachments create call. 
+
+v6.7.0 / 2018-03-15
+-------------------
+* Add skip_deletion flag for Backups.cleanup action
+* Update Server resource: change deployment_href on existing server
+
+v6.6.0 / 2017-10-25
+-------------------
+* Add action/priority to security group rules.
+* Add source/destination cidr IPs/group names and source start/end port to security group rules. These are currently
+  only available for AzureRM.
+* Add cloud_specific_params[service_account] to instances
+
+v6.5.0 / 2017-07-19
+-------------------
+* Add support for AzureRM Managed Disk.
+* Fix a bug command line resource href matching where actions whose href pattern partially matched the href were
+  considered a full match resulting in the wrong resource action being selected.
+
+v6.4.1 / 2017-06-20
+-------------------
+* Fix bug introduced with storing refresh token in `~/.rsc` where it took precedence over the `-r`/`--refresh-token`
+  flag rather than the flag taking precendence over the config file value like it should.
+
+v6.4.0 / 2017-06-14
+-------------------
+* Build with Go 1.8 which fixes JSON output to prefer decimal notation rather than scientific notation which was messing
+  up some IDs (see [encoding/json](https://golang.org/doc/go1.8#encoding_json) in the Go 1.8 Release Notes).
+* Add `httpclient.NewPB` constructor which will create an `HTTPClient` from a `ParamBlock` rather than using package
+  global variables which can be unsafe with multiple Goroutines.
+* Use `context` instead of `golang.org/x/net/context`.
+* Support refresh token in `~/.rsc` configuration file for the command line tool.
+
+v6.3.0 / 2017-03-02
+------------------
+* Added ResourceGroup resource
+* Added MultiCloudImageMatcher resource
+* Updated fields for Subnet, Instance, ServerArray
+
+v6.2.0 / 2016-08-29
+-------------------
+* rl10: Added /rll/proc/log_level.
+* Add destroy action for alerts.
+* Fields for Instance are updated.
+
+v6.1.0 / 2016-08-09
 --------
-* Fields for Instance, Route, SshKey, Volume, and Permission types are updated.
+* SelfService action paths have been updated to the latest version of the SelfService API. This means that each path has been prefixed with one of "/api/catalog", "/api/design", or "/api/manager" depending on the service it is associated with. The built-in documentation has been updated with the new paths.
+* The old SelfService action paths are now deprecated. While they still work as before they will no longer be supported in the next major release of RSC.
+* Added support for the EndUser resource in the SelfService Catalog API.
+
+v6.0.0 / 2016-06-28
+--------
+* Fields for Instance, Route, SshKey, Volume, User, and Permission types are updated.
 * Instances#set_custom_lodgement is removed.
 * InstanceCustomLodgement is removed.
 * Added RightScript#delete, Servers#disable_runnable_bindings, Servers#enable_runnable_bindings, ServerArrays#disable_runnable_bindings, and ServerArrays#enable_runnable_bindings, and VolumeSnapshots#copy.
 * Sessions#index now accepts a view argument and the supported views are: default and whoami.
 * Parameters for Instances#create, Instances#update, Routes#create, Servers#create, Servers#update, ServerArrays#create, and Volumes#create updated.
+* rl10: Add managed login actions
 
 v5.0.3 / 2016-04-21
 -------------------

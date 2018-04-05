@@ -1,0 +1,19 @@
+package: github.com/rightscale/rsc
+import:
+- package: bitbucket.org/pkg/inflect
+- package: github.com/alecthomas/template
+- package: github.com/alecthomas/units
+- package: github.com/coddingtonbear/go-simplejson
+- package: github.com/mattn/go-colorable
+- package: github.com/mattn/go-isatty
+- package: github.com/golang/protobuf
+  subpackages:
+  - proto
+- package: github.com/rightscale/go-jsonselect
+- package: gopkg.in/alecthomas/kingpin.v2
+  version: ^2.0.12
+- package: github.com/inconshreveable/log15
+testImport:
+- package: github.com/onsi/ginkgo
+- package: github.com/onsi/gomega
+

@@ -39,6 +39,11 @@
       "controller": "Resources-TSSControl",
       "name": "Resources::TSSControl",
       "media_type": "Praxis-SimpleMediaType"
+    },
+    "LoginControl": {
+      "controller": "Resources-LoginControl",
+      "name": "Resources::LoginControl",
+      "media_type": "Praxis-SimpleMediaType"
     }
   }
 }

@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"text/tabwriter"
+	"time"
 
 	"github.com/rightscale/rsc/metadata"
 )
@@ -104,6 +105,18 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 					name, value)
 			}
 			*coerced = append(*coerced, APIParams{name: val})
+		case "*time.Time":
+			// Try to parse the input as int64 and if it was successful, treat is as a Unix
+			// time otherwise parse as RFC3339.
+			if val, err := strconv.ParseInt(value, 10, 64); err == nil {
+				*coerced = append(*coerced, APIParams{name: time.Unix(val, 0)})
+			} else {
+				val, err := time.Parse(time.RFC3339, value)
+				if err != nil {
+					return nil, fmt.Errorf("Invalid time '%s' for %s: %s", value, name, err)
+				}
+				*coerced = append(*coerced, APIParams{name: val})
+			}
 		case "map":
 			velems := strings.SplitN(value, "=", 2)
 			if len(velems) != 2 {
@@ -346,20 +359,16 @@ func (a *API) parseResource(cmd, hrefPrefix string, commandValues ActionCommands
 
 	var vars []*metadata.PathVariable
 	var candidates []*metadata.Resource
+Metadata:
 	for _, res := range a.Metadata {
 		if v, err := res.ExtractVariables(href); err == nil {
 			vars = v
-			exact := false
 			for _, a := range res.Actions {
 				if a.Name == actionName && a.MatchHref(href) {
 					// We found an exact match!
 					candidates = []*metadata.Resource{res}
-					exact = true
-					break
+					break Metadata
 				}
-			}
-			if exact {
-				break
 			}
 			candidates = append(candidates, res)
 		}

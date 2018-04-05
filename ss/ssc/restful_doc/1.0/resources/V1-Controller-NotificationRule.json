@@ -1,1 +1,587 @@
-{"description":"A notification rule describes which notification should be created\n        when events occur in the system. Events may be generated when an\n        execution status changes or when an operation fails for example.\n        A rule has a source which can be a specific resource or a group of\n        resources (described via a link-like syntax), a target which\n        corresponds to a user (for now) and a minimum severity used to filter\n        out events with lower severities.","media_type":"V1::MediaType::NotificationRule","mime_type":"application/vnd.rightscale.self_service.notification_rule","actions":[{"description":"List all notification rules, potentially filtering by a collection of resources.","name":"index","urls":[["GET","/accounts/:account_id/notification_rules"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"account_id":{"required":true,"description":"Account ID of the target and resource.","example_definition":"12345","type":{"name":"String"}},"source":{"required":true,"description":"List all notification rules where the target is the current user.\n                          The list can be further filtered by notification source: either by\n                          source type or by specific source.\n                          * To retrieve all notification rules that apply to all executions use:\n                            GET nofication_rules?source==/api/projects/1234/executions\n                          * To retrieve all notification rules that apply to a specific execution use:\n                            GET notification_rules?source==/api/projects/1234/executions/5678","example_definition":["/api/projects/1234/executions"],"type":{"name":"String"}},"targets":{"description":"Comma separated list of target ids. Note, currently only \"me\" is allowed.","example_definition":"me,1234,1235","type":{"name":"String"}}}},"example":{"account_id":"12345","source":"/api/projects/1234/executions","targets":"me,1234,1235"}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.notification_rule"},"forbidden":{"description":"Not allowed to view other users NotificationRules. Only allowed Target is \"me\"","status":403},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Create one notification rule for a specific target and source.\n          The source must be unique in the scope of target and account.","name":"create","urls":[["POST","/accounts/:account_id/notification_rules"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"account_id":{"required":true,"description":"Account ID of the target and resource.","example_definition":"12345","type":{"name":"String"}},"filter":{"type":{"name":"Collection","member_attribute":{"type":{"name":"String"}}}}}},"example":{"account_id":"12345","filter":["epimyth","Aesculapian"]}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"source":{"description":"The resource (or resource collection) that would trigger the notification.\n                    \"/api/manager/projects/1234/executions\" refers to ALL executions in the project,\n                    \"/api/manager/projects/1234/executions/5678\" refers to just one execution, and\n                    \"/api/manager/projects/1234/executions?filter[]=created_by==me\" refers to executions\n                    created by the submitting user. The source must be unique in the scope of target and account.\n                    Note that at this time, \"me\" is the only supported target filter.","required":true,"example_definition":["/api/manager/projects/1234/executions","/api/manager/projects/1234/executions/5678","/api/manager/projects/1234/executions?filter[]=created_by==me"],"type":{"name":"String"}},"min_severity":{"values":["error","info","none"],"description":"The lowest level of notifications for the target to receive.\n                    Setting this to \"error\" will result in only receiving error notifications,\n                    whereas setting it to \"info\" will result in receiving both info and error notifications,\n                    and setting it to \"none\" will result in not receiving any notifications.","required":true,"type":{"name":"String"}},"target":{"description":"The notification target (user) that the rule applies to.\n                    Note that at this time, \"me\" is the only supported target.","required":true,"example_definition":"me","type":{"name":"String"}}}},"example":{"source":"/api/manager/projects/1234/executions?filter[]=created_by==me","min_severity":"info","target":"me"}},"responses":{"created":{"description":"The resource was successfully created, and the href is in the Location header.","status":201},"already_exists":{"description":"There is already a rule for the given source and target in the account","status":409},"forbidden":{"description":"Not allowed to create NotificationRules for other users. Only allowed Target is \"me\"","status":403},"not_found":{"description":"If a source with an ID is passed (e.g. /api/manager/project/1234/executions/5678),\n            that resource must exist, and the target must have privilege to access it.","status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Change min severity of existing rule","name":"patch","urls":[["PATCH","/accounts/:account_id/notification_rules/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"account_id":{"required":true,"description":"Account ID of the target and resource.","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"Notification rule id","example_definition":"53e3bfa9a37b334abf000064","type":{"name":"String"}}}},"example":{"account_id":"12345","id":"53e3bfa9a37b334abf000064"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"min_severity":{"values":["error","info","none"],"description":"The lowest level of notifications for the target to receive.\n                    Setting this to \"error\" will result in only receiving error notifications,\n                    whereas setting it to \"info\" will result in receiving both info and error notifications,\n                    and setting it to \"none\" will result in not receiving any notifications.","required":true,"type":{"name":"String"}}}},"example":{"min_severity":"info"}},"responses":{"no_content":{"description":null,"status":204},"forbidden":{"description":"Not allowed to patch NotificationRules for other users. Only allowed Target is \"me\"","status":403},"not_found":{"description":null,"status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Show one notification rule.","name":"show","urls":[["GET","/accounts/:account_id/notification_rules/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"account_id":{"required":true,"description":"Account ID of the target and resource.","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"Notification rule id","example_definition":"53e3bfa9a37b334abf000064","type":{"name":"String"}}}},"example":{"account_id":"12345","id":"53e3bfa9a37b334abf000064"}},"responses":{"default":{"description":null,"status":200,"mime_type":"application/vnd.rightscale.self_service.notification_rule"},"forbidden":{"description":"Not allowed to show NotificationRules for other users. Only allowed Target is \"me\"","status":403},"not_found":{"description":null,"status":404},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Delete one notification rule.","name":"delete","urls":[["DELETE","/accounts/:account_id/notification_rules/:id"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"account_id":{"required":true,"description":"Account ID of the target and resource.","example_definition":"12345","type":{"name":"String"}},"id":{"required":true,"description":"Notification rule id","example_definition":"53e3bfa9a37b334abf000064","type":{"name":"String"}}}},"example":{"account_id":"12345","id":"53e3bfa9a37b334abf000064"}},"responses":{"no_content":{"description":null,"status":204},"forbidden":{"description":"Not allowed to delete NotificationRules for other users. Only allowed Target is \"me\"","status":403},"not_found":{"description":null,"status":404},"default":{"description":null,"status":200,"mime_type":"controller_defined"},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}},{"description":"Delete one or more notification rules by id or source and target.","name":"multi_delete","urls":[["DELETE","/accounts/:account_id/notification_rules"]],"params":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"account_id":{"required":true,"description":"Account ID of the target and resource.","example_definition":"12345","type":{"name":"String"}}}},"example":{"account_id":"12345"}},"payload":{"identity":"id","dsl_compiler":"Skeletor::MediaType::DSLCompiler","reference":"V1::MediaType::NotificationRule","type":{"name":"Struct","attributes":{"id":{"required":false,"description":"Notification rule id","example_definition":"53e3bfa9a37b334abf000064","type":{"name":"String"}},"source":{"description":"The exact source of the rule to be deleted","example_definition":["/api/manager/projects/1234/executions","/api/manager/projects/1234/executions/5678","/api/manager/projects/1234/executions?filter[]=created_by==me"],"type":{"name":"String"}},"target":{"description":"The notification target (user) that the rule applies to.\n                    Note that at this time, \"me\" is the only supported target.","example_definition":"me","type":{"name":"String"}}}},"example":{"id":"53e3bfa9a37b334abf000064","source":"/api/manager/projects/1234/executions?filter[]=created_by==me","target":"me"}},"responses":{"default":{"description":null,"status":200,"multipart":{"type":"always","envelope":{"description":null,"status":200}}},"forbidden":{"description":"Not allowed to delete NotificationRules for other users. Only allowed Target is \"me\"","status":403},"not_found":{"description":null,"status":404},"no_content":{"description":null,"status":204},"validation":{"description":"When parameter validation hits...","status":400,"mime_type":"application/json"},"internal_server_error":{"description":"Internal Server Error","status":500},"unauthorized":{"description":"Authentication is required and has failed or has not yet been provided.","status":401}}}]}
+{
+  "description": "A notification rule describes which notification should be created\n        when events occur in the system. Events may be generated when an\n        execution status changes or when an operation fails for example.\n        A rule has a source which can be a specific resource or a group of\n        resources (described via a link-like syntax), a target which\n        corresponds to a user (for now) and a minimum severity used to filter\n        out events with lower severities.",
+  "media_type": "V1::MediaType::NotificationRule",
+  "mime_type": "application/vnd.rightscale.self_service.notification_rule",
+  "actions": [
+    {
+      "description": "List all notification rules, potentially filtering by a collection of resources.",
+      "name": "index",
+      "urls": [
+        [
+          "GET",
+          "/api/catalog/accounts/:account_id/notification_rules"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "account_id": {
+              "required": true,
+              "description": "Account ID of the target and resource.",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "source": {
+              "required": true,
+              "description": "List all notification rules where the target is the current user.\n                          The list can be further filtered by notification source: either by\n                          source type or by specific source.\n                          * To retrieve all notification rules that apply to all executions use:\n                            GET nofication_rules?source==/api/projects/1234/executions\n                          * To retrieve all notification rules that apply to a specific execution use:\n                            GET notification_rules?source==/api/projects/1234/executions/5678",
+              "example_definition": [
+                "/api/projects/1234/executions"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "targets": {
+              "description": "Comma separated list of target ids. Note, currently only \"me\" is allowed.",
+              "example_definition": "me",
+              "type": {
+                "name": "String"
+              }
+            },
+            "filter": {
+              "description": "Filter by category.",
+              "example_definition": "[\"category==lifecycle\"]",
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "account_id": "12345",
+          "source": "/api/projects/1234/executions",
+          "targets": "me",
+          "filter": [
+            "category==lifecycle"
+          ]
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.notification_rule"
+        },
+        "forbidden": {
+          "description": "Not allowed to view other users NotificationRules. Only allowed Target is \"me\"",
+          "status": 403
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Create one notification rule for a specific target and source.\n          The source must be unique in the scope of target and account.",
+      "name": "create",
+      "urls": [
+        [
+          "POST",
+          "/api/catalog/accounts/:account_id/notification_rules"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "account_id": {
+              "required": true,
+              "description": "Account ID of the target and resource.",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "filter": {
+              "type": {
+                "name": "Collection",
+                "member_attribute": {
+                  "type": {
+                    "name": "String"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "account_id": "12345",
+          "filter": [
+            "epimyth",
+            "Aesculapian"
+          ]
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "source": {
+              "description": "The resource (or resource collection) that would trigger the notification.\n                    \"/api/manager/projects/1234/executions\" refers to ALL executions in the project,\n                    \"/api/manager/projects/1234/executions/5678\" refers to just one execution, and\n                    \"/api/manager/projects/1234/executions?filter[]=created_by==me\" refers to executions\n                    created by the submitting user. The source must be unique in the scope of target and account.\n                    Note that at this time, \"me\" is the only supported target filter.",
+              "required": true,
+              "example_definition": [
+                "/api/manager/projects/1234/executions",
+                "/api/manager/projects/1234/executions/5678",
+                "/api/manager/projects/1234/executions?filter[]=created_by==me"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "category": {
+              "values": [
+                "lifecycle",
+                "scheduled"
+              ],
+              "default": "lifecycle",
+              "description": "The type of notification for the resource.",
+              "type": {
+                "name": "String"
+              }
+            },
+            "min_severity": {
+              "values": [
+                "error",
+                "info",
+                "none"
+              ],
+              "description": "The lowest level of notifications for the target to receive.\n                    Setting this to \"error\" will result in only receiving error notifications,\n                    whereas setting it to \"info\" will result in receiving both info and error notifications,\n                    and setting it to \"none\" will result in not receiving any notifications.",
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            },
+            "target": {
+              "description": "The notification target (user) that the rule applies to.\n                    Note that at this time, \"me\" is the only supported target.",
+              "required": true,
+              "example_definition": "me",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "source": "/api/manager/projects/1234/executions?filter[]=created_by==me",
+          "category": "lifecycle",
+          "min_severity": "info",
+          "target": "me"
+        }
+      },
+      "responses": {
+        "created": {
+          "description": "The resource was successfully created, and the href is in the Location header.",
+          "status": 201
+        },
+        "already_exists": {
+          "description": "There is already a rule for the given source and target in the account",
+          "status": 409
+        },
+        "forbidden": {
+          "description": "Not allowed to create NotificationRules for other users. Only allowed Target is \"me\"",
+          "status": 403
+        },
+        "not_found": {
+          "description": "If a source with an ID is passed (e.g. /api/manager/project/1234/executions/5678),\n            that resource must exist, and the target must have privilege to access it.",
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Change min severity of existing rule",
+      "name": "patch",
+      "urls": [
+        [
+          "PATCH",
+          "/api/catalog/accounts/:account_id/notification_rules/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "account_id": {
+              "required": true,
+              "description": "Account ID of the target and resource.",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "Notification rule id",
+              "example_definition": "53e3bfa9a37b334abf000064",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "account_id": "12345",
+          "id": "53e3bfa9a37b334abf000064"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "min_severity": {
+              "values": [
+                "error",
+                "info",
+                "none"
+              ],
+              "description": "The lowest level of notifications for the target to receive.\n                    Setting this to \"error\" will result in only receiving error notifications,\n                    whereas setting it to \"info\" will result in receiving both info and error notifications,\n                    and setting it to \"none\" will result in not receiving any notifications.",
+              "required": true,
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "min_severity": "info"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": null,
+          "status": 204
+        },
+        "forbidden": {
+          "description": "Not allowed to patch NotificationRules for other users. Only allowed Target is \"me\"",
+          "status": 403
+        },
+        "not_found": {
+          "description": null,
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Show one notification rule.",
+      "name": "show",
+      "urls": [
+        [
+          "GET",
+          "/api/catalog/accounts/:account_id/notification_rules/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "account_id": {
+              "required": true,
+              "description": "Account ID of the target and resource.",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "Notification rule id",
+              "example_definition": "53e3bfa9a37b334abf000064",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "account_id": "12345",
+          "id": "53e3bfa9a37b334abf000064"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "application/vnd.rightscale.self_service.notification_rule"
+        },
+        "forbidden": {
+          "description": "Not allowed to show NotificationRules for other users. Only allowed Target is \"me\"",
+          "status": 403
+        },
+        "not_found": {
+          "description": null,
+          "status": 404
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Delete one notification rule.",
+      "name": "delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/catalog/accounts/:account_id/notification_rules/:id"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "account_id": {
+              "required": true,
+              "description": "Account ID of the target and resource.",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            },
+            "id": {
+              "required": true,
+              "description": "Notification rule id",
+              "example_definition": "53e3bfa9a37b334abf000064",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "account_id": "12345",
+          "id": "53e3bfa9a37b334abf000064"
+        }
+      },
+      "responses": {
+        "no_content": {
+          "description": null,
+          "status": 204
+        },
+        "forbidden": {
+          "description": "Not allowed to delete NotificationRules for other users. Only allowed Target is \"me\"",
+          "status": 403
+        },
+        "not_found": {
+          "description": null,
+          "status": 404
+        },
+        "default": {
+          "description": null,
+          "status": 200,
+          "mime_type": "controller_defined"
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    },
+    {
+      "description": "Delete one or more notification rules by id or source and target.",
+      "name": "multi_delete",
+      "urls": [
+        [
+          "DELETE",
+          "/api/catalog/accounts/:account_id/notification_rules"
+        ]
+      ],
+      "params": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "account_id": {
+              "required": true,
+              "description": "Account ID of the target and resource.",
+              "example_definition": "12345",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "account_id": "12345"
+        }
+      },
+      "payload": {
+        "identity": "id",
+        "dsl_compiler": "Skeletor::MediaType::DSLCompiler",
+        "reference": "V1::MediaType::NotificationRule",
+        "type": {
+          "name": "Struct",
+          "attributes": {
+            "id": {
+              "required": false,
+              "description": "Notification rule id",
+              "example_definition": "53e3bfa9a37b334abf000064",
+              "type": {
+                "name": "String"
+              }
+            },
+            "source": {
+              "description": "The exact source of the rule to be deleted",
+              "example_definition": [
+                "/api/manager/projects/1234/executions",
+                "/api/manager/projects/1234/executions/5678",
+                "/api/manager/projects/1234/executions?filter[]=created_by==me"
+              ],
+              "type": {
+                "name": "String"
+              }
+            },
+            "target": {
+              "description": "The notification target (user) that the rule applies to.\n                    Note that at this time, \"me\" is the only supported target.",
+              "example_definition": "me",
+              "type": {
+                "name": "String"
+              }
+            }
+          }
+        },
+        "example": {
+          "id": "53e3bfa9a37b334abf000064",
+          "source": "/api/manager/projects/1234/executions?filter[]=created_by==me",
+          "target": "me"
+        }
+      },
+      "responses": {
+        "default": {
+          "description": null,
+          "status": 200,
+          "multipart": {
+            "type": "always",
+            "envelope": {
+              "description": null,
+              "status": 200
+            }
+          }
+        },
+        "forbidden": {
+          "description": "Not allowed to delete NotificationRules for other users. Only allowed Target is \"me\"",
+          "status": 403
+        },
+        "not_found": {
+          "description": null,
+          "status": 404
+        },
+        "bad_request": {
+          "description": null,
+          "status": 400
+        },
+        "no_content": {
+          "description": null,
+          "status": 204
+        },
+        "validation": {
+          "description": "When parameter validation hits...",
+          "status": 400,
+          "mime_type": "application/json"
+        },
+        "internal_server_error": {
+          "description": "Internal Server Error",
+          "status": 500
+        },
+        "unauthorized": {
+          "description": "Authentication is required and has failed or has not yet been provided.",
+          "status": 401
+        }
+      }
+    }
+  ]
+}

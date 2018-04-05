@@ -1,1 +1,451 @@
-{"name":"Service::MediaType::CompiledCAT","attributes":{"name":{"required":true,"type":{"name":"String"}},"rs_ca_ver":{"required":true,"type":{"name":"Integer"}},"short_description":{"type":{"name":"String"}},"long_description":{"type":{"name":"String"}},"source":{"required":true,"type":{"name":"String"}},"parameters":{"type":{"name":"Hash"}},"required_parameters":{"type":{"name":"Collection","member_attribute":{"type":{"name":"String"}}}},"conditions":{"type":{"name":"Hash"}},"mappings":{"type":{"name":"Hash"}},"resources":{"required":true,"type":{"name":"Hash"}},"outputs":{"type":{"name":"Hash"}},"operations":{"type":{"name":"Hash"}},"definitions":{"type":{"name":"Hash"}},"namespaces":{"default":[],"type":{"name":"Collection","member_attribute":{"type":{"name":"Service::MediaType::Namespace"}}}},"permissions":{"default":{},"type":{"name":"Hash"}}},"views":{"default":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}},"example":{"name":"watershed","rs_ca_ver":422,"short_description":"hypnoses","long_description":"thronelike","parameters":{"presuspicious":"#<Service::MediaType::SourceParameter:0x007fbede8905e0>"},"conditions":{"redoubler":{"eucalypt":["An Object","An Object"]},"gastrocnemius":{"ornithodelphic":["An Object"],"stealable":["An Object","An Object"]}},"mappings":{"unpatient":{"bolograph":{"turkeybush":"ombrograph","preconvey":"metaphysicianism"},"sulphocyanide":{"great":"backchat"}}},"resources":{"justiciarship":"#<Service::MediaType::SourceResource:0x007fbede8aaa08>","nonofficeholding":"#<Service::MediaType::SourceResource:0x007fbede8aa080>"},"outputs":{"pitikins":"#<Service::MediaType::SourceOutput:0x007fbede8a9220>"},"operations":{"cacoplasia":"#<Service::MediaType::SourceOperation:0x007fbede8a81b8>","Heteromeles":"#<Service::MediaType::SourceOperation:0x007fbede8b3540>"},"definitions":{"epicyclical":"#<Service::MediaType::SourceDefinition:0x007fbede8b24b0>","mockernut":"#<Service::MediaType::SourceDefinition:0x007fbede8b1a88>","mikado":"#<Service::MediaType::SourceDefinition:0x007fbede8b1060>"}}},"expanded":{"attributes":{"name":{},"rs_ca_ver":{},"short_description":{},"long_description":{},"source":{},"parameters":{},"conditions":{},"mappings":{},"resources":{},"outputs":{},"operations":{},"definitions":{}},"example":{"name":"watershed","rs_ca_ver":422,"short_description":"hypnoses","long_description":"thronelike","source":"gynophagite","parameters":{"presuspicious":"#<Service::MediaType::SourceParameter:0x007fbede8905e0>"},"conditions":{"redoubler":{"eucalypt":["An Object","An Object"]},"gastrocnemius":{"ornithodelphic":["An Object"],"stealable":["An Object","An Object"]}},"mappings":{"unpatient":{"bolograph":{"turkeybush":"ombrograph","preconvey":"metaphysicianism"},"sulphocyanide":{"great":"backchat"}}},"resources":{"justiciarship":"#<Service::MediaType::SourceResource:0x007fbede8aaa08>","nonofficeholding":"#<Service::MediaType::SourceResource:0x007fbede8aa080>"},"outputs":{"pitikins":"#<Service::MediaType::SourceOutput:0x007fbede8a9220>"},"operations":{"cacoplasia":"#<Service::MediaType::SourceOperation:0x007fbede8a81b8>","Heteromeles":"#<Service::MediaType::SourceOperation:0x007fbede8b3540>"},"definitions":{"epicyclical":"#<Service::MediaType::SourceDefinition:0x007fbede8b24b0>","mockernut":"#<Service::MediaType::SourceDefinition:0x007fbede8b1a88>","mikado":"#<Service::MediaType::SourceDefinition:0x007fbede8b1060>"}}}},"mime_type":"application/vnd.rightscale.self_service.compiled_cat","description":null,"example":{"name":"watershed","rs_ca_ver":422,"short_description":"hypnoses","long_description":"thronelike","source":"gynophagite","parameters":{"presuspicious":"#<Service::MediaType::SourceParameter:0x007fbede8905e0>"},"required_parameters":["deafforestation","terrene"],"conditions":{"redoubler":{"eucalypt":["An Object","An Object"]},"gastrocnemius":{"ornithodelphic":["An Object"],"stealable":["An Object","An Object"]}},"mappings":{"unpatient":{"bolograph":{"turkeybush":"ombrograph","preconvey":"metaphysicianism"},"sulphocyanide":{"great":"backchat"}}},"resources":{"justiciarship":"#<Service::MediaType::SourceResource:0x007fbede8aaa08>","nonofficeholding":"#<Service::MediaType::SourceResource:0x007fbede8aa080>"},"outputs":{"pitikins":"#<Service::MediaType::SourceOutput:0x007fbede8a9220>"},"operations":{"cacoplasia":"#<Service::MediaType::SourceOperation:0x007fbede8a81b8>","Heteromeles":"#<Service::MediaType::SourceOperation:0x007fbede8b3540>"},"definitions":{"epicyclical":"#<Service::MediaType::SourceDefinition:0x007fbede8b24b0>","mockernut":"#<Service::MediaType::SourceDefinition:0x007fbede8b1a88>","mikado":"#<Service::MediaType::SourceDefinition:0x007fbede8b1060>"},"namespaces":[{"name":"dk","service":{"host":"docker.rightscale.com","path":"/api","headers":{"X-API-VERSION":"1.0"},"auth":"basic john:s3kret"},"types":[{"name":"containers","path":"/Containers","provision":"define provision(@container) return @created; @created = dk.containers.create(@container); end","delete":"define delete(@container); @container.delete(); end","fields":{"bearberry":"#<Service::MediaType::NamespaceTypeField:0x007fbede8e3ab0>"}}]},{"name":"dk","service":{"host":"docker.rightscale.com","path":"/api","headers":{"X-API-VERSION":"1.0"},"auth":"basic john:s3kret"},"types":[{"name":"containers","path":"/Containers","provision":"define provision(@container) return @created; @created = dk.containers.create(@container); end","delete":"define delete(@container); @container.delete(); end","fields":{"unchastity":"#<Service::MediaType::NamespaceTypeField:0x007fbede8ea8b0>"}},{"name":"containers","path":"/Containers","provision":"define provision(@container) return @created; @created = dk.containers.create(@container); end","delete":"define delete(@container); @container.delete(); end","fields":{"tanjong":"#<Service::MediaType::NamespaceTypeField:0x007fbede8e8bf0>","Epictetian":"#<Service::MediaType::NamespaceTypeField:0x007fbede8e8128>"}},{"name":"containers","path":"/Containers","provision":"define provision(@container) return @created; @created = dk.containers.create(@container); end","delete":"define delete(@container); @container.delete(); end","fields":{"ectoplasm":"#<Service::MediaType::NamespaceTypeField:0x007fbede8f2498>","consummation":"#<Service::MediaType::NamespaceTypeField:0x007fbede8f19d0>"}}]}],"permissions":{"reanchor":"#<Service::MediaType::SourcePermission:0x007fbede8fb840>","gumlike":"#<Service::MediaType::SourcePermission:0x007fbede8fa918>"}}}
+{
+  "name": "Service::MediaType::CompiledCAT",
+  "attributes": {
+    "name": {
+      "required": true,
+      "type": {
+        "name": "String"
+      }
+    },
+    "rs_ca_ver": {
+      "required": true,
+      "type": {
+        "name": "Integer"
+      }
+    },
+    "short_description": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "long_description": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "compiler_ver": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "source": {
+      "required": true,
+      "type": {
+        "name": "String"
+      }
+    },
+    "parameters": {
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "required_parameters": {
+      "type": {
+        "name": "Collection",
+        "member_attribute": {
+          "type": {
+            "name": "String"
+          }
+        }
+      }
+    },
+    "conditions": {
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "mappings": {
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "resources": {
+      "required": true,
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "outputs": {
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "operations": {
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "definitions": {
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "namespaces": {
+      "default": [
+
+      ],
+      "type": {
+        "name": "Collection",
+        "member_attribute": {
+          "type": {
+            "name": "Service::MediaType::Namespace"
+          }
+        }
+      }
+    },
+    "permissions": {
+      "default": {
+      },
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "imports": {
+      "type": {
+        "name": "Hash"
+      }
+    },
+    "dependency_hashes": {
+      "type": {
+        "name": "Collection",
+        "member_attribute": {
+          "type": {
+            "name": "Hash"
+          }
+        }
+      }
+    },
+    "package": {
+      "type": {
+        "name": "String"
+      }
+    },
+    "cat_parser_gem_version": {
+      "type": {
+        "name": "String"
+      }
+    }
+  },
+  "views": {
+    "default": {
+      "attributes": {
+        "name": {
+        },
+        "rs_ca_ver": {
+        },
+        "short_description": {
+        },
+        "long_description": {
+        },
+        "compiler_ver": {
+        },
+        "parameters": {
+        },
+        "conditions": {
+        },
+        "mappings": {
+        },
+        "resources": {
+        },
+        "outputs": {
+        },
+        "operations": {
+        },
+        "definitions": {
+        }
+      },
+      "example": {
+        "name": "watershed",
+        "rs_ca_ver": 422,
+        "short_description": "hypnoses",
+        "long_description": "thronelike",
+        "compiler_ver": "untouch",
+        "parameters": {
+          "presuspicious": "#<Service::MediaType::SourceParameter:0x007f955e80de50>"
+        },
+        "conditions": {
+          "redoubler": {
+            "eucalypt": [
+              "An Object",
+              "An Object"
+            ]
+          },
+          "gastrocnemius": {
+            "ornithodelphic": [
+              "An Object"
+            ],
+            "stealable": [
+              "An Object",
+              "An Object"
+            ]
+          }
+        },
+        "mappings": {
+          "unpatient": {
+            "bolograph": {
+              "turkeybush": "ombrograph",
+              "preconvey": "metaphysicianism"
+            },
+            "sulphocyanide": {
+              "great": "backchat"
+            }
+          }
+        },
+        "resources": {
+          "justiciarship": "#<Service::MediaType::SourceResource:0x007f95699c82a8>",
+          "nonofficeholding": "#<Service::MediaType::SourceResource:0x007f9568af38b8>"
+        },
+        "outputs": {
+          "pitikins": "#<Service::MediaType::SourceOutput:0x007f9568af2a58>"
+        },
+        "operations": {
+          "cacoplasia": "#<Service::MediaType::SourceOperation:0x007f9568af19f0>",
+          "Heteromeles": "#<Service::MediaType::SourceOperation:0x007f9568af0d48>"
+        },
+        "definitions": {
+          "epicyclical": "#<Service::MediaType::SourceDefinition:0x007f9568afbba8>",
+          "mockernut": "#<Service::MediaType::SourceDefinition:0x007f9568afb180>",
+          "mikado": "#<Service::MediaType::SourceDefinition:0x007f9568afa758>"
+        }
+      }
+    },
+    "expanded": {
+      "attributes": {
+        "name": {
+        },
+        "rs_ca_ver": {
+        },
+        "short_description": {
+        },
+        "long_description": {
+        },
+        "compiler_ver": {
+        },
+        "source": {
+        },
+        "parameters": {
+        },
+        "conditions": {
+        },
+        "mappings": {
+        },
+        "resources": {
+        },
+        "outputs": {
+        },
+        "operations": {
+        },
+        "definitions": {
+        }
+      },
+      "example": {
+        "name": "watershed",
+        "rs_ca_ver": 422,
+        "short_description": "hypnoses",
+        "long_description": "thronelike",
+        "compiler_ver": "untouch",
+        "source": "gynophagite",
+        "parameters": {
+          "presuspicious": "#<Service::MediaType::SourceParameter:0x007f955e80de50>"
+        },
+        "conditions": {
+          "redoubler": {
+            "eucalypt": [
+              "An Object",
+              "An Object"
+            ]
+          },
+          "gastrocnemius": {
+            "ornithodelphic": [
+              "An Object"
+            ],
+            "stealable": [
+              "An Object",
+              "An Object"
+            ]
+          }
+        },
+        "mappings": {
+          "unpatient": {
+            "bolograph": {
+              "turkeybush": "ombrograph",
+              "preconvey": "metaphysicianism"
+            },
+            "sulphocyanide": {
+              "great": "backchat"
+            }
+          }
+        },
+        "resources": {
+          "justiciarship": "#<Service::MediaType::SourceResource:0x007f95699c82a8>",
+          "nonofficeholding": "#<Service::MediaType::SourceResource:0x007f9568af38b8>"
+        },
+        "outputs": {
+          "pitikins": "#<Service::MediaType::SourceOutput:0x007f9568af2a58>"
+        },
+        "operations": {
+          "cacoplasia": "#<Service::MediaType::SourceOperation:0x007f9568af19f0>",
+          "Heteromeles": "#<Service::MediaType::SourceOperation:0x007f9568af0d48>"
+        },
+        "definitions": {
+          "epicyclical": "#<Service::MediaType::SourceDefinition:0x007f9568afbba8>",
+          "mockernut": "#<Service::MediaType::SourceDefinition:0x007f9568afb180>",
+          "mikado": "#<Service::MediaType::SourceDefinition:0x007f9568afa758>"
+        }
+      }
+    }
+  },
+  "mime_type": "application/vnd.rightscale.self_service.compiled_cat",
+  "description": null,
+  "example": {
+    "name": "watershed",
+    "rs_ca_ver": 422,
+    "short_description": "hypnoses",
+    "long_description": "thronelike",
+    "compiler_ver": "untouch",
+    "source": "gynophagite",
+    "parameters": {
+      "presuspicious": "#<Service::MediaType::SourceParameter:0x007f955e80de50>"
+    },
+    "required_parameters": [
+      "deafforestation",
+      "terrene"
+    ],
+    "conditions": {
+      "redoubler": {
+        "eucalypt": [
+          "An Object",
+          "An Object"
+        ]
+      },
+      "gastrocnemius": {
+        "ornithodelphic": [
+          "An Object"
+        ],
+        "stealable": [
+          "An Object",
+          "An Object"
+        ]
+      }
+    },
+    "mappings": {
+      "unpatient": {
+        "bolograph": {
+          "turkeybush": "ombrograph",
+          "preconvey": "metaphysicianism"
+        },
+        "sulphocyanide": {
+          "great": "backchat"
+        }
+      }
+    },
+    "resources": {
+      "justiciarship": "#<Service::MediaType::SourceResource:0x007f95699c82a8>",
+      "nonofficeholding": "#<Service::MediaType::SourceResource:0x007f9568af38b8>"
+    },
+    "outputs": {
+      "pitikins": "#<Service::MediaType::SourceOutput:0x007f9568af2a58>"
+    },
+    "operations": {
+      "cacoplasia": "#<Service::MediaType::SourceOperation:0x007f9568af19f0>",
+      "Heteromeles": "#<Service::MediaType::SourceOperation:0x007f9568af0d48>"
+    },
+    "definitions": {
+      "epicyclical": "#<Service::MediaType::SourceDefinition:0x007f9568afbba8>",
+      "mockernut": "#<Service::MediaType::SourceDefinition:0x007f9568afb180>",
+      "mikado": "#<Service::MediaType::SourceDefinition:0x007f9568afa758>"
+    },
+    "namespaces": [
+      {
+        "name": "dk",
+        "service": {
+          "host": "docker.rightscale.com",
+          "path": "/api",
+          "headers": {
+            "X-API-VERSION": "1.0"
+          },
+          "auth": "basic john:s3kret"
+        },
+        "types": [
+          {
+            "name": "containers",
+            "path": "/Containers",
+            "provision": "provision_dk",
+            "delete": "delete_dk",
+            "fields": {
+              "bearberry": "#<Service::MediaType::NamespaceTypeField:0x007f9568b20f70>"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dk",
+        "service": {
+          "host": "docker.rightscale.com",
+          "path": "/api",
+          "headers": {
+            "X-API-VERSION": "1.0"
+          },
+          "auth": "basic john:s3kret"
+        },
+        "types": [
+          {
+            "name": "containers",
+            "path": "/Containers",
+            "provision": "provision_dk",
+            "delete": "delete_dk",
+            "fields": {
+              "unchastity": "#<Service::MediaType::NamespaceTypeField:0x007f9568b33dc8>"
+            }
+          },
+          {
+            "name": "containers",
+            "path": "/Containers",
+            "provision": "provision_dk",
+            "delete": "delete_dk",
+            "fields": {
+              "tanjong": "#<Service::MediaType::NamespaceTypeField:0x007f9568b32108>",
+              "Epictetian": "#<Service::MediaType::NamespaceTypeField:0x007f9568b31640>"
+            }
+          },
+          {
+            "name": "containers",
+            "path": "/Containers",
+            "provision": "provision_dk",
+            "delete": "delete_dk",
+            "fields": {
+              "ectoplasm": "#<Service::MediaType::NamespaceTypeField:0x007f9568b3b9b0>",
+              "consummation": "#<Service::MediaType::NamespaceTypeField:0x007f9568b3aee8>"
+            }
+          }
+        ]
+      }
+    ],
+    "permissions": {
+      "reanchor": "#<Service::MediaType::SourcePermission:0x007f9568b38da0>",
+      "gumlike": "#<Service::MediaType::SourcePermission:0x007f9568b43c78>"
+    },
+    "imports": {
+      "unliquidatable": "epilogation",
+      "devoter": "tricarinated",
+      "Bulbochaete": "pearly"
+    },
+    "dependency_hashes": [
+      {
+        "overbear": "pestilentialness",
+        "unsympathizing": "nonconfinement"
+      },
+      {
+        "fei": "metze",
+        "overboil": "beeherd",
+        "Balolo": "redry"
+      },
+      {
+        "Abronia": "curvet",
+        "skillagalee": "cognizance"
+      }
+    ],
+    "package": "sere",
+    "cat_parser_gem_version": "alienicola"
+  }
+}

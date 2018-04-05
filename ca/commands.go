@@ -17,7 +17,6 @@ var commandValues rsapi.ActionCommands
 // RegisterCommands registers all commands with kinpin application.
 func RegisterCommands(registrar rsapi.APICommandRegistrar) {
 	commandValues = rsapi.ActionCommands{}
-	setupMetadata()
 	registrar.RegisterActionCommands(APIName, GenMetadata, commandValues)
 }
 

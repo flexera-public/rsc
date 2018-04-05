@@ -1,1 +1,101 @@
-{"name":"V1::Type::OperationDefinition","attributes":{"name":{"description":"Name of operation","example_definition":"update_code","type":{"name":"String"}},"description":{"description":"Description","example_definition":"Update the code on the app servers","type":{"name":"String"}},"parameters":{"description":"List of parameters required for the operation","type":{"name":"Collection","member_attribute":{"type":{"name":"Service::SharedType::Parameter"}}}}},"example":{"name":"update_code","description":"Update the code on the app servers","parameters":[{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}},{"name":"cloud","description":"Select the cloud to launch in","type":"string","default":"AWS US-East","operations":["launch","update_code"],"ui":{"label":"Cloud","category":"Cloud Information","index":1},"validation":{"no_echo":true,"min_length":5,"max_length":100,"min_value":1024,"max_value":2048,"allowed_pattern":"[a-z0-9]+[a-z0-9\\.-]*","allowed_values":["An Object","An Object","An Object"],"constraint_description":"The value must fit the pattern: ###-ABC"}}]}}
+{
+  "name": "V1::Type::OperationDefinition",
+  "attributes": {
+    "name": {
+      "description": "Name of operation",
+      "example_definition": "update_code",
+      "type": {
+        "name": "String"
+      }
+    },
+    "description": {
+      "description": "Description",
+      "example_definition": "Update the code on the app servers",
+      "type": {
+        "name": "String"
+      }
+    },
+    "label": {
+      "description": "Label of the operation",
+      "example_definition": "Update code",
+      "type": {
+        "name": "String"
+      }
+    },
+    "parameters": {
+      "description": "List of parameters required for the operation",
+      "type": {
+        "name": "Collection",
+        "member_attribute": {
+          "type": {
+            "name": "Service::SharedType::Parameter"
+          }
+        }
+      }
+    }
+  },
+  "example": {
+    "name": "update_code",
+    "description": "Update the code on the app servers",
+    "label": "Update code",
+    "parameters": [
+      {
+        "name": "cloud",
+        "description": "Select the cloud to launch in",
+        "type": "string",
+        "default": "AWS US-East",
+        "operations": [
+          "launch",
+          "update_code"
+        ],
+        "ui": {
+          "label": "Cloud",
+          "category": "Cloud Information",
+          "index": 1
+        },
+        "validation": {
+          "no_echo": true,
+          "min_length": 5,
+          "max_length": 100,
+          "min_value": 1024,
+          "max_value": 2048,
+          "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+          "allowed_values": [
+            "An Object",
+            "An Object"
+          ],
+          "constraint_description": "The value must fit the pattern: ###-ABC"
+        }
+      },
+      {
+        "name": "cloud",
+        "description": "Select the cloud to launch in",
+        "type": "string",
+        "default": "AWS US-East",
+        "operations": [
+          "launch",
+          "update_code"
+        ],
+        "ui": {
+          "label": "Cloud",
+          "category": "Cloud Information",
+          "index": 1
+        },
+        "validation": {
+          "no_echo": true,
+          "min_length": 5,
+          "max_length": 100,
+          "min_value": 1024,
+          "max_value": 2048,
+          "allowed_pattern": "[a-z0-9]+[a-z0-9\\.-]*",
+          "allowed_values": [
+            "An Object",
+            "An Object",
+            "An Object"
+          ],
+          "constraint_description": "The value must fit the pattern: ###-ABC"
+        }
+      }
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 //                     rsc - RightScale API command line tool
 //
 // Generated with:
-// $ api15gen
+// $ api15gen -metadata=cm15 -output=cm15
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -21,43 +21,6 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Account",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.account",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "permissions",
-				FieldName: "Permissions",
-				FieldType: "[]Permission",
-			},
-
-			&metadata.Attribute{
-				Name:      "products",
-				FieldName: "Products",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -84,43 +47,6 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "AccountGroup",
 		Description: ` An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.`,
 		Identifier:  "application/vnd.rightscale.account_group",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -222,50 +148,46 @@ Optional parameters:
 		Name:        "Alert",
 		Description: `An Alert represents an AlertSpec bound to a running Instance.`,
 		Identifier:  "application/vnd.rightscale.alert",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "quenched_until",
-				FieldName: "QuenchedUntil",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "status",
-				FieldName: "Status",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "triggered_at",
-				FieldName: "TriggeredAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name:        "destroy",
+				Description: `Destroys the Alert.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/clouds/%s/instances/%s/alerts/%s",
+						Variables:  []string{"cloud_id", "instance_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/clouds/([^/]+)/instances/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/servers/%s/alerts/%s",
+						Variables:  []string{"server_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/servers/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/server_arrays/%s/alerts/%s",
+						Variables:  []string{"server_array_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/deployments/%s/alerts/%s",
+						Variables:  []string{"deployment_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/deployments/([^/]+)/alerts/([^/]+)$`),
+					},
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/alerts/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/alerts/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
 			&metadata.Action{
 				Name:        "disable",
 				Description: `Disables the Alert indefinitely. Idempotent.`,
@@ -555,91 +477,6 @@ Optional parameters:
 		Description: `An AlertSpec defines the conditions under which an Alert is triggered and escalated.
 Condition sentence: if &lt;file&gt;.&lt;variable&gt; &lt;condition&gt; '&lt;threshold&gt;' for &lt;duration&gt; min then escalate to '&lt;escalation_name&gt;'.`,
 		Identifier: "application/vnd.rightscale.alert_spec",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "condition",
-				FieldName: "Condition",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "duration",
-				FieldName: "Duration",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "escalation_name",
-				FieldName: "EscalationName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "file",
-				FieldName: "File",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "threshold",
-				FieldName: "Threshold",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "variable",
-				FieldName: "Variable",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "vote_tag",
-				FieldName: "VoteTag",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "vote_type",
-				FieldName: "VoteType",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -1123,43 +960,6 @@ Required parameters:
 		Name:        "AuditEntry",
 		Description: `An Audit Entry can be used to track various activities of a resource.`,
 		Identifier:  "application/vnd.rightscale.audit_entry",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "detail_size",
-				FieldName: "DetailSize",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "summary",
-				FieldName: "Summary",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "user_email",
-				FieldName: "UserEmail",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "append",
@@ -1573,73 +1373,6 @@ Optional parameters:
 		Name:        "Backup",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.backup",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "committed",
-				FieldName: "Committed",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "completed",
-				FieldName: "Completed",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "from_master",
-				FieldName: "FromMaster",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "lineage",
-				FieldName: "Lineage",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "volume_snapshot_count",
-				FieldName: "VolumeSnapshotCount",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "volume_snapshots",
-				FieldName: "VolumeSnapshots",
-				FieldType: "[]VolumeSnapshot",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "cleanup",
@@ -1666,6 +1399,8 @@ For all the perfect backups, the constraints of keep_last and dailies etc. will 
 The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
 independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
 Hence, it is important to "commit" a backup to make it eligible for cleanup.
+Using skip_deletion='true' attribute will return an index of what will be deleted when the action is run.
+The status code returned is 200 when using this parameter instead of 204.
 Required parameters:
 	keep_last: The number of backups that should be kept.
 	lineage: The lineage of the backups that are to be cleaned-up.
@@ -1673,6 +1408,7 @@ Optional parameters:
 	cloud_href: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
 	dailies: The number of daily backups(the latest one in each day) that should be kept.
 	monthlies: The number of monthly backups(the latest one in each month) that should be kept.
+	skip_deletion: When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.
 	weeklies: The number of weekly backups(the latest one in each week) that should be kept.
 	yearlies: The number of yearly backups(the latest one in each year) that should be kept.`,
 				PathPatterns: []*metadata.PathPattern{
@@ -1684,6 +1420,15 @@ Optional parameters:
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "skip_deletion",
+						Description: `When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
 					&metadata.ActionParam{
 						Name:        "cloud_href",
 						Description: `Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.`,
@@ -1709,14 +1454,6 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "weeklies",
-						Description: `The number of weekly backups(the latest one in each week) that should be kept.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "yearlies",
 						Description: `The number of yearly backups(the latest one in each year) that should be kept.`,
 						Type:        "string",
@@ -1725,8 +1462,8 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "dailies",
-						Description: `The number of daily backups(the latest one in each day) that should be kept.`,
+						Name:        "weeklies",
+						Description: `The number of weekly backups(the latest one in each week) that should be kept.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -1738,6 +1475,14 @@ Optional parameters:
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "dailies",
+						Description: `The number of daily backups(the latest one in each day) that should be kept.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 				},
@@ -1781,6 +1526,15 @@ Optional parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "skip_deletion",
+						Description: `When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
 						Name:        "weeklies",
@@ -2095,7 +1849,6 @@ Required parameters:
 		Name:        "ChildAccount",
 		Description: ``,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -2226,43 +1979,6 @@ Required parameters:
 		Name:        "Cloud",
 		Description: `Represents a Cloud (within the context of the account in the session).`,
 		Identifier:  "application/vnd.rightscale.cloud",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "capabilities",
-				FieldName: "Capabilities",
-				FieldType: "[]map[string]interface{}",
-			},
-
-			&metadata.Attribute{
-				Name:      "cloud_type",
-				FieldName: "CloudType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "display_name",
-				FieldName: "DisplayName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -2379,25 +2095,6 @@ Optional parameters:
 		Name:        "CloudAccount",
 		Description: `Represents a Cloud Account (An association between the account and a cloud).`,
 		Identifier:  "application/vnd.rightscale.cloud_account",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -2507,79 +2204,6 @@ Required parameters:
 		Name:        "Cookbook",
 		Description: `Represents a given instance of a single cookbook.`,
 		Identifier:  "application/vnd.rightscale.cookbook",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "download_url",
-				FieldName: "DownloadUrl",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "metadata",
-				FieldName: "Metadata",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "namespace",
-				FieldName: "Namespace",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "source_info_summary",
-				FieldName: "SourceInfoSummary",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "version",
-				FieldName: "Version",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "destroy",
@@ -2812,31 +2436,6 @@ Optional parameters:
 		Name:        "CookbookAttachment",
 		Description: `Cookbook Attachment is used to associate a particular cookbook with a ServerTemplate. A Cookbook Attachment must be in place before a recipe can be bound to a runlist using RunnableBinding.`,
 		Identifier:  "application/vnd.rightscale.cookbook_attachment",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "dependency",
-				FieldName: "Dependency",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -3123,43 +2722,6 @@ API. Credentials may then be used as inputs of type "Cred" in RightScripts
 or Chef recipes. NOTE: Credential values may be updated through the API, but
 values cannot be retrieved via the API.`,
 		Identifier: "application/vnd.rightscale.credential",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "value",
-				FieldName: "Value",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -3382,37 +2944,6 @@ While Datacenters in large public clouds might correspond to different physical 
 internet links...etc., Datacenters within the context of a private cloud might simply correspond to having different network providers.
 Spreading servers across distinct Datacenters helps minimize outages.`,
 		Identifier: "application/vnd.rightscale.datacenter",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -3516,49 +3047,6 @@ Optional parameters:
 		Name:        "Deployment",
 		Description: `Deployments represent logical groupings of related assets such as servers, server arrays, default configuration settings...etc.`,
 		Identifier:  "application/vnd.rightscale.deployment",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "inputs",
-				FieldName: "Inputs",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "locked",
-				FieldName: "Locked",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "server_tag_scope",
-				FieldName: "ServerTagScope",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "clone",
@@ -3627,6 +3115,14 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "deployment[resource_group_href]",
+						Description: `The href of the Windows Azure Resource Group attached to the deployment.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "deployment[server_tag_scope]",
 						Description: `The routing scope for tags for servers in the deployment.`,
 						Type:        "string",
@@ -3656,7 +3152,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "deployment",
 						Description: ``,
-						Type:        "*DeploymentParam",
+						Type:        "*DeploymentParam2",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -3704,7 +3200,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"description", "name", "server_tag_scope"},
+						ValidValues: []string{"description", "name", "resource_group_href", "server_tag_scope"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3724,7 +3220,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"description", "name", "server_tag_scope"},
+						ValidValues: []string{"description", "name", "resource_group_href", "server_tag_scope"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -3879,6 +3375,14 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "deployment[resource_group_href]",
+						Description: `The href of the Windows Azure Resource Group attached to the deployment.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "deployment[server_tag_scope]",
 						Description: `The routing scope for tags for servers in the deployment.`,
 						Type:        "string",
@@ -3908,7 +3412,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "deployment",
 						Description: ``,
-						Type:        "*DeploymentParam",
+						Type:        "*DeploymentParam3",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -3917,19 +3421,19 @@ Required parameters:
 			},
 		},
 		Links: map[string]string{
-			"alerts":        "Associated alerts",
-			"inputs":        "List of configuration inputs",
-			"lock_user":     "Href of the user who has locked this deployment",
-			"self":          "Href of itself",
-			"server_arrays": "Associated server arrays",
-			"servers":       "Associated servers",
+			"alerts":         "Associated alerts",
+			"inputs":         "List of configuration inputs",
+			"lock_user":      "Href of the user who has locked this deployment",
+			"resource_group": "Href of the ResourceGroup that this Deployment belongs to",
+			"self":           "Href of itself",
+			"server_arrays":  "Associated server arrays",
+			"servers":        "Associated servers",
 		},
 	},
 	"HealthCheck": &metadata.Resource{
 		Name:        "HealthCheck",
 		Description: ``,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -3949,47 +3453,10 @@ Required parameters:
 	},
 	"IdentityProvider": &metadata.Resource{
 		Name: "IdentityProvider",
-		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,
-and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
+		Description: `An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Organization,
+and is trusted by the RightScale dashboard to authenticate your organization's end users.
 To register an Identity Provider, contact your account manager.`,
 		Identifier: "application/vnd.rightscale.identity_provider",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "discovery_hint",
-				FieldName: "DiscoveryHint",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -4093,73 +3560,6 @@ Optional parameters:
 		Description: `Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents
 for a new Instance to have, and therefore it represents the basic starting point for creating a new one.`,
 		Identifier: "application/vnd.rightscale.image",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "cpu_architecture",
-				FieldName: "CpuArchitecture",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "image_type",
-				FieldName: "ImageType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "os_platform",
-				FieldName: "OsPlatform",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "root_device_storage",
-				FieldName: "RootDeviceStorage",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "virtualization_type",
-				FieldName: "VirtualizationType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "visibility",
-				FieldName: "Visibility",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -4266,19 +3666,6 @@ Inputs are variables defined in and used by RightScripts/Recipes. The two main a
 identifies the input and the 'value', although a string encodes what type it is. It could be a text encoded as 'text:myvalue' or a credential
 encoded as 'cred:MY_CRED' or a key etc. Please see support.rightscale.com for more info on input hierarchies and their different types.`,
 		Identifier: "application/vnd.rightscale.input",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "value",
-				FieldName: "Value",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -4464,181 +3851,6 @@ A "next" instance generally only exists in the RightScale realm, and usually doe
 existing in the cloud. However, if an instance is not of type "next", it will generally represent an existing running
 (or provisioned) virtual machine existing in the cloud.`,
 		Identifier: "application/vnd.rightscale.instance",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "admin_password",
-				FieldName: "AdminPassword",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "associate_public_ip_address",
-				FieldName: "AssociatePublicIpAddress",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "cloud_specific_attributes",
-				FieldName: "CloudSpecificAttributes",
-				FieldType: "map[string]interface{}",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "inherited_sources",
-				FieldName: "InheritedSources",
-				FieldType: "map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "inputs",
-				FieldName: "Inputs",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "ip_forwarding_enabled",
-				FieldName: "IpForwardingEnabled",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "locked",
-				FieldName: "Locked",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "monitoring_collector_http",
-				FieldName: "MonitoringCollectorHttp",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "monitoring_collector_udp",
-				FieldName: "MonitoringCollectorUdp",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "monitoring_id",
-				FieldName: "MonitoringId",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "monitoring_server",
-				FieldName: "MonitoringServer",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "os_platform",
-				FieldName: "OsPlatform",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "pricing_type",
-				FieldName: "PricingType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "private_dns_names",
-				FieldName: "PrivateDnsNames",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "private_ip_addresses",
-				FieldName: "PrivateIpAddresses",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "public_dns_names",
-				FieldName: "PublicDnsNames",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "public_ip_addresses",
-				FieldName: "PublicIpAddresses",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "security_groups",
-				FieldName: "SecurityGroups",
-				FieldType: "[]SecurityGroup",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "subnets",
-				FieldName: "Subnets",
-				FieldType: "[]Subnet",
-			},
-
-			&metadata.Attribute{
-				Name:      "terminated_at",
-				FieldName: "TerminatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "user_data",
-				FieldName: "UserData",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -4683,20 +3895,20 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
-						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
 						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
+						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][local_ssd_interface]",
@@ -4707,8 +3919,8 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4716,8 +3928,8 @@ Optional parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "instance[cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4734,8 +3946,24 @@ Optional parameters:
 						ValidValues: []string{"default", "dedicated"},
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][service_account]",
+						Description: `Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4750,16 +3978,24 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Name:        "instance[cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][keep_alive_url]",
-						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Name:        "instance[cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4817,6 +4053,14 @@ Optional parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][disk_gb]",
 						Description: `The size of root disk. Supported by UCA cloud only.`,
 						Type:        "int",
@@ -4843,17 +4087,17 @@ Optional parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "instance[placement_group_href]",
-						Description: `The placement group to launch the instance in. Not supported by all clouds & instance types.`,
-						Type:        "string",
+						Name:        "instance[security_group_hrefs][]",
+						Description: `The hrefs of the security groups.`,
+						Type:        "[]string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[security_group_hrefs][]",
-						Description: `The hrefs of the security groups.`,
-						Type:        "[]string",
+						Name:        "instance[placement_group_href]",
+						Description: `The placement group to launch the instance in. Not supported by all clouds & instance types.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -4883,16 +4127,16 @@ Optional parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[deployment_href]",
-						Description: `The href of the deployment to which the Instance will be added.`,
+						Name:        "instance[datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
+						Name:        "instance[deployment_href]",
+						Description: `The href of the deployment to which the Instance will be added.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -5634,20 +4878,20 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
-						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][iam_instance_profile]",
 						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][root_volume_type_uid]",
+						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][local_ssd_interface]",
@@ -5693,6 +4937,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][local_ssd_count]",
 						Description: `Additional local SSDs. Supported by GCE cloud only`,
 						Type:        "string",
@@ -5701,16 +4953,32 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Name:        "instance[cloud_specific_attributes][service_account]",
+						Description: `Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[cloud_specific_attributes][keep_alive_url]",
-						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Name:        "instance[cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][max_spot_price]",
+						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -5757,6 +5025,14 @@ Required parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "instance[cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][disk_gb]",
@@ -5841,16 +5117,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[datacenter_href]",
-						Description: `The href of the updated Datacenter / Zone for the Instance.`,
+						Name:        "instance[deployment_href]",
+						Description: `The href of the updated Deployment for the Instance. This is only supported for Instances that are not associated with a Server or ServerArray.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "instance[deployment_href]",
-						Description: `The href of the updated Deployment for the Instance. This is only supported for Instances that are not associated with a Server or ServerArray.`,
+						Name:        "instance[datacenter_href]",
+						Description: `The href of the updated Datacenter / Zone for the Instance.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -5935,73 +5211,6 @@ Required parameters:
 		Name:        "InstanceType",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.instance_type",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "cpu_architecture",
-				FieldName: "CpuArchitecture",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "cpu_count",
-				FieldName: "CpuCount",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "cpu_speed",
-				FieldName: "CpuSpeed",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "local_disk_size",
-				FieldName: "LocalDiskSize",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "local_disks",
-				FieldName: "LocalDisks",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "memory",
-				FieldName: "Memory",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -6105,43 +5314,6 @@ Optional parameters:
 		Name:        "IpAddress",
 		Description: `An IpAddress provides an abstraction for IPv4 addresses bindable to Instance resources running in a Cloud.`,
 		Identifier:  "application/vnd.rightscale.ip_address",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "address",
-				FieldName: "Address",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "domain",
-				FieldName: "Domain",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6326,43 +5498,6 @@ Required parameters:
 The IpAddress is bound immediately for a current instance, or on launch for a next instance.
 It also allows specifying port forwarding rules for that particular IpAddress and Instance pair.`,
 		Identifier: "application/vnd.rightscale.ip_address_binding",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "private_port",
-				FieldName: "PrivatePort",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "protocol",
-				FieldName: "Protocol",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "public_port",
-				FieldName: "PublicPort",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "recurring",
-				FieldName: "Recurring",
-				FieldType: "bool",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -6399,15 +5534,23 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "ip_address_binding[instance_href]",
-						Description: `The Instance to which this IpAddress should be bound.`,
+						Description: `The Instance to which this IpAddress should be bound. Mutually exclusive with server_href.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "ip_address_binding[private_port]",
 						Description: `Incoming network traffic will get forwarded to this port number on the specified Instance. If not specified, will use public port. Required unless public_ip_address_href is passed.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "ip_address_binding[server_href]",
+						Description: `The Server to which this IpAddress should be bound. Mutually exclusive with instance_href.Note: the Server must have a current_instance.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -6538,37 +5681,6 @@ Optional parameters:
 		Name:        "MonitoringMetric",
 		Description: `A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.`,
 		Identifier:  "application/vnd.rightscale.monitoring_metric",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "graph_href",
-				FieldName: "GraphHref",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "plugin",
-				FieldName: "Plugin",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "view",
-				FieldName: "View",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "data",
@@ -6837,37 +5949,6 @@ Optional parameters:
 (e.g. AWS US-East, Rackspace). Each ServerTemplate can reference many MultiCloudImages that defines which
 image should be used when a server is launched in a particular cloud.`,
 		Identifier: "application/vnd.rightscale.multi_cloud_image",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "revision",
-				FieldName: "Revision",
-				FieldType: "int",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "clone",
@@ -7132,8 +6213,127 @@ Required parameters:
 			},
 		},
 		Links: map[string]string{
+			"matchers": "Associated multi cloud image setting matchers",
 			"self":     "Href of itself",
 			"settings": "Associated multi cloud image settings",
+		},
+	},
+	"MultiCloudImageMatcher": &metadata.Resource{
+		Name: "MultiCloudImageMatcher",
+		Description: `A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a
+given cloud type. For now, only one type of matcher is supported
+(fingerprint). Fingerprint will match images based upon a checksum as returned
+by the cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass
+in an example image with an image_href from which to generate the fingerprint.`,
+		Identifier: "application/vnd.rightscale.multi_cloud_image_matcher",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "create",
+				Description: `Creates a new setting matcher for an existing MultiCloudImage.
+Required parameters:
+	multi_cloud_image_matcher`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/multi_cloud_images/%s/matchers",
+						Variables:  []string{"multi_cloud_image_id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "multi_cloud_image_matcher[image_href]",
+						Description: `The href of the example Image to use. Mandatory if specifying fingerprint type.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "multi_cloud_image_matcher[user_data]",
+						Description: `User data that RightScale automatically passes to your instance at boot time.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "multi_cloud_image_matcher",
+						Description: ``,
+						Type:        "*MultiCloudImageMatcherParam",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "destroy",
+				Description: `Deletes a MultiCloudImage setting matcher.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/multi_cloud_images/%s/matchers/%s",
+						Variables:  []string{"multi_cloud_image_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "index",
+				Description: `Lists the MultiCloudImage setting matchers.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/multi_cloud_images/%s/matchers",
+						Variables:  []string{"multi_cloud_image_id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "rematch",
+				Description: `Generates new MultiCloudImageSettings based upon match_criteria. Returns hash of created/updated/destroyed settings.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/multi_cloud_images/%s/matchers/%s/rematch",
+						Variables:  []string{"multi_cloud_image_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers/([^/]+)/rematch$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name:        "show",
+				Description: `Show information about a single MultiCloudImage setting matcher.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/multi_cloud_images/%s/matchers/%s",
+						Variables:  []string{"multi_cloud_image_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/multi_cloud_images/([^/]+)/matchers/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+		},
+		Links: map[string]string{
+			"cloud":             "Associated cloud",
+			"multi_cloud_image": "Associated multi cloud image",
+			"self":              "Href of itself",
 		},
 	},
 	"MultiCloudImageSetting": &metadata.Resource{
@@ -7141,19 +6341,6 @@ Required parameters:
 		Description: `A MultiCloudImageSetting defines which
 settings should be used when a server is launched in a cloud.`,
 		Identifier: "application/vnd.rightscale.multi_cloud_image_setting",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7266,7 +6453,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "multi_cloud_image_href"},
+						ValidValues: []string{"cloud_href"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -7277,7 +6464,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "multi_cloud_image_href"},
+						ValidValues: []string{"cloud_href"},
 					},
 				},
 			},
@@ -7299,7 +6486,7 @@ Optional parameters:
 
 			&metadata.Action{
 				Name: "update",
-				Description: `Updates a settings for a MultiCLoudImage.
+				Description: `Updates a settings for a MultiCloudImage.
 Required parameters:
 	multi_cloud_image_setting`,
 				PathPatterns: []*metadata.PathPattern{
@@ -7384,55 +6571,6 @@ Required parameters:
 		Name:        "Network",
 		Description: `A Network is a logical grouping of network devices.`,
 		Identifier:  "application/vnd.rightscale.network",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "cidr_block",
-				FieldName: "CidrBlock",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "instance_tenancy",
-				FieldName: "InstanceTenancy",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "is_default",
-				FieldName: "IsDefault",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7451,6 +6589,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "network[instance_tenancy]",
 						Description: `The launch policy for AWS instances in the Network. Specify 'default' to allow instances to decide their own launch policy. Specify 'dedicated' to force all instances to be launched as 'dedicated'.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "network[deployment_href]",
+						Description: `The href of the Deployment that owns this Network.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -7537,7 +6683,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cidr_block", "cloud_href", "name", "resource_uid"},
+						ValidValues: []string{"cidr_block", "cloud_href", "deployment_href", "name", "resource_uid"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -7548,7 +6694,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cidr_block", "cloud_href", "name", "resource_uid"},
+						ValidValues: []string{"cidr_block", "cloud_href", "deployment_href", "name", "resource_uid"},
 					},
 				},
 			},
@@ -7591,6 +6737,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "network[deployment_href]",
+						Description: `The href of the Deployment that owns this Network.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "network[description]",
 						Description: `The updated description for the Network.`,
 						Type:        "string",
@@ -7622,6 +6776,7 @@ Required parameters:
 		Links: map[string]string{
 			"cloud":               "Href of the Cloud the network is in",
 			"default_route_table": "The href of the RouteTable that is currently active",
+			"deployment":          "Containing Deployment",
 			"self":                "Href of itself",
 		},
 	},
@@ -7629,61 +6784,6 @@ Required parameters:
 		Name:        "NetworkGateway",
 		Description: `A NetworkGateway is an interface that allows traffic to be routed between networks.`,
 		Identifier:  "application/vnd.rightscale.network_gateway",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "type",
-				FieldName: "Type",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -7878,61 +6978,6 @@ to the value of the particular option being set.
 Option keys that are supported vary depending on cloud -- please consult
 your particular cloud's documentation for available option keys.`,
 		Identifier: "application/vnd.rightscale.network_option_group",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "options",
-				FieldName: "Options",
-				FieldType: "map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "type",
-				FieldName: "Type",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -8135,43 +7180,6 @@ NetworkOptionGroup and Network.
 Amazon currently only supports attaching NetworkOptionGroups to Networks.
 Other clouds in the future may support attaching to Subnets.`,
 		Identifier: "application/vnd.rightscale.network_option_group_attachment",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "network_option_group",
-				FieldName: "NetworkOptionGroup",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -8367,32 +7375,9 @@ Required parameters:
 		},
 	},
 	"Oauth2": &metadata.Resource{
-		Name: "Oauth2",
-		Description: `Note that all API calls irrespective of the resource it is acting on, should pass a header
-"X-Api-Version" with the value "1.5".
-This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
-a bearer access token, which can be used in lieu of a session cookie when interacting with API
-resources.
-This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
-to the conventions established by other RightScale API resources. However, an API-version header is
-still required when interacting with the OAuth endpoint.
-OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
-browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
-endpoint supports the following OAuth 2.0 operations:
- * refresh_token - for end-user login using a previously-negotiated OAuth grant
- * client_credentials - for instance login using API credentials transmitted via user-data
-RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
- * clients MUST transmit an X-Api-Version header with every OAuth request
- * clients MAY transmit an account_id parameter as part of their POST form data
-If you choose to post an account_id, then the API may respond with a 301 redirect if your account
-is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
-elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
-this cluster).
-For more information on how to use OAuth 2.0 with RightScale, refer to the following:
-http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
-http://tools.ietf.org/html/draft-ietf-oauth-v2-23`,
-		Identifier: "",
-		Attributes: []*metadata.Attribute{},
+		Name:        "Oauth2",
+		Description: ``,
+		Identifier:  "",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -8554,40 +7539,20 @@ Optional parameters:
 		},
 	},
 	"Permission": &metadata.Resource{
-		Name:        "Permission",
-		Description: ``,
-		Identifier:  "application/vnd.rightscale.permission",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "deleted_at",
-				FieldName: "DeletedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "role_title",
-				FieldName: "RoleTitle",
-				FieldType: "string",
-			},
-		},
+		Name: "Permission",
+		Description: `  Please note that API 1.5 does not support operations on Governance Groups
+  or Orgs and only allows management of the following CM Roles:
+    admin, actor, observer,
+    aws_architect, publisher,
+    designer, signup_wiz,
+    enterprise_manager, server_login,
+    library, security_manager,
+    instance, server_superuser,
+    infrastructure, ss_end_user,
+    ss_designer, ss_observer
+  Moreover, this API allows management of only roles granted directly
+  on an account, to an individual user.`,
+		Identifier: "application/vnd.rightscale.permission",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -8664,7 +7629,7 @@ destroying it while the user has other permissions will result in an error.`,
 
 			&metadata.Action{
 				Name: "index",
-				Description: `List all permissions for all users of the current acount.
+				Description: `List all permissions for all users of the current account.
 Optional parameters:
 	filter`,
 				PathPatterns: []*metadata.PathPattern{
@@ -8724,55 +7689,6 @@ Optional parameters:
 		Name:        "PlacementGroup",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.placement_group",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -8788,6 +7704,22 @@ Required parameters:
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "placement_group[cloud_specific_attributes][account_type]",
+						Description: `AzureRM: The type of Storage Account.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "placement_group[deployment_href]",
+						Description: `The href of the Deployment that owns this PlacementGroup.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
 					&metadata.ActionParam{
 						Name:        "placement_group[description]",
 						Description: `The description of the Placement Group to be created.`,
@@ -8862,7 +7794,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "name", "state"},
+						ValidValues: []string{"cloud_href", "deployment_href", "name", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -8871,7 +7803,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -8882,7 +7814,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"cloud_href", "name", "state"},
+						ValidValues: []string{"cloud_href", "deployment_href", "name", "state"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -8891,7 +7823,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 			},
@@ -8917,7 +7849,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -8928,51 +7860,21 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "extended"},
 					},
 				},
 			},
 		},
 		Links: map[string]string{
-			"cloud": "Href of the Cloud that this PlacementGroup belongs to",
-			"self":  "Href of itself",
+			"cloud":      "Href of the Cloud that this PlacementGroup belongs to",
+			"deployment": "Containing Deployment",
+			"self":       "Href of itself",
 		},
 	},
 	"Preference": &metadata.Resource{
 		Name:        "Preference",
 		Description: `A Preference is a user and account-specific setting. Preferences are used in many part of the RightScale platform and can be used for custom purposes if desired.`,
 		Identifier:  "application/vnd.rightscale.preference",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "contents",
-				FieldName: "Contents",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "destroy",
@@ -9085,73 +7987,6 @@ Required parameters:
 		Description: `A Publication is a revisioned component shared with a set of Account Groups.
 If shared with your account, it can be imported in to your account.`,
 		Identifier: "application/vnd.rightscale.publication",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "commit_message",
-				FieldName: "CommitMessage",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "content_type",
-				FieldName: "ContentType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "publisher",
-				FieldName: "Publisher",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "revision",
-				FieldName: "Revision",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "revision_notes",
-				FieldName: "RevisionNotes",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "import",
@@ -9273,61 +8108,6 @@ Optional parameters:
 It is shared among all revisions of a Publication within the marketplace.
 Publication Lineages are different than lineages that exist within an account.`,
 		Identifier: "application/vnd.rightscale.publication_lineage",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "comments_emailed",
-				FieldName: "CommentsEmailed",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "comments_enabled",
-				FieldName: "CommentsEnabled",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "long_description",
-				FieldName: "LongDescription",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "short_description",
-				FieldName: "ShortDescription",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "show",
@@ -9374,73 +8154,6 @@ Optional parameters:
 		Name:        "RecurringVolumeAttachment",
 		Description: `A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.`,
 		Identifier:  "application/vnd.rightscale.recurring_volume_attachment",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "device",
-				FieldName: "Device",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "device_id",
-				FieldName: "DeviceId",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "runnable_type",
-				FieldName: "RunnableType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "size",
-				FieldName: "Size",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "status",
-				FieldName: "Status",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "storage_type",
-				FieldName: "StorageType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -9677,97 +8390,6 @@ Optional parameters:
 		Description: `A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.
 RightScale currently supports the following types of repositores: git, svn, and URLs of compressed files (tar, tgz, gzip).`,
 		Identifier: "application/vnd.rightscale.repository",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "asset_counts",
-				FieldName: "AssetCounts",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "asset_paths",
-				FieldName: "AssetPaths",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "commit_reference",
-				FieldName: "CommitReference",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "credentials",
-				FieldName: "Credentials",
-				FieldType: "map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "fetch_status",
-				FieldName: "FetchStatus",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "read_only",
-				FieldName: "ReadOnly",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "source",
-				FieldName: "Source",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "source_type",
-				FieldName: "SourceType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "cookbook_import",
@@ -10360,43 +8982,6 @@ Required parameters:
 		Description: `A RepositoryAsset represents an item discovered in a Repository. These assets represent only a view of the Repository
 the last time it was scraped. In order to use these assets, you must import them into your account.`,
 		Identifier: "application/vnd.rightscale.repository_asset",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "version",
-				FieldName: "Version",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -10480,6 +9065,186 @@ Optional parameters:
 			"self": "Href of itself",
 		},
 	},
+	"ResourceGroup": &metadata.Resource{
+		Name:        "ResourceGroup",
+		Description: ``,
+		Identifier:  "application/vnd.rightscale.resource_group",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "create",
+				Description: `Creates a ResourceGroup.
+Required parameters:
+	resource_group`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/resource_groups",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group[deployment_href]",
+						Description: `The Href of the Deployment that owns this Resource Group.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[description]",
+						Description: `The description of the Resource Group to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[cloud_href]",
+						Description: `The Href of the Cloud in which the ResourceGroup should be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[name]",
+						Description: `The name of the Resource Group to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group",
+						Description: ``,
+						Type:        "*ResourceGroupParam",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "destroy",
+				Description: `Destroys a ResourceGroup.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/resource_groups/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name: "index",
+				Description: `Lists all ResourceGroups in an account.
+Optional parameters:
+	filter`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/resource_groups",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "state"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"cloud_href", "name", "state"},
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "show",
+				Description: `Shows information about a single ResourceGroup.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/resource_groups/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name: "update",
+				Description: `Updates attributes of a given ResourceGroup.
+Required parameters:
+	resource_group`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/api/resource_groups/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/resource_groups/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group[deployment_href]",
+						Description: `The Href of the Deployment that owns this Resource Group.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "resource_group[description]",
+						Description: `The description of the Resource Group to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "resource_group",
+						Description: ``,
+						Type:        "*ResourceGroupParam2",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+		},
+		Links: map[string]string{
+			"cloud":      "Href of the Cloud that this ResourceGroup belongs to",
+			"deployment": "Associated Deployment",
+			"self":       "Href of itself",
+		},
+	},
 	"RightScript": &metadata.Resource{
 		Name: "RightScript",
 		Description: `A RightScript is an executable piece of code that can be run on a server
@@ -10489,67 +9254,6 @@ a RightScript belong to a RightScript lineage that is exposed by the
 "lineage" attribute (NOTE: This attribute is merely a string to locate
 all revisions of a RightScript and NOT a working URL).`,
 		Identifier: "application/vnd.rightscale.right_script",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "inputs",
-				FieldName: "Inputs",
-				FieldType: "[]map[string]interface{}",
-			},
-
-			&metadata.Attribute{
-				Name:      "lineage",
-				FieldName: "Lineage",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "revision",
-				FieldName: "Revision",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "source",
-				FieldName: "Source",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "commit",
@@ -10603,6 +9307,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "right_script[description]",
 						Description: `The description of the RightScript to be created.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script[packages]",
+						Description: `Space-separated list of package names needed in order to successfully run the script.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -10802,6 +9514,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "right_script[packages]",
+						Description: `The new list of packages for the RightScript`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "right_script[source]",
 						Description: `The script source to be updated.`,
 						Type:        "string",
@@ -10874,55 +9594,6 @@ Required parameters:
 		Name:        "RightScriptAttachment",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.right_script_attachment",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "digest",
-				FieldName: "Digest",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "download_url",
-				FieldName: "DownloadUrl",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "filename",
-				FieldName: "Filename",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "size",
-				FieldName: "Size",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -11128,73 +9799,6 @@ Required parameters:
 		Description: `A Route defines how networking traffic should be routed from one
 destination to another. See next_hop_type for available endpoint targets.`,
 		Identifier: "application/vnd.rightscale.route",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "cloud_specific_attributes",
-				FieldName: "CloudSpecificAttributes",
-				FieldType: "map[string]interface{}",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "destination_cidr_block",
-				FieldName: "DestinationCidrBlock",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "next_hop_ip",
-				FieldName: "NextHopIp",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "next_hop_type",
-				FieldName: "NextHopType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "next_hop_url",
-				FieldName: "NextHopUrl",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -11476,55 +10080,6 @@ Required parameters:
 		Name:        "RouteTable",
 		Description: `Grouped listing of Routes`,
 		Identifier:  "application/vnd.rightscale.route_table",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "routes",
-				FieldName: "Routes",
-				FieldType: "[]Route",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -11749,49 +10304,6 @@ Required parameters:
 RightScript or Chef recipes, and could be associated with any one of the three runlists of a
 ServerTemplate (boot, operational, decommission).`,
 		Identifier: "application/vnd.rightscale.runnable_binding",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "id",
-				FieldName: "Id",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "position",
-				FieldName: "Position",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "recipe",
-				FieldName: "Recipe",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "right_script",
-				FieldName: "RightScript",
-				FieldType: "RightScript",
-			},
-
-			&metadata.Attribute{
-				Name:      "sequence",
-				FieldName: "Sequence",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -12026,7 +10538,6 @@ Optional parameters:
 		Name:        "Scheduler",
 		Description: `Provide RightLink with the ability to schedule script executions on instances`,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "schedule_recipe",
@@ -12342,43 +10853,6 @@ Optional parameters:
 		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
 trust relationships amongst different security groups.`,
 		Identifier: "application/vnd.rightscale.security_group",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -12394,6 +10868,14 @@ Required parameters:
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "security_group[deployment_href]",
+						Description: `The href of the Deployment that owns this SecurityGroup.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
 					&metadata.ActionParam{
 						Name:        "security_group[network_href]",
 						Description: ``,
@@ -12468,7 +10950,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"name", "network_href", "resource_uid"},
+						ValidValues: []string{"deployment_href", "name", "network_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12488,7 +10970,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"name", "network_href", "resource_uid"},
+						ValidValues: []string{"deployment_href", "name", "network_href", "resource_uid"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -12541,6 +11023,7 @@ Optional parameters:
 		},
 		Links: map[string]string{
 			"cloud":                "Associated cloud",
+			"deployment":           "Containing Deployment",
 			"network":              "Associated network",
 			"security_group_rules": "Associated security_group_rules",
 			"self":                 "Href of itself",
@@ -12550,97 +11033,6 @@ Optional parameters:
 		Name:        "SecurityGroupRule",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.security_group_rule",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "cidr_ips",
-				FieldName: "CidrIps",
-				FieldType: "[]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "direction",
-				FieldName: "Direction",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "end_port",
-				FieldName: "EndPort",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "group_name",
-				FieldName: "GroupName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "group_owner",
-				FieldName: "GroupOwner",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "group_uid",
-				FieldName: "GroupUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "href",
-				FieldName: "Href",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "icmp_code",
-				FieldName: "IcmpCode",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "icmp_type",
-				FieldName: "IcmpType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "protocol",
-				FieldName: "Protocol",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "source_type",
-				FieldName: "SourceType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "start_port",
-				FieldName: "StartPort",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -12676,16 +11068,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "security_group_rule[protocol_details][icmp_type]",
-						Description: `ICMP type. Required if protocol is 'icmp'.`,
+						Name:        "security_group_rule[protocol_details][icmp_code]",
+						Description: `ICMP code. Required if protocol is 'icmp'.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "security_group_rule[protocol_details][icmp_code]",
-						Description: `ICMP code. Required if protocol is 'icmp'.`,
+						Name:        "security_group_rule[protocol_details][icmp_type]",
+						Description: `ICMP type. Required if protocol is 'icmp'.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12751,12 +11143,29 @@ Required parameters:
 						ValidValues: []string{"tcp", "udp", "icmp", "all"},
 					},
 					&metadata.ActionParam{
+						Name:        "security_group_rule[priority]",
+						Description: `Lower takes precedence. Supported by AzureRM cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "security_group_rule[cidr_ips]",
 						Description: `An IP address range in CIDR notation. Required if source_type is 'cidr_ips'.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "security_group_rule[action]",
+						Description: `Allow or deny rule. Defaults to allow. Supported by AzureRM cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"allow", "deny"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -12935,67 +11344,6 @@ Accessing the current_instance of a server results in immediate runtime modifica
 Changes to the next_instance association prepares the
 configuration for the next instance launch/start (therefore they have no effect until such operation is performed).`,
 		Identifier: "application/vnd.rightscale.server",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "current_instance",
-				FieldName: "CurrentInstance",
-				FieldType: "*Instance",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "next_instance",
-				FieldName: "NextInstance",
-				FieldType: "*Instance",
-			},
-
-			&metadata.Attribute{
-				Name:      "optimized",
-				FieldName: "Optimized",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "clone",
@@ -13118,6 +11466,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][local_ssd_count]",
 						Description: `Additional local SSDs. Supported by GCE cloud only`,
 						Type:        "string",
@@ -13126,8 +11482,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][keep_alive_url]",
-						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Name:        "server[instance][cloud_specific_attributes][service_account]",
+						Description: `Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -13136,6 +11500,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
 						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -13182,6 +11554,14 @@ Required parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][disk_gb]",
@@ -13242,14 +11622,6 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][instance_type_href]",
-						Description: `The href of the Instance Type.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server[instance][ramdisk_image_href]",
 						Description: `The href of the Ramdisk Image.`,
 						Type:        "string",
@@ -13260,6 +11632,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[instance][private_ip_address]",
 						Description: `The private ip address for the instance`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][instance_type_href]",
+						Description: `The href of the Instance Type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -13322,19 +11702,19 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][image_href]",
-						Description: `The href of the Image to use.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server[instance][cloud_href]",
 						Description: `The href of the cloud that the Server should be added to.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[instance][image_href]",
+						Description: `The href of the Image to use.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -13739,8 +12119,8 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "server[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -13748,8 +12128,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server[instance][cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "server[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -13768,6 +12148,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server[root_volume_size]",
 						Description: `The size for root disk. Not supported in all Clouds.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server[deployment_href]",
+						Description: `The updated deployment of the server.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -13918,79 +12306,6 @@ current_instances relationship that gives the information about
 all the running instances in the array. Changes to the next_instance association prepares the configuration for the next instance that is to be launched
 in the array and will therefore not affect any of the currently running instances.`,
 		Identifier: "application/vnd.rightscale.server_array",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "array_type",
-				FieldName: "ArrayType",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "current_instances",
-				FieldName: "CurrentInstances",
-				FieldType: "[]Instance",
-			},
-
-			&metadata.Attribute{
-				Name:      "datacenter_policy",
-				FieldName: "DatacenterPolicy",
-				FieldType: "[]DatacenterPolicy",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "elasticity_params",
-				FieldName: "ElasticityParams",
-				FieldType: "map[string]interface{}",
-			},
-
-			&metadata.Attribute{
-				Name:      "instances_count",
-				FieldName: "InstancesCount",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "next_instance",
-				FieldName: "NextInstance",
-				FieldType: "*Instance",
-			},
-
-			&metadata.Attribute{
-				Name:      "optimized",
-				FieldName: "Optimized",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "clone",
@@ -14111,20 +12426,20 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][iam_instance_profile]",
-						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][root_volume_type_uid]",
 						Description: `The type of root volume for instance. Only available on clouds supporting root volume type.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][iam_instance_profile]",
+						Description: `The name or ARN of the IAM Instance Profile (IIP) to associate with the instance (Amazon only)`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_interface]",
@@ -14135,8 +12450,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14144,8 +12459,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14170,6 +12485,22 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][availability_set]",
+						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][service_account]",
+						Description: `Email of service account for instance. Scope will default to cloud-platform. Supported by GCE cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_count]",
 						Description: `Additional local SSDs. Supported by GCE cloud only`,
 						Type:        "string",
@@ -14178,8 +12509,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][keep_alive_url]",
-						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][admin_username]",
+						Description: `The user that will be granted administrative privileges. Supported by AzureRM cloud only. For more information, <a href="http://docs.rightscale.com/clouds/azure_resource_manager/reference/limitations.html">review the documentation</a>.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14188,6 +12519,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][max_spot_price]",
 						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14220,6 +12559,14 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
 						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
@@ -14228,12 +12575,12 @@ Required parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
-						Description: `The size of instance memory. Supported by UCA cloud only.`,
-						Type:        "int",
+						Name:        "server_array[instance][cloud_specific_attributes][metadata]",
+						Description: `Extra data used for configuration, in query string format.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
-						NonBlank:    false,
+						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][disk_gb]",
@@ -14260,16 +12607,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][schedule][][max_count]",
-						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
+						Name:        "server_array[elasticity_params][schedule][][min_count]",
+						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][schedule][][min_count]",
-						Description: `The minimum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
+						Name:        "server_array[elasticity_params][schedule][][max_count]",
+						Description: `The maximum number of servers that must be operational at all times in the server array. NOTE: Any changes that are made to the min/max count in the server array schedule will overwrite the array's default min/max count settings.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14301,16 +12648,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][bounds][max_count]",
-						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
+						Name:        "server_array[datacenter_policy][][datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[datacenter_policy][][datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
+						Name:        "server_array[elasticity_params][bounds][max_count]",
+						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14351,14 +12698,6 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][placement_group_href]",
-						Description: `The href of the Placement Group.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
 						Name:        "server_array[instance][security_group_hrefs][]",
 						Description: `The hrefs of the Security Groups.`,
 						Type:        "[]string",
@@ -14375,8 +12714,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][ramdisk_image_href]",
-						Description: `The href of the Ramdisk Image.`,
+						Name:        "server_array[instance][placement_group_href]",
+						Description: `The href of the Placement Group.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14391,8 +12730,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][kernel_image_href]",
-						Description: `The href of the Kernel Image.`,
+						Name:        "server_array[instance][ramdisk_image_href]",
+						Description: `The href of the Ramdisk Image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -14401,6 +12740,14 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[datacenter_policy][][weight]",
 						Description: `Instance allocation (should total 100%).`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][kernel_image_href]",
+						Description: `The href of the Kernel Image.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -15328,49 +13675,6 @@ provisioned by your cloud provider.
 All revisions of a ServerTemplate belong to a ServerTemplate lineage that is exposed by the "lineage" attribute.
 (NOTE: This attribute is merely a string to locate all revisions of a ServerTemplate and NOT a working URL)`,
 		Identifier: "application/vnd.rightscale.server_template",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "inputs",
-				FieldName: "Inputs",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "lineage",
-				FieldName: "Lineage",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "revision",
-				FieldName: "Revision",
-				FieldType: "int",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "clone",
@@ -15928,37 +14232,6 @@ Required parameters:
 		Description: `This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively
 add/delete MultiCloudImages to ServerTemplates and make them the default one.`,
 		Identifier: "application/vnd.rightscale.server_template_multi_cloud_image",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "is_default",
-				FieldName: "IsDefault",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -16142,25 +14415,6 @@ Optional parameters:
 * If the session expires, it will return a 403 http code with a "Session cookie is expired or invalid" message.
 Note that all API calls irrespective of the resource it is acting on, should pass a header "X_API_VERSION" with the value "1.5".`,
 		Identifier: "application/vnd.rightscale.session",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "message",
-				FieldName: "Message",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "accounts",
@@ -16346,37 +14600,6 @@ curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/s
 		Description: `Ssh Keys represent a created SSH Key that exists in the cloud.
 An ssh key might also contain the private part of the key, and can be used to login to instances launched with it.`,
 		Identifier: "application/vnd.rightscale.ssh_key",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "material",
-				FieldName: "Material",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -16531,55 +14754,6 @@ Optional parameters:
 		Description: `A Subnet is a logical grouping of network devices. An Instance can have many
 Subnets.`,
 		Identifier: "application/vnd.rightscale.subnet",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "cidr_block",
-				FieldName: "CidrBlock",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "is_default",
-				FieldName: "IsDefault",
-				FieldType: "bool",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "visibility",
-				FieldName: "Visibility",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -16776,6 +14950,14 @@ Required parameters:
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "subnet[cidr_block]",
+						Description: `The range of IP addresses for the Subnet.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "subnet[name]",
 						Description: `The updated name for the Subnet.`,
 						Type:        "string",
@@ -16810,7 +14992,6 @@ Required parameters:
 Tags are commonly used as an extra label or identifier.
 For example, you might want to add a tag to an EBS Snapshot or AMI so that you can find it more quickly.`,
 		Identifier: "",
-		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "by_resource",
@@ -16894,7 +15075,7 @@ Optional parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
-						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts"},
+						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts", "placement_groups"},
 					},
 					&metadata.ActionParam{
 						Name:        "with_deleted",
@@ -16948,7 +15129,7 @@ Optional parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
-						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts"},
+						ValidValues: []string{"servers", "instances", "volumes", "volume_snapshots", "deployments", "server_templates", "multi_cloud_images", "images", "server_arrays", "accounts", "placement_groups"},
 					},
 					&metadata.ActionParam{
 						Name:        "tags",
@@ -17088,31 +15269,6 @@ Required parameters:
 An example of a type of task is an operational script that runs in an instance.
 Task resources can be returned by certain API calls, such as Instances.run_executable, Backups.restore, and others.`,
 		Identifier: "application/vnd.rightscale.task",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "detail",
-				FieldName: "Detail",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "summary",
-				FieldName: "Summary",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "show",
@@ -17165,73 +15321,6 @@ Optional parameters:
 		Name:        "User",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.user",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "company",
-				FieldName: "Company",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "email",
-				FieldName: "Email",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "first_name",
-				FieldName: "FirstName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "last_name",
-				FieldName: "LastName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "phone",
-				FieldName: "Phone",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "principal_uid",
-				FieldName: "PrincipalUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "timezone_name",
-				FieldName: "TimezoneName",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -17404,12 +15493,12 @@ Optional parameters:
 				Description: `Update a user's contact information, change their password, or update their SSO settings.
 In order to update a user record, one of the following criteria must be met:
 1. You've authenticated and are the user being modified, and you provide a valid current_password.
-2. You're an admin and the user is linked to your enterprise SSO provider.
-3. You're an admin and the user's email matches the email_domain of your enterprise SSO provider.
+2. You're an admin and the user is linked to your organization SSO provider.
+3. You're an admin and the user's email matches the email_domain of your organization SSO provider.
 In other words: you can update yourself if you know your own password, you can update
 yourself or others if you're an admin and they're linked to your SSO provider, and you can update any user
 if you're an admin and their email address is known to belong to your organization.
-For information about enabling canonical email domain ownership for your enterprise, please
+For information about enabling canonical email domain ownership for your organization, please
 talk to your RightScale account manager or contact our support team.
 To update a user's contact information, simply pass the desired values for email, first_name,
 and so forth.
@@ -17447,11 +15536,11 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "user[current_email]",
-						Description: `The existing email of this user.`,
+						Name:        "user[timezone_name]",
+						Description: `This can be in the form of country/region or timezone name. For example 'America/Los_Angeles' or 'GB' or 'UTC'. A complete list of acceptable values is available in the Settings > User Settings > Preferences page.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   true,
+						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -17463,11 +15552,11 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "user[timezone_name]",
-						Description: `This can be in the form of country/region or timezone name. For example 'America/Los_Angeles' or 'GB' or 'UTC'. A complete list of acceptable values is available in the Settings > User Settings > Preferences page.`,
+						Name:        "user[current_email]",
+						Description: `The existing email of this user.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   false,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -17485,6 +15574,14 @@ Required parameters:
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "user[login_name]",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
 					},
 					&metadata.ActionParam{
 						Name:        "user[last_name]",
@@ -17540,7 +15637,6 @@ Required parameters:
 		Name:        "UserData",
 		Description: ``,
 		Identifier:  "",
-		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -17562,85 +15658,6 @@ Required parameters:
 		Name:        "Volume",
 		Description: `A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).`,
 		Identifier:  "application/vnd.rightscale.volume",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "cloud_specific_attributes",
-				FieldName: "CloudSpecificAttributes",
-				FieldType: "map[string]interface{}",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "iops",
-				FieldName: "Iops",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "placement_group",
-				FieldName: "PlacementGroup",
-				FieldType: "",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "size",
-				FieldName: "Size",
-				FieldType: "int",
-			},
-
-			&metadata.Attribute{
-				Name:      "status",
-				FieldName: "Status",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "volume_type",
-				FieldName: "VolumeType",
-				FieldType: "string",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -17935,55 +15952,6 @@ Required parameters:
 		Name:        "VolumeAttachment",
 		Description: `A VolumeAttachment represents a relationship between a volume and an instance.`,
 		Identifier:  "application/vnd.rightscale.volume_attachment",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "device",
-				FieldName: "Device",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "device_id",
-				FieldName: "DeviceId",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -18018,8 +15986,32 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "volume_attachment[settings][delete_on_termination]",
+						Description: `Setting to 'true' will schedule volume deletion if instance was terminated, default value is 'false'`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "volume_attachment[instance_href]",
-						Description: `The href of the instance to which the volume will be attached to.`,
+						Description: `The href of the instance to which the volume will be attached. Mutually exclusive with server_href.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "volume_attachment[api_behavior]",
+						Description: `Setting to 'async' will cause volume_attachments to happen asynchrously,default value is null`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "volume_attachment[server_href]",
+						Description: `The href of the server to which the volume will be attached. Mutually exclusive with instance_href.Note: the Server must have a current_instance.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -18029,14 +16021,6 @@ Required parameters:
 						Name:        "volume_attachment[volume_href]",
 						Description: `The href of the volume to be attached.`,
 						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "volume_attachment[settings]",
-						Description: `Additional parameters concerning created attachment. For example, ':delete_on_termination => true' will schedule volume deletion if instance was terminated.`,
-						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -18247,67 +16231,6 @@ Optional parameters:
 various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
 Snapshots consist of a series of data blocks that are incrementally saved.`,
 		Identifier: "application/vnd.rightscale.volume_snapshot",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "progress",
-				FieldName: "Progress",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "size",
-				FieldName: "Size",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "state",
-				FieldName: "State",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "copy",
@@ -18569,55 +16492,6 @@ Optional parameters:
 		Name:        "VolumeType",
 		Description: `A VolumeType describes the type of volume, particularly the size.`,
 		Identifier:  "application/vnd.rightscale.volume_type",
-		Attributes: []*metadata.Attribute{
-			&metadata.Attribute{
-				Name:      "actions",
-				FieldName: "Actions",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "created_at",
-				FieldName: "CreatedAt",
-				FieldType: "*RubyTime",
-			},
-
-			&metadata.Attribute{
-				Name:      "description",
-				FieldName: "Description",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "links",
-				FieldName: "Links",
-				FieldType: "[]map[string]string",
-			},
-
-			&metadata.Attribute{
-				Name:      "name",
-				FieldName: "Name",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "resource_uid",
-				FieldName: "ResourceUid",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "size",
-				FieldName: "Size",
-				FieldType: "string",
-			},
-
-			&metadata.Attribute{
-				Name:      "updated_at",
-				FieldName: "UpdatedAt",
-				FieldType: "*RubyTime",
-			},
-		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",

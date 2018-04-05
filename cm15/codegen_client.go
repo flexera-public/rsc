@@ -2,7 +2,7 @@
 //                     RightScale API client
 //
 // Generated with:
-// $ api15gen
+// $ api15gen -metadata=cm15 -output=cm15
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -295,6 +295,40 @@ func (api *API) AlertLocator(href string) *AlertLocator {
 
 //===== Actions
 
+// DELETE /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
+// DELETE /api/servers/:server_id/alerts/:id
+// DELETE /api/server_arrays/:server_array_id/alerts/:id
+// DELETE /api/deployments/:deployment_id/alerts/:id
+// DELETE /api/alerts/:id
+//
+// Destroys the Alert.
+func (loc *AlertLocator) Destroy() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("Alert", "destroy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // POST /api/clouds/:cloud_id/instances/:instance_id/alerts/:id/disable
 // POST /api/servers/:server_id/alerts/:id/disable
 // POST /api/server_arrays/:server_array_id/alerts/:id/disable
@@ -425,9 +459,10 @@ func (loc *AlertLocator) Index(options rsapi.APIParams) ([]*Alert, error) {
 // Suppresses the Alert from being triggered for a given time period. Idempotent.
 // Required parameters:
 // duration: The time period in seconds to suppress Alert from being triggered.
-func (loc *AlertLocator) Quench(duration string) error {
+func (loc *AlertLocator) Quench(duration string) (string, error) {
+	var res string
 	if duration == "" {
-		return fmt.Errorf("duration is required")
+		return res, fmt.Errorf("duration is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -436,15 +471,15 @@ func (loc *AlertLocator) Quench(duration string) error {
 	}
 	uri, err := loc.ActionPath("Alert", "quench")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -453,9 +488,15 @@ func (loc *AlertLocator) Quench(duration string) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	res = string(respBody)
+	return res, err
 }
 
 // GET /api/clouds/:cloud_id/instances/:instance_id/alerts/:id
@@ -1194,6 +1235,8 @@ func (api *API) BackupLocator(href string) *BackupLocator {
 // The algorithm for choosing the perfect backups to keep is simple. It is the union of those set of backups if each of those conditions are applied
 // independently. i.e backups_to_keep = backups_to_keep(keep_last) U backups_to_keep(dailies) U backups_to_keep(weeklies) U backups_to_keep(monthlies) U backups_to_keep(yearlies)
 // Hence, it is important to "commit" a backup to make it eligible for cleanup.
+// Using skip_deletion='true' attribute will return an index of what will be deleted when the action is run.
+// The status code returned is 200 when using this parameter instead of 204.
 // Required parameters:
 // keep_last: The number of backups that should be kept.
 // lineage: The lineage of the backups that are to be cleaned-up.
@@ -1201,6 +1244,7 @@ func (api *API) BackupLocator(href string) *BackupLocator {
 // cloud_href: Backups belonging to only this cloud are considered for cleanup. Otherwise, all backups in the account with the same lineage will be considered.
 // dailies: The number of daily backups(the latest one in each day) that should be kept.
 // monthlies: The number of monthly backups(the latest one in each month) that should be kept.
+// skip_deletion: When set to 'true' return an index of what backups would be cleaned-up.  Otherwise, the backups will be removed.
 // weeklies: The number of weekly backups(the latest one in each week) that should be kept.
 // yearlies: The number of yearly backups(the latest one in each year) that should be kept.
 func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi.APIParams) error {
@@ -1227,6 +1271,10 @@ func (loc *BackupLocator) Cleanup(keepLast string, lineage string, options rsapi
 	var monthliesOpt = options["monthlies"]
 	if monthliesOpt != nil {
 		p["monthlies"] = monthliesOpt
+	}
+	var skipDeletionOpt = options["skip_deletion"]
+	if skipDeletionOpt != nil {
+		p["skip_deletion"] = skipDeletionOpt
 	}
 	var weekliesOpt = options["weeklies"]
 	if weekliesOpt != nil {
@@ -3003,7 +3051,7 @@ func (loc *DeploymentLocator) Clone(options rsapi.APIParams) error {
 // Creates a new deployment with the given parameters.
 // Required parameters:
 // deployment
-func (loc *DeploymentLocator) Create(deployment *DeploymentParam) (*DeploymentLocator, error) {
+func (loc *DeploymentLocator) Create(deployment *DeploymentParam2) (*DeploymentLocator, error) {
 	var res *DeploymentLocator
 	if deployment == nil {
 		return res, fmt.Errorf("deployment is required")
@@ -3280,7 +3328,7 @@ func (loc *DeploymentLocator) Unlock() error {
 // Updates attributes of a given deployment.
 // Required parameters:
 // deployment
-func (loc *DeploymentLocator) Update(deployment *DeploymentParam) error {
+func (loc *DeploymentLocator) Update(deployment *DeploymentParam3) error {
 	if deployment == nil {
 		return fmt.Errorf("deployment is required")
 	}
@@ -3372,8 +3420,8 @@ func (loc *HealthCheckLocator) Index() ([]map[string]interface{}, error) {
 
 /******  IdentityProvider ******/
 
-// An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Enterprise account,
-// and is trusted by the RightScale dashboard to authenticate your enterprise's end users.
+// An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Organization,
+// and is trusted by the RightScale dashboard to authenticate your organization's end users.
 // To register an Identity Provider, contact your account manager.
 type IdentityProvider struct {
 	Actions       []map[string]string `json:"actions,omitempty"`
@@ -3844,6 +3892,7 @@ type Instance struct {
 	PublicDnsNames           []string               `json:"public_dns_names,omitempty"`
 	PublicIpAddresses        []string               `json:"public_ip_addresses,omitempty"`
 	ResourceUid              string                 `json:"resource_uid,omitempty"`
+	RsProvisioned            bool                   `json:"rs_provisioned,omitempty"`
 	SecurityGroups           []SecurityGroup        `json:"security_groups,omitempty"`
 	State                    string                 `json:"state,omitempty"`
 	Subnets                  []Subnet               `json:"subnets,omitempty"`
@@ -5568,13 +5617,233 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	return nil
 }
 
+/******  MultiCloudImageMatcher ******/
+
+// A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a
+// given cloud type. For now, only one type of matcher is supported
+// (fingerprint). Fingerprint will match images based upon a checksum as returned
+// by the cloud and is supported CloudStack, OpenStack, and vSphere clouds. Pass
+// in an example image with an image_href from which to generate the fingerprint.
+type MultiCloudImageMatcher struct {
+	Actions       []map[string]string `json:"actions,omitempty"`
+	CloudType     string              `json:"cloud_type,omitempty"`
+	Links         []map[string]string `json:"links,omitempty"`
+	MatchCriteria map[string]string   `json:"match_criteria,omitempty"`
+	MatchType     string              `json:"match_type,omitempty"`
+	UserData      string              `json:"user_data,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *MultiCloudImageMatcher) Locator(api *API) *MultiCloudImageMatcherLocator {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.MultiCloudImageMatcherLocator(l["href"])
+		}
+	}
+	return nil
+}
+
+//===== Locator
+
+// MultiCloudImageMatcherLocator exposes the MultiCloudImageMatcher resource actions.
+type MultiCloudImageMatcherLocator struct {
+	Href
+	api *API
+}
+
+// MultiCloudImageMatcherLocator builds a locator from the given href.
+func (api *API) MultiCloudImageMatcherLocator(href string) *MultiCloudImageMatcherLocator {
+	return &MultiCloudImageMatcherLocator{Href(href), api}
+}
+
+//===== Actions
+
+// POST /api/multi_cloud_images/:multi_cloud_image_id/matchers
+//
+// Creates a new setting matcher for an existing MultiCloudImage.
+// Required parameters:
+// multi_cloud_image_matcher
+func (loc *MultiCloudImageMatcherLocator) Create(multiCloudImageMatcher *MultiCloudImageMatcherParam) (*MultiCloudImageMatcherLocator, error) {
+	var res *MultiCloudImageMatcherLocator
+	if multiCloudImageMatcher == nil {
+		return res, fmt.Errorf("multiCloudImageMatcher is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"multi_cloud_image_matcher": multiCloudImageMatcher,
+	}
+	uri, err := loc.ActionPath("MultiCloudImageMatcher", "create")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &MultiCloudImageMatcherLocator{Href(location), loc.api}, nil
+	}
+}
+
+// DELETE /api/multi_cloud_images/:multi_cloud_image_id/matchers/:id
+//
+// Deletes a MultiCloudImage setting matcher.
+func (loc *MultiCloudImageMatcherLocator) Destroy() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("MultiCloudImageMatcher", "destroy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// GET /api/multi_cloud_images/:multi_cloud_image_id/matchers
+//
+// Lists the MultiCloudImage setting matchers.
+func (loc *MultiCloudImageMatcherLocator) Index() ([]*MultiCloudImageMatcher, error) {
+	var res []*MultiCloudImageMatcher
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("MultiCloudImageMatcher", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// POST /api/multi_cloud_images/:multi_cloud_image_id/matchers/:id/rematch
+//
+// Generates new MultiCloudImageSettings based upon match_criteria. Returns hash of created/updated/destroyed settings.
+func (loc *MultiCloudImageMatcherLocator) Rematch() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("MultiCloudImageMatcher", "rematch")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// GET /api/multi_cloud_images/:multi_cloud_image_id/matchers/:id
+//
+// Show information about a single MultiCloudImage setting matcher.
+func (loc *MultiCloudImageMatcherLocator) Show() (*MultiCloudImageMatcher, error) {
+	var res *MultiCloudImageMatcher
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("MultiCloudImageMatcher", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
 /******  MultiCloudImageSetting ******/
 
 // A MultiCloudImageSetting defines which
 // settings should be used when a server is launched in a cloud.
 type MultiCloudImageSetting struct {
-	Actions []map[string]string `json:"actions,omitempty"`
-	Links   []map[string]string `json:"links,omitempty"`
+	Actions  []map[string]string `json:"actions,omitempty"`
+	Links    []map[string]string `json:"links,omitempty"`
+	UserData string              `json:"user_data,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -5759,7 +6028,7 @@ func (loc *MultiCloudImageSettingLocator) Show() (*MultiCloudImageSetting, error
 
 // PUT /api/multi_cloud_images/:multi_cloud_image_id/settings/:id
 //
-// Updates a settings for a MultiCLoudImage.
+// Updates a settings for a MultiCloudImage.
 // Required parameters:
 // multi_cloud_image_setting
 func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCloudImageSettingParam) error {
@@ -6749,29 +7018,6 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 
 /******  Oauth2 ******/
 
-// Note that all API calls irrespective of the resource it is acting on, should pass a header
-// "X-Api-Version" with the value "1.5".
-// This is an OAuth 2.0 token endpoint that can be used to perform token-refresh operations and obtain
-// a bearer access token, which can be used in lieu of a session cookie when interacting with API
-// resources.
-// This is not an API resource; in order to maintain compatibility with OAuth 2.0, it does not conform
-// to the conventions established by other RightScale API resources. However, an API-version header is
-// still required when interacting with the OAuth endpoint.
-// OAuth 2.0 endpoints always use the POST verb, accept a www-urlencoded request body (similarly to a
-// browser form submission) and the OAuth action is indicated by the "grant_type" parameter. This
-// endpoint supports the following OAuth 2.0 operations:
-// * refresh_token - for end-user login using a previously-negotiated OAuth grant
-// * client_credentials - for instance login using API credentials transmitted via user-data
-// RightScale's OAuth implementation has two proprietary aspects that you should be aware of:
-// * clients MUST transmit an X-Api-Version header with every OAuth request
-// * clients MAY transmit an account_id parameter as part of their POST form data
-// If you choose to post an account_id, then the API may respond with a 301 redirect if your account
-// is hosted in another RightScale cluster. If you omit this parameter and your account is hosted
-// elsewhere, then you will simply receive a 400 Bad Request (because your grant is not known to
-// this cluster).
-// For more information on how to use OAuth 2.0 with RightScale, refer to the following:
-// http://support.rightscale.com/12-Guides/03-RightScale_API/OAuth
-// http://tools.ietf.org/html/draft-ietf-oauth-v2-23
 type Oauth2 struct {
 }
 
@@ -6886,10 +7132,23 @@ func (loc *Oauth2Locator) Create(grantType string, options rsapi.APIParams) (map
 
 /******  Permission ******/
 
+// Please note that API 1.5 does not support operations on Governance Groups
+// or Orgs and only allows management of the following CM Roles:
+// admin, actor, observer,
+// aws_architect, publisher,
+// designer, signup_wiz,
+// enterprise_manager, server_login,
+// library, security_manager,
+// instance, server_superuser,
+// infrastructure, ss_end_user,
+// ss_designer, ss_observer
+// Moreover, this API allows management of only roles granted directly
+// on an account, to an individual user.
 type Permission struct {
 	Actions   []map[string]string `json:"actions,omitempty"`
 	CreatedAt *RubyTime           `json:"created_at,omitempty"`
 	DeletedAt *RubyTime           `json:"deleted_at,omitempty"`
+	Id        string              `json:"id,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	RoleTitle string              `json:"role_title,omitempty"`
 }
@@ -7010,7 +7269,7 @@ func (loc *PermissionLocator) Destroy() error {
 
 // GET /api/permissions
 //
-// List all permissions for all users of the current acount.
+// List all permissions for all users of the current account.
 // Optional parameters:
 // filter
 func (loc *PermissionLocator) Index(options rsapi.APIParams) ([]*Permission, error) {
@@ -7092,14 +7351,15 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 /******  PlacementGroup ******/
 
 type PlacementGroup struct {
-	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
-	Description string              `json:"description,omitempty"`
-	Links       []map[string]string `json:"links,omitempty"`
-	Name        string              `json:"name,omitempty"`
-	ResourceUid string              `json:"resource_uid,omitempty"`
-	State       string              `json:"state,omitempty"`
-	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+	Actions                 []map[string]string    `json:"actions,omitempty"`
+	CloudSpecificAttributes map[string]interface{} `json:"cloud_specific_attributes,omitempty"`
+	CreatedAt               *RubyTime              `json:"created_at,omitempty"`
+	Description             string                 `json:"description,omitempty"`
+	Links                   []map[string]string    `json:"links,omitempty"`
+	Name                    string                 `json:"name,omitempty"`
+	ResourceUid             string                 `json:"resource_uid,omitempty"`
+	State                   string                 `json:"state,omitempty"`
+	UpdatedAt               *RubyTime              `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -7486,17 +7746,17 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 // A Publication is a revisioned component shared with a set of Account Groups.
 // If shared with your account, it can be imported in to your account.
 type Publication struct {
-	Actions       []map[string]string `json:"actions,omitempty"`
-	CommitMessage string              `json:"commit_message,omitempty"`
-	ContentType   string              `json:"content_type,omitempty"`
-	CreatedAt     *RubyTime           `json:"created_at,omitempty"`
-	Description   string              `json:"description,omitempty"`
-	Links         []map[string]string `json:"links,omitempty"`
-	Name          string              `json:"name,omitempty"`
-	Publisher     string              `json:"publisher,omitempty"`
-	Revision      int                 `json:"revision,omitempty"`
-	RevisionNotes string              `json:"revision_notes,omitempty"`
-	UpdatedAt     *RubyTime           `json:"updated_at,omitempty"`
+	Actions       []map[string]string    `json:"actions,omitempty"`
+	CommitMessage map[string]interface{} `json:"commit_message,omitempty"`
+	ContentType   string                 `json:"content_type,omitempty"`
+	CreatedAt     *RubyTime              `json:"created_at,omitempty"`
+	Description   string                 `json:"description,omitempty"`
+	Links         []map[string]string    `json:"links,omitempty"`
+	Name          string                 `json:"name,omitempty"`
+	Publisher     string                 `json:"publisher,omitempty"`
+	Revision      int                    `json:"revision,omitempty"`
+	RevisionNotes string                 `json:"revision_notes,omitempty"`
+	UpdatedAt     *RubyTime              `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -8551,6 +8811,237 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.APIParams) (*RepositoryAss
 	return res, err
 }
 
+/******  ResourceGroup ******/
+
+type ResourceGroup struct {
+	Actions     []map[string]string `json:"actions,omitempty"`
+	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
+	Description string              `json:"description,omitempty"`
+	Links       []map[string]string `json:"links,omitempty"`
+	Name        string              `json:"name,omitempty"`
+	ResourceUid string              `json:"resource_uid,omitempty"`
+	State       string              `json:"state,omitempty"`
+	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *ResourceGroup) Locator(api *API) *ResourceGroupLocator {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.ResourceGroupLocator(l["href"])
+		}
+	}
+	return nil
+}
+
+//===== Locator
+
+// ResourceGroupLocator exposes the ResourceGroup resource actions.
+type ResourceGroupLocator struct {
+	Href
+	api *API
+}
+
+// ResourceGroupLocator builds a locator from the given href.
+func (api *API) ResourceGroupLocator(href string) *ResourceGroupLocator {
+	return &ResourceGroupLocator{Href(href), api}
+}
+
+//===== Actions
+
+// POST /api/resource_groups
+//
+// Creates a ResourceGroup.
+// Required parameters:
+// resource_group
+func (loc *ResourceGroupLocator) Create(resourceGroup *ResourceGroupParam) (*ResourceGroupLocator, error) {
+	var res *ResourceGroupLocator
+	if resourceGroup == nil {
+		return res, fmt.Errorf("resourceGroup is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"resource_group": resourceGroup,
+	}
+	uri, err := loc.ActionPath("ResourceGroup", "create")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ResourceGroupLocator{Href(location), loc.api}, nil
+	}
+}
+
+// DELETE /api/resource_groups/:id
+//
+// Destroys a ResourceGroup.
+func (loc *ResourceGroupLocator) Destroy() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ResourceGroup", "destroy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// GET /api/resource_groups
+//
+// Lists all ResourceGroups in an account.
+// Optional parameters:
+// filter
+func (loc *ResourceGroupLocator) Index(options rsapi.APIParams) ([]*ResourceGroup, error) {
+	var res []*ResourceGroup
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ResourceGroup", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /api/resource_groups/:id
+//
+// Shows information about a single ResourceGroup.
+func (loc *ResourceGroupLocator) Show() (*ResourceGroup, error) {
+	var res *ResourceGroup
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ResourceGroup", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// PUT /api/resource_groups/:id
+//
+// Updates attributes of a given ResourceGroup.
+// Required parameters:
+// resource_group
+func (loc *ResourceGroupLocator) Update(resourceGroup *ResourceGroupParam2) error {
+	if resourceGroup == nil {
+		return fmt.Errorf("resourceGroup is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"resource_group": resourceGroup,
+	}
+	uri, err := loc.ActionPath("ResourceGroup", "update")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 /******  RightScript ******/
 
 // A RightScript is an executable piece of code that can be run on a server
@@ -8567,6 +9058,7 @@ type RightScript struct {
 	Lineage     string                   `json:"lineage,omitempty"`
 	Links       []map[string]string      `json:"links,omitempty"`
 	Name        string                   `json:"name,omitempty"`
+	Packages    string                   `json:"packages,omitempty"`
 	Revision    int                      `json:"revision,omitempty"`
 	Source      string                   `json:"source,omitempty"`
 	UpdatedAt   *RubyTime                `json:"updated_at,omitempty"`
@@ -10258,21 +10750,29 @@ func (loc *SecurityGroupLocator) Show(options rsapi.APIParams) (*SecurityGroup, 
 /******  SecurityGroupRule ******/
 
 type SecurityGroupRule struct {
-	Actions     []map[string]string `json:"actions,omitempty"`
-	CidrIps     []string            `json:"cidr_ips,omitempty"`
-	Description string              `json:"description,omitempty"`
-	Direction   string              `json:"direction,omitempty"`
-	EndPort     string              `json:"end_port,omitempty"`
-	GroupName   string              `json:"group_name,omitempty"`
-	GroupOwner  string              `json:"group_owner,omitempty"`
-	GroupUid    string              `json:"group_uid,omitempty"`
-	Href        string              `json:"href,omitempty"`
-	IcmpCode    string              `json:"icmp_code,omitempty"`
-	IcmpType    string              `json:"icmp_type,omitempty"`
-	Links       []map[string]string `json:"links,omitempty"`
-	Protocol    string              `json:"protocol,omitempty"`
-	SourceType  string              `json:"source_type,omitempty"`
-	StartPort   string              `json:"start_port,omitempty"`
+	Action               string              `json:"action,omitempty"`
+	Actions              []map[string]string `json:"actions,omitempty"`
+	CidrIps              string              `json:"cidr_ips,omitempty"`
+	Description          string              `json:"description,omitempty"`
+	DestinationCidrIps   string              `json:"destination_cidr_ips,omitempty"`
+	DestinationGroupName string              `json:"destination_group_name,omitempty"`
+	Direction            string              `json:"direction,omitempty"`
+	EndPort              string              `json:"end_port,omitempty"`
+	GroupName            string              `json:"group_name,omitempty"`
+	GroupOwner           string              `json:"group_owner,omitempty"`
+	GroupUid             string              `json:"group_uid,omitempty"`
+	Href                 string              `json:"href,omitempty"`
+	IcmpCode             string              `json:"icmp_code,omitempty"`
+	IcmpType             string              `json:"icmp_type,omitempty"`
+	Links                []map[string]string `json:"links,omitempty"`
+	Priority             int                 `json:"priority,omitempty"`
+	Protocol             string              `json:"protocol,omitempty"`
+	SourceCidrIps        string              `json:"source_cidr_ips,omitempty"`
+	SourceEndPort        int                 `json:"source_end_port,omitempty"`
+	SourceGroupName      string              `json:"source_group_name,omitempty"`
+	SourceStartPort      int                 `json:"source_start_port,omitempty"`
+	SourceType           string              `json:"source_type,omitempty"`
+	StartPort            string              `json:"start_port,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -13328,6 +13828,7 @@ type User struct {
 	FirstName    string              `json:"first_name,omitempty"`
 	LastName     string              `json:"last_name,omitempty"`
 	Links        []map[string]string `json:"links,omitempty"`
+	LoginName    string              `json:"login_name,omitempty"`
 	Phone        string              `json:"phone,omitempty"`
 	PrincipalUid string              `json:"principal_uid,omitempty"`
 	TimezoneName string              `json:"timezone_name,omitempty"`
@@ -13504,12 +14005,12 @@ func (loc *UserLocator) Show() (*User, error) {
 // Update a user's contact information, change their password, or update their SSO settings.
 // In order to update a user record, one of the following criteria must be met:
 // 1. You've authenticated and are the user being modified, and you provide a valid current_password.
-// 2. You're an admin and the user is linked to your enterprise SSO provider.
-// 3. You're an admin and the user's email matches the email_domain of your enterprise SSO provider.
+// 2. You're an admin and the user is linked to your organization SSO provider.
+// 3. You're an admin and the user's email matches the email_domain of your organization SSO provider.
 // In other words: you can update yourself if you know your own password, you can update
 // yourself or others if you're an admin and they're linked to your SSO provider, and you can update any user
 // if you're an admin and their email address is known to belong to your organization.
-// For information about enabling canonical email domain ownership for your enterprise, please
+// For information about enabling canonical email domain ownership for your organization, please
 // talk to your RightScale account manager or contact our support team.
 // To update a user's contact information, simply pass the desired values for email, first_name,
 // and so forth.
@@ -14089,16 +14590,17 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.APIParams) (*VolumeAttach
 // various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
 // Snapshots consist of a series of data blocks that are incrementally saved.
 type VolumeSnapshot struct {
-	Actions     []map[string]string `json:"actions,omitempty"`
-	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
-	Description string              `json:"description,omitempty"`
-	Links       []map[string]string `json:"links,omitempty"`
-	Name        string              `json:"name,omitempty"`
-	Progress    string              `json:"progress,omitempty"`
-	ResourceUid string              `json:"resource_uid,omitempty"`
-	Size        string              `json:"size,omitempty"`
-	State       string              `json:"state,omitempty"`
-	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+	Actions                 []map[string]string    `json:"actions,omitempty"`
+	CloudSpecificAttributes map[string]interface{} `json:"cloud_specific_attributes,omitempty"`
+	CreatedAt               *RubyTime              `json:"created_at,omitempty"`
+	Description             string                 `json:"description,omitempty"`
+	Links                   []map[string]string    `json:"links,omitempty"`
+	Name                    string                 `json:"name,omitempty"`
+	Progress                string                 `json:"progress,omitempty"`
+	ResourceUid             string                 `json:"resource_uid,omitempty"`
+	Size                    string                 `json:"size,omitempty"`
+	State                   string                 `json:"state,omitempty"`
+	UpdatedAt               *RubyTime              `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -14563,7 +15065,9 @@ type CloudAccountParam struct {
 }
 
 type CloudSpecificAttributes struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
 	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
 	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
@@ -14576,6 +15080,7 @@ type CloudSpecificAttributes struct {
 	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
 	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
 	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
 	NumCores                         int    `json:"num_cores,omitempty"`
 	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
 	Preemptible                      string `json:"preemptible,omitempty"`
@@ -14583,10 +15088,13 @@ type CloudSpecificAttributes struct {
 	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
 }
 
 type CloudSpecificAttributes2 struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
 	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
 	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
@@ -14598,6 +15106,7 @@ type CloudSpecificAttributes2 struct {
 	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
 	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
 	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
 	NumCores                         int    `json:"num_cores,omitempty"`
 	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
 	Preemptible                      string `json:"preemptible,omitempty"`
@@ -14605,37 +15114,22 @@ type CloudSpecificAttributes2 struct {
 	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
 }
 
 type CloudSpecificAttributes3 struct {
+	AccountType string `json:"account_type,omitempty"`
+}
+
+type CloudSpecificAttributes4 struct {
 	InstanceTags []string `json:"instance_tags,omitempty"`
 	Priority     int      `json:"priority,omitempty"`
 }
 
-type CloudSpecificAttributes4 struct {
-	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
-	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
-	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
-	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
-	DiskGb                           int    `json:"disk_gb,omitempty"`
-	IamInstanceProfile               string `json:"iam_instance_profile,omitempty"`
-	KeepAliveId                      string `json:"keep_alive_id,omitempty"`
-	KeepAliveUrl                     string `json:"keep_alive_url,omitempty"`
-	LocalSsdCount                    string `json:"local_ssd_count,omitempty"`
-	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
-	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
-	MemoryMb                         int    `json:"memory_mb,omitempty"`
-	NumCores                         int    `json:"num_cores,omitempty"`
-	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
-	Preemptible                      string `json:"preemptible,omitempty"`
-	PricingType                      string `json:"pricing_type,omitempty"`
-	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
-	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
-	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
-}
-
 type CloudSpecificAttributes5 struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
 	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
 	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
 	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
 	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
@@ -14647,6 +15141,7 @@ type CloudSpecificAttributes5 struct {
 	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
 	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
 	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
 	NumCores                         int    `json:"num_cores,omitempty"`
 	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
 	Preemptible                      string `json:"preemptible,omitempty"`
@@ -14654,9 +15149,36 @@ type CloudSpecificAttributes5 struct {
 	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
 	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
 	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
 }
 
 type CloudSpecificAttributes6 struct {
+	AdminUsername                    string `json:"admin_username,omitempty"`
+	AutomaticInstanceStoreMapping    string `json:"automatic_instance_store_mapping,omitempty"`
+	AvailabilitySet                  string `json:"availability_set,omitempty"`
+	CreateBootVolume                 string `json:"create_boot_volume,omitempty"`
+	CreateDefaultPortForwardingRules string `json:"create_default_port_forwarding_rules,omitempty"`
+	DeleteBootVolume                 string `json:"delete_boot_volume,omitempty"`
+	DiskGb                           int    `json:"disk_gb,omitempty"`
+	IamInstanceProfile               string `json:"iam_instance_profile,omitempty"`
+	KeepAliveId                      string `json:"keep_alive_id,omitempty"`
+	KeepAliveUrl                     string `json:"keep_alive_url,omitempty"`
+	LocalSsdCount                    string `json:"local_ssd_count,omitempty"`
+	LocalSsdInterface                string `json:"local_ssd_interface,omitempty"`
+	MaxSpotPrice                     string `json:"max_spot_price,omitempty"`
+	MemoryMb                         int    `json:"memory_mb,omitempty"`
+	Metadata                         string `json:"metadata,omitempty"`
+	NumCores                         int    `json:"num_cores,omitempty"`
+	PlacementTenancy                 string `json:"placement_tenancy,omitempty"`
+	Preemptible                      string `json:"preemptible,omitempty"`
+	PricingType                      string `json:"pricing_type,omitempty"`
+	RootVolumePerformance            string `json:"root_volume_performance,omitempty"`
+	RootVolumeSize                   string `json:"root_volume_size,omitempty"`
+	RootVolumeTypeUid                string `json:"root_volume_type_uid,omitempty"`
+	ServiceAccount                   string `json:"service_account,omitempty"`
+}
+
+type CloudSpecificAttributes7 struct {
 	CreateBootVolume string `json:"create_boot_volume,omitempty"`
 	DeleteBootVolume string `json:"delete_boot_volume,omitempty"`
 }
@@ -14697,6 +15219,20 @@ type DeploymentParam struct {
 	Description    string `json:"description,omitempty"`
 	Name           string `json:"name,omitempty"`
 	ServerTagScope string `json:"server_tag_scope,omitempty"`
+}
+
+type DeploymentParam2 struct {
+	Description       string `json:"description,omitempty"`
+	Name              string `json:"name,omitempty"`
+	ResourceGroupHref string `json:"resource_group_href,omitempty"`
+	ServerTagScope    string `json:"server_tag_scope,omitempty"`
+}
+
+type DeploymentParam3 struct {
+	Description       string `json:"description,omitempty"`
+	Name              string `json:"name,omitempty"`
+	ResourceGroupHref string `json:"resource_group_href,omitempty"`
+	ServerTagScope    string `json:"server_tag_scope,omitempty"`
 }
 
 type Descriptions struct {
@@ -14754,7 +15290,7 @@ type InstanceParam2 struct {
 type InstanceParam3 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
 	CloudHref                string                    `json:"cloud_href,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes5 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
@@ -14774,7 +15310,7 @@ type InstanceParam3 struct {
 type InstanceParam4 struct {
 	AssociatePublicIpAddress string                    `json:"associate_public_ip_address,omitempty"`
 	CloudHref                string                    `json:"cloud_href,omitempty"`
-	CloudSpecificAttributes  *CloudSpecificAttributes5 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes  *CloudSpecificAttributes6 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
@@ -14793,7 +15329,7 @@ type InstanceParam4 struct {
 }
 
 type InstanceParam5 struct {
-	CloudSpecificAttributes *CloudSpecificAttributes6 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes *CloudSpecificAttributes7 `json:"cloud_specific_attributes,omitempty"`
 }
 
 type InstanceParam6 struct {
@@ -14809,6 +15345,7 @@ type IpAddressBindingParam struct {
 	Protocol            string `json:"protocol,omitempty"`
 	PublicIpAddressHref string `json:"public_ip_address_href,omitempty"`
 	PublicPort          string `json:"public_port,omitempty"`
+	ServerHref          string `json:"server_href,omitempty"`
 }
 
 type IpAddressParam struct {
@@ -14827,6 +15364,11 @@ type ItemAge struct {
 	Algorithm string `json:"algorithm,omitempty"`
 	MaxAge    string `json:"max_age,omitempty"`
 	Regexp    string `json:"regexp,omitempty"`
+}
+
+type MultiCloudImageMatcherParam struct {
+	ImageHref string `json:"image_href,omitempty"`
+	UserData  string `json:"user_data,omitempty"`
 }
 
 type MultiCloudImageParam struct {
@@ -14881,12 +15423,14 @@ type NetworkOptionGroupParam2 struct {
 type NetworkParam struct {
 	CidrBlock       string `json:"cidr_block,omitempty"`
 	CloudHref       string `json:"cloud_href,omitempty"`
+	DeploymentHref  string `json:"deployment_href,omitempty"`
 	Description     string `json:"description,omitempty"`
 	InstanceTenancy string `json:"instance_tenancy,omitempty"`
 	Name            string `json:"name,omitempty"`
 }
 
 type NetworkParam2 struct {
+	DeploymentHref string `json:"deployment_href,omitempty"`
 	Description    string `json:"description,omitempty"`
 	Name           string `json:"name,omitempty"`
 	RouteTableHref string `json:"route_table_href,omitempty"`
@@ -14904,9 +15448,11 @@ type PermissionParam struct {
 }
 
 type PlacementGroupParam struct {
-	CloudHref   string `json:"cloud_href,omitempty"`
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
+	CloudHref               string                    `json:"cloud_href,omitempty"`
+	CloudSpecificAttributes *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
+	DeploymentHref          string                    `json:"deployment_href,omitempty"`
+	Description             string                    `json:"description,omitempty"`
+	Name                    string                    `json:"name,omitempty"`
 }
 
 type PreferenceParam struct {
@@ -14959,6 +15505,18 @@ type RepositoryParam2 struct {
 	SourceType      string       `json:"source_type,omitempty"`
 }
 
+type ResourceGroupParam struct {
+	CloudHref      string `json:"cloud_href,omitempty"`
+	DeploymentHref string `json:"deployment_href,omitempty"`
+	Description    string `json:"description,omitempty"`
+	Name           string `json:"name,omitempty"`
+}
+
+type ResourceGroupParam2 struct {
+	DeploymentHref string `json:"deployment_href,omitempty"`
+	Description    string `json:"description,omitempty"`
+}
+
 type RightScriptAttachmentParam struct {
 	Content  *rsapi.FileUpload `json:"content,omitempty"`
 	Filename string            `json:"filename,omitempty"`
@@ -14971,17 +15529,19 @@ type RightScriptParam struct {
 type RightScriptParam2 struct {
 	Description string `json:"description,omitempty"`
 	Name        string `json:"name,omitempty"`
+	Packages    string `json:"packages,omitempty"`
 	Source      string `json:"source,omitempty"`
 }
 
 type RightScriptParam3 struct {
 	Description string `json:"description,omitempty"`
 	Name        string `json:"name,omitempty"`
+	Packages    string `json:"packages,omitempty"`
 	Source      string `json:"source,omitempty"`
 }
 
 type RouteParam struct {
-	CloudSpecificAttributes *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
+	CloudSpecificAttributes *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
 	Description             string                    `json:"description,omitempty"`
 	DestinationCidrBlock    string                    `json:"destination_cidr_block,omitempty"`
 	NextHopHref             string                    `json:"next_hop_href,omitempty"`
@@ -15034,16 +15594,19 @@ type Schedule struct {
 }
 
 type SecurityGroupParam struct {
-	Description string `json:"description,omitempty"`
-	Name        string `json:"name,omitempty"`
-	NetworkHref string `json:"network_href,omitempty"`
+	DeploymentHref string `json:"deployment_href,omitempty"`
+	Description    string `json:"description,omitempty"`
+	Name           string `json:"name,omitempty"`
+	NetworkHref    string `json:"network_href,omitempty"`
 }
 
 type SecurityGroupRuleParam struct {
+	Action            string           `json:"action,omitempty"`
 	CidrIps           string           `json:"cidr_ips,omitempty"`
 	Direction         string           `json:"direction,omitempty"`
 	GroupName         string           `json:"group_name,omitempty"`
 	GroupOwner        string           `json:"group_owner,omitempty"`
+	Priority          int              `json:"priority,omitempty"`
 	Protocol          string           `json:"protocol,omitempty"`
 	ProtocolDetails   *ProtocolDetails `json:"protocol_details,omitempty"`
 	SecurityGroupHref string           `json:"security_group_href,omitempty"`
@@ -15087,6 +15650,7 @@ type ServerParam struct {
 
 type ServerParam2 struct {
 	AutomaticInstanceStoreMapping string          `json:"automatic_instance_store_mapping,omitempty"`
+	DeploymentHref                string          `json:"deployment_href,omitempty"`
 	Description                   string          `json:"description,omitempty"`
 	Instance                      *InstanceParam5 `json:"instance,omitempty"`
 	Name                          string          `json:"name,omitempty"`
@@ -15111,6 +15675,10 @@ type ServerTemplateParam struct {
 	Name        string `json:"name,omitempty"`
 }
 
+type Settings struct {
+	DeleteOnTermination string `json:"delete_on_termination,omitempty"`
+}
+
 type SshKeyParam struct {
 	Name string `json:"name,omitempty"`
 }
@@ -15124,6 +15692,7 @@ type SubnetParam struct {
 }
 
 type SubnetParam2 struct {
+	CidrBlock      string `json:"cidr_block,omitempty"`
 	Description    string `json:"description,omitempty"`
 	Name           string `json:"name,omitempty"`
 	RouteTableHref string `json:"route_table_href,omitempty"`
@@ -15148,6 +15717,7 @@ type UserParam2 struct {
 	FirstName            string `json:"first_name,omitempty"`
 	IdentityProviderHref string `json:"identity_provider_href,omitempty"`
 	LastName             string `json:"last_name,omitempty"`
+	LoginName            string `json:"login_name,omitempty"`
 	NewEmail             string `json:"new_email,omitempty"`
 	NewPassword          string `json:"new_password,omitempty"`
 	Phone                string `json:"phone,omitempty"`
@@ -15156,10 +15726,12 @@ type UserParam2 struct {
 }
 
 type VolumeAttachmentParam struct {
-	Device       string                 `json:"device,omitempty"`
-	InstanceHref string                 `json:"instance_href,omitempty"`
-	Settings     map[string]interface{} `json:"settings,omitempty"`
-	VolumeHref   string                 `json:"volume_href,omitempty"`
+	ApiBehavior  string    `json:"api_behavior,omitempty"`
+	Device       string    `json:"device,omitempty"`
+	InstanceHref string    `json:"instance_href,omitempty"`
+	ServerHref   string    `json:"server_href,omitempty"`
+	Settings     *Settings `json:"settings,omitempty"`
+	VolumeHref   string    `json:"volume_href,omitempty"`
 }
 
 type VolumeParam struct {

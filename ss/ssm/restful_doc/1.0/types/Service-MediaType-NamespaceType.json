@@ -1,1 +1,50 @@
-{"name":"Service::MediaType::NamespaceType","attributes":{"name":{"description":"Namespace resource type name","required":true,"example_definition":"containers","type":{"name":"String"}},"path":{"description":"Namespace resource type path relative to namespace path, defaults to name","example_definition":"/Containers","type":{"name":"String"}},"provision":{"description":"Resource type provision definition, must take one reference argument that contains resource declaration to be provisioned and return on resource collection corresponding to provisioned resource, example shows default implementation","example_definition":"define provision(@container) return @created; @created = dk.containers.create(@container); end","type":{"name":"String"}},"delete":{"description":"Resource type delete definition, must take one reference argument that contains resource collection to be deleted, example shows default implementation","example_definition":"define delete(@container); @container.delete(); end","type":{"name":"String"}},"fields":{"description":"Type fields","type":{"name":"Hash"}}},"example":{"name":"containers","path":"/Containers","provision":"define provision(@container) return @created; @created = dk.containers.create(@container); end","delete":"define delete(@container); @container.delete(); end","fields":{"sorbic":"#<Service::MediaType::NamespaceTypeField:0x007fbede9202a8>","gedder":"#<Service::MediaType::NamespaceTypeField:0x007fbedcd07788>"}}}
+{
+  "name": "Service::MediaType::NamespaceType",
+  "attributes": {
+    "name": {
+      "description": "Namespace resource type name",
+      "required": true,
+      "example_definition": "containers",
+      "type": {
+        "name": "String"
+      }
+    },
+    "path": {
+      "description": "Namespace resource type path relative to namespace path, defaults to name",
+      "example_definition": "/Containers",
+      "type": {
+        "name": "String"
+      }
+    },
+    "provision": {
+      "description": "Resource type provision definition name",
+      "example_definition": "provision_dk",
+      "type": {
+        "name": "String"
+      }
+    },
+    "delete": {
+      "description": "Resource type delete definition name",
+      "example_definition": "delete_dk",
+      "type": {
+        "name": "String"
+      }
+    },
+    "fields": {
+      "description": "Type fields",
+      "type": {
+        "name": "Hash"
+      }
+    }
+  },
+  "example": {
+    "name": "containers",
+    "path": "/Containers",
+    "provision": "provision_dk",
+    "delete": "delete_dk",
+    "fields": {
+      "sorbic": "#<Service::MediaType::NamespaceTypeField:0x007f9565f61fb0>",
+      "gedder": "#<Service::MediaType::NamespaceTypeField:0x007f9565f614e8>"
+    }
+  }
+}
