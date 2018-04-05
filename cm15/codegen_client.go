@@ -3384,8 +3384,8 @@ func (api *API) HealthCheckLocator(href string) *HealthCheckLocator {
 // GET /api/health-check/
 //
 // Check health of RightApi controllers
-func (loc *HealthCheckLocator) Index() ([]map[string]interface{}, error) {
-	var res []map[string]interface{}
+func (loc *HealthCheckLocator) Index() (map[string]interface{}, error) {
+	var res map[string]interface{}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("HealthCheck", "index")
@@ -6415,8 +6415,8 @@ func (loc *NetworkGatewayLocator) Destroy() error {
 // Lists the NetworkGateways available to this account.
 // Optional parameters:
 // filter
-func (loc *NetworkGatewayLocator) Index(options rsapi.APIParams) ([]*NetworkGateway, error) {
-	var res []*NetworkGateway
+func (loc *NetworkGatewayLocator) Index(options rsapi.APIParams) (*NetworkGateway, error) {
+	var res *NetworkGateway
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
@@ -12975,8 +12975,8 @@ func (loc *SessionLocator) Accounts(options rsapi.APIParams) ([]*Account, error)
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
 // Optional parameters:
 // view: Whoami view provides links to the logged-in principal and the account being accessed
-func (loc *SessionLocator) Index(options rsapi.APIParams) ([]*Session, error) {
-	var res []*Session
+func (loc *SessionLocator) Index(options rsapi.APIParams) (*Session, error) {
+	var res *Session
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
