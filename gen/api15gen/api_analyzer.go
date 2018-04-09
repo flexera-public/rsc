@@ -459,7 +459,11 @@ func parseReturn(kind, resName, contentType string) string {
 	case "show":
 		return refType(resName)
 	case "index":
-		return fmt.Sprintf("[]%s", refType(resName))
+		if strings.HasSuffix(contentType, ";type=collection") {
+			return fmt.Sprintf("[]%s", refType(resName))
+		} else {
+			return refType(resName)
+		}
 	case "create":
 		if _, ok := noMediaTypeResources[resName]; ok {
 			return "map[string]interface{}"
