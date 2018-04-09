@@ -1880,8 +1880,8 @@ func (api *API) CloudAccountLocator(href string) *CloudAccountLocator {
 
 // POST /api/cloud_accounts
 //
-// Create a CloudAccount by passing in the respective credentials for each cloud.
-// For more information on the specific parameters for each cloud, refer to the following:
+// Register a cloud account/subscription/project with a RightScale account. Not all clouds support API-based registration.
+// For more information on the supported clouds and their respective parameters, refer to the following:
 // http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
 // Required parameters:
 // cloud_account
@@ -2026,6 +2026,46 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 	}
 	err = json.Unmarshal(respBody, &res)
 	return res, err
+}
+
+// PUT /api/cloud_accounts/:id
+//
+// Update credentials for a registered cloud account/subscription/project. Not all clouds support API-based credential update.
+// For more information on the supported clouds and their respective parameters, refer to the following:
+// http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
+// Required parameters:
+// cloud_account
+func (loc *CloudAccountLocator) Update(cloudAccount *CloudAccountParam2) error {
+	if cloudAccount == nil {
+		return fmt.Errorf("cloudAccount is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"cloud_account": cloudAccount,
+	}
+	uri, err := loc.ActionPath("CloudAccount", "update")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
 }
 
 /******  Cookbook ******/
@@ -2759,7 +2799,7 @@ func (loc *CredentialLocator) Index(options rsapi.APIParams) ([]*Credential, err
 
 // GET /api/credentials/:id
 //
-// Show information about a single Credential. Credential values may be retrieved using the "sensitive" view by users with "admin" role only.
+// Show information about a single Credential. Credential values may be retrieved using the "sensitive" view by users with "admin" or "credential_viewer" role only.
 // Optional parameters:
 // view
 func (loc *CredentialLocator) Show(options rsapi.APIParams) (*Credential, error) {
@@ -3384,8 +3424,8 @@ func (api *API) HealthCheckLocator(href string) *HealthCheckLocator {
 // GET /api/health-check/
 //
 // Check health of RightApi controllers
-func (loc *HealthCheckLocator) Index() ([]map[string]interface{}, error) {
-	var res []map[string]interface{}
+func (loc *HealthCheckLocator) Index() (map[string]interface{}, error) {
+	var res map[string]interface{}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("HealthCheck", "index")
@@ -12975,8 +13015,8 @@ func (loc *SessionLocator) Accounts(options rsapi.APIParams) ([]*Account, error)
 // curl -i -H X_API_VERSION:1.5 -b mycookies -X GET https://my.rightscale.com/api/sessions
 // Optional parameters:
 // view: Whoami view provides links to the logged-in principal and the account being accessed
-func (loc *SessionLocator) Index(options rsapi.APIParams) ([]*Session, error) {
-	var res []*Session
+func (loc *SessionLocator) Index(options rsapi.APIParams) (*Session, error) {
+	var res *Session
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var viewOpt = options["view"]
@@ -15062,6 +15102,10 @@ type CloudAccountParam struct {
 	CloudHref string                 `json:"cloud_href,omitempty"`
 	Creds     map[string]interface{} `json:"creds,omitempty"`
 	Token     string                 `json:"token,omitempty"`
+}
+
+type CloudAccountParam2 struct {
+	Creds map[string]interface{} `json:"creds,omitempty"`
 }
 
 type CloudSpecificAttributes struct {
