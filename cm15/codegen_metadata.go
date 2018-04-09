@@ -10571,6 +10571,320 @@ Optional parameters:
 			"server_template": "Href of associated ServerTemplate",
 		},
 	},
+	"Scheduler": &metadata.Resource{
+		Name:        "Scheduler",
+		Description: `Provide RightLink with the ability to schedule script executions on instances`,
+		Identifier:  "",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "schedule_recipe",
+				Description: `Schedules a chef recipe for execution on the current instance
+Optional parameters:
+	arguments: Serialized recipe execution arguments values keyed by name
+	audit_id: Optional, reuse audit if specified
+	audit_period: RunlistPolicy audit period
+	formal_values: Formal input parameter values
+	policy: RunlistPolicy policy name
+	recipe: Chef recipe name, overridden by recipe_id
+	recipe_id: ServerTemplateChefRecipe ID
+	thread: RunlistPolicy thread name`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/right_net/scheduler/schedule_recipe",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_recipe$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized recipe execution arguments values keyed by name`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe_id",
+						Description: `ServerTemplateChefRecipe ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe",
+						Description: `Chef recipe name, overridden by recipe_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized recipe execution arguments values keyed by name`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe",
+						Description: `Chef recipe name, overridden by recipe_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "recipe_id",
+						Description: `ServerTemplateChefRecipe ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name: "schedule_right_script",
+				Description: `Schedules a RightScript for execution on the current instance
+Optional parameters:
+	arguments: Serialized script execution arguments values keyed by name
+	audit_id: Optional, reuse audit if specified
+	audit_period: RunlistPolicy audit period
+	formal_values: Formal input parameter values
+	policy: RunlistPolicy policy name
+	right_script: RightScript name, overridden by right_script_id
+	right_script_id: RightScript ID
+	thread: RunlistPolicy thread name`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/right_net/scheduler/schedule_right_script",
+						Variables:  []string{},
+						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_right_script$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "right_script_id",
+						Description: `RightScript ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script",
+						Description: `RightScript name, overridden by right_script_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized script execution arguments values keyed by name`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "arguments",
+						Description: `Serialized script execution arguments values keyed by name`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_id",
+						Description: `Optional, reuse audit if specified`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "audit_period",
+						Description: `RunlistPolicy audit period`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "formal_values",
+						Description: `Formal input parameter values`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "policy",
+						Description: `RunlistPolicy policy name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script",
+						Description: `RightScript name, overridden by right_script_id`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script_id",
+						Description: `RightScript ID`,
+						Type:        "int",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "thread",
+						Description: `RunlistPolicy thread name`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+		},
+	},
 	"SecurityGroup": &metadata.Resource{
 		Name: "SecurityGroup",
 		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as

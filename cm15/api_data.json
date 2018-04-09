@@ -1,4 +1,101 @@
 {
+  "Scheduler": {
+    "description": "Provide RightLink with the ability to schedule script executions on instances",
+    "attributes": {
+    },
+    "methods": {
+      "schedule_right_script": {
+        "access_rules": [
+          "instance"
+        ],
+        "routes": [
+          "POST   /api/right_net/scheduler/schedule_right_script(.:format)? {dummy so regexp matches}"
+        ],
+        "status_code": "204 No Content",
+        "description": "Schedules a RightScript for execution on the current instance",
+        "content_type": "",
+        "parameters": {
+          "audit_id": {
+            "class": "Integer",
+            "non_blank": true,
+            "description": "Optional, reuse audit if specified"
+          },
+          "right_script_id": {
+            "class": "Integer",
+            "non_blank": true,
+            "description": "RightScript ID"
+          },
+          "right_script": {
+            "class": "String",
+            "non_blank": true,
+            "description": "RightScript name, overridden by right_script_id"
+          },
+          "arguments": {
+            "class": "Enumerable",
+            "description": "Serialized script execution arguments values keyed by name"
+          },
+          "formal_values": {
+            "class": "Enumerable",
+            "description": "Formal input parameter values"
+          },
+          "policy": {
+            "description": "RunlistPolicy policy name"
+          },
+          "thread": {
+            "description": "RunlistPolicy thread name"
+          },
+          "audit_period": {
+            "description": "RunlistPolicy audit period"
+          }
+        }
+      },
+      "schedule_recipe": {
+        "access_rules": [
+          "instance"
+        ],
+        "routes": [
+          "POST   /api/right_net/scheduler/schedule_recipe(.:format)? {dummy so regexp matches}"
+        ],
+        "status_code": "204 No Content",
+        "description": "Schedules a chef recipe for execution on the current instance",
+        "content_type": "",
+        "parameters": {
+          "audit_id": {
+            "class": "Integer",
+            "non_blank": true,
+            "description": "Optional, reuse audit if specified"
+          },
+          "recipe_id": {
+            "class": "Integer",
+            "non_blank": true,
+            "description": "ServerTemplateChefRecipe ID"
+          },
+          "recipe": {
+            "class": "String",
+            "non_blank": true,
+            "description": "Chef recipe name, overridden by recipe_id"
+          },
+          "arguments": {
+            "class": "Enumerable",
+            "description": "Serialized recipe execution arguments values keyed by name"
+          },
+          "formal_values": {
+            "class": "Enumerable",
+            "description": "Formal input parameter values"
+          },
+          "policy": {
+            "description": "RunlistPolicy policy name"
+          },
+          "thread": {
+            "description": "RunlistPolicy thread name"
+          },
+          "audit_period": {
+            "description": "RunlistPolicy audit period"
+          }
+        }
+      }
+    }
+  },
   "AccountGroups": {
     "methods": {
       "index": {
