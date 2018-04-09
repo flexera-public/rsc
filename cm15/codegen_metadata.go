@@ -2098,8 +2098,8 @@ Optional parameters:
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
-				Description: `Create a CloudAccount by passing in the respective credentials for each cloud.
-For more information on the specific parameters for each cloud, refer to the following:
+				Description: `Register a cloud account/subscription/project with a RightScale account. Not all clouds support API-based registration.
+For more information on the supported clouds and their respective parameters, refer to the following:
 http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
 Required parameters:
 	cloud_account`,
@@ -2192,6 +2192,43 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{},
 				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name: "update",
+				Description: `Update credentials for a registered cloud account/subscription/project. Not all clouds support API-based credential update.
+For more information on the supported clouds and their respective parameters, refer to the following:
+http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
+Required parameters:
+	cloud_account`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/api/cloud_accounts/%s",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/cloud_accounts/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_account[creds]",
+						Description: ``,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "cloud_account",
+						Description: ``,
+						Type:        "*CloudAccountParam2",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
 			},
 		},
 		Links: map[string]string{
@@ -2847,7 +2884,7 @@ Optional parameters:
 
 			&metadata.Action{
 				Name: "show",
-				Description: `Show information about a single Credential. Credential values may be retrieved using the "sensitive" view by users with "admin" role only.
+				Description: `Show information about a single Credential. Credential values may be retrieved using the "sensitive" view by users with "admin" or "credential_viewer" role only.
 Optional parameters:
 	view`,
 				PathPatterns: []*metadata.PathPattern{
@@ -3995,7 +4032,7 @@ Optional parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Description: `Specify the max spot price you will pay for. Default is the on-demand price set by cloud.Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Can be blank or a float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -4978,7 +5015,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "instance[cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Description: `Specify the max spot price you will pay for. Default is the on-demand price set by cloud.Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Can be blank or a float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -10534,320 +10571,6 @@ Optional parameters:
 			"server_template": "Href of associated ServerTemplate",
 		},
 	},
-	"Scheduler": &metadata.Resource{
-		Name:        "Scheduler",
-		Description: `Provide RightLink with the ability to schedule script executions on instances`,
-		Identifier:  "",
-		Actions: []*metadata.Action{
-			&metadata.Action{
-				Name: "schedule_recipe",
-				Description: `Schedules a chef recipe for execution on the current instance
-Optional parameters:
-	arguments: Serialized recipe execution arguments values keyed by name
-	audit_id: Optional, reuse audit if specified
-	audit_period: RunlistPolicy audit period
-	formal_values: Formal input parameter values
-	policy: RunlistPolicy policy name
-	recipe: Chef recipe name, overridden by recipe_id
-	recipe_id: ServerTemplateChefRecipe ID
-	thread: RunlistPolicy thread name`,
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
-						Pattern:    "/api/right_net/scheduler/schedule_recipe",
-						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_recipe$`),
-					},
-				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized recipe execution arguments values keyed by name`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe_id",
-						Description: `ServerTemplateChefRecipe ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe",
-						Description: `Chef recipe name, overridden by recipe_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-				APIParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized recipe execution arguments values keyed by name`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe",
-						Description: `Chef recipe name, overridden by recipe_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "recipe_id",
-						Description: `ServerTemplateChefRecipe ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-			},
-
-			&metadata.Action{
-				Name: "schedule_right_script",
-				Description: `Schedules a RightScript for execution on the current instance
-Optional parameters:
-	arguments: Serialized script execution arguments values keyed by name
-	audit_id: Optional, reuse audit if specified
-	audit_period: RunlistPolicy audit period
-	formal_values: Formal input parameter values
-	policy: RunlistPolicy policy name
-	right_script: RightScript name, overridden by right_script_id
-	right_script_id: RightScript ID
-	thread: RunlistPolicy thread name`,
-				PathPatterns: []*metadata.PathPattern{
-					&metadata.PathPattern{
-						HTTPMethod: "POST",
-						Pattern:    "/api/right_net/scheduler/schedule_right_script",
-						Variables:  []string{},
-						Regexp:     regexp.MustCompile(`^/api/right_net/scheduler/schedule_right_script$`),
-					},
-				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "right_script_id",
-						Description: `RightScript ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "right_script",
-						Description: `RightScript name, overridden by right_script_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized script execution arguments values keyed by name`,
-						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-				APIParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "arguments",
-						Description: `Serialized script execution arguments values keyed by name`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_id",
-						Description: `Optional, reuse audit if specified`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "audit_period",
-						Description: `RunlistPolicy audit period`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "formal_values",
-						Description: `Formal input parameter values`,
-						Type:        "map[string]interface{}",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "policy",
-						Description: `RunlistPolicy policy name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-					&metadata.ActionParam{
-						Name:        "right_script",
-						Description: `RightScript name, overridden by right_script_id`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "right_script_id",
-						Description: `RightScript ID`,
-						Type:        "int",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "thread",
-						Description: `RunlistPolicy thread name`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    false,
-					},
-				},
-			},
-		},
-	},
 	"SecurityGroup": &metadata.Resource{
 		Name: "SecurityGroup",
 		Description: `Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
@@ -11499,7 +11222,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "server[instance][cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Description: `Specify the max spot price you will pay for. Default is the on-demand price set by cloud.Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Can be blank or a float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12518,7 +12241,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][max_spot_price]",
-						Description: `Specify the max spot price you will pay for. Required when 'pricing_type' is 'spot'. Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Should be a Float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
+						Description: `Specify the max spot price you will pay for. Default is the on-demand price set by cloud.Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Can be blank or a float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -16027,7 +15750,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "volume_attachment[device]",
-						Description: `The device location where the volume will be mounted. Value must be of format /dev/xvd[bcefghij]. This is not reliable and will be deprecated.`,
+						Description: `The device location where the volume will be mounted. This is rquired for the following cloud: Azure Resource Manager (ARM). The format for Azure Resource Manager (ARM) is ` + `device: 00` + `, ` + `device: 01` + `. The format for AWS, GCE, and any other cloud is /dev/xvd[bcefghij]. This is not reliable and will be deprecated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
