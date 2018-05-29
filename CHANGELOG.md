@@ -1,3 +1,9 @@
+v6.9.0 / 2018-05-30
+-------------------
+* add visibility filter to VolumeAttachments index call.
+* update visibility filter for Images index call.
+* add scale_up and scale_down actions to ServerArray.
+
 v6.8.0 / 2018-03-28
 -------------------
 * add api_behavior to VolumeAttachments create call. 
