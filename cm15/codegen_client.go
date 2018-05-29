@@ -11948,6 +11948,36 @@ func (loc *ServerArrayLocator) Launch(options rsapi.APIParams) error {
 	return nil
 }
 
+// POST /api/server_arrays/:id/monitor
+//
+// Run the monitoring workflow, if one is attached
+func (loc *ServerArrayLocator) Monitor() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ServerArray", "monitor")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // POST /api/server_arrays/:id/multi_run_executable
 //
 // Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
@@ -12030,6 +12060,70 @@ func (loc *ServerArrayLocator) MultiTerminate(options rsapi.APIParams) error {
 		p["terminate_all"] = terminateAllOpt
 	}
 	uri, err := loc.ActionPath("ServerArray", "multi_terminate")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// POST /api/server_arrays/:id/scale_down
+//
+// Scale down the array by 1 instance using the array's scaling logic. For workflow-
+// based arrays, this will scale using the defined workflow. For non-workflow based
+// arrays this will scale using the same logic as if the system triggered the event.
+func (loc *ServerArrayLocator) ScaleDown() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ServerArray", "scale_down")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// POST /api/server_arrays/:id/scale_up
+//
+// Scale up the array by 1 instance using the array's scaling logic. For workflow-
+// based arrays, this will scale using the defined workflow. For non-workflow based
+// arrays this will scale using the same logic as if the system triggered the event.
+func (loc *ServerArrayLocator) ScaleUp() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ServerArray", "scale_up")
 	if err != nil {
 		return err
 	}
@@ -14641,6 +14735,7 @@ type VolumeSnapshot struct {
 	Size                    string                 `json:"size,omitempty"`
 	State                   string                 `json:"state,omitempty"`
 	UpdatedAt               *RubyTime              `json:"updated_at,omitempty"`
+	Visibility              string                 `json:"visibility,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -15286,11 +15381,12 @@ type Descriptions struct {
 }
 
 type ElasticityParams struct {
-	AlertSpecificParams *AlertSpecificParams `json:"alert_specific_params,omitempty"`
-	Bounds              *Bounds              `json:"bounds,omitempty"`
-	Pacing              *Pacing              `json:"pacing,omitempty"`
-	QueueSpecificParams *QueueSpecificParams `json:"queue_specific_params,omitempty"`
-	Schedule            []*Schedule          `json:"schedule,omitempty"`
+	AlertSpecificParams    *AlertSpecificParams    `json:"alert_specific_params,omitempty"`
+	Bounds                 *Bounds                 `json:"bounds,omitempty"`
+	Pacing                 *Pacing                 `json:"pacing,omitempty"`
+	QueueSpecificParams    *QueueSpecificParams    `json:"queue_specific_params,omitempty"`
+	Schedule               []*Schedule             `json:"schedule,omitempty"`
+	WorkflowSpecificParams *WorkflowSpecificParams `json:"workflow_specific_params,omitempty"`
 }
 
 type InstanceParam struct {
@@ -15808,4 +15904,8 @@ type VolumeSnapshotParam struct {
 	Description      string `json:"description,omitempty"`
 	Name             string `json:"name,omitempty"`
 	ParentVolumeHref string `json:"parent_volume_href,omitempty"`
+}
+
+type WorkflowSpecificParams struct {
+	Template string `json:"template,omitempty"`
 }

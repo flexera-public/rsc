@@ -12431,16 +12431,16 @@ Required parameters:
 						ValidValues: []string{"max_10", "avg_10"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][alert_specific_params][decision_threshold]",
-						Description: `The percentage of servers that must agree in order to trigger an alert before an action is taken.`,
+						Name:        "server_array[instance][cloud_specific_attributes][root_volume_performance]",
+						Description: `The number of IOPS (I/O Operations Per Second) this root volume should support. Only available on clouds supporting performance provisioning.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][root_volume_performance]",
-						Description: `The number of IOPS (I/O Operations Per Second) this root volume should support. Only available on clouds supporting performance provisioning.`,
+						Name:        "server_array[elasticity_params][alert_specific_params][decision_threshold]",
+						Description: `The percentage of servers that must agree in order to trigger an alert before an action is taken.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12487,8 +12487,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
-						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
+						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
+						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12496,8 +12496,8 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][create_boot_volume]",
-						Description: `If enabled, the instance will launch into volume storage. Otherwise, it will boot to local storage.`,
+						Name:        "server_array[instance][cloud_specific_attributes][delete_boot_volume]",
+						Description: `If enabled, the associated volume will be deleted when the instance is terminated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12522,8 +12522,24 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[elasticity_params][workflow_specific_params][template]",
+						Description: `The WAT used for scale up/down logic.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][availability_set]",
 						Description: `Availability set for raw instance. Supported by Azure v2 cloud only.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_count]",
+						Description: `Additional local SSDs. Supported by GCE cloud only`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12538,8 +12554,8 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][local_ssd_count]",
-						Description: `Additional local SSDs. Supported by GCE cloud only`,
+						Name:        "server_array[instance][cloud_specific_attributes][keep_alive_url]",
+						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12556,14 +12572,6 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[instance][cloud_specific_attributes][max_spot_price]",
 						Description: `Specify the max spot price you will pay for. Default is the on-demand price set by cloud.Only applies to clouds which support spot-pricing and when 'spot' is chosen as the 'pricing_type'. Can be blank or a float value >= 0.001, eg: 0.095, 0.123, 1.23, etc...`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][keep_alive_url]",
-						Description: `The ulr of keep alive. Supported by UCA cloud only.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12596,16 +12604,16 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
-						Description: `The size of instance memory. Supported by UCA cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
+						Description: `The number of instance cores. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][cloud_specific_attributes][num_cores]",
-						Description: `The number of instance cores. Supported by UCA cloud only.`,
+						Name:        "server_array[instance][cloud_specific_attributes][memory_mb]",
+						Description: `The size of instance memory. Supported by UCA cloud only.`,
 						Type:        "int",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12685,16 +12693,16 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[datacenter_policy][][datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
+						Name:        "server_array[elasticity_params][bounds][max_count]",
+						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[elasticity_params][bounds][max_count]",
-						Description: `The maximum number of servers that can be operational at the same time in the server array.`,
+						Name:        "server_array[datacenter_policy][][datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -12735,6 +12743,14 @@ Required parameters:
 						ValidValues: []string{"true", "false"},
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][placement_group_href]",
+						Description: `The href of the Placement Group.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][security_group_hrefs][]",
 						Description: `The hrefs of the Security Groups.`,
 						Type:        "[]string",
@@ -12748,14 +12764,6 @@ Required parameters:
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "server_array[instance][placement_group_href]",
-						Description: `The href of the Placement Group.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -12791,6 +12799,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][datacenter_href]",
+						Description: `The href of the Datacenter / Zone. For multiple Datacenters, use 'datacenter_policy' instead.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][inputs][][value]",
 						Description: `The value of that Input. Should be of the form 'text:my_value' or 'cred:MY_CRED' etc.`,
 						Type:        "string",
@@ -12802,14 +12818,6 @@ Required parameters:
 						Name:        "server_array[instance][inputs]",
 						Description: ``,
 						Type:        "map",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "server_array[instance][datacenter_href]",
-						Description: `The href of the Datacenter / Zone. For multiple Datacenters, use 'datacenter_policy' instead.`,
-						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12831,6 +12839,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[instance][subnet_hrefs][]",
+						Description: `The hrefs of the updated Subnets.`,
+						Type:        "[]string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[instance][ssh_key_href]",
 						Description: `The href of the SSH Key to be used.`,
 						Type:        "string",
@@ -12839,9 +12855,9 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "server_array[instance][subnet_hrefs][]",
-						Description: `The hrefs of the updated Subnets.`,
-						Type:        "[]string",
+						Name:        "server_array[instance][image_href]",
+						Description: `The href of the Image to be used.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -12852,14 +12868,6 @@ Required parameters:
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "server_array[instance][image_href]",
-						Description: `The href of the Image to be used.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
@@ -13236,6 +13244,21 @@ Optional parameters:
 			},
 
 			&metadata.Action{
+				Name:        "monitor",
+				Description: `Run the monitoring workflow, if one is attached`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/server_arrays/%s/monitor",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/monitor$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
 				Name: "multi_run_executable",
 				Description: `Run an executable on all instances of this array. This function is equivalent to invoking the "multi_run_executable" action on the instances resource
 (Instances#multi_run_executable with the filter "parent_href == /api/server_arrays/XX"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable
@@ -13415,6 +13438,40 @@ Optional parameters:
 			},
 
 			&metadata.Action{
+				Name: "scale_down",
+				Description: `Scale down the array by 1 instance using the array's scaling logic. For workflow-
+based arrays, this will scale using the defined workflow. For non-workflow based
+arrays this will scale using the same logic as if the system triggered the event.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/server_arrays/%s/scale_down",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/scale_down$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name: "scale_up",
+				Description: `Scale up the array by 1 instance using the array's scaling logic. For workflow-
+based arrays, this will scale using the defined workflow. For non-workflow based
+arrays this will scale using the same logic as if the system triggered the event.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/server_arrays/%s/scale_up",
+						Variables:  []string{"id"},
+						Regexp:     regexp.MustCompile(`^/api/server_arrays/([^/]+)/scale_up$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
 				Name: "show",
 				Description: `Shows the information of a single server array.
 Optional parameters:
@@ -13535,6 +13592,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[elasticity_params][workflow_specific_params][template]",
+						Description: `The WAT used for scale up/down logic.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][pacing][resize_calm_time]",
 						Description: `The updated time (in minutes) on how long you want to wait before you repeat another action.`,
 						Type:        "string",
@@ -13575,6 +13640,14 @@ Required parameters:
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
+						Name:        "server_array[datacenter_policy][][datacenter_href]",
+						Description: `The href of the Datacenter / Zone.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][bounds][min_count]",
 						Description: `The updated minimum number of servers that must be operational at all times in the server array.`,
 						Type:        "string",
@@ -13585,14 +13658,6 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "server_array[elasticity_params][bounds][max_count]",
 						Description: `The updated maximum number of servers that can be operational at the same time in the server array.`,
-						Type:        "string",
-						Location:    metadata.PayloadParam,
-						Mandatory:   false,
-						NonBlank:    true,
-					},
-					&metadata.ActionParam{
-						Name:        "server_array[datacenter_policy][][datacenter_href]",
-						Description: `The href of the Datacenter / Zone.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -16440,7 +16505,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state"},
+						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state", "visibility"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -16460,7 +16525,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state"},
+						ValidValues: []string{"deployment_href", "description", "name", "parent_volume_href", "resource_uid", "state", "visibility"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
