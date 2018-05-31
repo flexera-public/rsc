@@ -1207,10 +1207,7 @@
             {
               "resource_uid": "RESOURCE_4283663438",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_4283663438;195590580"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_4283663438;195590580"}
               ],
               "size": null,
               "state": "available",
@@ -1221,10 +1218,7 @@
             {
               "resource_uid": "RESOURCE_1445144189",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_1445144189;2340558978"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_1445144189;2340558978"}
               ],
               "size": null,
               "state": "available",
@@ -1334,10 +1328,7 @@
             {
               "resource_uid": "RESOURCE_4283663438",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_4283663438;195590580"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_4283663438;195590580"}
               ],
               "size": null,
               "state": "available",
@@ -1348,10 +1339,7 @@
             {
               "resource_uid": "RESOURCE_1445144189",
               "links": [
-                {
-                  "rel": "self",
-                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_1445144189;2340558978"
-                }
+                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_1445144189;2340558978"}
               ],
               "size": null,
               "state": "available",
@@ -9746,6 +9734,15 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
+          },
+          "server_array[elasticity_params][workflow_specific_params]": {
+            "class": "Hash",
+            "non_blank": true
+          },
+          "server_array[elasticity_params][workflow_specific_params][template]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The WAT used for scale up/down logic."
           }
         }
       },
@@ -10181,6 +10178,15 @@
             "non_blank": true,
             "mandatory": true,
             "description": "Max instances (0 for unlimited)."
+          },
+          "server_array[elasticity_params][workflow_specific_params]": {
+            "class": "Hash",
+            "non_blank": true
+          },
+          "server_array[elasticity_params][workflow_specific_params][template]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The WAT used for scale up/down logic."
           }
         }
       },
@@ -10225,6 +10231,42 @@
         ],
         "description": "Run an executable on all instances of this array. This function is equivalent to invoking the \"multi_run_executable\" action on the instances resource\n(Instances#multi_run_executable with the filter \"parent_href == /api/server_arrays/XX\"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable\na single instance, invoke the action \"run_executable\" directly on the instance (see Instances#run_executable)\n",
         "status_code": null,
+        "parameters": {
+        }
+      },
+      "monitor": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "POST   /api/server_arrays/:id/monitor(.:format)? {:controller=>\"server_arrays\", :action=>\"monitor\"}"
+        ],
+        "description": "Run the monitoring workflow, if one is attached\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
+      "scale_down": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "POST   /api/server_arrays/:id/scale_down(.:format)? {:controller=>\"server_arrays\", :action=>\"scale_down\"}"
+        ],
+        "description": "Scale down the array by 1 instance using the array's scaling logic. For workflow-\nbased arrays, this will scale using the defined workflow. For non-workflow based\narrays this will scale using the same logic as if the system triggered the event.\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
+      "scale_up": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "POST   /api/server_arrays/:id/scale_up(.:format)? {:controller=>\"server_arrays\", :action=>\"scale_up\"}"
+        ],
+        "description": "Scale up the array by 1 instance using the array's scaling logic. For workflow-\nbased arrays, this will scale using the defined workflow. For non-workflow based\narrays this will scale using the same logic as if the system triggered the event.\n",
+        "status_code": "204 No Content",
         "parameters": {
         }
       }
@@ -12927,6 +12969,9 @@
           },
           "deployment_href": {
             "description": "Deployment href to filter on."
+          },
+          "visibility": {
+            "description": "Visibilty of volume snapshot (public, private, or account)"
           }
         }
       },
@@ -12984,7 +13029,8 @@
         "links": "",
         "actions": "",
         "created_at": "The date at which this volume snapshot was created in the cloud",
-        "updated_at": ""
+        "updated_at": "",
+        "visibility": "Visibility of volume snapshot, either private or public"
       },
       "links": {
         "self": "Href of itself",
