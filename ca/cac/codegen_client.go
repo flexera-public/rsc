@@ -55,7 +55,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
-/******  Account ******/
+/****** Account ******/
 
 // Accounts act as a container for clouds credentials and other RightScale concepts such as
 // Deployments or ServerArrays. Users with the `enterprise_manager` permission in an account can create
@@ -203,7 +203,7 @@ func (loc *AccountLocator) Show(options rsapi.APIParams) (*Account, error) {
 	return res, err
 }
 
-/******  AnalysisSnapshot ******/
+/****** AnalysisSnapshot ******/
 
 // AnalysisSnapshots can be used to generate unique links to share data using filters over a date range.
 type AnalysisSnapshot struct {
@@ -335,7 +335,7 @@ func (loc *AnalysisSnapshotLocator) Show(options rsapi.APIParams) (*AnalysisSnap
 	return res, err
 }
 
-/******  BudgetAlert ******/
+/****** BudgetAlert ******/
 
 // Enable you to set a monthly spend budget and be alerted via email when this is exceeded,
 // based on either actual or forecasted spend. These emails include links to AnalysisSnapshots, which are
@@ -610,7 +610,7 @@ func (loc *BudgetAlertLocator) Destroy() error {
 	return nil
 }
 
-/******  CloudBill ******/
+/****** CloudBill ******/
 
 // Enables you to get details about cloud bills. Only Amazon Web Services is supported for now.
 type CloudBill struct {
@@ -684,7 +684,7 @@ func (loc *CloudBillLocator) FilterOptions(endTime *time.Time, filterTypes []str
 	return res, err
 }
 
-/******  CloudBillMetric ******/
+/****** CloudBillMetric ******/
 
 // Enables you to get breakdowns of your cloud bill costs. Only Amazon Web Services is supported for now.
 type CloudBillMetric struct {
@@ -760,7 +760,7 @@ func (loc *CloudBillMetricLocator) GroupedTimeSeries(endTime *time.Time, group [
 	return res, err
 }
 
-/******  CurrentUser ******/
+/****** CurrentUser ******/
 
 // Represents the currently logged-in user. This resource is not included in the public docs.
 type CurrentUser struct {
@@ -1027,7 +1027,7 @@ func (loc *CurrentUserLocator) Environment() (*UserEnvironment, error) {
 	return res, err
 }
 
-/******  Instance ******/
+/****** Instance ******/
 
 // Enables you to get instance details, including the cost of individual instances.
 type Instance struct {
@@ -1354,7 +1354,7 @@ func (loc *InstanceLocator) FilterOptions(endTime *time.Time, filterTypes []stri
 	return res, err
 }
 
-/******  InstanceCombination ******/
+/****** InstanceCombination ******/
 
 // InstanceCombinations represent instances that make-up a Scenario.
 // Note that, when making create and update calls, a Pattern can only be applied to an InstanceCombination once.
@@ -1645,7 +1645,7 @@ func (loc *InstanceCombinationLocator) ReservedInstancePrices(options rsapi.APIP
 	return res, err
 }
 
-/******  InstanceMetric ******/
+/****** InstanceMetric ******/
 
 // Enables you to get aggregated metrics from instances, such as total_cost or lowest_instance_count.
 type InstanceMetric struct {
@@ -1992,7 +1992,7 @@ func (loc *InstanceMetricLocator) CurrentCount(options rsapi.APIParams) (string,
 	return res, err
 }
 
-/******  InstanceUsagePeriod ******/
+/****** InstanceUsagePeriod ******/
 
 // Enables you to get usage period details from instances. An instance can have many usage periods, which can
 // be caused by stop/start actions or changes to the instance type etc. InstanceUsagePeriods are used internally to
@@ -2062,7 +2062,7 @@ func (loc *InstanceUsagePeriodLocator) Index(instanceUsagePeriodFilters []*Filte
 	return res, err
 }
 
-/******  Pattern ******/
+/****** Pattern ******/
 
 // Patterns describe operations in usage, and can be applied to InstanceCombinations in Scenarios to model changes in the cost.
 // A pattern can only be applied to an InstanceCombination once.
@@ -2382,7 +2382,7 @@ func (loc *PatternLocator) CreateDefaults(options rsapi.APIParams) (*Pattern, er
 	return res, err
 }
 
-/******  ReservedInstance ******/
+/****** ReservedInstance ******/
 
 // Enables you to get details of existing AWS ReservedInstances and some metrics about their utilization.
 type ReservedInstance struct {
@@ -2709,7 +2709,7 @@ func (loc *ReservedInstanceLocator) FilterOptions(endTime *time.Time, startTime 
 	return res, err
 }
 
-/******  ReservedInstancePurchase ******/
+/****** ReservedInstancePurchase ******/
 
 // ReservedInstancePurchases can be applied to InstanceCombinations in Scenarios to model changes in the cost. These are not actually purchased in the cloud and are only used for cost simulation purposes.
 type ReservedInstancePurchase struct {
@@ -2958,7 +2958,7 @@ func (loc *ReservedInstancePurchaseLocator) Destroy() error {
 	return nil
 }
 
-/******  Scenario ******/
+/****** Scenario ******/
 
 // Scenarios can be used to model changes in cloud usage to forecast costs over a 3-year period.
 // Use the forecast action to generate the results after you create a Scenario and add your InstanceCombinations,
@@ -3266,7 +3266,7 @@ func (loc *ScenarioLocator) Forecast(options rsapi.APIParams) (*TimeSeriesMetric
 	return res, err
 }
 
-/******  ScheduledReport ******/
+/****** ScheduledReport ******/
 
 // ScheduledReports are emailed to you, and include usage, cost, and the change from the previous reporting period.
 // These emails include links to AnalysisSnapshots, which are generated automatically by us.
@@ -3566,7 +3566,7 @@ func (loc *ScheduledReportLocator) CreateDefaults(options rsapi.APIParams) (*Sch
 	return res, err
 }
 
-/******  TempInstancePrice ******/
+/****** TempInstancePrice ******/
 
 // This is a temporary API call that can be used by the Cloud Analytics UI until the
 // Pricing Service is live, at which point this API call will be deleted. This is not included in the public docs.
@@ -3625,7 +3625,7 @@ func (loc *TempInstancePriceLocator) Index() (string, error) {
 	return res, err
 }
 
-/******  User ******/
+/****** User ******/
 
 // Users can have various permissions on multiple accounts. Users with admin permissions in an account
 // can modify that account's users. This resource is not included in the public docs.
@@ -3884,7 +3884,7 @@ func (loc *UserLocator) Invite(options rsapi.APIParams) (*User, error) {
 	return res, err
 }
 
-/******  UserSetting ******/
+/****** UserSetting ******/
 
 // Used by the Cloud Analytics UI to keep track of various UI states.
 type UserSetting struct {
@@ -4038,7 +4038,7 @@ func (loc *UserSettingLocator) Update(options rsapi.APIParams) (*UserSetting, er
 	return res, err
 }
 
-/****** Parameter Data Types ******/
+/****** Data Types ******/
 
 type AccountParam struct {
 	CloudAccounts                             []*CloudAccount `json:"cloud_accounts,omitempty"`

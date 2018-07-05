@@ -54,7 +54,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
-/******  Account ******/
+/****** Account ******/
 
 type Account struct {
 	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
@@ -127,7 +127,7 @@ func (loc *AccountLocator) Show() (*Account, error) {
 	return res, err
 }
 
-/******  AccountGroup ******/
+/****** AccountGroup ******/
 
 // An Account Group specifies which RightScale accounts will have access to import a shared RightScale component (e.g. ServerTemplate, RightScript, etc.) from the MultiCloud Marketplace.
 type AccountGroup struct {
@@ -257,7 +257,7 @@ func (loc *AccountGroupLocator) Show(options rsapi.APIParams) (*AccountGroup, er
 	return res, err
 }
 
-/******  Alert ******/
+/****** Alert ******/
 
 // An Alert represents an AlertSpec bound to a running Instance.
 type Alert struct {
@@ -547,7 +547,7 @@ func (loc *AlertLocator) Show(options rsapi.APIParams) (*Alert, error) {
 	return res, err
 }
 
-/******  AlertSpec ******/
+/****** AlertSpec ******/
 
 // An AlertSpec defines the conditions under which an Alert is triggered and escalated.
 // Condition sentence: if &lt;file&gt;.&lt;variable&gt; &lt;condition&gt; '&lt;threshold&gt;' for &lt;duration&gt; min then escalate to '&lt;escalation_name&gt;'.
@@ -823,7 +823,7 @@ func (loc *AlertSpecLocator) Update(alertSpec *AlertSpecParam2) error {
 	return nil
 }
 
-/******  AuditEntry ******/
+/****** AuditEntry ******/
 
 // An Audit Entry can be used to track various activities of a resource.
 type AuditEntry struct {
@@ -1168,7 +1168,7 @@ func (loc *AuditEntryLocator) Update(auditEntry *AuditEntryParam2, options rsapi
 	return nil
 }
 
-/******  Backup ******/
+/****** Backup ******/
 
 type Backup struct {
 	Actions             []map[string]string `json:"actions,omitempty"`
@@ -1562,7 +1562,7 @@ func (loc *BackupLocator) Update(backup *BackupParam3) error {
 	return nil
 }
 
-/******  ChildAccount ******/
+/****** ChildAccount ******/
 
 type ChildAccount struct {
 }
@@ -1712,7 +1712,7 @@ func (loc *ChildAccountLocator) Update(childAccount *ChildAccountParam2) error {
 	return nil
 }
 
-/******  Cloud ******/
+/****** Cloud ******/
 
 // Represents a Cloud (within the context of the account in the session).
 type Cloud struct {
@@ -1842,7 +1842,7 @@ func (loc *CloudLocator) Show(options rsapi.APIParams) (*Cloud, error) {
 	return res, err
 }
 
-/******  CloudAccount ******/
+/****** CloudAccount ******/
 
 // Represents a Cloud Account (An association between the account and a cloud).
 type CloudAccount struct {
@@ -2074,7 +2074,7 @@ func (loc *CloudAccountLocator) Update(cloudAccount *CloudAccountParam2) error {
 	return nil
 }
 
-/******  Cookbook ******/
+/****** Cookbook ******/
 
 // Represents a given instance of a single cookbook.
 type Cookbook struct {
@@ -2356,7 +2356,7 @@ func (loc *CookbookLocator) Show(options rsapi.APIParams) (*Cookbook, error) {
 	return res, err
 }
 
-/******  CookbookAttachment ******/
+/****** CookbookAttachment ******/
 
 // Cookbook Attachment is used to associate a particular cookbook with a ServerTemplate. A Cookbook Attachment must be in place before a recipe can be bound to a runlist using RunnableBinding.
 type CookbookAttachment struct {
@@ -2638,7 +2638,7 @@ func (loc *CookbookAttachmentLocator) Show(options rsapi.APIParams) (*CookbookAt
 	return res, err
 }
 
-/******  Credential ******/
+/****** Credential ******/
 
 // A Credential provides an abstraction for sensitive textual information,
 // such as passphrases or cloud credentials, whose value should be encrypted
@@ -2885,7 +2885,7 @@ func (loc *CredentialLocator) Update(credential *CredentialParam) error {
 	return nil
 }
 
-/******  Datacenter ******/
+/****** Datacenter ******/
 
 // Datacenters represent isolated facilities within a cloud. The level and type of isolation is cloud dependent.
 // While Datacenters in large public clouds might correspond to different physical buildings, with different power,
@@ -3017,7 +3017,7 @@ func (loc *DatacenterLocator) Show(options rsapi.APIParams) (*Datacenter, error)
 	return res, err
 }
 
-/******  Deployment ******/
+/****** Deployment ******/
 
 // Deployments represent logical groupings of related assets such as servers, server arrays, default configuration settings...etc.
 type Deployment struct {
@@ -3407,7 +3407,7 @@ func (loc *DeploymentLocator) Update(deployment *DeploymentParam3) error {
 	return nil
 }
 
-/******  HealthCheck ******/
+/****** HealthCheck ******/
 
 type HealthCheck struct {
 }
@@ -3464,7 +3464,7 @@ func (loc *HealthCheckLocator) Index() (map[string]interface{}, error) {
 	return res, err
 }
 
-/******  IdentityProvider ******/
+/****** IdentityProvider ******/
 
 // An Identity Provider represents a SAML identity provider (IdP) that is linked to your RightScale Organization,
 // and is trusted by the RightScale dashboard to authenticate your organization's end users.
@@ -3596,7 +3596,7 @@ func (loc *IdentityProviderLocator) Show(options rsapi.APIParams) (*IdentityProv
 	return res, err
 }
 
-/******  Image ******/
+/****** Image ******/
 
 // Images represent base VM image existing in a cloud. An image will define the initial Operating System and root disk contents
 // for a new Instance to have, and therefore it represents the basic starting point for creating a new one.
@@ -3732,7 +3732,7 @@ func (loc *ImageLocator) Show(options rsapi.APIParams) (*Image, error) {
 	return res, err
 }
 
-/******  Input ******/
+/****** Input ******/
 
 // Inputs help extract dynamic information, usually specified at runtime, from repeatable configuration operations that can be codified.
 // Inputs are variables defined in and used by RightScripts/Recipes. The two main attributes of an input are 'name' and 'value'. The 'name'
@@ -3906,7 +3906,7 @@ func (loc *InputLocator) MultiUpdate(inputs map[string]interface{}) error {
 	return nil
 }
 
-/******  Instance ******/
+/****** Instance ******/
 
 // Instances represent an entity that is runnable in the cloud.
 // An instance of type "next" is a container of information that expresses how to configure a future instance when we decide
@@ -4568,7 +4568,7 @@ func (loc *InstanceLocator) Update(instance *InstanceParam2) error {
 	return nil
 }
 
-/******  InstanceType ******/
+/****** InstanceType ******/
 
 type InstanceType struct {
 	Actions         []map[string]string `json:"actions,omitempty"`
@@ -4713,7 +4713,7 @@ func (loc *InstanceTypeLocator) Show(options rsapi.APIParams) (*InstanceType, er
 	return res, err
 }
 
-/******  IpAddress ******/
+/****** IpAddress ******/
 
 // An IpAddress provides an abstraction for IPv4 addresses bindable to Instance resources running in a Cloud.
 type IpAddress struct {
@@ -4943,7 +4943,7 @@ func (loc *IpAddressLocator) Update(ipAddress *IpAddressParam2) error {
 	return nil
 }
 
-/******  IpAddressBinding ******/
+/****** IpAddressBinding ******/
 
 // An IpAddressBinding represents an abstraction for binding an IpAddress to an instance.
 // The IpAddress is bound immediately for a current instance, or on launch for a next instance.
@@ -5146,7 +5146,7 @@ func (loc *IpAddressBindingLocator) Show() (*IpAddressBinding, error) {
 	return res, err
 }
 
-/******  MonitoringMetric ******/
+/****** MonitoringMetric ******/
 
 // A monitoring metric is a stream of data that is captured in an instance. Metrics can be monitored, graphed and can be used as the basis for triggering alerts.
 type MonitoringMetric struct {
@@ -5361,7 +5361,7 @@ func (loc *MonitoringMetricLocator) Show(options rsapi.APIParams) (*MonitoringMe
 	return res, err
 }
 
-/******  MultiCloudImage ******/
+/****** MultiCloudImage ******/
 
 // A MultiCloudImage is a RightScale component that functions as a pointer to machine images in specific clouds
 // (e.g. AWS US-East, Rackspace). Each ServerTemplate can reference many MultiCloudImages that defines which
@@ -5674,7 +5674,7 @@ func (loc *MultiCloudImageLocator) Update(multiCloudImage *MultiCloudImageParam)
 	return nil
 }
 
-/******  MultiCloudImageMatcher ******/
+/****** MultiCloudImageMatcher ******/
 
 // A MultiCloudImageMatcher generates MultiCloudImageSettings for all clouds of a
 // given cloud type. For now, only one type of matcher is supported
@@ -5893,7 +5893,7 @@ func (loc *MultiCloudImageMatcherLocator) Show() (*MultiCloudImageMatcher, error
 	return res, err
 }
 
-/******  MultiCloudImageSetting ******/
+/****** MultiCloudImageSetting ******/
 
 // A MultiCloudImageSetting defines which
 // settings should be used when a server is launched in a cloud.
@@ -6121,7 +6121,7 @@ func (loc *MultiCloudImageSettingLocator) Update(multiCloudImageSetting *MultiCl
 	return nil
 }
 
-/******  Network ******/
+/****** Network ******/
 
 // A Network is a logical grouping of network devices.
 type Network struct {
@@ -6353,7 +6353,7 @@ func (loc *NetworkLocator) Update(network *NetworkParam2) error {
 	return nil
 }
 
-/******  NetworkGateway ******/
+/****** NetworkGateway ******/
 
 // A NetworkGateway is an interface that allows traffic to be routed between networks.
 type NetworkGateway struct {
@@ -6586,7 +6586,7 @@ func (loc *NetworkGatewayLocator) Update(networkGateway *NetworkGatewayParam2) e
 	return nil
 }
 
-/******  NetworkOptionGroup ******/
+/****** NetworkOptionGroup ******/
 
 // A key/value pair hash containing options for configuring a Network.
 // The key/value pairs are stored in the "options" parameter.
@@ -6824,7 +6824,7 @@ func (loc *NetworkOptionGroupLocator) Update(networkOptionGroup *NetworkOptionGr
 	return nil
 }
 
-/******  NetworkOptionGroupAttachment ******/
+/****** NetworkOptionGroupAttachment ******/
 
 // Resource for attaching NetworkOptionGroups to Networks.
 // A single NetworkOptionGroup can be attached to many Networks.
@@ -7073,7 +7073,7 @@ func (loc *NetworkOptionGroupAttachmentLocator) Update(networkOptionGroupAttachm
 	return nil
 }
 
-/******  Oauth2 ******/
+/****** Oauth2 ******/
 
 type Oauth2 struct {
 }
@@ -7187,7 +7187,7 @@ func (loc *Oauth2Locator) Create(grantType string, options rsapi.APIParams) (map
 	return res, err
 }
 
-/******  Permission ******/
+/****** Permission ******/
 
 // Please note that API 1.5 does not support operations on Governance Groups
 // or Orgs and only allows management of the following CM Roles:
@@ -7405,7 +7405,7 @@ func (loc *PermissionLocator) Show() (*Permission, error) {
 	return res, err
 }
 
-/******  PlacementGroup ******/
+/****** PlacementGroup ******/
 
 type PlacementGroup struct {
 	Actions                 []map[string]string    `json:"actions,omitempty"`
@@ -7611,7 +7611,7 @@ func (loc *PlacementGroupLocator) Show(options rsapi.APIParams) (*PlacementGroup
 	return res, err
 }
 
-/******  Preference ******/
+/****** Preference ******/
 
 // A Preference is a user and account-specific setting. Preferences are used in many part of the RightScale platform and can be used for custom purposes if desired.
 type Preference struct {
@@ -7798,7 +7798,7 @@ func (loc *PreferenceLocator) Update(preference *PreferenceParam) error {
 	return nil
 }
 
-/******  Publication ******/
+/****** Publication ******/
 
 // A Publication is a revisioned component shared with a set of Account Groups.
 // If shared with your account, it can be imported in to your account.
@@ -7965,7 +7965,7 @@ func (loc *PublicationLocator) Show(options rsapi.APIParams) (*Publication, erro
 	return res, err
 }
 
-/******  PublicationLineage ******/
+/****** PublicationLineage ******/
 
 // A Publication Lineage contains lineage information for a Publication in the MultiCloudMarketplace.
 // It is shared among all revisions of a Publication within the marketplace.
@@ -8051,7 +8051,7 @@ func (loc *PublicationLineageLocator) Show(options rsapi.APIParams) (*Publicatio
 	return res, err
 }
 
-/******  RecurringVolumeAttachment ******/
+/****** RecurringVolumeAttachment ******/
 
 // A RecurringVolumeAttachment specifies a Volume/VolumeSnapshot to attach to a Server/ServerArray the next time an instance is launched.
 type RecurringVolumeAttachment struct {
@@ -8268,7 +8268,7 @@ func (loc *RecurringVolumeAttachmentLocator) Show(options rsapi.APIParams) (*Rec
 	return res, err
 }
 
-/******  Repository ******/
+/****** Repository ******/
 
 // A Repository is a location from which you can download and import design objects such as Chef cookbooks. Using this resource you can add and modify repository information and import assets discovered in the repository.
 // RightScale currently supports the following types of repositores: git, svn, and URLs of compressed files (tar, tgz, gzip).
@@ -8738,7 +8738,7 @@ func (loc *RepositoryLocator) Update(repository *RepositoryParam2) error {
 	return nil
 }
 
-/******  RepositoryAsset ******/
+/****** RepositoryAsset ******/
 
 // A RepositoryAsset represents an item discovered in a Repository. These assets represent only a view of the Repository
 // the last time it was scraped. In order to use these assets, you must import them into your account.
@@ -8868,7 +8868,7 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.APIParams) (*RepositoryAss
 	return res, err
 }
 
-/******  ResourceGroup ******/
+/****** ResourceGroup ******/
 
 type ResourceGroup struct {
 	Actions     []map[string]string `json:"actions,omitempty"`
@@ -9099,7 +9099,7 @@ func (loc *ResourceGroupLocator) Update(resourceGroup *ResourceGroupParam2) erro
 	return nil
 }
 
-/******  RightScript ******/
+/****** RightScript ******/
 
 // A RightScript is an executable piece of code that can be run on a server
 // during the boot, operational, or decommission phases.
@@ -9459,7 +9459,7 @@ func (loc *RightScriptLocator) UpdateSource(filename *rsapi.SourceUpload) error 
 	return nil
 }
 
-/******  RightScriptAttachment ******/
+/****** RightScriptAttachment ******/
 
 type RightScriptAttachment struct {
 	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
@@ -9702,7 +9702,7 @@ func (loc *RightScriptAttachmentLocator) Update(rightScriptAttachment *RightScri
 	return nil
 }
 
-/******  Route ******/
+/****** Route ******/
 
 // A Route defines how networking traffic should be routed from one
 // destination to another. See next_hop_type for available endpoint targets.
@@ -9943,7 +9943,7 @@ func (loc *RouteLocator) Update(route *RouteParam2) error {
 	return nil
 }
 
-/******  RouteTable ******/
+/****** RouteTable ******/
 
 // Grouped listing of Routes
 type RouteTable struct {
@@ -10187,7 +10187,7 @@ func (loc *RouteTableLocator) Update(routeTable *RouteTableParam2) error {
 	return nil
 }
 
-/******  RunnableBinding ******/
+/****** RunnableBinding ******/
 
 // A RunnableBinding represents an item in a runlist of a ServerTemplate. These items could be
 // RightScript or Chef recipes, and could be associated with any one of the three runlists of a
@@ -10433,7 +10433,7 @@ func (loc *RunnableBindingLocator) Show(options rsapi.APIParams) (*RunnableBindi
 	return res, err
 }
 
-/******  Scheduler ******/
+/****** Scheduler ******/
 
 // Provide RightLink with the ability to schedule script executions on instances
 type Scheduler struct {
@@ -10598,7 +10598,7 @@ func (loc *SchedulerLocator) ScheduleRightScript(options rsapi.APIParams) error 
 	return nil
 }
 
-/******  SecurityGroup ******/
+/****** SecurityGroup ******/
 
 // Security Groups represent network security profiles that contain lists of firewall rules for different ports and source IP addresses, as well as
 // trust relationships amongst different security groups.
@@ -10803,7 +10803,7 @@ func (loc *SecurityGroupLocator) Show(options rsapi.APIParams) (*SecurityGroup, 
 	return res, err
 }
 
-/******  SecurityGroupRule ******/
+/****** SecurityGroupRule ******/
 
 type SecurityGroupRule struct {
 	Action               string              `json:"action,omitempty"`
@@ -11065,7 +11065,7 @@ func (loc *SecurityGroupRuleLocator) Update(securityGroupRule *SecurityGroupRule
 	return nil
 }
 
-/******  Server ******/
+/****** Server ******/
 
 // Servers represent the notion of a server/machine from the RightScale's perspective. A Server, does not always
 // have a corresponding VM running or provisioned in a cloud. Some clouds use the word "servers" to refer to created VM's. These allocated VM's
@@ -11583,7 +11583,7 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam3) error {
 	return nil
 }
 
-/******  ServerArray ******/
+/****** ServerArray ******/
 
 // A server array represents a logical group of instances and allows to resize(grow/shrink) that group based on certain elasticity parameters.
 // A server array just like a server always has a next_instance association, which will define the configuration to apply when a new instance is launched.
@@ -12247,7 +12247,7 @@ func (loc *ServerArrayLocator) Update(serverArray *ServerArrayParam2) error {
 	return nil
 }
 
-/******  ServerTemplate ******/
+/****** ServerTemplate ******/
 
 // ServerTemplates allow you to pre-configure servers by starting from a base image and adding scripts that run during the boot,
 // operational, and shutdown phases. A ServerTemplate is a description of how a new instance will be configured when it is
@@ -12780,7 +12780,7 @@ func (loc *ServerTemplateLocator) Update(serverTemplate *ServerTemplateParam) er
 	return nil
 }
 
-/******  ServerTemplateMultiCloudImage ******/
+/****** ServerTemplateMultiCloudImage ******/
 
 // This resource represents links between ServerTemplates and MultiCloud Images and enables you to effectively
 // add/delete MultiCloudImages to ServerTemplates and make them the default one.
@@ -13014,7 +13014,7 @@ func (loc *ServerTemplateMultiCloudImageLocator) Show(options rsapi.APIParams) (
 	return res, err
 }
 
-/******  Session ******/
+/****** Session ******/
 
 // The sessions resource is in charge of creating API sessions that are bound to a given account. The sequence for login into the API is the following:
 // * Perform a POST request to /api/sessions ('create' action) to my.rightscale.com or to any more specific hosts saved from previous sessions.
@@ -13204,7 +13204,7 @@ func (loc *SessionLocator) IndexInstanceSession() (*Instance, error) {
 	return res, err
 }
 
-/******  SshKey ******/
+/****** SshKey ******/
 
 // Ssh Keys represent a created SSH Key that exists in the cloud.
 // An ssh key might also contain the private part of the key, and can be used to login to instances launched with it.
@@ -13408,7 +13408,7 @@ func (loc *SshKeyLocator) Show(options rsapi.APIParams) (*SshKey, error) {
 	return res, err
 }
 
-/******  Subnet ******/
+/****** Subnet ******/
 
 // A Subnet is a logical grouping of network devices. An Instance can have many
 // Subnets.
@@ -13646,7 +13646,7 @@ func (loc *SubnetLocator) Update(subnet *SubnetParam2) error {
 	return nil
 }
 
-/******  Tag ******/
+/****** Tag ******/
 
 // A tag or machine tag is a useful way of attaching useful metadata to an object/resource.
 // Tags are commonly used as an extra label or identifier.
@@ -13886,7 +13886,7 @@ func (loc *TagLocator) MultiDelete(resourceHrefs []string, tags []string) error 
 	return nil
 }
 
-/******  Task ******/
+/****** Task ******/
 
 // Tasks represent processes that happen (or have happened) asynchronously within the context of an Instance.
 // An example of a type of task is an operational script that runs in an instance.
@@ -13968,7 +13968,7 @@ func (loc *TaskLocator) Show(options rsapi.APIParams) (*Task, error) {
 	return res, err
 }
 
-/******  User ******/
+/****** User ******/
 
 type User struct {
 	Actions      []map[string]string `json:"actions,omitempty"`
@@ -14205,7 +14205,7 @@ func (loc *UserLocator) Update(user *UserParam2) error {
 	return nil
 }
 
-/******  UserData ******/
+/****** UserData ******/
 
 type UserData struct {
 }
@@ -14262,7 +14262,7 @@ func (loc *UserDataLocator) Show() (map[string]interface{}, error) {
 	return res, err
 }
 
-/******  Volume ******/
+/****** Volume ******/
 
 // A Volume provides a highly reliable, efficient and persistent storage solution that can be mounted to a cloud instance (in the same datacenter / zone).
 type Volume struct {
@@ -14511,7 +14511,7 @@ func (loc *VolumeLocator) Update(volume *VolumeParam2) error {
 	return nil
 }
 
-/******  VolumeAttachment ******/
+/****** VolumeAttachment ******/
 
 // A VolumeAttachment represents a relationship between a volume and an instance.
 type VolumeAttachment struct {
@@ -14734,7 +14734,7 @@ func (loc *VolumeAttachmentLocator) Show(options rsapi.APIParams) (*VolumeAttach
 	return res, err
 }
 
-/******  VolumeSnapshot ******/
+/****** VolumeSnapshot ******/
 
 // A VolumeSnapshot represents a Cloud storage volume at a particular point in time. One can create a snapshot regardless of whether or not a volume is attached to an Instance. When a snapshot is created,
 // various meta data is retained such as a Created At timestamp, a unique Resource UID (e.g. vol-52EF05A9), the Volume Owner and Visibility (e.g. private or public).
@@ -14989,7 +14989,7 @@ func (loc *VolumeSnapshotLocator) Show(options rsapi.APIParams) (*VolumeSnapshot
 	return res, err
 }
 
-/******  VolumeType ******/
+/****** VolumeType ******/
 
 // A VolumeType describes the type of volume, particularly the size.
 type VolumeType struct {
@@ -15121,7 +15121,7 @@ func (loc *VolumeTypeLocator) Show(options rsapi.APIParams) (*VolumeType, error)
 	return res, err
 }
 
-/****** Parameter Data Types ******/
+/****** Data Types ******/
 
 type AlertSpecParam struct {
 	Condition      string `json:"condition,omitempty"`

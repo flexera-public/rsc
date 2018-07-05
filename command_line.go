@@ -10,6 +10,7 @@ import (
 	"github.com/rightscale/rsc/cm15"
 	"github.com/rightscale/rsc/cm16"
 	"github.com/rightscale/rsc/cmd"
+	"github.com/rightscale/rsc/policy"
 	"github.com/rightscale/rsc/rl10"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
@@ -145,6 +146,9 @@ const (
 
 	// CaCommand is the command for CA client.
 	CaCommand = "ca"
+
+	// PolicyCommand is the command for Policy client.
+	PolicyCommand = "policy"
 )
 
 // APIClient instantiates a client with the given name from command line arguments.
@@ -160,6 +164,8 @@ func APIClient(name string, cmdLine *cmd.CommandLine) (cmd.CommandClient, error)
 		return rl10.FromCommandLine(cmdLine)
 	case CaCommand:
 		return ca.FromCommandLine(cmdLine)
+	case PolicyCommand:
+		return policy.FromCommandLine(cmdLine)
 	default:
 		return nil, fmt.Errorf("No client for '%s'", name)
 	}
@@ -186,4 +192,8 @@ func RegisterClientCommands(app *kingpin.Application) {
 	caCmd := app.Command(CaCommand, ca.APIName)
 	registrar = rsapi.Registrar{APICmd: caCmd}
 	ca.RegisterCommands(&registrar)
+
+	policyCmd := app.Command(PolicyCommand, policy.APIName)
+	registrar = rsapi.Registrar{APICmd: policyCmd}
+	policy.RegisterCommands(&registrar)
 }

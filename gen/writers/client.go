@@ -52,12 +52,12 @@ func (c *ClientWriter) WriteHeader(pkg, version string, needTime, needJSON bool,
 
 // WriteResourceHeader writes the resource header.
 func (c *ClientWriter) WriteResourceHeader(name string, w io.Writer) {
-	fmt.Fprintf(w, "/******  %s ******/\n\n", name)
+	fmt.Fprintf(w, "/****** %s ******/\n\n", name)
 }
 
 // WriteTypeSectionHeader writes the separator between resources and data types.
 func (c *ClientWriter) WriteTypeSectionHeader(w io.Writer) {
-	fmt.Fprintf(w, "\n/****** Parameter Data Types ******/\n\n\n")
+	fmt.Fprintf(w, "\n/****** Data Types ******/\n\n\n")
 }
 
 // WriteType writest the type declaration for a resource action arguments.

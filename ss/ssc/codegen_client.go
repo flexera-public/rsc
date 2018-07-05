@@ -55,7 +55,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
-/******  AccountPreference ******/
+/****** AccountPreference ******/
 
 // The AccountPreference resource stores preferences that apply account-wide, such as UI customization settings and other settings.
 // The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
@@ -249,7 +249,7 @@ func (loc *AccountPreferenceLocator) Delete() error {
 	return nil
 }
 
-/******  Application ******/
+/****** Application ******/
 
 // An Application is an element in the Catalog that can be launched by users. Applications are generally created by uploading CAT
 // files to the Designer and publishing them to the Catalog, though they can also be created via API calls to the Catalog directly without
@@ -726,7 +726,7 @@ func (loc *ApplicationLocator) Launch(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  EndUser ******/
+/****** EndUser ******/
 
 type EndUser struct {
 	Company      string `json:"company,omitempty"`
@@ -910,7 +910,7 @@ func (loc *EndUserLocator) NonSsUsers() (*EndUser, error) {
 	return res, err
 }
 
-/******  NotificationRule ******/
+/****** NotificationRule ******/
 
 // A notification rule describes which notification should be created
 // when events occur in the system. Events may be generated when an
@@ -1209,7 +1209,7 @@ func (loc *NotificationRuleLocator) MultiDelete(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  UserPreference ******/
+/****** UserPreference ******/
 
 // The UserPreference resource stores preferences on a per user basis, such as default notification preference.
 // The Self-Service portal uses these preferences in the portal.
@@ -1452,7 +1452,7 @@ func (loc *UserPreferenceLocator) Delete() error {
 	return nil
 }
 
-/******  UserPreferenceInfo ******/
+/****** UserPreferenceInfo ******/
 
 // The UserPreferenceInfo resource defines the available user preferences supported by the system.
 // It is also used to validate values saved in UserPreference.
@@ -1569,7 +1569,7 @@ func (loc *UserPreferenceInfoLocator) Show() (*UserPreferenceInfo, error) {
 	return res, err
 }
 
-/****** Parameter Data Types ******/
+/****** Data Types ******/
 
 type CompiledCAT struct {
 	CatParserGemVersion string                   `json:"cat_parser_gem_version,omitempty"`

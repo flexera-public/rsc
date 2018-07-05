@@ -245,8 +245,11 @@ func (a *API) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 	if err == nil {
 		resource = res.Name
 	}
-	actions := make(map[string][][2]string)
+	if _, ok := a.Metadata[hrefPrefix]; ok {
+		resource = hrefPrefix
+	}
 	resNames := make([]string, len(a.Metadata))
+	actionsByRes := make(map[string][][]string)
 	idx := 0
 	for n := range a.Metadata {
 		resNames[idx] = n
@@ -254,6 +257,7 @@ func (a *API) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 	}
 	sort.Strings(resNames)
 	for _, resName := range resNames {
+		actionsByRes[resName] = make([][]string, 0)
 		res := a.Metadata[resName]
 		if resource != "" && resName != resource {
 			continue
@@ -272,17 +276,10 @@ func (a *API) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 				if !ok {
 					pat, _ = shortenPattern(res, pat, "/"+action.Name)
 				}
-				actions[action.Name] = append(actions[action.Name], [2]string{pat, resName})
+				actionsByRes[resName] = append(actionsByRes[resName], []string{action.Name, pat})
 			}
 		}
 	}
-	keys := make([]string, len(actions))
-	i := 0
-	for k := range actions {
-		keys[i] = k
-		i++
-	}
-	sort.Strings(keys)
 	var lines []string
 	actionTitle := "Action"
 	hrefTitle := "Href"
@@ -290,41 +287,41 @@ func (a *API) ShowActions(cmd, hrefPrefix string, values ActionCommands) error {
 	maxActionLen := len(actionTitle)
 	maxHrefLen := len(hrefTitle)
 	maxResourceLen := len(resourceTitle)
-	for _, name := range keys {
-		if len(name) > maxActionLen {
-			maxActionLen = len(name)
+	for res, actions := range actionsByRes {
+		if len(res) > maxResourceLen {
+			maxResourceLen = len(res)
 		}
-		as := actions[name]
-		for _, action := range as {
-			if len(action[0]) > maxHrefLen {
-				maxHrefLen = len(action[0])
+		for _, action := range actions {
+			if len(action[0]) > maxActionLen {
+				maxActionLen = len(action[0])
 			}
-			if len(action[1]) > maxResourceLen {
-				maxResourceLen = len(action[1])
+			if len(action[1]) > maxHrefLen {
+				maxHrefLen = len(action[1])
 			}
+
 		}
 	}
-	for idx, name := range keys {
-		as := actions[name]
+	for idx, resName := range resNames {
+		as := actionsByRes[resName]
 		for i, action := range as {
 			title := ""
 			if i == 0 {
-				title = name
+				title = resName
 				if idx > 0 {
 					lines = append(lines, fmt.Sprintf("%s\t%s\t%s",
+						strings.Repeat("-", maxResourceLen),
 						strings.Repeat("-", maxActionLen),
-						strings.Repeat("-", maxHrefLen),
-						strings.Repeat("-", maxResourceLen)))
+						strings.Repeat("-", maxHrefLen)))
 				}
 			}
 			lines = append(lines, fmt.Sprintf("%s\t%s\t%s", title, action[0], action[1]))
 		}
 	}
 	w := tabwriter.NewWriter(os.Stdout, 0, 4, 1, ' ', 0)
-	w.Write([]byte(fmt.Sprintf("%s\t%s\t%s\n", actionTitle, hrefTitle, resourceTitle)))
-	w.Write([]byte(fmt.Sprintf("%s\t%s\t%s\n", strings.Repeat("=", maxActionLen),
-		strings.Repeat("=", maxHrefLen),
-		strings.Repeat("=", maxResourceLen))))
+	w.Write([]byte(fmt.Sprintf("%s\t%s\t%s\n", resourceTitle, actionTitle, hrefTitle)))
+	w.Write([]byte(fmt.Sprintf("%s\t%s\t%s\n", strings.Repeat("=", maxResourceLen),
+		strings.Repeat("=", maxActionLen),
+		strings.Repeat("=", maxHrefLen))))
 	w.Write([]byte(strings.Join(lines, "\n")))
 	w.Write([]byte("\n"))
 	return w.Flush()

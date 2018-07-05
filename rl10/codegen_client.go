@@ -53,7 +53,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
-/******  DebugCookbookPath ******/
+/****** DebugCookbookPath ******/
 
 // Manipulate debug cookbook directory location
 type DebugCookbookPath struct {
@@ -184,7 +184,7 @@ func (loc *DebugCookbookPathLocator) Delete() error {
 	return nil
 }
 
-/******  DockerControl ******/
+/****** DockerControl ******/
 
 // Manipulate the Docker integration in RightLink 10
 type DockerControl struct {
@@ -288,7 +288,7 @@ func (loc *DockerControlLocator) Update(options rsapi.APIParams) (string, error)
 	return res, err
 }
 
-/******  Env ******/
+/****** Env ******/
 
 // Manipulate global script environment variables
 type Env struct {
@@ -456,7 +456,7 @@ func (loc *EnvLocator) Delete() error {
 	return nil
 }
 
-/******  LoginControl ******/
+/****** LoginControl ******/
 
 // Manipulate login policy settings
 type LoginControl struct {
@@ -556,7 +556,7 @@ func (loc *LoginControlLocator) Update(options rsapi.APIParams) (string, error) 
 	return res, err
 }
 
-/******  Proc ******/
+/****** Proc ******/
 
 // List of process variables, such as version, identity, and protocol_version
 type Proc struct {
@@ -694,7 +694,7 @@ func (loc *ProcLocator) Update(payload string) (string, error) {
 	return res, err
 }
 
-/******  Rl10 ******/
+/****** Rl10 ******/
 
 // Miscellaneous RightLink 10 local requests
 type Rl10 struct {
@@ -859,7 +859,7 @@ func (loc *Rl10Locator) RunRightScript(options rsapi.APIParams) (string, error) 
 	return res, err
 }
 
-/******  TSS ******/
+/****** TSS ******/
 
 // Manipulate the TSS proxy (this is deprecated, please use the /rll/tss/control resource)
 type TSS struct {
@@ -960,7 +960,7 @@ func (loc *TSSLocator) PutHostname(hostname string) (string, error) {
 	return res, err
 }
 
-/******  TSSControl ******/
+/****** TSSControl ******/
 
 // Manipulate monitoring (TSS) settings
 type TSSControl struct {
@@ -1110,7 +1110,7 @@ func (loc *TSSControlLocator) PutControl(options rsapi.APIParams) (string, error
 	return res, err
 }
 
-/******  TSSPlugin ******/
+/****** TSSPlugin ******/
 
 // TSS Custom Plugins
 type TSSPlugin struct {
@@ -1322,4 +1322,4 @@ func (loc *TSSPluginLocator) Destroy() error {
 	return nil
 }
 
-/****** Parameter Data Types ******/
+/****** Data Types ******/

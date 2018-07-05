@@ -4,6 +4,7 @@ vendor
 rsc
 gen/api15gen/api15gen
 gen/praxisgen/praxisgen
+gen/goav2gen/goav2gen
 *.exe
 *.coverprofile
 build

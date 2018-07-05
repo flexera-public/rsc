@@ -183,7 +183,11 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 		return nil, err
 	}
 	if version != "" {
-		req.Header.Set("X-API-Version", version)
+		if a.VersionHeader != "" {
+			req.Header.Set(a.VersionHeader, version)
+		} else {
+			req.Header.Set("X-Api-Version", version)
+		}
 	}
 	if isMultipart {
 		req.Header.Set("Content-Type", fmt.Sprintf("multipart/form-data; boundary=%s", boundary))

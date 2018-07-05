@@ -55,7 +55,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
-/******  Schedule ******/
+/****** Schedule ******/
 
 // A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
 // Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.
@@ -335,7 +335,7 @@ func (loc *ScheduleLocator) MultiDelete(ids []string) error {
 	return nil
 }
 
-/******  Template ******/
+/****** Template ******/
 
 // A Template represent a CloudApplication Template (CAT) that has been uploaded to this design collection.
 // For information on the syntax of a CAT file, please see the [CAT File Language Reference](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html) on the RightScale Docs
@@ -963,7 +963,7 @@ func (loc *TemplateLocator) Unpublish(id string) error {
 	return nil
 }
 
-/****** Parameter Data Types ******/
+/****** Data Types ******/
 
 type ApplicationInfo struct {
 	Href string `json:"href,omitempty"`
