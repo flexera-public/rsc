@@ -122,13 +122,13 @@
           }
         },
         "example_resource": {
-          "name": "NAME_1811890577",
-          "description": "DESCRIPTION_2588298061",
-          "created_at": 1523044408,
-          "updated_at": 1523044408,
+          "name": "NAME_3734169041",
+          "description": "DESCRIPTION_2323604368",
+          "created_at": 1534975254,
+          "updated_at": 1534975254,
           "links": [
             {"rel":"self","href":"/api/account_groups/1"},
-            {"rel":"account","href":"/api/accounts/406979988"}
+            {"rel":"account","href":"/api/accounts/253276753"}
           ],
           "actions": [
 
@@ -157,13 +157,13 @@
           }
         },
         "example_resource": {
-          "name": "NAME_1811890577",
-          "description": "DESCRIPTION_2588298061",
-          "created_at": 1523044408,
-          "updated_at": 1523044408,
+          "name": "NAME_3734169041",
+          "description": "DESCRIPTION_2323604368",
+          "created_at": 1534975254,
+          "updated_at": 1534975254,
           "links": [
             {"rel":"self","href":"/api/account_groups/1"},
-            {"rel":"account","href":"/api/accounts/406979988"}
+            {"rel":"account","href":"/api/accounts/253276753"}
           ],
           "actions": [
 
@@ -207,10 +207,10 @@
         },
         "example_resource": {
           "name": "SPEC_ACCOUNT",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:53 +0000",
           "links": [
-            {"rel":"self","href":"/api/accounts/406979988"},
+            {"rel":"self","href":"/api/accounts/253276753"},
             {"rel":"owner","href":"/api/users/888"},
             {"rel":"cluster","href":"/api/clusters/9"}
           ]
@@ -388,10 +388,10 @@
           }
         },
         "example_resource": {
-          "name": "NAME_2930544205",
-          "description": "DESCRIPTION_740147473",
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
+          "name": "NAME_322713869",
+          "description": "DESCRIPTION_3640963964",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "duration": 60,
           "threshold": "1",
           "condition": "==",
@@ -447,10 +447,10 @@
           }
         },
         "example_resource": {
-          "name": "NAME_2930544205",
-          "description": "DESCRIPTION_740147473",
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
+          "name": "NAME_322713869",
+          "description": "DESCRIPTION_3640963964",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "duration": 60,
           "threshold": "1",
           "condition": "==",
@@ -658,11 +658,11 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "links": [
             {"rel":"self","href":"/api/alerts/1"},
-            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
+            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
             {"rel":"alert_spec","href":"/api/alert_specs/1"}
           ],
           "actions": [
@@ -732,11 +732,11 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "links": [
             {"rel":"self","href":"/api/alerts/1"},
-            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
+            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
             {"rel":"alert_spec","href":"/api/alert_specs/1"}
           ],
           "actions": [
@@ -921,7 +921,7 @@
         "example_resource": {
           "links": [
             {"rel":"self","href":"/api/audit_entries/7"},
-            {"rel":"auditee","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
+            {"rel":"auditee","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
             {"rel":"detail","href":"/api/audit_entries/7/detail"}
           ],
           "actions": [
@@ -931,8 +931,8 @@
           ],
           "summary": "test summary",
           "user_email": "owner_user@rightscale.com",
-          "updated_at": "2018/04/06 19:53:30 +0000",
-          "detail_size": 16
+          "updated_at": "2018/08/22 22:00:57 +0000",
+          "detail_size": 17
         },
         "filters": {
           "auditee_href": {
@@ -965,7 +965,7 @@
         "example_resource": {
           "links": [
             {"rel":"self","href":"/api/audit_entries/7"},
-            {"rel":"auditee","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
+            {"rel":"auditee","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
             {"rel":"detail","href":"/api/audit_entries/7/detail"}
           ],
           "actions": [
@@ -975,8 +975,8 @@
           ],
           "summary": "test summary",
           "user_email": "owner_user@rightscale.com",
-          "updated_at": "2018/04/06 19:53:30 +0000",
-          "detail_size": 16
+          "updated_at": "2018/08/22 22:00:57 +0000",
+          "detail_size": 17
         }
       },
       "update": {
@@ -1192,11 +1192,11 @@
           "lineage": "lineage123",
           "from_master": false,
           "volume_snapshot_count": 2,
-          "created_at": "2018/04/06 19:53:28 +0000",
+          "created_at": "2018/08/22 22:00:54 +0000",
           "completed": true,
           "committed": true,
           "links": [
-            {"rel":"self","href":"/api/backups/2cbe1c92-39d4-11e8-bca7-02424fa50f63"}
+            {"rel":"self","href":"/api/backups/d75a170c-a656-11e8-8b9d-0242654fdba0"}
           ],
           "actions": [
             {
@@ -1205,9 +1205,12 @@
           ],
           "volume_snapshots": [
             {
-              "resource_uid": "RESOURCE_4283663438",
+              "resource_uid": "RESOURCE_3392294980",
               "links": [
-                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_4283663438;195590580"}
+                {
+                  "rel": "self",
+                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_3392294980;3205452321"
+                }
               ],
               "size": null,
               "state": "available",
@@ -1216,9 +1219,12 @@
               "committed": true
             },
             {
-              "resource_uid": "RESOURCE_1445144189",
+              "resource_uid": "RESOURCE_442562675",
               "links": [
-                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_1445144189;2340558978"}
+                {
+                  "rel": "self",
+                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_442562675;1482852308"
+                }
               ],
               "size": null,
               "state": "available",
@@ -1313,11 +1319,11 @@
           "lineage": "lineage123",
           "from_master": false,
           "volume_snapshot_count": 2,
-          "created_at": "2018/04/06 19:53:28 +0000",
+          "created_at": "2018/08/22 22:00:54 +0000",
           "completed": true,
           "committed": true,
           "links": [
-            {"rel":"self","href":"/api/backups/2cbe1c92-39d4-11e8-bca7-02424fa50f63"}
+            {"rel":"self","href":"/api/backups/d75a170c-a656-11e8-8b9d-0242654fdba0"}
           ],
           "actions": [
             {
@@ -1326,9 +1332,12 @@
           ],
           "volume_snapshots": [
             {
-              "resource_uid": "RESOURCE_4283663438",
+              "resource_uid": "RESOURCE_3392294980",
               "links": [
-                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_4283663438;195590580"}
+                {
+                  "rel": "self",
+                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_3392294980;3205452321"
+                }
               ],
               "size": null,
               "state": "available",
@@ -1337,9 +1346,12 @@
               "committed": true
             },
             {
-              "resource_uid": "RESOURCE_1445144189",
+              "resource_uid": "RESOURCE_442562675",
               "links": [
-                {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_1445144189;2340558978"}
+                {
+                  "rel": "self",
+                  "href": "/api/clouds/888/volume_snapshots/RESOURCE_442562675;1482852308"
+                }
               ],
               "size": null,
               "state": "available",
@@ -1450,10 +1462,10 @@
         },
         "example_resource": {
           "name": "SPEC_ACCOUNT",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:53 +0000",
           "links": [
-            {"rel":"self","href":"/api/accounts/406979988"},
+            {"rel":"self","href":"/api/accounts/253276753"},
             {"rel":"owner","href":"/api/users/888"},
             {"rel":"cluster","href":"/api/clusters/9"}
           ]
@@ -1501,7 +1513,7 @@
         "routes": [
           "POST   /api/cloud_accounts(.:format)?           {:controller=>\"cloud_accounts\", :action=>\"create\"}"
         ],
-        "description": "Register a cloud account/subscription/project with a RightScale account. Not all clouds support API-based registration.\n\nFor more information on the supported clouds and their respective parameters, refer to the following:\n\n\nhttp://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html\n\n\n\n",
+        "description": "Register a cloud account/subscription/project with a RightScale account. Not all clouds support API-based registration.\n\ncreds by cloud type\n\nAWS cloud: aws_account_number, aws_access_key_id, aws_secret_access_key, ec2_key (optional), ec2_cert (optional)\n\nAzureRM cloud: client_id, client_secret, tenant_id, subscription_id\n\nGoogle cloud: project, client_email (optional), private_key (optional), json (optional)\n\nSoftLayer cloud: api_key, username\n\nFor more information on the supported clouds and their respective parameters, refer to the following:\n\n\nhttp://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html\n\n\n\n",
         "status_code": "201 Created",
         "parameters": {
           "cloud_account": {
@@ -1550,18 +1562,18 @@
         "routes": [
           "GET    /api/cloud_accounts(.:format)?           {:controller=>\"cloud_accounts\", :action=>\"index\"}"
         ],
-        "description": "Lists the CloudAccounts (non-aws) available to this Account.\n",
+        "description": "Lists all the CloudAccounts available to this Account.\n",
         "content_type": "application/vnd.rightscale.cloud_account;type=collection",
         "status_code": "200 OK",
         "parameters": {
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:53 +0000",
           "links": [
             {"rel":"self","href":"/api/cloud_accounts/7773"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"account","href":"/api/accounts/406979988"}
+            {"rel":"account","href":"/api/accounts/253276753"}
           ]
         },
         "filters": {
@@ -1580,12 +1592,12 @@
         "parameters": {
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:53 +0000",
           "links": [
             {"rel":"self","href":"/api/cloud_accounts/7773"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"account","href":"/api/accounts/406979988"}
+            {"rel":"account","href":"/api/accounts/253276753"}
           ]
         }
       },
@@ -1596,7 +1608,7 @@
         "routes": [
           "PUT    /api/cloud_accounts/:id(.:format)?       {:controller=>\"cloud_accounts\", :action=>\"update\"}"
         ],
-        "description": "Update credentials for a registered cloud account/subscription/project. Not all clouds support API-based credential update.\n\nFor more information on the supported clouds and their respective parameters, refer to the following:\n\n\nhttp://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html\n\n\n\n",
+        "description": "Update credentials for a registered cloud account/subscription/project. Not all clouds support API-based credential update.\n\ncreds by cloud type\n\nAzureRM cloud: client_id (optional), client_secret (optional), tenant_id (optional)\n\nGoogle cloud: client_email (optional), private_key (optional), json (optional)\n\nFor more information on the supported clouds and their respective parameters, refer to the following:\n\n\nhttp://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html\n\n\n\n",
         "status_code": "204 No Content",
         "parameters": {
           "cloud_account": {
@@ -2047,8 +2059,8 @@
           "id": 1,
           "namespace": "alternate",
           "state": "followed",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
             {"rel":"self","href":"/api/cookbooks/1"},
             {"rel":"repository","href":"/api/repositories/1"},
@@ -2066,7 +2078,7 @@
             }
           ],
           "version": "0.1.0",
-          "name": "cookbook_2106398965"
+          "name": "cookbook_5210287"
         },
         "filters": {
           "name": {
@@ -2137,8 +2149,8 @@
           "id": 1,
           "namespace": "alternate",
           "state": "followed",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
             {"rel":"self","href":"/api/cookbooks/1"},
             {"rel":"repository","href":"/api/repositories/1"},
@@ -2156,7 +2168,7 @@
             }
           ],
           "version": "0.1.0",
-          "name": "cookbook_2106398965"
+          "name": "cookbook_5210287"
         }
       }
     },
@@ -2260,12 +2272,12 @@
           }
         },
         "example_resource": {
-          "name": "CREDENTIAL_22347479",
+          "name": "CREDENTIAL_1132925243",
           "description": null,
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
-            {"rel":"self","href":"/api/credentials/1"}
+            {"rel":"self","href":"/api/credentials/43"}
           ]
         },
         "filters": {
@@ -2302,12 +2314,12 @@
           }
         },
         "example_resource": {
-          "name": "CREDENTIAL_22347479",
+          "name": "CREDENTIAL_1132925243",
           "description": null,
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
-            {"rel":"self","href":"/api/credentials/1"}
+            {"rel":"self","href":"/api/credentials/43"}
           ]
         }
       },
@@ -2389,11 +2401,11 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_2671918874",
-          "name": "NAME_2983073754",
+          "resource_uid": "RESOURCE_2816668058",
+          "name": "NAME_75772738",
           "description": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/datacenters/ABC1603370783DEF"},
+            {"rel":"self","href":"/api/clouds/888/datacenters/ABC1517951188DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -2430,11 +2442,11 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_2671918874",
-          "name": "NAME_2983073754",
+          "resource_uid": "RESOURCE_2816668058",
+          "name": "NAME_75772738",
           "description": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/datacenters/ABC1603370783DEF"},
+            {"rel":"self","href":"/api/clouds/888/datacenters/ABC1517951188DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -2580,7 +2592,7 @@
           }
         },
         "example_resource": {
-          "name": "TEST_NICKNAME-3113876255",
+          "name": "TEST_NICKNAME-2506723120",
           "description": null,
           "locked": false,
           "server_tag_scope": "deployment",
@@ -2658,7 +2670,7 @@
           }
         },
         "example_resource": {
-          "name": "TEST_NICKNAME-3113876255",
+          "name": "TEST_NICKNAME-2506723120",
           "description": null,
           "locked": false,
           "server_tag_scope": "deployment",
@@ -2891,8 +2903,8 @@
           }
         },
         "example_resource": {
-          "resource_uid": "resource_machine_2878502281",
-          "name": "NAME_4191649028",
+          "resource_uid": "resource_machine_4244329992",
+          "name": "NAME_72279522",
           "description": null,
           "os_platform": null,
           "image_type": "machine",
@@ -2900,7 +2912,7 @@
           "virtualization_type": null,
           "cpu_architecture": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/images/RS_ID_711584216"},
+            {"rel":"self","href":"/api/clouds/888/images/RS_ID_3583064947"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -2956,8 +2968,8 @@
           }
         },
         "example_resource": {
-          "resource_uid": "resource_machine_2878502281",
-          "name": "NAME_4191649028",
+          "resource_uid": "resource_machine_4244329992",
+          "name": "NAME_72279522",
           "description": null,
           "os_platform": null,
           "image_type": "machine",
@@ -2965,7 +2977,7 @@
           "virtualization_type": null,
           "cpu_architecture": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/images/RS_ID_711584216"},
+            {"rel":"self","href":"/api/clouds/888/images/RS_ID_3583064947"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -3024,7 +3036,7 @@
           }
         },
         "example_resource": {
-          "name": "input_definition_1932579833",
+          "name": "input_definition_3033968616",
           "value": "text:"
         },
         "filters": {
@@ -3108,9 +3120,9 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_1317419666",
-          "name": "NAME_3947495319",
-          "description": "description_1178168309",
+          "resource_uid": "RESOURCE_2607285400",
+          "name": "NAME_882545915",
+          "description": "description_1468244961",
           "memory": null,
           "cpu_speed": null,
           "cpu_count": null,
@@ -3118,7 +3130,7 @@
           "local_disks": null,
           "local_disk_size": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/instance_types/ABC4199924923DEF"},
+            {"rel":"self","href":"/api/clouds/888/instance_types/ABC3246477198DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -3160,12 +3172,21 @@
             "valid_values": [
               "default"
             ]
+          },
+          "with_deleted": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "description": "If set to 'true', deleted instance_type resources can be viewed. Default value is 'false'."
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_1317419666",
-          "name": "NAME_3947495319",
-          "description": "description_1178168309",
+          "resource_uid": "RESOURCE_2607285400",
+          "name": "NAME_882545915",
+          "description": "description_1468244961",
           "memory": null,
           "cpu_speed": null,
           "cpu_count": null,
@@ -3173,7 +3194,7 @@
           "local_disks": null,
           "local_disk_size": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/instance_types/ABC4199924923DEF"},
+            {"rel":"self","href":"/api/clouds/888/instance_types/ABC3246477198DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -3527,22 +3548,22 @@
           }
         },
         "example_resource": {
-          "name": "NAME_3157524596",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
-          "resource_uid": "RESOURCE_740446195",
+          "name": "NAME_1998630931",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "resource_uid": "RESOURCE_2060044246",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
+            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
             {"rel":"cloud","href":"/api/clouds/888"},
             {"rel":"deployment","href":"/api/deployments/2"},
             {"rel":"server_template","href":"/api/server_templates/1"},
             {"rel":"multi_cloud_image","href":"/api/multi_cloud_images/1","inherited_source":"server_template"},
             {"rel":"parent","href":"/api/servers/1"},
-            {"rel":"volume_attachments","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/volume_attachments"},
-            {"rel":"inputs","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/inputs"},
-            {"rel":"monitoring_metrics","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/monitoring_metrics"},
-            {"rel":"alerts","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/alerts"},
-            {"rel":"alert_specs","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/alert_specs"}
+            {"rel":"volume_attachments","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/volume_attachments"},
+            {"rel":"inputs","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/inputs"},
+            {"rel":"monitoring_metrics","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/monitoring_metrics"},
+            {"rel":"alerts","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/alerts"},
+            {"rel":"alert_specs","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/alert_specs"}
           ],
           "cloud_specific_attributes": {
           },
@@ -3565,10 +3586,10 @@
             }
           ],
           "public_ip_addresses": [
-            "82.182.107.75"
+            "172.151.172.203"
           ],
           "private_ip_addresses": [
-            "9.4.2.6"
+            "7.8.0.0"
           ],
           "pricing_type": "fixed",
           "locked": false,
@@ -3873,22 +3894,22 @@
           }
         },
         "example_resource": {
-          "name": "NAME_3157524596",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
-          "resource_uid": "RESOURCE_740446195",
+          "name": "NAME_1998630931",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "resource_uid": "RESOURCE_2060044246",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
+            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
             {"rel":"cloud","href":"/api/clouds/888"},
             {"rel":"deployment","href":"/api/deployments/2"},
             {"rel":"server_template","href":"/api/server_templates/1"},
             {"rel":"multi_cloud_image","href":"/api/multi_cloud_images/1","inherited_source":"server_template"},
             {"rel":"parent","href":"/api/servers/1"},
-            {"rel":"volume_attachments","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/volume_attachments"},
-            {"rel":"inputs","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/inputs"},
-            {"rel":"monitoring_metrics","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/monitoring_metrics"},
-            {"rel":"alerts","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/alerts"},
-            {"rel":"alert_specs","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/alert_specs"}
+            {"rel":"volume_attachments","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/volume_attachments"},
+            {"rel":"inputs","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/inputs"},
+            {"rel":"monitoring_metrics","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/monitoring_metrics"},
+            {"rel":"alerts","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/alerts"},
+            {"rel":"alert_specs","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/alert_specs"}
           ],
           "cloud_specific_attributes": {
           },
@@ -3911,10 +3932,10 @@
             }
           ],
           "public_ip_addresses": [
-            "82.182.107.75"
+            "172.151.172.203"
           ],
           "private_ip_addresses": [
-            "9.4.2.6"
+            "7.8.0.0"
           ],
           "pricing_type": "fixed",
           "locked": false,
@@ -4397,11 +4418,11 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
           "links": [
-            {"rel":"self","href":"/api/clouds/408566405/ip_address_bindings/RESOURCE_1085598185;RAND"},
-            {"rel":"instance","href":"/api/clouds/408566405/instances/RESOURCE_1208843785;RAND"},
-            {"rel":"ip_address","href":"/api/clouds/888/ip_addresses/RESOURCE_3932665934;RAND"}
+            {"rel":"self","href":"/api/clouds/254942127/ip_address_bindings/RESOURCE_3688434709;RAND"},
+            {"rel":"instance","href":"/api/clouds/254942127/instances/RESOURCE_3292589139;RAND"},
+            {"rel":"ip_address","href":"/api/clouds/888/ip_addresses/RESOURCE_646832670;RAND"}
           ],
           "recurring": false
         },
@@ -4430,11 +4451,11 @@
         "parameters": {
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
           "links": [
-            {"rel":"self","href":"/api/clouds/408566405/ip_address_bindings/RESOURCE_1085598185;RAND"},
-            {"rel":"instance","href":"/api/clouds/408566405/instances/RESOURCE_1208843785;RAND"},
-            {"rel":"ip_address","href":"/api/clouds/888/ip_addresses/RESOURCE_3932665934;RAND"}
+            {"rel":"self","href":"/api/clouds/254942127/ip_address_bindings/RESOURCE_3688434709;RAND"},
+            {"rel":"instance","href":"/api/clouds/254942127/instances/RESOURCE_3292589139;RAND"},
+            {"rel":"ip_address","href":"/api/clouds/888/ip_addresses/RESOURCE_646832670;RAND"}
           ],
           "recurring": false
         }
@@ -4534,12 +4555,12 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "NAME_2543240103",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "NAME_1042863657",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/ip_addresses/RESOURCE_3932665934;RAND"},
-            {"rel":"ip_address_bindings","href":"/api/clouds/888/ip_addresses/RESOURCE_3932665934;RAND/ip_address_bindings"}
+            {"rel":"self","href":"/api/clouds/888/ip_addresses/RESOURCE_646832670;RAND"},
+            {"rel":"ip_address_bindings","href":"/api/clouds/888/ip_addresses/RESOURCE_646832670;RAND/ip_address_bindings"}
           ],
           "address": "127.0.0.1"
         },
@@ -4567,12 +4588,12 @@
         "parameters": {
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "NAME_2543240103",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "NAME_1042863657",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/ip_addresses/RESOURCE_3932665934;RAND"},
-            {"rel":"ip_address_bindings","href":"/api/clouds/888/ip_addresses/RESOURCE_3932665934;RAND/ip_address_bindings"}
+            {"rel":"self","href":"/api/clouds/888/ip_addresses/RESOURCE_646832670;RAND"},
+            {"rel":"ip_address_bindings","href":"/api/clouds/888/ip_addresses/RESOURCE_646832670;RAND/ip_address_bindings"}
           ],
           "address": "127.0.0.1"
         }
@@ -4715,8 +4736,8 @@
           "view": "cpu-idle",
           "graph_href": "test.com/graph",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/monitoring_metrics/cpu-0:cpu-idle"},
-            {"rel":"data","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/monitoring_metrics/cpu-0:cpu-idle/data"}
+            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/monitoring_metrics/cpu-0:cpu-idle"},
+            {"rel":"data","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/monitoring_metrics/cpu-0:cpu-idle/data"}
           ],
           "actions": [
 
@@ -4785,8 +4806,8 @@
           "view": "cpu-idle",
           "graph_href": "test.com/graph",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/monitoring_metrics/cpu-0:cpu-idle"},
-            {"rel":"data","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/monitoring_metrics/cpu-0:cpu-idle/data"}
+            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/monitoring_metrics/cpu-0:cpu-idle"},
+            {"rel":"data","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/monitoring_metrics/cpu-0:cpu-idle/data"}
           ],
           "actions": [
 
@@ -4880,9 +4901,9 @@
           "cloud_type": "eucalyptus",
           "match_type": "fingerprint",
           "match_criteria": {
-            "fingerprint": "F857221216"
+            "fingerprint": "F2751683434"
           },
-          "user_data": "user_data_1915044997"
+          "user_data": "user_data_867877160"
         },
         "filters": {
         }
@@ -4924,9 +4945,9 @@
           "cloud_type": "eucalyptus",
           "match_type": "fingerprint",
           "match_criteria": {
-            "fingerprint": "F857221216"
+            "fingerprint": "F2751683434"
           },
-          "user_data": "user_data_1915044997"
+          "user_data": "user_data_867877160"
         }
       }
     },
@@ -5031,9 +5052,9 @@
         "example_resource": {
           "links": [
             {"rel":"self","href":"/api/multi_cloud_images/1/settings/3"},
-            {"rel":"image","href":"/api/clouds/888/images/RS_ID_711584216"},
+            {"rel":"image","href":"/api/clouds/888/images/RS_ID_3583064947"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"instance_type","href":"/api/clouds/888/instance_types/RESOURCE_3892680028;RAND"},
+            {"rel":"instance_type","href":"/api/clouds/888/instance_types/RESOURCE_3377699112;RAND"},
             {"rel":"multi_cloud_image","href":"/api/multi_cloud_images/1"}
           ],
           "actions": [
@@ -5063,9 +5084,9 @@
         "example_resource": {
           "links": [
             {"rel":"self","href":"/api/multi_cloud_images/1/settings/3"},
-            {"rel":"image","href":"/api/clouds/888/images/RS_ID_711584216"},
+            {"rel":"image","href":"/api/clouds/888/images/RS_ID_3583064947"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"instance_type","href":"/api/clouds/888/instance_types/RESOURCE_3892680028;RAND"},
+            {"rel":"instance_type","href":"/api/clouds/888/instance_types/RESOURCE_3377699112;RAND"},
             {"rel":"multi_cloud_image","href":"/api/multi_cloud_images/1"}
           ],
           "actions": [
@@ -5251,8 +5272,8 @@
           }
         },
         "example_resource": {
-          "name": "NAME_3604648067",
-          "description": "DESCRIPTION_4294387944",
+          "name": "NAME_2905434559",
+          "description": "DESCRIPTION_720608698",
           "revision": 0,
           "links": [
             {"rel":"self","href":"/api/multi_cloud_images/1"},
@@ -5294,8 +5315,8 @@
         "parameters": {
         },
         "example_resource": {
-          "name": "NAME_3604648067",
-          "description": "DESCRIPTION_4294387944",
+          "name": "NAME_2905434559",
+          "description": "DESCRIPTION_720608698",
           "revision": 0,
           "links": [
             {"rel":"self","href":"/api/multi_cloud_images/1"},
@@ -5437,15 +5458,15 @@
         },
         "example_resource": {
           "links": [
-            {"rel":"self","href":"/api/network_gateways/RESOURCE_3980748713;4074285736"},
+            {"rel":"self","href":"/api/network_gateways/RESOURCE_1946816411;1093635168"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"network","href":"/api/networks/RESOURCE_1936171894;1897720137"}
+            {"rel":"network","href":"/api/networks/RESOURCE_3068070820;1477972080"}
           ],
-          "name": "NAME_4122095044",
+          "name": "NAME_2913646240",
           "description": null,
-          "resource_uid": "RESOURCE_3980748713",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "resource_uid": "RESOURCE_1946816411",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "state": "available",
           "actions": [
 
@@ -5480,15 +5501,15 @@
         },
         "example_resource": {
           "links": [
-            {"rel":"self","href":"/api/network_gateways/RESOURCE_3980748713;4074285736"},
+            {"rel":"self","href":"/api/network_gateways/RESOURCE_1946816411;1093635168"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"network","href":"/api/networks/RESOURCE_1936171894;1897720137"}
+            {"rel":"network","href":"/api/networks/RESOURCE_3068070820;1477972080"}
           ],
-          "name": "NAME_4122095044",
+          "name": "NAME_2913646240",
           "description": null,
-          "resource_uid": "RESOURCE_3980748713",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "resource_uid": "RESOURCE_1946816411",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "state": "available",
           "actions": [
 
@@ -5624,15 +5645,15 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_1065083293",
+          "resource_uid": "RESOURCE_233455308",
           "links": [
-            {"rel":"self","href":"/api/network_option_group_attachments/RESOURCE_1065083293;2480459556"},
+            {"rel":"self","href":"/api/network_option_group_attachments/RESOURCE_233455308;809800314"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"network_option_group","href":"/api/network_option_groups/RESOURCE_2023742327;3340500209"},
-            {"rel":"network","href":"/api/networks/RESOURCE_3973098712;214963536"}
+            {"rel":"network_option_group","href":"/api/network_option_groups/RESOURCE_2794983890;2727691704"},
+            {"rel":"network","href":"/api/networks/RESOURCE_2754178163;2284634211"}
           ],
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000"
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000"
         },
         "filters": {
           "cloud_href": {
@@ -5669,15 +5690,15 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_1065083293",
+          "resource_uid": "RESOURCE_233455308",
           "links": [
-            {"rel":"self","href":"/api/network_option_group_attachments/RESOURCE_1065083293;2480459556"},
+            {"rel":"self","href":"/api/network_option_group_attachments/RESOURCE_233455308;809800314"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"network_option_group","href":"/api/network_option_groups/RESOURCE_2023742327;3340500209"},
-            {"rel":"network","href":"/api/networks/RESOURCE_3973098712;214963536"}
+            {"rel":"network_option_group","href":"/api/network_option_groups/RESOURCE_2794983890;2727691704"},
+            {"rel":"network","href":"/api/networks/RESOURCE_2754178163;2284634211"}
           ],
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000"
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000"
         }
       },
       "update": {
@@ -5805,16 +5826,16 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_2023742327",
-          "name": "NAME_3673694021",
+          "resource_uid": "RESOURCE_2794983890",
+          "name": "NAME_1520846080",
           "description": null,
           "links": [
-            {"rel":"self","href":"/api/network_option_groups/RESOURCE_2023742327;3340500209"},
+            {"rel":"self","href":"/api/network_option_groups/RESOURCE_2794983890;2727691704"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "type": "aws-dhcp-options",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "options": {
             "dns_names": "xxx.com"
           }
@@ -5850,16 +5871,16 @@
         "parameters": {
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_2023742327",
-          "name": "NAME_3673694021",
+          "resource_uid": "RESOURCE_2794983890",
+          "name": "NAME_1520846080",
           "description": null,
           "links": [
-            {"rel":"self","href":"/api/network_option_groups/RESOURCE_2023742327;3340500209"},
+            {"rel":"self","href":"/api/network_option_groups/RESOURCE_2794983890;2727691704"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "type": "aws-dhcp-options",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "options": {
             "dns_names": "xxx.com"
           }
@@ -6003,14 +6024,14 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_3973098712",
-          "name": "NAME_3190464225",
-          "description": "DESCRIPTION_2377691158",
-          "instance_tenancy": "INSTANCE_TENANCY_1137291142",
+          "resource_uid": "RESOURCE_2754178163",
+          "name": "NAME_3084485588",
+          "description": "DESCRIPTION_1361982054",
+          "instance_tenancy": "INSTANCE_TENANCY_1039147653",
           "cidr_block": "10.0.0.0/32",
           "is_default": false,
           "links": [
-            {"rel":"self","href":"/api/networks/RESOURCE_3973098712;214963536"},
+            {"rel":"self","href":"/api/networks/RESOURCE_2754178163;2284634211"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ]
         },
@@ -6047,14 +6068,14 @@
         "parameters": {
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_3973098712",
-          "name": "NAME_3190464225",
-          "description": "DESCRIPTION_2377691158",
-          "instance_tenancy": "INSTANCE_TENANCY_1137291142",
+          "resource_uid": "RESOURCE_2754178163",
+          "name": "NAME_3084485588",
+          "description": "DESCRIPTION_1361982054",
+          "instance_tenancy": "INSTANCE_TENANCY_1039147653",
           "cidr_block": "10.0.0.0/32",
           "is_default": false,
           "links": [
-            {"rel":"self","href":"/api/networks/RESOURCE_3973098712;214963536"},
+            {"rel":"self","href":"/api/networks/RESOURCE_2754178163;2284634211"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ]
         }
@@ -6246,7 +6267,7 @@
           "created_at": null,
           "links": [
             {"rel":"self","href":"/api/permissions/888-observer"},
-            {"rel":"account","href":"/api/accounts/406979988"},
+            {"rel":"account","href":"/api/accounts/253276753"},
             {"rel":"user","href":"/api/users/888"}
           ],
           "actions": [
@@ -6276,7 +6297,7 @@
           "created_at": null,
           "links": [
             {"rel":"self","href":"/api/permissions/888-observer"},
-            {"rel":"account","href":"/api/accounts/406979988"},
+            {"rel":"account","href":"/api/accounts/253276753"},
             {"rel":"user","href":"/api/users/888"}
           ],
           "actions": [
@@ -6395,14 +6416,14 @@
           }
         },
         "example_resource": {
-          "name": "NAME_1537910799",
+          "name": "NAME_2490149182",
           "description": "",
           "state": null,
-          "resource_uid": "RESOURCE_242932355",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "resource_uid": "RESOURCE_3242702380",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "links": [
-            {"rel":"self","href":"/api/placement_groups/ABC1251208074DEF"},
+            {"rel":"self","href":"/api/placement_groups/ABC2215643575DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -6446,14 +6467,14 @@
           }
         },
         "example_resource": {
-          "name": "NAME_1537910799",
+          "name": "NAME_2490149182",
           "description": "",
           "state": null,
-          "resource_uid": "RESOURCE_242932355",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "resource_uid": "RESOURCE_3242702380",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "links": [
-            {"rel":"self","href":"/api/placement_groups/ABC1251208074DEF"},
+            {"rel":"self","href":"/api/placement_groups/ABC2215643575DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -6517,8 +6538,8 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
             {"rel":"self","href":"/api/preferences/my:custom:scope:custom_id"}
           ],
@@ -6540,8 +6561,8 @@
         "parameters": {
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
             {"rel":"self","href":"/api/preferences/my:custom:scope:custom_id"}
           ],
@@ -6612,11 +6633,11 @@
           }
         },
         "example_resource": {
-          "created_at": 1523044408,
-          "updated_at": 1523044408,
-          "name": "NAME_1286833138",
-          "short_description": "SHORT_DESCRIPTION_445131295",
-          "long_description": "LONG_DESCRIPTION_3000890657",
+          "created_at": 1534975254,
+          "updated_at": 1534975254,
+          "name": "NAME_4056353845",
+          "short_description": "SHORT_DESCRIPTION_1630424435",
+          "long_description": "LONG_DESCRIPTION_1095537319",
           "comments_enabled": true,
           "comments_emailed": false,
           "links": [
@@ -6688,15 +6709,15 @@
           }
         },
         "example_resource": {
-          "created_at": 1523044408,
-          "updated_at": 1523044408,
-          "name": "NAME_4131720795",
-          "description": "DESCRIPTION_2930365315",
+          "created_at": 1534975254,
+          "updated_at": 1534975254,
+          "name": "NAME_2573322833",
+          "description": "DESCRIPTION_90775802",
           "revision": 5,
           "commit_message": "A committed revision",
           "content_type": "ServerTemplate",
-          "revision_notes": "REVISION_NOTES 3696718157",
-          "publisher": "org_3137753997",
+          "revision_notes": "REVISION_NOTES 2373920386",
+          "publisher": "org_4053930315",
           "links": [
             {"rel":"self","href":"/api/publications/1"},
             {"rel":"lineage","href":"/api/publication_lineages/1"}
@@ -6746,15 +6767,15 @@
           }
         },
         "example_resource": {
-          "created_at": 1523044408,
-          "updated_at": 1523044408,
-          "name": "NAME_4131720795",
-          "description": "DESCRIPTION_2930365315",
+          "created_at": 1534975254,
+          "updated_at": 1534975254,
+          "name": "NAME_2573322833",
+          "description": "DESCRIPTION_90775802",
           "revision": 5,
           "commit_message": "A committed revision",
           "content_type": "ServerTemplate",
-          "revision_notes": "REVISION_NOTES 3696718157",
-          "publisher": "org_3137753997",
+          "revision_notes": "REVISION_NOTES 2373920386",
+          "publisher": "org_4053930315",
           "links": [
             {"rel":"self","href":"/api/publications/1"},
             {"rel":"lineage","href":"/api/publication_lineages/1"}
@@ -6886,9 +6907,9 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "Recurring Volume Attachment between nickname-1692928817 and NAME_4084813534",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "Recurring Volume Attachment between nickname-536897124 and NAME_2463967360",
           "runnable_type": "Server",
           "storage_type": "Volume",
           "status": "attached",
@@ -6899,7 +6920,7 @@
             {"rel":"self","href":"/api/clouds/888/recurring_volume_attachments/1"},
             {"rel":"cloud","href":"/api/clouds/888"},
             {"rel":"runnable","href":"/api/servers/1"},
-            {"rel":"storage","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"}
+            {"rel":"storage","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"}
           ],
           "actions": [
 
@@ -6939,9 +6960,9 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "Recurring Volume Attachment between nickname-1692928817 and NAME_4084813534",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "Recurring Volume Attachment between nickname-536897124 and NAME_2463967360",
           "runnable_type": "Server",
           "storage_type": "Volume",
           "status": "attached",
@@ -6952,7 +6973,7 @@
             {"rel":"self","href":"/api/clouds/888/recurring_volume_attachments/1"},
             {"rel":"cloud","href":"/api/clouds/888"},
             {"rel":"runnable","href":"/api/servers/1"},
-            {"rel":"storage","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"}
+            {"rel":"storage","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"}
           ],
           "actions": [
 
@@ -7198,8 +7219,8 @@
         "example_resource": {
           "id": "1",
           "source_type": "git",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "asset_paths": {
             "cookbooks": null
           },
@@ -7227,8 +7248,8 @@
               "rel": "resolve"
             }
           ],
-          "name": "cookbook_repo_3300215310",
-          "source": "git://host20794.com/repo49958.git"
+          "name": "cookbook_repo_248129000",
+          "source": "git://host49931.com/repo43305.git"
         },
         "filters": {
           "name": {
@@ -7305,8 +7326,8 @@
         "example_resource": {
           "id": "1",
           "source_type": "git",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "asset_paths": {
             "cookbooks": null
           },
@@ -7334,8 +7355,8 @@
               "rel": "resolve"
             }
           ],
-          "name": "cookbook_repo_3300215310",
-          "source": "git://host20794.com/repo49958.git"
+          "name": "cookbook_repo_248129000",
+          "source": "git://host49931.com/repo43305.git"
         }
       },
       "update": {
@@ -7476,7 +7497,7 @@
           "actions": [
 
           ],
-          "name": "pending_cookbook_576299683",
+          "name": "pending_cookbook_921288107",
           "version": "1.2.3"
         },
         "filters": {
@@ -7509,7 +7530,7 @@
           "actions": [
 
           ],
-          "name": "pending_cookbook_576299683",
+          "name": "pending_cookbook_921288107",
           "version": "1.2.3"
         }
       }
@@ -7747,12 +7768,12 @@
         },
         "example_resource": {
           "id": "1",
-          "filename": "FILENAME_735917543",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
-          "digest": "3760250931",
+          "filename": "FILENAME_527562664",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
+          "digest": "1488506540",
           "size": "100",
-          "download_url": "https://island-mirror-fixture.dev/attachments/1/3760250931?md5=3760250931&expiration=1523046212&signature=n2KBSTI0rNDGscKybWGIQqkMrbpsvC9VWc1xpphDY6ovVxIIq%2FnR85%2FufMmx%0AdYDSvTMMjnThlqS40G8BkEF5u%2FKeUvsaszbYLSpyLK%2F%2B2EguWrMiBvu96MNa%0AGpQAn94MN7h3ke%2FAbs%2BCvFJZC%2BCnTZwArR3BTy9h11jQAQHkYBQ%3D%0A&signer=dev&filename=FILENAME_735917543",
+          "download_url": "https://island-mirror-fixture.dev/attachments/1/1488506540?md5=1488506540&expiration=1534977058&signature=bw%2FQKISfma6TMAneJLTXI5dnZmmX0nzWEyEbUF%2BtL9mhuzPm1TUKvv37zg90%0AhppC2Fy1yQOP0zdvnLMViqKErSA1fAvc2epBw5AlFKcncAnldXDEps8DpGQ9%0APLAPBcSPFlHTxghaZohzcN0613dsfDzpJdWFKZlrz8pK4FrW%2Fe8%3D%0A&signer=dev&filename=FILENAME_527562664",
           "links": [
             {"rel":"self","href":"/api/right_scripts/2/attachments/1"},
             {"rel":"right_script","href":"/api/right_scripts/2"}
@@ -7786,12 +7807,12 @@
         },
         "example_resource": {
           "id": "1",
-          "filename": "FILENAME_735917543",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
-          "digest": "3760250931",
+          "filename": "FILENAME_527562664",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
+          "digest": "1488506540",
           "size": "100",
-          "download_url": "https://island-mirror-fixture.dev/attachments/1/3760250931?md5=3760250931&expiration=1523046212&signature=n2KBSTI0rNDGscKybWGIQqkMrbpsvC9VWc1xpphDY6ovVxIIq%2FnR85%2FufMmx%0AdYDSvTMMjnThlqS40G8BkEF5u%2FKeUvsaszbYLSpyLK%2F%2B2EguWrMiBvu96MNa%0AGpQAn94MN7h3ke%2FAbs%2BCvFJZC%2BCnTZwArR3BTy9h11jQAQHkYBQ%3D%0A&signer=dev&filename=FILENAME_735917543",
+          "download_url": "https://island-mirror-fixture.dev/attachments/1/1488506540?md5=1488506540&expiration=1534977058&signature=bw%2FQKISfma6TMAneJLTXI5dnZmmX0nzWEyEbUF%2BtL9mhuzPm1TUKvv37zg90%0AhppC2Fy1yQOP0zdvnLMViqKErSA1fAvc2epBw5AlFKcncAnldXDEps8DpGQ9%0APLAPBcSPFlHTxghaZohzcN0613dsfDzpJdWFKZlrz8pK4FrW%2Fe8%3D%0A&signer=dev&filename=FILENAME_527562664",
           "links": [
             {"rel":"self","href":"/api/right_scripts/2/attachments/1"},
             {"rel":"right_script","href":"/api/right_scripts/2"}
@@ -7960,15 +7981,15 @@
         "example_resource": {
           "id": "2",
           "revision": 0,
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
             {"rel":"self","href":"/api/right_scripts/2"},
             {"rel":"source","href":"/api/right_scripts/2/source"}
           ],
-          "name": "NAME_3445562371",
-          "description": "DESCRIPTION_44577450",
-          "lineage": "https://testscale_1/api/acct/406979988/right_scripts/2"
+          "name": "NAME_1992665629",
+          "description": "DESCRIPTION_308703360",
+          "lineage": "https://testscale_1/api/acct/253276753/right_scripts/2"
         },
         "filters": {
           "name": {
@@ -8005,15 +8026,15 @@
         "example_resource": {
           "id": "2",
           "revision": 0,
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
             {"rel":"self","href":"/api/right_scripts/2"},
             {"rel":"source","href":"/api/right_scripts/2/source"}
           ],
-          "name": "NAME_3445562371",
-          "description": "DESCRIPTION_44577450",
-          "lineage": "https://testscale_1/api/acct/406979988/right_scripts/2"
+          "name": "NAME_1992665629",
+          "description": "DESCRIPTION_308703360",
+          "lineage": "https://testscale_1/api/acct/253276753/right_scripts/2"
         }
       },
       "show_source": {
@@ -8182,17 +8203,17 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_1918172383",
-          "name": "NAME_51447168",
-          "description": "DESCRIPTION_52535896",
+          "resource_uid": "RESOURCE_4099151390",
+          "name": "NAME_2892064528",
+          "description": "DESCRIPTION_379440211",
           "links": [
-            {"rel":"self","href":"/api/route_tables/RESOURCE_1918172383;40276159"},
+            {"rel":"self","href":"/api/route_tables/RESOURCE_4099151390;151397739"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"network","href":"/api/networks/RESOURCE_3973098712;214963536"},
-            {"rel":"routes","href":"/api/route_tables/RESOURCE_1918172383;40276159/routes"}
+            {"rel":"network","href":"/api/networks/RESOURCE_2754178163;2284634211"},
+            {"rel":"routes","href":"/api/route_tables/RESOURCE_4099151390;151397739/routes"}
           ],
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000"
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000"
         },
         "filters": {
           "name": {
@@ -8229,17 +8250,17 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_1918172383",
-          "name": "NAME_51447168",
-          "description": "DESCRIPTION_52535896",
+          "resource_uid": "RESOURCE_4099151390",
+          "name": "NAME_2892064528",
+          "description": "DESCRIPTION_379440211",
           "links": [
-            {"rel":"self","href":"/api/route_tables/RESOURCE_1918172383;40276159"},
+            {"rel":"self","href":"/api/route_tables/RESOURCE_4099151390;151397739"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"network","href":"/api/networks/RESOURCE_3973098712;214963536"},
-            {"rel":"routes","href":"/api/route_tables/RESOURCE_1918172383;40276159/routes"}
+            {"rel":"network","href":"/api/networks/RESOURCE_2754178163;2284634211"},
+            {"rel":"routes","href":"/api/route_tables/RESOURCE_4099151390;151397739/routes"}
           ],
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000"
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000"
         }
       },
       "update": {
@@ -8413,18 +8434,18 @@
           }
         },
         "example_resource": {
-          "description": "DESCRIPTION_1968462587",
+          "description": "DESCRIPTION_1101259209",
           "destination_cidr_block": "10.0.0.0/16",
           "next_hop_type": "instance",
           "state": "available",
-          "resource_uid": "RESOURCE_1238214854",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "resource_uid": "RESOURCE_3378834724",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
-            {"rel":"self","href":"/api/routes/RESOURCE_1238214854;2698463719"},
-            {"rel":"route_table","href":"/api/route_tables/RESOURCE_1918172383;40276159"},
+            {"rel":"self","href":"/api/routes/RESOURCE_3378834724;1856007143"},
+            {"rel":"route_table","href":"/api/route_tables/RESOURCE_4099151390;151397739"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"next_hop","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"}
+            {"rel":"next_hop","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"}
           ],
           "cloud_specific_attributes": null
         },
@@ -8481,18 +8502,18 @@
         "parameters": {
         },
         "example_resource": {
-          "description": "DESCRIPTION_1968462587",
+          "description": "DESCRIPTION_1101259209",
           "destination_cidr_block": "10.0.0.0/16",
           "next_hop_type": "instance",
           "state": "available",
-          "resource_uid": "RESOURCE_1238214854",
-          "created_at": "2018/04/06 19:53:29 +0000",
-          "updated_at": "2018/04/06 19:53:29 +0000",
+          "resource_uid": "RESOURCE_3378834724",
+          "created_at": "2018/08/22 22:00:55 +0000",
+          "updated_at": "2018/08/22 22:00:55 +0000",
           "links": [
-            {"rel":"self","href":"/api/routes/RESOURCE_1238214854;2698463719"},
-            {"rel":"route_table","href":"/api/route_tables/RESOURCE_1918172383;40276159"},
+            {"rel":"self","href":"/api/routes/RESOURCE_3378834724;1856007143"},
+            {"rel":"route_table","href":"/api/route_tables/RESOURCE_4099151390;151397739"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"next_hop","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"}
+            {"rel":"next_hop","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"}
           ],
           "cloud_specific_attributes": null
         }
@@ -8670,9 +8691,9 @@
           ],
           "right_script": {
             "id": "2",
-            "name": "NAME_3445562371",
+            "name": "NAME_1992665629",
             "revision": 0,
-            "lineage": "https://testscale_1/api/acct/406979988/right_scripts/2"
+            "lineage": "https://testscale_1/api/acct/253276753/right_scripts/2"
           }
         },
         "filters": {
@@ -8760,9 +8781,9 @@
           ],
           "right_script": {
             "id": "2",
-            "name": "NAME_3445562371",
+            "name": "NAME_1992665629",
             "revision": 0,
-            "lineage": "https://testscale_1/api/acct/406979988/right_scripts/2"
+            "lineage": "https://testscale_1/api/acct/253276753/right_scripts/2"
           }
         }
       }
@@ -8937,7 +8958,7 @@
         "example_resource": {
           "links": [
             {"rel":"self","href":"/api/security_group_rules/1"},
-            {"rel":"security_group","href":"/api/clouds/888/security_groups/RESOURCE_2757078110;RAND"}
+            {"rel":"security_group","href":"/api/clouds/888/security_groups/RESOURCE_2203675653;RAND"}
           ],
           "actions": [
 
@@ -8977,7 +8998,7 @@
         "example_resource": {
           "links": [
             {"rel":"self","href":"/api/security_group_rules/1"},
-            {"rel":"security_group","href":"/api/clouds/888/security_groups/RESOURCE_2757078110;RAND"}
+            {"rel":"security_group","href":"/api/clouds/888/security_groups/RESOURCE_2203675653;RAND"}
           ],
           "actions": [
 
@@ -9126,13 +9147,13 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_2640255872",
-          "name": "NAME_3660196459",
+          "resource_uid": "RESOURCE_3964473216",
+          "name": "NAME_443456391",
           "description": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/security_groups/ABC3145915309DEF"},
+            {"rel":"self","href":"/api/clouds/888/security_groups/ABC2325083765DEF"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"security_group_rules","href":"/api/clouds/888/security_groups/ABC3145915309DEF/security_group_rules"}
+            {"rel":"security_group_rules","href":"/api/clouds/888/security_groups/ABC2325083765DEF/security_group_rules"}
           ],
           "actions": [
 
@@ -9176,13 +9197,13 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_2640255872",
-          "name": "NAME_3660196459",
+          "resource_uid": "RESOURCE_3964473216",
+          "name": "NAME_443456391",
           "description": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/security_groups/ABC3145915309DEF"},
+            {"rel":"self","href":"/api/clouds/888/security_groups/ABC2325083765DEF"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"security_group_rules","href":"/api/clouds/888/security_groups/ABC3145915309DEF/security_group_rules"}
+            {"rel":"security_group_rules","href":"/api/clouds/888/security_groups/ABC2325083765DEF/security_group_rules"}
           ],
           "actions": [
 
@@ -9430,6 +9451,15 @@
             "non_blank": true,
             "description": "Defines the ratio of worker instances per items in the queue. Example: If there are 50 items in the queue and \"Items per instance\" is set to 10, the server array will resize to 5 worker instances (50/10).  Default = 10",
             "regex": "/^\\d+$/"
+          },
+          "server_array[elasticity_params][workflow_specific_params]": {
+            "class": "Hash",
+            "non_blank": true
+          },
+          "server_array[elasticity_params][workflow_specific_params][template]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The WAT used for scale up/down logic."
           },
           "server_array[instance]": {
             "class": "Hash",
@@ -9734,15 +9764,6 @@
             "mandatory": false,
             "non_blank": true,
             "description": "Automatically create default port forwarding rules (enabled by default). Supported by Azure cloud only."
-          },
-          "server_array[elasticity_params][workflow_specific_params]": {
-            "class": "Hash",
-            "non_blank": true
-          },
-          "server_array[elasticity_params][workflow_specific_params][template]": {
-            "class": "String",
-            "non_blank": true,
-            "description": "The WAT used for scale up/down logic."
           }
         }
       },
@@ -9819,8 +9840,8 @@
           }
         },
         "example_resource": {
-          "name": "NICKNAME_2165290687",
-          "description": "DESCRIPTION_3810329966",
+          "name": "NICKNAME_3886859974",
+          "description": "DESCRIPTION_2396552124",
           "state": "enabled",
           "array_type": "alert",
           "instances_count": 0,
@@ -9849,7 +9870,7 @@
               }
             ],
             "alert_specific_params": {
-              "voters_tag_predicate": "pred1025293638",
+              "voters_tag_predicate": "pred3124907667",
               "decision_threshold": "50"
             }
           },
@@ -9857,13 +9878,16 @@
             {"rel":"self","href":"/api/server_arrays/1"},
             {"rel":"deployment","href":"/api/deployments/3"},
             {"rel":"current_instances","href":"/api/server_arrays/1/current_instances"},
-            {"rel":"next_instance","href":"/api/clouds/888/instances/D0BLM0QR1AS1I"},
+            {"rel":"next_instance","href":"/api/clouds/888/instances/6GG8C3UAVSA7C"},
             {"rel":"alert_specs","href":"/api/server_arrays/1/alert_specs"},
             {"rel":"alerts","href":"/api/server_arrays/1/alerts"}
           ],
           "actions": [
             {
               "rel": "launch"
+            },
+            {
+              "rel": "scale_up"
             },
             {
               "rel": "clone"
@@ -9882,6 +9906,42 @@
           "cloud_href": {
             "description": "The href of the Cloud to filter on."
           }
+        }
+      },
+      "monitor": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "POST   /api/server_arrays/:id/monitor(.:format)? {:controller=>\"server_arrays\", :action=>\"monitor\"}"
+        ],
+        "description": "Run the monitoring workflow, if one is attached\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
+      "scale_down": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "POST   /api/server_arrays/:id/scale_down(.:format)? {:controller=>\"server_arrays\", :action=>\"scale_down\"}"
+        ],
+        "description": "Scale down the array by 1 instance using the array's scaling logic. For workflow-\nbased arrays, this will scale using the defined workflow. For non-workflow based\narrays this will scale using the same logic as if the system triggered the event.\n",
+        "status_code": "204 No Content",
+        "parameters": {
+        }
+      },
+      "scale_up": {
+        "access_rules": [
+          "actor"
+        ],
+        "routes": [
+          "POST   /api/server_arrays/:id/scale_up(.:format)? {:controller=>\"server_arrays\", :action=>\"scale_up\"}"
+        ],
+        "description": "Scale up the array by 1 instance using the array's scaling logic. For workflow-\nbased arrays, this will scale using the defined workflow. For non-workflow based\narrays this will scale using the same logic as if the system triggered the event.\n",
+        "status_code": "204 No Content",
+        "parameters": {
         }
       },
       "show": {
@@ -9906,8 +9966,8 @@
           }
         },
         "example_resource": {
-          "name": "NICKNAME_2165290687",
-          "description": "DESCRIPTION_3810329966",
+          "name": "NICKNAME_3886859974",
+          "description": "DESCRIPTION_2396552124",
           "state": "enabled",
           "array_type": "alert",
           "instances_count": 0,
@@ -9936,7 +9996,7 @@
               }
             ],
             "alert_specific_params": {
-              "voters_tag_predicate": "pred1025293638",
+              "voters_tag_predicate": "pred3124907667",
               "decision_threshold": "50"
             }
           },
@@ -9944,13 +10004,16 @@
             {"rel":"self","href":"/api/server_arrays/1"},
             {"rel":"deployment","href":"/api/deployments/3"},
             {"rel":"current_instances","href":"/api/server_arrays/1/current_instances"},
-            {"rel":"next_instance","href":"/api/clouds/888/instances/D0BLM0QR1AS1I"},
+            {"rel":"next_instance","href":"/api/clouds/888/instances/6GG8C3UAVSA7C"},
             {"rel":"alert_specs","href":"/api/server_arrays/1/alert_specs"},
             {"rel":"alerts","href":"/api/server_arrays/1/alerts"}
           ],
           "actions": [
             {
               "rel": "launch"
+            },
+            {
+              "rel": "scale_up"
             },
             {
               "rel": "clone"
@@ -10146,6 +10209,15 @@
             "description": "The updated threshold (in seconds) before a resize action occurs on the server array.",
             "regex": "/^\\d+$/"
           },
+          "server_array[elasticity_params][workflow_specific_params]": {
+            "class": "Hash",
+            "non_blank": true
+          },
+          "server_array[elasticity_params][workflow_specific_params][template]": {
+            "class": "String",
+            "non_blank": true,
+            "description": "The WAT used for scale up/down logic."
+          },
           "server_array[elasticity_params][queue_specific_params][queue_size]": {
             "class": "Hash",
             "non_blank": true
@@ -10178,15 +10250,6 @@
             "non_blank": true,
             "mandatory": true,
             "description": "Max instances (0 for unlimited)."
-          },
-          "server_array[elasticity_params][workflow_specific_params]": {
-            "class": "Hash",
-            "non_blank": true
-          },
-          "server_array[elasticity_params][workflow_specific_params][template]": {
-            "class": "String",
-            "non_blank": true,
-            "description": "The WAT used for scale up/down logic."
           }
         }
       },
@@ -10231,42 +10294,6 @@
         ],
         "description": "Run an executable on all instances of this array. This function is equivalent to invoking the \"multi_run_executable\" action on the instances resource\n(Instances#multi_run_executable with the filter \"parent_href == /api/server_arrays/XX\"). To run an executable on a subset of the instances of the array, provide additional filters. To run an executable\na single instance, invoke the action \"run_executable\" directly on the instance (see Instances#run_executable)\n",
         "status_code": null,
-        "parameters": {
-        }
-      },
-      "monitor": {
-        "access_rules": [
-          "actor"
-        ],
-        "routes": [
-          "POST   /api/server_arrays/:id/monitor(.:format)? {:controller=>\"server_arrays\", :action=>\"monitor\"}"
-        ],
-        "description": "Run the monitoring workflow, if one is attached\n",
-        "status_code": "204 No Content",
-        "parameters": {
-        }
-      },
-      "scale_down": {
-        "access_rules": [
-          "actor"
-        ],
-        "routes": [
-          "POST   /api/server_arrays/:id/scale_down(.:format)? {:controller=>\"server_arrays\", :action=>\"scale_down\"}"
-        ],
-        "description": "Scale down the array by 1 instance using the array's scaling logic. For workflow-\nbased arrays, this will scale using the defined workflow. For non-workflow based\narrays this will scale using the same logic as if the system triggered the event.\n",
-        "status_code": "204 No Content",
-        "parameters": {
-        }
-      },
-      "scale_up": {
-        "access_rules": [
-          "actor"
-        ],
-        "routes": [
-          "POST   /api/server_arrays/:id/scale_up(.:format)? {:controller=>\"server_arrays\", :action=>\"scale_up\"}"
-        ],
-        "description": "Scale up the array by 1 instance using the array's scaling logic. For workflow-\nbased arrays, this will scale using the defined workflow. For non-workflow based\narrays this will scale using the same logic as if the system triggered the event.\n",
-        "status_code": "204 No Content",
         "parameters": {
         }
       }
@@ -10368,8 +10395,8 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:53 +0000",
           "is_default": true,
           "links": [
             {"rel":"self","href":"/api/server_template_multi_cloud_images/1"},
@@ -10424,8 +10451,8 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:27 +0000",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:53 +0000",
           "is_default": true,
           "links": [
             {"rel":"self","href":"/api/server_template_multi_cloud_images/1"},
@@ -10606,8 +10633,8 @@
           }
         },
         "example_resource": {
-          "name": "NICKNAME_600861269",
-          "description": "DESCRIPTION_2085708172",
+          "name": "NICKNAME_188040127",
+          "description": "DESCRIPTION_3741936742",
           "revision": 0,
           "links": [
             {"rel":"self","href":"/api/server_templates/1"},
@@ -10635,7 +10662,7 @@
               "rel": "detect_changes_in_head"
             }
           ],
-          "lineage": "https://testscale_1/api/acct/406979988/ec2_server_templates/1"
+          "lineage": "https://testscale_1/api/acct/253276753/ec2_server_templates/1"
         },
         "filters": {
           "name": {
@@ -10763,8 +10790,8 @@
           }
         },
         "example_resource": {
-          "name": "NICKNAME_600861269",
-          "description": "DESCRIPTION_2085708172",
+          "name": "NICKNAME_188040127",
+          "description": "DESCRIPTION_3741936742",
           "revision": 0,
           "links": [
             {"rel":"self","href":"/api/server_templates/1"},
@@ -10792,7 +10819,7 @@
               "rel": "detect_changes_in_head"
             }
           ],
-          "lineage": "https://testscale_1/api/acct/406979988/ec2_server_templates/1"
+          "lineage": "https://testscale_1/api/acct/253276753/ec2_server_templates/1"
         }
       },
       "swap_repository": {
@@ -11291,16 +11318,16 @@
           }
         },
         "example_resource": {
-          "name": "nickname-1692928817",
-          "description": "description_3048676595",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
+          "name": "nickname-536897124",
+          "description": "description_2440921596",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "state": "operational",
           "links": [
             {"rel":"self","href":"/api/servers/1"},
             {"rel":"deployment","href":"/api/deployments/2"},
-            {"rel":"current_instance","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
-            {"rel":"next_instance","href":"/api/clouds/888/instances/ASDBRAH86P65G"},
+            {"rel":"current_instance","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
+            {"rel":"next_instance","href":"/api/clouds/888/instances/EDU2EA1N8PI2L"},
             {"rel":"alert_specs","href":"/api/servers/1/alert_specs"},
             {"rel":"alerts","href":"/api/servers/1/alerts"}
           ],
@@ -11349,16 +11376,16 @@
           }
         },
         "example_resource": {
-          "name": "nickname-1692928817",
-          "description": "description_3048676595",
-          "created_at": "2018/04/06 19:53:27 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
+          "name": "nickname-536897124",
+          "description": "description_2440921596",
+          "created_at": "2018/08/22 22:00:53 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
           "state": "operational",
           "links": [
             {"rel":"self","href":"/api/servers/1"},
             {"rel":"deployment","href":"/api/deployments/2"},
-            {"rel":"current_instance","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"},
-            {"rel":"next_instance","href":"/api/clouds/888/instances/ASDBRAH86P65G"},
+            {"rel":"current_instance","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"},
+            {"rel":"next_instance","href":"/api/clouds/888/instances/EDU2EA1N8PI2L"},
             {"rel":"alert_specs","href":"/api/servers/1/alert_specs"},
             {"rel":"alerts","href":"/api/servers/1/alerts"}
           ],
@@ -11880,10 +11907,10 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_3748998484",
+          "resource_uid": "RESOURCE_1229475098",
           "name": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/ssh_keys/ABC2433998049DEF"},
+            {"rel":"self","href":"/api/clouds/888/ssh_keys/ABC985428418DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -11922,10 +11949,10 @@
           }
         },
         "example_resource": {
-          "resource_uid": "RESOURCE_3748998484",
+          "resource_uid": "RESOURCE_1229475098",
           "name": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/ssh_keys/ABC2433998049DEF"},
+            {"rel":"self","href":"/api/clouds/888/ssh_keys/ABC985428418DEF"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -12032,17 +12059,17 @@
         },
         "example_resource": {
           "visibility": "public",
-          "resource_uid": "RESOURCE_2716577289",
-          "name": "NAME_1171640188",
-          "description": "subnet449950000",
+          "resource_uid": "RESOURCE_2680415977",
+          "name": "NAME_1433393691",
+          "description": "subnet3156403423",
           "state": "pending",
           "cidr_block": null,
           "is_default": false,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/subnets/RESOURCE_2716577289;1442836306"},
-            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_3657961366;RAND"},
-            {"rel":"route_table","href":"/api/route_tables/RESOURCE_3075351877;113814771"},
-            {"rel":"effective_route_table","href":"/api/route_tables/RESOURCE_3075351877;113814771"}
+            {"rel":"self","href":"/api/clouds/888/subnets/RESOURCE_2680415977;2965918203"},
+            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_2652589313;RAND"},
+            {"rel":"route_table","href":"/api/route_tables/RESOURCE_4185065097;3571178901"},
+            {"rel":"effective_route_table","href":"/api/route_tables/RESOURCE_4185065097;3571178901"}
           ]
         },
         "filters": {
@@ -12089,17 +12116,17 @@
         },
         "example_resource": {
           "visibility": "public",
-          "resource_uid": "RESOURCE_2716577289",
-          "name": "NAME_1171640188",
-          "description": "subnet449950000",
+          "resource_uid": "RESOURCE_2680415977",
+          "name": "NAME_1433393691",
+          "description": "subnet3156403423",
           "state": "pending",
           "cidr_block": null,
           "is_default": false,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/subnets/RESOURCE_2716577289;1442836306"},
-            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_3657961366;RAND"},
-            {"rel":"route_table","href":"/api/route_tables/RESOURCE_3075351877;113814771"},
-            {"rel":"effective_route_table","href":"/api/route_tables/RESOURCE_3075351877;113814771"}
+            {"rel":"self","href":"/api/clouds/888/subnets/RESOURCE_2680415977;2965918203"},
+            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_2652589313;RAND"},
+            {"rel":"route_table","href":"/api/route_tables/RESOURCE_4185065097;3571178901"},
+            {"rel":"effective_route_table","href":"/api/route_tables/RESOURCE_4185065097;3571178901"}
           ]
         }
       },
@@ -12327,7 +12354,7 @@
         },
         "example_resource": {
           "links": [
-            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND/live/tasks/ae-9"}
+            {"rel":"self","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND/live/tasks/ae-9"}
           ],
           "actions": [
 
@@ -12723,17 +12750,17 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "resource_uid": "RESOURCE_755963341",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "resource_uid": "RESOURCE_591430822",
           "state": "attached",
           "device": "/dev/xvdj",
           "device_id": "device_id:9",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volume_attachments/RESOURCE_755963341;1475292296"},
+            {"rel":"self","href":"/api/clouds/888/volume_attachments/RESOURCE_591430822;3645187230"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"volume","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"},
-            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"}
+            {"rel":"volume","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"},
+            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"}
           ],
           "actions": [
 
@@ -12777,17 +12804,17 @@
           }
         },
         "example_resource": {
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "resource_uid": "RESOURCE_755963341",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "resource_uid": "RESOURCE_591430822",
           "state": "attached",
           "device": "/dev/xvdj",
           "device_id": "device_id:9",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volume_attachments/RESOURCE_755963341;1475292296"},
+            {"rel":"self","href":"/api/clouds/888/volume_attachments/RESOURCE_591430822;3645187230"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"volume","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"},
-            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_740446195;RAND"}
+            {"rel":"volume","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"},
+            {"rel":"instance","href":"/api/clouds/888/instances/RESOURCE_2060044246;RAND"}
           ],
           "actions": [
 
@@ -12933,21 +12960,25 @@
         },
         "example_resource": {
           "created_at": null,
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "NAME_585037842",
-          "resource_uid": "RESOURCE_590326695",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "NAME_3269211838",
+          "resource_uid": "RESOURCE_3009534649",
           "size": null,
-          "description": "DESCRIPTION_744397369",
+          "description": "DESCRIPTION_3772855826",
           "state": "available",
+          "visibility": "private",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_590326695;2739360187"},
+            {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_3009534649;1305856734"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"parent_volume","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"},
-            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volume_snapshots/RESOURCE_590326695;2739360187/recurring_volume_attachments"}
+            {"rel":"parent_volume","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"},
+            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volume_snapshots/RESOURCE_3009534649;1305856734/recurring_volume_attachments"}
           ],
           "actions": [
 
-          ]
+          ],
+          "cloud_specific_attributes": {
+            "aws_owner_id": "CLOUD_OWNER_3853122992"
+          }
         },
         "filters": {
           "resource_uid": {
@@ -12997,21 +13028,25 @@
         },
         "example_resource": {
           "created_at": null,
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "NAME_585037842",
-          "resource_uid": "RESOURCE_590326695",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "NAME_3269211838",
+          "resource_uid": "RESOURCE_3009534649",
           "size": null,
-          "description": "DESCRIPTION_744397369",
+          "description": "DESCRIPTION_3772855826",
           "state": "available",
+          "visibility": "private",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_590326695;2739360187"},
+            {"rel":"self","href":"/api/clouds/888/volume_snapshots/RESOURCE_3009534649;1305856734"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"parent_volume","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"},
-            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volume_snapshots/RESOURCE_590326695;2739360187/recurring_volume_attachments"}
+            {"rel":"parent_volume","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"},
+            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volume_snapshots/RESOURCE_3009534649;1305856734/recurring_volume_attachments"}
           ],
           "actions": [
 
-          ]
+          ],
+          "cloud_specific_attributes": {
+            "aws_owner_id": "CLOUD_OWNER_3853122992"
+          }
         }
       }
     },
@@ -13026,11 +13061,11 @@
         "state": "",
         "progress": "",
         "cloud_specific_attributes": "Any cloud specific attributes of the volume snapshot",
+        "visibility": "Visibility of volume snapshot, either private or public",
         "links": "",
         "actions": "",
         "created_at": "The date at which this volume snapshot was created in the cloud",
-        "updated_at": "",
-        "visibility": "Visibility of volume snapshot, either private or public"
+        "updated_at": ""
       },
       "links": {
         "self": "Href of itself",
@@ -13071,13 +13106,13 @@
         },
         "example_resource": {
           "name": "small",
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "resource_uid": "RESOURCE_2123971675",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "resource_uid": "RESOURCE_3204118241",
           "size": "5",
           "description": "Small Disk, 5 GB",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volume_types/RESOURCE_2123971675;1640789073"},
+            {"rel":"self","href":"/api/clouds/888/volume_types/RESOURCE_3204118241;1179746859"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -13115,13 +13150,13 @@
         },
         "example_resource": {
           "name": "small",
-          "created_at": "2018/04/06 19:53:28 +0000",
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "resource_uid": "RESOURCE_2123971675",
+          "created_at": "2018/08/22 22:00:54 +0000",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "resource_uid": "RESOURCE_3204118241",
           "size": "5",
           "description": "Small Disk, 5 GB",
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volume_types/RESOURCE_2123971675;1640789073"},
+            {"rel":"self","href":"/api/clouds/888/volume_types/RESOURCE_3204118241;1179746859"},
             {"rel":"cloud","href":"/api/clouds/888"}
           ],
           "actions": [
@@ -13273,20 +13308,20 @@
         },
         "example_resource": {
           "created_at": null,
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "NAME_4084813534",
-          "resource_uid": "RESOURCE_3528274899",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "NAME_2463967360",
+          "resource_uid": "RESOURCE_1155515380",
           "size": 1,
-          "description": "DESCRIPTION_3015772281",
+          "description": "DESCRIPTION_2791262892",
           "status": "in-use",
           "cloud_specific_attributes": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"},
+            {"rel":"self","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_364746084;RAND"},
-            {"rel":"volume_snapshots","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781/volume_snapshots"},
-            {"rel":"current_volume_attachment","href":"/api/clouds/888/volume_attachments/RESOURCE_755963341;1475292296"},
-            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781/recurring_volume_attachments"}
+            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_4243250531;RAND"},
+            {"rel":"volume_snapshots","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911/volume_snapshots"},
+            {"rel":"current_volume_attachment","href":"/api/clouds/888/volume_attachments/RESOURCE_591430822;3645187230"},
+            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911/recurring_volume_attachments"}
           ],
           "actions": [
 
@@ -13339,20 +13374,20 @@
         },
         "example_resource": {
           "created_at": null,
-          "updated_at": "2018/04/06 19:53:28 +0000",
-          "name": "NAME_4084813534",
-          "resource_uid": "RESOURCE_3528274899",
+          "updated_at": "2018/08/22 22:00:54 +0000",
+          "name": "NAME_2463967360",
+          "resource_uid": "RESOURCE_1155515380",
           "size": 1,
-          "description": "DESCRIPTION_3015772281",
+          "description": "DESCRIPTION_2791262892",
           "status": "in-use",
           "cloud_specific_attributes": null,
           "links": [
-            {"rel":"self","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781"},
+            {"rel":"self","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911"},
             {"rel":"cloud","href":"/api/clouds/888"},
-            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_364746084;RAND"},
-            {"rel":"volume_snapshots","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781/volume_snapshots"},
-            {"rel":"current_volume_attachment","href":"/api/clouds/888/volume_attachments/RESOURCE_755963341;1475292296"},
-            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volumes/RESOURCE_3528274899;2001989781/recurring_volume_attachments"}
+            {"rel":"datacenter","href":"/api/clouds/888/datacenters/RESOURCE_4243250531;RAND"},
+            {"rel":"volume_snapshots","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911/volume_snapshots"},
+            {"rel":"current_volume_attachment","href":"/api/clouds/888/volume_attachments/RESOURCE_591430822;3645187230"},
+            {"rel":"recurring_volume_attachments","href":"/api/clouds/888/volumes/RESOURCE_1155515380;1849034911/recurring_volume_attachments"}
           ],
           "actions": [
 

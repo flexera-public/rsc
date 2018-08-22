@@ -2099,6 +2099,11 @@ Optional parameters:
 			&metadata.Action{
 				Name: "create",
 				Description: `Register a cloud account/subscription/project with a RightScale account. Not all clouds support API-based registration.
+creds by cloud type
+AWS cloud: aws_account_number, aws_access_key_id, aws_secret_access_key, ec2_key (optional), ec2_cert (optional)
+AzureRM cloud: client_id, client_secret, tenant_id, subscription_id
+Google cloud: project, client_email (optional), private_key (optional), json (optional)
+SoftLayer cloud: api_key, username
 For more information on the supported clouds and their respective parameters, refer to the following:
 http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
 Required parameters:
@@ -2166,7 +2171,7 @@ Required parameters:
 
 			&metadata.Action{
 				Name:        "index",
-				Description: `Lists the CloudAccounts (non-aws) available to this Account.`,
+				Description: `Lists all the CloudAccounts available to this Account.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -2197,6 +2202,9 @@ Required parameters:
 			&metadata.Action{
 				Name: "update",
 				Description: `Update credentials for a registered cloud account/subscription/project. Not all clouds support API-based credential update.
+creds by cloud type
+AzureRM cloud: client_id (optional), client_secret (optional), tenant_id (optional)
+Google cloud: client_email (optional), private_key (optional), json (optional)
 For more information on the supported clouds and their respective parameters, refer to the following:
 http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
 Required parameters:
@@ -5309,7 +5317,8 @@ Optional parameters:
 				Name: "show",
 				Description: `Displays information about a single Instance type.
 Optional parameters:
-	view`,
+	view
+	with_deleted: If set to 'true', deleted instance_type resources can be viewed. Default value is 'false'.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -5319,6 +5328,15 @@ Optional parameters:
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "with_deleted",
+						Description: `If set to 'true', deleted instance_type resources can be viewed. Default value is 'false'.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
 					&metadata.ActionParam{
 						Name:        "view",
 						Description: ``,
@@ -5338,6 +5356,15 @@ Optional parameters:
 						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "with_deleted",
+						Description: `If set to 'true', deleted instance_type resources can be viewed. Default value is 'false'.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
 					},
 				},
 			},
