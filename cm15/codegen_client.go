@@ -1881,6 +1881,11 @@ func (api *API) CloudAccountLocator(href string) *CloudAccountLocator {
 // POST /api/cloud_accounts
 //
 // Register a cloud account/subscription/project with a RightScale account. Not all clouds support API-based registration.
+// creds by cloud type
+// AWS cloud: aws_account_number, aws_access_key_id, aws_secret_access_key, ec2_key (optional), ec2_cert (optional)
+// AzureRM cloud: client_id, client_secret, tenant_id, subscription_id
+// Google cloud: project, client_email (optional), private_key (optional), json (optional)
+// SoftLayer cloud: api_key, username
 // For more information on the supported clouds and their respective parameters, refer to the following:
 // http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
 // Required parameters:
@@ -1956,7 +1961,7 @@ func (loc *CloudAccountLocator) Destroy() error {
 
 // GET /api/cloud_accounts
 //
-// Lists the CloudAccounts (non-aws) available to this Account.
+// Lists all the CloudAccounts available to this Account.
 func (loc *CloudAccountLocator) Index() ([]*CloudAccount, error) {
 	var res []*CloudAccount
 	var params rsapi.APIParams
@@ -2031,6 +2036,9 @@ func (loc *CloudAccountLocator) Show() (*CloudAccount, error) {
 // PUT /api/cloud_accounts/:id
 //
 // Update credentials for a registered cloud account/subscription/project. Not all clouds support API-based credential update.
+// creds by cloud type
+// AzureRM cloud: client_id (optional), client_secret (optional), tenant_id (optional)
+// Google cloud: client_email (optional), private_key (optional), json (optional)
 // For more information on the supported clouds and their respective parameters, refer to the following:
 // http://docs.rightscale.com/api/api_1.5_examples/cloudaccounts.html
 // Required parameters:
@@ -4657,6 +4665,7 @@ func (loc *InstanceTypeLocator) Index(options rsapi.APIParams) ([]*InstanceType,
 // Displays information about a single Instance type.
 // Optional parameters:
 // view
+// with_deleted: If set to 'true', deleted instance_type resources can be viewed. Default value is 'false'.
 func (loc *InstanceTypeLocator) Show(options rsapi.APIParams) (*InstanceType, error) {
 	var res *InstanceType
 	var params rsapi.APIParams
@@ -4666,6 +4675,11 @@ func (loc *InstanceTypeLocator) Show(options rsapi.APIParams) (*InstanceType, er
 		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var withDeletedOpt = options["with_deleted"]
+	if withDeletedOpt != nil {
+		p["with_deleted"] = withDeletedOpt
+	}
 	uri, err := loc.ActionPath("InstanceType", "show")
 	if err != nil {
 		return res, err
