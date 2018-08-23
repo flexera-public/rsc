@@ -67,6 +67,13 @@ func (a *APIAnalyzer) AnalyzeProperty(ec EvalCtx, name string, required bool, p 
 		Regexp:      p.Pattern,
 		ValidValues: p.Enum,
 	}
+	if min, ok := p.Minimum.(float64); ok {
+		ap.Min = int(min)
+	}
+	if max, ok := p.Maximum.(float64); ok {
+		ap.Max = int(max)
+	}
+
 	if p.IsRef() {
 		ap.Type = a.typeForRef(ec, p.GetRef())
 		return ap
@@ -89,7 +96,13 @@ func (a *APIAnalyzer) AnalyzeProperty(ec EvalCtx, name string, required bool, p 
 			ap.Type = &dt
 		}
 	default:
-		ap.Type = basicType(p.Type)
+		if p.Format == "date-time" {
+			a.api.NeedTime = true
+			t := gen.BasicDataType("*time.Time")
+			ap.Type = &t
+		} else {
+			ap.Type = basicType(p.Type)
+		}
 	}
 
 	return ap

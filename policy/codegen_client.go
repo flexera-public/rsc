@@ -13,6 +13,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"time"
 
 	"github.com/rightscale/rsc/metadata"
 	"github.com/rightscale/rsc/rsapi"
@@ -1108,7 +1109,7 @@ func (loc *PublishedTemplateServiceLocator) Unhide() error {
 /****** Data Types ******/
 
 type AppliedPolicy struct {
-	CreatedAt         string             `json:"created_at,omitempty"`
+	CreatedAt         *time.Time         `json:"created_at,omitempty"`
 	CreatedBy         *User              `json:"created_by,omitempty"`
 	Frequency         string             `json:"frequency,omitempty"`
 	Href              string             `json:"href,omitempty"`
@@ -1136,11 +1137,11 @@ type AppliedPolicyList struct {
 }
 
 type AppliedPolicyStatus struct {
-	EvaluationError      string `json:"evaluation_error,omitempty"`
-	EvaluationErroredAt  string `json:"evaluation_errored_at,omitempty"`
-	LastEvaluationFinish string `json:"last_evaluation_finish,omitempty"`
-	LastEvaluationStart  string `json:"last_evaluation_start,omitempty"`
-	NextEvaluationStart  string `json:"next_evaluation_start,omitempty"`
+	EvaluationError      string     `json:"evaluation_error,omitempty"`
+	EvaluationErroredAt  *time.Time `json:"evaluation_errored_at,omitempty"`
+	LastEvaluationFinish *time.Time `json:"last_evaluation_finish,omitempty"`
+	LastEvaluationStart  *time.Time `json:"last_evaluation_start,omitempty"`
+	NextEvaluationStart  *time.Time `json:"next_evaluation_start,omitempty"`
 }
 
 type ConfigurationOption struct {
@@ -1162,17 +1163,17 @@ type Escalation struct {
 }
 
 type EscalationAction struct {
-	Error      string `json:"error,omitempty"`
-	FinishedAt string `json:"finished_at,omitempty"`
-	StartedAt  string `json:"started_at,omitempty"`
-	Status     string `json:"status,omitempty"`
-	Type       string `json:"type,omitempty"`
+	Error      string     `json:"error,omitempty"`
+	FinishedAt *time.Time `json:"finished_at,omitempty"`
+	StartedAt  *time.Time `json:"started_at,omitempty"`
+	Status     string     `json:"status,omitempty"`
+	Type       string     `json:"type,omitempty"`
 }
 
 type Escalations struct {
 	Escalations []*Escalation `json:"escalations,omitempty"`
-	FinishedAt  string        `json:"finished_at,omitempty"`
-	StartedAt   string        `json:"started_at,omitempty"`
+	FinishedAt  *time.Time    `json:"finished_at,omitempty"`
+	StartedAt   *time.Time    `json:"started_at,omitempty"`
 	Status      string        `json:"status,omitempty"`
 }
 
@@ -1180,7 +1181,7 @@ type Incident struct {
 	ActionFailed       bool                   `json:"action_failed,omitempty"`
 	AppliedPolicy      *AppliedPolicy         `json:"applied_policy,omitempty"`
 	Category           string                 `json:"category,omitempty"`
-	CreatedAt          string                 `json:"created_at,omitempty"`
+	CreatedAt          *time.Time             `json:"created_at,omitempty"`
 	DryRun             bool                   `json:"dry_run,omitempty"`
 	Href               string                 `json:"href,omitempty"`
 	Id                 string                 `json:"id,omitempty"`
@@ -1189,12 +1190,12 @@ type Incident struct {
 	Options            []*ConfigurationOption `json:"options,omitempty"`
 	Project            *Project               `json:"project,omitempty"`
 	ResolutionMessage  string                 `json:"resolution_message,omitempty"`
-	ResolvedAt         string                 `json:"resolved_at,omitempty"`
+	ResolvedAt         *time.Time             `json:"resolved_at,omitempty"`
 	ResolvedBy         *User                  `json:"resolved_by,omitempty"`
 	Severity           string                 `json:"severity,omitempty"`
 	State              string                 `json:"state,omitempty"`
 	Summary            string                 `json:"summary,omitempty"`
-	UpdatedAt          string                 `json:"updated_at,omitempty"`
+	UpdatedAt          *time.Time             `json:"updated_at,omitempty"`
 	ViolationDataCount int                    `json:"violation_data_count,omitempty"`
 }
 
@@ -1207,7 +1208,7 @@ type IncidentList struct {
 
 type PolicyTemplate struct {
 	Category         string                 `json:"category,omitempty"`
-	CreatedAt        string                 `json:"created_at,omitempty"`
+	CreatedAt        *time.Time             `json:"created_at,omitempty"`
 	CreatedBy        *User                  `json:"created_by,omitempty"`
 	DocLink          string                 `json:"doc_link,omitempty"`
 	Fingerprint      string                 `json:"fingerprint,omitempty"`
@@ -1221,7 +1222,7 @@ type PolicyTemplate struct {
 	RsPtVer          int                    `json:"rs_pt_ver,omitempty"`
 	Severity         string                 `json:"severity,omitempty"`
 	ShortDescription string                 `json:"short_description,omitempty"`
-	UpdatedAt        string                 `json:"updated_at,omitempty"`
+	UpdatedAt        *time.Time             `json:"updated_at,omitempty"`
 	UpdatedBy        *User                  `json:"updated_by,omitempty"`
 }
 
@@ -1255,14 +1256,14 @@ type Project struct {
 }
 
 type PublishedTemplate struct {
-	BuiltIn     bool   `json:"built_in,omitempty"`
-	Fingerprint string `json:"fingerprint,omitempty"`
-	Href        string `json:"href,omitempty"`
-	Id          string `json:"id,omitempty"`
-	Kind        string `json:"kind,omitempty"`
-	Name        string `json:"name,omitempty"`
-	UpdatedAt   string `json:"updated_at,omitempty"`
-	UpdatedBy   *User  `json:"updated_by,omitempty"`
+	BuiltIn     bool       `json:"built_in,omitempty"`
+	Fingerprint string     `json:"fingerprint,omitempty"`
+	Href        string     `json:"href,omitempty"`
+	Id          string     `json:"id,omitempty"`
+	Kind        string     `json:"kind,omitempty"`
+	Name        string     `json:"name,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	UpdatedBy   *User      `json:"updated_by,omitempty"`
 }
 
 type PublishedTemplateCreate struct {
@@ -1287,17 +1288,17 @@ type Resolution struct {
 }
 
 type ResolutionAction struct {
-	Error      string `json:"error,omitempty"`
-	FinishedAt string `json:"finished_at,omitempty"`
-	StartedAt  string `json:"started_at,omitempty"`
-	Status     string `json:"status,omitempty"`
-	Type       string `json:"type,omitempty"`
+	Error      string     `json:"error,omitempty"`
+	FinishedAt *time.Time `json:"finished_at,omitempty"`
+	StartedAt  *time.Time `json:"started_at,omitempty"`
+	Status     string     `json:"status,omitempty"`
+	Type       string     `json:"type,omitempty"`
 }
 
 type Resolutions struct {
-	FinishedAt  string        `json:"finished_at,omitempty"`
+	FinishedAt  *time.Time    `json:"finished_at,omitempty"`
 	Resolutions []*Resolution `json:"resolutions,omitempty"`
-	StartedAt   string        `json:"started_at,omitempty"`
+	StartedAt   *time.Time    `json:"started_at,omitempty"`
 	Status      string        `json:"status,omitempty"`
 }
 

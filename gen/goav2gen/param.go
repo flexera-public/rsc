@@ -90,10 +90,6 @@ func (a *APIAnalyzer) addType(ec EvalCtx, dt *gen.ObjectDataType, r Ref) {
 				dt.TypeName, r.ID(), dt, a.refByType[dt.TypeName], other)
 		}
 	}
-	// if _, ok := a.api.Types[dt.TypeName]; ok {
-	// 	dbg("DEBUG: Not creating new type %s, exists as resource", dt.TypeName)
-	// 	return
-	// }
 	dbg("DEBUG NEW TYPE %s\n", prettify(dt))
 	a.api.NeedJSON = true
 	a.refByType[dt.TypeName] = r.ID()

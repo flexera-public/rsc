@@ -64,6 +64,8 @@ type Property struct {
 	Pattern     string        `json:"pattern"`
 	Format      string        `json:"format"`
 	Default     interface{}   `json:"default"`
+	Minimum     interface{}   `json:"minimum"`
+	Maximum     interface{}   `json:"maximum"`
 	Ref         string        `json:"$ref"`
 }
 
@@ -90,7 +92,7 @@ type Response struct {
 	Headers     map[string]Parameter `json:"headers"`
 }
 
-// SecurityDefinition
+// SecurityDefinition defines the authentication scheme
 type SecurityDefinition struct {
 	Type        string `json:"type"`
 	Description string `json:"description"`
@@ -132,6 +134,7 @@ func (r Ref) Required() []string {
 	return []string{}
 }
 
+// ID of the reference
 func (r Ref) ID() string {
 	if refIF, ok := r["$ref"]; ok {
 		return strings.TrimPrefix(refIF.(string), "#/definitions/")
@@ -158,10 +161,12 @@ func (ep *Endpoint) Method() string {
 	return ""
 }
 
+// IsRef is whether this property is a reference to another object.
 func (p *Property) IsRef() bool {
 	return len(p.Ref) > 0
 }
 
+// GetRef will get the object pointed to by this property
 func (p *Property) GetRef() Ref {
 	return Ref{"$ref": p.Ref}
 }
