@@ -3,7 +3,6 @@ package main
 import (
 	"strings"
 
-	"github.com/kr/pretty"
 	"github.com/rightscale/rsc/gen"
 )
 
@@ -95,7 +94,7 @@ func (a *APIAnalyzer) addType(ec EvalCtx, dt *gen.ObjectDataType, r Ref) {
 	// 	dbg("DEBUG: Not creating new type %s, exists as resource", dt.TypeName)
 	// 	return
 	// }
-	dbg("DEBUG NEW TYPE % #v\n", pretty.Formatter(dt))
+	dbg("DEBUG NEW TYPE %s\n", prettify(dt))
 	a.api.NeedJSON = true
 	a.refByType[dt.TypeName] = r.ID()
 	a.api.Types[dt.TypeName] = dt

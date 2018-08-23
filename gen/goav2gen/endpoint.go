@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"bitbucket.org/pkg/inflect"
-	"github.com/kr/pretty"
 	"github.com/rightscale/rsc/gen"
 )
 
@@ -126,7 +125,7 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 
 	}
 	action.ReturnLocation = hasLocation
-	dbg("DEBUG ACTION % #v", pretty.Formatter(action))
+	dbg("DEBUG ACTION %s", prettify(action))
 	return nil
 }
 
