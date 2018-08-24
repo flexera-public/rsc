@@ -5262,7 +5262,8 @@ Required parameters:
 				Description: `Lists instance types.
 Optional parameters:
 	filter
-	view`,
+	view
+	with_deleted: If set to 'true', deleted instance_type resources will be included. Default value is 'false'.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -5272,6 +5273,15 @@ Optional parameters:
 					},
 				},
 				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "with_deleted",
+						Description: `If set to 'true', deleted instance_type resources will be included. Default value is 'false'.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
+					},
 					&metadata.ActionParam{
 						Name:        "filter[]",
 						Description: ``,
@@ -5309,6 +5319,15 @@ Optional parameters:
 						Mandatory:   false,
 						NonBlank:    true,
 						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "with_deleted",
+						Description: `If set to 'true', deleted instance_type resources will be included. Default value is 'false'.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"true", "false"},
 					},
 				},
 			},

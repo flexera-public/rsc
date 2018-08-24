@@ -4617,6 +4617,7 @@ func (api *API) InstanceTypeLocator(href string) *InstanceTypeLocator {
 // Optional parameters:
 // filter
 // view
+// with_deleted: If set to 'true', deleted instance_type resources will be included. Default value is 'false'.
 func (loc *InstanceTypeLocator) Index(options rsapi.APIParams) ([]*InstanceType, error) {
 	var res []*InstanceType
 	var params rsapi.APIParams
@@ -4630,6 +4631,11 @@ func (loc *InstanceTypeLocator) Index(options rsapi.APIParams) ([]*InstanceType,
 		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var withDeletedOpt = options["with_deleted"]
+	if withDeletedOpt != nil {
+		p["with_deleted"] = withDeletedOpt
+	}
 	uri, err := loc.ActionPath("InstanceType", "index")
 	if err != nil {
 		return res, err
