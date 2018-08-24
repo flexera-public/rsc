@@ -1,3 +1,7 @@
+v6.10.0 / 2018-08-24
+--------------------
+* Support with_deleted parameter in instance_types show and index calls.
+
 v6.9.0 / 2018-05-30
 -------------------
 * add visibility filter to VolumeAttachments index call.
