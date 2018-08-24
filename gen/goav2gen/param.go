@@ -1,8 +1,6 @@
 package main
 
 import (
-	"strings"
-
 	"github.com/rightscale/rsc/gen"
 )
 
@@ -11,23 +9,6 @@ var loc = map[string]int{
 	"query":  gen.QueryParam,
 	"body":   gen.PayloadParam,
 	"header": gen.HeaderParam,
-}
-
-type EvalCtx struct {
-	IsResult bool     // true means this is a ResultType. false means input to function
-	Trail    []string // trail of previous types we're a child of
-	Svc      *gen.Resource
-	Method   *gen.Action
-}
-
-func (ec EvalCtx) WithTrail(t string) EvalCtx {
-	newEC := ec
-	trailCopy := make([]string, 0, len(ec.Trail)+1)
-	for _, val := range ec.Trail {
-		trailCopy = append(trailCopy, val)
-	}
-	newEC.Trail = append(trailCopy, t)
-	return newEC
 }
 
 func (a *APIAnalyzer) AnalyzeParam(ec EvalCtx, p *Parameter) *gen.ActionParam {
@@ -94,12 +75,6 @@ func (a *APIAnalyzer) addType(ec EvalCtx, dt *gen.ObjectDataType, r Ref) {
 	a.api.NeedJSON = true
 	a.refByType[dt.TypeName] = r.ID()
 	a.api.Types[dt.TypeName] = dt
-}
-
-func normTitle(s string) string {
-	s = strings.TrimSuffix(s, "RequestBody")
-	s = strings.TrimSuffix(s, "ResponseBody")
-	return s
 }
 
 func basicType(typ string) gen.DataType {

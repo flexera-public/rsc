@@ -22,6 +22,15 @@ type FileUpload struct {
 	Reader   io.Reader // Backing reader
 }
 
+// MarshalJSON just inserts the contents of the file from disk inline into the json
+func (f *FileUpload) MarshalJSON() ([]byte, error) {
+	b, err := ioutil.ReadAll(f.Reader)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(string(b))
+}
+
 // SourceUpload represents a payload for /api/right_scripts/:id/update_source
 // It's needed as this one API call has unique properties -- it's content type is
 // text/plain only, and body of the HTTP call is the script body rather than a properly
@@ -136,7 +145,11 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 	var boundary string
 	if payload != nil {
 		var fields io.Reader
-		uploads := extractUploads(&payload)
+		var multiPartUploads []*FileUpload
+		if a.FileEncoding == FileEncodingMime {
+			multiPartUploads = extractUploads(&payload)
+			isMultipart = len(multiPartUploads) > 0
+		}
 		sourceUpload := extractSourceUpload(&payload)
 
 		if len(payload) > 0 {
@@ -146,8 +159,7 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 			}
 			fields = bytes.NewBuffer(jsonBytes)
 		}
-		if len(uploads) > 0 {
-			isMultipart = true
+		if isMultipart {
 			var buffer bytes.Buffer
 			w := multipart.NewWriter(&buffer)
 			if len(payload) > 0 {
@@ -156,7 +168,7 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 					return nil, fmt.Errorf("failed to write multipart params: %s", err.Error())
 				}
 			}
-			for _, u := range uploads {
+			for _, u := range multiPartUploads {
 				p, err := w.CreateFormFile(u.Name, u.Filename)
 				if err != nil {
 					return nil, fmt.Errorf("failed to create multipart file: %s", err.Error())

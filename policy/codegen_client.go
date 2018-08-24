@@ -632,13 +632,10 @@ func (loc *PolicyTemplateServiceLocator) Index(options rsapi.APIParams) (*Policy
 // post /api/governance/projects/{project_id}/policy_templates
 //
 // Upload uploads a policy template for a project, first compiling it. On failure, an array of syntax errors will be returned.
-func (loc *PolicyTemplateServiceLocator) Upload(filename string, source string) (*PolicyTemplate, error) {
+func (loc *PolicyTemplateServiceLocator) Upload(filename string, source *rsapi.FileUpload) (*PolicyTemplate, error) {
 	var res *PolicyTemplate
 	if filename == "" {
 		return res, fmt.Errorf("filename is required")
-	}
-	if source == "" {
-		return res, fmt.Errorf("source is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -679,12 +676,9 @@ func (loc *PolicyTemplateServiceLocator) Upload(filename string, source string) 
 // post /api/governance/projects/{project_id}/policy_templates/compile
 //
 // Compile compiles a policy template for a project. This is only to be used for checking the syntax of a policy template; the results are not stored.
-func (loc *PolicyTemplateServiceLocator) Compile(filename string, source string) error {
+func (loc *PolicyTemplateServiceLocator) Compile(filename string, source *rsapi.FileUpload) error {
 	if filename == "" {
 		return fmt.Errorf("filename is required")
-	}
-	if source == "" {
-		return fmt.Errorf("source is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -761,13 +755,10 @@ func (loc *PolicyTemplateServiceLocator) Show(options rsapi.APIParams) (*PolicyT
 // put /api/governance/projects/{project_id}/policy_templates/{template_id}
 //
 // Update updates a policy template in place for a project, by replacing it. Any existing applied policies using the template will not be updated; they must be deleted and recreated again.
-func (loc *PolicyTemplateServiceLocator) Update(filename string, source string) (*PolicyTemplate, error) {
+func (loc *PolicyTemplateServiceLocator) Update(filename string, source *rsapi.FileUpload) (*PolicyTemplate, error) {
 	var res *PolicyTemplate
 	if filename == "" {
 		return res, fmt.Errorf("filename is required")
-	}
-	if source == "" {
-		return res, fmt.Errorf("source is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -1227,8 +1218,8 @@ type PolicyTemplate struct {
 }
 
 type PolicyTemplateCompile struct {
-	Filename string `json:"filename,omitempty"`
-	Source   string `json:"source,omitempty"`
+	Filename string            `json:"filename,omitempty"`
+	Source   *rsapi.FileUpload `json:"source,omitempty"`
 }
 
 type PolicyTemplateList struct {
@@ -1239,13 +1230,13 @@ type PolicyTemplateList struct {
 }
 
 type PolicyTemplateUpdate struct {
-	Filename string `json:"filename,omitempty"`
-	Source   string `json:"source,omitempty"`
+	Filename string            `json:"filename,omitempty"`
+	Source   *rsapi.FileUpload `json:"source,omitempty"`
 }
 
 type PolicyTemplateUpload struct {
-	Filename string `json:"filename,omitempty"`
-	Source   string `json:"source,omitempty"`
+	Filename string            `json:"filename,omitempty"`
+	Source   *rsapi.FileUpload `json:"source,omitempty"`
 }
 
 type Project struct {

@@ -4,9 +4,31 @@ import (
 	"regexp"
 	"strings"
 
-	"bitbucket.org/pkg/inflect"
 	"github.com/rightscale/rsc/gen"
 )
+
+// EvalCtx stores what is currently under evaluation
+type EvalCtx struct {
+	// IsResult true means this is a ResultType. false means input to function
+	IsResult bool
+	// Trail of where we're evaluating is we're evaluating down a chain of objects
+	Trail []string
+	// Svc links to the goa v2 service
+	Svc *gen.Resource
+	// Method links to the goa v2 method/action
+	Method *gen.Action
+}
+
+// WithTrail creates a new context with trail appended to
+func (ec EvalCtx) WithTrail(t string) EvalCtx {
+	newEC := ec
+	trailCopy := make([]string, 0, len(ec.Trail)+1)
+	for _, val := range ec.Trail {
+		trailCopy = append(trailCopy, val)
+	}
+	newEC.Trail = append(trailCopy, t)
+	return newEC
+}
 
 // AnalyzeEndpoint creates an API descriptor from goa v2 generated swagger definition
 func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) error {
@@ -59,10 +81,9 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 		if returnDef != nil {
 			ec := EvalCtx{IsResult: true, Trail: nil, Svc: res, Method: action}
 			if mediaType(returnDef.Title) == "" {
-				dbg("DEBUG AnalyzeEndpoint UNKNOWN mediatype! %#v\n", returnDef)
+				warn("Warning: AnalyzeEndpoint: MediaType not set for %s %s, will be hard to guess the result type\n", verb, path)
 				continue
 			}
-			//returnTypeName = a.guessType(svc, returnDef)
 			returnDT = a.AnalyzeDefinition(ec, returnDef)
 			if returnObj, ok := returnDT.(*gen.ObjectDataType); ok {
 				isResourceType := verb == "get" && returnObj.TypeName == svc
@@ -76,10 +97,7 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 				a.addType(ec, returnObj, response.Schema)
 			}
 		} else {
-			//dbg("HERE")
 			returnDT = basicType(response.Schema.Type())
-			//returnTypeName = toGoTypeName(response.Schema.Type())
-			//			returnType = basicType(returnTypeName)
 		}
 
 		break
@@ -154,7 +172,6 @@ func copyFieldsToResource(res *gen.Resource, returnObj *gen.ObjectDataType) {
 				FieldType: f.Signature(),
 			}
 			dbg("COPYFIELDS %v\n", attr)
-
 			//res.Attributes = append(res.Attributes, attr)
 		}
 
@@ -178,16 +195,16 @@ func (a *APIAnalyzer) guessType(ec EvalCtx, d *Definition) string {
 	return normTitle(d.Title)
 }
 
-func normResponseName(s string) string {
-	s = strings.TrimSuffix(s, "RequestBody")
-	s = strings.TrimSuffix(s, "ResponseBody")
-	return inflect.Underscore(s)
-}
-
 // locatorFunc returns the source for the function returning the resource locator built from its
 // href field.
 func locatorFunc(resource string) string {
 	return "return api." + resource + "Locator(r.Href)"
+}
+
+func normTitle(s string) string {
+	s = strings.TrimSuffix(s, "RequestBody")
+	s = strings.TrimSuffix(s, "ResponseBody")
+	return s
 }
 
 // Regular expression that captures variables in a path

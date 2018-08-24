@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/rightscale/rsc/gen"
@@ -100,10 +101,23 @@ func (a *APIAnalyzer) AnalyzeProperty(ec EvalCtx, name string, required bool, p 
 			a.api.NeedTime = true
 			t := gen.BasicDataType("*time.Time")
 			ap.Type = &t
+		} else if t := a.overrideType(ec, name); t != nil {
+			ap.Type = t
 		} else {
 			ap.Type = basicType(p.Type)
 		}
 	}
 
 	return ap
+}
+
+func (a *APIAnalyzer) overrideType(ec EvalCtx, name string) gen.DataType {
+	if override, ok := a.AttrOverrides[name]; ok {
+		switch override {
+		case "sourcefile":
+			return new(gen.UploadDataType)
+		}
+		return basicType(override)
+	}
+	return nil
 }

@@ -463,7 +463,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "source",
 						Description: `source is the policy template source code.`,
-						Type:        "string",
+						Type:        "file",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -482,7 +482,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "source",
 						Description: `source is the policy template source code.`,
-						Type:        "string",
+						Type:        "*rsapi.FileUpload",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -513,7 +513,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "source",
 						Description: `source is the policy template source code.`,
-						Type:        "string",
+						Type:        "file",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -532,7 +532,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "source",
 						Description: `source is the policy template source code.`,
-						Type:        "string",
+						Type:        "*rsapi.FileUpload",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -598,7 +598,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "source",
 						Description: `source is the policy template source code.`,
-						Type:        "string",
+						Type:        "file",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,
@@ -617,7 +617,7 @@ var GenMetadata = map[string]*metadata.Resource{
 					&metadata.ActionParam{
 						Name:        "source",
 						Description: `source is the policy template source code.`,
-						Type:        "string",
+						Type:        "*rsapi.FileUpload",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    false,

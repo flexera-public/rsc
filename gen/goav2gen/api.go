@@ -15,6 +15,8 @@ type APIAnalyzer struct {
 	Version string
 	// Name of golang struct to generate for API client
 	ClientName string
+	// AttrOverrides holds attribute overrides
+	AttrOverrides map[string]string
 
 	// Temporary data structures used by analysis
 	refByType map[string]string
@@ -24,11 +26,12 @@ type APIAnalyzer struct {
 }
 
 // NewAPIAnalyzer is the factory method for APIAnalyzer.
-func NewAPIAnalyzer(version, clientName string, doc *Doc) *APIAnalyzer {
+func NewAPIAnalyzer(version, clientName string, doc *Doc, attrOverrides map[string]string) *APIAnalyzer {
 	return &APIAnalyzer{
-		Doc:        doc,
-		Version:    version,
-		ClientName: clientName,
+		Doc:           doc,
+		Version:       version,
+		ClientName:    clientName,
+		AttrOverrides: attrOverrides,
 
 		refByType: map[string]string{},
 	}

@@ -64,8 +64,20 @@ func main() {
 		kingpin.Fatalf("Cannot unmarshal JSON read from '%s': %s", docFile, err)
 	}
 
+	attrFile := path.Join(*metadata, "attributes.json")
+	var attrOverrides = make(map[string]string)
+	if fileExists(attrFile) {
+		attrData, err := loadFile(attrFile)
+		kingpin.FatalIfError(err, "")
+		err = json.Unmarshal(attrData, &attrOverrides)
+		if err != nil {
+			kingpin.Fatalf("Cannot unmarshal JSON read from '%s': %s", attrFile, err)
+		}
+
+	}
+
 	// 2. Analyze
-	a := NewAPIAnalyzer(*version, *clientName, &doc)
+	a := NewAPIAnalyzer(*version, *clientName, &doc, attrOverrides)
 	api, err := a.Analyze()
 	kingpin.FatalIfError(err, "")
 
@@ -104,4 +116,10 @@ func loadFile(file string) ([]byte, error) {
 		return nil, fmt.Errorf("Cannot read '%s': %s", file, err)
 	}
 	return js, nil
+}
+
+// fileExists reads content from existing file and returns a byte array
+func fileExists(file string) bool {
+	_, err := os.Stat(file)
+	return err == nil
 }

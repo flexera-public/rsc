@@ -33,6 +33,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 
 // Wrap generic client into API 1.0 client
 func fromAPI(api *rsapi.API) *API {
+	api.FileEncoding = rsapi.FileEncodingJSON
 	api.Host = HostFromLogin(api.Host)
 	api.Metadata = GenMetadata
 	api.VersionHeader = "Api-Version"

@@ -130,6 +130,7 @@ func signature(dt gen.DataType) (sig string) {
 }
 
 var dbg = func(msg string, args ...interface{}) (int, error) { return 0, nil }
+var warn = fmt.Printf
 
 func fail(msg string, args ...interface{}) {
 	panic(fmt.Errorf(msg, args...))
