@@ -244,7 +244,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		var payloadParamNames []string
 		for _, p := range leafParams {
 			n := p.Name
-			if isQueryParam(n) {
+			if isQueryParam(actionName, n) {
 				queryParamNames = append(queryParamNames, n)
 				p.Location = gen.QueryParam
 			} else if isPathParam(n, pathPatterns) {
@@ -267,7 +267,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 				continue
 			}
 			n := p.Name
-			if isQueryParam(n) {
+			if isQueryParam(actionName, n) {
 				p.Location = gen.QueryParam
 			} else if isPathParam(n, pathPatterns) {
 				p.Location = gen.PathParam
@@ -424,8 +424,8 @@ func isCustom(method, path string) bool {
 
 // Heuristic to determine whether given param is a query string param
 // For now only consider view and filter...
-func isQueryParam(n string) bool {
-	return n == "view" || n == "filter"
+func isQueryParam(a, n string) bool {
+	return n == "view" || n == "filter" || (a == "index" && (n == "with_deleted" || n == "with_inherited" || n == "latest_only" || n == "lineage"))
 }
 
 // Look in given path patterns to chek whether given parameter name corresponds to a variable
