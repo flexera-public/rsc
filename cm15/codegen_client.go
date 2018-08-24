@@ -698,12 +698,11 @@ func (loc *AlertSpecLocator) Index(options rsapi.APIParams) ([]*AlertSpec, error
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.APIParams
-	p = rsapi.APIParams{}
 	var withInheritedOpt = options["with_inherited"]
 	if withInheritedOpt != nil {
-		p["with_inherited"] = withInheritedOpt
+		params["with_inherited"] = withInheritedOpt
 	}
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AlertSpec", "index")
 	if err != nil {
 		return res, err
@@ -1402,15 +1401,14 @@ func (loc *BackupLocator) Index(lineage string, options rsapi.APIParams) ([]*Bac
 		return res, fmt.Errorf("lineage is required")
 	}
 	var params rsapi.APIParams
-	params = rsapi.APIParams{}
+	params = rsapi.APIParams{
+		"lineage": lineage,
+	}
 	var filterOpt = options["filter"]
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
 	}
 	var p rsapi.APIParams
-	p = rsapi.APIParams{
-		"lineage": lineage,
-	}
 	uri, err := loc.ActionPath("Backup", "index")
 	if err != nil {
 		return res, err
@@ -4630,12 +4628,11 @@ func (loc *InstanceTypeLocator) Index(options rsapi.APIParams) ([]*InstanceType,
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
-	var p rsapi.APIParams
-	p = rsapi.APIParams{}
 	var withDeletedOpt = options["with_deleted"]
 	if withDeletedOpt != nil {
-		p["with_deleted"] = withDeletedOpt
+		params["with_deleted"] = withDeletedOpt
 	}
+	var p rsapi.APIParams
 	uri, err := loc.ActionPath("InstanceType", "index")
 	if err != nil {
 		return res, err
@@ -9276,16 +9273,15 @@ func (loc *RightScriptLocator) Index(options rsapi.APIParams) ([]*RightScript, e
 	if filterOpt != nil {
 		params["filter[]"] = filterOpt
 	}
+	var latestOnlyOpt = options["latest_only"]
+	if latestOnlyOpt != nil {
+		params["latest_only"] = latestOnlyOpt
+	}
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
 	var p rsapi.APIParams
-	p = rsapi.APIParams{}
-	var latestOnlyOpt = options["latest_only"]
-	if latestOnlyOpt != nil {
-		p["latest_only"] = latestOnlyOpt
-	}
 	uri, err := loc.ActionPath("RightScript", "index")
 	if err != nil {
 		return res, err
