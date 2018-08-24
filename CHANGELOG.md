@@ -1,3 +1,7 @@
+v6.10.1 / 2018-08-24
+--------------------
+* Update the metadata to reflect the proper location for query params in index calls.
+
 v6.10.0 / 2018-08-24
 --------------------
 * Support with_deleted parameter in instance_types show and index calls.
