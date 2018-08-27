@@ -250,7 +250,7 @@ var GenMetadata = map[string]*metadata.Resource{
 
 			&metadata.Action{
 				Name:        "show_log",
-				Description: `ShowLog retrieves the last evaluation log of an applied policy.`,
+				Description: `ShowLog retrieves the last evaluation log of an applied policy. *The content type is "text/markdown"*.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "get",

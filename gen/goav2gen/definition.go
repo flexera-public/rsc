@@ -22,8 +22,11 @@ func (a *APIAnalyzer) AnalyzeDefinition(ec EvalCtx, def *Definition, refID strin
 			ElemType: apElem,
 		}
 	default:
-		// object assumed
 		name := a.guessType(ec, def, refID)
+		if name == "string" || name == "boolean" || name == "integer" {
+			return basicType("string")
+		}
+		// else: object is assumed
 		isRequired := map[string]bool{}
 		for _, r := range def.Required {
 			isRequired[r] = true
@@ -45,8 +48,10 @@ func (a *APIAnalyzer) AnalyzeDefinition(ec EvalCtx, def *Definition, refID strin
 }
 
 // guessType tries to guess the resource name based on the definition and service.
-// This info is not stored in the swagger. TBD manual overrides if needed
+// This info is not stored in the swagger. TBD manual overrides if needed.
 func (a *APIAnalyzer) guessType(ec EvalCtx, d *Definition, refID string) string {
+	// First get the type name and and view from the swagger reference definition
+	// name -- are a few cases where that's the only place that has the view
 	if t, ok := a.TypeOverrides[refID]; ok {
 		return t
 	}
@@ -66,11 +71,11 @@ func (a *APIAnalyzer) guessType(ec EvalCtx, d *Definition, refID string) string 
 	} else {
 		name = refID
 	}
-	// if view == "" {
-	// }
+
+	// Now try and get it from the media type -- this is preferred if its set.
 	if mt := mediaType(d.Title); mt != "" {
-		bits := strings.Split(mt, ".")
-		if len(bits) > 1 {
+		if strings.Contains(mt, "application") {
+			bits := strings.Split(mt, ".")
 			name := bits[len(bits)-1]
 			attrs := mediaTypeAttrs(d.Title)
 			if attrs["type"] != "" {
@@ -81,16 +86,17 @@ func (a *APIAnalyzer) guessType(ec EvalCtx, d *Definition, refID string) string 
 			} else if view != "" {
 				name += "_" + view
 			}
-			//warn("=== HERE1 %#v %#v %#v %#v -> %#v\n", refID, d.Title, name, view, name)
+			dbg("DEBUG media type refID:%#v title:%#v name:%#v view:%#v -> type:%#v\n", refID, d.Title, name, view, name)
 			return toTypeName(name)
+		} else if strings.Contains(mt, "text/") {
+			return "string"
+		} else {
+			fail("Don't know how to handle media type %s", mt)
 		}
 	}
 	if view != "" {
-		//warn("=== HERE2 %#v %#v -> %#v\n", refID, name, view, name)
-
 		return name + "_" + view
 	}
-	//warn("=== HERE3 %#v %#v %#v -> %#v\n", refID, name, view, name)
 
 	return name
 }

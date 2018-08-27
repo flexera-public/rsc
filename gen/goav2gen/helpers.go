@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"mime"
 	"regexp"
 	"strings"
 
@@ -43,12 +44,6 @@ func toGoTypeName(name string) string {
 
 // Parse native names into go parameter names
 func toVarName(name string) string {
-	// if name == "options" {
-	// 	return "options_"
-	// }
-	// if name == "type" {
-	// 	return "type_"
-	// }
 	p := partsRegexp.ReplaceAllString(name, "_")
 	return inflect.CamelizeDownFirst(p)
 }
@@ -82,32 +77,20 @@ func cleanDescription(doc string) string {
 	return strings.Join(fullLines[:i], "\n")
 }
 
-var mediateTypeRe = regexp.MustCompile(`(?i)Mediatype identifier: ([^;]+)(;.*$)?`)
-var splitAttrs = regexp.MustCompile(`\s*;\s*`)
-
 func mediaType(title string) string {
-	if matches := mediateTypeRe.FindStringSubmatch(title); matches != nil {
-		return matches[1]
+	if strings.Contains(title, "Mediatype") {
+		ident, _, _ := mime.ParseMediaType(strings.TrimPrefix(title, "Mediatype identifier: "))
+		return ident
 	}
 	return ""
 }
 
 func mediaTypeAttrs(title string) map[string]string {
-	attrs := map[string]string{}
-	if matches := mediateTypeRe.FindStringSubmatch(title); matches != nil {
-		allAttrs := matches[2]
-
-		attrBits := splitAttrs.Split(allAttrs, -1)
-
-		for _, attr := range attrBits {
-			if attr == "" {
-				continue
-			}
-			kv := strings.Split(attr, "=")
-			attrs[kv[0]] = kv[1]
-		}
+	if strings.Contains(title, "Mediatype") {
+		_, params, _ := mime.ParseMediaType(strings.TrimPrefix(title, "Mediatype identifier: "))
+		return params
 	}
-	return attrs
+	return map[string]string{}
 }
 
 func signature(dt gen.DataType) (sig string) {

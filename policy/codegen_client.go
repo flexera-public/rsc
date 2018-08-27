@@ -306,7 +306,7 @@ func (loc *AppliedPolicyLocator) Evaluate() error {
 
 // get /api/governance/projects/{project_id}/applied_policies/{policy_id}/log
 //
-// ShowLog retrieves the last evaluation log of an applied policy.
+// ShowLog retrieves the last evaluation log of an applied policy. *The content type is "text/markdown"*.
 func (loc *AppliedPolicyLocator) ShowLog() (string, error) {
 	var res string
 	var params rsapi.APIParams
