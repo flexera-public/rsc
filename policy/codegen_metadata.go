@@ -17,8 +17,8 @@ import (
 
 // Consists of a map of resource name to resource metadata.
 var GenMetadata = map[string]*metadata.Resource{
-	"AppliedPolicyService": &metadata.Resource{
-		Name:        "AppliedPolicyService",
+	"AppliedPolicy": &metadata.Resource{
+		Name:        "AppliedPolicy",
 		Description: `Show retrieves the details of an applied policy.`,
 		Identifier:  "application/vnd.rightscale.applied_policy",
 		Actions: []*metadata.Action{
@@ -279,8 +279,8 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"IncidentService": &metadata.Resource{
-		Name:        "IncidentService",
+	"Incident": &metadata.Resource{
+		Name:        "Incident",
 		Description: `Show retrieves the details of an incident.`,
 		Identifier:  "application/vnd.rightscale.incident",
 		Actions: []*metadata.Action{
@@ -400,8 +400,8 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"PolicyTemplateService": &metadata.Resource{
-		Name:        "PolicyTemplateService",
+	"PolicyTemplate": &metadata.Resource{
+		Name:        "PolicyTemplate",
 		Description: `Show retrieves the details of a policy template.`,
 		Identifier:  "application/vnd.rightscale.policy_template",
 		Actions: []*metadata.Action{
@@ -641,8 +641,8 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 		},
 	},
-	"PublishedTemplateService": &metadata.Resource{
-		Name:        "PublishedTemplateService",
+	"PublishedTemplate": &metadata.Resource{
+		Name:        "PublishedTemplate",
 		Description: `Show retrieves the details of a published template.`,
 		Identifier:  "application/vnd.rightscale.published_template",
 		Actions: []*metadata.Action{

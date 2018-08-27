@@ -37,23 +37,22 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 	pattern := toPattern(verb, path)
 	dbg("DEBUG AnalyzeEndpoint pattern %v\n", pattern)
 	svc := ep.Service()
-	svcName := svc + "Service"
 
 	// Get Resource -- base it on the service name for now
-	res := a.api.Resources[svcName]
+	res := a.api.Resources[svc]
 	if res == nil {
 		res = &gen.Resource{
-			Name:       svcName,
+			Name:       svc,
 			ClientName: a.ClientName,
 			Actions:    []*gen.Action{},
 		}
-		a.api.Resources[svcName] = res
+		a.api.Resources[svc] = res
 	}
 	action := &gen.Action{
 		Name:         ep.Method(),
 		MethodName:   toMethodName(ep.Method()),
 		Description:  cleanDescription(ep.Description),
-		ResourceName: svcName,
+		ResourceName: svc,
 		PathPatterns: []*gen.PathPattern{pattern},
 	}
 	res.Actions = append(res.Actions, action)
@@ -84,7 +83,7 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 				warn("Warning: AnalyzeEndpoint: MediaType not set for %s %s, will be hard to guess the result type\n", verb, path)
 				continue
 			}
-			returnDT = a.AnalyzeDefinition(ec, returnDef)
+			returnDT = a.AnalyzeDefinition(ec, returnDef, response.Schema.ID())
 			if returnObj, ok := returnDT.(*gen.ObjectDataType); ok {
 				isResourceType := verb == "get" && returnObj.TypeName == svc
 				dbg("DEBUG AnalyzeEndpoint Path %s Verb %s returnTypeName %s svc %s\n", path, verb, returnObj.TypeName, svc)
@@ -92,7 +91,6 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 				if isResourceType {
 					res.Description = cleanDescription(ep.Description)
 					res.Identifier = mediaType(returnDef.Title)
-					//copyFieldsToResource(res, returnObj)
 				}
 				a.addType(ec, returnObj, response.Schema)
 			}
@@ -121,10 +119,10 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 			def := a.Doc.Ref(p.Schema)
 			if def != nil {
 				if def.Type == "array" {
-					fail("ERROR ANALYZE PARAMETERS UNHANDLED ARRAY!")
+					fail("Array type for body not implemented yet")
 				} else if def.Type == "object" {
 					// Flatten the first level of object
-					dt := a.AnalyzeDefinition(ec, def)
+					dt := a.AnalyzeDefinition(ec, def, p.Schema.ID())
 					if obj, ok := dt.(*gen.ObjectDataType); ok {
 						a.addType(ec, obj, p.Schema)
 						action.Payload = obj
@@ -147,64 +145,10 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 	return nil
 }
 
-func copyFieldsToResource(res *gen.Resource, returnObj *gen.ObjectDataType) {
-	for _, f := range returnObj.Fields {
-		switch f.Type.(type) {
-		case *gen.ObjectDataType:
-			attr := &gen.Attribute{
-				Name:      f.Name,
-				FieldName: toTypeName(f.Name),
-				FieldType: f.Signature(),
-			}
-			dbg("COPYFIELDS %v\n", attr)
-			//res.Attributes = append(res.Attributes, attr)
-		case *gen.ArrayDataType:
-			attr := &gen.Attribute{
-				Name:      f.Name,
-				FieldName: toTypeName(f.Name),
-				FieldType: f.Signature(),
-			}
-			dbg("COPYFIELDS %v\n", attr)
-		default:
-			attr := &gen.Attribute{
-				Name:      f.Name,
-				FieldName: toTypeName(f.Name),
-				FieldType: f.Signature(),
-			}
-			dbg("COPYFIELDS %v\n", attr)
-			//res.Attributes = append(res.Attributes, attr)
-		}
-
-	}
-}
-
-// guessType tries to guess the resource name based on the definition and service.
-// This info is not stored in the swagger. TBD manual overrides if needed
-func (a *APIAnalyzer) guessType(ec EvalCtx, d *Definition) string {
-	if mt := mediaType(d.Title); mt != "" {
-		bits := strings.Split(mt, ".")
-		if len(bits) > 1 {
-			name := bits[len(bits)-1]
-			attrs := mediaTypeAttrs(d.Title)
-			if attrs["type"] != "" {
-				name += "_" + attrs["type"]
-			}
-			return toTypeName(name)
-		}
-	}
-	return normTitle(d.Title)
-}
-
 // locatorFunc returns the source for the function returning the resource locator built from its
 // href field.
 func locatorFunc(resource string) string {
 	return "return api." + resource + "Locator(r.Href)"
-}
-
-func normTitle(s string) string {
-	s = strings.TrimSuffix(s, "RequestBody")
-	s = strings.TrimSuffix(s, "ResponseBody")
-	return s
 }
 
 // Regular expression that captures variables in a path

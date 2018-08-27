@@ -67,16 +67,15 @@ func (a *APIAnalyzer) Analyze() (*gen.APIDescriptor, error) {
 }
 
 func (a *APIAnalyzer) finalize() {
-	for n := range a.api.Resources {
-		a.api.ResourceNames = append(a.api.ResourceNames, n)
+	// Create resource fields
+	for _, res := range a.api.Resources {
+		if t, ok := a.api.Types[res.Name]; ok {
+			convertToResource(res, t)
+			delete(a.api.Types, res.Name)
+		}
 	}
-	sort.Strings(a.api.ResourceNames)
 
-	for n := range a.api.Types {
-		a.api.TypeNames = append(a.api.TypeNames, n)
-	}
-	sort.Strings(a.api.TypeNames)
-
+	// Generate leaf params for command line
 	for _, res := range a.api.Resources {
 		for _, ax := range res.Actions {
 			cmdLineParams := []*gen.ActionParam{}
@@ -101,6 +100,17 @@ func (a *APIAnalyzer) finalize() {
 			ax.Params = methodParams
 		}
 	}
+
+	for n := range a.api.Resources {
+		a.api.ResourceNames = append(a.api.ResourceNames, n)
+	}
+	sort.Strings(a.api.ResourceNames)
+
+	for n := range a.api.Types {
+		a.api.TypeNames = append(a.api.TypeNames, n)
+	}
+	sort.Strings(a.api.TypeNames)
+
 }
 
 // extractCmdLineParams generates flags for the command line
@@ -145,4 +155,36 @@ func extractCmdLineParams(a *gen.ActionParam, root string, seen map[string]*[]*g
 		return params
 	}
 	return nil
+}
+
+func convertToResource(res *gen.Resource, returnObj *gen.ObjectDataType) {
+	for _, f := range returnObj.Fields {
+		switch f.Type.(type) {
+		case *gen.ObjectDataType:
+			attr := &gen.Attribute{
+				Name:      f.Name,
+				FieldName: toTypeName(f.Name),
+				FieldType: f.Signature(),
+			}
+			dbg("COPYFIELDS %v\n", attr)
+			res.Attributes = append(res.Attributes, attr)
+		case *gen.ArrayDataType:
+			attr := &gen.Attribute{
+				Name:      f.Name,
+				FieldName: toTypeName(f.Name),
+				FieldType: f.Signature(),
+			}
+			dbg("COPYFIELDS %v\n", attr)
+			res.Attributes = append(res.Attributes, attr)
+		default:
+			attr := &gen.Attribute{
+				Name:      f.Name,
+				FieldName: toTypeName(f.Name),
+				FieldType: f.Signature(),
+			}
+			dbg("COPYFIELDS %v\n", attr)
+			res.Attributes = append(res.Attributes, attr)
+		}
+
+	}
 }
