@@ -80,7 +80,7 @@ func (a *APIAnalyzer) AnalyzeEndpoint(verb string, path string, ep *Endpoint) er
 		if returnDef != nil {
 			ec := EvalCtx{IsResult: true, Trail: nil, Svc: res, Method: action}
 			if mediaType(returnDef.Title) == "" {
-				warn("Warning: AnalyzeEndpoint: MediaType not set for %s %s, will be hard to guess the result type\n", verb, path)
+				warn("Warning: AnalyzeEndpoint: MediaType not set for %s, will be hard to guess the result type\n", response.Schema.ID())
 				continue
 			}
 			returnDT = a.AnalyzeDefinition(ec, returnDef, response.Schema.ID())

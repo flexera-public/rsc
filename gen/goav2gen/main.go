@@ -73,11 +73,20 @@ func main() {
 		if err != nil {
 			kingpin.Fatalf("Cannot unmarshal JSON read from '%s': %s", attrFile, err)
 		}
-
+	}
+	typeFile := path.Join(*metadata, "types.json")
+	var typeOverrides = make(map[string]string)
+	if fileExists(typeFile) {
+		typeData, err := loadFile(typeFile)
+		kingpin.FatalIfError(err, "")
+		err = json.Unmarshal(typeData, &typeOverrides)
+		if err != nil {
+			kingpin.Fatalf("Cannot unmarshal JSON read from '%s': %s", typeFile, err)
+		}
 	}
 
 	// 2. Analyze
-	a := NewAPIAnalyzer(*version, *clientName, &doc, attrOverrides)
+	a := NewAPIAnalyzer(*version, *clientName, &doc, attrOverrides, typeOverrides)
 	api, err := a.Analyze()
 	kingpin.FatalIfError(err, "")
 

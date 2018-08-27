@@ -47,6 +47,9 @@ func (a *APIAnalyzer) AnalyzeDefinition(ec EvalCtx, def *Definition, refID strin
 // guessType tries to guess the resource name based on the definition and service.
 // This info is not stored in the swagger. TBD manual overrides if needed
 func (a *APIAnalyzer) guessType(ec EvalCtx, d *Definition, refID string) string {
+	if t, ok := a.TypeOverrides[refID]; ok {
+		return t
+	}
 	var name, view string
 	if strings.Contains(refID, "RequestBody") {
 		bits := strings.Split(refID, "RequestBody")
@@ -148,7 +151,7 @@ func (a *APIAnalyzer) AnalyzeProperty(ec EvalCtx, name string, required bool, p 
 			a.api.NeedTime = true
 			t := gen.BasicDataType("*time.Time")
 			ap.Type = &t
-		} else if t := a.overrideType(ec, name); t != nil {
+		} else if t := a.overrideAttr(ec, name); t != nil {
 			ap.Type = t
 		} else {
 			ap.Type = basicType(p.Type)
@@ -158,7 +161,7 @@ func (a *APIAnalyzer) AnalyzeProperty(ec EvalCtx, name string, required bool, p 
 	return ap
 }
 
-func (a *APIAnalyzer) overrideType(ec EvalCtx, name string) gen.DataType {
+func (a *APIAnalyzer) overrideAttr(ec EvalCtx, name string) gen.DataType {
 	if override, ok := a.AttrOverrides[name]; ok {
 		switch override {
 		case "sourcefile":

@@ -17,6 +17,10 @@ type APIAnalyzer struct {
 	ClientName string
 	// AttrOverrides holds attribute overrides
 	AttrOverrides map[string]string
+	// TypeOverrides holds type overrides. We have to guess the goa type for result types from
+	// methods and TypeOverrides is for the cases where we can't guess or the swagger is wrong
+	// because of a bug
+	TypeOverrides map[string]string
 
 	// Temporary data structures used by analysis
 	refByType map[string]string
@@ -26,12 +30,13 @@ type APIAnalyzer struct {
 }
 
 // NewAPIAnalyzer is the factory method for APIAnalyzer.
-func NewAPIAnalyzer(version, clientName string, doc *Doc, attrOverrides map[string]string) *APIAnalyzer {
+func NewAPIAnalyzer(version, clientName string, doc *Doc, attrOverrides, typeOverrides map[string]string) *APIAnalyzer {
 	return &APIAnalyzer{
 		Doc:           doc,
 		Version:       version,
 		ClientName:    clientName,
 		AttrOverrides: attrOverrides,
+		TypeOverrides: typeOverrides,
 
 		refByType: map[string]string{},
 	}

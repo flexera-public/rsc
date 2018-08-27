@@ -1192,15 +1192,15 @@ type AppliedPolicyCreate struct {
 }
 
 type AppliedPolicyLink struct {
-	CreatedAt         *time.Time         `json:"created_at,omitempty"`
-	CreatedBy         *User              `json:"created_by,omitempty"`
-	Frequency         string             `json:"frequency,omitempty"`
-	Href              string             `json:"href,omitempty"`
-	Id                string             `json:"id,omitempty"`
-	Kind              string             `json:"kind,omitempty"`
-	Name              string             `json:"name,omitempty"`
-	PolicyTemplate    *PolicyTemplate    `json:"policy_template,omitempty"`
-	PublishedTemplate *PublishedTemplate `json:"published_template,omitempty"`
+	CreatedAt         *time.Time             `json:"created_at,omitempty"`
+	CreatedBy         *User                  `json:"created_by,omitempty"`
+	Frequency         string                 `json:"frequency,omitempty"`
+	Href              string                 `json:"href,omitempty"`
+	Id                string                 `json:"id,omitempty"`
+	Kind              string                 `json:"kind,omitempty"`
+	Name              string                 `json:"name,omitempty"`
+	PolicyTemplate    *PolicyTemplateLink    `json:"policy_template,omitempty"`
+	PublishedTemplate *PublishedTemplateLink `json:"published_template,omitempty"`
 }
 
 type AppliedPolicyList struct {
