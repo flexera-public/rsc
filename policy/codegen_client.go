@@ -97,7 +97,7 @@ func (api *API) AppliedPolicyLocator(href string) *AppliedPolicyLocator {
 
 //===== Actions
 
-// get /api/governance/projects/{project_id}/applied_policies
+// GET /api/governance/projects/{project_id}/applied_policies
 //
 // Index retrieves the list of applied policies in a project.
 func (loc *AppliedPolicyLocator) Index(options rsapi.APIParams) (*AppliedPolicyList, error) {
@@ -139,7 +139,7 @@ func (loc *AppliedPolicyLocator) Index(options rsapi.APIParams) (*AppliedPolicyL
 	return res, err
 }
 
-// post /api/governance/projects/{project_id}/applied_policies
+// POST /api/governance/projects/{project_id}/applied_policies
 //
 // Create applies a policy template to a given project. The applied policy will continually run until deleted.
 func (loc *AppliedPolicyLocator) Create(name string, templateHref string, options rsapi.APIParams) (*AppliedPolicy, error) {
@@ -202,7 +202,7 @@ func (loc *AppliedPolicyLocator) Create(name string, templateHref string, option
 	return res, err
 }
 
-// get /api/governance/projects/{project_id}/applied_policies/{policy_id}
+// GET /api/governance/projects/{project_id}/applied_policies/{policy_id}
 //
 // Show retrieves the details of an applied policy.
 func (loc *AppliedPolicyLocator) Show(options rsapi.APIParams) (*AppliedPolicy, error) {
@@ -244,7 +244,7 @@ func (loc *AppliedPolicyLocator) Show(options rsapi.APIParams) (*AppliedPolicy, 
 	return res, err
 }
 
-// delete /api/governance/projects/{project_id}/applied_policies/{policy_id}
+// DELETE /api/governance/projects/{project_id}/applied_policies/{policy_id}
 //
 // Delete stops and deletes an applied policy.
 func (loc *AppliedPolicyLocator) Delete() error {
@@ -274,7 +274,7 @@ func (loc *AppliedPolicyLocator) Delete() error {
 	return nil
 }
 
-// post /api/governance/projects/{project_id}/applied_policies/{policy_id}/evaluate
+// POST /api/governance/projects/{project_id}/applied_policies/{policy_id}/evaluate
 //
 // Evaluate executes an applied policy evaluation on demand. It does not affect the normal execution schedule.
 func (loc *AppliedPolicyLocator) Evaluate() error {
@@ -304,7 +304,7 @@ func (loc *AppliedPolicyLocator) Evaluate() error {
 	return nil
 }
 
-// get /api/governance/projects/{project_id}/applied_policies/{policy_id}/log
+// GET /api/governance/projects/{project_id}/applied_policies/{policy_id}/log
 //
 // ShowLog retrieves the last evaluation log of an applied policy. *The content type is "text/markdown"*.
 func (loc *AppliedPolicyLocator) ShowLog() (string, error) {
@@ -341,7 +341,7 @@ func (loc *AppliedPolicyLocator) ShowLog() (string, error) {
 	return res, err
 }
 
-// get /api/governance/projects/{project_id}/applied_policies/{policy_id}/status
+// GET /api/governance/projects/{project_id}/applied_policies/{policy_id}/status
 //
 // ShowStatus retrieves the evaluation status details of an applied policy.
 func (loc *AppliedPolicyLocator) ShowStatus() (*AppliedPolicyStatus, error) {
@@ -419,7 +419,7 @@ func (api *API) IncidentLocator(href string) *IncidentLocator {
 
 //===== Actions
 
-// get /api/governance/projects/{project_id}/incidents
+// GET /api/governance/projects/{project_id}/incidents
 //
 // Index retrieves the list of incidents in a project.
 func (loc *IncidentLocator) Index(options rsapi.APIParams) (*IncidentList, error) {
@@ -461,7 +461,7 @@ func (loc *IncidentLocator) Index(options rsapi.APIParams) (*IncidentList, error
 	return res, err
 }
 
-// get /api/governance/projects/{project_id}/incidents/{incident_id}
+// GET /api/governance/projects/{project_id}/incidents/{incident_id}
 //
 // Show retrieves the details of an incident.
 func (loc *IncidentLocator) Show(options rsapi.APIParams) (*Incident, error) {
@@ -503,7 +503,7 @@ func (loc *IncidentLocator) Show(options rsapi.APIParams) (*Incident, error) {
 	return res, err
 }
 
-// get /api/governance/projects/{project_id}/incidents/{incident_id}/escalations
+// GET /api/governance/projects/{project_id}/incidents/{incident_id}/escalations
 //
 // IndexEscalations retrieves the status details of all of the escalations for an incident.
 func (loc *IncidentLocator) IndexEscalations() (*Escalations, error) {
@@ -540,7 +540,7 @@ func (loc *IncidentLocator) IndexEscalations() (*Escalations, error) {
 	return res, err
 }
 
-// get /api/governance/projects/{project_id}/incidents/{incident_id}/resolutions
+// GET /api/governance/projects/{project_id}/incidents/{incident_id}/resolutions
 //
 // IndexResolutions retrieves the status details of all of the resolutions for an incident.
 func (loc *IncidentLocator) IndexResolutions() (*Resolutions, error) {
@@ -577,7 +577,7 @@ func (loc *IncidentLocator) IndexResolutions() (*Resolutions, error) {
 	return res, err
 }
 
-// put /api/governance/projects/{project_id}/incidents/{incident_id}/resolve
+// PUT /api/governance/projects/{project_id}/incidents/{incident_id}/resolve
 //
 // Resolve resolves an incident by setting it to an inactive state, indicating that it has been addressed.
 func (loc *IncidentLocator) Resolve() error {
@@ -645,7 +645,7 @@ func (api *API) PolicyTemplateLocator(href string) *PolicyTemplateLocator {
 
 //===== Actions
 
-// get /api/governance/projects/{project_id}/policy_templates
+// GET /api/governance/projects/{project_id}/policy_templates
 //
 // IndexPolicyTemplates retrieves the list of policy templates in a project.
 func (loc *PolicyTemplateLocator) Index(options rsapi.APIParams) (*PolicyTemplateList, error) {
@@ -687,7 +687,7 @@ func (loc *PolicyTemplateLocator) Index(options rsapi.APIParams) (*PolicyTemplat
 	return res, err
 }
 
-// post /api/governance/projects/{project_id}/policy_templates
+// POST /api/governance/projects/{project_id}/policy_templates
 //
 // Upload uploads a policy template for a project, first compiling it. On failure, an array of syntax errors will be returned.
 func (loc *PolicyTemplateLocator) Upload(filename string, source *rsapi.FileUpload) (*PolicyTemplate, error) {
@@ -731,7 +731,7 @@ func (loc *PolicyTemplateLocator) Upload(filename string, source *rsapi.FileUplo
 	return res, err
 }
 
-// post /api/governance/projects/{project_id}/policy_templates/compile
+// POST /api/governance/projects/{project_id}/policy_templates/compile
 //
 // Compile compiles a policy template for a project. This is only to be used for checking the syntax of a policy template; the results are not stored.
 func (loc *PolicyTemplateLocator) Compile(filename string, source *rsapi.FileUpload) error {
@@ -768,7 +768,7 @@ func (loc *PolicyTemplateLocator) Compile(filename string, source *rsapi.FileUpl
 	return nil
 }
 
-// get /api/governance/projects/{project_id}/policy_templates/{template_id}
+// GET /api/governance/projects/{project_id}/policy_templates/{template_id}
 //
 // Show retrieves the details of a policy template.
 func (loc *PolicyTemplateLocator) Show(options rsapi.APIParams) (*PolicyTemplate, error) {
@@ -810,7 +810,7 @@ func (loc *PolicyTemplateLocator) Show(options rsapi.APIParams) (*PolicyTemplate
 	return res, err
 }
 
-// put /api/governance/projects/{project_id}/policy_templates/{template_id}
+// PUT /api/governance/projects/{project_id}/policy_templates/{template_id}
 //
 // Update updates a policy template in place for a project, by replacing it. Any existing applied policies using the template will not be updated; they must be deleted and recreated again.
 func (loc *PolicyTemplateLocator) Update(filename string, source *rsapi.FileUpload) (*PolicyTemplate, error) {
@@ -854,7 +854,7 @@ func (loc *PolicyTemplateLocator) Update(filename string, source *rsapi.FileUplo
 	return res, err
 }
 
-// delete /api/governance/projects/{project_id}/policy_templates/{template_id}
+// DELETE /api/governance/projects/{project_id}/policy_templates/{template_id}
 //
 // Delete deletes a policy template from a project. Deleting a policy template will not delete any applied policies created from the template, they must be stopped explicitly.
 func (loc *PolicyTemplateLocator) Delete() error {
@@ -930,7 +930,7 @@ func (api *API) PublishedTemplateLocator(href string) *PublishedTemplateLocator 
 
 //===== Actions
 
-// get /api/governance/orgs/{org_id}/published_templates
+// GET /api/governance/orgs/{org_id}/published_templates
 //
 // Index retrieves the list of published templates in an organization.
 func (loc *PublishedTemplateLocator) Index(options rsapi.APIParams) (*PublishedTemplateList, error) {
@@ -976,7 +976,7 @@ func (loc *PublishedTemplateLocator) Index(options rsapi.APIParams) (*PublishedT
 	return res, err
 }
 
-// post /api/governance/orgs/{org_id}/published_templates
+// POST /api/governance/orgs/{org_id}/published_templates
 //
 // Create creates an organization-scoped published template from a project-scoped policy template.
 func (loc *PublishedTemplateLocator) Create(templateHref string) error {
@@ -1012,7 +1012,7 @@ func (loc *PublishedTemplateLocator) Create(templateHref string) error {
 	return nil
 }
 
-// get /api/governance/orgs/{org_id}/published_templates/{template_id}
+// GET /api/governance/orgs/{org_id}/published_templates/{template_id}
 //
 // Show retrieves the details of a published template.
 func (loc *PublishedTemplateLocator) Show(options rsapi.APIParams) (*PublishedTemplate, error) {
@@ -1054,7 +1054,7 @@ func (loc *PublishedTemplateLocator) Show(options rsapi.APIParams) (*PublishedTe
 	return res, err
 }
 
-// put /api/governance/orgs/{org_id}/published_templates/{template_id}
+// PUT /api/governance/orgs/{org_id}/published_templates/{template_id}
 //
 // Update updates a published template in place for an organization, by replacing it. Any existing applied policies using the template will not be updated; they must be deleted and recreated again.
 func (loc *PublishedTemplateLocator) Update(templateHref string) error {
@@ -1090,7 +1090,7 @@ func (loc *PublishedTemplateLocator) Update(templateHref string) error {
 	return nil
 }
 
-// delete /api/governance/orgs/{org_id}/published_templates/{template_id}
+// DELETE /api/governance/orgs/{org_id}/published_templates/{template_id}
 //
 // Delete deletes a published template from an organization. Deleting a published template will not delete any applied policies created from the template, they must be stopped explicitly.
 func (loc *PublishedTemplateLocator) Delete() error {
@@ -1120,7 +1120,7 @@ func (loc *PublishedTemplateLocator) Delete() error {
 	return nil
 }
 
-// post /api/governance/orgs/{org_id}/published_templates/{template_id}/hide
+// POST /api/governance/orgs/{org_id}/published_templates/{template_id}/hide
 //
 // Hide hides a RightScale built-in template from an organization.
 func (loc *PublishedTemplateLocator) Hide() error {
@@ -1150,7 +1150,7 @@ func (loc *PublishedTemplateLocator) Hide() error {
 	return nil
 }
 
-// post /api/governance/orgs/{org_id}/published_templates/{template_id}/unhide
+// POST /api/governance/orgs/{org_id}/published_templates/{template_id}/unhide
 //
 // Unhide unhides a RightScale built-in template from an organization.
 func (loc *PublishedTemplateLocator) Unhide() error {

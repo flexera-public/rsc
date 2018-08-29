@@ -27,7 +27,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Index retrieves the list of applied policies in a project.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/applied_policies",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/applied_policies`),
@@ -62,7 +62,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create applies a policy template to a given project. The applied policy will continually run until deleted.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "post",
+						HTTPMethod: "POST",
 						Pattern:    "/api/governance/projects/%s/applied_policies",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/applied_policies`),
@@ -188,7 +188,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show retrieves the details of an applied policy.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/applied_policies/%s",
 						Variables:  []string{"project_id", "policy_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/applied_policies/([^/]+)`),
@@ -223,7 +223,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete stops and deletes an applied policy.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "delete",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/governance/projects/%s/applied_policies/%s",
 						Variables:  []string{"project_id", "policy_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/applied_policies/([^/]+)`),
@@ -238,7 +238,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Evaluate executes an applied policy evaluation on demand. It does not affect the normal execution schedule.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "post",
+						HTTPMethod: "POST",
 						Pattern:    "/api/governance/projects/%s/applied_policies/%s/evaluate",
 						Variables:  []string{"project_id", "policy_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/applied_policies/([^/]+)/evaluate`),
@@ -253,7 +253,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `ShowLog retrieves the last evaluation log of an applied policy. *The content type is "text/markdown"*.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/applied_policies/%s/log",
 						Variables:  []string{"project_id", "policy_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/applied_policies/([^/]+)/log`),
@@ -268,7 +268,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `ShowStatus retrieves the evaluation status details of an applied policy.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/applied_policies/%s/status",
 						Variables:  []string{"project_id", "policy_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/applied_policies/([^/]+)/status`),
@@ -289,7 +289,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Index retrieves the list of incidents in a project.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/incidents",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/incidents`),
@@ -324,7 +324,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show retrieves the details of an incident.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/incidents/%s",
 						Variables:  []string{"project_id", "incident_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/incidents/([^/]+)`),
@@ -359,7 +359,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `IndexEscalations retrieves the status details of all of the escalations for an incident.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/incidents/%s/escalations",
 						Variables:  []string{"project_id", "incident_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/incidents/([^/]+)/escalations`),
@@ -374,7 +374,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `IndexResolutions retrieves the status details of all of the resolutions for an incident.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/incidents/%s/resolutions",
 						Variables:  []string{"project_id", "incident_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/incidents/([^/]+)/resolutions`),
@@ -389,7 +389,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Resolve resolves an incident by setting it to an inactive state, indicating that it has been addressed.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "put",
+						HTTPMethod: "PUT",
 						Pattern:    "/api/governance/projects/%s/incidents/%s/resolve",
 						Variables:  []string{"project_id", "incident_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/incidents/([^/]+)/resolve`),
@@ -410,7 +410,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `IndexPolicyTemplates retrieves the list of policy templates in a project.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/policy_templates",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/policy_templates`),
@@ -445,7 +445,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Upload uploads a policy template for a project, first compiling it. On failure, an array of syntax errors will be returned.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "post",
+						HTTPMethod: "POST",
 						Pattern:    "/api/governance/projects/%s/policy_templates",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/policy_templates`),
@@ -495,7 +495,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Compile compiles a policy template for a project. This is only to be used for checking the syntax of a policy template; the results are not stored.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "post",
+						HTTPMethod: "POST",
 						Pattern:    "/api/governance/projects/%s/policy_templates/compile",
 						Variables:  []string{"project_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/policy_templates/compile`),
@@ -545,7 +545,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show retrieves the details of a policy template.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/projects/%s/policy_templates/%s",
 						Variables:  []string{"project_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/policy_templates/([^/]+)`),
@@ -580,7 +580,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update updates a policy template in place for a project, by replacing it. Any existing applied policies using the template will not be updated; they must be deleted and recreated again.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "put",
+						HTTPMethod: "PUT",
 						Pattern:    "/api/governance/projects/%s/policy_templates/%s",
 						Variables:  []string{"project_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/policy_templates/([^/]+)`),
@@ -630,7 +630,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete deletes a policy template from a project. Deleting a policy template will not delete any applied policies created from the template, they must be stopped explicitly.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "delete",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/governance/projects/%s/policy_templates/%s",
 						Variables:  []string{"project_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/policy_templates/([^/]+)`),
@@ -651,7 +651,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Index retrieves the list of published templates in an organization.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/orgs/%s/published_templates",
 						Variables:  []string{"org_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/orgs/([^/]+)/published_templates`),
@@ -702,7 +702,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Create creates an organization-scoped published template from a project-scoped policy template.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "post",
+						HTTPMethod: "POST",
 						Pattern:    "/api/governance/orgs/%s/published_templates",
 						Variables:  []string{"org_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/orgs/([^/]+)/published_templates`),
@@ -738,7 +738,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Show retrieves the details of a published template.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "get",
+						HTTPMethod: "GET",
 						Pattern:    "/api/governance/orgs/%s/published_templates/%s",
 						Variables:  []string{"org_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/orgs/([^/]+)/published_templates/([^/]+)`),
@@ -773,7 +773,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Update updates a published template in place for an organization, by replacing it. Any existing applied policies using the template will not be updated; they must be deleted and recreated again.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "put",
+						HTTPMethod: "PUT",
 						Pattern:    "/api/governance/orgs/%s/published_templates/%s",
 						Variables:  []string{"org_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/orgs/([^/]+)/published_templates/([^/]+)`),
@@ -809,7 +809,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Delete deletes a published template from an organization. Deleting a published template will not delete any applied policies created from the template, they must be stopped explicitly.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "delete",
+						HTTPMethod: "DELETE",
 						Pattern:    "/api/governance/orgs/%s/published_templates/%s",
 						Variables:  []string{"org_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/orgs/([^/]+)/published_templates/([^/]+)`),
@@ -824,7 +824,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Hide hides a RightScale built-in template from an organization.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "post",
+						HTTPMethod: "POST",
 						Pattern:    "/api/governance/orgs/%s/published_templates/%s/hide",
 						Variables:  []string{"org_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/orgs/([^/]+)/published_templates/([^/]+)/hide`),
@@ -839,7 +839,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				Description: `Unhide unhides a RightScale built-in template from an organization.`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HTTPMethod: "post",
+						HTTPMethod: "POST",
 						Pattern:    "/api/governance/orgs/%s/published_templates/%s/unhide",
 						Variables:  []string{"org_id", "template_id"},
 						Regexp:     regexp.MustCompile(`/api/governance/orgs/([^/]+)/published_templates/([^/]+)/unhide`),

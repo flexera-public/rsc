@@ -198,7 +198,12 @@ func (a *APIAnalyzer) typeForRef(ec EvalCtx, r Ref) gen.DataType {
 
 }
 
-// addType conditionally adds a new type, trying its best to avoid type collisions
+// addType conditionally adds a new type, trying its best to avoid type
+// collisions. This is the downside of swagger 2 vs swagger 3. For swagger 2
+// if you the same type like "User" returned in multiple places, each have to
+// create their own definition in the swagger "definitions" section for goa
+// v2. So they'll be X copies of identical definition for a User struct lets
+// say. This tries to collapse those things down into one return type struct.
 func (a *APIAnalyzer) addType(ec EvalCtx, dt *gen.ObjectDataType, r Ref) {
 	a.api.NeedJSON = true
 	if a.refByType[dt.TypeName] == r.ID() {

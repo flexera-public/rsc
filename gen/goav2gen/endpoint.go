@@ -158,7 +158,7 @@ var pathVarsReQuoted = regexp.MustCompile(`/\\{([^}]+)\\}`)
 // Create path pattern from HTTP verb and request path
 func toPattern(verb, path string) *gen.PathPattern {
 	pattern := gen.PathPattern{
-		HTTPMethod: verb,
+		HTTPMethod: strings.ToUpper(verb),
 		Path:       path,
 		Pattern:    pathVarsRe.ReplaceAllLiteralString(path, "/%s"),
 		Regexp:     pathVarsReQuoted.ReplaceAllLiteralString(regexp.QuoteMeta(path), `/([^/]+)`),
