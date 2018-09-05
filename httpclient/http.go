@@ -270,7 +270,12 @@ func (d *dumpClient) doImp(req *http.Request, hidden bool, ctx context.Context) 
 			req.URL.Scheme = "https"
 		}
 	}
-	req.Header.Set("User-Agent", UA)
+
+	//set user-agent if one is not provided.
+	ua := req.Header.Get("User-Agent")
+	if ua == "" {
+		req.Header.Set("User-Agent", UA)
+	}
 
 	var reqBody []byte
 	startedAt := time.Now()
