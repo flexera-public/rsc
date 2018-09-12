@@ -13,6 +13,7 @@ import (
 	"github.com/rightscale/rsc/rl10"
 	"github.com/rightscale/rsc/rsapi"
 	"github.com/rightscale/rsc/ss"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 // ParseCommandLine retrieves the command and top level flag values.
