@@ -115,6 +115,9 @@ type (
 		// NoRedirect as true to not follow redirects. false follows redirects.
 		NoRedirect bool
 
+		// DisableKeepAlives disables the HTTP keepalive in the transport.
+		DisableKeepAlives bool
+
 		// ResponseHeaderTimeout if non-zero, specifies the amount of
 		// time to wait in seconds for a server's response headers after fully
 		// writing the request (including its body, if any). This
@@ -142,12 +145,12 @@ func init() {
 
 // New returns an HTTP client using the settings specified by this package variables.
 func New() HTTPClient {
-	return newVariableDumpClient(newRawClient(false, NoCertCheck, ResponseHeaderTimeout))
+	return newVariableDumpClient(newRawClient(false, NoCertCheck, false, ResponseHeaderTimeout))
 }
 
 // NewNoRedirect returns an HTTP client that does not follow redirects.
 func NewNoRedirect() HTTPClient {
-	return newVariableDumpClient(newRawClient(true, NoCertCheck, ResponseHeaderTimeout))
+	return newVariableDumpClient(newRawClient(true, NoCertCheck, false, ResponseHeaderTimeout))
 }
 
 // NewPB returns an HTTP client using only the parameter block and ignoring
@@ -167,7 +170,7 @@ func NewPB(pb *ParamBlock) HTTPClient {
 	} else {
 		hiddenHeaders = copyHiddenHeaders(hiddenHeaders) // copy to avoid side-effects
 	}
-	dc := &dumpClient{Client: newRawClient(pb.NoRedirect, pb.NoCertCheck, responseHeaderTimeout)}
+	dc := &dumpClient{Client: newRawClient(pb.NoRedirect, pb.NoCertCheck, pb.DisableKeepAlives, responseHeaderTimeout)}
 	dc.isInsecure = func() bool {
 		return pb.Insecure
 	}
@@ -208,10 +211,14 @@ func ShortToken() string {
 // newRawClient creates an http package Client taking into account both the parameters and package
 // variables.
 func newRawClient(
-	noRedirect, noCertCheck bool,
+	noRedirect, noCertCheck, disableKeepAlives bool,
 	responseHeaderTimeout time.Duration) *http.Client {
 
-	tr := http.Transport{ResponseHeaderTimeout: responseHeaderTimeout, Proxy: http.ProxyFromEnvironment}
+	tr := http.Transport{
+		DisableKeepAlives:     disableKeepAlives,
+		ResponseHeaderTimeout: responseHeaderTimeout,
+		Proxy: http.ProxyFromEnvironment,
+	}
 	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: noCertCheck}
 	c := http.Client{Transport: &tr}
 	if noRedirect {
