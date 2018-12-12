@@ -25,6 +25,12 @@ cache:
 # travis checks rsc out into github.com/rightscale/rsc but for release branches we really need it
 # in gopkg.in/rightscale/rsc-v1 so we have to manually move it, sigh
 before_install:
+  # install latest mercurial client. Older clients have issues https://bitbucket.org/blog/deprecating-tlsv1-tlsv1-1-2018-12-01
+  - pyenv install --skip-existing 2.7.14 && pyenv rehash && pyenv local 2.7.14
+  - virtualenv -p python2.7.14 python_env
+  - source python_env/bin/activate
+  - pip install --upgrade pip
+  - pip install mercurial --upgrade
   - re='^v[0-9]'; if [[ ${TRAVIS_BRANCH} =~ $re ]]; then
       cd $HOME/gopath/src;
       mkdir -p gopkg.in/rightscale;
