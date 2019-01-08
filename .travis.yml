@@ -27,7 +27,6 @@ cache:
 before_install:
   # install latest mercurial client. Older clients have issues https://bitbucket.org/blog/deprecating-tlsv1-tlsv1-1-2018-12-01
   - pyenv install --skip-existing 2.7.14 && pyenv rehash && pyenv local 2.7.14
-  - virtualenv -p python2.7.14 python_env
   - re='^v[0-9]'; if [[ ${TRAVIS_BRANCH} =~ $re ]]; then
       cd $HOME/gopath/src;
       mkdir -p gopkg.in/rightscale;
@@ -35,6 +34,7 @@ before_install:
       export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${BASH_REMATCH[0]};
     fi
   - cd ${TRAVIS_BUILD_DIR}
+  - virtualenv -p python2.7.14 python_env
   - source python_env/bin/activate
   - pip install --upgrade pip
   - pip install mercurial --upgrade
