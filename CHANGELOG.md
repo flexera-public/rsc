@@ -1,4 +1,4 @@
-v6.11.0 / 2018-08-28
+v6.11.0 / 2019-01-08
 -------------------
 * add policy API to rsc (rsc policy action to see details)
 
