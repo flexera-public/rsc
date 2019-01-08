@@ -1,10 +1,10 @@
-package policy
+package policy // import "gopkg.in/rightscale/rsc.v6/policy"
 
 import (
 	"strings"
 
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v6/cmd"
+	"gopkg.in/rightscale/rsc.v6/rsapi"
 )
 
 // API 1.0 client

@@ -1,4 +1,4 @@
-package httpclient
+package httpclient // import "gopkg.in/rightscale/rsc.v6/httpclient"
 
 import (
 	"bytes"
@@ -17,8 +17,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rightscale/rsc/log"
-	"github.com/rightscale/rsc/recording"
+	"gopkg.in/rightscale/rsc.v6/log"
+	"gopkg.in/rightscale/rsc.v6/recording"
 )
 
 const (
@@ -217,7 +217,7 @@ func newRawClient(
 	tr := http.Transport{
 		DisableKeepAlives:     disableKeepAlives,
 		ResponseHeaderTimeout: responseHeaderTimeout,
-		Proxy: http.ProxyFromEnvironment,
+		Proxy:                 http.ProxyFromEnvironment,
 	}
 	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: noCertCheck}
 	c := http.Client{Transport: &tr}
