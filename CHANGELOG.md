@@ -1,3 +1,7 @@
+v6.11.0 / 2018-08-28
+-------------------
+* add policy API to rsc (rsc policy action to see details)
+
 v6.10.1 / 2018-08-24
 --------------------
 * Update the metadata to reflect the proper location for query params in index calls.

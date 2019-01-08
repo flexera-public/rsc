@@ -200,6 +200,7 @@ type Action struct {
 	PathParamNames    []string       // Name of path parameters if any (e.g. :id in /clouds/:id)
 	QueryParamNames   []string       // Name of query string parameters if any
 	PayloadParamNames []string       // Name of payload parameter names if any (payload top level keys)
+	HeaderParamNames  []string       // Name of header only parameteter names if any
 }
 
 // MandatoryParams returns the list of all action mandatory parameters
@@ -239,6 +240,7 @@ const (
 	PathParam    = 0
 	QueryParam   = 1
 	PayloadParam = 2
+	HeaderParam  = 3
 )
 
 // ActionParam is the data structure used to render method params.

@@ -55,7 +55,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
-/******  Account ******/
+/****** Account ******/
 
 // Resources in RightScale generally belong to accounts. Users can have
 // any number of accounts, but when performing an action, a user is
@@ -157,7 +157,7 @@ func (loc *AccountLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  Cloud ******/
+/****** Cloud ******/
 
 // Clouds provide remote resources for things like storage and compute.
 // You must have registered a cloud within your account in order to use
@@ -261,7 +261,7 @@ func (loc *CloudLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  Datacenter ******/
+/****** Datacenter ******/
 
 // Datacenters are cloud resources that give you the ability to place
 // resources in isolated locations. A carefully designed system placed in
@@ -369,7 +369,7 @@ func (loc *DatacenterLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  Deployment ******/
+/****** Deployment ******/
 
 // Deployments provide a way to group resources that logically belong
 // together.
@@ -495,7 +495,7 @@ func (loc *DeploymentLocator) Show(options rsapi.APIParams) (*Deployment, error)
 	return res, err
 }
 
-/******  Image ******/
+/****** Image ******/
 
 // Images define the initial Operating System and root disk contents
 // for new instances.
@@ -619,7 +619,7 @@ func (loc *ImageLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  Instance ******/
+/****** Instance ******/
 
 // Instances represent an entity that is runnable in the cloud.
 // An instance of type "next" is a container of information that expresses
@@ -771,7 +771,7 @@ func (loc *InstanceLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  InstanceType ******/
+/****** InstanceType ******/
 
 // An InstanceType represents a basic hardware configuration for an
 // Instance.
@@ -883,7 +883,7 @@ func (loc *InstanceTypeLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  IpAddress ******/
+/****** IpAddress ******/
 
 // An IpAddress provides an abstraction for IPv4 addresses bindable to
 // Instance resources running in a Cloud.
@@ -989,7 +989,7 @@ func (loc *IpAddressLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  IpAddressBinding ******/
+/****** IpAddressBinding ******/
 
 // An IpAddressBinding represents an abstraction for binding an IpAddress
 // to an instance. The IpAddress is bound immediately for a current
@@ -1097,7 +1097,7 @@ func (loc *IpAddressBindingLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  MultiCloudImage ******/
+/****** MultiCloudImage ******/
 
 // A MultiCloudImage is a RightScale component that functions as a pointer
 // to machine images in specific clouds (e.g. AWS US-East, Rackspace).
@@ -1204,7 +1204,7 @@ func (loc *MultiCloudImageLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  Network ******/
+/****** Network ******/
 
 // A Network is a logical grouping of network devices.
 type Network struct {
@@ -1307,7 +1307,7 @@ func (loc *NetworkLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  NetworkInterface ******/
+/****** NetworkInterface ******/
 
 // Just like their physical counterparts, NetworkInterfaces join other
 // resources to a network.
@@ -1409,7 +1409,7 @@ func (loc *NetworkInterfaceLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  NetworkInterfaceAttachment ******/
+/****** NetworkInterfaceAttachment ******/
 
 // NetworkInterfaceAttachments represent an attachment between a
 // NetworkInterface and another resource.
@@ -1510,7 +1510,7 @@ func (loc *NetworkInterfaceAttachmentLocator) Show(options rsapi.APIParams) erro
 	return nil
 }
 
-/******  SecurityGroup ******/
+/****** SecurityGroup ******/
 
 // Security Groups represent network security profiles that contain lists
 // of firewall rules for different ports and source IP addresses, as well
@@ -1618,7 +1618,7 @@ func (loc *SecurityGroupLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  Server ******/
+/****** Server ******/
 
 // Servers represent the notion of a server/machine from RightScale's
 // perspective. A Server, does not always have a corresponding VM running
@@ -1738,7 +1738,7 @@ func (loc *ServerLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  ServerArray ******/
+/****** ServerArray ******/
 
 // A server array represents a logical group of instances and allows to
 // resize(grow/shrink) that group based on certain elasticity parameters.
@@ -1854,7 +1854,7 @@ func (loc *ServerArrayLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  ServerTemplate ******/
+/****** ServerTemplate ******/
 
 // ServerTemplates allow you to pre-configure servers by starting from a
 // base image and adding scripts that run during the boot, operational,
@@ -1964,7 +1964,7 @@ func (loc *ServerTemplateLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  SshKey ******/
+/****** SshKey ******/
 
 // Ssh Keys represent a created SSH Key that exists in the cloud.
 type SshKey struct {
@@ -2068,7 +2068,7 @@ func (loc *SshKeyLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/******  Subnet ******/
+/****** Subnet ******/
 
 // A Subnet is a logical grouping of network devices. An Instance can have
 // many Subnets.
@@ -2175,7 +2175,7 @@ func (loc *SubnetLocator) Show(options rsapi.APIParams) error {
 	return nil
 }
 
-/****** Parameter Data Types ******/
+/****** Data Types ******/
 
 type AccountParam struct {
 	Href string `json:"href,omitempty"`

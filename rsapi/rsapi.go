@@ -21,7 +21,16 @@ type (
 		Client                httpclient.HTTPClient // Underlying http client (not used for authentication requests as these necessitate special redirect handling)
 		FetchLocationResource bool                  // Whether to fetch resource pointed by Location header
 		Metadata              APIMetadata           // Generated API metadata
+		VersionHeader         string                // Version header name, defaults to X-Api-Version
+		FileEncoding          int                   // Encoding for file uploads. 0 = mime, 1 = json
 	}
+)
+
+const (
+	// FileEncodingMime will upload files as multipart mime, which is needed for some older APIs
+	FileEncodingMime = iota
+	// FileEncodingJSON will cause files to be read from disk then placed inline into JSON
+	FileEncodingJSON
 )
 
 // APIMetadata consists of resource metadata indexed by resource name.

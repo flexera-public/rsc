@@ -55,7 +55,7 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
-/******  Execution ******/
+/****** Execution ******/
 
 // An Execution is a launched instance of a CloudApp. Executions can be created from the catalog
 // by launching an Application, from Designer by launching a Template, or directly in Manager
@@ -808,7 +808,7 @@ func (loc *ExecutionLocator) MultiRun(ids []string, name string, options rsapi.A
 	return nil
 }
 
-/******  Notification ******/
+/****** Notification ******/
 
 // The Notification resource represents a system notification that an action has occurred. Generally
 // these Notifications are the start and completion of Operations. Currently notifications are only
@@ -928,7 +928,7 @@ func (loc *NotificationLocator) Show() (*Notification, error) {
 	return res, err
 }
 
-/******  Operation ******/
+/****** Operation ******/
 
 // Operations represent actions that can be taken on an Execution.
 // When a CloudApp is launched, a sequence of Operations is run as [explained here](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html#operations) in the Operations section
@@ -1114,7 +1114,7 @@ func (loc *OperationLocator) Create(executionId string, name string, options rsa
 	}
 }
 
-/******  ScheduledAction ******/
+/****** ScheduledAction ******/
 
 // ScheduledActions describe a set of timed occurrences for an action to be run (at most once per day).
 // Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
@@ -1400,7 +1400,7 @@ func (loc *ScheduledActionLocator) Skip(options rsapi.APIParams) error {
 	return nil
 }
 
-/****** Parameter Data Types ******/
+/****** Data Types ******/
 
 type ApiResourcesValueStruct struct {
 	Details map[string]interface{} `json:"details,omitempty"`

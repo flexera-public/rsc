@@ -6,11 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"path"
 	"strings"
-
-	"bitbucket.org/pkg/inflect"
 
 	"github.com/rightscale/rsc/gen"
 	"github.com/rightscale/rsc/gen/writers"
@@ -138,13 +135,13 @@ func main() {
 		case "rsc":
 			clientPath := path.Join(destDir, pkg, "codegen_client.go")
 			metadataPath := path.Join(destDir, pkg, "codegen_metadata.go")
-			kingpin.FatalIfError(generateClient(*targetVersion, descriptor, clientPath, *pkgName), "")
-			kingpin.FatalIfError(generateMetadata(descriptor, metadataPath, *pkgName), "")
+			kingpin.FatalIfError(writers.GenerateClient(*targetVersion, descriptor, clientPath, *pkgName), "")
+			kingpin.FatalIfError(writers.GenerateMetadata(descriptor, metadataPath, *pkgName), "")
 			generated = append(generated, clientPath)
 			generated = append(generated, metadataPath)
 		case "angular":
 			pkgPath := path.Join(destDir, pkg)
-			files, err := generateAngular(descriptor, pkgPath)
+			files, err := writers.GenerateAngular(descriptor, pkgPath)
 			kingpin.FatalIfError(err, "")
 			generated = append(generated, files...)
 		default:
@@ -186,76 +183,6 @@ func toPackageName(version string) string {
 	}
 	version = strings.Join(parts, "_")
 	return fmt.Sprintf("v%s", version)
-}
-
-// Generate API client code, drives the code writer.
-func generateClient(version string, descriptor *gen.APIDescriptor, codegen, pkg string) error {
-	f, err := os.Create(codegen)
-	if err != nil {
-		return err
-	}
-	c, err := writers.NewClientWriter()
-	if err != nil {
-		return err
-	}
-	kingpin.FatalIfError(c.WriteHeader(pkg, version, descriptor.NeedTime, descriptor.NeedJSON, f), "")
-	for _, name := range descriptor.ResourceNames {
-		resource := descriptor.Resources[name]
-		c.WriteResourceHeader(name, f)
-		kingpin.FatalIfError(c.WriteResource(resource, f), "")
-	}
-	c.WriteTypeSectionHeader(f)
-	for _, name := range descriptor.TypeNames {
-		t := descriptor.Types[name]
-		c.WriteType(t, f)
-	}
-	f.Close()
-	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("Failed to format generated client code:\n%s", o)
-	}
-	return nil
-}
-
-// Generate API metadata, drives the metadata writer.
-func generateMetadata(descriptor *gen.APIDescriptor, codegen, pkg string) error {
-	f, err := os.Create(codegen)
-	if err != nil {
-		return err
-	}
-	c, err := writers.NewMetadataWriter()
-	if err != nil {
-		return err
-	}
-	kingpin.FatalIfError(c.WriteHeader(pkg, f), "")
-	kingpin.FatalIfError(c.WriteMetadata(descriptor, f), "")
-	f.Close()
-	o, err := exec.Command("go", "fmt", codegen).CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("Failed to format generated metadata code:\n%s", o)
-	}
-	return nil
-}
-
-// Generate API metadata, drives the metadata writer.
-func generateAngular(descriptor *gen.APIDescriptor, pkgDir string) ([]string, error) {
-	var files []string
-	for _, name := range descriptor.ResourceNames {
-		res := descriptor.Resources[name]
-		codegen := path.Join(pkgDir, inflect.Underscore(name)+".js")
-		f, err := os.Create(codegen)
-		if err != nil {
-			return files, err
-		}
-		c, err := writers.NewAngularWriter()
-		if err != nil {
-			return files, err
-		}
-		kingpin.FatalIfError(c.WriteResource(res, f), "")
-		f.Close()
-		files = append(files, codegen)
-	}
-	return files, nil
 }
 
 // Helper function that reads content from given file

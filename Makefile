@@ -218,18 +218,31 @@ test: lint generate
 
 #===== SPECIAL TARGETS FOR RSC =====
 
-.PHONY: rsc test generate api15gen praxisgen api15json
+.PHONY: rsc test generate api15gen praxisgen api15json goav2gen
 
-generate: api15gen praxisgen
+generate: api15gen praxisgen goav2gen
 	go generate
 
 api15gen:
 	cd gen/api15gen && go install
+	@if ! which api15gen >/dev/null; then \
+	  echo '*** api15gen got installed in a location that is not in your PATH ***'; \
+	  echo GOPATH=$$GOPATH ;\
+	  echo PATH=$$PATH ;\
+	fi
 
 praxisgen:
 	cd gen/praxisgen && go install
 	@if ! which praxisgen >/dev/null; then \
-	  echo '*** Praxisgen got installed in a location that is not in your PATH ***'; \
+	  echo '*** praxisgen got installed in a location that is not in your PATH ***'; \
+	  echo GOPATH=$$GOPATH ;\
+	  echo PATH=$$PATH ;\
+	fi
+
+goav2gen:
+	cd gen/goav2gen && go install
+	@if ! which goav2gen >/dev/null; then \
+	  echo '*** goav2gen got installed in a location that is not in your PATH ***'; \
 	  echo GOPATH=$$GOPATH ;\
 	  echo PATH=$$PATH ;\
 	fi

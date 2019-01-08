@@ -1,0 +1,7 @@
+{
+  "AppliedPolicyShowLogOKResponseBody": "string",
+  "PolicyTemplateLink": "PolicyTemplateLink",
+  "PublishedTemplateLink": "PublishedTemplateLink",
+  "AppliedPolicyLink": "AppliedPolicyLink",
+  "IncidentLink": "IncidentLink"
+}

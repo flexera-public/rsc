@@ -18,4 +18,7 @@
 // CA 1.0
 //go:generate praxisgen -metadata=ca/cac/docs/api -output=ca/cac -pkg=cac -target=1.0 -client=API
 
+// Policy 1.0
+//go:generate goav2gen -metadata=policy/docs -output=policy -pkg=policy -version=1.0 -client=API
+
 package main
