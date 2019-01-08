@@ -108,6 +108,10 @@ func (loc *AppliedPolicyLocator) Index(options rsapi.APIParams) (*AppliedPolicyL
 	if viewOpt != nil {
 		params["view"] = viewOpt
 	}
+	var nameOpt = options["name"]
+	if nameOpt != nil {
+		params["name"] = nameOpt
+	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("AppliedPolicy", "index")
 	if err != nil {
@@ -378,6 +382,196 @@ func (loc *AppliedPolicyLocator) ShowStatus() (*AppliedPolicyStatus, error) {
 	return res, err
 }
 
+/****** Approval ******/
+
+type Approval struct {
+}
+
+//===== Locator
+
+// ApprovalLocator exposes the Approval resource actions.
+type ApprovalLocator struct {
+	Href
+	api *API
+}
+
+// ApprovalLocator builds a locator from the given href.
+func (api *API) ApprovalLocator(href string) *ApprovalLocator {
+	return &ApprovalLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /api/governance/projects/{project_id}/approval_requests
+//
+// Index retrieves the list of approval requests in a project.
+func (loc *ApprovalLocator) Index(options rsapi.APIParams) (*ApprovalRequestList, error) {
+	var res *ApprovalRequestList
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var idOpt = options["id"]
+	if idOpt != nil {
+		params["id"] = idOpt
+	}
+	var subjectKindOpt = options["subject_kind"]
+	if subjectKindOpt != nil {
+		params["subject_kind"] = subjectKindOpt
+	}
+	var subjectHrefOpt = options["subject_href"]
+	if subjectHrefOpt != nil {
+		params["subject_href"] = subjectHrefOpt
+	}
+	var statusOpt = options["status"]
+	if statusOpt != nil {
+		params["status"] = statusOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("Approval", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /api/governance/projects/{project_id}/approval_requests/{approval_request_id}
+//
+// Show retrieves the details of an approval request.
+func (loc *ApprovalLocator) Show(options rsapi.APIParams) (*ApprovalRequest, error) {
+	var res *ApprovalRequest
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("Approval", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// POST /api/governance/projects/{project_id}/approval_requests/{approval_request_id}/approve
+//
+// Approve approves a single approval request.
+func (loc *ApprovalLocator) Approve(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var optionsOpt = options["options"]
+	if optionsOpt != nil {
+		p["options"] = optionsOpt
+	}
+	uri, err := loc.ActionPath("Approval", "approve")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// POST /api/governance/projects/{project_id}/approval_requests/{approval_request_id}/deny
+//
+// Deny denies a single approval request.
+func (loc *ApprovalLocator) Deny(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var commentOpt = options["comment"]
+	if commentOpt != nil {
+		p["comment"] = commentOpt
+	}
+	uri, err := loc.ActionPath("Approval", "deny")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 /****** Incident ******/
 
 // Show retrieves the details of an incident.
@@ -429,6 +623,14 @@ func (loc *IncidentLocator) Index(options rsapi.APIParams) (*IncidentList, error
 	var viewOpt = options["view"]
 	if viewOpt != nil {
 		params["view"] = viewOpt
+	}
+	var stateOpt = options["state"]
+	if stateOpt != nil {
+		params["state"] = stateOpt
+	}
+	var appliedPolicyIdOpt = options["applied_policy_id"]
+	if appliedPolicyIdOpt != nil {
+		params["applied_policy_id"] = appliedPolicyIdOpt
 	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Incident", "index")
@@ -1218,6 +1420,59 @@ type AppliedPolicyStatus struct {
 	NextEvaluationStart  *time.Time `json:"next_evaluation_start,omitempty"`
 }
 
+type ApprovalApprove struct {
+	Options []*ConfigurationOptionCreateType `json:"options,omitempty"`
+}
+
+type ApprovalDeny struct {
+	Comment string `json:"comment,omitempty"`
+}
+
+type ApprovalRequest struct {
+	CreatedAt   *time.Time       `json:"created_at,omitempty"`
+	Description string           `json:"description,omitempty"`
+	Href        string           `json:"href,omitempty"`
+	Id          string           `json:"id,omitempty"`
+	Kind        string           `json:"kind,omitempty"`
+	Label       string           `json:"label,omitempty"`
+	ProjectId   int              `json:"project_id,omitempty"`
+	Status      string           `json:"status,omitempty"`
+	Subject     *ApprovalSubject `json:"subject,omitempty"`
+	UpdatedAt   *time.Time       `json:"updated_at,omitempty"`
+}
+
+type ApprovalRequestExtended struct {
+	ApprovedAt    *time.Time             `json:"approved_at,omitempty"`
+	ApprovedBy    *User                  `json:"approved_by,omitempty"`
+	CreatedAt     *time.Time             `json:"created_at,omitempty"`
+	DenialComment string                 `json:"denial_comment,omitempty"`
+	DeniedAt      *time.Time             `json:"denied_at,omitempty"`
+	DeniedBy      *User                  `json:"denied_by,omitempty"`
+	Description   string                 `json:"description,omitempty"`
+	Href          string                 `json:"href,omitempty"`
+	Id            string                 `json:"id,omitempty"`
+	Kind          string                 `json:"kind,omitempty"`
+	Label         string                 `json:"label,omitempty"`
+	Options       []*ConfigurationOption `json:"options,omitempty"`
+	Parameters    map[string]interface{} `json:"parameters,omitempty"`
+	ProjectId     int                    `json:"project_id,omitempty"`
+	Status        string                 `json:"status,omitempty"`
+	Subject       *ApprovalSubject       `json:"subject,omitempty"`
+	UpdatedAt     *time.Time             `json:"updated_at,omitempty"`
+}
+
+type ApprovalRequestList struct {
+	Count       int                `json:"count,omitempty"`
+	Items       []*ApprovalRequest `json:"items,omitempty"`
+	Kind        string             `json:"kind,omitempty"`
+	NotModified string             `json:"not_modified,omitempty"`
+}
+
+type ApprovalSubject struct {
+	Href string `json:"href,omitempty"`
+	Kind string `json:"kind,omitempty"`
+}
+
 type ConfigurationOption struct {
 	Label string      `json:"label,omitempty"`
 	Name  string      `json:"name,omitempty"`
@@ -1237,11 +1492,13 @@ type Escalation struct {
 }
 
 type EscalationAction struct {
-	Error      string     `json:"error,omitempty"`
-	FinishedAt *time.Time `json:"finished_at,omitempty"`
-	StartedAt  *time.Time `json:"started_at,omitempty"`
-	Status     string     `json:"status,omitempty"`
-	Type       string     `json:"type,omitempty"`
+	ApprovalRequest *ApprovalRequestExtended `json:"approval_request,omitempty"`
+	Error           string                   `json:"error,omitempty"`
+	FinishedAt      *time.Time               `json:"finished_at,omitempty"`
+	ProcessHref     string                   `json:"process_href,omitempty"`
+	StartedAt       *time.Time               `json:"started_at,omitempty"`
+	Status          string                   `json:"status,omitempty"`
+	Type            string                   `json:"type,omitempty"`
 }
 
 type Escalations struct {
@@ -1330,11 +1587,13 @@ type Resolution struct {
 }
 
 type ResolutionAction struct {
-	Error      string     `json:"error,omitempty"`
-	FinishedAt *time.Time `json:"finished_at,omitempty"`
-	StartedAt  *time.Time `json:"started_at,omitempty"`
-	Status     string     `json:"status,omitempty"`
-	Type       string     `json:"type,omitempty"`
+	ApprovalRequest *ApprovalRequestExtended `json:"approval_request,omitempty"`
+	Error           string                   `json:"error,omitempty"`
+	FinishedAt      *time.Time               `json:"finished_at,omitempty"`
+	ProcessHref     string                   `json:"process_href,omitempty"`
+	StartedAt       *time.Time               `json:"started_at,omitempty"`
+	Status          string                   `json:"status,omitempty"`
+	Type            string                   `json:"type,omitempty"`
 }
 
 type Resolutions struct {
