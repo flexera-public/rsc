@@ -16091,9 +16091,9 @@ Required parameters:
 			"parent_volume_snapshot":       "The volume snapshot from which the volume was created, if any",
 			"placement_group":              "Associated placement group",
 			"recurring_volume_attachments": "Associated recurring volume attachments",
-			"self":                         "Href of itself",
-			"volume_snapshots":             "Associated volume snapshots",
-			"volume_type":                  "Associated volume type",
+			"self":             "Href of itself",
+			"volume_snapshots": "Associated volume snapshots",
+			"volume_type":      "Associated volume type",
 		},
 	},
 	"VolumeAttachment": &metadata.Resource{
@@ -16633,7 +16633,7 @@ Optional parameters:
 			"deployment":                   "Containing Deployment",
 			"parent_volume":                "The volume from which the snapshot was created.",
 			"recurring_volume_attachments": "Associated recurring volume attachments",
-			"self":                         "Href of itself",
+			"self": "Href of itself",
 		},
 	},
 	"VolumeType": &metadata.Resource{

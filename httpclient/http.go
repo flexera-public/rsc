@@ -217,7 +217,7 @@ func newRawClient(
 	tr := http.Transport{
 		DisableKeepAlives:     disableKeepAlives,
 		ResponseHeaderTimeout: responseHeaderTimeout,
-		Proxy:                 http.ProxyFromEnvironment,
+		Proxy: http.ProxyFromEnvironment,
 	}
 	tr.TLSClientConfig = &tls.Config{InsecureSkipVerify: noCertCheck}
 	c := http.Client{Transport: &tr}
