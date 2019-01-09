@@ -8,6 +8,9 @@ and [README](https://github.com/rightscale/rsc/blob/master/README.md) must be ke
 
 If making a major release version, change `GOPKG_VERS` in Makefile.
 
+Make sure you switch the go version to the same version travis uses, e.g 1.10. gofmt sometimes
+hash minor changes which can break the build.
+
 In order to cut a release branch from master, the steps are:
 ```
 git checkout -b v2.3.4
