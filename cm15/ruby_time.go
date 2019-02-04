@@ -1,11 +1,19 @@
 package cm15
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 // RubyTime is a wrapper around time.Time that adds the ability to unmarshal ruby JSON date time
 // values.
 type RubyTime struct {
 	time.Time
+}
+
+// MarshalJSON implements the marshaller interface.
+func (r *RubyTime) MarshalJSON() ([]byte, error) {
+	return json.Marshal(r.Format("2006/01/02 15:04:05 -0700"))
 }
 
 // UnmarshalJSON implements the unmarshaller interface.
