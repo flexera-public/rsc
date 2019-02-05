@@ -30,12 +30,12 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("retry", "Number of retry attempts for non-successful API responses (500, 503, and timeouts only)").Short('R').Default("0").IntVar(&cmdLine.Retry)
 	app.Flag("account", "RightScale account ID").Short('a').IntVar(&cmdLine.Account)
 	app.Flag("host", "RightScale login endpoint (e.g. 'us-3.rightscale.com')").Short('h').StringVar(&cmdLine.Host)
-	app.Flag("email", "Login email, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").StringVar(&cmdLine.Username)
-	app.Flag("pwd", "Login password, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").StringVar(&cmdLine.Password)
-	app.Flag("refreshToken", "OAuth refresh token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").Short('r').StringVar(&cmdLine.OAuthToken)
-	app.Flag("accessToken", "OAuth access token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").Short('s').StringVar(&cmdLine.OAuthAccessToken)
-	app.Flag("apiToken", "Instance API token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").Short('p').StringVar(&cmdLine.APIToken)
-	app.Flag("rl10", "Proxy requests through RightLink 10 agent, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").BoolVar(&cmdLine.RL10)
+	app.Flag("email", "Login email, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").StringVar(&cmdLine.Username)
+	app.Flag("pwd", "Login password, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").StringVar(&cmdLine.Password)
+	app.Flag("refreshToken", "OAuth refresh token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").Short('r').StringVar(&cmdLine.OAuthToken)
+	app.Flag("accessToken", "OAuth access token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").Short('s').StringVar(&cmdLine.OAuthAccessToken)
+	app.Flag("apiToken", "Instance API token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").Short('p').StringVar(&cmdLine.APIToken)
+	app.Flag("rl10", "Proxy requests through RightLink 10 agent, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").BoolVar(&cmdLine.RL10)
 	app.Flag("noAuth", "Make unauthenticated requests, used for testing").BoolVar(&cmdLine.NoAuth)
 	app.Flag("timeout", "Set the request timeout, defaults to 300s").Short('t').Default("300").IntVar(&cmdLine.Timeout)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
@@ -48,7 +48,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("pp", "Pretty print response body").BoolVar(&cmdLine.Pretty)
 
 	// Keep around for a few releases for backwards compatibility
-	app.Flag("key", "OAuth refresh token, use --email and --password or use --refreshToken, --accessToken, --apiToken or --rl10").Short('k').Hidden().StringVar(&cmdLine.OAuthToken)
+	app.Flag("key", "OAuth refresh token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").Short('k').Hidden().StringVar(&cmdLine.OAuthToken)
 
 	args := os.Args[1:]
 	if len(args) == 0 {
@@ -124,7 +124,7 @@ func validateCommandLine(cmdLine *cmd.CommandLine) {
 		kingpin.Fatalf("missing --host option")
 	}
 	if cmdLine.Password == "" && cmdLine.OAuthToken == "" && cmdLine.OAuthAccessToken == "" && cmdLine.APIToken == "" && !cmdLine.NoAuth {
-		kingpin.Fatalf("missing login info, use --email and --password or use --key, --apiToken or --rl10")
+		kingpin.Fatalf("missing login info, use --email and --pwd or use --key, --apiToken or --rl10")
 	}
 }
 
