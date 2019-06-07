@@ -1,3 +1,7 @@
+v7.0.0 / 2019-06-07
+-------------------
+* All actions which return the `"Location"` header now return Locator pointers from their Go functions.
+
 v6.11.0 / 2019-01-08
 -------------------
 * add policy API to rsc (rsc policy action to see details)
@@ -8,29 +12,29 @@ v6.10.1 / 2018-08-24
 
 v6.10.0 / 2018-08-24
 --------------------
-* Support with_deleted parameter in instance_types show and index calls.
+* Support with\_deleted parameter in instance\_types show and index calls.
 
 v6.9.0 / 2018-05-30
 -------------------
 * add visibility filter to VolumeAttachments index call.
 * update visibility filter for Images index call.
-* add scale_up and scale_down actions to ServerArray.
+* add scale\_up and scale\_down actions to ServerArray.
 
 v6.8.0 / 2018-03-28
 -------------------
-* add api_behavior to VolumeAttachments create call. 
+* add api\_behavior to VolumeAttachments create call.
 
 v6.7.0 / 2018-03-15
 -------------------
-* Add skip_deletion flag for Backups.cleanup action
-* Update Server resource: change deployment_href on existing server
+* Add skip\_deletion flag for Backups.cleanup action
+* Update Server resource: change deployment\_href on existing server
 
 v6.6.0 / 2017-10-25
 -------------------
 * Add action/priority to security group rules.
 * Add source/destination cidr IPs/group names and source start/end port to security group rules. These are currently
   only available for AzureRM.
-* Add cloud_specific_params[service_account] to instances
+* Add cloud\_specific\_params[service\_account] to instances
 
 v6.5.0 / 2017-07-19
 -------------------
@@ -46,7 +50,7 @@ v6.4.1 / 2017-06-20
 v6.4.0 / 2017-06-14
 -------------------
 * Build with Go 1.8 which fixes JSON output to prefer decimal notation rather than scientific notation which was messing
-  up some IDs (see [encoding/json](https://golang.org/doc/go1.8#encoding_json) in the Go 1.8 Release Notes).
+  up some IDs (see [encoding/json](https://golang.org/doc/go1.8#encoding\_json) in the Go 1.8 Release Notes).
 * Add `httpclient.NewPB` constructor which will create an `HTTPClient` from a `ParamBlock` rather than using package
   global variables which can be unsafe with multiple Goroutines.
 * Use `context` instead of `golang.org/x/net/context`.
@@ -60,7 +64,7 @@ v6.3.0 / 2017-03-02
 
 v6.2.0 / 2016-08-29
 -------------------
-* rl10: Added /rll/proc/log_level.
+* rl10: Added /rll/proc/log\_level.
 * Add destroy action for alerts.
 * Fields for Instance are updated.
 
@@ -73,9 +77,9 @@ v6.1.0 / 2016-08-09
 v6.0.0 / 2016-06-28
 --------
 * Fields for Instance, Route, SshKey, Volume, User, and Permission types are updated.
-* Instances#set_custom_lodgement is removed.
+* Instances#set\_custom\_lodgement is removed.
 * InstanceCustomLodgement is removed.
-* Added RightScript#delete, Servers#disable_runnable_bindings, Servers#enable_runnable_bindings, ServerArrays#disable_runnable_bindings, and ServerArrays#enable_runnable_bindings, and VolumeSnapshots#copy.
+* Added RightScript#delete, Servers#disable\_runnable\_bindings, Servers#enable\_runnable\_bindings, ServerArrays#disable\_runnable\_bindings, and ServerArrays#enable\_runnable\_bindings, and VolumeSnapshots#copy.
 * Sessions#index now accepts a view argument and the supported views are: default and whoami.
 * Parameters for Instances#create, Instances#update, Routes#create, Servers#create, Servers#update, ServerArrays#create, and Volumes#create updated.
 * rl10: Add managed login actions
@@ -83,7 +87,7 @@ v6.0.0 / 2016-06-28
 v5.0.3 / 2016-04-21
 -------------------
 * Add --retry flag. Specifies number of retry attempts for non-successful API responses(500, 503, and timeouts only)
-* cm15: Add RightScriptAttachment actions. Add RightScript delete and update_source actions.
+* cm15: Add RightScriptAttachment actions. Add RightScript delete and update\_source actions.
 * rl10: Add Docker integration actions.
 
 v5.0.2 / 2016-02-05
@@ -127,7 +131,7 @@ v3.1.1 / 2015-08-24
 
 v3.1.0 / 2015-08-14
 -------------------
-* Proxy support: honor HTTP_PROXY and HTTPS_PROXY environment variables
+* Proxy support: honor HTTP\_PROXY and HTTPS\_PROXY environment variables
 * Add cloud specific attributes to servers and instances
 * Fix issue with request timing logging
 

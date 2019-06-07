@@ -30,7 +30,7 @@ after releasing.
 Once the release branch has been pushed and the CI job completes:
 * Download the binary, run `rsc --version` and make sure the correct version is displayed, on Linux:
 ```
-curl https://binaries.rightscale.com/rsbin/rsc/v6/rsc-linux-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
+curl https://binaries.rightscale.com/rsbin/rsc/v7/rsc-linux-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 chmod +x ./rsc
 ./rsc --version
 ```
@@ -39,8 +39,8 @@ chmod +x ./rsc
 mkdir tmp
 export SAVED_GOPATH=$GOPATH
 export GOPATH=`pwd`/tmp
-go get gopkg.in/rightscale/rsc.v6
-cd tmp/src/gopkg.in/rightscale/rsc.v6
+go get gopkg.in/rightscale/rsc.v7
+cd tmp/src/gopkg.in/rightscale/rsc.v7
 git log -2
 export GOPATH=$SAVED_GOPATH
 cd ../../../../..
