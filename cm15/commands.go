@@ -1,9 +1,9 @@
-package cm15
+package cm15 // import "gopkg.in/rightscale/rsc.v7/cm15"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v7/rsapi"
 )
 
 const (

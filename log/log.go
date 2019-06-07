@@ -1,4 +1,4 @@
-package log
+package log // import "gopkg.in/rightscale/rsc.v7/log"
 
 import "github.com/inconshreveable/log15"
 

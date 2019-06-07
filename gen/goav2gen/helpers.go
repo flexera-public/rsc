@@ -1,4 +1,4 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v7/gen/goav2gen"
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"bitbucket.org/pkg/inflect"
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v7/gen"
 )
 
 var (

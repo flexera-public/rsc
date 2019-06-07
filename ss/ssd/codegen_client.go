@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssd
+package ssd // import "gopkg.in/rightscale/rsc.v7/ss/ssd"
 
 import (
 	"encoding/json"
@@ -15,8 +15,8 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v7/metadata"
+	"gopkg.in/rightscale/rsc.v7/rsapi"
 )
 
 // API Version

@@ -1,10 +1,10 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v7/gen/goav2gen"
 
 import (
 	"sort"
 	"strings"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v7/gen"
 )
 
 // AnalyzeDefinition analyzes a definition which is an object. Definitions are referenced by

@@ -1,4 +1,4 @@
-package writers
+package writers // import "gopkg.in/rightscale/rsc.v7/gen/writers"
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 
 	"bitbucket.org/pkg/inflect"
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v7/gen"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
