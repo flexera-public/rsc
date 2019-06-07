@@ -1,6 +1,6 @@
 v7.0.0 / 2019-06-07
 -------------------
-* All actions which return the `"Location"` header now return Locator pointers from their Go functions.
+* All actions from API 1.5 which return the `"Location"` header now return Locator pointers from their Go functions.
 * Build with Go 1.12.x.
 
 v6.11.0 / 2019-01-08
