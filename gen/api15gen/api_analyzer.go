@@ -313,7 +313,7 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			Params:            actionParams,
 			LeafParams:        paramAnalyzer.LeafParams,
 			Return:            parseReturn(actionName, name, contentType, hasLocation),
-			ReturnLocation:    hasLocation && name != "Oauth2",
+			ReturnLocation:    (actionName == "create" || hasLocation) && name != "Oauth2",
 			PathParamNames:    pathParamNames,
 			QueryParamNames:   queryParamNames,
 			PayloadParamNames: payloadParamNames,

@@ -5060,13 +5060,12 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &IpAddressBindingLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
@@ -6245,13 +6244,12 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &NetworkLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/networks/:id
@@ -6479,13 +6477,12 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &NetworkGatewayLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/network_gateways/:id
@@ -6718,13 +6715,12 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &NetworkOptionGroupLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/network_option_groups/:id
@@ -6956,13 +6952,12 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &NetworkOptionGroupAttachmentLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/network_option_group_attachments/:id
@@ -7533,13 +7528,12 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &PlacementGroupLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/placement_groups/:id
@@ -9002,13 +8996,12 @@ func (loc *ResourceGroupLocator) Create(resourceGroup *ResourceGroupParam) (*Res
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ResourceGroupLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/resource_groups/:id
@@ -9287,13 +9280,12 @@ func (loc *RightScriptLocator) Create(rightScript *RightScriptParam2) (*RightScr
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RightScriptLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/right_scripts/:id
@@ -9601,13 +9593,12 @@ func (loc *RightScriptAttachmentLocator) Create(rightScriptAttachment *RightScri
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RightScriptAttachmentLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/right_scripts/:right_script_id/attachments/:id
@@ -9851,13 +9842,12 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RouteLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/routes/:id
@@ -10088,13 +10078,12 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RouteTableLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/route_tables/:id
@@ -10743,13 +10732,12 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &SecurityGroupLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/clouds/:cloud_id/security_groups/:id
@@ -13593,13 +13581,12 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return res, err
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &SubnetLocator{Href(location), loc.api}, nil
 	}
-	err = json.Unmarshal(respBody, &res)
-	return res, err
 }
 
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
