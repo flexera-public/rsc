@@ -1450,9 +1450,10 @@ func (loc *BackupLocator) Index(lineage string, options rsapi.APIParams) ([]*Bac
 // instance_href: The instance href that the backup will be restored to.
 // Optional parameters:
 // backup
-func (loc *BackupLocator) Restore(instanceHref string, options rsapi.APIParams) error {
+func (loc *BackupLocator) Restore(instanceHref string, options rsapi.APIParams) (*BackupLocator, error) {
+	var res *BackupLocator
 	if instanceHref == "" {
-		return fmt.Errorf("instanceHref is required")
+		return res, fmt.Errorf("instanceHref is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -1465,15 +1466,15 @@ func (loc *BackupLocator) Restore(instanceHref string, options rsapi.APIParams) 
 	}
 	uri, err := loc.ActionPath("Backup", "restore")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -1482,9 +1483,14 @@ func (loc *BackupLocator) Restore(instanceHref string, options rsapi.APIParams) 
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &BackupLocator{Href(location), loc.api}, nil
+	}
 }
 
 // GET /api/backups/:id
@@ -3060,7 +3066,8 @@ func (api *API) DeploymentLocator(href string) *DeploymentLocator {
 // Clones a given deployment.
 // Optional parameters:
 // deployment
-func (loc *DeploymentLocator) Clone(options rsapi.APIParams) error {
+func (loc *DeploymentLocator) Clone(options rsapi.APIParams) (*DeploymentLocator, error) {
+	var res *DeploymentLocator
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{}
@@ -3070,15 +3077,15 @@ func (loc *DeploymentLocator) Clone(options rsapi.APIParams) error {
 	}
 	uri, err := loc.ActionPath("Deployment", "clone")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -3087,9 +3094,14 @@ func (loc *DeploymentLocator) Clone(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &DeploymentLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/deployments
@@ -4092,7 +4104,8 @@ func (loc *InstanceLocator) Index(options rsapi.APIParams) ([]*Instance, error) 
 // api_behavior: When set to 'async', an instance resource will be returned immediately and processing will be handled in the background. Errors will not be returned and must be checked through the instance's audit entries. Default value is 'sync'
 // count: For Server Arrays, will launch the specified number of instances into the ServerArray. Attempting to call this action on non-server array objects will result in a parameter error
 // inputs
-func (loc *InstanceLocator) Launch(options rsapi.APIParams) error {
+func (loc *InstanceLocator) Launch(options rsapi.APIParams) (*InstanceLocator, error) {
+	var res *InstanceLocator
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{}
@@ -4110,15 +4123,15 @@ func (loc *InstanceLocator) Launch(options rsapi.APIParams) error {
 	}
 	uri, err := loc.ActionPath("Instance", "launch")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -4127,9 +4140,14 @@ func (loc *InstanceLocator) Launch(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &InstanceLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/lock
@@ -4174,7 +4192,8 @@ func (loc *InstanceLocator) Lock() error {
 // inputs
 // recipe_name: The name of the recipe to be run.
 // right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
-func (loc *InstanceLocator) MultiRunExecutable(options rsapi.APIParams) error {
+func (loc *InstanceLocator) MultiRunExecutable(options rsapi.APIParams) (*InstanceLocator, error) {
+	var res *InstanceLocator
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
@@ -4201,15 +4220,15 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.APIParams) error {
 	}
 	uri, err := loc.ActionPath("Instance", "multi_run_executable")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -4218,9 +4237,14 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &InstanceLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/clouds/:cloud_id/instances/multi_terminate
@@ -4231,7 +4255,8 @@ func (loc *InstanceLocator) MultiRunExecutable(options rsapi.APIParams) error {
 // Optional parameters:
 // filter
 // terminate_all: Specifies the ability to terminate all instances.
-func (loc *InstanceLocator) MultiTerminate(options rsapi.APIParams) error {
+func (loc *InstanceLocator) MultiTerminate(options rsapi.APIParams) (*InstanceLocator, error) {
+	var res *InstanceLocator
 	var params rsapi.APIParams
 	params = rsapi.APIParams{}
 	var filterOpt = options["filter"]
@@ -4246,15 +4271,15 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.APIParams) error {
 	}
 	uri, err := loc.ActionPath("Instance", "multi_terminate")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -4263,9 +4288,14 @@ func (loc *InstanceLocator) MultiTerminate(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &InstanceLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/clouds/:cloud_id/instances/:id/reboot
@@ -4311,7 +4341,8 @@ func (loc *InstanceLocator) Reboot() error {
 // inputs
 // recipe_name: The name of the recipe to run.
 // right_script_href: The href of the RightScript to run. Should be of the form '/api/right_scripts/:id'.
-func (loc *InstanceLocator) RunExecutable(options rsapi.APIParams) error {
+func (loc *InstanceLocator) RunExecutable(options rsapi.APIParams) (*InstanceLocator, error) {
+	var res *InstanceLocator
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{}
@@ -4333,15 +4364,15 @@ func (loc *InstanceLocator) RunExecutable(options rsapi.APIParams) error {
 	}
 	uri, err := loc.ActionPath("Instance", "run_executable")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -4350,9 +4381,14 @@ func (loc *InstanceLocator) RunExecutable(options rsapi.APIParams) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &InstanceLocator{Href(location), loc.api}, nil
+	}
 }
 
 // GET /api/clouds/:cloud_id/instances/:id
@@ -5024,12 +5060,13 @@ func (loc *IpAddressBindingLocator) Create(ipAddressBinding *IpAddressBindingPar
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &IpAddressBindingLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/clouds/:cloud_id/ip_addresses/:ip_address_id/ip_address_bindings/:id
@@ -5404,9 +5441,10 @@ func (api *API) MultiCloudImageLocator(href string) *MultiCloudImageLocator {
 // Clones a given MultiCloudImage.
 // Required parameters:
 // multi_cloud_image
-func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) error {
+func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) (*MultiCloudImageLocator, error) {
+	var res *MultiCloudImageLocator
 	if multiCloudImage == nil {
-		return fmt.Errorf("multiCloudImage is required")
+		return res, fmt.Errorf("multiCloudImage is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -5415,15 +5453,15 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 	}
 	uri, err := loc.ActionPath("MultiCloudImage", "clone")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -5432,9 +5470,14 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &MultiCloudImageLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/multi_cloud_images/:id/commit
@@ -5442,9 +5485,10 @@ func (loc *MultiCloudImageLocator) Clone(multiCloudImage *MultiCloudImageParam) 
 // Commits a given MultiCloudImage. Only HEAD revisions can be committed.
 // Required parameters:
 // commit_message: The message associated with the commit.
-func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
+func (loc *MultiCloudImageLocator) Commit(commitMessage string) (*MultiCloudImageLocator, error) {
+	var res *MultiCloudImageLocator
 	if commitMessage == "" {
-		return fmt.Errorf("commitMessage is required")
+		return res, fmt.Errorf("commitMessage is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -5453,15 +5497,15 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 	}
 	uri, err := loc.ActionPath("MultiCloudImage", "commit")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -5470,9 +5514,14 @@ func (loc *MultiCloudImageLocator) Commit(commitMessage string) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &MultiCloudImageLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/server_templates/:server_template_id/multi_cloud_images
@@ -6196,12 +6245,13 @@ func (loc *NetworkLocator) Create(network *NetworkParam) (*NetworkLocator, error
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &NetworkLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/networks/:id
@@ -6429,12 +6479,13 @@ func (loc *NetworkGatewayLocator) Create(networkGateway *NetworkGatewayParam) (*
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &NetworkGatewayLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/network_gateways/:id
@@ -6667,12 +6718,13 @@ func (loc *NetworkOptionGroupLocator) Create(networkOptionGroup *NetworkOptionGr
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &NetworkOptionGroupLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/network_option_groups/:id
@@ -6904,12 +6956,13 @@ func (loc *NetworkOptionGroupAttachmentLocator) Create(networkOptionGroupAttachm
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &NetworkOptionGroupAttachmentLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/network_option_group_attachments/:id
@@ -7480,12 +7533,13 @@ func (loc *PlacementGroupLocator) Create(placementGroup *PlacementGroupParam) (*
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &PlacementGroupLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/placement_groups/:id
@@ -7845,20 +7899,21 @@ func (api *API) PublicationLocator(href string) *PublicationLocator {
 //
 // Imports the given publication and its subordinates to this account.
 // Only non-HEAD revisions that are shared with the account can be imported.
-func (loc *PublicationLocator) Import() error {
+func (loc *PublicationLocator) Import() (*PublicationLocator, error) {
+	var res *PublicationLocator
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Publication", "import")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -7867,9 +7922,14 @@ func (loc *PublicationLocator) Import() error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &PublicationLocator{Href(location), loc.api}, nil
+	}
 }
 
 // GET /api/publications
@@ -8942,12 +9002,13 @@ func (loc *ResourceGroupLocator) Create(resourceGroup *ResourceGroupParam) (*Res
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &ResourceGroupLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/resource_groups/:id
@@ -9151,9 +9212,10 @@ func (api *API) RightScriptLocator(href string) *RightScriptLocator {
 // Commits the given RightScript. Only HEAD revisions (revision 0) can be committed.
 // Required parameters:
 // right_script
-func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
+func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) (*RightScriptLocator, error) {
+	var res *RightScriptLocator
 	if rightScript == nil {
-		return fmt.Errorf("rightScript is required")
+		return res, fmt.Errorf("rightScript is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -9162,15 +9224,15 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	}
 	uri, err := loc.ActionPath("RightScript", "commit")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -9179,9 +9241,14 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RightScriptLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/right_scripts
@@ -9220,12 +9287,13 @@ func (loc *RightScriptLocator) Create(rightScript *RightScriptParam2) (*RightScr
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &RightScriptLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/right_scripts/:id
@@ -9533,12 +9601,13 @@ func (loc *RightScriptAttachmentLocator) Create(rightScriptAttachment *RightScri
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &RightScriptAttachmentLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/right_scripts/:right_script_id/attachments/:id
@@ -9782,12 +9851,13 @@ func (loc *RouteLocator) Create(route *RouteParam) (*RouteLocator, error) {
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &RouteLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/routes/:id
@@ -10018,12 +10088,13 @@ func (loc *RouteTableLocator) Create(routeTable *RouteTableParam) (*RouteTableLo
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &RouteTableLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/route_tables/:id
@@ -10672,12 +10743,13 @@ func (loc *SecurityGroupLocator) Create(securityGroup *SecurityGroupParam) (*Sec
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &SecurityGroupLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/clouds/:cloud_id/security_groups/:id
@@ -11117,20 +11189,21 @@ func (api *API) ServerLocator(href string) *ServerLocator {
 // POST /api/servers/:id/clone
 //
 // Clones a given server.
-func (loc *ServerLocator) Clone() error {
+func (loc *ServerLocator) Clone() (*ServerLocator, error) {
+	var res *ServerLocator
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("Server", "clone")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -11139,9 +11212,14 @@ func (loc *ServerLocator) Clone() error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ServerLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/servers
@@ -11550,9 +11628,10 @@ func (loc *ServerLocator) Update(server *ServerParam2) error {
 // Wrap an existing instance and set current instance for new server
 // Required parameters:
 // server
-func (loc *ServerLocator) WrapInstance(server *ServerParam3) error {
+func (loc *ServerLocator) WrapInstance(server *ServerParam3) (*ServerLocator, error) {
+	var res *ServerLocator
 	if server == nil {
-		return fmt.Errorf("server is required")
+		return res, fmt.Errorf("server is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -11561,15 +11640,15 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam3) error {
 	}
 	uri, err := loc.ActionPath("Server", "wrap_instance")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -11578,9 +11657,14 @@ func (loc *ServerLocator) WrapInstance(server *ServerParam3) error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ServerLocator{Href(location), loc.api}, nil
+	}
 }
 
 /****** ServerArray ******/
@@ -11634,20 +11718,21 @@ func (api *API) ServerArrayLocator(href string) *ServerArrayLocator {
 // POST /api/server_arrays/:id/clone
 //
 // Clones a given server array.
-func (loc *ServerArrayLocator) Clone() error {
+func (loc *ServerArrayLocator) Clone() (*ServerArrayLocator, error) {
+	var res *ServerArrayLocator
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("ServerArray", "clone")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -11656,9 +11741,14 @@ func (loc *ServerArrayLocator) Clone() error {
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ServerArrayLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/server_arrays
@@ -12294,9 +12384,10 @@ func (api *API) ServerTemplateLocator(href string) *ServerTemplateLocator {
 // Clones a given ServerTemplate.
 // Required parameters:
 // server_template
-func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) error {
+func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) (*ServerTemplateLocator, error) {
+	var res *ServerTemplateLocator
 	if serverTemplate == nil {
-		return fmt.Errorf("serverTemplate is required")
+		return res, fmt.Errorf("serverTemplate is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -12305,15 +12396,15 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 	}
 	uri, err := loc.ActionPath("ServerTemplate", "clone")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -12322,9 +12413,14 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ServerTemplateLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/server_templates/:id/commit
@@ -12334,15 +12430,16 @@ func (loc *ServerTemplateLocator) Clone(serverTemplate *ServerTemplateParam) err
 // commit_head_dependencies: Commit all HEAD revisions (if any) of the associated MultiCloud Images, RightScripts and Chef repo sequences.
 // commit_message: The message associated with the commit.
 // freeze_repositories: Freeze the repositories.
-func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMessage string, freezeRepositories string) error {
+func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMessage string, freezeRepositories string) (*ServerTemplateLocator, error) {
+	var res *ServerTemplateLocator
 	if commitHeadDependencies == "" {
-		return fmt.Errorf("commitHeadDependencies is required")
+		return res, fmt.Errorf("commitHeadDependencies is required")
 	}
 	if commitMessage == "" {
-		return fmt.Errorf("commitMessage is required")
+		return res, fmt.Errorf("commitMessage is required")
 	}
 	if freezeRepositories == "" {
-		return fmt.Errorf("freezeRepositories is required")
+		return res, fmt.Errorf("freezeRepositories is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -12353,15 +12450,15 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 	}
 	uri, err := loc.ActionPath("ServerTemplate", "commit")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -12370,9 +12467,14 @@ func (loc *ServerTemplateLocator) Commit(commitHeadDependencies string, commitMe
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ServerTemplateLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/server_templates
@@ -12550,12 +12652,13 @@ func (loc *ServerTemplateLocator) Index(options rsapi.APIParams) ([]*ServerTempl
 // allow_comments: Allow users to leave comments on this ServerTemplate.
 // categories: List of Categories.
 // email_comments: Email me when a user comments on this ServerTemplate.
-func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptions *Descriptions, options rsapi.APIParams) error {
+func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptions *Descriptions, options rsapi.APIParams) (*ServerTemplateLocator, error) {
+	var res *ServerTemplateLocator
 	if len(accountGroupHrefs) == 0 {
-		return fmt.Errorf("accountGroupHrefs is required")
+		return res, fmt.Errorf("accountGroupHrefs is required")
 	}
 	if descriptions == nil {
-		return fmt.Errorf("descriptions is required")
+		return res, fmt.Errorf("descriptions is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -12577,15 +12680,15 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 	}
 	uri, err := loc.ActionPath("ServerTemplate", "publish")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -12594,9 +12697,14 @@ func (loc *ServerTemplateLocator) Publish(accountGroupHrefs []string, descriptio
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &ServerTemplateLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/server_templates/:id/resolve
@@ -13485,12 +13593,13 @@ func (loc *SubnetLocator) Create(subnet *SubnetParam) (*SubnetLocator, error) {
 		}
 		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	location := resp.Header.Get("Location")
-	if len(location) == 0 {
-		return res, fmt.Errorf("Missing location header in response")
-	} else {
-		return &SubnetLocator{Href(location), loc.api}, nil
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
 	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
 }
 
 // DELETE /api/clouds/:cloud_id/instances/:instance_id/subnets/:id
@@ -14785,9 +14894,10 @@ func (api *API) VolumeSnapshotLocator(href string) *VolumeSnapshotLocator {
 // No description provided for copy.
 // Required parameters:
 // volume_snapshot_copy
-func (loc *VolumeSnapshotLocator) Copy(volumeSnapshotCopy *VolumeSnapshotCopy) error {
+func (loc *VolumeSnapshotLocator) Copy(volumeSnapshotCopy *VolumeSnapshotCopy) (*VolumeSnapshotLocator, error) {
+	var res *VolumeSnapshotLocator
 	if volumeSnapshotCopy == nil {
-		return fmt.Errorf("volumeSnapshotCopy is required")
+		return res, fmt.Errorf("volumeSnapshotCopy is required")
 	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
@@ -14796,15 +14906,15 @@ func (loc *VolumeSnapshotLocator) Copy(volumeSnapshotCopy *VolumeSnapshotCopy) e
 	}
 	uri, err := loc.ActionPath("VolumeSnapshot", "copy")
 	if err != nil {
-		return err
+		return res, err
 	}
 	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
-		return err
+		return res, err
 	}
 	resp, err := loc.api.PerformRequest(req)
 	if err != nil {
-		return err
+		return res, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode > 299 {
@@ -14813,9 +14923,14 @@ func (loc *VolumeSnapshotLocator) Copy(volumeSnapshotCopy *VolumeSnapshotCopy) e
 		if sr != "" {
 			sr = ": " + sr
 		}
-		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
 	}
-	return nil
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &VolumeSnapshotLocator{Href(location), loc.api}, nil
+	}
 }
 
 // POST /api/clouds/:cloud_id/volumes/:volume_id/volume_snapshots
