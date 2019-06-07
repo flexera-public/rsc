@@ -9,7 +9,6 @@ import (
 
 var _ = Describe("ParamAnalyzer", func() {
 	var (
-		path     string
 		params   map[string]interface{}
 		analyzer *ParamAnalyzer
 	)
@@ -20,7 +19,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with an empty path and a simple param", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{"foo": map[string]interface{}{"class": "String"}}
 		})
 
@@ -37,7 +35,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with a simple array param", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{"foo": map[string]interface{}{"class": "Array"}}
 		})
 
@@ -60,7 +57,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with a simple hash param", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo":      map[string]interface{}{"class": "Hash"},
 				"foo[bar]": map[string]interface{}{"class": "String"},
@@ -95,7 +91,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with a simple enumerable param", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo":    map[string]interface{}{"class": "Enumerable"},
 				"foo[*]": map[string]interface{}{"class": "String"},
@@ -114,7 +109,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with a hash of enumerable params", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo":         map[string]interface{}{"class": "Hash"},
 				"foo[bar]":    map[string]interface{}{"class": "String"},
@@ -149,7 +143,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with a hash star param", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo":    map[string]interface{}{"class": "Hash"},
 				"foo[*]": map[string]interface{}{"class": "String"},
@@ -168,7 +161,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with a orphan star param", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo[*]": map[string]interface{}{"class": "String"},
 			}
@@ -186,7 +178,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with an array of hashes", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo":        map[string]interface{}{"class": "Array"},
 				"foo[][bar]": map[string]interface{}{"class": "String"},
@@ -227,7 +218,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with an array of hashes with sub-array", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo":               map[string]interface{}{"class": "Array"},
 				"foo[][bar]":        map[string]interface{}{"class": "String"},
@@ -281,7 +271,6 @@ var _ = Describe("ParamAnalyzer", func() {
 
 	Context("with a mix of arrays, enumerables and hashes", func() {
 		BeforeEach(func() {
-			path = ""
 			params = map[string]interface{}{
 				"foo4":                  map[string]interface{}{"class": "Array"},
 				"foo4[][bar]":           map[string]interface{}{"class": "String"},

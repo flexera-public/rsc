@@ -186,6 +186,14 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 		var paramAnalyzer = NewAnalyzer(params)
 		paramAnalyzer.Analyze()
 
+		// Check for Location header
+		hasLocation := false
+		if h, ok := meth["http_headers"].(map[string]interface{}); ok {
+			if _, ok := h["Location"]; ok {
+				hasLocation = true
+			}
+		}
+
 		// Record new parameter types
 		var paramTypeNames = make([]string, len(paramAnalyzer.ParamTypes))
 		var idx = 0
@@ -304,8 +312,8 @@ func (a *APIAnalyzer) AnalyzeResource(name string, resource interface{}, descrip
 			PathPatterns:      pathPatterns,
 			Params:            actionParams,
 			LeafParams:        paramAnalyzer.LeafParams,
-			Return:            parseReturn(actionName, name, contentType),
-			ReturnLocation:    actionName == "create" && name != "Oauth2",
+			Return:            parseReturn(actionName, name, contentType, hasLocation),
+			ReturnLocation:    (actionName == "create" || hasLocation) && name != "Oauth2",
 			PathParamNames:    pathParamNames,
 			QueryParamNames:   queryParamNames,
 			PayloadParamNames: payloadParamNames,
@@ -454,7 +462,7 @@ var noMediaTypeResources = map[string]bool{
 	"ResourceTag":          true,
 }
 
-func parseReturn(kind, resName, contentType string) string {
+func parseReturn(kind, resName, contentType string, hasLocation bool) string {
 	switch kind {
 	case "show":
 		return refType(resName)
@@ -475,6 +483,8 @@ func parseReturn(kind, resName, contentType string) string {
 		return "[]*Instance"
 	default:
 		switch {
+		case hasLocation:
+			return "*" + inflect.Singularize(resName) + "Locator"
 		case len(contentType) == 0:
 			return ""
 		case strings.Index(contentType, "application/vnd.rightscale.") == 0:
