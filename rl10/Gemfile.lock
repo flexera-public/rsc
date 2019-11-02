@@ -38,7 +38,7 @@ GEM
       activesupport (>= 3)
       randexp (~> 0)
       sequel (~> 4)
-    rack (1.6.0)
+    rack (1.6.11)
     rake (10.4.2)
     randexp (0.1.7)
     sequel (4.21.0)
