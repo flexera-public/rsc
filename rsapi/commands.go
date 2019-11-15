@@ -203,7 +203,16 @@ func (a *API) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 		if f.Regexp != nil {
 			attrs += ", /" + f.Regexp.String() + "/"
 		}
-		flagHelp[i] = fmt.Sprintf("%s=%s\n    <%s> %s", f.Name, f.Type, attrs, f.Description)
+
+		if f.Type == "map" {
+			whatIsMap := "This param takes a map of key=>value pairs. These may be specified as an repeated set of strings or given as a raw json map."
+			flagHelp[i] = fmt.Sprintf("%s=key=value (repeated) OR %s:={\"key_in_json\":\"value_in_json\"}\n    %s\n    <%s> %s", f.Name, f.Name, whatIsMap, attrs, f.Description)
+		} else if f.Type == "interface{}" {
+			whatIsJSON := "If := is used instead of =, the value will be interpreted as JSON. This allows passing alternate types like integers or arrays."
+			flagHelp[i] = fmt.Sprintf("%s=string OR %s:=<json>\n    %s\n    <%s> %s", f.Name, f.Name, whatIsJSON, attrs, f.Description)
+		} else {
+			flagHelp[i] = fmt.Sprintf("%s=%s\n    <%s> %s", f.Name, f.Type, attrs, f.Description)
+		}
 	}
 	fmt.Printf("usage: rsc [<FLAGS>] %s %s %s [<PARAMS>]\n\n%s\n\n", strings.Split(cmd, " ")[0],
 		action.Name, href, action.Description)
