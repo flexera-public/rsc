@@ -5,6 +5,7 @@
 language: go
 go:
   - 1.12.x
+dist: bionic
 env:
   global:
     # RSBIN_KEY= to upload to rightscale-binaries bucket in q&b acct:
