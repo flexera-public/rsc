@@ -1,3 +1,8 @@
+v7.0.1 / 2019-11-15
+-------------------
+* Refreshed policy API actions
+* Added ability to pass in raw json for certain parameters by doing a param:=value instead of param=value
+
 v7.0.0 / 2019-06-07
 -------------------
 * All actions from API 1.5 which return the `"Location"` header now return Locator pointers from their Go functions.
