@@ -1,6 +1,7 @@
 package rsapi
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path"
@@ -62,7 +63,7 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 	var queryParams, payloadParams []APIParams
 	var seen []string
 	for _, p := range params {
-		param, value, err := a.findParamAndValue(action, p)
+		param, value, isRawJSON, err := a.findParamAndValue(action, p)
 		if err != nil {
 			return nil, err
 		}
@@ -81,7 +82,7 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 		}
 		name := param.Name
 		seen = append(seen, name)
-		if err := validateFlagValue(value, param); err != nil {
+		if err := validateFlagValue(value, param, isRawJSON); err != nil {
 			return nil, err
 		}
 		coerced := &queryParams
@@ -90,7 +91,13 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 		}
 		switch param.Type {
 		case "string", "[]string", "interface{}":
-			*coerced = append(*coerced, APIParams{name: value})
+			var val interface{}
+			if isRawJSON {
+				val = convertJSON(value)
+			} else {
+				val = value
+			}
+			*coerced = append(*coerced, APIParams{name: val})
 		case "int", "[]int":
 			val, err := strconv.Atoi(value)
 			if err != nil {
@@ -118,11 +125,18 @@ func (a *API) ParseCommand(cmd, hrefPrefix string, values ActionCommands) (*Pars
 				*coerced = append(*coerced, APIParams{name: val})
 			}
 		case "map":
-			velems := strings.SplitN(value, "=", 2)
-			if len(velems) != 2 {
-				return nil, fmt.Errorf("Value for '%s' must be of the form NAME=VALUE, got %s", name, value)
+			if isRawJSON {
+				val := convertJSON(value)
+				*coerced = append(*coerced, APIParams{name: val})
+			} else {
+				velems := strings.SplitN(value, "=", 2)
+				if len(velems) != 2 {
+					return nil, fmt.Errorf("Value for '%s' must be of the form NAME=VALUE, got %s", name, value)
+				}
+				p := APIParams{fmt.Sprintf("%s[%s]", name, velems[0]): velems[1]}
+				*coerced = append(*coerced, p)
 			}
-			*coerced = append(*coerced, APIParams{fmt.Sprintf("%s[%s]", name, velems[0]): velems[1]})
+
 		case "sourcefile":
 			file, err := os.Open(value)
 			if err != nil {
@@ -189,7 +203,16 @@ func (a *API) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 		if f.Regexp != nil {
 			attrs += ", /" + f.Regexp.String() + "/"
 		}
-		flagHelp[i] = fmt.Sprintf("%s=%s\n    <%s> %s", f.Name, f.Type, attrs, f.Description)
+
+		if f.Type == "map" {
+			whatIsMap := "This param takes a map of key=>value pairs. These may be specified as a repeated set of strings or given as a raw json map."
+			flagHelp[i] = fmt.Sprintf("%s=key=value (repeated) OR %s:={\"key_in_json\":\"value_in_json\"}\n    %s\n    <%s> %s", f.Name, f.Name, whatIsMap, attrs, f.Description)
+		} else if f.Type == "interface{}" {
+			whatIsJSON := "If := is used instead of =, the value will be interpreted as JSON. This allows passing alternate types like integers or arrays."
+			flagHelp[i] = fmt.Sprintf("%s=string OR %s:=<json>\n    %s\n    <%s> %s", f.Name, f.Name, whatIsJSON, attrs, f.Description)
+		} else {
+			flagHelp[i] = fmt.Sprintf("%s=%s\n    <%s> %s", f.Name, f.Type, attrs, f.Description)
+		}
 	}
 	fmt.Printf("usage: rsc [<FLAGS>] %s %s %s [<PARAMS>]\n\n%s\n\n", strings.Split(cmd, " ")[0],
 		action.Name, href, action.Description)
@@ -389,10 +412,15 @@ var captureEnumRegex = regexp.MustCompile(`.*\[(.+)\]$`)
 // the flag is of the form "NAME[KEY]=VALUE" (e.g. inputs).
 // First check if there is a parameter with the given flag name, then check for the enumerable case
 // if not found.
-func (a *API) findParamAndValue(action *metadata.Action, flag string) (*metadata.ActionParam, string, error) {
-	elems := strings.SplitN(flag, "=", 2)
+func (a *API) findParamAndValue(action *metadata.Action, flag string) (*metadata.ActionParam, string, bool, error) {
+	elems := strings.SplitN(flag, ":=", 2)
+	isRawJSON := true
 	if len(elems) != 2 {
-		return nil, "", fmt.Errorf("Arguments must be of the form NAME=VALUE, value provided was '%s'", flag)
+		elems = strings.SplitN(flag, "=", 2)
+		isRawJSON = false
+	}
+	if len(elems) != 2 {
+		return nil, "", isRawJSON, fmt.Errorf("Arguments must be of the form NAME=VALUE or NAME:=JSON, value provided was '%s'", flag)
 	}
 	name := elems[0]
 	value := elems[1]
@@ -411,18 +439,18 @@ func (a *API) findParamAndValue(action *metadata.Action, flag string) (*metadata
 				param = ap
 				es := captureEnumRegex.FindStringSubmatch(elems[0])
 				if es == nil {
-					return nil, "", fmt.Errorf("Key/value arguments must be of the form NAME[KEY]=VALUE, value provided was '%s'", flag)
+					return nil, "", isRawJSON, fmt.Errorf("Key/value arguments must be of the form NAME[KEY]=VALUE, value provided was '%s'", flag)
 				}
 				value = es[1] + "=" + value
 				break
 			}
 		}
 	}
-	return param, value, nil
+	return param, value, isRawJSON, nil
 }
 
 // Validate flag value using validation criteria provided in metadata
-func validateFlagValue(value string, param *metadata.ActionParam) error {
+func validateFlagValue(value string, param *metadata.ActionParam, isRawJSON bool) error {
 	if param.Regexp != nil {
 		if !param.Regexp.MatchString(value) {
 			return fmt.Errorf("Invalid value '%s' for '%s', value must validate /%s/",
@@ -444,6 +472,11 @@ func validateFlagValue(value string, param *metadata.ActionParam) error {
 		if !found {
 			return fmt.Errorf("Invalid value for '%s', value must be one of %s, value provided was '%s'",
 				param.Name, strings.Join(param.ValidValues, ", "), value)
+		}
+	}
+	if isRawJSON {
+		if err := validateJSON(value); err != nil {
+			return fmt.Errorf("Invalid value for '%s', value '%s' is not valid JSON: %v", param.Name, value, err)
 		}
 	}
 
@@ -588,4 +621,17 @@ func shortenPattern(res *metadata.Resource, pattern, suffix string) (string, boo
 		}
 	}
 	return pattern, false
+}
+
+// convertJSON doesn't do an error checking as its assumed we've done that already.
+func convertJSON(value string) interface{} {
+	var val interface{}
+	json.Unmarshal([]byte(value), &val)
+	return val
+}
+
+// validateJSON is a complement to the above, only handles the validation aspect.
+func validateJSON(value string) error {
+	var val interface{}
+	return json.Unmarshal([]byte(value), &val)
 }

@@ -1,6 +1,7 @@
 package rsapi_test
 
 import (
+	"encoding/json"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/rightscale/rsc/cm15"
@@ -221,6 +222,39 @@ var _ = Describe("ParseCommand", func() {
 		parsed, parseErr = api.ParseCommand(cmd, hrefPrefix, values)
 	})
 
+	Describe("with some raw json bits", func() {
+		BeforeEach(func() {
+			cmd = "run"
+			runCmd := rsapi.ActionCommand{
+				Href: "/api/manager/projects/42/executions/54",
+				Params: []string{
+					"name=Tip CWF",
+					"configuration_options[][name]=environment_name",
+					`configuration_options[][value]:=["a","json","array"]`,
+				},
+			}
+			values = rsapi.ActionCommands{"run": &runCmd}
+		})
+		It("parses", func() {
+			Ω(parseErr).ShouldNot(HaveOccurred())
+			Ω(parsed).ShouldNot(BeNil())
+			payload := rsapi.APIParams{
+				"name": "Tip CWF",
+				"configuration_options": []interface{}{rsapi.APIParams{
+					"name":  "environment_name",
+					"value": []string{"a", "json", "array"},
+				}},
+			}
+			expected := rsapi.ParsedCommand{
+				HTTPMethod:    "POST",
+				URI:           "/api/manager/projects/42/executions/54/actions/run",
+				QueryParams:   rsapi.APIParams{},
+				PayloadParams: payload,
+			}
+			Ω(dumpJSON(parsed)).Should(Equal(dumpJSON(&expected)))
+		})
+	})
+
 	Describe("with array of maps with one element", func() {
 		BeforeEach(func() {
 			cmd = "run"
@@ -392,3 +426,8 @@ var _ = Describe("ParseCommand with cm15", func() {
 	})
 
 })
+
+func dumpJSON(o interface{}) string {
+	byt, _ := json.Marshal(o)
+	return string(byt)
+}
