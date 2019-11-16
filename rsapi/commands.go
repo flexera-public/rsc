@@ -205,7 +205,7 @@ func (a *API) ShowHelp(cmd, hrefPrefix string, values ActionCommands) error {
 		}
 
 		if f.Type == "map" {
-			whatIsMap := "This param takes a map of key=>value pairs. These may be specified as an repeated set of strings or given as a raw json map."
+			whatIsMap := "This param takes a map of key=>value pairs. These may be specified as a repeated set of strings or given as a raw json map."
 			flagHelp[i] = fmt.Sprintf("%s=key=value (repeated) OR %s:={\"key_in_json\":\"value_in_json\"}\n    %s\n    <%s> %s", f.Name, f.Name, whatIsMap, attrs, f.Description)
 		} else if f.Type == "interface{}" {
 			whatIsJSON := "If := is used instead of =, the value will be interpreted as JSON. This allows passing alternate types like integers or arrays."
