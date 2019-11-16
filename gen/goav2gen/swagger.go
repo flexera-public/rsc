@@ -1,4 +1,4 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v7/gen/goav2gen"
 
 import (
 	"strings"

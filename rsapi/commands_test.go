@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc/cm15"
-	"github.com/rightscale/rsc/rsapi"
-	"github.com/rightscale/rsc/ss/ssm"
+	"gopkg.in/rightscale/rsc.v7/cm15"
+	"gopkg.in/rightscale/rsc.v7/rsapi"
+	"gopkg.in/rightscale/rsc.v7/ss/ssm"
 )
 
 var _ = Describe("normalize", func() {

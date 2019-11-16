@@ -6,7 +6,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"github.com/rightscale/rsc/cm15"
+	"gopkg.in/rightscale/rsc.v7/cm15"
 )
 
 var _ = Describe("RubyTime", func() {

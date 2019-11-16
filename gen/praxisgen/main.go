@@ -1,4 +1,4 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v7/gen/praxisgen"
 
 import (
 	"encoding/json"
@@ -9,8 +9,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/writers"
+	"gopkg.in/rightscale/rsc.v7/gen"
+	"gopkg.in/rightscale/rsc.v7/gen/writers"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
