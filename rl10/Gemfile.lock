@@ -39,7 +39,7 @@ GEM
       randexp (~> 0)
       sequel (~> 4)
     rack (1.6.0)
-    rake (10.4.2)
+    rake (12.3.3)
     randexp (0.1.7)
     sequel (4.21.0)
     statsd-ruby (1.2.1)
