@@ -19,7 +19,7 @@ func (r *RubyTime) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements the unmarshaller interface.
 func (r *RubyTime) UnmarshalJSON(b []byte) (err error) {
 	s := string(b)
-	t, err := time.Parse("2006/01/02 15:04:05 -0700", s[1:len(s)-1])
+	t, err := time.ParseInLocation("2006/01/02 15:04:05 -0700", s[1:len(s)-1], time.UTC)
 	if err != nil {
 		return err
 	}
