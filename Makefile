@@ -34,7 +34,7 @@ NAME=rsc
 BUCKET=rightscale-binaries
 ACL=public-read
 # version for gopkg.in, e.g. v1, v2, ...
-GOPKG_VERS=v7
+GOPKG_VERS=v8
 GLIDE_VERSION?=v0.13.3
 GOOS=$(shell go env GOOS)
 GOARCH=$(shell go env GOARCH)
