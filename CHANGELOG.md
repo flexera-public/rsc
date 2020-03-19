@@ -1,3 +1,8 @@
+v8.0.0 / 2020-03-19
+-------------------
+* Make the parsing of `RubyTime` for `cm15` more predictable by using [`time.ParseInLocation`](https://golang.org/pkg/time/#ParseInLocation) with `time.UTC`
+* Build with Go 1.14.x.
+
 v7.0.1 / 2019-11-15
 -------------------
 * Refreshed policy API actions
