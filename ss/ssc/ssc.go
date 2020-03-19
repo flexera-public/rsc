@@ -1,6 +1,6 @@
-package ssc
+package ssc // import "gopkg.in/rightscale/rsc.v8/ss/ssc"
 
-import "github.com/rightscale/rsc/rsapi"
+import "gopkg.in/rightscale/rsc.v8/rsapi"
 
 // API is the Self-Service catalog client.
 type API struct {

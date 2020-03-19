@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssm
+package ssm // import "gopkg.in/rightscale/rsc.v8/ss/ssm"
 
 import (
 	"encoding/json"
@@ -15,8 +15,8 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v8/metadata"
+	"gopkg.in/rightscale/rsc.v8/rsapi"
 )
 
 // API Version

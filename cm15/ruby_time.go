@@ -1,4 +1,4 @@
-package cm15
+package cm15 // import "gopkg.in/rightscale/rsc.v8/cm15"
 
 import (
 	"encoding/json"

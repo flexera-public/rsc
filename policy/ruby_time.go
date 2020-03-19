@@ -1,4 +1,4 @@
-package policy
+package policy // import "gopkg.in/rightscale/rsc.v8/policy"
 
 import "time"
 

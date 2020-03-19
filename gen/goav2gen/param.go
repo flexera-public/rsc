@@ -1,7 +1,7 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v8/gen/goav2gen"
 
 import (
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v8/gen"
 )
 
 var loc = map[string]int{

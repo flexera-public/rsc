@@ -1,8 +1,8 @@
-package rl10
+package rl10 // import "gopkg.in/rightscale/rsc.v8/rl10"
 
 import (
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v8/cmd"
+	"gopkg.in/rightscale/rsc.v8/rsapi"
 )
 
 // API is the RightLink 10 client.

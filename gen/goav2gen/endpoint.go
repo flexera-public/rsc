@@ -1,10 +1,10 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v8/gen/goav2gen"
 
 import (
 	"regexp"
 	"strings"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v8/gen"
 )
 
 // EvalCtx stores what is currently under evaluation

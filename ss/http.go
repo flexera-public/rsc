@@ -1,10 +1,10 @@
-package ss
+package ss // import "gopkg.in/rightscale/rsc.v8/ss"
 
 import (
 	"fmt"
 	"net/http"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v8/rsapi"
 )
 
 // BuildRequest builds a HTTP request from a resource name and href and an action name and
