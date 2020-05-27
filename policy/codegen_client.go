@@ -63,6 +63,7 @@ type AppliedPolicy struct {
 	Category            string                 `json:"category,omitempty"`
 	CreatedAt           *time.Time             `json:"created_at,omitempty"`
 	CreatedBy           *User                  `json:"created_by,omitempty"`
+	Credentials         map[string]interface{} `json:"credentials,omitempty"`
 	Description         string                 `json:"description,omitempty"`
 	DocLink             string                 `json:"doc_link,omitempty"`
 	DryRun              bool                   `json:"dry_run,omitempty"`
@@ -167,6 +168,10 @@ func (loc *AppliedPolicyLocator) Create(name string, templateHref string, option
 		"name":          name,
 		"template_href": templateHref,
 	}
+	var credentialsOpt = options["credentials"]
+	if credentialsOpt != nil {
+		p["credentials"] = credentialsOpt
+	}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
 		p["description"] = descriptionOpt
@@ -182,6 +187,10 @@ func (loc *AppliedPolicyLocator) Create(name string, templateHref string, option
 	var optionsOpt = options["options"]
 	if optionsOpt != nil {
 		p["options"] = optionsOpt
+	}
+	var severityOpt = options["severity"]
+	if severityOpt != nil {
+		p["severity"] = severityOpt
 	}
 	var skipApprovalsOpt = options["skip_approvals"]
 	if skipApprovalsOpt != nil {
@@ -1225,10 +1234,12 @@ type PolicyAggregate struct {
 	Count                 int                    `json:"count,omitempty"`
 	CreatedAt             *time.Time             `json:"created_at,omitempty"`
 	CreatedBy             *User                  `json:"created_by,omitempty"`
+	Credentials           map[string]interface{} `json:"credentials,omitempty"`
 	Description           string                 `json:"description,omitempty"`
 	DocLink               string                 `json:"doc_link,omitempty"`
 	DryRun                bool                   `json:"dry_run,omitempty"`
 	ErrorCount            int                    `json:"error_count,omitempty"`
+	Errors                map[string]interface{} `json:"errors,omitempty"`
 	ExcludedProjectIds    []int                  `json:"excluded_project_ids,omitempty"`
 	Frequency             string                 `json:"frequency,omitempty"`
 	Href                  string                 `json:"href,omitempty"`
@@ -1332,6 +1343,10 @@ func (loc *PolicyAggregateLocator) Create(name string, templateHref string, opti
 	if allProjectsOpt != nil {
 		p["all_projects"] = allProjectsOpt
 	}
+	var credentialsOpt = options["credentials"]
+	if credentialsOpt != nil {
+		p["credentials"] = credentialsOpt
+	}
 	var descriptionOpt = options["description"]
 	if descriptionOpt != nil {
 		p["description"] = descriptionOpt
@@ -1351,6 +1366,10 @@ func (loc *PolicyAggregateLocator) Create(name string, templateHref string, opti
 	var projectIdsOpt = options["project_ids"]
 	if projectIdsOpt != nil {
 		p["project_ids"] = projectIdsOpt
+	}
+	var severityOpt = options["severity"]
+	if severityOpt != nil {
+		p["severity"] = severityOpt
 	}
 	var skipApprovalsOpt = options["skip_approvals"]
 	if skipApprovalsOpt != nil {
@@ -1505,6 +1524,7 @@ type PolicyTemplate struct {
 	Category         string                 `json:"category,omitempty"`
 	CreatedAt        *time.Time             `json:"created_at,omitempty"`
 	CreatedBy        *User                  `json:"created_by,omitempty"`
+	DefaultFrequency string                 `json:"default_frequency,omitempty"`
 	DocLink          string                 `json:"doc_link,omitempty"`
 	Fingerprint      string                 `json:"fingerprint,omitempty"`
 	Href             string                 `json:"href,omitempty"`
@@ -1791,6 +1811,10 @@ func (loc *PolicyTemplateLocator) RetrieveData(options rsapi.APIParams) (interfa
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{}
+	var credentialsOpt = options["credentials"]
+	if credentialsOpt != nil {
+		p["credentials"] = credentialsOpt
+	}
 	var namesOpt = options["names"]
 	if namesOpt != nil {
 		p["names"] = namesOpt
@@ -1838,6 +1862,7 @@ type PublishedTemplate struct {
 	Category                  string                 `json:"category,omitempty"`
 	CreatedAt                 *time.Time             `json:"created_at,omitempty"`
 	CreatedBy                 *User                  `json:"created_by,omitempty"`
+	DefaultFrequency          string                 `json:"default_frequency,omitempty"`
 	DocLink                   string                 `json:"doc_link,omitempty"`
 	Fingerprint               string                 `json:"fingerprint,omitempty"`
 	Hidden                    bool                   `json:"hidden,omitempty"`
@@ -2142,11 +2167,13 @@ type ActionSummary struct {
 }
 
 type AppliedPolicyCreate struct {
+	Credentials   map[string]interface{}           `json:"credentials,omitempty"`
 	Description   string                           `json:"description,omitempty"`
 	DryRun        bool                             `json:"dry_run,omitempty"`
 	Frequency     string                           `json:"frequency,omitempty"`
 	Name          string                           `json:"name,omitempty"`
 	Options       []*ConfigurationOptionCreateType `json:"options,omitempty"`
+	Severity      string                           `json:"severity,omitempty"`
 	SkipApprovals bool                             `json:"skip_approvals,omitempty"`
 	TemplateHref  string                           `json:"template_href,omitempty"`
 }
@@ -2241,10 +2268,11 @@ type ArchivedIncidentList struct {
 }
 
 type ConfigurationOption struct {
-	Label string      `json:"label,omitempty"`
-	Name  string      `json:"name,omitempty"`
-	Type  string      `json:"type,omitempty"`
-	Value interface{} `json:"value,omitempty"`
+	Label  string      `json:"label,omitempty"`
+	Name   string      `json:"name,omitempty"`
+	NoEcho bool        `json:"no_echo,omitempty"`
+	Type   string      `json:"type,omitempty"`
+	Value  interface{} `json:"value,omitempty"`
 }
 
 type ConfigurationOptionCreateType struct {
@@ -2370,12 +2398,14 @@ type Org struct {
 
 type PolicyAggregateCreate struct {
 	AllProjects   bool                             `json:"all_projects,omitempty"`
+	Credentials   map[string]interface{}           `json:"credentials,omitempty"`
 	Description   string                           `json:"description,omitempty"`
 	DryRun        bool                             `json:"dry_run,omitempty"`
 	Frequency     string                           `json:"frequency,omitempty"`
 	Name          string                           `json:"name,omitempty"`
 	Options       []*ConfigurationOptionCreateType `json:"options,omitempty"`
 	ProjectIds    []int                            `json:"project_ids,omitempty"`
+	Severity      string                           `json:"severity,omitempty"`
 	SkipApprovals bool                             `json:"skip_approvals,omitempty"`
 	TemplateHref  string                           `json:"template_href,omitempty"`
 }
@@ -2386,6 +2416,7 @@ type PolicyAggregateIndex struct {
 	Count                 int                    `json:"count,omitempty"`
 	CreatedAt             *time.Time             `json:"created_at,omitempty"`
 	CreatedBy             *User                  `json:"created_by,omitempty"`
+	Credentials           map[string]interface{} `json:"credentials,omitempty"`
 	Description           string                 `json:"description,omitempty"`
 	DocLink               string                 `json:"doc_link,omitempty"`
 	DryRun                bool                   `json:"dry_run,omitempty"`
@@ -2497,8 +2528,9 @@ type PolicyTemplateList struct {
 }
 
 type PolicyTemplateRetrieveData struct {
-	Names   []string                         `json:"names,omitempty"`
-	Options []*ConfigurationOptionCreateType `json:"options,omitempty"`
+	Credentials map[string]interface{}           `json:"credentials,omitempty"`
+	Names       []string                         `json:"names,omitempty"`
+	Options     []*ConfigurationOptionCreateType `json:"options,omitempty"`
 }
 
 type PolicyTemplateUpdate struct {

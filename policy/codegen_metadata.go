@@ -89,6 +89,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "credentials",
+						Description: `credentials is the map of name and credential used to launch the policy.`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "description",
 						Description: `description provides a human readable description for this specific application of the policy.`,
 						Type:        "string",
@@ -138,6 +146,15 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "severity",
+						Description: `severity is the severity level of the incident.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"low", "medium", "high", "critical"},
+					},
+					&metadata.ActionParam{
 						Name:        "skip_approvals",
 						Description: `skip_approvals means that any approval actions will be skipped and all actions automatically run.`,
 						Type:        "bool",
@@ -157,6 +174,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				Payload: "AppliedPolicyCreate",
 				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "credentials",
+						Description: `credentials is the map of name and credential used to launch the policy.`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "description",
 						Description: `description provides a human readable description for this specific application of the policy.`,
@@ -197,6 +222,15 @@ var GenMetadata = map[string]*metadata.Resource{
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "severity",
+						Description: `severity is the severity level of the incident.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"low", "medium", "high", "critical"},
 					},
 					&metadata.ActionParam{
 						Name:        "skip_approvals",
@@ -708,7 +742,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
-						ValidValues: []string{"default", "extended"},
+						ValidValues: []string{"default"},
 					},
 					&metadata.ActionParam{
 						Name:        "state",
@@ -735,7 +769,7 @@ var GenMetadata = map[string]*metadata.Resource{
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    false,
-						ValidValues: []string{"default", "extended"},
+						ValidValues: []string{"default"},
 					},
 					&metadata.ActionParam{
 						Name:        "state",
@@ -1036,6 +1070,14 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "credentials",
+						Description: `credentials is the map of name to credential used to launch the policy.`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "description",
 						Description: `description provides a human readable description for this specific application of the policy.`,
 						Type:        "string",
@@ -1093,6 +1135,15 @@ var GenMetadata = map[string]*metadata.Resource{
 						NonBlank:    false,
 					},
 					&metadata.ActionParam{
+						Name:        "severity",
+						Description: `severity is the severity level of the incident.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"low", "medium", "high", "critical"},
+					},
+					&metadata.ActionParam{
 						Name:        "skip_approvals",
 						Description: `skip_approvals means that any approval actions will be skipped and all actions automatically run.`,
 						Type:        "bool",
@@ -1116,6 +1167,14 @@ var GenMetadata = map[string]*metadata.Resource{
 						Name:        "all_projects",
 						Description: `all_projects is a flag to specify the policy should be run on all projects in the org.`,
 						Type:        "bool",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "credentials",
+						Description: `credentials is the map of name to credential used to launch the policy.`,
+						Type:        "map[string]interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
@@ -1168,6 +1227,15 @@ var GenMetadata = map[string]*metadata.Resource{
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "severity",
+						Description: `severity is the severity level of the incident.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"low", "medium", "high", "critical"},
 					},
 					&metadata.ActionParam{
 						Name:        "skip_approvals",
@@ -1539,6 +1607,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
+						Name:        "credentials",
+						Description: `credentials is the map of name and credential used to launch the policy.`,
+						Type:        "map",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
 						Name:        "names[]",
 						Description: ``,
 						Type:        "string",
@@ -1565,6 +1641,14 @@ var GenMetadata = map[string]*metadata.Resource{
 				},
 				Payload: "PolicyTemplateRetrieveData",
 				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "credentials",
+						Description: `credentials is the map of name and credential used to launch the policy.`,
+						Type:        "map[string]interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
 					&metadata.ActionParam{
 						Name:        "names",
 						Description: `names is a filter to only retrieve datasources or resources that match the given names`,
