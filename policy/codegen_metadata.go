@@ -17,6 +17,117 @@ import (
 
 // Consists of a map of resource name to resource metadata.
 var GenMetadata = map[string]*metadata.Resource{
+	"ActionStatus": &metadata.Resource{
+		Name: "ActionStatus",
+		Description: `Show retrieves the details of an action status.
+**`,
+		Identifier: "application/vnd.rightscale.action_status",
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "index",
+				Description: `Index returns a list of action statuses in a project.
+**`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/governance/projects/%s/action_status",
+						Variables:  []string{"project_id"},
+						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/action_status`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `View used to render incident status`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "incident_id",
+						Description: `incident_id is a filter to only show action statuses that relate to a certain incident.`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "applied_policy_id",
+						Description: `applied_policy_id is a filter to only show action statuses that relate to a certain applied policy.`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `View used to render incident status`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default"},
+					},
+					&metadata.ActionParam{
+						Name:        "incident_id",
+						Description: `incident_id is a filter to only show action statuses that relate to a certain incident.`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "applied_policy_id",
+						Description: `applied_policy_id is a filter to only show action statuses that relate to a certain applied policy.`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name: "show",
+				Description: `Show retrieves the details of an action status.
+**`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/governance/projects/%s/action_status/%s",
+						Variables:  []string{"project_id", "id"},
+						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/action_status/([^/]+)`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `View used to render action status`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: `View used to render action status`,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    false,
+						ValidValues: []string{"default", "extended"},
+					},
+				},
+			},
+		},
+	},
 	"AppliedPolicy": &metadata.Resource{
 		Name: "AppliedPolicy",
 		Description: `Show retrieves the details of an applied policy.
@@ -90,7 +201,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "credentials",
-						Description: `credentials is the map of name and credential used to launch the policy.`,
+						Description: `credentials map of credentials to use. The key in the map is the credential name from the PolicyTemplate and the value is the credential identifier from the Credentials management page.`,
 						Type:        "map",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -176,7 +287,7 @@ var GenMetadata = map[string]*metadata.Resource{
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "credentials",
-						Description: `credentials is the map of name and credential used to launch the policy.`,
+						Description: `credentials map of credentials to use. The key in the map is the credential name from the PolicyTemplate and the value is the credential identifier from the Credentials management page.`,
 						Type:        "map[string]interface{}",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -827,8 +938,51 @@ var GenMetadata = map[string]*metadata.Resource{
 			},
 
 			&metadata.Action{
+				Name: "run_action",
+				Description: `RunAction executes any action listed in available_actions on an incident. It can run against all resources in an incident or only a selected amount, depending on passed in options. Actions will run in parallel.
+**`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/governance/projects/%s/incidents/%s/actions/%s/run_action",
+						Variables:  []string{"project_id", "incident_id", "action_id"},
+						Regexp:     regexp.MustCompile(`/api/governance/projects/([^/]+)/incidents/([^/]+)/actions/([^/]+)/run_action`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "options[][name]",
+						Description: `name of option`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+					&metadata.ActionParam{
+						Name:        "options[][value]",
+						Description: `value of option`,
+						Type:        "interface{}",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+				Payload: "IncidentRunAction",
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "options",
+						Description: `options lists the configuration options used to parameterize the policy.`,
+						Type:        "[]*ConfigurationOptionCreateType",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    false,
+					},
+				},
+			},
+
+			&metadata.Action{
 				Name: "index_escalations",
-				Description: `IndexEscalations retrieves the status details of all of the escalations for an incident.
+				Description: `IndexEscalations retrieves the status details of all of the escalations for an incident. This API method is deprecated and will no longer be updated as of July 30, 2020. Please use the index_statuses method instead.
 **`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
@@ -844,7 +998,7 @@ var GenMetadata = map[string]*metadata.Resource{
 
 			&metadata.Action{
 				Name: "index_resolutions",
-				Description: `IndexResolutions retrieves the status details of all of the resolutions for an incident.
+				Description: `IndexResolutions retrieves the status details of all of the resolutions for an incident. This API method is deprecated and will no longer be updated as of July 30, 2020. Please use the index_statuses method instead.
 **`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{

@@ -55,6 +55,131 @@ func (r *Href) ActionPath(rName, aName string) (*metadata.ActionPath, error) {
 	return action.URL(vars)
 }
 
+/****** ActionStatus ******/
+
+// Show retrieves the details of an action status.
+// **
+type ActionStatus struct {
+	FinishedAt *time.Time             `json:"finished_at,omitempty"`
+	Id         string                 `json:"id,omitempty"`
+	Kind       string                 `json:"kind,omitempty"`
+	Label      string                 `json:"label,omitempty"`
+	Name       string                 `json:"name,omitempty"`
+	Options    []*ConfigurationOption `json:"options,omitempty"`
+	RunBy      *User                  `json:"run_by,omitempty"`
+	StartedAt  *time.Time             `json:"started_at,omitempty"`
+	Status     string                 `json:"status,omitempty"`
+}
+
+//===== Locator
+
+// ActionStatusLocator exposes the ActionStatus resource actions.
+type ActionStatusLocator struct {
+	Href
+	api *API
+}
+
+// ActionStatusLocator builds a locator from the given href.
+func (api *API) ActionStatusLocator(href string) *ActionStatusLocator {
+	return &ActionStatusLocator{Href(href), api}
+}
+
+//===== Actions
+
+// GET /api/governance/projects/{project_id}/action_status
+//
+// Index returns a list of action statuses in a project.
+// **
+func (loc *ActionStatusLocator) Index(options rsapi.APIParams) (*ActionStatusList, error) {
+	var res *ActionStatusList
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var incidentIdOpt = options["incident_id"]
+	if incidentIdOpt != nil {
+		params["incident_id"] = incidentIdOpt
+	}
+	var appliedPolicyIdOpt = options["applied_policy_id"]
+	if appliedPolicyIdOpt != nil {
+		params["applied_policy_id"] = appliedPolicyIdOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ActionStatus", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /api/governance/projects/{project_id}/action_status/{id}
+//
+// Show retrieves the details of an action status.
+// **
+func (loc *ActionStatusLocator) Show(options rsapi.APIParams) (*ActionStatus, error) {
+	var res *ActionStatus
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("ActionStatus", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
 /****** AppliedPolicy ******/
 
 // Show retrieves the details of an applied policy.
@@ -950,9 +1075,45 @@ func (loc *IncidentLocator) Show(options rsapi.APIParams) (*Incident, error) {
 	return res, err
 }
 
+// POST /api/governance/projects/{project_id}/incidents/{incident_id}/actions/{action_id}/run_action
+//
+// RunAction executes any action listed in available_actions on an incident. It can run against all resources in an incident or only a selected amount, depending on passed in options. Actions will run in parallel.
+// **
+func (loc *IncidentLocator) RunAction(options rsapi.APIParams) error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{}
+	var optionsOpt = options["options"]
+	if optionsOpt != nil {
+		p["options"] = optionsOpt
+	}
+	uri, err := loc.ActionPath("Incident", "run_action")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
 // GET /api/governance/projects/{project_id}/incidents/{incident_id}/escalations
 //
-// IndexEscalations retrieves the status details of all of the escalations for an incident.
+// IndexEscalations retrieves the status details of all of the escalations for an incident. This API method is deprecated and will no longer be updated as of July 30, 2020. Please use the index_statuses method instead.
 // **
 func (loc *IncidentLocator) IndexEscalations() (*Escalations, error) {
 	var res *Escalations
@@ -990,7 +1151,7 @@ func (loc *IncidentLocator) IndexEscalations() (*Escalations, error) {
 
 // GET /api/governance/projects/{project_id}/incidents/{incident_id}/resolutions
 //
-// IndexResolutions retrieves the status details of all of the resolutions for an incident.
+// IndexResolutions retrieves the status details of all of the resolutions for an incident. This API method is deprecated and will no longer be updated as of July 30, 2020. Please use the index_statuses method instead.
 // **
 func (loc *IncidentLocator) IndexResolutions() (*Resolutions, error) {
 	var res *Resolutions
@@ -2161,6 +2322,13 @@ func (loc *PublishedTemplateLocator) Unhide() error {
 
 /****** Data Types ******/
 
+type ActionStatusList struct {
+	Count       int             `json:"count,omitempty"`
+	Items       []*ActionStatus `json:"items,omitempty"`
+	Kind        string          `json:"kind,omitempty"`
+	NotModified string          `json:"not_modified,omitempty"`
+}
+
 type ActionSummary struct {
 	FailedCount  int `json:"failed_count,omitempty"`
 	PendingCount int `json:"pending_count,omitempty"`
@@ -2382,6 +2550,10 @@ type IncidentList struct {
 	Items       []*Incident `json:"items,omitempty"`
 	Kind        string      `json:"kind,omitempty"`
 	NotModified string      `json:"not_modified,omitempty"`
+}
+
+type IncidentRunAction struct {
+	Options []*ConfigurationOptionCreateType `json:"options,omitempty"`
 }
 
 type IncidentSummary struct {
