@@ -17,11 +17,6 @@ env:
 # sudo=false makes the build run using a container
 sudo: false
 
-# This project uses a glide.lock file that is committed to the repository,
-# meaning that the contents of `vendor/` can be safely cached.
-cache:
-  - vendor
-
 # travis checks rsc out into github.com/rightscale/rsc but for release branches we really need it
 # in gopkg.in/rightscale/rsc-v1 so we have to manually move it, sigh
 before_install:
