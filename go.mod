@@ -23,6 +23,7 @@ require (
 	github.com/rlmcpherson/s3gof3r v0.5.0 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/stretchr/testify v1.5.1 // indirect
-	golang.org/x/tools v0.0.0-20200601175630-2caf76543d99 // indirect
+	github.com/tylercasper/govers v0.0.0-20200611001233-bb9e6c444010 // indirect
+	golang.org/x/tools v0.0.0-20200611134948-54cf04ef09c8 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.4
 )

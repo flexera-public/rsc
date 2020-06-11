@@ -182,7 +182,7 @@ clean:
 	rm -rf build
 	rm -f version.go httpclient/user_agent.go
 
-lint:
+lint: check-govers
 	@if gofmt -l *.go */*.go 2>&1 | grep .go; then \
 	  echo "^- Repo contains improperly formatted go files; run gofmt -w *.go */*.go" && exit 1; \
 	  else echo "All .go files formatted correctly"; fi
