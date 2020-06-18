@@ -30,7 +30,7 @@ after releasing.
 Once the release branch has been pushed and the CI job completes:
 * Download the binary, run `rsc --version` and make sure the correct version is displayed, on Linux:
 ```
-curl https://binaries.rightscale.com/rsbin/rsc/v8/rsc-linux-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
+curl https://binaries.rightscale.com/rsbin/rsc/v8.1/rsc-linux-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 chmod +x ./rsc
 ./rsc --version
 ```
