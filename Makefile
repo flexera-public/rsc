@@ -35,21 +35,15 @@ BUCKET=rightscale-binaries
 ACL=public-read
 # version for gopkg.in, e.g. v1, v2, ...
 GOPKG_VERS=v8
-GLIDE_VERSION?=v0.13.3
 GOOS=$(shell go env GOOS)
 GOARCH=$(shell go env GOARCH)
-ifeq (windows,$(GOOS))
-GLIDE_EXEC=glide-$(GLIDE_VERSION).exe
-else
-GLIDE_EXEC=glide-$(GLIDE_VERSION)
-endif
-# Dependencies not handled by glide, i.e. that are used to build/test/upload this puppy
+# Dependencies used to build/test/upload this puppy
 DEPEND=golang.org/x/tools/cmd/cover \
 			github.com/onsi/ginkgo \
 			github.com/onsi/ginkgo/ginkgo \
 			github.com/golang/protobuf/proto \
 			github.com/rlmcpherson/s3gof3r/gof3r \
-			github.com/rogpeppe/govers
+			github.com/tylercasper/govers
 
 #=== below this line ideally remains unchanged, add new targets at the end  ===
 
@@ -177,20 +171,11 @@ check-govers:
 	@echo "not a release branch: not checking import constraints"
 endif
 
-bin/$(GLIDE_EXEC):
-	mkdir -p tmp bin
-	curl -sSfL --tlsv1 --connect-timeout 30 --max-time 180 --retry 3 \
-		-o tmp/glide.tar.gz https://github.com/Masterminds/glide/releases/download/$(GLIDE_VERSION)/glide-$(GLIDE_VERSION)-$(GOOS)-$(GOARCH).tar.gz
-	cd tmp && tar zxvf glide.tar.gz
-	mv tmp/$(GOOS)-$(GOARCH)/glide* bin/$(GLIDE_EXEC)
-	rm -rf tmp
-
 # Installing build dependencies is a bit of a mess. Don't want to spend lots of time in
 # Travis doing this. The following just relies on go get no reinstalling when it's already
 # there, like your laptop.
-depend: bin/$(GLIDE_EXEC)
+depend:
 	go get $(DEPEND)
-	./bin/$(GLIDE_EXEC) install --cache
 
 
 clean:

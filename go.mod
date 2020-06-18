@@ -21,9 +21,9 @@ require (
 	github.com/onsi/gomega v1.10.1
 	github.com/rightscale/go-jsonselect v0.0.0-20150427163236-d04eebe26072
 	github.com/rlmcpherson/s3gof3r v0.5.0 // indirect
-	github.com/rogpeppe/govers v0.0.0-20160623113756-77fd787551fc // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/stretchr/testify v1.5.1 // indirect
-	golang.org/x/tools v0.0.0-20200530233709-52effbd89c51 // indirect
+	github.com/tylercasper/govers v0.0.0-20200611001233-bb9e6c444010 // indirect
+	golang.org/x/tools v0.0.0-20200611134948-54cf04ef09c8 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.4
 )
