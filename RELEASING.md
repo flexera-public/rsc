@@ -40,10 +40,10 @@ mkdir tmp
 export SAVED_GOPATH=$GOPATH
 export GOPATH=`pwd`/tmp
 go get gopkg.in/rightscale/rsc.v8
-cd tmp/src/gopkg.in/rightscale/rsc.v8
+cd tmp/pkg/mod/gopkg.in/rightscale/rsc.v8
 git log -2
 export GOPATH=$SAVED_GOPATH
-cd ../../../../..
+cd ../../../../../..
 rm -rf tmp
 ```
 
