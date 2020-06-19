@@ -34,7 +34,7 @@ NAME=rsc
 BUCKET=rightscale-binaries
 ACL=public-read
 # version for gopkg.in, e.g. v1, v2, ...
-GOPKG_VERS=v8.1.0
+GOPKG_VERS=v8
 GOOS=$(shell go env GOOS)
 GOARCH=$(shell go env GOARCH)
 # Dependencies used to build/test/upload this puppy
