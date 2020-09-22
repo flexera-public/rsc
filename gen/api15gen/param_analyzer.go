@@ -8,7 +8,7 @@ import (
 
 	"github.com/rightscale/rsc/gen"
 
-	"bitbucket.org/pkg/inflect"
+	"github.com/go-openapi/inflect"
 )
 
 var (

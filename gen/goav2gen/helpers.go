@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"bitbucket.org/pkg/inflect"
+	"github.com/go-openapi/inflect"
 	"github.com/rightscale/rsc/gen"
 )
 
