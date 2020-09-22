@@ -16,7 +16,7 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 
 	// phoney reference to make Godep pull this in for the code generators
-	_ "bitbucket.org/pkg/inflect"
+	_ "github.com/go-openapi/inflect"
 )
 
 // Command line client entry point.

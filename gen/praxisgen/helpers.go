@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"bitbucket.org/pkg/inflect"
+	"github.com/go-openapi/inflect"
 )
 
 var (
