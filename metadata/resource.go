@@ -10,6 +10,7 @@ import (
 type Resource struct {
 	Name        string
 	Description string
+	Attributes  []*Attribute
 	Actions     []*Action
 	Identifier  string
 	Links       map[string]string
