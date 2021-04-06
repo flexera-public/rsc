@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"bitbucket.org/pkg/inflect"
+	"github.com/go-openapi/inflect"
 	"github.com/rightscale/rsc/gen"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
