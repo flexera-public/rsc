@@ -56,6 +56,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (>= 6.0.1)
   attributor
   praxis
-  rake
+  rake (~> 12.3.3)
+
+BUNDLED WITH
+   2.2.15
