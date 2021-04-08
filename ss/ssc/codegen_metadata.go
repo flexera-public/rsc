@@ -23,6 +23,49 @@ var GenMetadata = map[string]*metadata.Resource{
 The Self-Service portal uses some of these preferences in the portal itself, and this resource allows you to extend the settings
 to use in your own integration.`,
 		Identifier: "application/vnd.rightscale.self_service.account_preference",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "group_name",
+				FieldName: "GroupName",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "value",
+				FieldName: "Value",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -162,6 +205,103 @@ resource in Designer.
 In the Self-Service portal, an Application is equivalent to an item in the Catalog. Most users have access to these Application resources
 and can launch them to create Executions in the Manager application.`,
 		Identifier: "application/vnd.rightscale.self_service.application",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "compilation_href",
+				FieldName: "CompilationHref",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "compiled_cat",
+				FieldName: "CompiledCat",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "compiler_ver",
+				FieldName: "CompilerVer",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "long_description",
+				FieldName: "LongDescription",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "parameters",
+				FieldName: "Parameters",
+				FieldType: "[]*Parameter",
+			},
+
+			&metadata.Attribute{
+				Name:      "required_parameters",
+				FieldName: "RequiredParameters",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "schedule_required",
+				FieldName: "ScheduleRequired",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "schedules",
+				FieldName: "Schedules",
+				FieldType: "[]*Schedule",
+			},
+
+			&metadata.Attribute{
+				Name:      "short_description",
+				FieldName: "ShortDescription",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "template_info",
+				FieldName: "TemplateInfo",
+				FieldType: "*TemplateInfo",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1498,6 +1638,55 @@ and can launch them to create Executions in the Manager application.`,
 		Name:        "EndUser",
 		Description: ``,
 		Identifier:  "application/vnd.rightscale.self_service.end_user",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "company",
+				FieldName: "Company",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "first_name",
+				FieldName: "FirstName",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "last_name",
+				FieldName: "LastName",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "phone",
+				FieldName: "Phone",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "timezone_name",
+				FieldName: "TimezoneName",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1624,6 +1813,67 @@ and can launch them to create Executions in the Manager application.`,
         corresponds to a user (for now) and a minimum severity used to filter
         out events with lower severities.`,
 		Identifier: "application/vnd.rightscale.self_service.notification_rule",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "account_id",
+				FieldName: "AccountId",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "min_severity",
+				FieldName: "MinSeverity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "priority",
+				FieldName: "Priority",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "source",
+				FieldName: "Source",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "target",
+				FieldName: "Target",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1966,6 +2216,55 @@ and can launch them to create Executions in the Manager application.`,
 		Description: `The UserPreference resource stores preferences on a per user basis, such as default notification preference.
 The Self-Service portal uses these preferences in the portal.`,
 		Identifier: "application/vnd.rightscale.self_service.user_preference",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "user_id",
+				FieldName: "UserId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "user_preference_info",
+				FieldName: "UserPreferenceInfo",
+				FieldType: "*UserPreferenceInfo",
+			},
+
+			&metadata.Attribute{
+				Name:      "value",
+				FieldName: "Value",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -2194,6 +2493,73 @@ Values are validated with the corresponding UserPreferenceInfo.`,
 		Description: `The UserPreferenceInfo resource defines the available user preferences supported by the system.
 It is also used to validate values saved in UserPreference.`,
 		Identifier: "application/vnd.rightscale.self_service.user_preference_info",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "default_value",
+				FieldName: "DefaultValue",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "display_name",
+				FieldName: "DisplayName",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "help_text",
+				FieldName: "HelpText",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "value_constraint",
+				FieldName: "ValueConstraint",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "value_range",
+				FieldName: "ValueRange",
+				FieldType: "*ValueRangeStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "value_type",
+				FieldName: "ValueType",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

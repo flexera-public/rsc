@@ -22,6 +22,61 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of an action status.
 **`,
 		Identifier: "application/vnd.rightscale.action_status",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "finished_at",
+				FieldName: "FinishedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "label",
+				FieldName: "Label",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "options",
+				FieldName: "Options",
+				FieldType: "[]*ConfigurationOption",
+			},
+
+			&metadata.Attribute{
+				Name:      "run_by",
+				FieldName: "RunBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "started_at",
+				FieldName: "StartedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "status",
+				FieldName: "Status",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -133,6 +188,163 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of an applied policy.
 **`,
 		Identifier: "application/vnd.rightscale.applied_policy",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_at",
+				FieldName: "CreatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "credentials",
+				FieldName: "Credentials",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "doc_link",
+				FieldName: "DocLink",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "dry_run",
+				FieldName: "DryRun",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "error",
+				FieldName: "Error",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "errored_at",
+				FieldName: "ErroredAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "frequency",
+				FieldName: "Frequency",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "incident_aggregate_id",
+				FieldName: "IncidentAggregateId",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "info",
+				FieldName: "Info",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "options",
+				FieldName: "Options",
+				FieldType: "[]*ConfigurationOption",
+			},
+
+			&metadata.Attribute{
+				Name:      "policy_aggregate_id",
+				FieldName: "PolicyAggregateId",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "policy_template",
+				FieldName: "PolicyTemplate",
+				FieldType: "*PolicyTemplateLink",
+			},
+
+			&metadata.Attribute{
+				Name:      "project",
+				FieldName: "Project",
+				FieldType: "*Project",
+			},
+
+			&metadata.Attribute{
+				Name:      "published_template",
+				FieldName: "PublishedTemplate",
+				FieldType: "*PublishedTemplateLink",
+			},
+
+			&metadata.Attribute{
+				Name:      "scope",
+				FieldName: "Scope",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "severity",
+				FieldName: "Severity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "skip_approvals",
+				FieldName: "SkipApprovals",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "status",
+				FieldName: "Status",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_at",
+				FieldName: "UpdatedAt",
+				FieldType: "*time.Time",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -468,6 +680,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Approval",
 		Description: ``,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -689,6 +902,127 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of an archived incident.
 **`,
 		Identifier: "application/vnd.rightscale.archived_incident",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "action_failed",
+				FieldName: "ActionFailed",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "applied_policy",
+				FieldName: "AppliedPolicy",
+				FieldType: "*AppliedPolicyLink",
+			},
+
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_at",
+				FieldName: "CreatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "dry_run",
+				FieldName: "DryRun",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "etag",
+				FieldName: "Etag",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "not_modified",
+				FieldName: "NotModified",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "options",
+				FieldName: "Options",
+				FieldType: "[]*ConfigurationOption",
+			},
+
+			&metadata.Attribute{
+				Name:      "project",
+				FieldName: "Project",
+				FieldType: "*Project",
+			},
+
+			&metadata.Attribute{
+				Name:      "resolution_message",
+				FieldName: "ResolutionMessage",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "resolved_at",
+				FieldName: "ResolvedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "resolved_by",
+				FieldName: "ResolvedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "severity",
+				FieldName: "Severity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "state",
+				FieldName: "State",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "summary",
+				FieldName: "Summary",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_at",
+				FieldName: "UpdatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "violation_data_count",
+				FieldName: "ViolationDataCount",
+				FieldType: "int",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -832,6 +1166,133 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of an incident.
 **`,
 		Identifier: "application/vnd.rightscale.incident",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "action_failed",
+				FieldName: "ActionFailed",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "applied_policy",
+				FieldName: "AppliedPolicy",
+				FieldType: "*AppliedPolicyLink",
+			},
+
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_at",
+				FieldName: "CreatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "dry_run",
+				FieldName: "DryRun",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "etag",
+				FieldName: "Etag",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "incident_aggregate_id",
+				FieldName: "IncidentAggregateId",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "not_modified",
+				FieldName: "NotModified",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "options",
+				FieldName: "Options",
+				FieldType: "[]*ConfigurationOption",
+			},
+
+			&metadata.Attribute{
+				Name:      "project",
+				FieldName: "Project",
+				FieldType: "*Project",
+			},
+
+			&metadata.Attribute{
+				Name:      "resolution_message",
+				FieldName: "ResolutionMessage",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "resolved_at",
+				FieldName: "ResolvedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "resolved_by",
+				FieldName: "ResolvedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "severity",
+				FieldName: "Severity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "state",
+				FieldName: "State",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "summary",
+				FieldName: "Summary",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_at",
+				FieldName: "UpdatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "violation_data_count",
+				FieldName: "ViolationDataCount",
+				FieldType: "int",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -1034,6 +1495,103 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of an aggregate.
 **`,
 		Identifier: "application/vnd.rightscale.incident_aggregate",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "action_summary",
+				FieldName: "ActionSummary",
+				FieldType: "*ActionSummary",
+			},
+
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "count",
+				FieldName: "Count",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_at",
+				FieldName: "CreatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "dry_run",
+				FieldName: "DryRun",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "incident_summary",
+				FieldName: "IncidentSummary",
+				FieldType: "*IncidentSummary",
+			},
+
+			&metadata.Attribute{
+				Name:      "items",
+				FieldName: "Items",
+				FieldType: "[]*IncidentAggregateItem",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "not_modified",
+				FieldName: "NotModified",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "org",
+				FieldName: "Org",
+				FieldType: "*Org",
+			},
+
+			&metadata.Attribute{
+				Name:      "policy_aggregate",
+				FieldName: "PolicyAggregate",
+				FieldType: "*PolicyAggregateLink",
+			},
+
+			&metadata.Attribute{
+				Name:      "severity",
+				FieldName: "Severity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "state",
+				FieldName: "State",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_at",
+				FieldName: "UpdatedAt",
+				FieldType: "*time.Time",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -1149,6 +1707,181 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of a policy aggregate.
 **`,
 		Identifier: "application/vnd.rightscale.policy_aggregate",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "active_count",
+				FieldName: "ActiveCount",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "count",
+				FieldName: "Count",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_at",
+				FieldName: "CreatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "credentials",
+				FieldName: "Credentials",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "doc_link",
+				FieldName: "DocLink",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "dry_run",
+				FieldName: "DryRun",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "error_count",
+				FieldName: "ErrorCount",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "errors",
+				FieldName: "Errors",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "excluded_project_ids",
+				FieldName: "ExcludedProjectIds",
+				FieldType: "[]int",
+			},
+
+			&metadata.Attribute{
+				Name:      "frequency",
+				FieldName: "Frequency",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "incident_aggregate_href",
+				FieldName: "IncidentAggregateHref",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "info",
+				FieldName: "Info",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "items",
+				FieldName: "Items",
+				FieldType: "[]*PolicyAggregateItem",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "options",
+				FieldName: "Options",
+				FieldType: "[]*ConfigurationOption",
+			},
+
+			&metadata.Attribute{
+				Name:      "org",
+				FieldName: "Org",
+				FieldType: "*Org",
+			},
+
+			&metadata.Attribute{
+				Name:      "project_ids",
+				FieldName: "ProjectIds",
+				FieldType: "[]int",
+			},
+
+			&metadata.Attribute{
+				Name:      "published_template",
+				FieldName: "PublishedTemplate",
+				FieldType: "*PublishedTemplateLink",
+			},
+
+			&metadata.Attribute{
+				Name:      "running_project_ids",
+				FieldName: "RunningProjectIds",
+				FieldType: "[]int",
+			},
+
+			&metadata.Attribute{
+				Name:      "severity",
+				FieldName: "Severity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "skip_approvals",
+				FieldName: "SkipApprovals",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "status",
+				FieldName: "Status",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_at",
+				FieldName: "UpdatedAt",
+				FieldType: "*time.Time",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -1505,6 +2238,121 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of a policy template.
 **`,
 		Identifier: "application/vnd.rightscale.policy_template",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_at",
+				FieldName: "CreatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "default_frequency",
+				FieldName: "DefaultFrequency",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "doc_link",
+				FieldName: "DocLink",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "fingerprint",
+				FieldName: "Fingerprint",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "info",
+				FieldName: "Info",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "project_id",
+				FieldName: "ProjectId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "required_roles",
+				FieldName: "RequiredRoles",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "rs_pt_ver",
+				FieldName: "RsPtVer",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "severity",
+				FieldName: "Severity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "short_description",
+				FieldName: "ShortDescription",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "tenancy",
+				FieldName: "Tenancy",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_at",
+				FieldName: "UpdatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_by",
+				FieldName: "UpdatedBy",
+				FieldType: "*User",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",
@@ -1828,6 +2676,169 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Show retrieves the details of a published template.
 **`,
 		Identifier: "application/vnd.rightscale.published_template",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "built_in",
+				FieldName: "BuiltIn",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_at",
+				FieldName: "CreatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "default_frequency",
+				FieldName: "DefaultFrequency",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "doc_link",
+				FieldName: "DocLink",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "fingerprint",
+				FieldName: "Fingerprint",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "hidden",
+				FieldName: "Hidden",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "hidden_at",
+				FieldName: "HiddenAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "hidden_by",
+				FieldName: "HiddenBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "info",
+				FieldName: "Info",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "org_id",
+				FieldName: "OrgId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "policy_template_fingerprint",
+				FieldName: "PolicyTemplateFingerprint",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "policy_template_id",
+				FieldName: "PolicyTemplateId",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "policy_template_url",
+				FieldName: "PolicyTemplateUrl",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "project_id",
+				FieldName: "ProjectId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "required_roles",
+				FieldName: "RequiredRoles",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "rs_pt_ver",
+				FieldName: "RsPtVer",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "severity",
+				FieldName: "Severity",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "short_description",
+				FieldName: "ShortDescription",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "tenancy",
+				FieldName: "Tenancy",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_at",
+				FieldName: "UpdatedAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "updated_by",
+				FieldName: "UpdatedBy",
+				FieldType: "*User",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "index",

@@ -31,6 +31,199 @@ result of running an Operation on an Execution. For example, if a Server is repl
 instead of through Self-Service, the new Server's information won' be available in
 Self-Service.`,
 		Identifier: "application/vnd.rightscale.self_service.execution",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "api_resources",
+				FieldName: "ApiResources",
+				FieldType: "[]*Resource",
+			},
+
+			&metadata.Attribute{
+				Name:      "available_actions",
+				FieldName: "AvailableActions",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "available_operations",
+				FieldName: "AvailableOperations",
+				FieldType: "[]*OperationDefinition",
+			},
+
+			&metadata.Attribute{
+				Name:      "available_operations_info",
+				FieldName: "AvailableOperationsInfo",
+				FieldType: "[]*OperationInfo",
+			},
+
+			&metadata.Attribute{
+				Name:      "compilation_href",
+				FieldName: "CompilationHref",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "configuration_options",
+				FieldName: "ConfigurationOptions",
+				FieldType: "[]*ConfigurationOption",
+			},
+
+			&metadata.Attribute{
+				Name:      "cost",
+				FieldName: "Cost",
+				FieldType: "*CostStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "current_schedule",
+				FieldName: "CurrentSchedule",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "dependencies",
+				FieldName: "Dependencies",
+				FieldType: "[]*CatDependency",
+			},
+
+			&metadata.Attribute{
+				Name:      "deployment",
+				FieldName: "Deployment",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "deployment_url",
+				FieldName: "DeploymentUrl",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "ends_at",
+				FieldName: "EndsAt",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "latest_notification",
+				FieldName: "LatestNotification",
+				FieldType: "*Notification",
+			},
+
+			&metadata.Attribute{
+				Name:      "latest_notifications",
+				FieldName: "LatestNotifications",
+				FieldType: "[]*Notification",
+			},
+
+			&metadata.Attribute{
+				Name:      "launched_from",
+				FieldName: "LaunchedFrom",
+				FieldType: "*LaunchedFrom",
+			},
+
+			&metadata.Attribute{
+				Name:      "launched_from_summary",
+				FieldName: "LaunchedFromSummary",
+				FieldType: "map[string]interface{}",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*ExecutionLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "next_action",
+				FieldName: "NextAction",
+				FieldType: "*ScheduledAction",
+			},
+
+			&metadata.Attribute{
+				Name:      "outputs",
+				FieldName: "Outputs",
+				FieldType: "[]*Output",
+			},
+
+			&metadata.Attribute{
+				Name:      "running_operations",
+				FieldName: "RunningOperations",
+				FieldType: "[]*Operation",
+			},
+
+			&metadata.Attribute{
+				Name:      "schedule_required",
+				FieldName: "ScheduleRequired",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "scheduled",
+				FieldName: "Scheduled",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "schedules",
+				FieldName: "Schedules",
+				FieldType: "[]*Schedule",
+			},
+
+			&metadata.Attribute{
+				Name:      "source",
+				FieldName: "Source",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "status",
+				FieldName: "Status",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1627,6 +1820,61 @@ Note: using this option only deletes the CloudApp from Self-Service and does not
 these Notifications are the start and completion of Operations. Currently notifications are only
 available via the API/UI and are not distributed externally to users.`,
 		Identifier: "application/vnd.rightscale.self_service.notification",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "category",
+				FieldName: "Category",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "execution",
+				FieldName: "Execution",
+				FieldType: "*Execution",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*NotificationLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "message",
+				FieldName: "Message",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "read",
+				FieldName: "Read",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1703,6 +1951,73 @@ When a CloudApp is launched, a sequence of Operations is run as [explained here]
 While a CloudApp is running, users may launch any custom Operations as defined in the CAT.
 Once a CAT is Terminated, a sequence of Operations is run as [explained here](http://docs.rightscale.com/ss/reference/ss_CAT_file_language.html#operations) in the Operations section`,
 		Identifier: "application/vnd.rightscale.self_service.operation",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "configuration_options",
+				FieldName: "ConfigurationOptions",
+				FieldType: "[]*ConfigurationOption",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "execution",
+				FieldName: "Execution",
+				FieldType: "*Execution",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "label",
+				FieldName: "Label",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*OperationLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "status",
+				FieldName: "Status",
+				FieldType: "*StatusStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1914,6 +2229,103 @@ Once a CAT is Terminated, a sequence of Operations is run as [explained here](ht
 Recurrence Rules are based off of the [RFC 5545](https://tools.ietf.org/html/rfc5545) iCal spec, and timezones are from the standard [tzinfo database](http://www.iana.org/time-zones).
 All DateTimes must be passed in [ISO-8601 format](https://en.wikipedia.org/wiki/ISO_8601)`,
 		Identifier: "application/vnd.rightscale.self_service.scheduled_action",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "action",
+				FieldName: "Action",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "execution",
+				FieldName: "Execution",
+				FieldType: "*Execution",
+			},
+
+			&metadata.Attribute{
+				Name:      "execution_schedule",
+				FieldName: "ExecutionSchedule",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "first_occurrence",
+				FieldName: "FirstOccurrence",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*ScheduledActionLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "next_occurrence",
+				FieldName: "NextOccurrence",
+				FieldType: "*time.Time",
+			},
+
+			&metadata.Attribute{
+				Name:      "operation",
+				FieldName: "Operation",
+				FieldType: "*OperationStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "recurrence",
+				FieldName: "Recurrence",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "recurrence_description",
+				FieldName: "RecurrenceDescription",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "timezone",
+				FieldName: "Timezone",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
