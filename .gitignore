@@ -21,3 +21,4 @@ vendor/
 .glide/
 .idea/
 .DS_Store
+.vscode
