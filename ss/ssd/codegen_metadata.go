@@ -22,6 +22,61 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `A Schedule represents a recurring period during which a CloudApp should be running. It must have a unique name and an optional description. The recurrence rules follow the [Recurrence Rule format](https://tools.ietf.org/html/rfc5545#section-3.8.5.3).
 Multiple Schedules can be associated with a Template when published to the Catalog. Users will be able to launch the resulting CloudApp with one of the associated schedule. Updating or deleting a Schedule will not affect CloudApps that were published with that Schedule.`,
 		Identifier: "application/vnd.rightscale.self_service.schedule",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "start_recurrence",
+				FieldName: "StartRecurrence",
+				FieldType: "*Recurrence",
+			},
+
+			&metadata.Attribute{
+				Name:      "stop_recurrence",
+				FieldName: "StopRecurrence",
+				FieldType: "*Recurrence",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -343,6 +398,145 @@ published to the Catalog.
 CAT files are uniquely identified by the name of the CloudApplication, which is specified as the "name"
 attribute inside of a CAT file.`,
 		Identifier: "application/vnd.rightscale.self_service.template",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "application_info",
+				FieldName: "ApplicationInfo",
+				FieldType: "*ApplicationInfo",
+			},
+
+			&metadata.Attribute{
+				Name:      "compilation_href",
+				FieldName: "CompilationHref",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "compiled_cat",
+				FieldName: "CompiledCat",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "created_by",
+				FieldName: "CreatedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "dependencies",
+				FieldName: "Dependencies",
+				FieldType: "[]*CatDependency",
+			},
+
+			&metadata.Attribute{
+				Name:      "dependents",
+				FieldName: "Dependents",
+				FieldType: "[]*CatDependency",
+			},
+
+			&metadata.Attribute{
+				Name:      "filename",
+				FieldName: "Filename",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "imports",
+				FieldName: "Imports",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "long_description",
+				FieldName: "LongDescription",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "package",
+				FieldName: "Package",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "parameters",
+				FieldName: "Parameters",
+				FieldType: "[]*Parameter",
+			},
+
+			&metadata.Attribute{
+				Name:      "published_by",
+				FieldName: "PublishedBy",
+				FieldType: "*User",
+			},
+
+			&metadata.Attribute{
+				Name:      "required_parameters",
+				FieldName: "RequiredParameters",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "rs_ca_ver",
+				FieldName: "RsCaVer",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "short_description",
+				FieldName: "ShortDescription",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "source",
+				FieldName: "Source",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "source_href",
+				FieldName: "SourceHref",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "stale",
+				FieldName: "Stale",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

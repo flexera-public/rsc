@@ -23,6 +23,31 @@ var GenMetadata = map[string]*metadata.Resource{
         any number of accounts, but when performing an action, a user is
         operating under a particular account.`,
 		Identifier: "application/vnd.rightscale.account",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -101,6 +126,43 @@ var GenMetadata = map[string]*metadata.Resource{
         You must have registered a cloud within your account in order to use
         it.`,
 		Identifier: "application/vnd.rightscale.cloud",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "cloud_type",
+				FieldName: "CloudType",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -180,6 +242,49 @@ var GenMetadata = map[string]*metadata.Resource{
         multiple datacenters can provide fault tolerance when one datacenter
         has a problem.`,
 		Identifier: "application/vnd.rightscale.datacenter",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*DatacenterLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -272,6 +377,73 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Deployments provide a way to group resources that logically belong
         together.`,
 		Identifier: "application/vnd.rightscale.deployment",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "instances",
+				FieldName: "Instances",
+				FieldType: "[]*Instance",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*DeploymentLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "locked",
+				FieldName: "Locked",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "server_arrays",
+				FieldName: "ServerArrays",
+				FieldType: "[]*ServerArray",
+			},
+
+			&metadata.Attribute{
+				Name:      "servers",
+				FieldName: "Servers",
+				FieldType: "[]*Server",
+			},
+
+			&metadata.Attribute{
+				Name:      "tags",
+				FieldName: "Tags",
+				FieldType: "[]string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -368,6 +540,97 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Images define the initial Operating System and root disk contents
         for new instances.`,
 		Identifier: "application/vnd.rightscale.image",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "cpu_architecture",
+				FieldName: "CpuArchitecture",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "image_type",
+				FieldName: "ImageType",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "inherited_source",
+				FieldName: "InheritedSource",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*ImageLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "os_platform",
+				FieldName: "OsPlatform",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "resource_uid",
+				FieldName: "ResourceUid",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "root_device_storage",
+				FieldName: "RootDeviceStorage",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "virtualization_type",
+				FieldName: "VirtualizationType",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "visibility",
+				FieldName: "Visibility",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -488,6 +751,175 @@ var GenMetadata = map[string]*metadata.Resource{
         generally represent an existing running (or provisioned) virtual
         machine existing in the cloud.`,
 		Identifier: "application/vnd.rightscale.instance",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "actions",
+				FieldName: "Actions",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "ip_addresses",
+				FieldName: "IpAddresses",
+				FieldType: "[]*IpAddress",
+			},
+
+			&metadata.Attribute{
+				Name:      "is_next",
+				FieldName: "IsNext",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*InstanceLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "locked",
+				FieldName: "Locked",
+				FieldType: "bool",
+			},
+
+			&metadata.Attribute{
+				Name:      "monitoring_id",
+				FieldName: "MonitoringId",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "monitoring_server",
+				FieldName: "MonitoringServer",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "monitoring_token",
+				FieldName: "MonitoringToken",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "networks",
+				FieldName: "Networks",
+				FieldType: "[]*Network",
+			},
+
+			&metadata.Attribute{
+				Name:      "os_platform",
+				FieldName: "OsPlatform",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "private_dns_names",
+				FieldName: "PrivateDnsNames",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "private_ip_addresses",
+				FieldName: "PrivateIpAddresses",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "public_dns_names",
+				FieldName: "PublicDnsNames",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "public_ip_addresses",
+				FieldName: "PublicIpAddresses",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "resource_uid",
+				FieldName: "ResourceUid",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "security_groups",
+				FieldName: "SecurityGroups",
+				FieldType: "*SecurityGroupCollection",
+			},
+
+			&metadata.Attribute{
+				Name:      "server_template",
+				FieldName: "ServerTemplate",
+				FieldType: "*ServerTemplate",
+			},
+
+			&metadata.Attribute{
+				Name:      "ssh_host",
+				FieldName: "SshHost",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "state",
+				FieldName: "State",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "subnets",
+				FieldName: "Subnets",
+				FieldType: "*SubnetCollection",
+			},
+
+			&metadata.Attribute{
+				Name:      "tags",
+				FieldName: "Tags",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "timestamps",
+				FieldName: "Timestamps",
+				FieldType: "*TimestampsStruct",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -663,6 +1095,67 @@ var GenMetadata = map[string]*metadata.Resource{
         well-known set of options makes instances easier to manage, and allows
         better allocation efficiency into physical hosts.`,
 		Identifier: "application/vnd.rightscale.instance_type",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "cpu_count",
+				FieldName: "CpuCount",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "cpu_speed",
+				FieldName: "CpuSpeed",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*InstanceTypeLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "memory",
+				FieldName: "Memory",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -755,6 +1248,49 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        An IpAddress provides an abstraction for IPv4 addresses bindable to
         Instance resources running in a Cloud.`,
 		Identifier: "application/vnd.rightscale.ip_address",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "address",
+				FieldName: "Address",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*IpAddressLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -848,6 +1384,55 @@ var GenMetadata = map[string]*metadata.Resource{
         to an instance. The IpAddress is bound immediately for a current
         instance, or on launch for a next instance.`,
 		Identifier: "application/vnd.rightscale.ip_address_binding",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*IpAddressBindingLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "private_port",
+				FieldName: "PrivatePort",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "protocol",
+				FieldName: "Protocol",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "public_port",
+				FieldName: "PublicPort",
+				FieldType: "int",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -945,6 +1530,49 @@ var GenMetadata = map[string]*metadata.Resource{
         which image should be used when a server is launched in a particular
         cloud.`,
 		Identifier: "application/vnd.rightscale.multi_cloud_image",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "inherited_source",
+				FieldName: "InheritedSource",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "version",
+				FieldName: "Version",
+				FieldType: "int",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1021,6 +1649,49 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Network",
 		Description: `        A Network is a logical grouping of network devices.`,
 		Identifier:  "application/vnd.rightscale.network",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*NetworkLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1101,6 +1772,37 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        Just like their physical counterparts, NetworkInterfaces join other
         resources to a network.`,
 		Identifier: "application/vnd.rightscale.network_interface",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*NetworkInterfaceLinks",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1181,6 +1883,31 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        NetworkInterfaceAttachments represent an attachment between a
         NetworkInterface and another resource.`,
 		Identifier: "application/vnd.rightscale.network_interface_attachment",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*NetworkInterfaceAttachmentLinks",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1262,6 +1989,49 @@ var GenMetadata = map[string]*metadata.Resource{
         of firewall rules for different ports and source IP addresses, as well
         as trust relationships between security groups.`,
 		Identifier: "application/vnd.rightscale.security_group",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*SecurityGroupLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1372,6 +2142,73 @@ var GenMetadata = map[string]*metadata.Resource{
         instance launch/start (therefore they have no effect until such
         operation is performed).`,
 		Identifier: "application/vnd.rightscale.server",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "actions",
+				FieldName: "Actions",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "current_instance",
+				FieldName: "CurrentInstance",
+				FieldType: "*Instance",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "instance",
+				FieldName: "Instance",
+				FieldType: "*Instance",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*ServerLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "next_instance",
+				FieldName: "NextInstance",
+				FieldType: "*Instance",
+			},
+
+			&metadata.Attribute{
+				Name:      "tags",
+				FieldName: "Tags",
+				FieldType: "[]string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1463,6 +2300,73 @@ var GenMetadata = map[string]*metadata.Resource{
         configuration for the next instance that is to be launched in the array
         and will therefore not affect any of the currently running instances.`,
 		Identifier: "application/vnd.rightscale.server_array",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "actions",
+				FieldName: "Actions",
+				FieldType: "[]string",
+			},
+
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "instance_summary",
+				FieldName: "InstanceSummary",
+				FieldType: "*InstanceSummaryStruct",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*ServerArrayLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "next_instance",
+				FieldName: "NextInstance",
+				FieldType: "*Instance",
+			},
+
+			&metadata.Attribute{
+				Name:      "state",
+				FieldName: "State",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "tags",
+				FieldName: "Tags",
+				FieldType: "[]string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1553,6 +2457,43 @@ var GenMetadata = map[string]*metadata.Resource{
         merely a string to locate all revisions of a ServerTemplate and NOT a
         working URL)`,
 		Identifier: "application/vnd.rightscale.server_template",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "version",
+				FieldName: "Version",
+				FieldType: "int",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1629,6 +2570,43 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "SshKey",
 		Description: `        Ssh Keys represent a created SSH Key that exists in the cloud.`,
 		Identifier:  "application/vnd.rightscale.ssh_key",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "fingerprint",
+				FieldName: "Fingerprint",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "resource_uid",
+				FieldName: "ResourceUid",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -1718,6 +2696,49 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `        A Subnet is a logical grouping of network devices. An Instance can have
         many Subnets.`,
 		Identifier: "application/vnd.rightscale.subnet",
+		Attributes: []*metadata.Attribute{
+			&metadata.Attribute{
+				Name:      "description",
+				FieldName: "Description",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "href",
+				FieldName: "Href",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "id",
+				FieldName: "Id",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "kind",
+				FieldName: "Kind",
+				FieldType: "string",
+			},
+
+			&metadata.Attribute{
+				Name:      "legacy_id",
+				FieldName: "LegacyId",
+				FieldType: "int",
+			},
+
+			&metadata.Attribute{
+				Name:      "links",
+				FieldName: "Links",
+				FieldType: "*SubnetLinks",
+			},
+
+			&metadata.Attribute{
+				Name:      "name",
+				FieldName: "Name",
+				FieldType: "string",
+			},
+		},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",

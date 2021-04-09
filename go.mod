@@ -12,14 +12,15 @@ require (
 	github.com/coddingtonbear/go-simplejson v0.4.4-0.20131204203750-a582018feafb // indirect
 	github.com/go-openapi/inflect v0.19.0
 	github.com/go-stack/stack v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/inconshreveable/log15 v0.0.0-20170216225631-39bacc234bf1
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.0.8-0.20170327083344-ded68f7a9561 // indirect
 	github.com/mattn/go-isatty v0.0.2 // indirect
-	github.com/onsi/ginkgo v1.12.3
+	github.com/onsi/ginkgo v1.16.1
 	github.com/onsi/gomega v1.10.1
 	github.com/rightscale/go-jsonselect v0.0.0-20150427163236-d04eebe26072
 	github.com/sergi/go-diff v1.1.0 // indirect
-	github.com/stretchr/testify v1.5.1 // indirect
+	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.4
 )

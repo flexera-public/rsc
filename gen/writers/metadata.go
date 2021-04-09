@@ -86,12 +86,15 @@ import (
 
 `
 
-const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}// Consists of a map of resource name to resource metadata.
+const resourceMetadataTmpl = `{{define "action"}}` + actionMetadataTmpl + `{{end}}{{define "attribute"}}` + attributeMetadataTmpl + `{{end}}// Consists of a map of resource name to resource metadata.
 var GenMetadata = map[string]*metadata.Resource{ {{range .}}
 	"{{.Name}}": &metadata.Resource{
 		Name: "{{.Name}}",
 		Description: ` + "`" + `{{escapeBackticks .Description}}` + "`" + `,
 		Identifier: "{{.Identifier}}",
+		Attributes: []*metadata.Attribute{ {{range .Attributes}}
+		{{template "attribute" . }}{{end}}
+		},
 		Actions: []*metadata.Action{ {{range .Actions}}
 		{{template "action" .}}{{end}}
 		},{{if .Links}}
@@ -138,5 +141,12 @@ const actionMetadataTmpl = `&metadata.Action {
 						ValidValues: []string{"{{join (toStringArray .ValidValues) "\", \""}}"},{{end}}
 					},{{end}}
 				},
+			},
+`
+
+const attributeMetadataTmpl = `&metadata.Attribute {
+				Name: "{{.Name}}",
+				FieldName: "{{.FieldName}}",
+				FieldType: "{{.FieldType}}",
 			},
 `

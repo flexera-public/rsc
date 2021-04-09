@@ -23,6 +23,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Deployments or ServerArrays. Users with the ` + `enterprise_manager` + ` permission in an account can create
         child accounts. This resource is not included in the public docs.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -128,6 +129,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "AnalysisSnapshot",
 		Description: `AnalysisSnapshots can be used to generate unique links to share data using filters over a date range.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -403,6 +405,7 @@ var GenMetadata = map[string]*metadata.Resource{
         based on either actual or forecasted spend. These emails include links to AnalysisSnapshots, which are
         generated automatically by us.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -829,6 +832,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "CloudBill",
 		Description: `Enables you to get details about cloud bills. Only Amazon Web Services is supported for now.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "filter_options",
@@ -932,6 +936,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "CloudBillMetric",
 		Description: `Enables you to get breakdowns of your cloud bill costs. Only Amazon Web Services is supported for now.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "grouped_time_series",
@@ -1037,6 +1042,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "CurrentUser",
 		Description: `Represents the currently logged-in user. This resource is not included in the public docs.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
@@ -1369,6 +1375,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "Instance",
 		Description: `Enables you to get instance details, including the cost of individual instances.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -2015,6 +2022,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `InstanceCombinations represent instances that make-up a Scenario.
         Note that, when making create and update calls, a Pattern can only be applied to an InstanceCombination once.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -2662,6 +2670,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "InstanceMetric",
 		Description: `Enables you to get aggregated metrics from instances, such as total_cost or lowest_instance_count.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "overall",
@@ -3367,6 +3376,7 @@ var GenMetadata = map[string]*metadata.Resource{
         be caused by stop/start actions or changes to the instance type etc. InstanceUsagePeriods are used internally to
         calculate aggregate InstanceMetrics.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -3423,6 +3433,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Patterns describe operations in usage, and can be applied to InstanceCombinations in Scenarios to model changes in the cost.
         A pattern can only be applied to an InstanceCombination once.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -3868,6 +3879,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "ReservedInstance",
 		Description: `Enables you to get details of existing AWS ReservedInstances and some metrics about their utilization.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -4513,6 +4525,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "ReservedInstancePurchase",
 		Description: `ReservedInstancePurchases can be applied to InstanceCombinations in Scenarios to model changes in the cost. These are not actually purchased in the cloud and are only used for cost simulation purposes.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -4836,6 +4849,7 @@ var GenMetadata = map[string]*metadata.Resource{
         Use the forecast action to generate the results after you create a Scenario and add your InstanceCombinations,
         ReservedInstancePurchases and Patterns.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5236,6 +5250,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `ScheduledReports are emailed to you, and include usage, cost, and the change from the previous reporting period.
         These emails include links to AnalysisSnapshots, which are generated automatically by us.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "create",
@@ -5618,6 +5633,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `This is a temporary API call that can be used by the Cloud Analytics UI until the
         Pricing Service is live, at which point this API call will be deleted. This is not included in the public docs.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "index",
@@ -5640,6 +5656,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Description: `Users can have various permissions on multiple accounts. Users with admin permissions in an account
         can modify that account's users. This resource is not included in the public docs.`,
 		Identifier: "",
+		Attributes: []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -5982,6 +5999,7 @@ var GenMetadata = map[string]*metadata.Resource{
 		Name:        "UserSetting",
 		Description: `Used by the Cloud Analytics UI to keep track of various UI states.`,
 		Identifier:  "",
+		Attributes:  []*metadata.Attribute{},
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name:        "show",
