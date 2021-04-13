@@ -1,4 +1,4 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v9/gen/api15gen"
 
 import (
 	"encoding/json"
@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"path"
 
-	"github.com/rightscale/rsc/gen"
-	"github.com/rightscale/rsc/gen/writers"
+	"gopkg.in/rightscale/rsc.v9/gen"
+	"gopkg.in/rightscale/rsc.v9/gen/writers"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

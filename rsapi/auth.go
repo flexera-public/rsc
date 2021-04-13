@@ -1,4 +1,4 @@
-package rsapi
+package rsapi // import "gopkg.in/rightscale/rsc.v9/rsapi"
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rightscale/rsc/httpclient"
+	"gopkg.in/rightscale/rsc.v9/httpclient"
 )
 
 // Authenticator interface

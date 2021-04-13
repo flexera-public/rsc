@@ -6,4 +6,4 @@ The default behavior in library mode consists of not logging anything.
 The Logger variable can be used to set the logger behavior, for example by changing its handler.
 See https://godoc.org/github.com/inconshreveable/log15 for a list of available handlers.
 */
-package log
+package log // import "gopkg.in/rightscale/rsc.v9/log"

@@ -6,15 +6,15 @@ import (
 	"path"
 	"strings"
 
-	"github.com/rightscale/rsc/ca"
-	"github.com/rightscale/rsc/cm15"
-	"github.com/rightscale/rsc/cm16"
-	"github.com/rightscale/rsc/cmd"
-	"github.com/rightscale/rsc/policy"
-	"github.com/rightscale/rsc/rl10"
-	"github.com/rightscale/rsc/rsapi"
-	"github.com/rightscale/rsc/ss"
 	"gopkg.in/alecthomas/kingpin.v2"
+	"gopkg.in/rightscale/rsc.v9/ca"
+	"gopkg.in/rightscale/rsc.v9/cm15"
+	"gopkg.in/rightscale/rsc.v9/cm16"
+	"gopkg.in/rightscale/rsc.v9/cmd"
+	"gopkg.in/rightscale/rsc.v9/policy"
+	"gopkg.in/rightscale/rsc.v9/rl10"
+	"gopkg.in/rightscale/rsc.v9/rsapi"
+	"gopkg.in/rightscale/rsc.v9/ss"
 )
 
 // ParseCommandLine retrieves the command and top level flag values.

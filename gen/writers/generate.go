@@ -1,4 +1,4 @@
-package writers
+package writers // import "gopkg.in/rightscale/rsc.v9/gen/writers"
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-openapi/inflect"
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v9/gen"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

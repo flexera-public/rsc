@@ -1,4 +1,4 @@
-package metadata
+package metadata // import "gopkg.in/rightscale/rsc.v9/metadata"
 
 type Attribute struct {
 	Name      string // Attribute name, e.g. "elasticity_params"

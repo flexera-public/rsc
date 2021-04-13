@@ -7,4 +7,4 @@
 // action command line flags.
 // The data structures also expose methods used by the client to parse the resource
 // hrefs and extracts the to build the action URL in a generic way.
-package metadata
+package metadata // import "gopkg.in/rightscale/rsc.v9/metadata"

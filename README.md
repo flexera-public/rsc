@@ -4,8 +4,8 @@
 Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 
-v8.0.0
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v8.0.0)](https://travis-ci.org/rightscale/rsc)
+v9.0.0
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v9.0.0)](https://travis-ci.org/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the

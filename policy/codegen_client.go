@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package policy
+package policy // import "gopkg.in/rightscale/rsc.v9/policy"
 
 import (
 	"encoding/json"
@@ -15,8 +15,8 @@ import (
 	"io/ioutil"
 	"time"
 
-	"github.com/rightscale/rsc/metadata"
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v9/metadata"
+	"gopkg.in/rightscale/rsc.v9/rsapi"
 )
 
 // API Version

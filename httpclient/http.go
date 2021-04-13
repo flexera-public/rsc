@@ -1,4 +1,4 @@
-package httpclient
+package httpclient // import "gopkg.in/rightscale/rsc.v9/httpclient"
 
 import (
 	"bytes"
@@ -17,8 +17,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rightscale/rsc/log"
-	"github.com/rightscale/rsc/recording"
+	"gopkg.in/rightscale/rsc.v9/log"
+	"gopkg.in/rightscale/rsc.v9/recording"
 )
 
 const (

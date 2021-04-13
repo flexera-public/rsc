@@ -1,11 +1,11 @@
-package writers
+package writers // import "gopkg.in/rightscale/rsc.v9/gen/writers"
 
 import (
 	"fmt"
 	"io"
 	"text/template"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v9/gen"
 )
 
 // AngularWriter struct exposes methods to generate the angular JS services code

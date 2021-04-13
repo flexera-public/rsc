@@ -1,4 +1,4 @@
-package cmd
+package cmd // import "gopkg.in/rightscale/rsc.v9/cmd"
 
 import "net/http"
 

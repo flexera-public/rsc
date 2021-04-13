@@ -1,10 +1,10 @@
-package main
+package main // import "gopkg.in/rightscale/rsc.v9/gen/goav2gen"
 
 import (
 	"fmt"
 	"sort"
 
-	"github.com/rightscale/rsc/gen"
+	"gopkg.in/rightscale/rsc.v9/gen"
 )
 
 // APIAnalyzer is holds the analysis results.

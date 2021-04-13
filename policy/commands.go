@@ -1,9 +1,9 @@
-package policy
+package policy // import "gopkg.in/rightscale/rsc.v9/policy"
 
 import (
 	"net/http"
 
-	"github.com/rightscale/rsc/rsapi"
+	"gopkg.in/rightscale/rsc.v9/rsapi"
 )
 
 const (
