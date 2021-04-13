@@ -36,6 +36,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 	app.Flag("accessToken", "OAuth access token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").Short('s').StringVar(&cmdLine.OAuthAccessToken)
 	app.Flag("apiToken", "Instance API token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").Short('p').StringVar(&cmdLine.APIToken)
 	app.Flag("rl10", "Proxy requests through RightLink 10 agent, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10").BoolVar(&cmdLine.RL10)
+	app.Flag("flexeraOne", "Use Flexera One for authentication, with --refreshToken").Short('F').BoolVar(&cmdLine.FlexeraOne)
 	app.Flag("noAuth", "Make unauthenticated requests, used for testing").BoolVar(&cmdLine.NoAuth)
 	app.Flag("timeout", "Set the request timeout, defaults to 300s").Short('t').Default("300").IntVar(&cmdLine.Timeout)
 	app.Flag("x1", "Extract single value using JSON:select").StringVar(&cmdLine.ExtractOneSelect)
@@ -91,6 +92,9 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 			}
 			if cmdLine.OAuthToken == "" {
 				cmdLine.OAuthToken = config.RefreshToken
+			}
+			if cmdLine.FlexeraOne == false {
+				cmdLine.FlexeraOne = config.FlexeraOne
 			}
 		}
 	}

@@ -14,6 +14,7 @@ type ClientConfig struct {
 	Email        string // RightScale API login email
 	Password     string // RightScale API login password
 	RefreshToken string // RightScale API refresh token
+	FlexeraOne   bool
 }
 
 // LoadConfig loads the client configuration from disk
@@ -63,6 +64,7 @@ func (cfg *ClientConfig) Save(path string) error {
 func CreateConfig(path string) error {
 	config, _ := LoadConfig(path)
 	var emailDef, passwordDef, accountDef, hostDef, refreshTokenDef string
+	var flexeraOneDef bool
 	if config != nil {
 		yn := PromptConfirmation("Found existing configuration file %v, overwrite? (y/N): ", path)
 		if yn != "y" {
@@ -77,6 +79,7 @@ func CreateConfig(path string) error {
 		}
 		hostDef = fmt.Sprintf(" (%v)", config.LoginHost)
 		refreshTokenDef = " (leave blank to leave unchanged)"
+		flexeraOneDef = config.FlexeraOne
 	} else {
 		config = &ClientConfig{}
 	}
@@ -118,6 +121,13 @@ func CreateConfig(path string) error {
 	fmt.Fscanln(in, &newRefreshToken)
 	if newRefreshToken != "" {
 		config.RefreshToken = newRefreshToken
+	}
+
+	fmt.Fprintf(out, "FlexeraOne Enabled %v: ", flexeraOneDef)
+	var newFlexeraOne bool
+	fmt.Fscanln(in, &newFlexeraOne)
+	if newFlexeraOne {
+		config.FlexeraOne = newFlexeraOne
 	}
 
 	err := config.Save(path)

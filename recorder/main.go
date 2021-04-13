@@ -11,7 +11,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"syscall"
 
 	"github.com/rightscale/rsc/recording"
 )
@@ -40,7 +39,8 @@ func main() {
 	if err != nil {
 		fail("can't create pipe: %s", err)
 	}
-	err = syscall.Dup2(int(w.Fd()), 10)
+
+	err = dupFD2(uintptr(w.Fd()), 10)
 	if err != nil {
 		fail("can't create fd 10: %s", err)
 	}

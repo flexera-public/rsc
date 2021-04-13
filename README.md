@@ -94,6 +94,7 @@ The list of global flags is:
                    OAuth access token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
   -p, --apiToken=APITOKEN
                    Instance API token, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
+  -F, --flexeraOne Use Flexera One for authentication, with --refreshToken
   --rl10           Proxy requests through RightLink 10 agent, use --email and --pwd or use --refreshToken, --accessToken, --apiToken or --rl10
   --noAuth         Make unauthenticated requests, used for testing
   --x1=X1          Extract single value using JSON:select
