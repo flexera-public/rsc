@@ -49,12 +49,13 @@ func NewInstanceAuthenticator(token string, accountID int) Authenticator {
 // The refresh token can be found in the CM dashboard under Settings > Account Settings > API Credentials.
 // Specifying the accountID is only required if the API requires the "X-Account" header to be set
 // (this is true of CM 1.6 at the moment).
-func NewOAuthAuthenticator(token string, accountID int) Authenticator {
+func NewOAuthAuthenticator(token string, accountID int, flexeraOne bool) Authenticator {
 	return &oAuthSigner{
 		refreshToken: token,
 		refreshAt:    time.Now().Add(-2 * time.Minute),
 		client:       httpclient.New(),
 		accountID:    accountID,
+		flexeraOne:   flexeraOne,
 	}
 }
 
@@ -184,13 +185,20 @@ type oAuthSigner struct {
 	refreshAt    time.Time
 	client       httpclient.HTTPClient
 	accountID    int // optional, only used to set X-Account header if present
+	flexeraOne   bool
 }
 
 // Sign adds the OAuth bearer header to the *http.Request
 func (s *oAuthSigner) Sign(req *http.Request) error {
 	if time.Now().After(s.refreshAt) {
 		jsonStr := fmt.Sprintf(`{"grant_type":"refresh_token","refresh_token":"%s"}`, s.refreshToken)
-		authReq, err := http.NewRequest("POST", buildURL(s.host, "api/oauth2"),
+		host := s.host
+		url := "api/oauth2"
+		if s.flexeraOne {
+			host = "login.flexera.com"
+			url = "oidc/token"
+		}
+		authReq, err := http.NewRequest("POST", buildURL(host, url),
 			bytes.NewBufferString(jsonStr))
 		if err != nil {
 			return fmt.Errorf("Authentication failed (failed to build request): %s", err)

@@ -93,6 +93,7 @@ func ParseCommandLine(app *kingpin.Application) (*cmd.CommandLine, error) {
 			if cmdLine.OAuthToken == "" {
 				cmdLine.OAuthToken = config.RefreshToken
 			}
+			cmdLine.FlexeraOne = config.FlexeraOne
 		}
 	}
 	cmdLine.Command = cmd

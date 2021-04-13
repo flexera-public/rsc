@@ -113,7 +113,7 @@ func FromCommandLine(cmdLine *cmd.CommandLine) (*API, error) {
 			return nil, err
 		}
 	} else if cmdLine.OAuthToken != "" {
-		auth := NewOAuthAuthenticator(cmdLine.OAuthToken, cmdLine.Account)
+		auth := NewOAuthAuthenticator(cmdLine.OAuthToken, cmdLine.Account, cmdLine.FlexeraOne)
 		if ss {
 			auth = NewSSAuthenticator(auth, cmdLine.Account)
 		}
