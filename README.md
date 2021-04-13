@@ -4,8 +4,8 @@
 Master
 [![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=master)](https://travis-ci.org/rightscale/rsc)
 
-v8.0.0
-[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v8.0.0)](https://travis-ci.org/rightscale/rsc)
+v9.0.0
+[![Build Status](https://travis-ci.org/rightscale/rsc.svg?branch=v9.0.0)](https://travis-ci.org/rightscale/rsc)
 
 `rsc` provides both a command line tool and a go package for interacting with the RightScale APIs.
 The currently supported APIs are the RightScale Cloud Management API 1.5 and 1.6 APIs, the
@@ -32,26 +32,26 @@ no dependency on any runtime library. Just download the correct version for your
 architecture and you're good to go.
 
 The latest stable versions can be download from:
-- MacOS X: `https://binaries.rightscale.com/rsbin/rsc/v8/rsc-darwin-amd64.tgz`
-- Windows: `https://binaries.rightscale.com/rsbin/rsc/v8/rsc-windows-amd64.zip`
-- Linux: `https://binaries.rightscale.com/rsbin/rsc/v8/rsc-linux-amd64.tgz`
-- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v8/rsc-linux-arm.tgz`
+- MacOS X: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-amd64.tgz`
+- Windows: `https://binaries.rightscale.com/rsbin/rsc/v/rsc-windows-amd64.zip`
+- Linux: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-amd64.tgz`
+- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-arm.tgz`
 
 As an example the following downloads and runs the MacOS X version:
 ```
-$ curl https://binaries.rightscale.com/rsbin/rsc/v8/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
+$ curl https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
-rsc v8.0.0 - 2017-07-19 00:34:20 - 308f4fcbf12da4b94d6fd683c25dd86deb35237e
+rsc v9.0.0 - 2021-04-13 22:01:22 - 4d8e4ad2a7f54fd085cb267df6c0baa60de0ad53
 ```
 
 #### Versioning
 
-- To download the latest stable use the links with 'v8' in them.
-- To download a specific version, replace the 'v8' by the exact version, such as 'v8.0.0'.
-- All versions with the same major number (e.g. 'v8') are intended to be "upward" compatible.
-- The 'v8' links download a specific version, so `rsc --version` will print something like 'v8.0.0'
-  and not 'v8'.
+- To download the latest stable use the links with 'v9' in them.
+- To download a specific version, replace the 'v9' by the exact version, such as 'v9.0.0'.
+- All versions with the same major number (e.g. 'v9') are intended to be "upward" compatible.
+- The 'v9' links download a specific version, so `rsc --version` will print something like 'v9.0.0'
+  and not 'v9'.
 - The latest dev version is 'master'.
 
 ### Command Line
@@ -321,11 +321,11 @@ sub-package: package `cm15` for CM API 1.5, package `cm16`for CM API
 `rsc` uses gopkg.in for versioning, this means that you can download the released `rsc` packages
 as follows:
 ```
-go get gopkg.in/rightscale/rsc.v8
+go get gopkg.in/rightscale/rsc.v9
 ```
 and import then in your code with:
 ```go
-import "gopkg.in/rightscale/rsc.v8"
+import "gopkg.in/rightscale/rsc.v9"
 ```
 If you intend on contributing, just want to play around with the code or feel adventurous you can
 download and use the beelding edge version from github which corresponds to the master branch:
@@ -524,16 +524,16 @@ The following make targets are useful:
 
 #### Your own build of the latest release version
 
-The simple option is `go get gopkg.in/rightscale/rsc.v8`, this will use the checked-in
+The simple option is `go get gopkg.in/rightscale/rsc.v9`, this will use the checked-in
 code-generated files.
 
 The more involved option is:
 ```
 mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
-git clone https://github.com/rightscale/rsc.git rsc.v8
-cd rsc.v8
-git checkout v8.0.0
+git clone https://github.com/rightscale/rsc.git rsc.v9
+cd rsc.v9
+git checkout v9.0.0
 make depend
 make
 ```
