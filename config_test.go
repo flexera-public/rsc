@@ -72,6 +72,7 @@ var _ = Describe("Config", func() {
 					Ω(config.Email).Should(BeZero())
 					Ω(config.Password).Should(BeZero())
 					Ω(config.RefreshToken).Should(BeZero())
+					Ω(config.FlexeraOne).Should(BeFalse())
 				})
 			})
 
@@ -224,6 +225,7 @@ var _ = Describe("Config", func() {
 							password string
 							host     string
 							refresh  string
+							flexera  bool
 						)
 
 						Context("given an incorrect account", func() {
@@ -247,8 +249,9 @@ var _ = Describe("Config", func() {
 								password = "tok"
 								host = "host"
 								refresh = "1ecea8a3fbce2eb3a3be6ac8180f60182b5c81cd"
-								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n",
-									account, email, password, host, refresh)
+								flexera = true
+								var inputs = fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n%t\n",
+									account, email, password, host, refresh, flexera)
 								testIn = bytes.NewReader([]byte(inputs))
 							})
 
@@ -261,6 +264,7 @@ var _ = Describe("Config", func() {
 								Ω(config.Password).Should(Equal(password))
 								Ω(config.LoginHost).Should(Equal(host))
 								Ω(config.RefreshToken).Should(Equal(refresh))
+								Ω(config.FlexeraOne).Should(Equal(flexera))
 							})
 						})
 					})
