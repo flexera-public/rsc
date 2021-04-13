@@ -34,7 +34,7 @@ NAME=rsc
 BUCKET=rightscale-binaries
 ACL=public-read
 # version for gopkg.in, e.g. v1, v2, ...
-GOPKG_VERS=v8
+GOPKG_VERS=v9
 GOOS=$(shell go env GOOS)
 GOARCH=$(shell go env GOARCH)
 # Dependencies used to build/test/upload this puppy
@@ -137,6 +137,7 @@ govers:
 	  sed -E -i $(SED_I) \
 		  -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
 	done
+	sed -i -e "s:github.com/rightscale/rsc:gopkg.in/rightscale/rsc.$(GOPKG_VERS):" go.mod
 	gofmt -w *.go */*.go
 
 # revert govers, i.e. remove import constraints and use github.com/rightscale/$(NAME)
