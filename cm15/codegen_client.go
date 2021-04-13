@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cm15 // import "gopkg.in/rightscale/rsc.v9/cm15"
+package cm15
 
 import (
 	"encoding/json"

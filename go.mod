@@ -1,6 +1,6 @@
-module github.com/rightscale/rsc
+module gopkg.in/rightscale/rsc.v9
 
-go 1.13
+go 1.16
 
 require (
 	github.com/alecthomas/assert v0.0.0-20170929043011-405dbfeb8e38 // indirect
@@ -14,13 +14,17 @@ require (
 	github.com/go-stack/stack v1.5.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/inconshreveable/log15 v0.0.0-20170216225631-39bacc234bf1
+	github.com/jessevdk/go-flags v1.5.0 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.0.8-0.20170327083344-ded68f7a9561 // indirect
 	github.com/mattn/go-isatty v0.0.2 // indirect
 	github.com/onsi/ginkgo v1.16.1
 	github.com/onsi/gomega v1.10.1
 	github.com/rightscale/go-jsonselect v0.0.0-20150427163236-d04eebe26072
+	github.com/rlmcpherson/s3gof3r v0.5.0 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
+	github.com/tylercasper/govers v0.0.0-20200611155053-a00ba11480d2 // indirect
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
+	golang.org/x/tools v0.1.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.4
 )

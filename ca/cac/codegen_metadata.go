@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cac // import "gopkg.in/rightscale/rsc.v9/ca/cac"
+package cac
 
 import (
 	"regexp"

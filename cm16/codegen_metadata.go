@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package cm16 // import "gopkg.in/rightscale/rsc.v9/cm16"
+package cm16
 
 import (
 	"regexp"

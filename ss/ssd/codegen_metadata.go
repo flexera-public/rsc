@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssd // import "gopkg.in/rightscale/rsc.v9/ss/ssd"
+package ssd
 
 import (
 	"regexp"

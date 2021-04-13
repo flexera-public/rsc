@@ -137,6 +137,7 @@ govers:
 	  sed -E -i $(SED_I) \
 		  -e 's;g[a-z.]+/rightscale/rsc[-.a-z0-9]*;gopkg.in/rightscale/$(NAME).$(GOPKG_VERS);' $$f ;\
 	done
+	sed -i -e "s:github.com/rightscale/rsc:gopkg.in/rightscale/rsc.$(GOPKG_VERS):" go.mod
 	gofmt -w *.go */*.go
 
 # revert govers, i.e. remove import constraints and use github.com/rightscale/$(NAME)

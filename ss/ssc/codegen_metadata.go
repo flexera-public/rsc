@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package ssc // import "gopkg.in/rightscale/rsc.v9/ss/ssc"
+package ssc
 
 import (
 	"regexp"

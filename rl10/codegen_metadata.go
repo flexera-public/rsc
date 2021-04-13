@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package rl10 // import "gopkg.in/rightscale/rsc.v9/rl10"
+package rl10
 
 import (
 	"regexp"

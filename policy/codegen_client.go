@@ -7,7 +7,7 @@
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
 
-package policy // import "gopkg.in/rightscale/rsc.v9/policy"
+package policy
 
 import (
 	"encoding/json"
