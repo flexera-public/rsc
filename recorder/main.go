@@ -39,7 +39,7 @@ func main() {
 	if err != nil {
 		fail("can't create pipe: %s", err)
 	}
-	
+
 	err = dupFD2(uintptr(w.Fd()), 10)
 	if err != nil {
 		fail("can't create fd 10: %s", err)
