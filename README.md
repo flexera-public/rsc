@@ -33,7 +33,7 @@ architecture and you're good to go.
 
 The latest stable versions can be download from:
 - MacOS X: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-amd64.tgz`
-- Windows: `https://binaries.rightscale.com/rsbin/rsc/v/rsc-windows-amd64.zip`
+- Windows: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-windows-amd64.zip`
 - Linux: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-amd64.tgz`
 - ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-arm.tgz`
 
