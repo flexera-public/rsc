@@ -115,9 +115,9 @@ upload:
 # produce a version string that is embedded into the binary that captures the branch, the date
 # and the commit we're building
 version:
-	@echo -e "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
+	@echo -e "//go:build make\n// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
-	@echo -e "// +build make\n\npackage httpclient\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
+	@echo -e "//go:build make\n// +build make\n\npackage httpclient\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
 	  >httpclient/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 
