@@ -1,6 +1,12 @@
 ChangeLog
 =========
 
+v9.1.0 / 2022-01-25
+-------------------
+
+* Build for macOS ARM64.
+* Build with latest Go and dependencies.
+
 v9.0.0 / 2021-04-13
 -------------------
 
