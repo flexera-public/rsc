@@ -35,6 +35,7 @@ architecture and you're good to go.
 The latest stable versions can be download from:
 
 - macOS Intel: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-amd64.tgz`
+- macOS ARM64: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-arm64.tgz`
 - Windows: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-windows-amd64.zip`
 - Linux: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-amd64.tgz`
 - Linux ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-arm.tgz`
