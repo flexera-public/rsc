@@ -12,10 +12,9 @@
 // implied. See the License for the specific language governing
 // permissions and limitations under the License.
 
-// +build windows
-// +build !arm
-// +build !arm64
-// +build !linux
+//go:build windows && !arm && !arm64 && !linux
+// +build windows,!arm,!arm64,!linux
+
 // borrowed from https://github.com/tamird/cockroach/blob/12859da4c3068a61efb8dc157761b54ef4620402/pkg/util/log/stderr_redirect_windows.go
 
 package main

@@ -1,3 +1,4 @@
+//go:build !make
 // +build !make
 
 package httpclient

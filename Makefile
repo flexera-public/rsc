@@ -53,7 +53,7 @@ SECONDS=$(shell date '+%s')
 TRAVIS_COMMIT?=$(shell git symbolic-ref HEAD | cut -d"/" -f 3)
 GIT_BRANCH:=$(shell git symbolic-ref --short -q HEAD || echo "master")
 SHELL:=$(shell which bash)
-# on Mac OS X and other platforms, sed might not be GNU sed and the -i flag needs an extension argument,
+# on macOS and other platforms, sed might not be GNU sed and the -i flag needs an extension argument,
 # but that argument can be an empty string to indicate no backup
 ifeq ($(shell sed --version 2>/dev/null | grep 'GNU sed'),)
 SED_I=''
@@ -70,7 +70,12 @@ install: $(NAME)
 	go install
 
 # the standard build produces a "local" executable, a linux tgz, and a darwin (macos) tgz
-build: depend generate $(NAME) build/$(NAME)-linux-amd64.tgz build/$(NAME)-darwin-amd64.tgz build/$(NAME)-linux-arm.tgz build/$(NAME)-windows-amd64.zip
+build: depend generate $(NAME) \
+	build/$(NAME)-linux-amd64.tgz \
+	build/$(NAME)-linux-arm.tgz \
+	build/$(NAME)-darwin-amd64.tgz \
+	build/$(NAME)-darwin-arm64.tgz \
+	build/$(NAME)-windows-amd64.zip
 
 # create a tgz with the binary and any artifacts that are necessary
 # note the hack to allow for various GOOS & GOARCH combos, sigh
@@ -110,9 +115,9 @@ upload:
 # produce a version string that is embedded into the binary that captures the branch, the date
 # and the commit we're building
 version:
-	@echo -e "// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
+	@echo -e "//go:build make\n// +build make\n\npackage main\n\nconst VV = \"$(NAME) $(TRAVIS_BRANCH) - $(DATE) - $(TRAVIS_COMMIT)\"" \
 	  >version.go
-	@echo -e "// +build make\n\npackage httpclient\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
+	@echo -e "//go:build make\n// +build make\n\npackage httpclient\n\nconst UA = \"$(NAME)/$(TRAVIS_BRANCH)-$(SECONDS)-$(TRAVIS_COMMIT)\"" \
 	  >httpclient/user_agent.go
 	@echo "version.go: `tail -1 version.go`"
 

@@ -4,15 +4,15 @@
 # uploaded version. (Note: nothing is automatically garbage collected.)
 language: go
 go:
-  - 1.16.x
+  - 1.17.x
 env:
   global:
     # RSBIN_KEY= to upload to rightscale-binaries bucket in q&b acct:
-  - secure: "ijNb1OR2HyNxKXMPemlYit+QEyJDahpm0L5nTI4sevJ2+99+L/p/rBGOUfrCxnnAD3Swn9jzkqLjfwZiUqL5MRMzNHtTnCKgmVRZpH6xMeFpZlQqTGVpOeLr1jVbbXlopjro1dtPEFE1ytu0k0AQS2G/kljOwN4FB3pnDsPPKZ0="
-    # GITHUB_TOKEN= to push code coverage comment to github
-  - secure: "UarvquG9ge5jXZn4gzfM4IhdYNsQYt3iM+EAlkiYiUMvor1d8nkpw5vSPhpdR7YE5fyCdZTzrqwdnEnACdDdZHLa1jR8PwTnWEWeRq+DBH5XFjcKbG3ODKmRzOYiU138K70I7e0y0eOFqEWsdNvyg/SdemmRgFbIAEZT7KYtEjg="
-    # COV_KEY= code coverage upload keys
-  - secure: "kcM2KYw0QC4BpAzUq1P7J1hTPVWDeJrmi6N42Ku5n8b1Bz3JtnFg6XxJcBBM6cPtCCCFhJhYDzXEQ/gX2Q7W7WMns/lcY3jev/1RSZg5Sdbf7y2CEQg/C/cWIlK+EQAOYAeY/B3ikIox+WwnC2P+Eoh7wn0ReTFpxTsmsvF5PDg="
+    - secure: "ijNb1OR2HyNxKXMPemlYit+QEyJDahpm0L5nTI4sevJ2+99+L/p/rBGOUfrCxnnAD3Swn9jzkqLjfwZiUqL5MRMzNHtTnCKgmVRZpH6xMeFpZlQqTGVpOeLr1jVbbXlopjro1dtPEFE1ytu0k0AQS2G/kljOwN4FB3pnDsPPKZ0="
+      # GITHUB_TOKEN= to push code coverage comment to github
+    - secure: "UarvquG9ge5jXZn4gzfM4IhdYNsQYt3iM+EAlkiYiUMvor1d8nkpw5vSPhpdR7YE5fyCdZTzrqwdnEnACdDdZHLa1jR8PwTnWEWeRq+DBH5XFjcKbG3ODKmRzOYiU138K70I7e0y0eOFqEWsdNvyg/SdemmRgFbIAEZT7KYtEjg="
+      # COV_KEY= code coverage upload keys
+    - secure: "kcM2KYw0QC4BpAzUq1P7J1hTPVWDeJrmi6N42Ku5n8b1Bz3JtnFg6XxJcBBM6cPtCCCFhJhYDzXEQ/gX2Q7W7WMns/lcY3jev/1RSZg5Sdbf7y2CEQg/C/cWIlK+EQAOYAeY/B3ikIox+WwnC2P+Eoh7wn0ReTFpxTsmsvF5PDg="
 
 # sudo=false makes the build run using a container
 sudo: false
@@ -21,15 +21,15 @@ sudo: false
 # in gopkg.in/rightscale/rsc-v1 so we have to manually move it, sigh
 before_install:
   - re='^v[0-9]'; if [[ ${TRAVIS_BRANCH} =~ $re ]]; then
-      cd $HOME/gopath/src;
-      mkdir -p gopkg.in/rightscale;
-      mv github.com/rightscale/rsc gopkg.in/rightscale/rsc.${BASH_REMATCH[0]};
-      export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${BASH_REMATCH[0]};
+    cd $HOME/gopath/src;
+    mkdir -p gopkg.in/rightscale;
+    mv github.com/rightscale/rsc gopkg.in/rightscale/rsc.${BASH_REMATCH[0]};
+    export TRAVIS_BUILD_DIR=$HOME/gopath/src/gopkg.in/rightscale/rsc.${BASH_REMATCH[0]};
     fi
   - cd ${TRAVIS_BUILD_DIR}
   - pwd
 
-# here all we're doing is making sure that we have a go compliler for every target architecture
+# here all we're doing is making sure that we have a go complier for every target architecture
 install:
   - export PATH=$PATH:$HOME/gopath/bin # travis' worker doesn't seem to do this consistently
 
@@ -71,13 +71,9 @@ script:
   # Deploy code coverage badge to S3
   # If you change this you *must* verify that the badge actually updates and isn't cached by
   # github in perpetuity! The image must serve over https, must have a no-cache header, must
-  # have a proper content-type, and possbly more...
+  # have a proper content-type, and possibly more...
   - export COVERAGE_INT=$(echo $COVERAGE | cut -d. -f1)
   - export BADGE_FILENAME=cc_badge_${TRAVIS_BRANCH}.svg
   - export BADGE_COLOR=$( if [ ${COVERAGE_INT} -gt 80 ] ; then echo brightgreen ; elif [ ${COVERAGE_INT} -gt 40 ] ; then echo yellow ; else echo red ; fi )
   - curl "http://img.shields.io/badge/coverage-${COVERAGE}%25-${BADGE_COLOR}.svg" -L -o ${BADGE_FILENAME}
   - gof3r put -b rs-code-coverage -k ${NAME}/${BADGE_FILENAME} --acl public-read -m cache-control:no-cache -m content-type:image/svg+xml < ${BADGE_FILENAME}
-
-notifications:
-  slack:
-          #secure: XOzXMfYmpv7xsycDWrjKkLVuZOOfPpYi8BQDVjHaSVzq233ClyqTktUAfLbPRu27E96+FyGueN7Yb6yYHqijYgycx7X7wcbYrE990xDcAzMXJxj3l3gSEzFgj8mRVqkQ9yB17JqZ9bnNRuoCMg4fjdIoI5GZlDkKOzdDJuGA/xs=

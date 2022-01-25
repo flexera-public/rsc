@@ -1,4 +1,5 @@
 # rsc - A generic RightScale API client
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rightscale/rsc/blob/master/LICENSE) [![Godoc](https://godoc.org/github.com/rightscale/rsc?status.svg)](http://godoc.org/github.com/rightscale/rsc)
 
 Master
@@ -15,8 +16,8 @@ by the RightLink10 agent. The RightScale APIs reference can be found on the
 
 `rsc` can be used in one of two ways:
 
-* as a command line tool
-* as a way to make API requests to RightScale programmatically from Go code
+- as a command line tool
+- as a way to make API requests to RightScale programmatically from Go code
 
 ## <a name="usage"></a>Command Line Tool
 
@@ -32,13 +33,16 @@ no dependency on any runtime library. Just download the correct version for your
 architecture and you're good to go.
 
 The latest stable versions can be download from:
-- MacOS X: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-amd64.tgz`
+
+- macOS Intel: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-amd64.tgz`
+- macOS ARM64: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-arm64.tgz`
 - Windows: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-windows-amd64.zip`
 - Linux: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-amd64.tgz`
-- ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-arm.tgz`
+- Linux ODroid/RasPi/armhf: `https://binaries.rightscale.com/rsbin/rsc/v9/rsc-linux-arm.tgz`
 
-As an example the following downloads and runs the MacOS X version:
-```
+As an example the following downloads and runs the macOS version:
+
+```bash
 $ curl https://binaries.rightscale.com/rsbin/rsc/v9/rsc-darwin-amd64.tgz | tar -zxf - -O rsc/rsc > rsc
 $ chmod +x ./rsc
 $ ./rsc --version
@@ -58,10 +62,12 @@ rsc v9.0.0 - 2021-04-13 22:01:22 - 4d8e4ad2a7f54fd085cb267df6c0baa60de0ad53
 
 The general shape of a command line is:
 
+```text
+rsc [GLOBAL] [API] ACTION HREF [PARAM=VALUE]
 ```
-$ rsc [GLOBAL] [API] ACTION HREF [PARAM=VALUE]
-```
+
 where:
+
 - `GLOBAL` is an optional list of global flags,
 - `API` is `cm15`, `cm16`, `ss` or `rl10`
 - `ACTION` is the API action to perform (i.e `index`, `show`, `update`, etc.),
@@ -69,15 +75,18 @@ where:
 - `PARAM` and `VALUE` are the names and values of the action parameters (e.g. `view=extended`).
 
 For example:
+
+```bash
+rsc cm15 show /api/servers 'filter[]=name==LB'
 ```
-$ rsc cm15 show /api/servers 'filter[]=name==LB'
-```
+
 The sections below cover each option in order.
 
 ### Global Flags
 
 The list of global flags is:
-```
+
+```text
   --help           Show help.
   --version        Show application version.
   -c, --config="/home/raphael/.rsc"
@@ -115,7 +124,7 @@ There are 3 different mechanisms for authenticating with the RightScale platform
 
 Basic authentication uses an email and password to create a session against the Cloud Management
 APIs (a.k.a. API 1.5). Creating a session returns a cookie. The session cookie can be used to make
-authenticated requests againsts all accounts the authenticated user has access to. While the session
+authenticated requests against all accounts the authenticated user has access to. While the session
 is created by making an API request to the CM 1.5 APIs the resulting cookie can be used to make API
 calls against all the RightScale APIs enabled for the user.
 
@@ -125,9 +134,11 @@ the same client. The package also takes care of refreshing the cookie before the
 
 Below is an example listing all clouds available in a given account using the `rsc` command line
 tool with basic authentication:
-```
+
+```bash
 rsc --account $ACCOUNT --email $EMAIL --pwd $PASSWORD --host $HOST cm15 index clouds
 ```
+
 The example assumes that the ACCOUNT, EMAIL, PASSWORD and HOST environment variables contain the
 account id, user email, password and RightScale API host respectively.
 
@@ -157,18 +168,22 @@ resource.
 
 Below is an example listing all clouds available in the account using the refresh token retrieved
 from the RightScale Cloud Management dashboard:
-```
+
+```bash
 rsc --refreshToken $REFRESH --host $HOST cm15 index clouds
 ```
+
 Note that in this case the account doesn't need to be specified on the command line, it is
 inferred from the token.
 
 Here is another example that first creates an access token explicitly then uses that token to list
 all clouds:
-```
+
+```bash
 export ACCESS=`rsc --x1 .access_token --refreshToken $REFRESH cm15 create oauth2 grant_type=refresh_token refresh_token=$REFRESH`
 rsc --accessToken $ACCESS --host $HOST cm15 index clouds
 ```
+
 The example above uses the `--x1` flag to extract the access token from the response. Extracting
 data from responses is described in the [Extracting values from responses](#extract) section below.
 
@@ -179,17 +194,20 @@ specific token to make API requests from a RightScale managed instance. This tok
 the instance user data on launch by the RightScale platform. There are actually two different ways
 scripts running on RightScale managed instances can authenticate:
 
-* The instance API token can be used to create a session which returns a cookie. This method is
+- The instance API token can be used to create a session which returns a cookie. This method is
   similar to basic authentication except that a token is used instead of email and password.
-* [RightLink 10](http://docs.rightscale.com/rl/about.html) also runs a HTTP proxy that can be used
+- [RightLink 10](http://docs.rightscale.com/rl/about.html) also runs a HTTP proxy that can be used
   to make authenticated requests without requiring any credentials from the client.
 
 Here is an example using the instance API token to list all clouds:
-```
+
+```bash
 rsc --apiToken $TOKEN --host $HOST cm15 index clouds
 ```
+
 And here is another example running on a RightLink 10 enabled instance:
-```
+
+```bash
 rsc --rl10 cm15 index clouds
 ```
 
@@ -208,28 +226,35 @@ The configuration file is a simple JSON file that lists the fields defined durin
 password is encrypted before being stored although it is a two way encryption scheme and so is not
 meant to be a truly secure mechanism but rather a way to avoid having the password stored in plain
 text on disk.
-```
-rsc setup
+
+```bash
+$ rsc setup
 Account id: 12345
 Login email: myemail@mycompany.com
 Login password: 12345abc
 API Login host: us-3.rightscale.com
 ```
+
 The values stored in the configuration can be overridden using command line flags so that for
 example a different account can be specified:
-```
+
+```bash
 rsc --account 234 cm15 index clouds
 ```
+
 ### <a name=extract></a>Extracting Values From Responses
 
 The `--x1`, `--xm` and `--xj` flags make it possible to extract values from the response using a
 JSON select expression (see [https://github.com/lloyd/JSONSelect](https://github.com/lloyd/JSONSelect)). For example:
+
+```bash
+rsc --xm .name cm15 index /api/clouds
 ```
-$ rsc --xm .name cm15 index /api/clouds
-```
+
 extracts the names of each cloud from the response and prints the result as a newline separated list
 which is convenient to consume from bash scripts:
-```
+
+```bash
 $ declare -a "clouds=(`rsc --xm=.cloud_type cm15 index clouds`)"; set | egrep '^clouds'
 clouds=([0]="amazon" [1]="open_stack_v2" [2]="cloud_stack" [3]="rackspace_next_gen" [4]="google" [5]="azure" [6]="soft_layer" [7]="vscale")
 ```
@@ -240,13 +265,16 @@ For additional help on extracting values see the [Command Line Help and Cookbook
 
 The names of the actions available for a given API or a given API resource can be listed with the
 special `actions` action:
+
+```bash
+rsc cm15 actions
 ```
-$ rsc cm15 actions
-```
+
 (output of example above not shown for brevity)
 
 To get the actions available on a resource specify the resource href as in:
-```
+
+```bash
 $ rsc cm15 actions /api/clouds/1/volumes
 Action  Href                              Resource
 ======= ================================= ========
@@ -258,32 +286,39 @@ index   /api/clouds/:cloud_id             Volume
 ------- --------------------------------- --------
 show    /api/clouds/:cloud_id/volumes/:id Volume
 ```
+
 Parameters use URL form encoding to represent nested data structures used in request bodies. For example
 using the RightScale CM API 1.5 the command line to create a volume is:
-```
+
+```bash
 $ rsc --pp --fetch cm15 create /api/clouds/1/volumes \
   'volume[name]=My New Volume' \
   'volume[size]=10' \
   'volume[datacenter_href]=/api/clouds/1/datacenters/5K443K2CF8NS6' \
   'volume[volume_type_href]=/api/clouds/1/volume_types/BDVEN383N1EN2'
 ```
+
 The `--pp` and `--fetch` options above are optional, `--fetch` makes a subsequent API call to retrieve
 the newly created resource and `--pp` pretty prints the response.
 Use the name of the fields followed by `[]` to represent arrays:
-```
+
+```bash
 $ rsc cm16 index /api/deployments 'filter[]=description==awesome deployment' \
   'filter[]=name==app servers'
 ```
+
 The `/api/` prefix for CM API 1.5 and CM API 1.6 hrefs is optional so the following lists all
 deployments:
-```
-$ rsc cm16 index deployments
+
+```bash
+rsc cm16 index deployments
 ```
 
 ### Built-in Help
 
 The `--help` flag is available on all commands. It displays contextual help, for example:
-```
+
+```text
 $ rsc index --help
 usage: rsc [<flags>] index <href> [<params>]
 
@@ -293,8 +328,10 @@ Args:
   <href>      API Resource or resource collection href on which to act, e.g. '/api/servers'
   [<params>]  Action parameters in the form QUERY=VALUE, e.g. 'server[name]=server42'
 ```
+
 Or:
-```
+
+```text
 $ rsc cm15 index clouds --help
 usage: rsc [<flags>] index index /api/clouds [<cloud index params>]
 
@@ -305,10 +342,12 @@ filter[]=[]string
 view=string
     <optional, [default|extended]>
 ```
+
 The help lists the valid values for views and filters for example.
 It also indicates which flags are mandatory.
 
 -----
+
 ## <a name="go"></a>Go Package
 
 The other use case for `rsc` is making programmatic API requests to the
@@ -320,22 +359,27 @@ sub-package: package `cm15` for CM API 1.5, package `cm16`for CM API
 
 `rsc` uses gopkg.in for versioning, this means that you can download the released `rsc` packages
 as follows:
-```
+
+```bash
 go get gopkg.in/rightscale/rsc.v9
 ```
+
 and import then in your code with:
+
 ```go
 import "gopkg.in/rightscale/rsc.v9"
 ```
+
 If you intend on contributing, just want to play around with the code or feel adventurous you can
-download and use the beelding edge version from github which corresponds to the master branch:
+download and use the bleeding edge version from github which corresponds to the master branch:
+
+```bash
+go get github.com/rightscale/rsc
 ```
-$ go get github.com/rightscale/rsc
-```
+
 ```go
 import "github.com/rightscale/rsc
 ```
-
 
 ### Client Creation
 
@@ -351,6 +395,7 @@ a RightScale account ID, authentication information and an optional
 low-level HTTP client. As an example the following creates a
 CM API 1.5 client that connects to `us-3.rightscale.com` using a OAuth
 refresh token for authentication and the default HTTP client:
+
 ```go
 // Retrieve refresh tokens from the RightScale dashboard Settings/API Credentials menu
 refreshToken := "3e040efed9a83ac758f3b1cbdfa041b905742169"
@@ -360,13 +405,16 @@ auth := rsapi.NewOAuthAuthenticator(refreshToken, accountID)
 accountId := 123
 client := cm15.New("us-3.rightscale.com", &auth, nil)
 ```
+
 You may test the credentials using the `CanAuthenticate` method:
+
 ```go
 if err := client.CanAuthenticate(); err != nil {
-	// Woops creds are not working
-	return err
+    // Woops creds are not working
+    return err
 }
 ```
+
 This method makes a test API request so is expensive, the idea is to call it once then use the client
 to make a series of requests.
 
@@ -378,13 +426,15 @@ to enable logging. The [log15](https://godoc.org/github.com/inconshreveable/log1
 with a number of default handlers including a file and a syslog handlers.
 
 Configuring the `log` package to log to the file `/var/log/myapp.log` would look like:
+
 ```go
 handler, err := log15.FileHandler("/var/log/myapp.log", log15.LogfmtFormat())
 if err != nil {
-	return err
+    return err
 }
 log.Logger.SetHandler(handler)
 ```
+
 Consult the [log15](https://godoc.org/github.com/inconshreveable/log15) GoDocs for more information.
 
 ### Locators
@@ -395,26 +445,31 @@ resource locator type per resource exposed by the underlying API.
 Locators are instantiated using factory methods exposed by the client object. The factory methods
 accept the collection or resource href and return the corresponding locator. For example the
 following creates a cloud locator:
+
 ```go
 var cloudLocator = client.CloudLocator("/api/clouds/1")
 ```
+
 Locators expose one method for each action supported by the underlying collection or resource. For
 example the clouds collection locator `CloudLocator` exposes an `Index()` and a `Show()` method.
 Locator methods may return resources which are structs that expose the underlying resource
 attributes. For example the `CloudLocator` `Index()` method returns an array of `Cloud` resource.
 A cloud resource is defined as:
+
 ```go
 // Represents a Cloud (within the context of the account in the session).
 type Cloud struct {
-	Capabilities []map[string]interface{} `json:"capabilities,omitempty"`
-	CloudType    string                   `json:"cloud_type,omitempty"`
-	Description  string                   `json:"description,omitempty"`
-	DisplayName  string                   `json:"display_name,omitempty"`
-	Links        []map[string]string      `json:"links,omitempty"`
-	Name         string                   `json:"name,omitempty"`
+    Capabilities []map[string]interface{} `json:"capabilities,omitempty"`
+    CloudType    string                   `json:"cloud_type,omitempty"`
+    Description  string                   `json:"description,omitempty"`
+    DisplayName  string                   `json:"display_name,omitempty"`
+    Links        []map[string]string      `json:"links,omitempty"`
+    Name         string                   `json:"name,omitempty"`
 }
 ```
+
 and the `Index()` method is defined as:
+
 ```go
 // GET /api/clouds
 // Lists the clouds available to this account.
@@ -423,27 +478,33 @@ and the `Index()` method is defined as:
 // view
 func (loc *CloudLocator) Index(options rsapi.APIParams) ([]*Cloud, error)
 ```
+
 The following code would invoke the `Index()` method using the default view and no filter to make the API request:
+
 ```go
 var clouds, err = api.CloudLocator("/api/clouds").Index(rsapi.APIParams{})
 ```
+
 `Create` actions all return a locator so that fetching the corresponding resource is easy:
+
 ```go
 var volumesLocator = client.VolumeLocator("/api/clouds/1/volumes")
 var params cm15.VolumeParam{} // Code that sets parameters omitted for brevity
 loc, err := volumeLocator.Create(&params)
 if err == nil {
-	volume, err := loc.Show(rsapi.APIParams{})
-	// ... check error, use volume etc.
+    volume, err := loc.Show(rsapi.APIParams{})
+    // ... check error, use volume etc.
 }
 ```
+
 It is also possible to create a locator directly from a resource by using the resource `Locator`
 method:
-```
+
+```go
 clouds, err := client.CloudLocator("/api/clouds").Index()
 if err == nil {
-	first := clouds[0].Locator(client)
-	first.Show() // first is a CloudLocator instance
+    first := clouds[0].Locator(client)
+    first.Show() // first is a CloudLocator instance
 }
 ```
 
@@ -459,14 +520,18 @@ For this use case each API client package also contains a generic `BuildRequest`
 method which accepts the name of a resource, the name of an action,
 the href of the resource and a map of generic parameters (in the form of
 `map[string]interface{}`):
+
 ```go
 func (a *API) BuildRequest(resource, action, href string, params rsapi.APIParams) (*http.Request, error)
 ```
+
 The client also exposes a `PerformRequest` method that makes the request and optionally
 dumps the request body and response to STDERR for debugging:
+
 ```go
 func (a *API) PerformRequest(req *http.Request) (*http.Response, error)
 ```
+
 The `httpclient` package exposes a `DumpFormat` variable that controls how much logging is done
 when HTTP requests are done. The default consists of logging the request method and URL as well
 as the response code and timing information. Setting `DumpFormat` to `httpclient.Debug` causes
@@ -482,9 +547,11 @@ and returns the result. If the response contains a `Location` header (all
 `create` actions return one) then the function returns a map containing
 the value of the location under the `"Location"` key. The signature of
 `LoadResponse` is:
+
 ```go
 func (a *API) LoadResponse(resp *http.Response) (interface{}, error)
 ```
+
 The `rsapi` package also includes authenticators which signs API requests
 by adding the required auth headers (cookie in the case of email/password
 authentication, OAuth header in the case of OAuth and custom header in
@@ -495,28 +562,30 @@ the clients to parse the command line.
 
 The repository includes the following Go examples:
 
-* [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/basic)
-* [Cloud Management 1.5 Auditail Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
-* [Cloud Management 1.5 RS SSH Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/rsssh)
-* [Self-Service Basic Example](https://github.com/rightscale/rsc/tree/master/ss/examples/basic)
+- [Cloud Management 1.5 Basic Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/basic)
+- [Cloud Management 1.5 Auditail Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/auditail)
+- [Cloud Management 1.5 RS SSH Example](https://github.com/rightscale/rsc/tree/master/cm15/examples/rsssh)
+- [Self-Service Basic Example](https://github.com/rightscale/rsc/tree/master/ss/examples/basic)
 
 ### Reference Documentation
 
 The documentation for each package is hosted on godoc.org:
 
-* [Cloud Management 1.5](http://godoc.org/github.com/rightscale/rsc/cm15)
-* [Cloud Management 1.6](http://godoc.org/github.com/rightscale/rsc/cm16)
-* [Self-Service Designer](http://godoc.org/github.com/rightscale/rsc/ss/ssd)
-* [Self-Service Catalog](http://godoc.org/github.com/rightscale/rsc/ss/ssc)
-* [Self-Service Manager](http://godoc.org/github.com/rightscale/rsc/ss/ssm)
-* [RightLink10](http://godoc.org/github.com/rightscale/rsc/rl10)
+- [Cloud Management 1.5](http://godoc.org/github.com/rightscale/rsc/cm15)
+- [Cloud Management 1.6](http://godoc.org/github.com/rightscale/rsc/cm16)
+- [Self-Service Designer](http://godoc.org/github.com/rightscale/rsc/ss/ssd)
+- [Self-Service Catalog](http://godoc.org/github.com/rightscale/rsc/ss/ssc)
+- [Self-Service Manager](http://godoc.org/github.com/rightscale/rsc/ss/ssm)
+- [RightLink10](http://godoc.org/github.com/rightscale/rsc/rl10)
 
 -----
+
 ## <a name="contributing"></a>Development & Contributing
 
 ### Building
 
 The following make targets are useful:
+
 - `make depend` installs required tools
 - `make` builds a binary for your local OS
 - `make build` builds binaries for Linux, OS-X and Windows
@@ -528,7 +597,8 @@ The simple option is `go get gopkg.in/rightscale/rsc.v9`, this will use the chec
 code-generated files.
 
 The more involved option is:
-```
+
+```bash
 mkdir -p $GOPATH/src/gopkg.in/rightscale
 cd $GOPATH/src/gopkg.in/rightscale
 git clone https://github.com/rightscale/rsc.git rsc.v9
@@ -537,6 +607,7 @@ git checkout v9.0.0
 make depend
 make
 ```
+
 ### Code generation
 
 Part of the `rsc` source code (the vast majority in terms of lines of code) is automatically
