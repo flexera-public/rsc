@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.0.3.1)
+    activesupport (6.0.6.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -10,14 +10,14 @@ GEM
     attributor (2.6.0)
       hashie (~> 3)
       randexp (~> 0)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.2.0)
     harness (2.0.0)
       statsd-ruby
     hashie (3.4.1)
-    i18n (1.8.10)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     mime (0.4.2)
-    minitest (5.14.4)
+    minitest (5.17.0)
     mustermann (0.4.0)
       tool (~> 0.2)
     praxis (0.14.0)
@@ -48,9 +48,9 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.6)
     tool (0.2.3)
-    tzinfo (1.2.9)
+    tzinfo (1.2.11)
       thread_safe (~> 0.1)
-    zeitwerk (2.4.2)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
