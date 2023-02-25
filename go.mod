@@ -21,6 +21,6 @@ require (
 	github.com/onsi/gomega v1.10.1
 	github.com/rightscale/go-jsonselect v0.0.0-20150427163236-d04eebe26072
 	github.com/sergi/go-diff v1.1.0 // indirect
-	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.4
 )
